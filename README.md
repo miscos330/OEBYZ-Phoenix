@@ -7,7 +7,7 @@
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
 
-⭐ **如果你喜欢这个 MOD，欢迎给本仓库点个 Star（页面右上角的 Star 按钮）。** Star 越多，越容易被其他玩家找到，也是对作者和贡献者最直接的鼓励。发现问题可以在 Issues 里反馈，请写上开局日期、出问题的事件或界面，最好附上截图或 `error.log` 里的相关几行。
+⭐ **如果你喜欢这个 MOD，欢迎给本仓库点个 Star（页面右上角的 Star 按钮）。** Star 越多，越容易被其他玩家找到，也是对我们最直接的鼓励。发现问题可以在 Issues 里反馈，请写上开局日期、出问题的事件或界面，最好附上截图或 `error.log` 里的相关几行。
 
 ## 本模组的定位
 
@@ -72,7 +72,7 @@
 
 ## 后续更新计划
 
-计划会根据测试、玩家反馈和原作者的意见调整，以实际更新为准。
+计划会根据测试和玩家反馈调整，以实际更新为准。
 
 ### 近期：修问题与平衡
 
@@ -127,9 +127,8 @@
 
 ## 制作人员
 
-- **原作者：** 寐夜空灵
-- **贡献者：** miscos330
-- **军区辖区数据：** 来自“拜占庭重置:涅槃”（Byzantium Overhaul: Nirvana，[创意工坊 3602306286](https://steamcommunity.com/sharedfiles/filedetails/?id=3602306286)），已获作者授权。
+- **制作：** 寐夜空灵、miscos330
+- **军区辖区数据：** 来自“拜占庭重置:涅槃”（Byzantium Overhaul: Nirvana，[创意工坊 3602306286](https://steamcommunity.com/sharedfiles/filedetails/?id=3602306286)），已获授权。
 
 ## 许可
 
@@ -146,7 +145,7 @@ The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
 
-⭐ **If you enjoy the mod, please star this repository.** Stars help other players find it and are the most direct encouragement for the author and contributors. Bug reports are welcome in Issues.
+⭐ **If you enjoy the mod, please star this repository.** Stars help other players find it and are the most direct encouragement for us. Bug reports are welcome in Issues.
 
 ## What this mod is
 
@@ -176,7 +175,7 @@ The full changelog is in [CHANGELOG.md](CHANGELOG.md) (Chinese).
 
 ## Roadmap
 
-Plans will change with testing, player feedback and the original author's views.
+Plans will change with testing and player feedback.
 
 - **Next:** rebalance the starting finances, fix early-firing stories, and test the English interface and long-term AI Byzantium in game.
 - **Later, Byzantium after 1341:** the second civil war and Gallipoli (1352–1357), vassalage to the Ottomans and Andronikos IV (1371–1381), Bayezid's siege (1394–1402), the Ottoman interregnum, the Morea, Thessalonica, the siege of 1422 and the price of Church union.
@@ -190,9 +189,8 @@ Plans will change with testing, player feedback and the original author's views.
 
 ## Credits
 
-- **Original author:** 寐夜空灵
-- **Contributor:** miscos330
-- **Theme-region data:** from Byzantium Overhaul: Nirvana ([Workshop 3602306286](https://steamcommunity.com/sharedfiles/filedetails/?id=3602306286)), used with its author's permission.
+- **Made by:** 寐夜空灵, miscos330
+- **Theme-region data:** from Byzantium Overhaul: Nirvana ([Workshop 3602306286](https://steamcommunity.com/sharedfiles/filedetails/?id=3602306286)), used with permission.
 
 ## Licence
 
