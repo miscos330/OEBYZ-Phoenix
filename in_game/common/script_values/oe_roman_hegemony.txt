@@ -1,0 +1,40 @@
+﻿# Debug switch: set to 0 to require ending the contest before opening Hegemony.
+oe_rw_hegemony_debug_open = 1
+
+# Fixed geographical denominator; does not depend on current IO membership or owners.
+oe_rw_hegemony_total_locations = {
+    value = 0
+    region:balkan_region = {
+        every_location_in_region = { limit = { is_ownable = yes } add = 1 }
+    }
+    region:anatolia_region = {
+        every_location_in_region = { limit = { is_ownable = yes } add = 1 }
+    }
+}
+
+# Country scope. Ownership, not military occupation; each location counts once.
+oe_rw_hegemony_direct_locations = {
+    value = 0
+    every_owned_location = {
+        limit = { oe_rw_hegemony_land = yes }
+        add = 1
+    }
+}
+oe_rw_hegemony_owned_locations = {
+    value = oe_rw_hegemony_direct_locations
+    every_subject_or_below = { add = oe_rw_hegemony_direct_locations }
+}
+oe_rw_hegemony_required_locations = {
+    value = oe_rw_hegemony_total_locations
+    multiply = 0.7
+    ceiling = yes
+}
+oe_rw_hegemony_owned_percent = {
+    value = 0
+    if = {
+        limit = { oe_rw_hegemony_total_locations > 0 }
+        value = oe_rw_hegemony_owned_locations
+        divide = oe_rw_hegemony_total_locations
+        multiply = 100
+    }
+}

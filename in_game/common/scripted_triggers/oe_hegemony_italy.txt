@@ -1,0 +1,82 @@
+﻿# Country scope. Italy has its own planning gate; no Alexandria requirement.
+oe_heg_plan_italy_allowed = {
+    oe_heg_campaign_access = yes
+    NOT = { has_variable = oe_heg_italy_plan_done }
+    gold >= 1000
+}
+oe_heg_italy_action_allowed = {
+    oe_heg_campaign_access = yes
+    custom_tooltip = { text = OE_HEG_ITALY_PLAN_REQUIRED has_variable = oe_heg_italy_plan_done }
+}
+# Location scope: already-owned bloc land counts for coverage, but only enemy occupation transfers.
+oe_heg_south_italy_covered = {
+    OR = {
+        owner = { oe_heg_byz_bloc = yes }
+        oe_heg_military_occupation = yes
+    }
+}
+oe_heg_drive_out_normans_allowed = {
+    oe_heg_italy_action_allowed = yes
+    custom_tooltip = {
+        text = OE_HEG_SOUTH_ITALY_COVERED
+        area:apulia_area = {
+            NOT = { any_location_in_area = { is_ownable = yes NOT = { oe_heg_south_italy_covered = yes } } }
+        }
+        area:basilicata_area = {
+            NOT = { any_location_in_area = { is_ownable = yes NOT = { oe_heg_south_italy_covered = yes } } }
+        }
+    }
+    custom_tooltip = {
+        text = OE_HEG_SOUTH_ITALY_OCCUPATION
+        OR = {
+            area:apulia_area = { any_location_in_area = { oe_heg_military_occupation = yes } }
+            area:basilicata_area = { any_location_in_area = { oe_heg_military_occupation = yes } }
+        }
+    }
+}
+oe_heg_march_on_rome_allowed = {
+    oe_heg_italy_action_allowed = yes
+    NOT = { has_variable = oe_heg_rome_done }
+    custom_tooltip = { text = OE_HEG_ROME_YEAR location:rome = { oe_heg_held_over_year = yes } }
+}
+oe_heg_revenge_on_venice_allowed = {
+    oe_heg_italy_action_allowed = yes
+    NOT = { has_variable = oe_heg_venice_done }
+    custom_tooltip = { text = OE_HEG_VENICE_YEAR location:venice = { oe_heg_held_over_year = yes } }
+}
+# Country selection follows current ownership, not its capital's region or occupation.
+oe_heg_invade_italy_target = {
+    country_type = location
+    NOT = { oe_heg_byz_bloc = yes }
+    any_owned_location = { region = region:italy_region }
+}
+oe_heg_invade_italy_allowed = {
+    oe_heg_campaign_access = yes
+    custom_tooltip = { text = OE_HEG_ITALY_PLAN_REQUIRED has_variable = oe_heg_italy_plan_done }
+    gold >= 100
+    any_country = { oe_heg_invade_italy_target = yes }
+}
+# Country selection follows current ownership, not its capital's region or occupation.
+oe_heg_invade_egypt_target = {
+    country_type = location
+    NOT = { oe_heg_byz_bloc = yes }
+    any_owned_location = { OR = { region = region:egypt_region area = area:levant_area } }
+}
+oe_heg_invade_egypt_allowed = {
+    oe_heg_campaign_access = yes
+    custom_tooltip = { text = OE_HEG_EGYPT_PLAN_REQUIRED has_variable = oe_heg_egypt_plan_done }
+    gold >= 100
+    any_country = { oe_heg_invade_egypt_target = yes }
+}
+# Country selection follows current ownership, not its capital's region or occupation.
+oe_heg_invade_africa_target = {
+    country_type = location
+    NOT = { oe_heg_byz_bloc = yes }
+    any_owned_location = { region = region:maghreb_region }
+}
+oe_heg_invade_africa_allowed = {
+    oe_heg_africa_access = yes
+    custom_tooltip = { text = OE_HEG_AFRICA_PLAN_REQUIRED has_variable = oe_heg_africa_plan_done }
+    gold >= 100
+    any_country = { oe_heg_invade_africa_target = yes }
+}

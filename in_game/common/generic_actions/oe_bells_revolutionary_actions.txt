@@ -1,0 +1,153 @@
+﻿# Revolutionary choices for BYZ, deliberately player-directed like the existing domestic actions.
+
+oe_bells_establish_press = {
+    type = situation
+    show_message = no
+    show_in_gui_list = no
+    potential = { scope:actor = { oe_bells_byz_actor = yes } }
+    allow = { scope:actor = { oe_bells_byz_actor = yes NOT = { has_country_modifier = oe_bells_clandestine_press } } }
+    cooldown = { type = oe_bells_establish_press_cooldown years = 5 }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_bells_of_revolution = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_bells_byz_actor = yes NOT = { has_country_modifier = oe_bells_clandestine_press } }
+                scope:recipient = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+            }
+            scope:actor = {
+                oe_bells_change_clamor = { amount = -3 reason = oe_bells_establish_press }
+                add_country_modifier = { modifier = oe_bells_clandestine_press years = 5 mode = replace }
+            }
+        }
+    }
+}
+
+oe_bells_refuse_taxes = {
+    type = situation
+    show_message = no
+    show_in_gui_list = no
+    potential = { scope:actor = { oe_bells_byz_actor = yes } }
+    allow = { scope:actor = { oe_bells_byz_actor = yes  } }
+    cooldown = { type = oe_bells_refuse_taxes_cooldown years = 5 }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_bells_of_revolution = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_bells_byz_actor = yes  }
+                scope:recipient = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+            }
+            scope:actor = {
+                add_country_modifier = { modifier = oe_bells_tax_refusal years = 5 mode = replace decaying = no }
+            }
+        }
+    }
+}
+
+oe_bells_army_propaganda = {
+    type = situation
+    show_message = no
+    show_in_gui_list = no
+    potential = { scope:actor = { oe_bells_byz_actor = yes } }
+    allow = { scope:actor = { oe_bells_byz_actor = yes  } }
+    cooldown = { type = oe_bells_army_propaganda_cooldown years = 2 }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_bells_of_revolution = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_bells_byz_actor = yes  }
+                scope:recipient = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+            }
+            scope:actor = {
+                oe_bells_change_clamor = { amount = 3 reason = oe_bells_army_propaganda }
+            }
+        }
+    }
+}
+
+oe_bells_salon_propaganda = {
+    type = situation
+    show_message = no
+    show_in_gui_list = no
+    potential = { scope:actor = { oe_bells_byz_actor = yes } }
+    allow = { scope:actor = { oe_bells_byz_actor = yes  } }
+    cooldown = { type = oe_bells_salon_propaganda_cooldown years = 2 }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_bells_of_revolution = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_bells_byz_actor = yes  }
+                scope:recipient = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+            }
+            scope:actor = {
+                oe_bells_change_clamor = { amount = 2 reason = oe_bells_salon_propaganda }
+                add_estate_satisfaction = { type = estate_type:nobles_estate value = -0.025 }
+            }
+        }
+    }
+}
+
+oe_bells_court_clergy_sympathizers = {
+    type = situation
+    show_message = no
+    show_in_gui_list = no
+    potential = { scope:actor = { oe_bells_byz_actor = yes } }
+    allow = { scope:actor = { oe_bells_byz_actor = yes  } }
+    cooldown = { type = oe_bells_court_clergy_sympathizers_cooldown years = 2 }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_bells_of_revolution = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_bells_byz_actor = yes  }
+                scope:recipient = { this = situation:oe_bells_of_revolution situation_is_active = yes }
+            }
+            scope:actor = {
+                oe_bells_change_clamor = { amount = 2 reason = oe_bells_court_clergy_sympathizers }
+            }
+        }
+    }
+}

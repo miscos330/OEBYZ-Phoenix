@@ -1,0 +1,281 @@
+﻿# Country scope. Camp lists are mutually exclusive and contain only selected countries.
+oe_bells_choose_camp = {
+    custom_tooltip = oe_bells_join_$camp$_tt
+    hidden_effect = {
+        remove_list_global_variable = { name = oe_bells_rebels target = this }
+        remove_list_global_variable = { name = oe_bells_royalists target = this }
+        set_variable = { name = oe_bells_camp value = $camp$ }
+        remove_variable = oe_bells_choice_pending
+        oe_bells_apply_camp_relations = yes
+        if = { limit = { var:oe_bells_camp = 1 } add_to_global_variable_list = { name = oe_bells_rebels target = this } }
+        else_if = { limit = { var:oe_bells_camp = 2 } add_to_global_variable_list = { name = oe_bells_royalists target = this } }
+    }
+}
+# Country scope. All non-natural clamor changes MUST use this effect.
+# Records are immutable snapshots, keyed by a monotonically increasing numeric scope.
+oe_bells_change_clamor = {
+    save_scope_as = oe_bells_actor
+    save_scope_value_as = { name = oe_bells_requested_change value = $amount$ }
+    custom_description = {
+        text = oe_bells_change_clamor_tt
+        # Preview must evaluate the supplied amount; saved effect-chain values do not exist yet.
+        value = $amount$
+        situation:oe_bells_of_revolution = {
+            save_scope_value_as = { name = oe_bells_before value = var:oe_bells_clamor }
+            change_variable = { name = oe_bells_clamor add = scope:oe_bells_requested_change }
+            clamp_variable = { name = oe_bells_clamor min = 0 max = 100 }
+            change_variable = { name = oe_bells_log_sequence add = 1 }
+            add_to_variable_list = { name = oe_bells_history target = var:oe_bells_log_sequence }
+            add_to_variable_map = { name = oe_bells_log_actor key = var:oe_bells_log_sequence value = scope:oe_bells_actor }
+            add_to_variable_map = { name = oe_bells_log_reason key = var:oe_bells_log_sequence value = flag:$reason$ }
+            save_scope_value_as = { name = oe_bells_record_year value = current_year }
+            save_scope_value_as = { name = oe_bells_record_month value = current_month }
+            add_to_variable_map = { name = oe_bells_log_year key = var:oe_bells_log_sequence value = scope:oe_bells_record_year }
+            add_to_variable_map = { name = oe_bells_log_month key = var:oe_bells_log_sequence value = scope:oe_bells_record_month }
+            save_scope_value_as = { name = oe_bells_actual_change value = { value = var:oe_bells_clamor subtract = scope:oe_bells_before } }
+            add_to_variable_map = { name = oe_bells_log_delta key = var:oe_bells_log_sequence value = scope:oe_bells_actual_change }
+            add_to_variable_map = { name = oe_bells_log_requested key = var:oe_bells_log_sequence value = scope:oe_bells_requested_change }
+            add_to_variable_map = { name = oe_bells_log_after key = var:oe_bells_log_sequence value = var:oe_bells_clamor }
+            oe_bells_check_thinker_thresholds = yes
+        }
+    }
+}
+
+# Country scope. Stance changes add/remove the one bounded mutual opinion entry.
+oe_bells_apply_camp_relations = {
+    save_scope_as = oe_bells_alignment_country
+    if = {
+        limit = { country_exists = c:BYZ }
+        if = {
+            limit = { oe_bells_rebel = yes }
+            add_opinion = { target = c:BYZ modifier = oe_bells_revolutionary_hostility }
+            c:BYZ = { add_opinion = { target = scope:oe_bells_alignment_country modifier = oe_bells_revolutionary_hostility } }
+        }
+        else = {
+            remove_opinion = { target = c:BYZ modifier = oe_bells_revolutionary_hostility }
+            c:BYZ = { remove_opinion = { target = scope:oe_bells_alignment_country modifier = oe_bells_revolutionary_hostility } }
+        }
+    }
+    oe_bells_sync_subject_penalty = yes
+}
+oe_bells_sync_subject_penalty = {
+    if = {
+        limit = { oe_bells_rebel = yes oe_bells_byz_subject = yes }
+        if = {
+            limit = { NOT = { has_country_modifier = oe_bells_revolutionary_subject } }
+            add_country_modifier = { modifier = oe_bells_revolutionary_subject years = -1 mode = replace }
+        }
+    }
+    else_if = {
+        limit = { has_country_modifier = oe_bells_revolutionary_subject }
+        remove_country_modifier = oe_bells_revolutionary_subject
+    }
+}
+# Situation scope. Set flag BEFORE queueing; threshold event can occur only once.
+oe_bells_check_thinker_thresholds = {
+    if = {
+        limit = {
+            country_exists = c:BYZ
+            var:oe_bells_clamor >= 10
+            NOT = { has_variable = oe_bells_thinker_threshold_10 }
+        }
+        set_variable = oe_bells_thinker_threshold_10
+        c:BYZ = { trigger_event_non_silently = oe_bells.21 }
+    }
+    if = {
+        limit = {
+            country_exists = c:BYZ
+            var:oe_bells_clamor >= 25
+            NOT = { has_variable = oe_bells_thinker_threshold_25 }
+        }
+        set_variable = oe_bells_thinker_threshold_25
+        c:BYZ = { trigger_event_non_silently = oe_bells.22 }
+    }
+    if = {
+        limit = {
+            country_exists = c:BYZ
+            var:oe_bells_clamor >= 35
+            NOT = { has_variable = oe_bells_thinker_threshold_35 }
+        }
+        set_variable = oe_bells_thinker_threshold_35
+        c:BYZ = { trigger_event_non_silently = oe_bells.23 }
+    }
+    if = {
+        limit = {
+            country_exists = c:BYZ
+            var:oe_bells_clamor >= 50
+            NOT = { has_variable = oe_bells_halfway_thinker }
+        }
+        set_variable = oe_bells_halfway_thinker
+        c:BYZ = { trigger_event_non_silently = oe_bells.4 }
+    }
+    if = {
+        limit = {
+            country_exists = c:BYZ
+            var:oe_bells_clamor >= 75
+            NOT = { has_variable = oe_bells_thinker_threshold_75 }
+        }
+        set_variable = oe_bells_thinker_threshold_75
+        c:BYZ = { trigger_event_non_silently = oe_bells.24 }
+    }
+}
+# BYZ country scope.
+oe_bells_create_thinker = {
+    create_character = {
+        age = { 30 45 }
+        female = no
+        culture = root.culture
+        religion = religion:orthodox
+        estate = estate_type:burghers_estate
+        artist = philosopher
+        artist_skill = 0.65
+        save_scope_as = oe_bells_new_thinker
+    }
+    scope:oe_bells_new_thinker = {
+        add_character_modifier = { modifier = oe_bells_dangerous_thinker years = -1 mode = replace }
+    }
+    add_to_variable_list = { name = oe_bells_thinkers target = scope:oe_bells_new_thinker }
+    change_variable = { name = oe_bells_thinkers_created add = 1 }
+}
+# Country scope: check current top THREE direct landed subjects first, THEN test disloyalty.
+oe_bells_check_country_crises = {
+    if = {
+        limit = {
+            exists = international_organization:oe_byz_empire_pillars
+            international_organization:oe_byz_empire_pillars = { var:oe_pillars_public_opinion < 40 }
+            NOT = { has_variable = oe_bells_alienated_people_fired }
+        }
+        set_variable = oe_bells_alienated_people_fired
+        trigger_event_non_silently = oe_bells.5
+    }
+    ordered_subject = {
+        limit = { num_locations > 0 }
+        order_by = country_tax_base
+        max = 3
+        check_range_bounds = no
+        if = {
+            limit = {
+                country_tax_base > 1000
+                subject_loyalty < 50
+                NOT = { has_variable = oe_bells_rebellious_subject_fired }
+            }
+            set_variable = oe_bells_rebellious_subject_fired
+            save_scope_as = oe_bells_rebellious_subject
+            c:BYZ = { trigger_event_non_silently = oe_bells.6 }
+        }
+    }
+}
+# Situation scope; this is the only monthly settlement. Continuous changes do not flood the log.
+oe_bells_monthly = {
+    change_variable = { name = oe_bells_clamor add = oe_bells_monthly_total }
+    clamp_variable = { name = oe_bells_clamor min = 0 max = 100 }
+    oe_bells_check_thinker_thresholds = yes
+    c:BYZ ?= {
+        add_legitimacy = oe_bells_thinker_legitimacy
+        # Fixed stability change, not the native stability-investment budget modifier.
+        add_stability = modifier:oe_bells_monthly_stability
+        oe_bells_check_country_crises = yes
+        oe_bells_roll_monthly_events = yes
+    }
+    # Stance opinion remains unchanged; only check the existing agitator list for subject-status changes.
+    every_in_global_list = {
+        variable = oe_bells_rebels
+        oe_bells_sync_subject_penalty = yes
+    }
+}
+# Situation scope. Camp-linked hostility expires with the situation.
+oe_bells_end_camps = {
+    every_in_global_list = {
+        variable = oe_bells_rebels
+        save_scope_as = oe_bells_alignment_country
+        remove_country_modifier = oe_bells_revolutionary_subject
+        if = {
+            limit = { country_exists = c:BYZ }
+            remove_opinion = { target = c:BYZ modifier = oe_bells_revolutionary_hostility }
+            c:BYZ = { remove_opinion = { target = scope:oe_bells_alignment_country modifier = oe_bells_revolutionary_hostility } }
+        }
+    }
+}
+
+# BYZ country scope: one independent roll per pool, then one eligible event.
+# Location eligibility is evaluated only after the 5% roll succeeds.
+oe_bells_roll_monthly_events = {
+    random = {
+        chance = 1
+        random_list = {
+            1 = { trigger_event_non_silently = oe_bells.4 }
+            1 = {
+                trigger = {
+                    NOT = { has_country_modifier = oe_bells_clandestine_press }
+                    NOT = { has_variable = oe_bells_event_12_pending }
+                }
+                set_variable = oe_bells_event_12_pending
+                trigger_event_non_silently = oe_bells.12
+            }
+            1 = {
+                trigger = {
+                    NOT = { has_country_modifier = oe_bells_university_manifesto }
+                    NOT = { has_variable = oe_bells_event_13_pending }
+                }
+                set_variable = oe_bells_event_13_pending
+                trigger_event_non_silently = oe_bells.13
+            }
+            1 = {
+                trigger = {
+                    NOT = { has_country_modifier = oe_bells_defecting_historiographer }
+                    NOT = { has_variable = oe_bells_event_14_pending }
+                }
+                set_variable = oe_bells_event_14_pending
+                trigger_event_non_silently = oe_bells.14
+            }
+            1 = {
+                trigger = {
+                    NOT = { has_country_modifier = oe_bells_army_republican_societies }
+                    NOT = { has_variable = oe_bells_event_15_pending }
+                }
+                set_variable = oe_bells_event_15_pending
+                trigger_event_non_silently = oe_bells.15
+            }
+        }
+    }
+    random = {
+        chance = 5
+        random_list = {
+            1 = {
+                trigger = { oe_bells_can_gather_protesters = yes }
+                set_variable = oe_bells_protest_pending
+                trigger_event_non_silently = oe_bells.10
+            }
+            1 = {
+                trigger = { oe_bells_can_demand_release = yes }
+                set_variable = oe_bells_release_pending
+                trigger_event_non_silently = oe_bells.11
+            }
+            1 = {
+                trigger = { NOT = { has_variable = oe_bells_event_16_pending } }
+                set_variable = oe_bells_event_16_pending
+                trigger_event_non_silently = oe_bells.16
+            }
+            1 = {
+                trigger = { NOT = { has_variable = oe_bells_event_17_pending } }
+                set_variable = oe_bells_event_17_pending
+                trigger_event_non_silently = oe_bells.17
+            }
+            1 = {
+                trigger = { NOT = { has_variable = oe_bells_event_18_pending } }
+                set_variable = oe_bells_event_18_pending
+                trigger_event_non_silently = oe_bells.18
+            }
+            1 = {
+                trigger = { NOT = { has_variable = oe_bells_event_19_pending } }
+                set_variable = oe_bells_event_19_pending
+                trigger_event_non_silently = oe_bells.19
+            }
+            1 = {
+                trigger = { NOT = { has_variable = oe_bells_event_20_pending } }
+                set_variable = oe_bells_event_20_pending
+                trigger_event_non_silently = oe_bells.20
+            }
+        }
+    }
+}

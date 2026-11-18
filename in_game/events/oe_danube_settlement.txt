@@ -1,0 +1,52 @@
+﻿namespace = oe_danube_settlement
+oe_danube_settlement.1 = {
+    type = country_event
+    title = oe_danube_settlement.1.t
+    desc = oe_danube_settlement.1.d
+    outcome = neutral
+    illustration_tags = { 10 = armed 10 = exterior }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_danube_settlement.1.a
+        trigger = {
+            gold >= 100
+            manpower >= 1
+            oe_danube_mongol_enclave = yes
+            has_variable = oe_danube_pending_governorate
+            var:oe_danube_pending_governorate = { oe_danube_governorate_valid = yes }
+        }
+        add_manpower = -1
+        add_gold = -100
+        custom_tooltip = {
+            text = OE_DANUBE_MONGOL_HANDOVER
+            area:moldavia_area = {
+                every_location_in_area = {
+                    limit = { owner = c:GLH }
+                    change_location_owner = root.var:oe_danube_pending_governorate
+                }
+            }
+        }
+        remove_variable = oe_danube_pending_governorate
+    }
+    option = {
+        name = oe_danube_settlement.1.b
+        add_prestige = 10
+        remove_variable = oe_danube_pending_governorate
+    }
+}
+
+# A hidden country event supplies a fresh, stable root for the transaction.
+oe_danube_settlement.2 = {
+    type = country_event
+    title = empty_text # FIX 2026-11-17 P2：隐藏事件按原版写法补 title
+    hidden = yes
+    orphan = yes
+    immediate = {
+        if = {
+            limit = { oe_danube_moldavia_allowed = yes }
+            oe_danube_found_moldavia = yes
+        }
+    }
+}

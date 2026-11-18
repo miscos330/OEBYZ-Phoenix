@@ -1,0 +1,30 @@
+﻿# NEW 2026-11-17 theme-rework: hand-written helpers for historical theme regions.
+# Region data lives in oe_theme_regions.txt (generated); do not mix the two.
+
+# Location scope. Builds the jurisdiction office (治所) matching the owner theme's type.
+# Usage: oe_theme_construct_post = { owner = scope:some_theme_country }
+oe_theme_construct_post = {
+    if = {
+        limit = { $owner$ = { is_subject_type = oe_empire_theme_naval } }
+        construct_building = { building_type = building_type:oe_byz_theme_naval_post owner = $owner$ cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    else_if = {
+        limit = { $owner$ = { is_subject_type = oe_empire_theme_administrative } }
+        construct_building = { building_type = building_type:oe_byz_theme_administrative_post owner = $owner$ cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    else_if = {
+        limit = { $owner$ = { is_subject_type = oe_empire_theme_frontier } }
+        construct_building = { building_type = building_type:oe_byz_theme_frontier_post owner = $owner$ cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    else_if = {
+        limit = { $owner$ = { is_subject_type = oe_empire_theme_italian } }
+        construct_building = { building_type = building_type:oe_byz_theme_italian_post owner = $owner$ cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    else_if = {
+        limit = { $owner$ = { is_subject_type = oe_empire_theme_latin } }
+        construct_building = { building_type = building_type:oe_byz_theme_latin_post owner = $owner$ cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    else = {
+        construct_building = { building_type = building_type:oe_byz_theme_system owner = $owner$ cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+}

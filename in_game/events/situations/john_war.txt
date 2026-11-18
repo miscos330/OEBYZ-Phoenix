@@ -1,0 +1,537 @@
+﻿# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# namespace = john_war
+# 	scripted_effect oe_byz_nobleIII_refor = {#武勋势力
+# 	custom_description = {
+# 		text = oe_byz_nobleIII_refor_$math$_text
+# 		value = $value$
+# 		change_variable = {
+# 			name = oe_byz_nobleIII_reformmm_var
+# 			$math$ = $value$
+# 		}
+# 	}
+# }	
+# 
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # 	scripted_effect oe_byz_nobleIV_refor = {#官僚势力
+# # 	custom_description = {
+# # 		text = oe_byz_nobleIV_refor_$math$_text
+# # 		value = $value$
+# # 		change_variable = {
+# # 			name = oe_byz_nobleIV_reformmm_var
+# # 			$math$ = $value$
+# # 		}
+# # 	}
+# # }
+# 	
+# 	scripted_effect oe_byz_nobleV_refor = {#阶级对立
+# 	custom_description = {
+# 		text = oe_byz_nobleV_refor_$math$_text
+# 		value = $value$
+# 		change_variable = {
+# 			name = oe_byz_nobleV_reformmm_var
+# 			$math$ = $value$
+# 		}
+# 	}
+# }	
+# john_war.1 = {#局势开始
+# 	type = country_event
+# 	category = situation_event
+# 	image = "gfx/interface/illustrations/situation/aaaaa.dds"
+# 	title = john_war.1.t
+# 	desc = john_war.1.d
+# 	immediate = {
+# 		set_variable = { name = oe_byz_nobleIII_reformmm_var value = 0 }
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # set_variable = { name = oe_byz_nobleIV_reformmm_var value = 0 }
+# 
+# 		set_variable = { name = oe_byz_nobleV_reformmm_var value = 0 }
+# 	}
+# 	option = {
+# 		name = john_war.1.a
+# 		oe_byz_nobleIII_refor = { math = add value = 14 }
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # oe_byz_nobleIV_refor = { math = add value = 10 }
+# 
+# 		oe_byz_nobleV_refor = { math = add value = 3 }
+# 		hidden_effect = {
+# 
+# 		trigger_event_non_silently = { id = john_war.6 days = 20 }
+# 			
+# 		}
+# 	}
+# }
+# john_war.2 = {#巴拉姆激烈抨击静修派
+# 	type = country_event
+# 	category = situation_event
+# 	image = "gfx/interface/illustrations/disaster/religious_turmoil.dds"
+# 	title = john_war.2.t
+# 	desc = john_war.2.d
+# 		illustration_tags = {
+# 		10 = angry
+# 		10 = interior
+# 	}
+# 	immediate = {
+# 		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+# 		character:byz_barlaam_of_seminara ?= {
+# 			save_scope_as = target_character_I
+# 		}
+# 	}
+# 	option = {
+# 		name = john_war.2.a
+# 		add_stability = 1
+# 		oe_byz_nobleIII_refor = { math = subtract value = 1 }
+# 		oe_byz_nobleV_refor = { math = add value = 1 }
+# 	}
+# 		option = {
+# 		name = john_war.2.b
+# 		add_stability = -3
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # oe_byz_nobleIV_refor = { math = subtract value = 1 }
+# 
+# 		oe_byz_nobleV_refor = { math = add value = 1 }
+# 	}
+# }
+# john_war.3 = {#静修派反击巴拉姆
+# 	type = country_event
+# 	category = situation_event
+# 	image = "gfx/interface/illustrations/disaster/religious_turmoil.dds"
+# 	title = john_war.3.t
+# 	desc = john_war.3.d
+# 		illustration_tags = {
+# 		10 = angry
+# 		10 = interior
+# 	}
+# 	immediate = {
+# 		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+# 
+# 		character:byz_gregory_palamas ?= {
+# 			save_scope_as = target_character_II
+# 		}
+# 	}
+# 	option = {
+# 		name = john_war.3.a
+# 		add_stability = -3
+# 		oe_byz_nobleIII_refor = { math = add value = 1 }
+# 		oe_byz_nobleV_refor = { math = add value = 1 }
+# 	}
+# 		option = {
+# 		name = john_war.3.b
+# 		add_government_power = -3
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # oe_byz_nobleIV_refor = { math = subtract value = 1 }
+# 
+# 		oe_byz_nobleV_refor = { math = subtract value = 1 }
+# 	}
+# }
+# john_war.4 = {#市民同情静修派
+# 	type = country_event
+# 	category = situation_event
+# 	image = "gfx/interface/illustrations/disaster/religious_turmoil.dds"
+# 	title = john_war.4.t
+# 	desc = john_war.4.d
+# 	illustration_tags = {
+# 		10 = happy
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_estate_effect = { foreground = estate_type:burghers_estate background = estate_type:burghers_estate }
+# 		character:byz_barlaam_of_seminara ?= {
+# 			save_scope_as = target_character_I
+# 		}
+# 		character:byz_gregory_palamas ?= {
+# 			save_scope_as = target_character_II
+# 		}
+# 	}
+# 	option = {
+# 		name = john_war.4.a
+# 		add_stability = 3
+# 		oe_byz_nobleIII_refor = { math = add value = 1 }
+# 		oe_byz_nobleV_refor = { math = add value = 1 }
+# 	}
+# 		option = {
+# 		name = john_war.4.b
+# 		add_government_power = -7
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # oe_byz_nobleIV_refor = { math = add value = 1 }
+# 
+# 		oe_byz_nobleV_refor = { math = subtract value = 1 }
+# 	}
+# }
+# john_war.5 = {#理性派声援巴拉姆
+# 	type = country_event
+# 	category = situation_event
+# 	image = "gfx/interface/illustrations/disaster/religious_turmoil.dds"
+# 	title = john_war.5.t
+# 	desc = john_war.5.d
+# 		illustration_tags = {
+# 		10 = angry
+# 		10 = interior
+# 	}
+# 	immediate = {
+# 		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+# 		character:byz_barlaam_of_seminara ?= {
+# 			save_scope_as = target_character_I
+# 		}
+# 		character:byz_gregory_palamas ?= {
+# 			save_scope_as = target_character_II
+# 		}
+# 	}
+# 	option = {
+# 		name = john_war.5.a
+# 		add_government_power = 5
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # oe_byz_nobleIV_refor = { math = add value = 1 }
+# 
+# 		oe_byz_nobleV_refor = { math = add value = 1 }
+# 	}
+# 		option = {
+# 		name = john_war.5.b
+# 		add_stability = -3
+# 		oe_byz_nobleIII_refor = { math = add value = 1 }
+# 		oe_byz_nobleV_refor = { math = subtract value = 1 }
+# 	}
+# }
+# john_war.6 = {#静修派争论
+# 	type = country_event
+# 	category = situation_event
+# 	image = "gfx/interface/illustrations/disaster/religious_turmoil.dds"
+# 	title = john_war.6.t
+# 	desc = john_war.6.d
+# 		illustration_tags = {
+# 		10 = angry
+# 		10 = interior
+# 	}
+# 	immediate = {
+# 		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+# 		character:byz_barlaam_of_seminara ?= {
+# 			save_scope_as = target_character_I
+# 		}
+# 		character:byz_gregory_palamas ?= {
+# 			save_scope_as = target_character_II
+# 		}
+# 	}
+# 	option = {
+# 		name = john_war.6.a
+# 				character:byz_barlaam_of_seminara = {
+# 			add_character_modifier = {
+# 				 modifier = oe_byz_john_religion_anti
+# 				 mode = add_and_extend 
+# 				 days = -1
+# 			}
+# 		}
+# 				character:byz_gregory_palamas = {
+# 			add_character_modifier = {
+# 				 modifier = oe_byz_john_religion_support
+# 				 mode = add_and_extend 
+# 				 days = -1
+# 			}
+# 		}
+# 		oe_byz_nobleV_refor = { math = add value = 1 }
+# 				hidden_effect = {
+# 
+# 			trigger_event_non_silently = { id = john_war.7 days = 365 }
+# 					
+# 		}
+# 	}
+# }
+# john_war.7 = {#静修派发表著作
+# 	type = country_event
+# 	category = situation_event
+# 	image = "gfx/interface/illustrations/disaster/religious_turmoil.dds"
+# 	title = john_war.7.t
+# 	desc = john_war.7.d
+# 		illustration_tags = {
+# 		10 = angry
+# 		10 = interior
+# 	}
+# 	immediate = {
+# 		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+# 		character:byz_barlaam_of_seminara ?= {
+# 			save_scope_as = target_character_I
+# 		}
+# 		character:byz_gregory_palamas ?= {
+# 			save_scope_as = target_character_II
+# 		}
+# 	}
+# 	option = {
+# 		name = john_war.7.a
+# 		capital = {
+# 			create_art = {
+# 				artist = scope:target_character_II
+# 				quality = 60
+# 				type = work_of_art_type:treatise
+# 				key = john_war_work_religion_sup_work
+# 			}
+# 		}
+# 		
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # oe_byz_nobleIV_refor = { math = subtract value = 1 }
+# 
+# 		hidden_effect = {
+# 			set_variable = john_war_7_has_on
+# 		}
+# 	}
+# }
+# john_war.8 = {#1341年君士坦丁堡宗教会议
+# 	type = country_event
+# 	category = situation_event
+# 	image = "gfx/interface/illustrations/disaster/religious_turmoil.dds"
+# 	title = john_war.8.t
+# 	desc = john_war.8.d
+# 		illustration_tags = {
+# 		10 = angry
+# 		10 = interior
+# 	}
+# 	immediate = {
+# 		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+# 		character:byz_barlaam_of_seminara ?= {
+# 			save_scope_as = target_character_I
+# 		}
+# 		character:byz_gregory_palamas ?= {
+# 			save_scope_as = target_character_II
+# 		}
+# 		c:BYZ = {
+# 			set_variable = john_war_8_has_on
+# 			revoke_estate_privilege = estate_privilege:oe_byz_clergy_different
+# 		}
+# 	}
+# 	option = {
+# 		name = john_war.8.a
+# 		character:byz_barlaam_of_seminara ?= {
+# 			move_country = location:rome.owner
+# 		}		
+# 		oe_byz_nobleIII_refor = { math = add value = 3 }
+# 		oe_byz_nobleV_refor = { math = subtract value = 1 }
+# 	}
+# 		option = {
+# 		name = john_war.8.b
+# 		custom_tooltip = {
+# 			text = john_war_8_b_tt
+# 			kill_character_silently = character:byz_gregory_palamas
+# 		}
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # oe_byz_nobleIV_refor = { math = add value = 3 }
+# 
+# 		oe_byz_nobleV_refor = { math = subtract value = 1 }
+# 	}
+# }
+# john_war.501 = {#安三遗嘱
+# 	type = country_event
+# 	image = "gfx/interface/illustrations/situation/an_III_death.dds"
+# 	title = oe_flavor_byz.501.t
+# 	desc = oe_flavor_byz.501.d
+# 	fire_only_once = yes
+# 	trigger = { 
+#     }
+# 
+# 	immediate = {
+# 		
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.501.a
+# 		oe_byz_nobleIII_refor = { math = add value = 1 }
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # oe_byz_nobleIV_refor = { math = subtract value = 1 }
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.501.b
+# 		oe_byz_nobleIII_refor = { math = subtract value = 1 }
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # oe_byz_nobleIV_refor = { math = add value = 1 }
+# 
+# 	}
+# }
+# john_war.502 = {#临终
+# 	type = country_event
+# 	image = "gfx/interface/illustrations/situation/an_III_death.dds"
+# 	title = oe_flavor_byz.502.t
+# 	desc = oe_flavor_byz.502.d
+# 	fire_only_once = yes
+# 	trigger = { 
+#     }
+# 	illustration_tags = {
+# 		10 = angry
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.502.a
+# 		add_stability = -10
+# 		add_government_power = -10
+# 		hidden_effect = {
+# 			
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # if = {
+# # 				limit = {
+# # # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # # var:oe_byz_nobleIII_reformmm_var < var:oe_byz_nobleIV_reformmm_var
+# # }
+# # 				
+# # # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # # oe_byz_nobleIV_refor = { math = subtract value = var:oe_byz_nobleIII_reformmm_var }
+# # 
+# # 				oe_byz_nobleIII_refor = { math = subtract value = var:oe_byz_nobleIII_reformmm_var }
+# # 			}
+# 
+# 			
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # else_if = {
+# # 				limit = {
+# # # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # # var:oe_byz_nobleIII_reformmm_var > var:oe_byz_nobleIV_reformmm_var
+# # }
+# # 				
+# # 				
+# # # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # # oe_byz_nobleIII_refor = { math = subtract value = var:oe_byz_nobleIV_reformmm_var }
+# # 
+# # 				
+# # # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # # oe_byz_nobleIV_refor = { math = subtract value = var:oe_byz_nobleIV_reformmm_var }
+# # 
+# # 			}
+# 
+# 			
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # else = {
+# # 				
+# # 				
+# # # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # # oe_byz_nobleIII_refor = { math = subtract value = var:oe_byz_nobleIV_reformmm_var }
+# # 
+# # 				
+# # # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # # oe_byz_nobleIV_refor = { math = subtract value = var:oe_byz_nobleIV_reformmm_var }
+# # 
+# # 			}
+# 
+# 			
+#    			kill_character_silently = character:byz_andronikos_iii_palaiologos
+#   		
+# 		}
+# 	}
+# 	after = {
+# 		if = {
+# 			limit = {var:oe_byz_nobleIII_reformmm_var > var:oe_byz_nobleV_reformmm_var}
+# 			trigger_event_non_silently = { id = oe_flavor_byz.503 days = 30 }
+# 		}
+# 		
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # else_if = {
+# # 			limit = {
+# # # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # # var:oe_byz_nobleIV_reformmm_var > var:oe_byz_nobleV_reformmm_var
+# # }
+# # 			trigger_event_non_silently = { id = oe_flavor_byz.504 days = 30 }
+# # 		}
+# 
+# 		else = {
+# 			trigger_event_non_silently = { id = oe_flavor_byz.505 days = 127 }
+# 		}
+# 	}
+# }
+# john_war.600 = {#恩惠贵族
+# 	type = country_event
+# 	title = oe_flavor_byz.600.t
+# 	desc = oe_flavor_byz.600.d
+# 	hidden = yes
+# 	trigger = { 
+#     }
+# 	illustration_tags = {
+# 		10 = angry
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.600.a
+# 		oe_byz_nobleIII_refor = { math = add value = 2 }
+# 		oe_byz_nobleV_refor = { math = add value = 1 }
+# 	}
+# }
+# 
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # john_war.601 = {#恩惠官僚
+# # 	type = country_event
+# # 	title = oe_flavor_byz.601.t
+# # 	desc = oe_flavor_byz.601.d
+# # 	hidden = yes
+# # 	trigger = { 
+# #     }
+# # 	illustration_tags = {
+# # 		10 = angry
+# # 		10 = exterior
+# # 	}
+# # 	immediate = {
+# # 		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+# # 
+# # 	}
+# # 	option = {
+# # 		name = oe_flavor_byz.601.a
+# # 		oe_byz_nobleIV_refor = { math = add value = 2 }
+# # 		oe_byz_nobleV_refor = { math = add value = 1 }
+# # 	}
+# # }
+# 
+# john_war.602 = {#让静修派收敛
+# 	type = country_event
+# 	title = oe_flavor_byz.602.t
+# 	desc = oe_flavor_byz.602.d
+# 	hidden = yes
+# 	trigger = { 
+#     }
+# 	illustration_tags = {
+# 		10 = angry
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.602.a
+# 		oe_byz_nobleV_refor = { math = subtract value = 3 }
+# 	}
+# }
+# john_war.603 = {#阶级对立-1
+# 	type = country_event
+# 	title = oe_flavor_byz.602.t
+# 	desc = oe_flavor_byz.602.d
+# 	hidden = yes
+# 	trigger = { 
+#     }
+# 	illustration_tags = {
+# 		10 = angry
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.602.a
+# 		oe_byz_nobleV_refor = { math = subtract value = 1 }
+# 	}
+# }
+# 
+# 
+# 
+# 
+# 

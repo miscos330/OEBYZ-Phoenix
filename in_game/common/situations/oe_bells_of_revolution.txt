@@ -1,0 +1,56 @@
+﻿oe_bells_of_revolution = {
+    monthly_spawn_chance = monthly_spawn_chance_unique
+    can_start = {
+        # FIX 2026-11-17 屏蔽：作者要求上新前先关闭“革命的钟声”和“东罗马大革命”（内容未完成）。重新开放时删掉下一行即可
+        always = no
+        current_age = age_5_absolutism
+        country_exists = c:BYZ
+        has_global_variable = phoenix_nirvana_is_end
+        c:BYZ = { has_variable = oe_ir_central_done num_locations > 1000 }
+        NOT = { has_global_variable = oe_bells_started }
+    }
+    visible = { oe_bells_observer = yes }
+    # The event-controlled flag remains available alongside the timed resolutions.
+    can_end = {
+        OR = {
+            has_global_variable = oe_bells_end_requested
+            years_since_situation_start >= 40
+            AND = {
+                years_since_situation_start >= 20
+                var:oe_bells_clamor < 20
+                c:BYZ ?= { stability > 75 legitimacy > 75 }
+            }
+            AND = {
+                years_since_situation_start >= 30
+                var:oe_bells_clamor < 50
+                c:BYZ ?= { stability > 50 legitimacy > 50 }
+            }
+        }
+    }
+    on_start = {
+        set_global_variable = oe_bells_started
+        set_variable = { name = oe_bells_clamor value = 0 }
+        set_variable = { name = oe_bells_log_sequence value = 0 }
+        c:BYZ = {
+            set_variable = { name = oe_bells_thinkers_created value = 0 }
+            trigger_event_non_silently = oe_bells.3
+            # Dates are measured from situation activation, not the opening event option.
+            trigger_event_non_silently = { id = oe_bells.7 days = 30 }
+            trigger_event_non_silently = { id = oe_bells.8 days = 60 }
+            trigger_event_non_silently = { id = oe_bells.9 days = 90 }
+            oe_bells_check_country_crises = yes
+        }
+        every_country = {
+            limit = { NOT = { tag = BYZ } oe_bells_observer = yes }
+            set_variable = oe_bells_choice_pending
+            trigger_event_non_silently = oe_bells.1
+        }
+    }
+    on_monthly = { oe_bells_monthly = yes }
+    on_ending = { oe_bells_end_camps = yes }
+    map_color = {
+        if = { limit = { has_owner = yes owner = { oe_bells_rebel = yes } } value = red }
+        else_if = { limit = { has_owner = yes owner = { OR = { tag = BYZ oe_bells_royalist = yes } } } value = purple }
+        else = { value = define:NMapColors|DEFAULT_COLOR }
+    }
+}

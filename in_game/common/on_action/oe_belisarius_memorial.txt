@@ -1,0 +1,21 @@
+﻿on_character_death = { on_actions = { oe_belisarius_memorial_death } }
+oe_belisarius_memorial_death = {
+    trigger = {
+        # FIX 2026-11-17: BYZ checks first. The character only exists after Varna, and comparing against it
+        # before that errored on every character death in the world (~1500 times in 4 game years).
+        country_exists = c:BYZ
+        c:BYZ = { has_variable = oe_osmaris_varna_resolved NOT = { has_variable = oe_osman_expelled } }
+        scope:target = character:oe_osmaris_belisarius
+    }
+    effect = { c:BYZ = { set_variable = oe_belisarius_death_seen oe_belisarius_unlock_memorial = yes } }
+}
+monthly_country_pulse = { on_actions = { oe_belisarius_memorial_monthly } }
+oe_belisarius_memorial_monthly = {
+    trigger = { tag = BYZ has_variable = oe_osmaris_varna_resolved NOT = { has_variable = oe_osman_expelled } }
+    effect = {
+        character:oe_osmaris_belisarius ?= {
+            if = { limit = { is_alive = no } c:BYZ = { set_variable = oe_belisarius_death_seen } }
+        }
+        oe_belisarius_unlock_memorial = yes
+    }
+}

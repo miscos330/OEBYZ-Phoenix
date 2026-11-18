@@ -1,0 +1,31 @@
+﻿# Province scope at selection. Check the entire geographic province, not only
+# the actor's owned fragment. Unownable terrain does not prevent full ownership.
+oe_sm_origin = {
+    owner = scope:actor
+    OR = { region = region:russian_region region = region:ural_region }
+    province_definition = {
+        NOT = {
+            any_location_in_province_definition = {
+                is_ownable = yes
+                OR = {
+                    has_owner = no
+                    NOT = { owner = scope:actor }
+                    NOT = { is_core_of = scope:actor }
+                    has_location_modifier = oe_siberian_migration_wave
+                }
+            }
+        }
+    }
+}
+# Province-definition scope: permits an entirely unowned destination, like the
+# native Settle the Frontier action. Borders include the complete subject tree.
+oe_sm_destination = {
+    OR = { region = region:west_siberia_region region = region:east_siberia_region }
+    any_location_in_province_definition = { is_ownable = yes has_owner = no }
+    any_location_in_province_definition = {
+        any_neighbor_location = {
+            has_owner = yes
+            is_owned_or_owned_by_subjects_or_below_of = scope:actor
+        }
+    }
+}

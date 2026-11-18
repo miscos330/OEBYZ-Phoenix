@@ -1,0 +1,126 @@
+﻿# Called only on project/policy milestones. Two bounded area passes, never world scans.
+oe_egypt_add_food_layer = {
+    area:lower_egypt_area = { every_location_in_area = {
+        limit = { oe_works_egypt_owned_farm = yes }
+        add_location_modifier = { modifier = oe_egypt_food_expansion years = -1 mode = add size = 1 }
+    } }
+    area:upper_egypt_area = { every_location_in_area = {
+        limit = { oe_works_egypt_owned_farm = yes }
+        add_location_modifier = { modifier = oe_egypt_food_expansion years = -1 mode = add size = 1 }
+    } }
+}
+oe_egypt_apply_land_policy = {
+    area:lower_egypt_area = { every_location_in_area = {
+        limit = { oe_works_egypt_owned_farm = yes }
+        add_location_modifier = { modifier = $MODIFIER$ years = -1 mode = replace }
+    } }
+    area:upper_egypt_area = { every_location_in_area = {
+        limit = { oe_works_egypt_owned_farm = yes }
+        add_location_modifier = { modifier = $MODIFIER$ years = -1 mode = replace }
+    } }
+}
+# Province scope, called once per eligible Egyptian province by the monthly event.
+# Allocate the planned shipment in proportion to each province's initial stores.
+# Read actual food changes before crediting the destination or charging freight.
+oe_egypt_supply_from_province = {
+    save_scope_value_as = { name = oe_egypt_source_before value = province_food }
+    save_scope_value_as = {
+        name = oe_egypt_province_quota
+        value = {
+            value = scope:oe_egypt_planned_shipment
+            multiply = scope:oe_egypt_source_before
+            divide = scope:oe_egypt_source_total
+            max = scope:oe_egypt_source_before
+            max = {
+                value = scope:oe_egypt_planned_shipment
+                subtract = scope:oe_egypt_supply_country.var:oe_egypt_last_food_shipped
+                min = 0
+            }
+            max = {
+                value = location:constantinople.province.province_max_food
+                subtract = location:constantinople.province.province_food
+                min = 0
+            }
+            min = 0
+        }
+    }
+    if = {
+        limit = { scope:oe_egypt_province_quota > 0 }
+        change_province_food = { value = scope:oe_egypt_province_quota multiply = -1 }
+        save_scope_value_as = {
+            name = oe_egypt_withdrawn_food
+            value = {
+                value = scope:oe_egypt_source_before
+                subtract = province_food
+                max = scope:oe_egypt_province_quota
+                min = 0
+            }
+        }
+        if = {
+            limit = { scope:oe_egypt_withdrawn_food > 0 }
+            save_scope_value_as = { name = oe_egypt_destination_before value = location:constantinople.province.province_food }
+            location:constantinople.province = {
+                change_province_food = scope:oe_egypt_withdrawn_food
+            }
+            save_scope_value_as = {
+                name = oe_egypt_delivered_food
+                value = {
+                    value = location:constantinople.province.province_food
+                    subtract = scope:oe_egypt_destination_before
+                    max = scope:oe_egypt_withdrawn_food
+                    min = 0
+                }
+            }
+            # Return any rejected portion to the same donor; do not bill for it.
+            change_province_food = {
+                value = scope:oe_egypt_withdrawn_food
+                subtract = scope:oe_egypt_delivered_food
+            }
+            scope:oe_egypt_supply_country = {
+                change_variable = { name = oe_egypt_last_food_shipped add = scope:oe_egypt_delivered_food }
+            }
+        }
+    }
+}
+
+# BYZ country root, once per monthly_country_pulse via oe_egypt_supply.1.
+# Native change_province_food only: no commodity conversion or trade creation.
+oe_egypt_supply_monthly = {
+    if = {
+        limit = { has_variable = oe_works_egypt_supply_unlocked }
+        set_variable = { name = oe_egypt_last_food_shipped value = 0 }
+        set_variable = { name = oe_egypt_last_shipping_cost value = 0 }
+        if = {
+            limit = { oe_egypt_supply_operational = yes oe_egypt_supply_fraction > 0 }
+            save_scope_as = oe_egypt_supply_country
+            save_scope_value_as = { name = oe_egypt_source_total value = oe_egypt_supply_source_food }
+            save_scope_value_as = {
+                name = oe_egypt_planned_shipment
+                value = {
+                    value = oe_egypt_supply_surplus
+                    multiply = oe_egypt_supply_fraction
+                    max = scope:oe_egypt_source_total
+                    max = oe_egypt_supply_destination_room
+                    max = { value = gold min = 0 multiply = 100 }
+                    min = 0
+                }
+            }
+            if = {
+                limit = { scope:oe_egypt_planned_shipment > 0 scope:oe_egypt_source_total > 0 }
+                area:lower_egypt_area = { every_province_in_area = {
+                    limit = { oe_egypt_supply_source_province = yes }
+                    oe_egypt_supply_from_province = yes
+                } }
+                area:upper_egypt_area = { every_province_in_area = {
+                    limit = { oe_egypt_supply_source_province = yes }
+                    oe_egypt_supply_from_province = yes
+                } }
+                set_variable = {
+                    name = oe_egypt_last_shipping_cost
+                    value = { value = var:oe_egypt_last_food_shipped divide = 100 }
+                }
+                add_gold = { value = var:oe_egypt_last_shipping_cost multiply = -1 }
+            }
+        }
+    }
+}

@@ -1,0 +1,75 @@
+﻿oe_byz_put_to_sub_mam = {
+	
+	message = yes
+	on_own_nation = yes
+	
+	
+	potential = {
+		scope:actor = {
+			tag = BYZ
+			any_subject = {
+				is_subject_type = oe_sub_mam
+			}
+		}
+	}
+
+	ai_tick = never
+
+	allow = {
+	}
+
+	select_trigger = {
+	    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+	    only_color_selectable = yes
+	    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = country
+		target_flag = target_sub_country
+		name = "oe_byz_selcet_sub_country"
+		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+		column = {
+			data = name
+		}
+		column = {
+			data = great_power_score
+		}
+		visible = {
+			is_subject_type = oe_sub_mam
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = character
+		source = actor
+		target_flag = recipient
+		name = "choose_character"
+		column = {
+			data = name
+		}
+		visible = {
+            NOT = { oe_bells_protected_thinker = yes }
+			owner = c:BYZ
+			has_estate = estate_type:nobles_estate
+			is_adult = yes
+		}
+	}
+
+
+	
+	effect = {
+        if = {
+            limit = { exists = scope:recipient scope:recipient = { NOT = { oe_bells_protected_thinker = yes } } }
+
+		scope:recipient = {
+			add_character_modifier = {
+				modifier = oe_byz_sub_mam_support_mod
+				years = -1
+				mode = add_and_extend
+			}
+			move_country = scope:target_sub_country
+
+		}
+
+	
+        }
+    }	
+}

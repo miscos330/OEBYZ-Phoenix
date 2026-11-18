@@ -1,0 +1,25 @@
+﻿# Character scope: domestic or theme ruler; original age and ability gates retained.
+oe_byz_caesar_candidate = {
+    is_alive = yes
+    is_adult = yes
+    oe_byz_honor_recipient = yes
+    OR = {
+        has_estate = estate_type:crown_estate
+        has_estate = estate_type:nobles_estate
+        has_estate = estate_type:burghers_estate
+        has_estate = estate_type:peasants_estate
+    }
+    OR = { adm > 65 dip > 65 mil > 65 }
+    NOT = { has_character_modifier = oe_byz_caesar_modifier }
+}
+
+# Country scope. Both costs are checked again before the effect pays them.
+oe_byz_can_confer_caesar = {
+    tag = BYZ
+    oe_byz_imperial_honors_allowed = yes
+    exists = international_organization:oe_byz_empire_pillars
+    custom_tooltip = { text = OE_CAESAR_LEGITIMACY_REQUIRED legitimacy >= 5 }
+    international_organization:oe_byz_empire_pillars = {
+        custom_tooltip = { text = OE_CAESAR_AUTHORITY_REQUIRED var:oe_pillars_authority >= 10 }
+    }
+}

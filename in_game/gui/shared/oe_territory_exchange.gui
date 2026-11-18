@@ -1,0 +1,239 @@
+﻿template oe_tx_edict_entry {
+    widget = {
+        name = "oe_tx_edict_entry"
+        layoutpolicy_horizontal = expanding
+        size = { -1 56 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% }
+            margin = { 12 7 }
+            button_regular_diamond = {
+                datacontext = "[GetGenericAction('oe_exchange_territory')]"
+                size = { 390 40 }
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = generic_action_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "oe_exchange_territory"
+                }
+            }
+        }
+    }
+}
+
+template oe_tx_draft_panel {
+    widget = {
+        name = "oe_tx_draft"
+        layoutpolicy_horizontal = expanding
+        size = { -1 346 }
+        visible = "[GetScriptedGui('oe_tx_panel_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% }
+            margin = { 8 8 }
+            spacing = 5
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 26 }
+                spacing = 8
+                text_single = { fontsize = 17 text = "OE_TX_PARTNER_LABEL" }
+                text_single = {
+                    layoutpolicy_horizontal = expanding
+                    size = { -1 26 }
+                    fontsize = 17
+                    elide = right
+                    text = "[InternationalOrganizationsView.GetPlayer.MakeScope.GetVariable('oe_tx_partner').GetCountry.GetNameWithNoTooltip]"
+                    tooltip = "[InternationalOrganizationsView.GetPlayer.MakeScope.GetVariable('oe_tx_partner').GetCountry.GetName]"
+                }
+            }
+            text_single = { layoutpolicy_horizontal = expanding multiline = yes size = { -1 36 } fontsize = 14 text = "OE_TX_DRAFT_HELP" tooltip = "oe_exchange_territory_desc" }
+            hbox = {
+                using = layoutpolicy_expanding
+                spacing = 8
+
+vbox = {
+    layoutpolicy_horizontal = expanding
+    layoutpolicy_vertical = expanding
+    minimumsize = { 150 0 }
+    spacing = 4
+    text_single = { layoutpolicy_horizontal = expanding size = { -1 24 } fontsize = 17 align = center|nobaseline text = "OE_TX_GIVE_COUNT" }
+    
+button_regular = {
+    layoutpolicy_horizontal = expanding
+    size = { -1 30 }
+    fontsize = 15
+    datacontext = "[GetGenericAction('oe_tx_add_give')]"
+    text = "OE_TX_ADD_GIVE"
+    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+    tooltipwidget = { using = generic_action_tooltip }
+    scripted_action_tooltip = {
+        click_type = left
+        click_mode = single
+        action_name = "oe_tx_add_give"
+        actor = "[InternationalOrganizationsView.GetPlayer]"
+        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetPlayer.MakeScope.GetVariable('oe_tx_partner').GetCountry]" }
+    }
+}
+
+    scrollarea = {
+        using = layoutpolicy_expanding
+        scrollbarpolicy_horizontal = always_off
+        scrollbar_vertical = { using = Scrollbar_Vertical_Small }
+        scrollwidget = {
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                spacing = 2
+                datamodel = "[InternationalOrganizationsView.GetPlayer.MakeScope.GetList('oe_tx_give')]"
+                item = {
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 28 }
+                        spacing = 4
+                        datacontext = "[Scope.GetLocation]"
+                        onmousehierarchyenter = "[PdxGuiWidget.SetHighlightLocation(Location.Self)]"
+                        text_single = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 26 }
+                            autoresize = no
+                            elide = right
+                            fontsize = 15
+                            text = "[Location.GetName]"
+                            tooltip = "[Location.GetName]"
+                        }
+                        button_regular = {
+                            size = { 46 26 }
+                            fontsize = 13
+                            text = "OE_TX_REMOVE"
+                            enabled = "[GetScriptedGui('oe_tx_remove_give').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('target_location', Location.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_tx_remove_give').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('target_location', Location.MakeScope).End)]"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+vbox = {
+    layoutpolicy_horizontal = expanding
+    layoutpolicy_vertical = expanding
+    minimumsize = { 150 0 }
+    spacing = 4
+    text_single = { layoutpolicy_horizontal = expanding size = { -1 24 } fontsize = 17 align = center|nobaseline text = "OE_TX_TAKE_COUNT" }
+    
+button_regular = {
+    layoutpolicy_horizontal = expanding
+    size = { -1 30 }
+    fontsize = 15
+    datacontext = "[GetGenericAction('oe_tx_add_take')]"
+    text = "OE_TX_ADD_TAKE"
+    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+    tooltipwidget = { using = generic_action_tooltip }
+    scripted_action_tooltip = {
+        click_type = left
+        click_mode = single
+        action_name = "oe_tx_add_take"
+        actor = "[InternationalOrganizationsView.GetPlayer]"
+        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetPlayer.MakeScope.GetVariable('oe_tx_partner').GetCountry]" }
+    }
+}
+
+    scrollarea = {
+        using = layoutpolicy_expanding
+        scrollbarpolicy_horizontal = always_off
+        scrollbar_vertical = { using = Scrollbar_Vertical_Small }
+        scrollwidget = {
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                spacing = 2
+                datamodel = "[InternationalOrganizationsView.GetPlayer.MakeScope.GetList('oe_tx_take')]"
+                item = {
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 28 }
+                        spacing = 4
+                        datacontext = "[Scope.GetLocation]"
+                        onmousehierarchyenter = "[PdxGuiWidget.SetHighlightLocation(Location.Self)]"
+                        text_single = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 26 }
+                            autoresize = no
+                            elide = right
+                            fontsize = 15
+                            text = "[Location.GetName]"
+                            tooltip = "[Location.GetName]"
+                        }
+                        button_regular = {
+                            size = { 46 26 }
+                            fontsize = 13
+                            text = "OE_TX_REMOVE"
+                            enabled = "[GetScriptedGui('oe_tx_remove_take').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('target_location', Location.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_tx_remove_take').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('target_location', Location.MakeScope).End)]"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+            }
+            text_single = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 24 }
+                fontsize = 13
+                autoresize = no
+                elide = right
+                text = "[SelectLocalization(GetScriptedGui('oe_tx_panel_invalid').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),'OE_TX_INVALID','OE_TX_READY')]"
+                tooltip = "OE_TX_VALIDATION_TT"
+            }
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                spacing = 6
+
+button_regular = {
+    layoutpolicy_horizontal = expanding
+    size = { -1 30 }
+    fontsize = 15
+    text = "OE_TX_REFRESH"
+    enabled = "[GetScriptedGui('oe_tx_refresh_gui').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+    onclick = "[GetScriptedGui('oe_tx_refresh_gui').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+}
+
+button_regular = {
+    layoutpolicy_horizontal = expanding
+    size = { -1 30 }
+    fontsize = 15
+    text = "OE_TX_CANCEL"
+    enabled = "[GetScriptedGui('oe_tx_cancel').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+    onclick = "[GetScriptedGui('oe_tx_cancel').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+}
+
+button_regular = {
+    layoutpolicy_horizontal = expanding
+    size = { -1 30 }
+    fontsize = 15
+    datacontext = "[GetGenericAction('oe_tx_confirm')]"
+    text = "OE_TX_CONFIRM"
+    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+    tooltipwidget = { using = generic_action_tooltip }
+    scripted_action_tooltip = {
+        click_type = left
+        click_mode = single
+        action_name = "oe_tx_confirm"
+        actor = "[InternationalOrganizationsView.GetPlayer]"
+        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetPlayer.MakeScope.GetVariable('oe_tx_partner').GetCountry]" }
+    }
+}
+
+            }
+        }
+    }
+}

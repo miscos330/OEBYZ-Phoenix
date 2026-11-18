@@ -1,0 +1,14 @@
+﻿# Country scope; both player action and AI pulse use this exact cost, modifier and lockout.
+oe_rw_mobilize_border_effect = {
+    add_gold = { value = oe_rw_one_month_income_cost multiply = -1 }
+    add_country_modifier = { modifier = oe_rw_border_mobilization years = 1 mode = replace }
+    set_variable = { name = oe_rw_border_mobilization_cooldown value = yes years = 3 }
+}
+
+# Organization scope. No random roll or discretionary AI weight: eligible AI members execute daily.
+oe_rw_military_ai_pulse = {
+    every_international_organization_member = {
+        limit = { is_ai = yes oe_rw_mobilize_eligible = yes }
+        oe_rw_mobilize_border_effect = yes
+    }
+}

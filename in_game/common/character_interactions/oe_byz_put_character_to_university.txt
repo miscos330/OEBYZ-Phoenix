@@ -1,0 +1,215 @@
+﻿oe_byz_put_character_to_university = {
+	
+	message = yes
+	on_own_nation = yes
+	
+	
+	potential = {
+        scope:actor = { tag = BYZ }
+        location:constantinople = {
+            has_building = building_type:oe_byz_constantinople_university
+        }
+    }
+    price = price:oe_byz_university_study_price
+
+	ai_tick = never
+
+	allow = {
+	}
+
+	select_trigger = {
+		looking_for_a = building_type
+		target_flag = target_university
+		name = "oe_byz_selcet_building"
+		none_available_msg_key = "OE_UNIVERSITY_NO_AVAILABLE_CHOICES"
+		column = {
+			data = name
+		}
+		visible = {
+            OR = {
+                AND = {
+                    root = building_type:oe_byz_constantinople_university
+                    location:constantinople = { has_building = building_type:oe_byz_constantinople_university }
+                }
+                AND = {
+                    root = building_type:oe_byz_constantinople_rome_university
+                    location:constantinople = { has_building = building_type:oe_byz_constantinople_rome_university }
+                }
+            }
+        }
+	}
+
+	select_trigger = {
+		looking_for_a = character
+		source = actor
+		target_flag = recipient
+		name = "choose_character"
+		column = {
+			data = name
+		}
+		visible = {
+			owner = c:BYZ
+			is_adolescent = yes
+			NOT = {
+				OR = {
+					has_character_modifier = oe_rr_put_university_fir_mod
+					has_character_modifier = oe_rr_put_university_wea_mod
+					has_character_modifier = oe_rr_put_university_can_mod
+					has_character_modifier = oe_rr_put_university_pap_mod
+					has_character_modifier = oe_rr_put_university_boo_mod
+					has_character_modifier = oe_rr_put_university_tin_mod
+					has_character_modifier = oe_rr_put_university_dye_mod
+					has_character_modifier = oe_rr_put_university_med_mod
+					has_character_modifier = oe_rr_put_university_por_mod
+					has_character_modifier = oe_rr_put_university_gla_mod
+				}
+			}
+		}
+	}
+	select_trigger = {
+		looking_for_a = goods
+		target_flag = target_goods
+		name = "oe_byz_selcet_subject_learn"
+		none_available_msg_key = "OE_UNIVERSITY_NO_AVAILABLE_CHOICES"
+		column = {
+			data = name
+		}
+		visible = {
+            OR = {
+                AND = {
+                    scope:target_university = building_type:oe_byz_constantinople_university
+                    scope:recipient = { is_female = no }
+                    OR = { root = goods:firearms root = goods:weaponry root = goods:cannons }
+                }
+                AND = {
+                    scope:target_university = building_type:oe_byz_constantinople_university
+                    OR = { root = goods:paper root = goods:books root = goods:tin root = goods:medicaments }
+                }
+                AND = {
+                    scope:target_university = building_type:oe_byz_constantinople_rome_university
+                    scope:recipient = { is_female = yes }
+                    root = goods:porcelain
+                }
+                AND = {
+                    scope:target_university = building_type:oe_byz_constantinople_rome_university
+                    OR = { root = goods:glass root = goods:dyes }
+                }
+            }
+        }
+	}
+
+	
+	effect = {
+		# The standard price handles affordability and the single payment.
+		scope:recipient = {
+			if = {
+				limit = {
+					scope:target_goods = goods:firearms
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_fir_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+			if = {
+				limit = {
+					scope:target_goods = goods:weaponry
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_wea_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+			if = {#弹道学
+				limit = {
+					scope:target_goods = goods:cannons
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_can_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+			if = {
+				limit = {
+					scope:target_goods = goods:paper
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_pap_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+			if = {
+				limit = {
+					scope:target_goods = goods:books
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_boo_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+			if = {
+				limit = {
+					scope:target_goods = goods:tin
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_tin_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+			if = {#医学
+				limit = {
+					scope:target_goods = goods:medicaments
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_med_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+			if = {
+				limit = {
+					scope:target_goods = goods:porcelain
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_por_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+			if = {
+				limit = {
+					scope:target_goods = goods:glass
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_gla_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+			if = {
+				limit = {
+					scope:target_goods = goods:dyes
+				}
+			add_character_modifier = {
+				modifier = oe_rr_put_university_dye_mod
+				years = -1
+				mode = add_and_extend
+			}
+			}
+
+
+
+
+
+
+
+		}
+
+	}		
+}

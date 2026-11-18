@@ -1,0 +1,30 @@
+﻿# Location scope; recipient is the acquiring country.
+# Call only for land proven not to have been the recipient's core before transfer.
+oe_reset_new_conquest_integration = {
+    remove_core = $recipient$
+    change_integration_progress = { value = integration_progress multiply = -1 }
+    change_integration_level = conquered
+}
+# Preserve genuine pre-transfer cores; never grant a new core.
+oe_transfer_conquest_without_core = {
+    # Native civil wars own their land/core transfer. Never reclassify that land
+    # as a fresh foreign conquest, or run the transfer again after native annexation.
+    if = {
+        limit = {
+            has_owner = yes
+            NOT = { owner = $recipient$ }
+            NOT = { oe_conquest_is_native_civil_war = { recipient = $recipient$ } }
+        }
+        if = {
+                limit = { is_core_of = $recipient$ }
+                change_location_owner = $recipient$
+                change_location_controller = $recipient$
+                change_integration_level = core
+            }
+            else = {
+                change_location_owner = $recipient$
+                change_location_controller = $recipient$
+                oe_reset_new_conquest_integration = { recipient = $recipient$ }
+            }
+    }
+}

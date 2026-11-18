@@ -1,0 +1,165 @@
+﻿oe_byz_plan_subject_governor = {
+    type = subject
+    category = CATEGORY_SUBJECT_ACTIONS
+    ai_tick = never
+    use_enroute = no
+    block_when_at_war = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = { scope:actor = { tag = BYZ } }
+    select_trigger = {
+        looking_for_a = country
+        interaction_source_list = { scope:actor = { every_subject = { add_to_list = source } } }
+        target_flag = recipient
+        name = choose_country
+        default_sort = will
+        column = { data = country_diplomacy_info_subject }
+        visible = { oe_byz_direct_subject = yes num_locations > 0 }
+        enabled = { always = yes }
+    }
+    select_trigger = {
+        looking_for_a = location
+        source = recipient
+        source_flags = only_actual_locations
+        target_flag = target
+        name = oe_byz_choose_governor_location
+        none_available_msg_key = oe_byz_no_governor_location
+        column = { data = name }
+        column = { data = population }
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        visible = { oe_byz_subject_governor_site = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                exists = scope:recipient
+                exists = scope:target
+                scope:recipient = { oe_byz_direct_subject = yes }
+                scope:target = { oe_byz_subject_governor_site = yes }
+            }
+            scope:target = {
+                if = {
+                    limit = { has_building_with_at_least_one_level = local_governor }
+                    destroy_building = "building(building_type:local_governor|scope:recipient)"
+                }
+                else = {
+                    construct_building = { building_type = building_type:local_governor owner = scope:recipient }
+                }
+            }
+        }
+    }
+}
+
+oe_byz_grant_subject_political_influence = {
+    type = subject
+    category = CATEGORY_SUBJECT_ACTIONS
+    ai_tick = never
+    use_enroute = no
+    block_when_at_war = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = { scope:actor = { tag = BYZ political_influence >= 20 } }
+    select_trigger = {
+        looking_for_a = country
+        interaction_source_list = { scope:actor = { every_subject = { add_to_list = source } } }
+        target_flag = recipient
+        name = choose_country
+        default_sort = will
+        column = { data = country_diplomacy_info_subject }
+        visible = { oe_byz_direct_subject = yes }
+        enabled = { scope:actor = { political_influence >= 20 } }
+    }
+    effect = {
+        if = {
+            limit = {
+                exists = scope:recipient
+                scope:actor = { tag = BYZ political_influence >= 20 }
+                scope:recipient = { oe_byz_direct_subject = yes }
+            }
+            scope:actor = { add_political_influence = -20 }
+            scope:recipient = { add_political_influence = 20 }
+        }
+    }
+}
+
+oe_byz_suppress_subject_rebellion = {
+    type = subject
+    category = CATEGORY_SUBJECT_ACTIONS
+    ai_tick = never
+    use_enroute = no
+    block_when_at_war = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = { scope:actor = { tag = BYZ }
+        trigger_if = { limit = { exists = scope:recipient } scope:recipient = { oe_byz_subject_suppression_allowed = yes } } }
+    select_trigger = {
+        looking_for_a = country
+        interaction_source_list = { scope:actor = { every_subject = { add_to_list = source } } }
+        target_flag = recipient
+        name = choose_country
+        default_sort = will
+        column = { data = country_diplomacy_info_subject }
+        visible = { oe_byz_direct_subject = yes }
+        enabled = { oe_byz_subject_suppression_allowed = yes }
+    }
+    effect = {
+        if = {
+            limit = { exists = scope:recipient scope:recipient = { oe_byz_subject_suppression_allowed = yes } }
+            scope:actor = { add_gold = { value = scope:recipient.oe_byz_subject_annual_income multiply = -1 } }
+            scope:recipient = {
+                every_rebel = { add_rebel_progress = -0.4 }
+                add_cooldown = { type = oe_byz_subject_rebellion_suppression_cooldown years = 15 }
+            }
+        }
+    }
+}
+
+oe_byz_plan_subject_naval_governor = {
+    type = subject
+    category = CATEGORY_SUBJECT_ACTIONS
+    ai_tick = never
+    use_enroute = no
+    block_when_at_war = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = { scope:actor = { tag = BYZ } }
+    select_trigger = {
+        looking_for_a = country
+        interaction_source_list = { scope:actor = { every_subject = { add_to_list = source } } }
+        target_flag = recipient
+        name = choose_country
+        default_sort = will
+        column = { data = country_diplomacy_info_subject }
+        visible = { oe_byz_direct_subject = yes num_locations > 0 }
+        enabled = { always = yes }
+    }
+    select_trigger = {
+        looking_for_a = location
+        source = recipient
+        source_flags = only_actual_locations
+        target_flag = target
+        name = oe_byz_choose_naval_governor_location
+        none_available_msg_key = oe_byz_no_naval_governor_location
+        column = { data = name }
+        column = { data = population }
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        visible = { oe_byz_subject_naval_governor_site = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                exists = scope:recipient
+                exists = scope:target
+                scope:recipient = { oe_byz_direct_subject = yes }
+                scope:target = { oe_byz_subject_naval_governor_site = yes }
+            }
+            scope:target = {
+                if = {
+                    limit = { has_building_with_at_least_one_level = naval_governor }
+                    destroy_building = "building(building_type:naval_governor|scope:recipient)"
+                }
+                else = {
+                    construct_building = { building_type = building_type:naval_governor owner = scope:recipient }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+﻿oe_byz_change_dynasty_to_crown = {
+    message = yes
+    on_own_nation = yes
+    on_other_nation = no
+    ai_tick = never
+    potential = {
+        scope:actor = { tag = BYZ oe_byz_imperial_honors_allowed = yes has_ruler = yes NOT = { oe_byz_has_co_emperor = yes } }
+    }
+    allow = { scope:actor = { oe_byz_imperial_honors_allowed = yes } }
+    select_trigger = {
+        looking_for_a = character
+        target_flag = recipient
+        source = actor
+        name = "choose_character"
+        none_available_msg_key = OE_BYZ_NO_CO_EMPEROR_CANDIDATE
+        column = { data = name }
+        visible = { owner = scope:actor oe_byz_co_emperor_candidate = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { tag = BYZ oe_byz_imperial_honors_allowed = yes has_ruler = yes NOT = { oe_byz_has_co_emperor = yes } }
+                scope:recipient = { owner = scope:actor oe_byz_co_emperor_candidate = yes }
+            }
+            scope:recipient = {
+                add_character_modifier = { modifier = oe_byz_select_as_second_empire_mod mode = replace years = -1 }
+                if = {
+                    limit = { NOT = { has_estate = estate_type:crown_estate } }
+                    change_character_estate = estate_type:crown_estate
+                }
+            }
+            scope:actor = { set_variable = { name = oe_byz_co_emperor_display value = scope:recipient } }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+﻿oe_rw_start_pentarchy_romanization = {
+    if = {
+        limit = { oe_rw_start_pentarchy_romanization_allowed = yes }
+        set_variable = oe_rw_pentarchy_romanization_started
+        # Preserve the movement's original European origin pool and Roman priority.
+        ordered_ownable_location = {
+            limit = {
+                OR = {
+                    sub_continent = sub_continent:western_europe
+                    sub_continent = sub_continent:eastern_europe
+                }
+            }
+            max = 1
+            order_by = {
+                value = population
+                if = { limit = { this = location:rome } add = 100000000 }
+            }
+            spawn_movement = {
+                movement_definition = movement_definition:oe_orthodox_identity_movement
+                supporters = { value = population multiply = 0.1 }
+            }
+            oe_identity_schedule_30_years = { holder = religion:orthodox event = oe_identity_expiry.12 }
+        }
+    }
+}

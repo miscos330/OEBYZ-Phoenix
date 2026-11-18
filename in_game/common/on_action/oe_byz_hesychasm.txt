@@ -1,0 +1,45 @@
+﻿# All dispatchers work without either of the paused situations.
+on_game_start = { on_actions = { oe_byz_independent_opening } }
+monthly_country_pulse = { on_actions = { oe_byz_hesychasm_monthly } }
+oe_byz_independent_opening = {
+    effect = {
+        c:BYZ ?= {
+            if = {
+                limit = { current_date = 1337.4.1 NOT = { has_variable = oe_byz_opening_queued } }
+                set_variable = oe_byz_opening_queued
+                trigger_event_non_silently = oe_byz_opening.1
+                trigger_event_non_silently = { id = john_war.6 days = 20 }
+                trigger_event_non_silently = { id = oe_golden_horn_bank.1 days = 20 }
+                # Preserve the existing regular-army setup outside the narrative option.
+                set_variable = { name = oe_byz_nobleII_reformmm_var value = 0 }
+                location:constantinople = {
+                    create_sub_unit_with_owner = { type = oe_byz_king_army_I owner = c:BYZ }
+                }
+                # Existing military-flavour follow-up, independent of the paused court plot.
+                trigger_event_non_silently = { id = oe_flavor_byz.6 days = 33 }
+            }
+        }
+    }
+}
+oe_byz_hesychasm_monthly = {
+    trigger = {
+        tag = BYZ
+        has_variable = oe_byz_hesychasm_started
+        NOT = { has_variable = john_war_8_has_on }
+    }
+    effect = {
+        if = {
+            limit = { current_date >= 1341.6.1 }
+            trigger_event_non_silently = john_war.8
+        }
+        else = {
+            random_list = {
+                80 = {}
+                5 = { trigger_event_non_silently = john_war.2 }
+                5 = { trigger_event_non_silently = john_war.3 }
+                5 = { trigger_event_non_silently = john_war.4 }
+                5 = { trigger_event_non_silently = john_war.5 }
+            }
+        }
+    }
+}

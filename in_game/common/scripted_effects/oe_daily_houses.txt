@@ -1,0 +1,70 @@
+﻿# IO scope; event identity and family references stay in this event's saved scopes.
+oe_daily_capture_house = {
+    save_scope_value_as = { name = oe_daily_house_slot value = $slot$ }
+    var:oe_nf_dynasty_$slot$ = { save_scope_as = oe_daily_family }
+    var:oe_nf_head_$slot$ = { save_scope_as = oe_daily_head }
+    set_variable = { name = oe_daily_house_$event$_cooldown_$slot$ value = 1 months = 36 }
+    oe_daily_pick_location_$event$ = { slot = $slot$ }
+}
+# Country scope; exactly one candidate per house, so large families receive no selection advantage.
+oe_daily_choose_house = {
+    clear_saved_scope = oe_daily_family
+    clear_saved_scope = oe_daily_head
+    clear_saved_scope = oe_daily_location
+    clear_saved_scope = oe_daily_house_slot
+    international_organization:oe_byz_empire_pillars = {
+        if = { limit = { oe_daily_house_candidate = { slot = 1 event = $event$ } } var:oe_nf_head_1 = { add_to_list = oe_daily_candidate_heads } }
+        if = { limit = { oe_daily_house_candidate = { slot = 2 event = $event$ } } var:oe_nf_head_2 = { add_to_list = oe_daily_candidate_heads } }
+        if = { limit = { oe_daily_house_candidate = { slot = 3 event = $event$ } } var:oe_nf_head_3 = { add_to_list = oe_daily_candidate_heads } }
+        if = { limit = { oe_daily_house_candidate = { slot = 4 event = $event$ } } var:oe_nf_head_4 = { add_to_list = oe_daily_candidate_heads } }
+    }
+    random_in_list = {
+        list = oe_daily_candidate_heads
+        save_scope_as = oe_daily_chosen_head
+        international_organization:oe_byz_empire_pillars = {
+            if = { limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:oe_daily_chosen_head } oe_daily_capture_house = { slot = 1 event = $event$ } }
+            if = { limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:oe_daily_chosen_head } oe_daily_capture_house = { slot = 2 event = $event$ } }
+            if = { limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:oe_daily_chosen_head } oe_daily_capture_house = { slot = 3 event = $event$ } }
+            if = { limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:oe_daily_chosen_head } oe_daily_capture_house = { slot = 4 event = $event$ } }
+        }
+    }
+}
+oe_daily_change_house_influence = {
+    international_organization:oe_byz_empire_pillars = {
+        if = { limit = { oe_daily_slot_matches = { slot = 1 } } oe_nf_change_influence = { slot = 1 amount = $amount$ } }
+        if = { limit = { oe_daily_slot_matches = { slot = 2 } } oe_nf_change_influence = { slot = 2 amount = $amount$ } }
+        if = { limit = { oe_daily_slot_matches = { slot = 3 } } oe_nf_change_influence = { slot = 3 amount = $amount$ } }
+        if = { limit = { oe_daily_slot_matches = { slot = 4 } } oe_nf_change_influence = { slot = 4 amount = $amount$ } }
+    }
+}
+oe_daily_claim_house_location = {
+    international_organization:oe_byz_empire_pillars = {
+        if = { limit = { oe_daily_slot_matches = { slot = 1 } } scope:oe_daily_location = { oe_nf_claim_location = { slot = 1 } } }
+        if = { limit = { oe_daily_slot_matches = { slot = 2 } } scope:oe_daily_location = { oe_nf_claim_location = { slot = 2 } } }
+        if = { limit = { oe_daily_slot_matches = { slot = 3 } } scope:oe_daily_location = { oe_nf_claim_location = { slot = 3 } } }
+        if = { limit = { oe_daily_slot_matches = { slot = 4 } } scope:oe_daily_location = { oe_nf_claim_location = { slot = 4 } } }
+    }
+}
+oe_daily_remove_house_location = {
+    international_organization:oe_byz_empire_pillars = {
+        if = { limit = { oe_daily_slot_matches = { slot = 1 } } scope:oe_daily_location = { oe_nf_remove_control = { slot = 1 } } }
+        if = { limit = { oe_daily_slot_matches = { slot = 2 } } scope:oe_daily_location = { oe_nf_remove_control = { slot = 2 } } }
+        if = { limit = { oe_daily_slot_matches = { slot = 3 } } scope:oe_daily_location = { oe_nf_remove_control = { slot = 3 } } }
+        if = { limit = { oe_daily_slot_matches = { slot = 4 } } scope:oe_daily_location = { oe_nf_remove_control = { slot = 4 } } }
+    }
+}
+
+oe_daily_pick_location_1 = {
+    c:BYZ = { random_owned_location = { limit = { oe_daily_rural_target = { slot = $slot$ } } save_scope_as = oe_daily_location } }
+}
+oe_daily_pick_location_2 = { c:BYZ.capital = { save_scope_as = oe_daily_location } save_scope_value_as = { name = oe_daily_slot_$slot$ value = 1 } } # FIX 2026-11-17: callers pass slot
+oe_daily_pick_location_3 = { oe_daily_pick_location_1 = { slot = $slot$ } }
+oe_daily_pick_location_4 = {
+    random_in_list = {
+        variable = oe_nf_locations_$slot$
+        limit = { owner = c:BYZ location_rank = location_rank:rural_settlement oe_nf_controls_slot = { slot = $slot$ } }
+        save_scope_as = oe_daily_location
+    }
+}
+oe_daily_pick_location_9 = { var:oe_nf_dynasty_$slot$ = { save_scope_as = oe_daily_family } }
+oe_daily_pick_location_11 = { var:oe_nf_dynasty_$slot$ = { save_scope_as = oe_daily_family } }

@@ -1,0 +1,74 @@
+﻿# Country scope plus city_building_type. Final execution repeats these checks.
+oe_city_expansion_visible = {
+    oe_city_access_trigger = yes
+    OR = { oe_city_expansion_remaining > 0 oe_city_locked_legacy_project = yes }
+}
+oe_city_expansion_valid = {
+    oe_city_expansion_visible = yes
+    oe_city_expansion_remaining > 0
+    gold >= oe_city_expansion_price
+    controls = location:constantinople
+    location:constantinople = {
+        has_siege = no
+        num_civil_constructions < oe_city_civil_capacity
+    }
+    oe_city_expansion_prerequisites = yes
+}
+
+# Country scope. Port prerequisite counts completed levels only.
+oe_city_expel_completed = { has_variable = oe_ir_expel_done }
+oe_city_full_port = {
+    location:constantinople = {
+        any_buildings_in_location = {
+            building_type = building_type:oe_byz_constantinople_rebuild_port
+            building_level >= 5
+        }
+    }
+}
+oe_city_expansion_prerequisites = {
+    OR = {
+        NOT = { OR = { scope:city_building_type = building_type:oe_byz_constantinople_galata_hall scope:city_building_type = building_type:oe_byz_constantinople_new_venice scope:city_building_type = building_type:oe_byz_constantinople_jewish_community } }
+        oe_city_expel_completed = yes
+    }
+    OR = {
+        NOT = { OR = { scope:city_building_type = building_type:oe_byz_constantinople_naval_academy scope:city_building_type = building_type:oe_byz_constantinople_athena_shipyard } }
+        oe_city_full_port = yes
+    }
+    OR = { NOT = { OR = { scope:city_building_type = building_type:oe_byz_constantinople_magnaura scope:city_building_type = building_type:oe_byz_constantinople_daphne scope:city_building_type = building_type:oe_byz_constantinople_chalke } } oe_city_palace_completed = yes }
+    OR = { NOT = { OR = { scope:city_building_type = building_type:oe_byz_constantinople_urban_academy } } oe_city_after_1453 = yes }
+
+    OR = { NOT = { scope:city_building_type = building_type:oe_byz_constantinople_manuel_academy } location:constantinople = { has_variable = oe_city_manuel_academy_unlocked } }
+    OR = { NOT = { scope:city_building_type = building_type:oe_byz_constantinople_belisarius_column } location:constantinople = { has_variable = oe_city_belisarius_column_unlocked } }
+
+    OR = { NOT = { scope:city_building_type = building_type:oe_byz_constantinople_osman_company } location:constantinople = { has_variable = oe_city_osman_company_unlocked } }
+    OR = { NOT = { scope:city_building_type = building_type:oe_byz_constantinople_constantine_suburb } oe_city_large_population = yes }
+    OR = { NOT = { scope:city_building_type = building_type:oe_byz_constantinople_blachernae_suburb } oe_city_large_population = yes }
+    OR = { NOT = { scope:city_building_type = building_type:oe_byz_constantinople_janissary_kitchen } oe_city_rum_movement_started = yes }
+}
+
+oe_city_after_1453 = { current_date >= 1454.1.1 }
+oe_city_palace_completed = {
+ location:constantinople = {
+  any_buildings_in_location = {
+   building_type = building_type:oe_byz_constantinople_big_palace
+   building_level >= 1
+  }
+ }
+}
+
+# Discoverable at level zero; the event prerequisite still blocks construction.
+oe_city_locked_legacy_project = {
+    OR = {
+        AND = { scope:city_building_type = building_type:oe_byz_constantinople_manuel_academy location:constantinople = { NOT = { has_variable = oe_city_manuel_academy_unlocked } } }
+        AND = { scope:city_building_type = building_type:oe_byz_constantinople_osman_company location:constantinople = { NOT = { has_variable = oe_city_osman_company_unlocked } } }
+        AND = { scope:city_building_type = building_type:oe_byz_constantinople_belisarius_column location:constantinople = { NOT = { has_variable = oe_city_belisarius_column_unlocked } } }
+    }
+}
+
+# Location scope. This administrative edict upgrades only directly owned cities.
+oe_upgrade_metropolis_target = {
+    has_owner = yes
+    owner = c:BYZ
+    location_rank = location_rank:city
+    population >= 400
+}

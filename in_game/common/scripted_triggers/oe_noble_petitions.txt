@@ -1,0 +1,87 @@
+﻿# Independent noble petitions. Persistent family data remains on the pillars IO.
+oe_npet_in_court = {
+    save_temporary_scope_as = oe_npet_checked_person
+    c:BYZ = { OR = {
+        AND = { oe_court_chancellor_filled = yes var:oe_court_chancellor = scope:oe_npet_checked_person }
+        AND = { oe_court_judge_filled = yes var:oe_court_judge = scope:oe_npet_checked_person }
+        AND = { oe_court_secretary_filled = yes var:oe_court_secretary = scope:oe_npet_checked_person }
+        AND = { oe_court_taxmaster_filled = yes var:oe_court_taxmaster = scope:oe_npet_checked_person }
+        AND = { oe_court_ceremonies_filled = yes var:oe_court_ceremonies = scope:oe_npet_checked_person }
+        AND = { oe_court_admiral_filled = yes var:oe_court_admiral = scope:oe_npet_checked_person }
+        AND = { oe_court_domestikos_filled = yes var:oe_court_domestikos = scope:oe_npet_checked_person }
+    } }
+}
+oe_npet_candidate_1 = { oe_nf_living = yes oe_court_candidate = yes }
+oe_npet_candidate_2 = {
+    oe_nf_living = yes owner = c:BYZ is_adult = yes
+    is_ruler = no in_cabinet = no can_serve_in_cabinet_of = c:BYZ
+}
+oe_npet_candidate_3 = {
+    oe_nf_living = yes owner = c:BYZ is_adult = yes is_ruler = no
+    has_estate = estate_type:nobles_estate
+    save_temporary_scope_as = oe_npet_checked_nominee
+    c:BYZ = { any_subject = {
+        oe_npet_theme_target = yes
+        save_temporary_scope_as = oe_npet_checked_theme
+        scope:oe_npet_checked_nominee = { is_eligible_heir_baseline = scope:oe_npet_checked_theme }
+    } }
+}
+oe_npet_represented_1 = { oe_nf_living = yes oe_npet_in_court = yes }
+oe_npet_represented_2 = { oe_nf_living = yes owner = c:BYZ in_cabinet = yes }
+oe_npet_represented_3 = { oe_nf_living = yes oe_nf_theme_governor = yes }
+oe_npet_theme_target = { is_subject_type = oe_empire_theme is_subject_of = c:BYZ }
+oe_npet_targets_1 = { always = yes }
+oe_npet_targets_2 = { any_cabinet = { always = yes } }
+oe_npet_targets_3 = { any_subject = { oe_npet_theme_target = yes } }
+# IO scope. A house gets one ticket regardless of family size.
+oe_npet_house = {
+    has_variable = oe_nf_dynasty_$slot$
+    exists = var:oe_nf_head_$slot$
+    var:oe_nf_head_$slot$ = { oe_nf_living = yes }
+    var:oe_nf_influence_$slot$ > 150
+    var:oe_nf_dynasty_$slot$ = {
+        NOT = { any_character_in_dynasty = { oe_npet_represented_$kind$ = yes } }
+        any_character_in_dynasty = { oe_npet_candidate_$kind$ = yes }
+    }
+}
+oe_npet_has_house = {
+    oe_court_actor = yes
+    oe_npet_targets_$kind$ = yes
+    international_organization:oe_byz_empire_pillars = { OR = {
+        oe_npet_house = { slot = 1 kind = $kind$ }
+        oe_npet_house = { slot = 2 kind = $kind$ }
+        oe_npet_house = { slot = 3 kind = $kind$ }
+        oe_npet_house = { slot = 4 kind = $kind$ }
+    } }
+}
+oe_npet_slot_matches = {
+    has_variable = oe_nf_dynasty_$slot$
+    exists = scope:oe_npet_family
+    var:oe_nf_dynasty_$slot$ = scope:oe_npet_family
+    scope:oe_npet_slot = $slot$
+}
+oe_npet_selected_house = {
+    international_organization:oe_byz_empire_pillars = { OR = {
+        AND = { oe_npet_slot_matches = { slot = 1 } oe_npet_house = { slot = 1 kind = $kind$ } }
+        AND = { oe_npet_slot_matches = { slot = 2 } oe_npet_house = { slot = 2 kind = $kind$ } }
+        AND = { oe_npet_slot_matches = { slot = 3 } oe_npet_house = { slot = 3 kind = $kind$ } }
+        AND = { oe_npet_slot_matches = { slot = 4 } oe_npet_house = { slot = 4 kind = $kind$ } }
+    } }
+}
+oe_npet_target_valid_1 = { scope:oe_npet_office >= 1 scope:oe_npet_office <= 7 }
+oe_npet_target_valid_2 = {
+    exists = scope:oe_npet_cabinet
+    any_cabinet = { this = scope:oe_npet_cabinet }
+}
+oe_npet_target_valid_3 = {
+    exists = scope:oe_npet_theme
+    scope:oe_npet_theme = { oe_npet_theme_target = yes }
+    scope:oe_npet_nominee = { is_eligible_heir_baseline = scope:oe_npet_theme }
+}
+oe_npet_can_accept = {
+    oe_court_actor = yes
+    exists = scope:oe_npet_nominee
+    oe_npet_selected_house = { kind = $kind$ }
+    scope:oe_npet_nominee = { dynasty = scope:oe_npet_family oe_npet_candidate_$kind$ = yes }
+    oe_npet_target_valid_$kind$ = yes
+}

@@ -1,0 +1,129 @@
+﻿# Country scope; engineering is available from the start, independent of hegemony.
+oe_works_actor = {
+    tag = BYZ
+    is_member_of_international_organization = international_organization:oe_byz_roman_world
+}
+
+# Location scope, with the native GenericAction actor saved scope.
+oe_works_thrace_food_target = {
+    area = area:thrace_area
+    owner = scope:actor
+    location_rank = location_rank:rural_settlement
+    raw_material ?= { is_food = yes }
+    NOT = { has_location_modifier = oe_supply_the_capital }
+}
+
+oe_works_thrace_food_allowed = {
+    oe_works_actor = yes
+    gold >= 1000
+    custom_tooltip = {
+        text = OE_WORKS_FIVE_PROJECTS_TT
+        OR = {
+            NOT = { has_variable = oe_works_thrace_food_projects }
+            var:oe_works_thrace_food_projects < 5
+        }
+    }
+    custom_tooltip = {
+        text = OE_WORKS_FOOD_TARGET_TT
+        area:thrace_area = { any_location_in_area = { oe_works_thrace_food_target = yes } }
+    }
+}
+
+# Location scope. Fixed whitelist: no world/location iteration on GUI refresh.
+oe_works_naval_base_port = {
+    OR = {
+        this = location:rodos
+        this = location:candia
+        this = location:athens
+        this = location:kalamata
+        this = location:acre
+        this = location:alexandria
+        this = location:tobruk
+        this = location:limassol
+        this = location:antioch
+        this = location:smyrna
+        this = location:corfu
+        this = location:dubrovnik
+        AND = {
+            scope:actor = { has_variable = oe_ir_sea_done }
+            OR = {
+                this = location:naples
+                this = location:genoa
+                this = location:venice
+                this = location:tunis
+                this = location:cagliari
+                this = location:ciudadela_de_menorca
+                this = location:marseille
+                this = location:barcelona
+                this = location:cartagena
+                this = location:ceuta
+                this = location:gibraltar
+                this = location:malta
+                this = location:palermo
+            }
+        }
+    }
+}
+
+oe_works_naval_base_target = {
+    has_owner = yes
+    owner = scope:actor
+    oe_works_naval_base_port = yes
+    NOT = { has_variable = oe_works_naval_base_site }
+    NOT = {
+        any_buildings_in_location = {
+            building_type = building_type:oe_imperial_naval_base
+            OR = { building_level > 0 building_levels_under_construction > 0 }
+        }
+    }
+}
+
+# Country scope; the allowance is cumulative, never reset by Our Sea.
+oe_works_naval_base_slots_available = {
+    OR = {
+        NOT = { has_variable = oe_works_naval_base_projects }
+        var:oe_works_naval_base_projects < 5
+        AND = {
+            has_variable = oe_ir_sea_done
+            var:oe_works_naval_base_projects < 10
+        }
+    }
+}
+
+oe_works_naval_base_allowed = {
+    oe_works_actor = yes
+    has_variable = oe_ir_expel_done
+    gold >= 1000
+    political_influence >= 25
+    custom_tooltip = { text = OE_WORKS_NAVAL_SLOTS_TT oe_works_naval_base_slots_available = yes }
+    custom_tooltip = {
+        text = OE_WORKS_NAVAL_TARGET_TT
+        OR = {
+            location:rodos = { oe_works_naval_base_target = yes }
+            location:candia = { oe_works_naval_base_target = yes }
+            location:athens = { oe_works_naval_base_target = yes }
+            location:kalamata = { oe_works_naval_base_target = yes }
+            location:acre = { oe_works_naval_base_target = yes }
+            location:alexandria = { oe_works_naval_base_target = yes }
+            location:tobruk = { oe_works_naval_base_target = yes }
+            location:limassol = { oe_works_naval_base_target = yes }
+            location:antioch = { oe_works_naval_base_target = yes }
+            location:smyrna = { oe_works_naval_base_target = yes }
+            location:corfu = { oe_works_naval_base_target = yes }
+            location:dubrovnik = { oe_works_naval_base_target = yes }
+            location:naples = { oe_works_naval_base_target = yes }
+            location:genoa = { oe_works_naval_base_target = yes }
+            location:venice = { oe_works_naval_base_target = yes }
+            location:tunis = { oe_works_naval_base_target = yes }
+            location:cagliari = { oe_works_naval_base_target = yes }
+            location:ciudadela_de_menorca = { oe_works_naval_base_target = yes }
+            location:marseille = { oe_works_naval_base_target = yes }
+            location:barcelona = { oe_works_naval_base_target = yes }
+            location:cartagena = { oe_works_naval_base_target = yes }
+            location:ceuta = { oe_works_naval_base_target = yes }
+            location:gibraltar = { oe_works_naval_base_target = yes }
+            location:malta = { oe_works_naval_base_target = yes }
+            location:palermo = { oe_works_naval_base_target = yes }
+        }
+    }
+}

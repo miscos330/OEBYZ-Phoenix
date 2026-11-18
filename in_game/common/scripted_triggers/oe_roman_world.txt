@@ -1,0 +1,88 @@
+﻿# Country scope. Building and population countries never qualify.
+oe_roman_world_territorial_country_trigger = {
+    country_type = location
+    num_locations > 0
+}
+# Location scope: organization territory, independent from membership.
+oe_roman_world_land_trigger = {
+    is_land = yes
+    is_passable = yes
+    OR = {
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_germany_included }
+            oe_heg_germany_location = yes
+        }
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_arabia_included }
+            region = region:arabia_region
+        }
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_persia_frontier_included }
+            OR = { region = region:caucasus_region region = region:crescent_region }
+        }
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_moldavia_included }
+            area = area:moldavia_area
+        }
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_france_included }
+            region = region:france_region
+        }
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_britain_included }
+            oe_heg_britain_location = yes
+        }
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_iberia_included }
+            region = region:iberia_region
+        }
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_italy_included }
+            region = region:italy_region
+        }
+        region = region:balkan_region
+        region = region:anatolia_region
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_crimea_included }
+            area = area:crimea_area
+        }
+        area = area:wallachia_area
+        area = area:apulia_area
+        area = area:basilicata_area
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_levant_egypt_included }
+            OR = { area = area:levant_area region = region:egypt_region }
+        }
+        AND = {
+            international_organization:oe_byz_roman_world = { has_variable = oe_rw_maghreb_included }
+            region = region:maghreb_region
+        }
+    }
+    NOT = {
+        OR = {
+            area = area:slovenia_area # Localized as Carniola.
+            province_definition = province_definition:istria_province
+        }
+    }
+}
+oe_roman_world_byz_trigger = {
+    oe_roman_world_territorial_country_trigger = yes
+    owns = location:constantinople
+}
+oe_roman_world_beylik_trigger = {
+    oe_roman_world_territorial_country_trigger = yes
+    OR = { culture = culture:turkish_culture culture = culture:turkoman_culture }
+}
+oe_roman_world_prince_trigger = {
+    oe_roman_world_territorial_country_trigger = yes
+    culture = { has_culture_group = culture_group:greek_group }
+}
+oe_roman_world_latin_duchy_trigger = {
+    oe_roman_world_territorial_country_trigger = yes
+    capital = { OR = { region = region:balkan_region region = region:anatolia_region } }
+    culture = { OR = { has_culture_group = culture_group:french_group has_culture_group = culture_group:iberian_group has_culture_group = culture_group:italian_group } }
+}
+oe_roman_world_orthodox_kingdom_trigger = {
+    oe_roman_world_territorial_country_trigger = yes
+    OR = { religion = religion:orthodox religion = religion:miaphysite }
+}

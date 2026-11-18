@@ -1,0 +1,169 @@
+﻿# Native russian_group is localized as East Slavic; not slavic_group.
+oe_rus_region = {
+    OR = { region = region:russian_region region = region:ruthenia_region region = region:steppes_region }
+}
+oe_rus_country = {
+    exists = capital
+    culture = { has_culture_group = culture_group:russian_group }
+    capital = { oe_rus_region = yes }
+}
+oe_rus_controller = {
+    is_subject = no
+    trigger_if = {
+        limit = { exists = union.leader_country }
+        union.leader_country = this
+    }
+}
+oe_rus_top_power = {
+    is_situation_active = situation:oe_rise_of_rus
+    oe_rus_country = yes
+    oe_rus_controller = yes
+    has_variable = oe_rus_rank
+}
+oe_rus_era_closed = {
+    OR = { current_age = age_5_absolutism current_age = age_6_revolutions }
+}
+# Target-country scope, actor is the purchaser. Adjacency includes subjects
+# and the actor's union, without scanning locations in selector tooltips.
+oe_rus_buy_target = {
+    oe_rus_country = yes
+    this != scope:actor
+    is_subject = no
+    NOT = { exists = union }
+    NOT = { has_variable = oe_rus_rank }
+    country_tax_base < scope:actor.country_tax_base
+    opinion = { target = scope:actor value > 50 }
+    OR = {
+        is_neighbor_of = scope:actor
+        any_neighbor_country = {
+            OR = {
+                is_subject_or_below_of = scope:actor
+                AND = {
+                    exists = scope:actor.union
+                    is_member_of_international_organization = scope:actor.union
+                }
+            }
+        }
+    }
+}
+oe_rus_rival_target = {
+    oe_rus_country = yes
+    this != scope:actor
+    NOT = { has_truce_with = scope:actor }
+    scope:actor = {
+        NOT = { has_truce_with = prev }
+        NOT = { has_casus_belli_on = prev }
+    }
+    NOT = { is_subject_or_below_of = scope:actor }
+    NOT = { scope:actor = { is_subject_or_below_of = prev } }
+    NOT = { is_allied_with = { target = scope:actor } }
+    trigger_if = {
+        limit = { exists = scope:actor.union }
+        NOT = { is_member_of_international_organization = scope:actor.union }
+    }
+    any_province = { any_location_in_province = { is_neighbor_of = scope:actor } }
+}
+oe_rus_union_target = {
+    this != scope:actor
+    exists = scope:actor.union
+    is_member_of_international_organization = scope:actor.union
+    scope:actor.union.leader_country = scope:actor
+    NOT = { this = scope:actor.union.leader_country }
+    years_in_international_organization = { international_organization = scope:actor.union value > 25 }
+}
+oe_rus_kremlin_capacity = {
+    NOT = {
+        any_owned_building = { OR = { building_type = building_type:oe_rus_kremlin building_type = building_type:kremlin } count >= 5 }
+    }
+}
+oe_rus_kremlin_site = {
+    owner = scope:actor
+    is_capital = no
+    oe_rus_region = yes
+    OR = { location_rank = location_rank:city location_rank = location_rank:megalopolis }
+    NOT = { has_building = building_type:oe_rus_kremlin }
+    NOT = { has_building = building_type:kremlin }
+}
+
+# Country scope. Both memberships must have lasted fifty years; counting only
+# Kyiv would incorrectly allow a recently joined Lithuania to annex it.
+oe_rus_can_integrate_kyiv = {
+    tag = LIT
+    is_situation_active = situation:oe_rise_of_rus
+    country_exists = c:KIE
+    exists = union.leader_country
+    union.leader_country = this
+    in_union_with = c:KIE
+    years_in_international_organization = { international_organization = c:LIT.union value >= 50 }
+    c:KIE = { years_in_international_organization = { international_organization = c:LIT.union value >= 50 } }
+}
+# Target-country scope. Do not confuse membership in another Orthodox
+# patriarchate with membership in Constantinople's BYZ-led patriarchate.
+oe_rus_in_byzantine_patriarchate = {
+    any_international_organizations_member_of = {
+        international_organization_type = international_organization_type:autocephalous_patriarchate
+        leader_country = c:BYZ
+        has_variable = seat
+        var:seat = location:constantinople
+    }
+}
+oe_rus_autonomous_metropolitan_target = {
+    oe_rus_country = yes
+    this != scope:actor
+    oe_rus_in_byzantine_patriarchate = yes
+    oe_rus_controller = yes
+    NOT = { has_variable = oe_rus_metropolitan_granted }
+    NOT = { has_country_modifier = oe_rus_autonomous_metropolitan }
+}
+oe_rus_church_support_target = {
+    oe_rus_country = yes
+    this != scope:actor
+    oe_rus_in_byzantine_patriarchate = yes
+    NOT = { has_country_modifier = oe_rus_catholic_orthodox_support }
+}
+oe_rus_mercenary_target = {
+    oe_rus_country = yes
+    this != scope:actor
+}
+
+# Province scope: native provinces contain only their owner's locations.
+oe_rus_boyar_province = {
+    owner = scope:actor
+    oe_rus_region = yes
+    any_location_in_province = {
+        NOT = { integration_level = integrated }
+        NOT = { integration_level = core }
+    }
+    NOT = { any_location_in_province = { has_location_modifier = oe_rus_boyar_privileges } }
+}
+
+oe_rus_first_power = {
+    oe_rus_top_power = yes
+    var:oe_rus_rank ?= 1
+}
+# Country scope; the GenericAction actor is explicit across nested scopes.
+oe_rus_unification_allowed = {
+    oe_rus_first_power = yes
+    NOT = { has_global_variable = oe_rus_unification_completed }
+    culture_group:russian_group = {
+        NOT = {
+            any_country_in_culture_group = {
+                exists = capital
+                capital = { region = region:russian_region }
+                this != scope:actor
+                NOT = { is_subject_or_below_of = scope:actor }
+            }
+        }
+    }
+}
+
+# Target-country scope; rank one may release either direction of a truce.
+oe_rus_accelerate_target = {
+    oe_rus_top_power = yes
+    var:oe_rus_rank <= 3
+    this != scope:actor
+    OR = {
+        has_truce_with = scope:actor
+        scope:actor = { has_truce_with = prev }
+    }
+}

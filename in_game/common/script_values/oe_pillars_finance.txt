@@ -1,0 +1,108 @@
+﻿# IO scope. One source of truth: -100 corruption / +100 integrity -> 100 / 0.
+
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# oe_pillars_corruption_value = {
+#     value = 50
+#     if = {
+#         limit = { country_exists = c:BYZ }
+#         subtract = { value = c:BYZ.societal_value:corruptionhigh_vs_corruptionlow multiply = 0.5 }
+#     }
+#     min = 0
+#     max = 100
+# }
+
+
+# IO scope; also used by the actual native contribution payment.
+oe_pillars_nobles_monthly_income = {
+    value = 0
+    every_country_with_special_status_of_type = {
+        type = oe_pillars_empire
+            every_estate = {
+                limit = { estate_type = estate_type:nobles_estate }
+                add = { value = estate_taxable_income min = 0 }
+            }
+    }
+    multiply = 0.10
+}
+
+# IO scope; also used by the actual native contribution payment.
+oe_pillars_clergy_monthly_income = {
+    value = 0
+    every_country_with_special_status_of_type = {
+        type = oe_pillars_empire
+            every_estate = {
+                limit = { estate_type = estate_type:clergy_estate }
+                add = { value = estate_taxable_income min = 0 }
+            }
+    }
+    multiply = 0.05
+}
+
+# IO scope; also used by the actual native contribution payment.
+# PAUSED 2026-09-26: no income from domestic noble families.
+# oe_pillars_houses_monthly_income = {
+#     value = 0
+#     every_country_with_special_status_of_type = {
+#         type = oe_pillars_noble
+#             add = { value = monthly_income_total min = 0 }
+#     }
+#     multiply = 0.25
+# }
+
+# Recurring privy-purse income. One-off contributions are reserves, not income.
+oe_pillars_purse_monthly_income = {
+    value = oe_pillars_nobles_monthly_income
+    add = oe_pillars_clergy_monthly_income
+    # add = oe_pillars_houses_monthly_income # PAUSED: no house income
+}
+
+oe_pillars_authority_max_gain = 0.5
+oe_pillars_authority_requested_spend = {
+    value = 0
+    if = {
+        limit = { country_exists = c:BYZ }
+        value = "c:BYZ.payment_maintenance(international_organization:oe_byz_empire_pillars|oe_pillars_authority_budget)"
+        min = 0
+        max = 1
+        multiply = oe_pillars_purse_monthly_income
+    }
+}
+oe_pillars_authority_available_spend = {
+    value = oe_pillars_authority_requested_spend
+    max = gold
+    min = 0
+}
+oe_pillars_authority_available_gain = {
+    value = 0
+    if = {
+        limit = { oe_pillars_purse_monthly_income > 0 }
+        value = oe_pillars_authority_available_spend
+        divide = oe_pillars_purse_monthly_income
+        multiply = oe_pillars_authority_max_gain
+        min = 0
+        max = 0.5
+    }
+}
+oe_pillars_authority_net_change = {
+    value = oe_pillars_authority_available_gain
+    subtract = 0.2
+
+if = { limit = { c:BYZ ?= { has_variable = oe_ir_offices_done } } add = 0.05 }
+    add = oe_court_chancellor_bonus
+}
+
+# Live IO-scope estimates; one-off orders are excluded from recurring monthly balance.
+oe_pillars_purse_monthly_net = {
+    value = oe_pillars_purse_monthly_income
+    subtract = oe_pillars_authority_available_spend
+}
+oe_pillars_opinion_monthly_change = {
+    value = 50
+    subtract = var:oe_pillars_public_opinion
+    divide = 100
+
+if = { limit = { c:BYZ ?= { has_variable = oe_ir_offices_done } } add = 0.05 }
+    add = oe_court_judge_bonus
+}
+oe_pillars_bread_cost = { value = oe_pillars_purse_monthly_income multiply = 6 }
+oe_pillars_officials_cost = { value = oe_pillars_purse_monthly_income multiply = 3 }

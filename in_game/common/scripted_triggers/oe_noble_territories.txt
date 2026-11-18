@@ -1,0 +1,64 @@
+﻿# These cheap location predicates also serve international_organization:oe_byz_empire_pillars map colors. international_organization:oe_byz_empire_pillars lists are authoritative.
+oe_nf_controls_slot = {
+    OR = { has_location_modifier = oe_nf_land_$slot$ has_location_modifier = oe_nf_industry_$slot$ }
+}
+oe_nf_controlled = { OR = {
+    oe_nf_controls_slot = { slot = 1 }
+    oe_nf_controls_slot = { slot = 2 }
+    oe_nf_controls_slot = { slot = 3 }
+    oe_nf_controls_slot = { slot = 4 }
+} }
+oe_nf_can_control = {
+    is_ownable = yes
+    has_owner = yes
+    owner = c:BYZ
+    this != location:mount_athos
+    NOT = { oe_nf_province_protected = yes }
+    NOT = { oe_nf_controls_slot = { slot = $slot$ } }
+    OR = {
+        NOT = { location_rank = location_rank:rural_settlement }
+        NOT = { oe_nf_controlled = yes }
+    }
+}
+oe_nf_expansion_target = {
+    c:BYZ = { NOT = { has_variable = oe_ir_reclaim_privileges_done } }
+    oe_nf_can_control = { slot = $slot$ }
+    OR = {
+        any_neighbor_location = { oe_nf_controls_slot = { slot = $slot$ } }
+        international_organization:oe_byz_empire_pillars = {
+            NOT = { any_in_list = { variable = oe_nf_locations_$slot$ oe_nf_controls_slot = { slot = $slot$ } } }
+        }
+    }
+}
+# A theme governor and a ruler of any landed country are separate per-member bonuses.
+oe_nf_theme_governor = {
+    any_ruling_countries = { is_subject_type = oe_empire_theme is_subject_of = c:BYZ }
+}
+oe_nf_landed_ruler = { any_ruling_countries = { num_locations > 0 } }
+oe_nf_selected_territory = {
+    OR = {
+        AND = {
+            oe_nf_controls_slot = { slot = 1 }
+            international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_map_focus var:oe_nf_map_focus = 1 }
+        }
+        AND = {
+            oe_nf_controls_slot = { slot = 2 }
+            international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_map_focus var:oe_nf_map_focus = 2 }
+        }
+        AND = {
+            oe_nf_controls_slot = { slot = 3 }
+            international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_map_focus var:oe_nf_map_focus = 3 }
+        }
+        AND = {
+            oe_nf_controls_slot = { slot = 4 }
+            international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_map_focus var:oe_nf_map_focus = 4 }
+        }
+    }
+}
+
+# A town demoted to rural cannot keep multiple houses. Stable slot order resolves it.
+oe_nf_earlier_control_1 = { always = no }
+oe_nf_earlier_control_2 = { OR = { oe_nf_controls_slot = { slot = 1 } } }
+oe_nf_earlier_control_3 = { OR = { oe_nf_controls_slot = { slot = 1 } oe_nf_controls_slot = { slot = 2 } } }
+
+oe_nf_earlier_control_4 = { OR = { oe_nf_controls_slot = { slot = 1 } oe_nf_controls_slot = { slot = 2 } oe_nf_controls_slot = { slot = 3 } } }

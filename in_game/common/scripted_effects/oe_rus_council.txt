@@ -1,0 +1,135 @@
+﻿# Event-local venue candidates; clear persisted scratch lists before building.
+oe_rsc_prepare_venues = {
+    scope:expedition = { clear_variable_list = oe_rsc_venue_pool }
+    location:kyiv = {
+        if = { limit = { oe_rsc_venue_eligible = yes }
+            scope:expedition = { add_to_variable_list = { name = oe_rsc_venue_pool target = prev } }
+        }
+    }
+    location:moscow = {
+        if = { limit = { oe_rsc_venue_eligible = yes }
+            scope:expedition = { add_to_variable_list = { name = oe_rsc_venue_pool target = prev } }
+        }
+    }
+    location:tver = {
+        if = { limit = { oe_rsc_venue_eligible = yes }
+            scope:expedition = { add_to_variable_list = { name = oe_rsc_venue_pool target = prev } }
+        }
+    }
+    location:novgorod = {
+        if = { limit = { oe_rsc_venue_eligible = yes }
+            scope:expedition = { add_to_variable_list = { name = oe_rsc_venue_pool target = prev } }
+        }
+    }
+    location:smolensk = {
+        if = { limit = { oe_rsc_venue_eligible = yes }
+            scope:expedition = { add_to_variable_list = { name = oe_rsc_venue_pool target = prev } }
+        }
+    }
+    location:nizhny_novgorod = {
+        if = { limit = { oe_rsc_venue_eligible = yes }
+            scope:expedition = { add_to_variable_list = { name = oe_rsc_venue_pool target = prev } }
+        }
+    }
+    location:ryazan = {
+        if = { limit = { oe_rsc_venue_eligible = yes }
+            scope:expedition = { add_to_variable_list = { name = oe_rsc_venue_pool target = prev } }
+        }
+    }
+    clear_saved_scope = oe_rsc_choice_1
+    clear_saved_scope = oe_rsc_choice_2
+    clear_saved_scope = oe_rsc_choice_3
+    scope:expedition = { random_in_list = {
+        variable = oe_rsc_venue_pool
+        save_scope_as = oe_rsc_choice_1
+        scope:expedition = { remove_list_variable = { name = oe_rsc_venue_pool target = prev } }
+    } }
+    scope:expedition = { random_in_list = {
+        variable = oe_rsc_venue_pool
+        save_scope_as = oe_rsc_choice_2
+        scope:expedition = { remove_list_variable = { name = oe_rsc_venue_pool target = prev } }
+    } }
+    scope:expedition = { random_in_list = {
+        variable = oe_rsc_venue_pool
+        save_scope_as = oe_rsc_choice_3
+        scope:expedition = { remove_list_variable = { name = oe_rsc_venue_pool target = prev } }
+    } }
+}
+oe_rsc_prepare_stops = {
+    clear_saved_scope = oe_rsc_stop_1
+    clear_saved_scope = oe_rsc_stop_2
+    clear_saved_scope = oe_rsc_stop_3
+    scope:expedition = { clear_variable_list = oe_rsc_stop_pool }
+    culture_group:russian_group = {
+        every_country_in_culture_group = {
+            limit = { oe_rsc_stop_candidate = yes }
+            scope:expedition = { add_to_variable_list = { name = oe_rsc_stop_pool target = prev } }
+        }
+    }
+    scope:expedition = { random_in_list = {
+        variable = oe_rsc_stop_pool
+        save_scope_as = oe_rsc_stop_1
+        scope:expedition = { remove_list_variable = { name = oe_rsc_stop_pool target = prev } }
+    } }
+    scope:expedition = { random_in_list = {
+        variable = oe_rsc_stop_pool
+        save_scope_as = oe_rsc_stop_2
+        scope:expedition = { remove_list_variable = { name = oe_rsc_stop_pool target = prev } }
+    } }
+    scope:expedition = { random_in_list = {
+        variable = oe_rsc_stop_pool
+        save_scope_as = oe_rsc_stop_3
+        scope:expedition = { remove_list_variable = { name = oe_rsc_stop_pool target = prev } }
+    } }
+}
+oe_rsc_depart_to_venue = {
+    scope:expedition = { set_variable = { name = oe_rsc_stage value = 6 } }
+    if = {
+        limit = { scope:expedition = { expedition_current_location = var:oe_rsc_venue } }
+        oe_rsc_open_council = yes
+    }
+    else = {
+        scope:expedition = { add_new_waypoint = var:oe_rsc_venue }
+        resume_expedition = scope:expedition
+    }
+}
+oe_rsc_open_council = {
+    if = {
+        limit = { scope:expedition.var:oe_rsc_venue = { oe_rsc_venue_eligible = yes } }
+        scope:expedition = {
+            set_variable = { name = oe_rsc_stage value = 3 }
+            set_variable = { name = oe_rsc_host value = var:oe_rsc_venue.owner }
+            pause_expedition = 200
+        }
+        # Count from arrival. Pending player choices delay only final settlement,
+        # not the 60/120/180-day agenda or the 200-day completion deadline.
+        trigger_event_non_silently = oe_rus_council.4
+        trigger_event_silently = { id = oe_rus_council.10 days = 60 }
+        trigger_event_silently = { id = oe_rus_council.10 days = 120 }
+        trigger_event_silently = { id = oe_rus_council.10 days = 180 }
+        trigger_event_silently = { id = oe_rus_council.20 days = 200 }
+    }
+    else = { fail_expedition = scope:expedition }
+}
+oe_rsc_finish_if_ready = {
+    if = {
+        limit = {
+            oe_rsc_live = yes
+            scope:expedition = {
+                var:oe_rsc_stage = 3
+                has_variable = oe_rsc_due
+                var:oe_rsc_pending = 0
+            }
+        }
+        scope:expedition = { set_variable = { name = oe_rsc_stage value = 4 } }
+        if = {
+            limit = { scope:expedition = { var:oe_rsc_disagreements >= 3 } }
+            trigger_event_non_silently = oe_rus_council.21
+        }
+        else_if = {
+            limit = { scope:expedition = { var:oe_rsc_disagreements = 0 } }
+            trigger_event_non_silently = oe_rus_council.22
+        }
+        else = { trigger_event_non_silently = oe_rus_council.23 }
+    }
+}

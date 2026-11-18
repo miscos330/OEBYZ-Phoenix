@@ -1,0 +1,88 @@
+﻿namespace = oe_eastern_governorates
+
+oe_eastern_governorates.900 = {
+    type = country_event
+    title = empty_text # FIX 2026-11-17 P2：隐藏事件按原版写法补 title
+    hidden = yes
+    interface_lock = no
+    trigger = { oe_heg_tracking_needed = yes }
+    immediate = {
+        # Renewed daily; a missing queue is restarted by the monthly failsafe.
+        set_variable = { name = oe_heg_tracker_alive value = yes days = 3 }
+        location:aleppo = { oe_heg_observe_occupation = yes }
+        location:damascus = { oe_heg_observe_occupation = yes }
+        location:jerusalem = { oe_heg_observe_occupation = yes }
+        location:alexandria = { oe_heg_observe_occupation = yes }
+        location:rome = { oe_heg_observe_occupation = yes }
+        location:venice = { oe_heg_observe_occupation = yes }
+        trigger_event_silently = { id = oe_eastern_governorates.900 days = 1 }
+    }
+}
+
+oe_eastern_governorates.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_eastern_governorates.1.t
+    desc = oe_eastern_governorates.1.d
+    image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+    trigger = {
+        tag = BYZ
+        exists = scope:oe_heg_new_country
+        scope:oe_heg_new_country = { is_subject_of = c:BYZ }
+    }
+    option = {
+        name = oe_eastern_governorates.1.1
+        trigger = { oe_heg_governor_destination_valid = yes exists = scope:oe_heg_candidate_1 scope:oe_heg_candidate_1 = { oe_heg_governor_candidate = yes } }
+        oe_heg_appoint_governor = { candidate = scope:oe_heg_candidate_1 }
+    }
+    option = {
+        name = oe_eastern_governorates.1.2
+        trigger = { oe_heg_governor_destination_valid = yes exists = scope:oe_heg_candidate_2 scope:oe_heg_candidate_2 = { oe_heg_governor_candidate = yes } }
+        oe_heg_appoint_governor = { candidate = scope:oe_heg_candidate_2 }
+    }
+    option = {
+        name = oe_eastern_governorates.1.3
+        trigger = { oe_heg_governor_destination_valid = yes exists = scope:oe_heg_candidate_3 scope:oe_heg_candidate_3 = { oe_heg_governor_candidate = yes } }
+        oe_heg_appoint_governor = { candidate = scope:oe_heg_candidate_3 }
+    }
+    option = {
+        name = oe_eastern_governorates.1.defer
+        trigger = {
+            oe_heg_governor_destination_valid = yes
+            NOR = {
+                AND = { exists = scope:oe_heg_candidate_1 scope:oe_heg_candidate_1 = { oe_heg_governor_candidate = yes } }
+                AND = { exists = scope:oe_heg_candidate_2 scope:oe_heg_candidate_2 = { oe_heg_governor_candidate = yes } }
+                AND = { exists = scope:oe_heg_candidate_3 scope:oe_heg_candidate_3 = { oe_heg_governor_candidate = yes } }
+            }
+        }
+        custom_tooltip = OE_HEG_RETRY_GOVERNOR
+        trigger_event_silently = { id = oe_eastern_governorates.2 days = 30 }
+    }
+    option = {
+        name = OE_HEG_GOVERNORATE_LOST
+        trigger = { NOT = { oe_heg_governor_destination_valid = yes } }
+        remove_variable = oe_heg_pending_governorate
+    }
+    on_trigger_fail = { remove_variable = oe_heg_pending_governorate }
+}
+# Recovery only if all three original candidates became unavailable while the event was open.
+oe_eastern_governorates.2 = {
+    type = country_event
+    title = empty_text # FIX 2026-11-17 P2：隐藏事件按原版写法补 title
+    hidden = yes
+    interface_lock = no
+    trigger = { tag = BYZ has_variable = oe_heg_pending_governorate }
+    immediate = {
+        if = {
+            limit = { country_exists = var:oe_heg_pending_governorate var:oe_heg_pending_governorate = { is_subject_of = c:BYZ } }
+            if = {
+                limit = { oe_heg_three_candidates = yes }
+                var:oe_heg_pending_governorate = { save_scope_as = oe_heg_new_country }
+                oe_heg_pick_governors = yes
+                trigger_event_non_silently = oe_eastern_governorates.1
+            }
+            else = { trigger_event_silently = { id = oe_eastern_governorates.2 days = 30 } }
+        }
+        else = { remove_variable = oe_heg_pending_governorate }
+    }
+}

@@ -1,0 +1,112 @@
+situation_panel = {
+
+	##################################### TOP HEADER #####################################
+
+	##################################### MAIN IMAGE #####################################
+
+blockoverride "situation_panel_image" {
+		using = one_country_header_template
+		
+		blockoverride "CountryContext" {
+			datacontext = "[GetCountry('BYZ')]"
+		}
+		# blockoverride "history_button_anchor" {}
+		blockoverride "character_portrait_anchor" {
+			parentanchor = bottom|left
+		}
+		blockoverride "character_religion_visibility" {
+			visible = no
+		}
+		blockoverride "character_name_maximumsize" {
+			maximumsize = { 270 -1 }
+		}
+		blockoverride "country_header_extra" {
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				margin = { 10 10 }
+				spacing = 8
+				expand = {}
+			}
+		}
+	}
+
+	##################################### TAB NAME #####################################
+
+	##################################### SUBHEADER #####################################
+
+	blockoverride "situation_subheader_content" {}
+
+	##################################### MAIN CONTENT #####################################
+
+
+
+	blockoverride "situation_panel_main_content" {
+		situation_card_expandable = {
+			blockoverride "header_button_onclick" {
+				onclick = "[LateralView.Vars.Toggle( 'requirements_toggled' )]"
+			}
+			blockoverride "header_text" {
+				text = "END_REQUIREMENTS"
+			}
+			blockoverride "header_icon" {
+				texture = "gfx/interface/icons/disasters/end_requirements_green.dds"
+			}
+			blockoverride "bottom_content" {
+				TooltipRequirementsList = {
+					textcontext = "[SituationView.GetActiveSituation.GetSituation.GetEndConditions]"
+				}
+			}
+			blockoverride "bottom_content_onclick" {
+				visible = "[LateralView.Vars.Exists( 'requirements_toggled' )]"
+			}
+			blockoverride "icon_replace_visible_yes" {
+				visible = "[LateralView.Vars.Exists( 'requirements_toggled' )]"
+			}
+			blockoverride "icon_replace_visible_not" {
+				visible = "[Not(LateralView.Vars.Exists( 'requirements_toggled' ))]"
+			}
+		}
+
+		
+		situation_card_expandable = {
+			blockoverride "header_icon" {
+				datacontext = "[GetCountry('BYZ')]"
+
+				country_flag_small_plus = {
+					size = { 50 30 }
+				}
+			}
+			blockoverride "header_text" {
+				margin_left = 25
+				align = nobaseline
+				text = "OE_BYZ_GUI_ROMEI"
+
+				tooltipwidget = {
+					ContextualTooltipType = {
+						datacontext = "[GetCountry('BYZ')]"
+						blockoverride "title_icon" {
+							country_flag_small = {
+							}
+						}
+						blockoverride "title_text" {
+							text = "OE_BYZ_GUI_ROMEII"
+						}
+						blockoverride "concept_link" {
+							text = "[GetCountry('BYZ')]"
+						}
+					}
+				}
+			}
+			blockoverride "bottom_content" {
+				text_multi = {
+					margin = {15 0}
+					layoutpolicy_horizontal = expanding
+					max_width = 400
+					autoresize = yes
+					text = "OE_BYZ_GUI_ROMEX"
+				}
+			}
+		}
+	}
+}

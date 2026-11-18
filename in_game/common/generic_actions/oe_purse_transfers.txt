@@ -1,0 +1,91 @@
+﻿oe_pillars_deposit_purse = {
+    type = internationalorganization
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_PURSE_LEGITIMACY_REQUIRED legitimacy >= 1 }
+        }
+        scope:actor = { gold >= 0.01 }
+    }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = value
+        target_flag = target_value
+        name = "OE_PURSE_DEPOSIT_AMOUNT"
+        min = 0.01
+        max = scope:actor.gold
+        step = 0.01
+        default = { value = scope:actor.gold divide = 10 min = 0.01 }
+    }
+    effect = {
+        if = {
+            limit = {
+                exists = scope:target_value
+                scope:target_value >= 0.01
+                scope:actor = { tag = BYZ legitimacy >= 1 }
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:actor = { gold >= scope:target_value }
+            }
+            scope:actor = { add_legitimacy = -1 }
+            scope:actor = { add_gold = { value = scope:target_value multiply = -1 } }
+            scope:recipient = { add_gold = scope:target_value }
+        }
+    }
+}
+
+oe_pillars_withdraw_purse = {
+    type = internationalorganization
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_PURSE_AUTHORITY_REQUIRED international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 1 } }
+        }
+        international_organization:oe_byz_empire_pillars = { gold >= 0.01 }
+    }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = value
+        target_flag = target_value
+        name = "OE_PURSE_WITHDRAW_AMOUNT"
+        min = 0.01
+        max = scope:recipient.gold
+        step = 0.01
+        default = { value = scope:recipient.gold divide = 10 min = 0.01 }
+    }
+    effect = {
+        if = {
+            limit = {
+                exists = scope:target_value
+                scope:target_value >= 0.01
+                scope:actor = { tag = BYZ international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 1 } }
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:recipient = { gold >= scope:target_value }
+            }
+            scope:recipient = { change_variable = { name = oe_pillars_authority add = -1 } }
+            scope:recipient = { add_gold = { value = scope:target_value multiply = -1 } }
+            scope:actor = { add_gold = scope:target_value }
+        }
+    }
+}

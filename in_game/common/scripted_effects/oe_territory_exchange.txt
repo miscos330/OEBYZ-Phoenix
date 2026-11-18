@@ -1,0 +1,102 @@
+﻿# Country scope BYZ. All traversals are click-only and bounded by the two 50-location lists.
+oe_tx_clear = {
+    clear_variable_list = oe_tx_give
+    clear_variable_list = oe_tx_take
+    clear_variable_list = oe_tx_connected
+    remove_variable = oe_tx_partner
+    remove_variable = oe_tx_give_count
+    remove_variable = oe_tx_take_count
+    remove_variable = oe_tx_connected_count
+    remove_variable = oe_tx_invalid
+}
+oe_tx_refresh = {
+    set_variable = { name = oe_tx_give_count value = 0 }
+    set_variable = { name = oe_tx_take_count value = 0 }
+    set_variable = { name = oe_tx_connected_count value = 0 }
+    clear_variable_list = oe_tx_connected
+    remove_variable = oe_tx_invalid
+    every_in_list = {
+        variable = oe_tx_give
+        c:BYZ = { change_variable = { name = oe_tx_give_count add = 1 } }
+    }
+    every_in_list = {
+        variable = oe_tx_take
+        c:BYZ = { change_variable = { name = oe_tx_take_count add = 1 } }
+    }
+    if = {
+        limit = { oe_tx_session = yes }
+        # Each pass reaches at least one more location, or no later pass can change the result.
+        # A fixed 50-pass ceiling also handles arbitrary selection order without recursion.
+        while = {
+            count = 50
+            every_in_list = {
+                variable = oe_tx_take
+                limit = {
+                    oe_tx_take_owned = yes
+                    NOT = { oe_tx_reached = yes }
+                    oe_tx_touches_reached_land = yes
+                }
+                save_scope_as = oe_tx_reached_location
+                c:BYZ = {
+                    add_to_variable_list = { name = oe_tx_connected target = scope:oe_tx_reached_location }
+                    change_variable = { name = oe_tx_connected_count add = 1 }
+                }
+            }
+        }
+    }
+    if = { limit = { NOT = { oe_tx_commit_valid = yes } } set_variable = oe_tx_invalid }
+    clear_saved_scope = oe_tx_reached_location
+}
+oe_tx_add_give_effect = {
+    if = {
+        limit = { oe_tx_session = yes exists = scope:target scope:target = { oe_tx_give_candidate = yes } }
+        add_to_variable_list = { name = oe_tx_give target = scope:target }
+        oe_tx_refresh = yes
+    }
+}
+oe_tx_add_take_effect = {
+    # Refresh before accepting a newly picked location; borders may have changed while the selector was open.
+    oe_tx_refresh = yes
+    if = {
+        limit = { oe_tx_session = yes exists = scope:target scope:target = { oe_tx_take_candidate = yes } }
+        add_to_variable_list = { name = oe_tx_take target = scope:target }
+        oe_tx_refresh = yes
+    }
+}
+oe_tx_commit_effect = {
+    oe_tx_refresh = yes
+    if = {
+        limit = { oe_tx_commit_valid = yes }
+        save_scope_as = oe_tx_byz
+        var:oe_tx_partner = { save_scope_as = oe_tx_other }
+        # Snapshot both lists before changing owners or subject relationships.
+        every_in_list = { variable = oe_tx_give add_to_list = oe_tx_offer_snapshot }
+        every_in_list = { variable = oe_tx_take add_to_list = oe_tx_receive_snapshot }
+        # Give the partner an anchor first when BYZ can retain its current territorial existence.
+        clear_saved_scope = oe_tx_first_gift
+        ordered_in_list = {
+            variable = oe_tx_give
+            limit = { OR = { NOT = { owner = c:BYZ } c:BYZ = { num_locations > 1 } } }
+            order_by = population
+            max = 1
+            check_range_bounds = no
+            save_scope_as = oe_tx_first_gift
+        }
+        add_diplomats = -1
+        add_cooldown = { type = oe_territory_exchange_cooldown years = 50 }
+        if = {
+            limit = { exists = scope:oe_tx_first_gift }
+            scope:oe_tx_first_gift = { change_location_owner = scope:oe_tx_other }
+        }
+        every_in_list = { list = oe_tx_receive_snapshot change_location_owner = scope:oe_tx_byz }
+        every_in_list = {
+            list = oe_tx_offer_snapshot
+            limit = { NOT = { owner = scope:oe_tx_other } }
+            change_location_owner = scope:oe_tx_other
+        }
+        scope:oe_tx_byz = { oe_tx_clear = yes }
+        clear_saved_scope = oe_tx_first_gift
+        clear_saved_scope = oe_tx_other
+        clear_saved_scope = oe_tx_byz
+    }
+}

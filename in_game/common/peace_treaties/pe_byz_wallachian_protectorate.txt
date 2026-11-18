@@ -1,0 +1,80 @@
+﻿pe_byz_wallachian_protectorate = {
+    cost = { value = 100 }
+    base_antagonism = 25
+    antagonism_type = antagonism_subjugate_neighbor_native
+    blocks_full_annexation = yes
+    potential = {
+        scope:winner = { tag = BYZ }
+        scope:loser = { tag = WAL }
+        scope:war = {
+            is_no_cb_war = no
+            casus_belli ?= casus_belli:oe_cb_byz_vs_wal
+            is_an_attacker = scope:winner
+            is_a_defender = scope:loser
+        }
+    }
+    allow = {
+        scope:loser = { any_owned_location = { area = area:wallachia_area } }
+        exists = international_organization:oe_byz_roman_world
+    }
+    effect = {
+        custom_tooltip = {
+            text = OE_DANUBE_WALLACHIA_TREATY_EFFECT
+            scope:loser = {
+                culture = { save_scope_as = oe_wal_original_culture }
+                religion = { save_scope_as = oe_wal_original_religion }
+                every_owned_location = {
+                    limit = { area = area:wallachia_area }
+                    add_to_list = oe_wal_protectorate_locations
+                }
+                every_owned_location = {
+                    limit = { area = area:moldavia_area }
+                    add_to_list = oe_wal_moldavian_locations
+                }
+                ordered_owned_location = {
+                    limit = { area = area:wallachia_area }
+                    order_by = population
+                    max = 1
+                    check_range_bounds = no
+                    save_scope_as = oe_wal_protectorate_capital
+                }
+                if = {
+                    limit = { capital = { area = area:wallachia_area } }
+                    capital = { save_scope_as = oe_wal_protectorate_capital }
+                }
+            }
+            scope:oe_wal_protectorate_capital = {
+                create_country_from_location = {
+                    overlord = scope:winner
+                    subject_type = subject_type:oe_rome_sub
+                    change_government_type = government_type:monarchy
+                    change_country_type = location
+                    change_heir_selection = heir_selection:cognatic_primogeniture
+                    change_culture = scope:oe_wal_original_culture
+                    change_religion = scope:oe_wal_original_religion
+                    change_country_name = OE_WALLACHIAN_PROTECTORATE
+                    change_country_adjective = OE_WALLACHIAN_PROTECTORATE_ADJ
+                    change_country_flag = WAL
+                    set_capital = scope:oe_wal_protectorate_capital
+                    save_scope_as = oe_wal_new_protectorate
+                    if = {
+                        limit = { has_ruler = no }
+                        create_character = {
+                            age = 35 culture = scope:oe_wal_original_culture religion = scope:oe_wal_original_religion
+                            estate = estate_type:nobles_estate save_scope_as = oe_wal_protector
+                        }
+                        set_new_ruler = scope:oe_wal_protector
+                    }
+                }
+            }
+            every_in_list = { list = oe_wal_moldavian_locations change_location_owner = scope:winner }
+            every_in_list = { list = oe_wal_protectorate_locations change_location_owner = scope:oe_wal_new_protectorate }
+            international_organization:oe_byz_roman_world = {
+                add_country_to_international_organization = scope:oe_wal_new_protectorate
+                set_variable = oe_rw_moldavia_included
+                oe_danube_sync_moldavian_territory = yes
+            }
+        }
+    }
+    ai_desire = { value = 100 }
+}

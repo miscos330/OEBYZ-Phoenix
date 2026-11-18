@@ -1,0 +1,118 @@
+﻿# Called from the generic action. Native alliance cancel_effect uses actor/recipient.
+# Rebind BOTH to the actual alliance partners, then restore the caller's scopes.
+oe_danube_end_balkan_alliance = {
+    scope:actor = { save_scope_as = oe_danube_alliance_initiator }
+    scope:recipient = { save_scope_as = oe_danube_alliance_organization }
+    c:BUL = { save_scope_as = actor }
+    c:SER = { save_scope_as = recipient }
+    remove_relation = { first = c:BUL second = c:SER type = relation_type:alliance }
+    scope:oe_danube_alliance_initiator = { save_scope_as = actor }
+    scope:oe_danube_alliance_organization = { save_scope_as = recipient }
+}
+
+# Runs only inside country event .2: root is always the commissioning country.
+oe_danube_found_moldavia = {
+    remove_variable = oe_danube_pending_governorate
+    remove_variable = oe_danube_mongol_offer_due
+    # Capture the original enclave before annexation, creation or owner-change hooks.
+    if = {
+        limit = { oe_danube_mongol_enclave = yes }
+        set_variable = oe_danube_mongol_offer_due
+    }
+    area:moldavia_area = {
+        every_location_in_area = {
+            limit = { oe_danube_moldavian_source = yes }
+            if = {
+                limit = { owner = { oe_danube_small_moldavian_country = yes } }
+                if = {
+                    limit = { is_capital = yes }
+                    owner = {
+                        add_to_list = oe_danube_absorbed_countries
+                        every_owned_location = { add_to_list = oe_danube_grant_locations }
+                    }
+                }
+            }
+            else = { add_to_list = oe_danube_grant_locations }
+        }
+        ordered_location_in_area = {
+            limit = { oe_danube_moldavian_source = yes }
+            order_by = population
+            max = 1
+            check_range_bounds = no
+            save_scope_as = oe_danube_capital
+        }
+    }
+    if = {
+        limit = { exists = scope:oe_danube_capital }
+        # Native full-country annexation handles overlords and country destruction.
+        # Finish it BEFORE creating the destination country or assigning its ID.
+        every_in_list = {
+            list = oe_danube_absorbed_countries
+            if = {
+                limit = { num_locations > 0 NOT = { this = c:BYZ } }
+                save_scope_as = oe_danube_annex_source
+                c:BYZ = { annex_country = { country = scope:oe_danube_annex_source reason = Diplomatic } }
+            }
+        }
+        scope:oe_danube_capital = {
+            # Match native creation examples: the seed belongs to the releasing country.
+            change_location_owner = c:BYZ
+            create_country_from_location = {
+                overlord = c:BYZ
+                subject_type = subject_type:oe_rome_sub_II
+                save_scope_as = oe_danube_governorate
+                set_variable = oe_danube_governorate_identity
+                root = { set_variable = { name = oe_danube_pending_governorate value = prev } }
+                change_government_type = government_type:monarchy
+                change_country_type = location
+                change_heir_selection = heir_selection:cognatic_primogeniture
+                change_culture = culture:greek_culture
+                change_religion = religion:orthodox
+                add_reform = government_reform:oe_roman_province
+                change_country_name = OE_MOLDAVIAN_GOVERNORATE
+                change_country_adjective = OE_MOLDAVIAN_GOVERNORATE_ADJ
+                change_country_flag = BYZ
+                set_capital = scope:oe_danube_capital
+                if = {
+                    limit = { has_ruler = no }
+                    create_character = {
+                        age = 35 culture = culture:greek_culture religion = religion:orthodox
+                        estate = estate_type:nobles_estate save_scope_as = oe_danube_governor
+                    }
+                    set_new_ruler = scope:oe_danube_governor
+                }
+            }
+        }
+        if = {
+            limit = {
+                has_variable = oe_danube_pending_governorate
+                var:oe_danube_pending_governorate = { oe_danube_governorate_valid = yes }
+                scope:oe_danube_capital = { owner = root.var:oe_danube_pending_governorate }
+            }
+            every_in_list = {
+                list = oe_danube_grant_locations
+                change_location_owner = root.var:oe_danube_pending_governorate
+            }
+            root = {
+                add_gold = -200
+                international_organization:oe_byz_roman_world = {
+                    set_variable = oe_danube_moldavia_founded
+                    add_country_to_international_organization = root.var:oe_danube_pending_governorate
+                }
+                if = {
+                    limit = { has_variable = oe_danube_mongol_offer_due }
+                    trigger_event_non_silently = oe_danube_settlement.1
+                }
+                else = { remove_variable = oe_danube_pending_governorate }
+                remove_variable = oe_danube_mongol_offer_due
+            }
+        }
+    }
+}
+
+oe_danube_sync_moldavian_territory = {
+    if = {
+        limit = { has_variable = oe_rw_moldavia_included }
+        area:moldavia_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+    }
+}

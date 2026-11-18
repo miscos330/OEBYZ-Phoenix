@@ -1,0 +1,673 @@
+﻿oe_city_access = {
+    scope = country
+    is_shown = { oe_city_access_trigger = yes }
+    is_valid = { oe_city_access_trigger = yes }
+}
+
+# Read-only inventory predicates. Construction uses the fixed-price expansion transaction.
+oe_city_has_building = {
+    scope = country
+    saved_scopes = { city_building_type }
+    is_shown = {
+        oe_city_access_trigger = yes
+        scope:city_building_type = { oe_city_special_building_trigger = yes }
+        location:constantinople = {
+            any_buildings_in_location = {
+                building_type = scope:city_building_type
+                OR = { building_level > 0 building_levels_under_construction > 0 }
+            }
+        }
+    }
+}
+
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_city_available_building = {
+#     scope = country
+#     saved_scopes = { city_building_type }
+#     is_shown = {
+#         oe_city_access_trigger = yes
+#         scope:city_building_type = { oe_city_special_building_trigger = yes }
+#         location:constantinople = {
+#             can_build_building = scope:city_building_type
+#             owner = { can_build_building = scope:city_building_type }
+#         }
+#     }
+# }
+
+
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_city_may_build = {
+#     scope = country
+#     saved_scopes = { city_building_type }
+#     is_valid = {
+#         oe_city_access_trigger = yes
+#         scope:city_building_type = { oe_city_special_building_trigger = yes }
+#         owns = location:constantinople
+#         can_build_building = scope:city_building_type
+#         location:constantinople = { can_build_building = scope:city_building_type }
+#     }
+# }
+
+
+oe_city_expansion = {
+    scope = country
+    saved_scopes = { city_building_type }
+    is_shown = { oe_city_expansion_visible = yes }
+    is_valid = { oe_city_expansion_valid = yes }
+    effect = {
+        if = {
+            limit = { oe_city_expansion_valid = yes }
+            location:constantinople = {
+                oe_city_initialize_projects = yes
+                save_scope_value_as = { name = oe_city_queued_before value = oe_city_queued_levels }
+                if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_civic_center }
+                    change_variable = { name = oe_city_civic_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_civic_center
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -1000 }
+                    }
+                    else = { change_variable = { name = oe_city_civic_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_belisarius_column }
+                    change_variable = { name = oe_city_belisarius_column_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_belisarius_column owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -5000 } }
+                    else = { change_variable = { name = oe_city_belisarius_column_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_manuel_academy }
+                    change_variable = { name = oe_city_manuel_academy_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_manuel_academy owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -2000  oe_ir_academy_score = yes } }
+                    else = { change_variable = { name = oe_city_manuel_academy_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_osman_company }
+                    change_variable = { name = oe_city_osman_company_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_osman_company owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -1000 } }
+                    else = { change_variable = { name = oe_city_osman_company_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_Hagia_Sophia }
+                    change_variable = { name = oe_city_sophia_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_Hagia_Sophia
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -10000 }
+                    }
+                    else = { change_variable = { name = oe_city_sophia_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:theodosian_walls }
+                    change_variable = { name = oe_city_walls_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:theodosian_walls
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -2000 }
+                    }
+                    else = { change_variable = { name = oe_city_walls_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_rebuild_port }
+                    change_variable = { name = oe_city_port_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_rebuild_port
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -1000 }
+                    }
+                    else = { change_variable = { name = oe_city_port_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_great_arena }
+                    change_variable = { name = oe_city_arena_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_great_arena
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -2000 }
+                    }
+                    else = { change_variable = { name = oe_city_arena_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_big_palace }
+                    change_variable = { name = oe_city_palace_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_big_palace
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -5000 }
+                    }
+                    else = { change_variable = { name = oe_city_palace_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_water_palace }
+                    change_variable = { name = oe_city_cistern_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_water_palace
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -1250 }
+                    }
+                    else = { change_variable = { name = oe_city_cistern_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_valuns_water_building }
+                    change_variable = { name = oe_city_aqueduct_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_valuns_water_building
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -1250 }
+                    }
+                    else = { change_variable = { name = oe_city_aqueduct_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_university }
+                    change_variable = { name = oe_city_university_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_university
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -4000 }
+                    }
+                    else = { change_variable = { name = oe_city_university_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_rome_university }
+                    change_variable = { name = oe_city_patriarch_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_rome_university
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -4000 }
+                    }
+                    else = { change_variable = { name = oe_city_patriarch_orders subtract = 1 } }
+                }
+                            else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_granary }
+                    change_variable = { name = oe_city_granary_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_granary owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -300 } }
+                    else = { change_variable = { name = oe_city_granary_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_customs }
+                    change_variable = { name = oe_city_customs_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_customs owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -500 } }
+                    else = { change_variable = { name = oe_city_customs_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_repair }
+                    change_variable = { name = oe_city_repair_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_repair owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -200 } }
+                    else = { change_variable = { name = oe_city_repair_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_chancery }
+                    change_variable = { name = oe_city_chancery_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_chancery owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -3000 } }
+                    else = { change_variable = { name = oe_city_chancery_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_baths }
+                    change_variable = { name = oe_city_baths_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_baths owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -1000 } }
+                    else = { change_variable = { name = oe_city_baths_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_hospital }
+                    change_variable = { name = oe_city_hospital_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_hospital owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -2000 } }
+                    else = { change_variable = { name = oe_city_hospital_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_arsenal }
+                    change_variable = { name = oe_city_arsenal_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_arsenal owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -500 } }
+                    else = { change_variable = { name = oe_city_arsenal_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_scriptorium }
+                    change_variable = { name = oe_city_scriptorium_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_scriptorium owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -300 } }
+                    else = { change_variable = { name = oe_city_scriptorium_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_silk }
+                    change_variable = { name = oe_city_silk_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_silk owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -300 } }
+                    else = { change_variable = { name = oe_city_silk_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_galata_hall }
+                    change_variable = { name = oe_city_galata_hall_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_galata_hall owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -500 } }
+                    else = { change_variable = { name = oe_city_galata_hall_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_new_venice }
+                    change_variable = { name = oe_city_new_venice_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_new_venice owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -500 } }
+                    else = { change_variable = { name = oe_city_new_venice_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_naval_academy }
+                    change_variable = { name = oe_city_naval_academy_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_naval_academy owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -5000 } }
+                    else = { change_variable = { name = oe_city_naval_academy_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_athena_shipyard }
+                    change_variable = { name = oe_city_athena_shipyard_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_athena_shipyard owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -3000 } }
+                    else = { change_variable = { name = oe_city_athena_shipyard_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_sea_walls }
+                    change_variable = { name = oe_city_sea_walls_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_sea_walls
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -2000 }
+                    }
+                    else = { change_variable = { name = oe_city_sea_walls_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_basil_academy }
+                    change_variable = { name = oe_city_basil_academy_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_basil_academy
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -3000  oe_ir_academy_score = yes }
+                    }
+                    else = { change_variable = { name = oe_city_basil_academy_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_urban_academy }
+                    change_variable = { name = oe_city_urban_academy_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_urban_academy
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -3000  oe_ir_academy_score = yes }
+                    }
+                    else = { change_variable = { name = oe_city_urban_academy_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_constantine_column }
+                    change_variable = { name = oe_city_constantine_column_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_constantine_column
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -1000 }
+                    }
+                    else = { change_variable = { name = oe_city_constantine_column_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_thutmose_obelisk }
+                    change_variable = { name = oe_city_thutmose_obelisk_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_thutmose_obelisk
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -1000 }
+                    }
+                    else = { change_variable = { name = oe_city_thutmose_obelisk_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_nymphaeum }
+                    change_variable = { name = oe_city_nymphaeum_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_nymphaeum
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -750 }
+                    }
+                    else = { change_variable = { name = oe_city_nymphaeum_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_theodosian_market }
+                    change_variable = { name = oe_city_theodosian_market_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_theodosian_market
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -500 }
+                    }
+                    else = { change_variable = { name = oe_city_theodosian_market_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_senate_rotunda }
+                    change_variable = { name = oe_city_senate_rotunda_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_senate_rotunda
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -2000 }
+                    }
+                    else = { change_variable = { name = oe_city_senate_rotunda_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_magnaura }
+                    change_variable = { name = oe_city_magnaura_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_magnaura
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -3000 }
+                    }
+                    else = { change_variable = { name = oe_city_magnaura_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_daphne }
+                    change_variable = { name = oe_city_daphne_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_daphne
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -3000 }
+                    }
+                    else = { change_variable = { name = oe_city_daphne_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_chalke }
+                    change_variable = { name = oe_city_chalke_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_chalke
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -3000 }
+                    }
+                    else = { change_variable = { name = oe_city_chalke_orders subtract = 1 } }
+                }
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_jewish_community }
+                    change_variable = { name = oe_city_jewish_community_orders add = 1 }
+                    construct_building = {
+                        building_type = building_type:oe_byz_constantinople_jewish_community
+                        owner = root
+                        instant = no
+                        cost_multiplier = 0
+                        cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT"
+                    }
+                    # Charge the fixed national-treasury price once, only after a queue entry exists.
+                    if = {
+                        limit = { oe_city_queued_levels > scope:oe_city_queued_before }
+                        root = { add_gold = -500 }
+                    }
+                    else = { change_variable = { name = oe_city_jewish_community_orders subtract = 1 } }
+                }
+
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_constantine_suburb }
+                    change_variable = { name = oe_city_constantine_suburb_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_constantine_suburb owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -2000 } }
+                    else = { change_variable = { name = oe_city_constantine_suburb_orders subtract = 1 } }
+                }
+
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_blachernae_suburb }
+                    change_variable = { name = oe_city_blachernae_suburb_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_blachernae_suburb owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -2000 } }
+                    else = { change_variable = { name = oe_city_blachernae_suburb_orders subtract = 1 } }
+                }
+
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_janissary_kitchen }
+                    change_variable = { name = oe_city_janissary_kitchen_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_janissary_kitchen owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -500 } }
+                    else = { change_variable = { name = oe_city_janissary_kitchen_orders subtract = 1 } }
+                }
+
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_aetius_cistern }
+                    change_variable = { name = oe_city_aetius_cistern_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_aetius_cistern owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -5000 } }
+                    else = { change_variable = { name = oe_city_aetius_cistern_orders subtract = 1 } }
+                }
+
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_aspar_cistern }
+                    change_variable = { name = oe_city_aspar_cistern_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_aspar_cistern owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -5000 } }
+                    else = { change_variable = { name = oe_city_aspar_cistern_orders subtract = 1 } }
+                }
+
+                else_if = {
+                    limit = { scope:city_building_type = building_type:oe_byz_constantinople_mocius_cistern }
+                    change_variable = { name = oe_city_mocius_cistern_orders add = 1 }
+                    construct_building = { building_type = building_type:oe_byz_constantinople_mocius_cistern owner = root instant = no cost_multiplier = 0 cost_multiplier_reason = "OE_CITY_PREPAID_PROJECT" }
+                    if = { limit = { oe_city_queued_levels > scope:oe_city_queued_before } root = { add_gold = -5000 } }
+                    else = { change_variable = { name = oe_city_mocius_cistern_orders subtract = 1 } }
+                }
+}
+        }
+    }
+}
+oe_city_district_projects_walls = { scope = country is_shown = { oe_city_access_trigger = yes location:constantinople = { OR = { oe_city_janissary_kitchen_remaining > 0 oe_city_constantine_suburb_remaining > 0 oe_city_manuel_academy_remaining > 0 NOT = { has_variable = oe_city_manuel_academy_unlocked } oe_city_walls_remaining > 0 oe_city_arsenal_remaining > 0 oe_city_urban_academy_remaining > 0 } } } }
+oe_city_district_projects_blachernae = { scope = country is_shown = { oe_city_access_trigger = yes location:constantinople = { OR = { oe_city_blachernae_suburb_remaining > 0 oe_city_chancery_remaining > 0 oe_city_basil_academy_remaining > 0 } } } }
+oe_city_district_projects_apostles = { scope = country is_shown = { oe_city_access_trigger = yes location:constantinople = { OR = { oe_city_mocius_cistern_remaining > 0 oe_city_belisarius_column_remaining > 0 NOT = { has_variable = oe_city_belisarius_column_unlocked } oe_city_aqueduct_remaining > 0 oe_city_patriarch_remaining > 0 oe_city_hospital_remaining > 0 oe_city_scriptorium_remaining > 0 oe_city_constantine_column_remaining > 0 oe_city_thutmose_obelisk_remaining > 0 } } } }
+oe_city_district_projects_mese = { scope = country is_shown = { oe_city_access_trigger = yes location:constantinople = { OR = { oe_city_aspar_cistern_remaining > 0 oe_city_university_remaining > 0 oe_city_baths_remaining > 0 oe_city_theodosian_market_remaining > 0 } } } }
+oe_city_district_projects_east = { scope = country is_shown = { oe_city_access_trigger = yes location:constantinople = { OR = { oe_city_aetius_cistern_remaining > 0 oe_city_civic_remaining > 0 oe_city_sophia_remaining > 0 oe_city_arena_remaining > 0 oe_city_palace_remaining > 0 oe_city_cistern_remaining > 0 oe_city_silk_remaining > 0 oe_city_nymphaeum_remaining > 0 oe_city_senate_rotunda_remaining > 0 oe_city_magnaura_remaining > 0 oe_city_daphne_remaining > 0 oe_city_chalke_remaining > 0 } } } }
+oe_city_district_projects_horn = { scope = country is_shown = { oe_city_access_trigger = yes location:constantinople = { OR = { oe_city_osman_company_remaining > 0 NOT = { has_variable = oe_city_osman_company_unlocked } oe_city_customs_remaining > 0 oe_city_repair_remaining > 0 oe_city_jewish_community_remaining > 0 } } } }
+oe_city_district_projects_south = { scope = country is_shown = { oe_city_access_trigger = yes location:constantinople = { OR = { oe_city_port_remaining > 0 oe_city_granary_remaining > 0 oe_city_naval_academy_remaining > 0 oe_city_athena_shipyard_remaining > 0 oe_city_sea_walls_remaining > 0 } } } }
+oe_city_district_projects_north = { scope = country is_shown = { oe_city_access_trigger = yes location:constantinople = { OR = { oe_city_galata_hall_remaining > 0 oe_city_new_venice_remaining > 0 } } } }
+
+oe_city_requires_expel = { scope = country saved_scopes = { city_building_type } is_shown = { OR = { scope:city_building_type = building_type:oe_byz_constantinople_galata_hall scope:city_building_type = building_type:oe_byz_constantinople_new_venice  scope:city_building_type = building_type:oe_byz_constantinople_jewish_community } } }
+
+oe_city_requires_port = { scope = country saved_scopes = { city_building_type } is_shown = { OR = { scope:city_building_type = building_type:oe_byz_constantinople_naval_academy scope:city_building_type = building_type:oe_byz_constantinople_athena_shipyard } } }
+
+oe_city_requires_palace = { scope = country saved_scopes = { city_building_type } is_shown = { OR = { scope:city_building_type = building_type:oe_byz_constantinople_magnaura scope:city_building_type = building_type:oe_byz_constantinople_daphne scope:city_building_type = building_type:oe_byz_constantinople_chalke } } }
+
+oe_city_requires_1454 = { scope = country saved_scopes = { city_building_type } is_shown = { OR = { scope:city_building_type = building_type:oe_byz_constantinople_urban_academy } } }
+
+# Show the event requirement while this district project is locked.
+oe_city_requires_manuel_academy_event = {
+    scope = country saved_scopes = { city_building_type }
+    is_shown = {
+        scope:city_building_type = building_type:oe_byz_constantinople_manuel_academy
+        location:constantinople = { NOT = { has_variable = oe_city_manuel_academy_unlocked } }
+    }
+}
+
+# Show the event requirement while this district project is locked.
+oe_city_requires_osman_company_event = {
+    scope = country saved_scopes = { city_building_type }
+    is_shown = {
+        scope:city_building_type = building_type:oe_byz_constantinople_osman_company
+        location:constantinople = { NOT = { has_variable = oe_city_osman_company_unlocked } }
+    }
+}
+
+# Show the event requirement while this district project is locked.
+oe_city_requires_belisarius_column_event = {
+    scope = country saved_scopes = { city_building_type }
+    is_shown = {
+        scope:city_building_type = building_type:oe_byz_constantinople_belisarius_column
+        location:constantinople = { NOT = { has_variable = oe_city_belisarius_column_unlocked } }
+    }
+}
+
+oe_city_requires_outer_population = {
+    scope = country saved_scopes = { city_building_type }
+    is_shown = { OR = {
+        scope:city_building_type = building_type:oe_byz_constantinople_constantine_suburb
+        scope:city_building_type = building_type:oe_byz_constantinople_blachernae_suburb
+    } }
+}
+oe_city_requires_rum_movement = {
+    scope = country saved_scopes = { city_building_type }
+    is_shown = { scope:city_building_type = building_type:oe_byz_constantinople_janissary_kitchen }
+}
+
+# Country scope; explicit click only. The catalogue itself is version-guarded.
+oe_city_refresh_on_open = {
+    scope = country
+    is_shown = { oe_city_access_trigger = yes }
+    is_valid = { oe_city_access_trigger = yes }
+    effect = {
+        if = {
+            limit = { oe_city_access_trigger = yes }
+            international_organization:oe_byz_roman_world ?= {
+                if = {
+                    limit = { NOT = { has_variable = oe_city_catalog_v10 } }
+                    oe_city_initialize_catalog = yes
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+﻿oe_osmaris_varna_date_window = {
+    tag = BYZ current_date >= 1444.9.1 current_date <= 1444.11.11
+    NOT = { has_variable = oe_osmaris_varna_presented }
+}
+oe_osmaris_belisarius_available = {
+    exists = character:oe_osmaris_belisarius
+    character:oe_osmaris_belisarius = {
+        oe_nf_living = yes owner = c:BYZ dynasty = dynasty:ottomans_dynasty
+        NOT = { has_trait = oe_osmaris_retired }
+        NOT = { has_trait = oe_belisarius_retired }
+    }
+}
+oe_osmaris_varna_story_ready = {
+    oe_court_actor = yes has_variable = oe_osman_chain_active
+    NOT = { has_variable = oe_osman_expelled }
+    NOT = { has_variable = oe_osmaris_varna_resolved }
+    oe_orhan_house_room = yes
+    exists = character:oe_osmaris_constantine
+    OR = {
+        exists = character:oe_osmaris_manuel_ii
+        NOT = { has_variable = oe_osmaris_manuel_ii_introduced }
+    }
+    OR = {
+        oe_osmaris_belisarius_available = yes
+        AND = { NOT = { exists = character:oe_osmaris_belisarius } NOT = { has_variable = oe_osmaris_belisarius_introduced } }
+    }
+}
+oe_osmaris_varna_can_choose = { oe_osmaris_varna_story_ready = yes oe_osmaris_belisarius_available = yes }

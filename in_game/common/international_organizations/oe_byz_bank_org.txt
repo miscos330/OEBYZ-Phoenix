@@ -1,0 +1,132 @@
+﻿oe_byz_bank_org = {
+	has_target = no
+	unique = yes
+	expel_members_who_are_targets_of_other_members = no
+	has_leader_country = yes
+	disband_if_no_leader = no
+	leader_type = character
+	leader_change_method = vote
+	leadership_election_resolution = oe_byz_bank_org_selection
+	leader_change_trigger_type = rulerchange
+	leader_title_key = "oe_byz_bank_org_leader_name"
+	leader = {
+		leader_country ?= {
+			if = {
+				limit = { 
+					has_regent = yes
+					has_heir = yes
+				}
+				heir = {
+					add_to_list = leaders
+				}
+			}
+			else = {
+				ruler ?= {
+					add_to_list = leaders
+				}
+			}
+		}
+	}
+	create_visible_trigger = {
+		always = no
+	}
+
+	invite_visible_trigger = {
+		always = yes
+	}
+
+	can_declare_war = {
+		always = yes
+	}
+	
+	variables = {
+
+	}
+	modifier = {
+		scale = {
+			value = oe_byz_org_leader_value_adm
+		}
+		tax_income_efficiency = 0.01	
+	}
+	modifier = {
+		scale = {
+			value = oe_byz_org_leader_value_dip
+		}
+	bank_interest = -0.002
+}
+	modifier = {
+		scale = {
+			value = oe_byz_org_leader_value_mil
+	}
+	total_loan_capacity_modifier = 0.02
+}
+	leader_modifier = {
+		country_cabinet_efficiency = -0.05
+		tax_income_efficiency = -0.05
+	}
+
+	can_lead_trigger = {
+		is_subject_type = oe_bank
+	}
+
+	can_join_trigger = {
+		OR = {
+		tag = BYZ
+		is_subject_type = oe_bank
+		}
+	}
+	
+	can_leave_trigger = {
+		always = no
+	}
+	
+	auto_leave_trigger = {
+		always = no
+	}
+
+	auto_disband_trigger = {
+		Not = { country_exists = c:BYZ }
+	}
+
+	on_joined = {
+
+	}
+
+	on_left = {
+	}
+
+
+
+
+	ai_desire_to_join = {
+		if = {
+			limit = {
+				is_subject_type = oe_bank
+			}
+		add = {
+			desc = oe_bank_opinion_ai_desire_to_join
+			value = {
+				value = 100
+				multiply = 10
+			}
+		}
+		}
+	}
+
+	ai_desire_to_allow_new_member = {
+		add = {
+			desc = "BASE"
+			value = 1000
+		}
+	}
+
+	payments_implemented = {
+		oe_byz_bank_org_leader_pay
+		oe_byz_bank_org_big_bank_pay
+	}
+
+	special_statuses_implemented = {
+		oe_bank_org_byz
+		oe_bank_org_big_bank
+	}	
+}

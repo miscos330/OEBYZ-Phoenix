@@ -1,0 +1,138 @@
+﻿oe_byz_bank_org_selection = {
+	loc = oe_byz_bank_org_selection
+	potential = { always = yes }
+	allow = {
+	}
+
+	can_vote = {
+		scope:actor = {
+			has_or_had_tag = BYZ
+		}
+	}
+
+	#if it's live, then we only want to test this monthly
+	ai_tick = monthly
+
+	is_live = {
+		scope:recipient ?= {
+			international_organization_has_leader = no
+		}
+	}
+	votes = {
+		add = {
+			desc = "[elector|e]"
+			value = 1
+		}
+	}
+	total_votes_needed = {
+		add = {
+			value = 1
+		}
+	}
+	#do not change this.
+	requires_explicit_votes = no
+
+	should_finalize_vote = {
+		custom_tooltip = {
+			text = oe_byz_bank_org_selection_has_over
+			scope:recipient = {
+				international_organization_has_leader = no
+			}
+			scope:highest_vote >= scope:total_votes_needed
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = {
+			data = name
+		}
+		visible = {
+			international_organization_type = international_organization_type:oe_byz_bank_org
+		}
+		enabled = {
+		}
+	}
+
+	select_trigger = {
+	    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+	    only_color_selectable = yes
+	    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = country
+		interaction_source_list = {
+			scope:recipient = {
+				every_international_organization_member = {
+					limit = {
+						can_lead_international_organization = scope:recipient
+					}
+					add_to_list = source
+				}
+			}
+		}
+		ai_interaction_source_list = {
+			scope:recipient = {
+				every_international_organization_member = {
+					limit = {
+						can_lead_international_organization = scope:recipient
+					}
+					add_to_list = source
+				}
+			}
+		}
+		target_flag = vote
+		allow_self = no
+		name = "election_select_country"
+		none_available_msg_key = "election_select_no_countries"
+		default_sort = great_power_score
+		column = {
+			data = name
+		}
+		column = {
+			data = great_power_score
+		}
+		visible = {
+
+		}
+	}
+	
+	effect = {
+		if = {
+			limit = { exists = scope:vote }
+			scope:recipient = { 
+				set_leader_country = scope:vote
+			c:BYZ = {
+				every_subject = {
+					limit = {
+					has_special_status_in_international_organization = {
+						type = special_status:oe_bank_org_big_bank
+						international_organization = scope:recipient
+					}	
+					
+					}
+					save_scope_as = target_last_bank
+				}
+			}
+			international_organization_remove_special_status = {
+				type = special_status:oe_bank_org_big_bank
+				country = scope:target_last_bank
+			} 
+			international_organization_add_special_status = {
+				type = special_status:oe_bank_org_big_bank
+				country = scope:vote
+			}
+			international_organization_remove_special_status = {
+				type = special_status:oe_bank_org_big_bank
+				country = c:BYZ
+			} 
+		}
+
+		}
+	}
+	vote_effect = {
+	}
+
+	ai_will_do = {
+	}
+}

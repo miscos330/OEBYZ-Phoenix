@@ -1,0 +1,57 @@
+﻿# BYZ country scope. Stable script identity prevents resurrection or duplicate sons.
+oe_osmaris_introduce_manuel_ii = {
+    if = {
+        limit = { NOT = { exists = character:oe_osmaris_manuel_ii } NOT = { has_variable = oe_osmaris_manuel_ii_introduced } }
+        set_variable = oe_osmaris_manuel_ii_introduced
+        create_character = {
+            first_name = oe_osmaris_manuel_ii_name
+            birth_date = 1404.6.1 birth_location = location:amasya
+            dynasty = dynasty:ottomans_dynasty
+            culture = culture:oe_tur_greek_culture religion = religion:orthodox
+            estate = estate_type:nobles_estate female = no
+            adm = 75 dip = 70 mil = 80
+            script = oe_osmaris_manuel_ii save_scope_as = oe_osmaris_manuel_ii_person
+        }
+        character:oe_osmaris_manuel_ii ?= {
+            change_father = character:oe_osmaris_constantine
+            set_nickname = oe_osmaris_athos_recluse
+        }
+    }
+    character:oe_osmaris_manuel_ii ?= { save_scope_as = oe_osmaris_manuel_ii_person }
+}
+oe_osmaris_retire_manuel_ii = {
+    if = {
+        limit = { oe_osmaris_manuel_ii_can_retire = yes }
+        set_variable = oe_osmaris_manuel_ii_retired
+        if = { limit = { character:oe_osmaris_manuel_ii = { in_cabinet = yes } } remove_from_cabinet = character:oe_osmaris_manuel_ii }
+        remove_commander = character:oe_osmaris_manuel_ii
+        # Award before moving out of BYZ; the common helper handles admission as well.
+        oe_osmaris_reward_house = { member = character:oe_osmaris_manuel_ii }
+        character:oe_osmaris_manuel_ii = {
+            add_trait = trait:oe_osmaris_retired
+            change_character_estate = estate_type:clergy_estate
+            # Native character relocation supports a country, not a location.
+            # Keep a real location reference as the monastery residence marker.
+            set_variable = { name = oe_osmaris_monastery_residence value = location:mount_athos }
+            move_country = location:mount_athos.owner
+        }
+        culture:greek_culture = { add_cultural_influence = 10 }
+        oe_court_clear_invalid = yes oe_court_auto_fill = yes oe_nf_refresh = yes
+    }
+}
+oe_osmaris_canonize_manuel_ii = {
+    if = {
+        limit = {
+            has_variable = oe_osmaris_manuel_ii_retired
+            NOT = { has_variable = oe_osmaris_manuel_ii_canonized }
+            exists = character:oe_osmaris_manuel_ii
+            character:oe_osmaris_manuel_ii = { is_alive = no }
+        }
+        set_variable = oe_osmaris_manuel_ii_canonized
+        character:oe_osmaris_manuel_ii = {
+            # Attribute the saint to Orthodoxy even if the country later converts.
+            change_character_religion = religion:orthodox
+            if = { limit = { NOT = { is_saint_of = religion:orthodox } } make_saint_in_character_religion = c:BYZ }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+﻿oe_nf_living = {
+    is_alive = yes
+    NOT = { has_variable = oe_court_deceased }
+    save_temporary_scope_as = oe_nf_checked_person
+    NOT = { international_organization:oe_byz_empire_pillars = { any_in_list = { variable = oe_nf_deceased_characters this = scope:oe_nf_checked_person } } }
+}
+# Dynasty scope, read-only family identity; all variables queried on the international_organization:oe_byz_empire_pillars.
+oe_nf_registered_family = {
+    save_temporary_scope_as = oe_nf_checked_family
+    international_organization:oe_byz_empire_pillars = {
+        OR = {
+            oe_nf_registered_family_slot = { slot = 1 }
+            oe_nf_registered_family_slot = { slot = 2 }
+            oe_nf_registered_family_slot = { slot = 3 }
+            oe_nf_registered_family_slot = { slot = 4 }
+        }
+    }
+}
+oe_nf_promotion_family = {
+    NOT = { oe_nf_is_ruling_dynasty = yes }
+    NOT = { oe_nf_registered_family = yes }
+    any_character_in_dynasty = { count > 5 oe_nf_living = yes owner = c:BYZ }
+}
+oe_nf_promotion_character = {
+    oe_nf_living = yes owner = c:BYZ has_dynasty = yes
+    dynasty = { oe_nf_promotion_family = yes }
+}
+oe_nf_can_promote = {
+    oe_court_actor = yes
+    international_organization:oe_byz_empire_pillars = {
+        has_variable = oe_nf_initialized
+        oe_nf_house_count < var:oe_nf_house_limit
+        OR = { NOT = { has_variable = oe_nf_dynasty_1 }
+NOT = { has_variable = oe_nf_dynasty_2 }
+NOT = { has_variable = oe_nf_dynasty_3 }
+NOT = { has_variable = oe_nf_dynasty_4 } }
+        var:oe_pillars_authority >= 1
+    }
+    any_dynasty = { oe_nf_promotion_family = yes }
+}
+
+oe_nf_registered_family_slot = {
+    trigger_if = {
+        limit = { exists = var:oe_nf_dynasty_$slot$ }
+        var:oe_nf_dynasty_$slot$ = scope:oe_nf_checked_family
+    }
+    trigger_else = { always = no }
+}

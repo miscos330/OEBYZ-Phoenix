@@ -1,0 +1,82 @@
+﻿# PAUSED 2026-09-30: replaced by imperial-reform military progression.
+# # Country scope. Six cumulative stages, with strict predecessor checks.
+# # Temporary callback overrides still protect grant/revoke timing.
+# 
+# oe_hi_elite_selection_active = {
+#     OR = { has_estate_privilege = estate_privilege:oe_hetaireia_elite_selection has_variable = oe_hi_grant_elite_selection }
+#     NOT = { has_variable = oe_hi_revoke_elite_selection }
+# }
+# 
+# oe_hi_cultural_education_active = {
+#     oe_hi_elite_selection_active = yes
+#     OR = { has_estate_privilege = estate_privilege:oe_hetaireia_cultural_education has_variable = oe_hi_grant_cultural_education }
+#     NOT = { has_variable = oe_hi_revoke_cultural_education }
+# }
+# 
+# oe_hi_path_to_glory_active = {
+#     oe_hi_cultural_education_active = yes
+#     OR = { has_estate_privilege = estate_privilege:oe_hetaireia_path_to_glory has_variable = oe_hi_grant_path_to_glory }
+#     NOT = { has_variable = oe_hi_revoke_path_to_glory }
+# }
+# 
+# oe_hi_military_band_active = {
+#     oe_hi_path_to_glory_active = yes
+#     OR = { has_estate_privilege = estate_privilege:oe_hetaireia_military_band has_variable = oe_hi_grant_military_band }
+#     NOT = { has_variable = oe_hi_revoke_military_band }
+# }
+# 
+# oe_hi_medical_corps_active = {
+#     oe_hi_military_band_active = yes
+#     OR = { has_estate_privilege = estate_privilege:oe_hetaireia_medical_corps has_variable = oe_hi_grant_medical_corps }
+#     NOT = { has_variable = oe_hi_revoke_medical_corps }
+# }
+# 
+# oe_hi_form_t0b0m0 = {
+#     oe_hi_elite_selection_active = no
+# }
+# 
+# oe_hi_form_t1b0m0 = {
+#     oe_hi_elite_selection_active = yes
+#     oe_hi_cultural_education_active = no
+# }
+# 
+# oe_hi_form_t2b0m0 = {
+#     oe_hi_cultural_education_active = yes
+#     oe_hi_path_to_glory_active = no
+# }
+# 
+# oe_hi_form_t3b0m0 = {
+#     oe_hi_path_to_glory_active = yes
+#     oe_hi_military_band_active = no
+# }
+# 
+# oe_hi_form_t3b1m0 = {
+#     oe_hi_military_band_active = yes
+#     oe_hi_medical_corps_active = no
+# }
+# 
+# oe_hi_form_t3b1m1 = {
+#     oe_hi_medical_corps_active = yes
+# }
+
+# Country scope: highest completed army reform selects the current stage.
+oe_hi_form_t1b0m0 = {
+    NOT = { has_variable = oe_ir_army_1_done }
+    NOT = { has_variable = oe_ir_army_2_done }
+    NOT = { has_variable = oe_ir_army_3_done }
+}
+
+oe_hi_form_t2b0m0 = {
+    has_variable = oe_ir_army_1_done
+    NOT = { has_variable = oe_ir_army_2_done }
+    NOT = { has_variable = oe_ir_army_3_done }
+}
+
+oe_hi_form_t3b0m0 = {
+    has_variable = oe_ir_army_2_done
+    NOT = { has_variable = oe_ir_army_3_done }
+}
+
+oe_hi_form_t3b1m1 = {
+    has_variable = oe_ir_army_3_done
+}

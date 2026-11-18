@@ -1,0 +1,23 @@
+﻿namespace = oe_pillars_debug
+
+# Opened only through Settings. No on_action, AI tick, fee or cooldown.
+oe_pillars_debug.1 = {
+    type = country_event
+    title = oe_pillars_debug.1.t
+    desc = oe_pillars_debug.1.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_court_actor = yes }
+    option = {
+        name = oe_pillars_debug.1.return
+        ai_will_select = { value = 100 }
+        # Intentionally no effects: close the event without changing state.
+    }
+    option = {
+        name = oe_pillars_debug.1.clamor
+        trigger = { is_situation_active = situation:oe_bells_of_revolution }
+        ai_will_select = { value = 0 }
+        oe_bells_change_clamor = { amount = 10 reason = oe_bells_debug_record }
+        hidden_effect = { trigger_event_non_silently = oe_pillars_debug.1 }
+    }
+}

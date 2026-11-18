@@ -1,0 +1,104 @@
+﻿# New World crops from the native Columbian Exchange. Goods scope.
+oe_nw_crop_good = {
+    OR = { this = goods:chili this = goods:maize this = goods:potato this = goods:tobacco this = goods:cocoa }
+}
+# Location scope. Existing farmland stands for established water management;
+# otherwise dry climates and sparse cover need an actual river. No recurring scans.
+oe_nw_crop_water = {
+    OR = {
+        NOR = {
+            climate = arid
+            climate = cold_arid
+            climate = hot_semi_arid
+            climate = cold_semi_arid
+            vegetation = sparse
+        }
+        has_river = yes
+        vegetation = farmland
+    }
+}
+# Seasonal crops can use warm summers even in a continental climate.
+oe_nw_crop_warm_season = {
+    OR = {
+        climate = tropical
+        climate = subtropical
+        climate = mediterranean
+        climate = oceanic
+        climate = continental
+        climate = hot_semi_arid
+        climate = cold_semi_arid
+        climate = arid
+        climate = cold_arid
+    }
+}
+oe_nw_crop_open_land = {
+    OR = { vegetation = farmland vegetation = grasslands vegetation = woods vegetation = forest vegetation = sparse }
+}
+oe_nw_crop_chili_site = {
+    oe_nw_crop_warm_season = yes
+    oe_nw_crop_water = yes
+    oe_nw_crop_open_land = yes
+    OR = { topography = flatland topography = hills topography = plateau }
+}
+oe_nw_crop_maize_site = {
+    oe_nw_crop_warm_season = yes
+    oe_nw_crop_water = yes
+    OR = { oe_nw_crop_open_land = yes vegetation = jungle }
+    OR = {
+        topography = flatland
+        topography = hills
+        topography = plateau
+        AND = { topography = mountains OR = { climate = tropical climate = subtropical } }
+    }
+}
+oe_nw_crop_potato_site = {
+    oe_nw_crop_water = yes
+    oe_nw_crop_open_land = yes
+    OR = { topography = flatland topography = hills topography = plateau topography = mountains }
+    OR = {
+        climate = oceanic
+        climate = continental
+        climate = mediterranean
+        climate = subpolar
+        climate = cold_semi_arid
+        climate = cold_arid
+        AND = {
+            OR = { climate = tropical climate = subtropical climate = hot_semi_arid climate = arid }
+            OR = { topography = plateau topography = mountains }
+        }
+    }
+}
+oe_nw_crop_tobacco_site = {
+    oe_nw_crop_warm_season = yes
+    oe_nw_crop_water = yes
+    OR = { vegetation = farmland vegetation = grasslands vegetation = woods vegetation = sparse }
+    OR = { topography = flatland topography = hills topography = plateau }
+}
+oe_nw_crop_cocoa_site = {
+    OR = { climate = tropical climate = subtropical }
+    OR = { vegetation = farmland vegetation = woods vegetation = forest vegetation = jungle }
+    OR = { topography = flatland topography = hills }
+}
+# All geography checks are local and constant-cost. No native is_goods_valid_for_location:
+# that uses the cached, narrower native goods whitelist and would undo these exceptions.
+oe_nw_crop_suitable = {
+    OR = {
+        AND = { scope:target_good = { this = goods:chili } oe_nw_crop_chili_site = yes }
+        AND = { scope:target_good = { this = goods:maize } oe_nw_crop_maize_site = yes }
+        AND = { scope:target_good = { this = goods:potato } oe_nw_crop_potato_site = yes }
+        AND = { scope:target_good = { this = goods:tobacco } oe_nw_crop_tobacco_site = yes }
+        AND = { scope:target_good = { this = goods:cocoa } oe_nw_crop_cocoa_site = yes }
+    }
+}
+oe_nw_crop_target = {
+    is_ownable = yes
+    has_owner = yes
+    owner = { OR = { this = scope:actor is_subject_or_below_of = scope:actor } }
+    NOT = { raw_material ?= scope:target_good }
+    custom_tooltip = { text = OE_NW_CROP_SUITABLE_TT oe_nw_crop_suitable = yes }
+}
+oe_nw_crop_allowed = {
+    oe_works_actor = yes
+    current_age_or_later = { age = age_3_discovery }
+    gold >= 200
+}

@@ -1,0 +1,145 @@
+﻿# Small runtime patch for vanilla historical characters. No character_db overrides.
+# Preserve the current custom ranges; do not add a fresh roll to existing abilities.
+oe_byz_initialize_historical_characters = {
+    if = {
+        limit = { NOT = { has_global_variable = oe_byz_andronikos_abilities_repaired } }
+        oe_byz_set_andronikos_starting_abilities = yes
+        set_global_variable = oe_byz_andronikos_abilities_repaired
+    }
+    oe_byz_apply_historical_character_patch = yes
+    oe_byz_initialize_andronikos_health = yes
+}
+
+# Resolve the target range first, then add only the difference from the current stat.
+# This also works on an existing character with nonzero native abilities.
+oe_byz_set_andronikos_starting_abilities = {
+    character:byz_andronikos_iii_palaiologos ?= {
+        if = {
+            limit = { is_alive = yes }
+            add_adm = { value = 55 subtract = adm } # 1337 restoration: fixed, was 53–95
+            add_dip = { value = 75 subtract = dip } # was 75–95
+            add_mil = { value = 75 subtract = mil } # was 73–95
+        }
+    }
+}
+
+# Once per old save: repair the reported triple-100 result, preserving other stats.
+oe_byz_repair_andronikos_capped_abilities = {
+    if = {
+        limit = { NOT = { has_global_variable = oe_byz_andronikos_abilities_repaired } }
+        if = {
+            limit = {
+                has_global_variable = oe_byz_historical_character_patch_applied
+                exists = character:byz_andronikos_iii_palaiologos
+                character:byz_andronikos_iii_palaiologos = {
+                    is_alive = yes
+                    adm = 100
+                    dip = 100
+                    mil = 100
+                }
+            }
+            oe_byz_set_andronikos_starting_abilities = yes
+        }
+        set_global_variable = oe_byz_andronikos_abilities_repaired
+    }
+}
+
+# New version marker permits one repair even if an older repair already ran.
+# Existing saves keep their accumulated abilities and later childhood phase.
+oe_byz_apply_historical_character_patch = {
+    if = {
+        limit = { NOT = { has_global_variable = oe_byz_historical_character_patch_applied } }
+        remove_global_variable = oe_byz_andronikos_identity_repaired
+        remove_global_variable = oe_byz_john_v_education_repaired
+        oe_byz_repair_andronikos_identity = yes
+        oe_byz_repair_john_v_education = yes
+        # 1337 restoration: John V is not crowned at the start (crowned only in 1341); the S4 crowning action uses
+        # oe_byz_restore_historical_co_emperor.
+        oe_byz_restore_latin_death_markers = yes
+        set_global_variable = oe_byz_historical_character_patch_applied
+    }
+}
+
+# Only John V, while still the reigning Andronikos III's non-ruling son.
+oe_byz_restore_historical_co_emperor = {
+    character:byz_john_v_palaiologos ?= {
+        if = {
+            limit = {
+                is_alive = yes
+                owner = c:BYZ
+                is_ruler = no
+                father ?= c:BYZ.ruler
+            }
+            if = {
+                limit = { NOT = { has_character_modifier = oe_byz_select_as_second_empire_mod } }
+                add_character_modifier = { modifier = oe_byz_select_as_second_empire_mod days = -1 mode = replace }
+            }
+            c:BYZ = { set_variable = { name = oe_byz_co_emperor_display value = character:byz_john_v_palaiologos } }
+            if = {
+                limit = { NOT = { has_estate = estate_type:crown_estate } }
+                change_character_estate = estate_type:crown_estate
+            }
+        }
+    }
+}
+
+# on_game_start runs after the native historical characters have been created.
+# Remove only the two native starting traits on this exact historical person.
+oe_byz_initialize_andronikos_health = {
+    character:byz_andronikos_iii_palaiologos ?= {
+        if = {
+            limit = { is_alive = yes }
+            if = { limit = { has_trait = greedy } remove_trait = trait:greedy }
+            if = { limit = { has_trait = sickly } remove_trait = trait:sickly }
+            if = {
+                limit = { NOT = { has_variable = oe_andronikos_health_lost } }
+                set_variable = { name = oe_andronikos_health_lost value = 0 }
+            }
+        }
+    }
+}
+
+# Callable from future events/actions in any scope. AMOUNT must be positive.
+# Example: oe_byz_lose_andronikos_health = { AMOUNT = 1 }
+# Replace one scaled modifier rather than stacking an unbounded number of them.
+oe_byz_lose_andronikos_health = {
+    character:byz_andronikos_iii_palaiologos ?= {
+        if = {
+            limit = { is_alive = yes has_trait = oe_byz_andronikos_iii_I }
+            if = {
+                limit = { NOT = { has_variable = oe_andronikos_health_lost } }
+                set_variable = { name = oe_andronikos_health_lost value = 0 }
+            }
+            change_variable = { name = oe_andronikos_health_lost add = $AMOUNT$ }
+            add_character_modifier = {
+                modifier = oe_andronikos_health_loss
+                years = -1
+                mode = replace
+                size = var:oe_andronikos_health_lost
+            }
+        }
+    }
+    oe_byz_check_andronikos_health = yes
+}
+
+# Fixed-country/fixed-character checks only. Missing/dead characters and removed
+# traits cannot trigger the event; mark it before dispatch to prevent re-entry.
+oe_byz_check_andronikos_health = {
+    c:BYZ ?= {
+        if = {
+            limit = {
+                NOT = { has_variable = oe_andronikos_illness_queued }
+                NOT = { has_variable = oe_andronikos_illness_resolved }
+                exists = character:byz_andronikos_iii_palaiologos
+                character:byz_andronikos_iii_palaiologos ?= {
+                    is_alive = yes
+                    owner = c:BYZ
+                    has_trait = oe_byz_andronikos_iii_I
+                    modifier:oe_andronikos_health <= 0
+                }
+            }
+            set_variable = oe_andronikos_illness_queued
+            trigger_event_non_silently = oe_byz_opening.2
+        }
+    }
+}

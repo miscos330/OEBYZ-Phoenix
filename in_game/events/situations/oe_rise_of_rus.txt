@@ -1,0 +1,171 @@
+﻿namespace = oe_rise_of_rus
+oe_rise_of_rus.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_rise_of_rus.1.t
+    desc = oe_rise_of_rus.1.d
+    image = "gfx/interface/illustrations/situation/oe_rise_of_rus.dds"
+    option = { name = oe_rise_of_rus.1.a trigger = { NOT = { tag = BYZ } } }
+    option = {
+        name = oe_rise_of_rus.1.b
+        trigger = { tag = BYZ }
+        add_political_influence = 25
+        add_country_modifier = { modifier = oe_rus_orthodox_resurgence years = 10 mode = replace }
+    }
+}
+oe_rise_of_rus.2 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_rise_of_rus.2.t
+    desc = oe_rise_of_rus.2.d
+    image = "gfx/interface/illustrations/situation/oe_rise_of_rus.dds"
+    option = { name = oe_rise_of_rus.2.a custom_tooltip = oe_rus_yoke_rewards_tt }
+}
+oe_rise_of_rus.3 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_rise_of_rus.3.t
+    desc = oe_rise_of_rus.3.d
+    image = "gfx/interface/illustrations/situation/oe_rise_of_rus.dds"
+    immediate = {
+        save_scope_value_as = { name = oe_rus_tribute_fur_income value = 0 }
+        save_scope_value_as = { name = oe_rus_tribute_livestock_income value = 0 }
+        save_scope_value_as = { name = oe_rus_tribute_beer_income value = 0 }
+        save_scope_value_as = { name = oe_rus_tribute_total_income value = 0 }
+        # One sender-tax-base snapshot drives all cargo and all three gifts.
+        # Never use the receiving emperor's income or tax base here.
+        save_scope_value_as = { name = oe_rus_tribute_tax_base value = 0 }
+        if = {
+            limit = { country_exists = scope:oe_rus_sender }
+            scope:oe_rus_sender = {
+                save_scope_value_as = { name = oe_rus_tribute_tax_base value = { value = country_tax_base min = 0 } }
+            }
+        }
+        save_scope_value_as = { name = oe_rus_return_large value = { value = scope:oe_rus_tribute_tax_base multiply = 5 } }
+        save_scope_value_as = { name = oe_rus_return_medium value = { value = scope:oe_rus_tribute_tax_base multiply = 3 } }
+        save_scope_value_as = { name = oe_rus_return_small value = scope:oe_rus_tribute_tax_base }
+        if = { limit = { location:constantinople = { owner = root } scope:oe_rus_tribute_tax_base > 0 }
+            location:constantinople.market = {
+                # Record actual treasury proceeds, including any native price effects.
+                save_scope_value_as = { name = oe_rus_tribute_before_sale value = root.gold }
+                sell_goods_from_location = { goods = goods:fur amount = scope:oe_rus_tribute_tax_base location = location:constantinople }
+                save_scope_value_as = { name = oe_rus_tribute_fur_income value = { value = root.gold subtract = scope:oe_rus_tribute_before_sale } }
+                # Record actual treasury proceeds, including any native price effects.
+                save_scope_value_as = { name = oe_rus_tribute_before_sale value = root.gold }
+                sell_goods_from_location = { goods = goods:livestock amount = scope:oe_rus_tribute_tax_base location = location:constantinople }
+                save_scope_value_as = { name = oe_rus_tribute_livestock_income value = { value = root.gold subtract = scope:oe_rus_tribute_before_sale } }
+                # Record actual treasury proceeds, including any native price effects.
+                save_scope_value_as = { name = oe_rus_tribute_before_sale value = root.gold }
+                sell_goods_from_location = { goods = goods:beer amount = scope:oe_rus_tribute_tax_base location = location:constantinople }
+                save_scope_value_as = { name = oe_rus_tribute_beer_income value = { value = root.gold subtract = scope:oe_rus_tribute_before_sale } }
+                save_scope_value_as = { name = oe_rus_tribute_total_income value = { value = scope:oe_rus_tribute_fur_income add = scope:oe_rus_tribute_livestock_income add = scope:oe_rus_tribute_beer_income } }
+            }
+        }
+    }
+
+    option = {
+        name = oe_rise_of_rus.3.a
+        custom_tooltip = oe_rus_tribute_sales_receipt_tt
+        trigger = { country_exists = scope:oe_rus_sender gold >= scope:oe_rus_return_large }
+        add_gold = { value = scope:oe_rus_return_large multiply = -1 }
+        scope:oe_rus_sender = { add_gold = scope:oe_rus_return_large oe_rus_set_return_opinion = { TARGET = root VALUE = 50 } }
+        add_country_modifier = { modifier = oe_rus_generous_gifts years = 5 mode = replace }
+        ai_chance = { base = 30 }
+    }
+
+    option = {
+        name = oe_rise_of_rus.3.b
+        custom_tooltip = oe_rus_tribute_sales_receipt_tt
+        trigger = { country_exists = scope:oe_rus_sender gold >= scope:oe_rus_return_medium }
+        add_gold = { value = scope:oe_rus_return_medium multiply = -1 }
+        scope:oe_rus_sender = { add_gold = scope:oe_rus_return_medium oe_rus_set_return_opinion = { TARGET = root VALUE = 10 } }
+        ai_chance = { base = 60 }
+    }
+
+    option = {
+        name = oe_rise_of_rus.3.c
+        custom_tooltip = oe_rus_tribute_sales_receipt_tt
+        trigger = { country_exists = scope:oe_rus_sender gold >= scope:oe_rus_return_small }
+        add_gold = { value = scope:oe_rus_return_small multiply = -1 }
+        scope:oe_rus_sender = { add_gold = scope:oe_rus_return_small oe_rus_set_return_opinion = { TARGET = root VALUE = -50 } }
+
+        ai_chance = { base = 20 }
+    }
+
+    option = {
+        name = oe_rise_of_rus.3.d_option
+        custom_tooltip = oe_rus_tribute_sales_receipt_tt
+        add_country_modifier = { modifier = oe_rus_refused_gifts years = 1 mode = replace }
+        if = { limit = { country_exists = scope:oe_rus_sender }
+            scope:oe_rus_sender = { oe_rus_set_return_opinion = { TARGET = root VALUE = -100 } }
+        }
+        ai_chance = { base = 5 }
+    }
+}
+
+# Delivery runs in the receiving country's event context, not the situation
+# action's context. Native categories select usable 1.4 unit definitions.
+# Match vanilla castilian_civil_war: explicit borrower, then hire_mercenary.
+# Check once after 14 days: vanilla has mobilization/gathering delays (2/7 base).
+oe_rise_of_rus.4 = {
+    type = country_event
+    title = empty_text # FIX 2026-11-17 P2：隐藏事件按原版写法补 title
+    hidden = yes
+    immediate = {
+        clear_saved_scope = oe_rus_supplied_mercenaries
+        if = {
+            limit = { exists = capital }
+            create_mercenary = {
+                name = oe_rus_roman_mercenary_company
+                home = root.capital
+                borrower = root
+                categories = { army_light_infantry = 2 army_light_cavalry = 3 }
+                cost_multiplier = 0.1
+                save_scope_as = oe_rus_supplied_mercenaries
+            }
+            if = { limit = { exists = scope:oe_rus_supplied_mercenaries } hire_mercenary = scope:oe_rus_supplied_mercenaries }
+        }
+        scope:oe_rus_mercenary_donor ?= { trigger_event_silently = { id = oe_rise_of_rus.5 days = 14 } }
+    }
+}
+oe_rise_of_rus.5 = {
+    type = country_event
+    title = empty_text # FIX 2026-11-17 P2：隐藏事件按原版写法补 title
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                NOT = { AND = {
+                    exists = scope:oe_rus_supplied_mercenaries
+                    scope:oe_rus_supplied_mercenaries = {
+                        is_mercenary_hired_by = scope:oe_rus_mercenary_recipient
+                        any_mercenary_sub_unit = {
+                            exists = owning_unit
+                            owning_unit = { owner = scope:oe_rus_mercenary_recipient }
+                        }
+                    }
+                } }
+            }
+            if = { limit = { exists = scope:oe_rus_supplied_mercenaries } destroy_mercenary = scope:oe_rus_supplied_mercenaries }
+            add_manpower = 1.6
+            # Older queued checks have no paid-gold variable and refund no gold.
+            if = {
+                limit = { has_variable = oe_rus_mercenary_gold_paid }
+                add_gold = var:oe_rus_mercenary_gold_paid
+            }
+            remove_cooldown = oe_rus_provide_mercenaries_cooldown
+            trigger_event_non_silently = oe_rise_of_rus.6
+        }
+        remove_variable = oe_rus_mercenary_gold_paid
+    }
+}
+oe_rise_of_rus.6 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_rise_of_rus.6.t
+    desc = oe_rise_of_rus.6.d
+    option = { name = oe_rise_of_rus.6.a }
+}

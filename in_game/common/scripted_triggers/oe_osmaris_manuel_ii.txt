@@ -1,0 +1,32 @@
+﻿oe_osmaris_athos_accessible = {
+    location:mount_athos = { has_owner = yes owner = { oe_heg_byz_bloc = yes religion = religion:orthodox } }
+}
+oe_osmaris_manuel_ii_available = {
+    exists = character:oe_osmaris_manuel_ii
+    character:oe_osmaris_manuel_ii = {
+        oe_nf_living = yes owner = c:BYZ is_adult = yes is_ruler = no
+        dynasty = dynasty:ottomans_dynasty
+        NOT = { has_trait = oe_osmaris_retired }
+    }
+}
+oe_osmaris_manuel_ii_ready = {
+    oe_court_actor = yes has_variable = oe_osman_chain_active
+    has_variable = oe_osmaris_constantine_resolved
+    exists = character:oe_osmaris_constantine
+    NOT = { has_variable = oe_osman_expelled }
+    NOT = { has_variable = oe_osmaris_manuel_ii_retired }
+    oe_orhan_house_room = yes oe_osmaris_athos_accessible = yes
+    OR = {
+        AND = { NOT = { exists = character:oe_osmaris_manuel_ii } NOT = { has_variable = oe_osmaris_manuel_ii_introduced } }
+        oe_osmaris_manuel_ii_available = yes
+    }
+}
+oe_osmaris_manuel_ii_can_retire = { oe_osmaris_manuel_ii_ready = yes oe_osmaris_manuel_ii_available = yes }
+oe_osmaris_manuel_ii_canonization_ready = {
+    tag = BYZ has_variable = oe_osmaris_manuel_ii_retired
+    has_variable = oe_osmaris_manuel_ii_death_seen
+    NOT = { has_variable = oe_osman_expelled }
+    NOT = { has_variable = oe_osmaris_manuel_ii_canonization_presented }
+    exists = character:oe_osmaris_manuel_ii
+    character:oe_osmaris_manuel_ii = { is_alive = no }
+}

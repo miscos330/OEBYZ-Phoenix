@@ -1,0 +1,55 @@
+﻿# Character scope. Gender and age do not disqualify a house member.
+oe_nf_successor_eligible = {
+    oe_nf_living = yes
+    has_dynasty = yes
+    trigger_if = {
+        limit = { exists = owner }
+        owner = { oe_pillars_eligible_trigger = yes }
+    }
+    trigger_else = { always = no }
+}
+# IO scope. Guard links explicitly: trigger blocks do not short-circuit.
+oe_nf_head_valid = {
+    trigger_if = {
+        limit = { exists = var:oe_nf_dynasty_$slot$ exists = var:oe_nf_head_$slot$ }
+        var:oe_nf_dynasty_$slot$ = { save_temporary_scope_as = oe_nf_head_family }
+        var:oe_nf_head_$slot$ = { oe_nf_successor_eligible = yes dynasty = scope:oe_nf_head_family }
+    }
+    trigger_else = { always = no }
+}
+oe_nf_head_dead = {
+    trigger_if = {
+        limit = { exists = var:oe_nf_head_$slot$ }
+        var:oe_nf_head_$slot$ = { NOT = { oe_nf_living = yes } }
+    }
+    trigger_else = { always = no }
+}
+# Empty slots and pending succession events never dereference an absent family.
+oe_nf_succession_needed = {
+    trigger_if = {
+        limit = { exists = var:oe_nf_dynasty_$slot$ NOT = { has_variable = oe_nf_succession_building_$slot$ } }
+        var:oe_nf_dynasty_$slot$ = { NOT = { any_character_in_dynasty = { oe_nf_successor_eligible = yes } } }
+    }
+    trigger_else = { always = no }
+}
+oe_nf_succession_choice_valid = {
+    trigger_if = {
+        limit = { oe_nf_succession_needed = { slot = $slot$ } has_variable = oe_nf_succession_pending_$slot$ exists = scope:oe_nf_succession_family }
+        var:oe_nf_dynasty_$slot$ = scope:oe_nf_succession_family
+    }
+    trigger_else = { always = no }
+}
+# Disabled: use the existing monthly refresh; no recurring daily polling.
+# # Cheap daily checks. Waiting for the player's collateral/extinction choice is valid.
+# oe_nf_head_needs_repair = {
+#     trigger_if = {
+#         limit = { exists = var:oe_nf_dynasty_$slot$ NOT = { has_variable = oe_nf_succession_building_$slot$ } }
+#         NOT = { oe_nf_head_valid = { slot = $slot$ } }
+#         OR = {
+#             has_variable = oe_nf_head_$slot$
+#             NOT = { has_variable = oe_nf_succession_pending_$slot$ }
+#             var:oe_nf_dynasty_$slot$ = { any_character_in_dynasty = { oe_nf_successor_eligible = yes } }
+#         }
+#     }
+#     trigger_else = { always = no }
+# }

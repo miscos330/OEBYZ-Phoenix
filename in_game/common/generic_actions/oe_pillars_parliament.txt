@@ -1,0 +1,69 @@
+﻿oe_pillars_assert_imperial_authority = {
+    type = parliament
+    show_message = no
+    potential = { scope:actor = { tag = BYZ exists = international_organization:oe_byz_empire_pillars } }
+    allow = {
+        scope:actor = { oe_pillars_parliament_ready = yes }
+        international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority < 100 }
+    }
+    automation_tick = never
+    player_automated_category = parliament
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    ai_prerequisite = {
+        oe_pillars_parliament_ready = yes
+        international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority < 100 }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_pillars_parliament_ready = yes }
+                international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority < 100 }
+            }
+            scope:actor = { change_parliament_issue_support = -0.5 }
+            international_organization:oe_byz_empire_pillars = {
+                custom_tooltip = {
+                    text = OE_PILLARS_PARLIAMENT_AUTHORITY_GAIN
+                    change_variable = { name = oe_pillars_authority add = 10 }
+                    clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+                }
+            }
+        }
+    }
+    ai_will_do = { add = 10 }
+}
+
+oe_pillars_heed_public_opinion = {
+    type = parliament
+    show_message = no
+    potential = { scope:actor = { tag = BYZ exists = international_organization:oe_byz_empire_pillars } }
+    allow = {
+        scope:actor = { oe_pillars_parliament_ready = yes }
+        international_organization:oe_byz_empire_pillars = { var:oe_pillars_public_opinion < 100 }
+    }
+    automation_tick = never
+    player_automated_category = parliament
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    ai_prerequisite = {
+        oe_pillars_parliament_ready = yes
+        international_organization:oe_byz_empire_pillars = { var:oe_pillars_public_opinion < 100 }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_pillars_parliament_ready = yes }
+                international_organization:oe_byz_empire_pillars = { var:oe_pillars_public_opinion < 100 }
+            }
+            scope:actor = { change_parliament_issue_support = -0.5 }
+            international_organization:oe_byz_empire_pillars = {
+                custom_tooltip = {
+                    text = OE_PILLARS_PARLIAMENT_OPINION_GAIN
+                    change_variable = { name = oe_pillars_public_opinion add = 10 }
+                    clamp_variable = { name = oe_pillars_public_opinion min = 0 max = 100 }
+                }
+            }
+        }
+    }
+    ai_will_do = { add = 10 }
+}

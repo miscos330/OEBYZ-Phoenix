@@ -1,0 +1,481 @@
+﻿namespace = oe_byz_mission
+
+#=====================================
+#南望雅典
+#=====================================
+
+oe_byz_mission.1 = {#南方诸国
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_byz_mission.1.t
+	desc = oe_byz_mission.1.d
+	historical_info = oe_byz_mission.1.historical_info
+	image = "gfx/interface/illustrations/disaster/castilian_civil_war.dds"
+	immediate = {
+		
+	}
+	option = {
+		name = oe_byz_mission.1.a
+		add_prestige = -5
+	}
+}
+
+oe_byz_mission.2 = {#遣使教皇
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_byz_mission.2.t
+	desc = {
+		first_valid = {
+			triggered_desc = { 
+				trigger = { 
+			NOT = {
+				OR = {
+					has_variable = oe_byz_mission_2_NAP_success
+					has_variable = oe_byz_mission_2_SIC_success
+					has_variable = oe_byz_mission_2_VEN_success
+					has_variable = oe_byz_mission_2_GEN_success
+				}
+			}
+				}
+
+				desc = oe_byz_mission.2.d.1
+			}
+			triggered_desc = { 
+				trigger = { 
+				OR = {
+					has_variable = oe_byz_mission_2_NAP_success
+					has_variable = oe_byz_mission_2_SIC_success
+					has_variable = oe_byz_mission_2_VEN_success
+					has_variable = oe_byz_mission_2_GEN_success
+				}
+				NOT = {
+					AND = {
+					has_variable = oe_byz_mission_2_NAP_success
+					has_variable = oe_byz_mission_2_SIC_success
+					has_variable = oe_byz_mission_2_VEN_success
+					has_variable = oe_byz_mission_2_GEN_success						
+					}
+				}			
+				}
+
+				desc = oe_byz_mission.2.d.2
+			}
+			triggered_desc = { 
+				trigger = { 
+
+					AND = {
+					has_variable = oe_byz_mission_2_NAP_success
+					has_variable = oe_byz_mission_2_SIC_success
+					has_variable = oe_byz_mission_2_VEN_success
+					has_variable = oe_byz_mission_2_GEN_success						
+					}
+						
+				}
+
+				desc = oe_byz_mission.2.d.3
+			}
+		}
+	}
+	historical_info = oe_byz_mission.2.historical_info
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}	
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:clergy background = pop_type:clergy }	
+		if = {#NAP
+			limit = {
+				c:NAP = {
+					opinion = { target = c:BYZ value >= 0 }
+				}
+			}
+			random_list = {
+				30 = {
+					set_variable = oe_byz_mission_2_NAP_success
+				}
+
+				70 = {
+					if = {
+						limit = {
+				c:NAP = {
+					opinion = { target = c:BYZ value >= 50 }
+				}
+						}
+						set_variable = oe_byz_mission_2_NAP_success
+					}
+					
+				}
+			}
+		}	
+		if = {#SIC
+			limit = {
+				c:SIC = {
+					opinion = { target = c:BYZ value >= 0 }
+				}
+			}
+			random_list = {
+				30 = {
+					set_variable = oe_byz_mission_2_SIC_success
+				}
+
+				70 = {
+					if = {
+						limit = {
+				c:SIC = {
+					opinion = { target = c:BYZ value >= 50 }
+				}
+						}
+						set_variable = oe_byz_mission_2_SIC_success
+					}
+					
+				}
+			}
+		}
+		if = {#VEN
+			limit = {
+				c:VEN = {
+					opinion = { target = c:BYZ value >= 0 }
+				}
+			}
+			random_list = {
+				30 = {
+					set_variable = oe_byz_mission_2_VEN_success
+				}
+
+				70 = {
+					if = {
+						limit = {
+				c:VEN = {
+					opinion = { target = c:BYZ value >= 50 }
+				}
+						}
+						set_variable = oe_byz_mission_2_VEN_success
+					}
+					
+				}
+			}
+		}
+		if = {#GEN
+			limit = {
+				c:GEN = {
+					opinion = { target = c:BYZ value >= 0 }
+				}
+			}
+			random_list = {
+				30 = {
+					set_variable = oe_byz_mission_2_GEN_success
+				}
+
+				70 = {
+					if = {
+						limit = {
+				c:GEN = {
+					opinion = { target = c:BYZ value >= 50 }
+				}
+						}
+						set_variable = oe_byz_mission_2_GEN_success
+					}
+					
+				}
+			}
+		}
+	}
+	option = {
+		name = oe_byz_mission.2.a
+		trigger = {
+			NOT = {
+				OR = {
+					has_variable = oe_byz_mission_2_NAP_success
+					has_variable = oe_byz_mission_2_SIC_success
+					has_variable = oe_byz_mission_2_VEN_success
+					has_variable = oe_byz_mission_2_GEN_success
+				}
+			}
+		}
+		custom_tooltip = {
+				text = oe_byz_mission.2.a.tt
+			}
+		add_prestige = -10
+	}
+	option = {
+		name = oe_byz_mission.2.b
+		trigger = {
+				OR = {
+					has_variable = oe_byz_mission_2_NAP_success
+					has_variable = oe_byz_mission_2_SIC_success
+					has_variable = oe_byz_mission_2_VEN_success
+					has_variable = oe_byz_mission_2_GEN_success
+				}
+				NOT = {
+					AND = {
+					has_variable = oe_byz_mission_2_NAP_success
+					has_variable = oe_byz_mission_2_SIC_success
+					has_variable = oe_byz_mission_2_VEN_success
+					has_variable = oe_byz_mission_2_GEN_success						
+					}
+				}	
+		}
+		if = {
+			limit = {
+				has_variable = oe_byz_mission_2_NAP_success
+			}
+			custom_tooltip = {
+				text = oe_byz_mission.2.b.tt.1
+			}
+			add_prestige = 3
+			add_gold = -10
+		}
+		if = {
+			limit = {
+				has_variable = oe_byz_mission_2_SIC_success
+			}
+			custom_tooltip = {
+				text = oe_byz_mission.2.b.tt.2
+			}
+			add_prestige = 3
+			add_gold = -10
+		}
+		if = {
+			limit = {
+				has_variable = oe_byz_mission_2_GEN_success
+			}
+			custom_tooltip = {
+				text = oe_byz_mission.2.b.tt.3
+			}
+			add_prestige = 3
+			add_gold = -10
+		}
+		if = {
+			limit = {
+				has_variable = oe_byz_mission_2_VEN_success
+			}
+			custom_tooltip = {
+				text = oe_byz_mission.2.b.tt.4
+			}
+			add_prestige = 3
+			add_gold = -10
+		}
+
+	}	
+	option = {
+		name = oe_byz_mission.2.c
+		trigger = {
+					AND = {
+					has_variable = oe_byz_mission_2_NAP_success
+					has_variable = oe_byz_mission_2_SIC_success
+					has_variable = oe_byz_mission_2_VEN_success
+					has_variable = oe_byz_mission_2_GEN_success						
+					}
+		}
+		custom_tooltip = {
+				text = oe_byz_mission.2.c.tt
+			}
+		add_prestige = 10
+		add_government_power = 10
+		add_gold = -30
+	}
+}
+
+oe_byz_mission.3 = {#湛定伊庇鲁斯
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_byz_mission.3.t
+	desc = oe_byz_mission.3.d
+	historical_info = oe_byz_mission.3.historical_info
+	image = "gfx/interface/illustrations/disaster/hook_and_cod_wars.dds"
+	immediate = {
+		
+	}
+	after = {
+		remove_variable = oe_byz_mission_3_a_on
+		remove_variable = oe_byz_mission_3_b_on
+		remove_variable = oe_byz_mission_3_c_on
+	}
+	option = {
+		name = oe_byz_mission.3.a
+		trigger = {
+			has_variable = oe_byz_mission_3_a_on
+		}
+			annex_country = {
+                country = c:EPI
+				reason = MilitaryConquest
+				transfer = no
+            }
+			add_manpower = -0.1
+	}
+	option = {
+		name = oe_byz_mission.3.b
+		trigger = {
+			has_variable = oe_byz_mission_3_b_on
+		}
+			annex_country = {
+                country = c:EPI
+                reason = Diplomatic
+                transfer = yes
+            }
+			add_manpower = -0.05
+			add_government_power = 5
+	}
+	option = {
+		name = oe_byz_mission.3.c
+		trigger = {
+			has_variable = oe_byz_mission_3_c_on
+		}
+		c:EPI = {
+			every_owned_location = {
+				add_core = c:BYZ
+			}
+		}
+			annex_country = {
+                country = c:EPI
+                reason = CivilWar
+                transfer = yes
+            }
+			add_government_power = 10
+			add_prestige = 10
+	}
+}
+
+oe_byz_mission.4 = {#伊庇鲁斯统治者的命运
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_byz_mission.4.t
+	desc = oe_byz_mission.4.d
+	image = "gfx/interface/illustrations/disaster/hook_and_cod_wars.dds"
+	immediate = {
+		c:EPI.ruler = {
+			save_scope_as = target_character
+		}
+	}
+	option = {
+		name = oe_byz_mission.4.a
+		set_variable = oe_byz_mission_4_a_on
+		add_prestige = 5
+	}
+	option = {
+		name = oe_byz_mission.4.b
+		set_variable = oe_byz_mission_4_b_on
+		add_gold = -30
+		add_government_power = -5
+	}
+}
+
+oe_byz_mission.5 = {#伊庇鲁斯贵族的命运
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_byz_mission.5.t
+	desc = oe_byz_mission.5.d
+	image = "gfx/interface/illustrations/disaster/hook_and_cod_wars.dds"
+	immediate = {
+		c:EPI.ruler = {
+			save_scope_as = target_character
+		}
+	}
+	after = {
+		remove_variable = oe_byz_mission_4_a_on
+		remove_variable = oe_byz_mission_4_b_on
+	}
+	option = {
+		name = oe_byz_mission.5.a
+		add_prestige = 5
+		if = {
+			limit = {
+				has_variable = oe_byz_mission_4_a_on
+			}
+			set_variable = oe_byz_mission_3_a_on
+		}
+		if = {
+			limit = {
+				has_variable = oe_byz_mission_4_b_on
+			}
+			set_variable = oe_byz_mission_3_b_on
+		}
+	}
+	option = {
+		name = oe_byz_mission.5.b
+		if = {
+			limit = {
+				has_variable = oe_byz_mission_4_a_on
+			}
+			set_variable = oe_byz_mission_3_b_on
+		}
+		if = {
+			limit = {
+				has_variable = oe_byz_mission_4_b_on
+			}
+			set_variable = oe_byz_mission_3_c_on
+		}
+		add_gold = {
+			value = -5
+			multiply = c:EPI.country_tax_base
+		}
+		c:EPI = {
+		add_gold_to_estate = {
+			estate_type = estate_type:nobles_estate
+			value = {
+				value = 5
+			multiply = c:EPI.country_tax_base
+			}
+		}			
+		}
+	}
+}
+
+oe_byz_mission.6 = {#雅典卫城
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_byz_mission.6.t
+	desc = oe_byz_mission.6.d
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}	
+	immediate = {
+	event_illustration_poptype_effect = { foreground = pop_type:clergy background = pop_type:clergy }			
+	}
+	option = {
+		name = oe_byz_mission.6.a
+		add_estate_satisfaction = {
+			type = estate_type:clergy_estate
+			value = -0.1
+		}
+		location:athens = {
+			add_location_modifier = { 
+				modifier =  oe_byz_mission_6_mod
+                days = -1
+				mode = add
+				}
+		}
+	}
+	option = {
+		name = oe_byz_mission.6.b
+		add_estate_satisfaction = {
+			type = estate_type:clergy_estate
+			value = 0.05
+		}
+		add_stability = 7
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

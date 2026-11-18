@@ -1,0 +1,57 @@
+﻿oe_byz_confer_caesar_foreign = {
+    message = yes
+    on_own_nation = no
+    on_other_nation = yes
+    potential = { scope:actor = { tag = BYZ oe_byz_imperial_honors_allowed = yes } }
+    ai_tick = never
+    allow = { scope:actor = { oe_byz_can_confer_caesar = yes } }
+    select_trigger = {
+        looking_for_a = character
+        interaction_source_list = {
+            scope:actor = {
+                every_subject = {
+                    limit = { oe_theme_member_trigger = yes }
+                    ruler ?= { add_to_list = source }
+                }
+            }
+        }
+        target_flag = recipient
+        name = "choose_character"
+        none_available_msg_key = "OE_CAESAR_NO_CANDIDATE"
+        column = { data = name }
+        visible = { owner != scope:actor is_ruler = yes owner = { oe_theme_member_trigger = yes } oe_byz_caesar_candidate = yes }
+        enabled = {
+            custom_tooltip = {
+                text = OE_CAESAR_FULL_LEGITIMACY_REQUIRED
+                scope:actor.legitimacy >= oe_byz_caesar_legitimacy_cost
+            }
+        }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_byz_can_confer_caesar = yes }
+                scope:recipient = {
+                    owner != scope:actor is_ruler = yes owner = { oe_theme_member_trigger = yes } oe_byz_caesar_candidate = yes
+                    scope:actor.legitimacy >= oe_byz_caesar_legitimacy_cost
+                }
+            }
+            custom_tooltip = {
+                text = OE_CAESAR_AUTHORITY_COST
+                international_organization:oe_byz_empire_pillars = {
+                    change_variable = { name = oe_pillars_authority add = -10 }
+                }
+            }
+            scope:actor = {
+                add_legitimacy = { value = scope:recipient.oe_byz_caesar_legitimacy_cost multiply = -1 }
+            }
+            scope:recipient = {
+                add_character_modifier = {
+                    modifier = oe_byz_caesar_modifier
+                    mode = add_and_extend
+                    years = -1
+                }
+            }
+        }
+    }
+}

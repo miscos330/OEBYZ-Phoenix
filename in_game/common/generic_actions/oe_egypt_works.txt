@@ -1,0 +1,194 @@
+﻿oe_works_egypt_plan = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_works_actor = yes NOT = { has_variable = oe_works_egypt_plan_done } } }
+    allow = { scope:actor = { oe_works_egypt_plan_allowed = yes } }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_works_egypt_plan_allowed = yes }
+            }
+            scope:actor = {
+                add_gold = -5000
+                set_variable = oe_works_egypt_plan_done
+                custom_tooltip = { text = OE_EGYPT_ADD_FOOD_LAYER_TT oe_egypt_add_food_layer = yes }
+            }
+        }
+    }
+}
+
+oe_works_aswan = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_works_actor = yes has_variable = oe_works_egypt_plan_done NOT = { has_variable = oe_works_aswan_started } } }
+    allow = { scope:actor = { oe_works_aswan_allowed = yes } }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_works_aswan_allowed = yes }
+            }
+            scope:actor = {
+                add_gold = -10000
+                set_variable = oe_works_aswan_started
+                set_variable = oe_works_aswan_pending
+                trigger_event_non_silently = oe_egypt_works.1
+                trigger_event_non_silently = { id = oe_egypt_works.2 months = 60 }
+            }
+        }
+    }
+}
+
+oe_works_egypt_supply = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_works_actor = yes has_variable = oe_works_egypt_plan_done NOT = { has_variable = oe_works_egypt_supply_unlocked } } }
+    allow = { scope:actor = { oe_works_egypt_supply_allowed = yes } }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_works_egypt_supply_allowed = yes }
+            }
+            scope:actor = {
+                add_gold = -2000
+                set_variable = oe_works_egypt_supply_unlocked
+                set_variable = { name = oe_egypt_last_food_shipped value = 0 }
+                set_variable = { name = oe_egypt_last_shipping_cost value = 0 }
+                custom_tooltip = OE_EGYPT_SUPPLY_UNLOCK_TT
+            }
+        }
+    }
+}
+
+oe_works_egypt_canal = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_works_actor = yes has_variable = oe_works_egypt_plan_done trigger_if = { limit = { has_variable = oe_works_egypt_canals } var:oe_works_egypt_canals < 3 } } }
+    allow = { scope:actor = { oe_works_egypt_canal_allowed = yes } }
+    automation_tick = never
+    ai_tick = never
+    cooldown = { type = oe_works_egypt_canal years = 5 }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    select_trigger = {
+        looking_for_a = location source = actor target_flag = target_location
+        name = "oe_works_egypt_canal_choose" none_available_msg_key = "oe_works_egypt_canal_none"
+        column = { data = name } column = { data = raw_material } column = { data = population }
+        interaction_source_list = {
+            area:lower_egypt_area = { every_location_in_area = { limit = { oe_works_egypt_canal_target = yes } add_to_list = source } }
+        }
+        only_color_selectable = yes map_color = define:NMapColors|MAP_COLOR_HIGH
+        visible = { oe_works_egypt_canal_target = yes }
+        enabled = { oe_works_egypt_canal_target = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_works_egypt_canal_allowed = yes }
+                scope:target_location = { oe_works_egypt_canal_target = yes }
+            }
+            scope:target_location = {
+                set_variable = oe_works_egypt_canal_site
+                construct_building = { building_type = building_type:oe_egypt_canal owner = scope:actor cost_multiplier = 0 cost_multiplier_reason = "oe_works_egypt_canal" }
+            }
+            scope:actor = {
+                add_gold = -5000
+                set_variable = { name = oe_works_egypt_canal_cooldown years = 5 }
+                if = { limit = { NOT = { has_variable = oe_works_egypt_canals } } set_variable = { name = oe_works_egypt_canals value = 0 } }
+                change_variable = { name = oe_works_egypt_canals add = 1 }
+                if = { limit = { var:oe_works_egypt_canals = 3 }
+                    custom_tooltip = { text = OE_EGYPT_ADD_FOOD_LAYER_TT oe_egypt_add_food_layer = yes }
+                }
+            }
+        }
+    }
+}
+
+oe_works_egypt_smallholders = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_works_actor = yes has_variable = oe_works_egypt_plan_done NOT = { has_variable = oe_works_egypt_land_policy_done } } }
+    allow = { scope:actor = { oe_works_egypt_smallholders_allowed = yes } }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_works_egypt_smallholders_allowed = yes }
+            }
+            scope:actor = {
+                set_variable = oe_works_egypt_land_policy_done
+                set_variable = oe_works_egypt_smallholders_done
+                custom_tooltip = { text = OE_EGYPT_ADD_FOOD_LAYER_TT oe_egypt_add_food_layer = yes }
+                custom_tooltip = { text = OE_EGYPT_SMALLHOLDERS_TT oe_egypt_apply_land_policy = { MODIFIER = oe_egypt_protect_smallholders } }
+            }
+        }
+    }
+}
+
+oe_works_egypt_landowners = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_works_actor = yes has_variable = oe_works_egypt_plan_done NOT = { has_variable = oe_works_egypt_land_policy_done } } }
+    allow = { scope:actor = { oe_works_egypt_landowners_allowed = yes } }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_works_egypt_landowners_allowed = yes }
+            }
+            scope:actor = {
+                set_variable = oe_works_egypt_land_policy_done
+                set_variable = oe_works_egypt_landowners_done
+                custom_tooltip = { text = OE_EGYPT_ADD_FOOD_LAYER_TT oe_egypt_add_food_layer = yes }
+                custom_tooltip = { text = OE_EGYPT_LANDOWNERS_TT oe_egypt_apply_land_policy = { MODIFIER = oe_egypt_cooperate_landowners } }
+            }
+        }
+    }
+}

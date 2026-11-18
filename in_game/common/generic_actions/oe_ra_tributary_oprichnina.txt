@@ -1,0 +1,113 @@
+﻿oe_ra_attack_tributary = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_ra_actor = yes } }
+    allow = {
+        scope:actor = {
+            oe_ra_actor = yes
+            gold >= oe_ra_tributary_war_cost
+        }
+    }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    # Early AI prerequisites have country root but no actor or target scopes.
+    ai_prerequisite = {
+        oe_ra_actor = yes
+        gold >= oe_ra_tributary_war_cost
+        any_subject = {
+            is_subject_type = tributary
+            overlord = root
+            NOT = { is_at_war_with = root }
+            NOT = { has_truce_with = root }
+        }
+    }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_russian_ambition = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_russian_ambition situation_is_active = yes }
+    }
+    select_trigger = {
+        looking_for_a = country
+        interaction_source_list = {
+            scope:actor = {
+                every_subject = {
+                    limit = { oe_ra_tributary_war_target = yes }
+                    add_to_list = source
+                }
+            }
+        }
+        target_flag = target
+        name = oe_ra_choose_tributary
+        none_available_msg_key = oe_ra_no_tributaries
+        column = { data = name }
+        visible = { oe_ra_tributary_war_target = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                exists = scope:target
+                scope:target = { oe_ra_tributary_war_target = yes }
+                scope:actor = { oe_ra_actor = yes gold >= oe_ra_tributary_war_cost }
+            }
+            scope:actor = {
+                add_gold = { value = oe_ra_tributary_war_cost multiply = -1 }
+                # The CB explicitly permits war on an own subject; do not release it first.
+                add_casus_belli = { target = scope:target type = casus_belli:oe_ra_imperial_tributary_war }
+                declare_war_with_cb = { target = scope:target type = casus_belli:oe_ra_imperial_tributary_war }
+            }
+        }
+    }
+    ai_will_do = { add = 80 }
+}
+
+oe_ra_establish_oprichnina = {
+    type = situation
+    show_message = no
+    potential = {
+        scope:actor = { oe_ra_actor = yes NOT = { has_reform = government_reform:oe_ra_oprichnina } }
+    }
+    allow = {
+        scope:actor = {
+            oe_ra_actor = yes
+            political_influence >= 50
+            NOT = { has_reform = government_reform:oe_ra_oprichnina }
+        }
+    }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    ai_prerequisite = {
+        oe_ra_actor = yes
+        political_influence >= 50
+        NOT = { has_reform = government_reform:oe_ra_oprichnina }
+    }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_russian_ambition = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_russian_ambition situation_is_active = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = {
+                    oe_ra_actor = yes
+                    political_influence >= 50
+                    NOT = { has_reform = government_reform:oe_ra_oprichnina }
+                }
+            }
+            scope:actor = {
+                add_political_influence = -50
+                set_variable = oe_ra_oprichnina_unlocked
+                add_reform = government_reform:oe_ra_oprichnina
+            }
+        }
+    }
+    ai_will_do = { add = 80 }
+}

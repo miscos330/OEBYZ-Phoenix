@@ -1,0 +1,121 @@
+﻿oe_rw_mobilize_border = {
+    type = internationalorganization
+    potential = { scope:actor = { has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_beylik international_organization = international_organization:oe_byz_roman_world } } }
+    allow = { scope:actor = { oe_rw_mobilize_eligible = yes } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    cooldown = { type = oe_rw_border_mobilization_key years = 3 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_roman_world
+            scope:actor = { has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_beylik international_organization = international_organization:oe_byz_roman_world } }
+        }
+    }
+    effect = {
+        scope:actor = {
+            oe_rw_mobilize_border_effect = yes
+        }
+    }
+}
+
+oe_rw_latin_instructors_action = {
+    type = internationalorganization
+    potential = { scope:actor = { oe_rw_latin_instructors_eligible = yes } }
+    allow = { scope:actor = { oe_rw_latin_instructors_eligible = yes custom_tooltip = { text = OE_RW_MONTHLY_INCOME_AFFORD gold >= oe_rw_one_month_income_cost } custom_tooltip = { text = OE_RW_MILITARY_STUDY_READY NOT = { has_variable = oe_rw_military_study_cooldown } } } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    cooldown = { type = oe_rw_shared_military_study_key years = 3 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_roman_world
+            scope:actor = { oe_rw_latin_instructors_eligible = yes }
+        }
+    }
+    effect = {
+        scope:actor = {
+            add_gold = { value = oe_rw_one_month_income_cost multiply = -1 }
+            add_country_modifier = { modifier = oe_rw_latin_instructors years = 3 mode = replace }
+            change_societal_value = { type = latinization_vs_hellenization value = -2.5 }
+            set_variable = { name = oe_rw_military_study_cooldown value = yes years = 3 }
+        }
+    }
+}
+
+oe_rw_study_roman_tactics = {
+    type = internationalorganization
+    potential = { scope:actor = { is_member_of_international_organization = international_organization:oe_byz_roman_world } }
+    allow = { scope:actor = { is_member_of_international_organization = international_organization:oe_byz_roman_world custom_tooltip = { text = OE_RW_MONTHLY_INCOME_AFFORD gold >= oe_rw_one_month_income_cost } custom_tooltip = { text = OE_RW_MILITARY_STUDY_READY NOT = { has_variable = oe_rw_military_study_cooldown } } } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    cooldown = { type = oe_rw_shared_military_study_key years = 3 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_roman_world
+            scope:actor = { is_member_of_international_organization = international_organization:oe_byz_roman_world }
+        }
+    }
+    effect = {
+        scope:actor = {
+            add_gold = { value = oe_rw_one_month_income_cost multiply = -1 }
+            add_country_modifier = { modifier = oe_rw_roman_tactics years = 3 mode = replace }
+            change_societal_value = { type = latinization_vs_hellenization value = 2.5 }
+            set_variable = { name = oe_rw_military_study_cooldown value = yes years = 3 }
+        }
+    }
+}
+
+oe_rw_challenge_empire = {
+    type = internationalorganization
+    potential = { scope:actor = { oe_rw_challenge_empire_visible = yes } }
+    allow = { scope:actor = { oe_rw_challenge_empire_visible = yes at_war = no can_declare_war_on = location:constantinople.owner } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    price = price:oe_rw_challenge_empire_price
+    cooldown = { type = oe_rw_challenge_empire_key years = 5 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_roman_world
+            scope:actor = { oe_rw_challenge_empire_visible = yes }
+        }
+    }
+    effect = {
+        scope:actor = {
+            add_casus_belli = {
+                target = location:constantinople.owner
+                type = casus_belli:oe_cb_challenge_roman_empire
+                province = location:constantinople.province
+            }
+            add_opinion = { target = location:constantinople.owner modifier = oe_rw_imperial_challenge_opinion }
+            location:constantinople.owner = { add_opinion = { target = scope:actor modifier = oe_rw_imperial_challenge_opinion } }
+        }
+    }
+}
+

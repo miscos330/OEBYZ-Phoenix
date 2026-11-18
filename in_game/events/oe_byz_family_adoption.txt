@@ -1,0 +1,115 @@
+﻿namespace = oe_byz_family_adoption
+
+oe_byz_family_adoption.1 = {
+    type = country_event
+    title = oe_byz_family_adoption.1.t
+    desc = oe_byz_family_adoption.1.d
+    outcome = positive
+    trigger = { tag = BYZ exists = scope:oe_adopting_ruler }
+    illustration_tags = { 10 = interior 10 = happy }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+        create_character = {
+            age = { 3 12 }
+            female = no
+            culture = scope:oe_adopting_ruler.culture
+            religion = religion:orthodox
+            dynasty = scope:oe_adopting_ruler.dynasty
+            estate = estate_type:nobles_estate
+            no_stats = yes
+            trait_category = none
+            create_in_limbo = yes
+            save_scope_as = oe_family_candidate_1
+        }
+        scope:oe_family_candidate_1 = {
+            add_random_trait_from_category = child
+            # Assign absolute 20-50 abilities, never add another random roll to a base.
+            add_adm = { value = { 20 50 } subtract = adm }
+            add_dip = { value = { 20 50 } subtract = dip }
+            add_mil = { value = { 20 50 } subtract = mil }
+        }
+        create_character = {
+            age = { 3 12 }
+            female = no
+            culture = scope:oe_adopting_ruler.culture
+            religion = religion:orthodox
+            dynasty = scope:oe_adopting_ruler.dynasty
+            estate = estate_type:nobles_estate
+            no_stats = yes
+            trait_category = none
+            create_in_limbo = yes
+            save_scope_as = oe_family_candidate_2
+        }
+        scope:oe_family_candidate_2 = {
+            add_random_trait_from_category = child
+            # Assign absolute 20-50 abilities, never add another random roll to a base.
+            add_adm = { value = { 20 50 } subtract = adm }
+            add_dip = { value = { 20 50 } subtract = dip }
+            add_mil = { value = { 20 50 } subtract = mil }
+        }
+        create_character = {
+            age = { 3 12 }
+            female = no
+            culture = scope:oe_adopting_ruler.culture
+            religion = religion:orthodox
+            dynasty = scope:oe_adopting_ruler.dynasty
+            estate = estate_type:nobles_estate
+            no_stats = yes
+            trait_category = none
+            create_in_limbo = yes
+            save_scope_as = oe_family_candidate_3
+        }
+        scope:oe_family_candidate_3 = {
+            add_random_trait_from_category = child
+            # Assign absolute 20-50 abilities, never add another random roll to a base.
+            add_adm = { value = { 20 50 } subtract = adm }
+            add_dip = { value = { 20 50 } subtract = dip }
+            add_mil = { value = { 20 50 } subtract = mil }
+        }
+    }
+    option = {
+        name = oe_byz_family_adoption.1.1
+        ai_chance = { factor = 1 }
+        # Family adoption establishes kinship without the separate Royal Adopted Child title.
+        scope:oe_adopting_ruler = { adopt_character = scope:oe_family_candidate_1 }
+        scope:oe_family_candidate_1 = {
+            move_country = c:BYZ
+            change_dynasty = scope:oe_adopting_ruler.dynasty
+            change_character_estate = estate_type:crown_estate
+        }
+        hidden_effect = {
+            kill_character_silently = scope:oe_family_candidate_2
+            kill_character_silently = scope:oe_family_candidate_3
+        }
+    }
+    option = {
+        name = oe_byz_family_adoption.1.2
+        ai_chance = { factor = 1 }
+        # Family adoption establishes kinship without the separate Royal Adopted Child title.
+        scope:oe_adopting_ruler = { adopt_character = scope:oe_family_candidate_2 }
+        scope:oe_family_candidate_2 = {
+            move_country = c:BYZ
+            change_dynasty = scope:oe_adopting_ruler.dynasty
+            change_character_estate = estate_type:crown_estate
+        }
+        hidden_effect = {
+            kill_character_silently = scope:oe_family_candidate_1
+            kill_character_silently = scope:oe_family_candidate_3
+        }
+    }
+    option = {
+        name = oe_byz_family_adoption.1.3
+        ai_chance = { factor = 1 }
+        # Family adoption establishes kinship without the separate Royal Adopted Child title.
+        scope:oe_adopting_ruler = { adopt_character = scope:oe_family_candidate_3 }
+        scope:oe_family_candidate_3 = {
+            move_country = c:BYZ
+            change_dynasty = scope:oe_adopting_ruler.dynasty
+            change_character_estate = estate_type:crown_estate
+        }
+        hidden_effect = {
+            kill_character_silently = scope:oe_family_candidate_1
+            kill_character_silently = scope:oe_family_candidate_2
+        }
+    }
+}

@@ -1,0 +1,108 @@
+﻿# Shared rule for this and future historical family episodes: existing house +50,
+# otherwise admission and the once-per-family capacity grant, without +50 as well.
+# Any scope. Write only the registered Osmaris house's influence on the pillars IO.
+# Scalar macro argument; arithmetic blocks belong inside native change_variable.
+oe_osmaris_add_house_influence = {
+    international_organization:oe_byz_empire_pillars = {
+        if = {
+            limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:ottomans_dynasty }
+            change_variable = { name = oe_nf_influence_1 add = $amount$ }
+            clamp_variable = { name = oe_nf_influence_1 min = 0 max = 1000 }
+        }
+        else_if = {
+            limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:ottomans_dynasty }
+            change_variable = { name = oe_nf_influence_2 add = $amount$ }
+            clamp_variable = { name = oe_nf_influence_2 min = 0 max = 1000 }
+        }
+        else_if = {
+            limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:ottomans_dynasty }
+            change_variable = { name = oe_nf_influence_3 add = $amount$ }
+            clamp_variable = { name = oe_nf_influence_3 min = 0 max = 1000 }
+        }
+        else_if = {
+            limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:ottomans_dynasty }
+            change_variable = { name = oe_nf_influence_4 add = $amount$ }
+            clamp_variable = { name = oe_nf_influence_4 min = 0 max = 1000 }
+        }
+    }
+}
+oe_osmaris_reward_house = {
+    if = {
+        limit = {
+            international_organization:oe_byz_empire_pillars = { OR = {
+                AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:ottomans_dynasty }
+                AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:ottomans_dynasty }
+                AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:ottomans_dynasty }
+                AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:ottomans_dynasty }
+            } }
+        }
+        oe_osmaris_add_house_influence = { amount = 50 }
+    }
+    else = { oe_osmaris_admit_house = { head = $member$ } }
+}
+oe_osmaris_introduce_basil = {
+    if = {
+        limit = {
+            NOT = { exists = character:oe_osmaris_basil }
+            NOT = { has_variable = oe_osmaris_basil_introduced }
+        }
+        # Guard before creation: character-created callbacks must never spawn a duplicate.
+        set_variable = oe_osmaris_basil_introduced
+        create_character = {
+            first_name = oe_osmaris_basil_name
+            birth_date = 1354.1.1
+            birth_location = location:bursa
+            dynasty = dynasty:ottomans_dynasty
+            culture = culture:oe_tur_greek_culture
+            religion = religion:orthodox
+            estate = estate_type:burghers_estate
+            female = no
+            adm = 80 dip = 85 mil = 60
+            script = oe_osmaris_basil
+            save_scope_as = oe_osmaris_basil_person
+        }
+        if = {
+            limit = { exists = character:oe_osmaris_basil }
+            character:oe_osmaris_basil = {
+                set_nickname = oe_osmaris_lightning_merchant
+                if = { limit = { exists = character:tur_murad } change_father = character:tur_murad }
+            }
+        }
+    }
+    character:oe_osmaris_basil ?= { save_scope_as = oe_osmaris_basil_person }
+}
+oe_osmaris_basil_reward = {
+    if = {
+        limit = { oe_osmaris_basil_can_reward = yes }
+        set_variable = oe_osmaris_basil_trade_done
+        add_country_modifier = { modifier = $modifier$ years = 20 mode = add }
+        oe_osmaris_reward_house = { member = character:oe_osmaris_basil }
+        set_variable = oe_osmaris_company_requested
+        oe_osmaris_grant_legacy_buildings = yes
+        # No twenty-year capture timer: the monthly pulse checks the living merchant and TIM land.
+    }
+}
+oe_osmaris_basil_prepare_capture = {
+    set_variable = oe_osmaris_basil_capture_presented
+    character:oe_osmaris_basil = { save_scope_as = oe_osmaris_basil_person }
+    # Country gross income, not net balance or the pillars' privy-purse income.
+    # Fix the quoted price when the ransom demand arrives; min is the script-value floor.
+    save_scope_value_as = { name = oe_osmaris_basil_ransom value = { value = monthly_income_total min = 0 multiply = 3 } }
+}
+oe_osmaris_basil_abandon = {
+    if = {
+        limit = { oe_osmaris_basil_captive_valid = yes }
+        set_variable = oe_osmaris_basil_capture_resolved
+        kill_character = { target = character:oe_osmaris_basil reason = execution }
+        oe_court_clear_invalid = yes
+        oe_court_auto_fill = yes
+        oe_nf_refresh = yes
+    }
+}
+oe_osmaris_basil_pay_ransom = {
+    if = {
+        limit = { oe_osmaris_basil_can_ransom = yes }
+        set_variable = oe_osmaris_basil_capture_resolved
+        add_gold = { value = scope:oe_osmaris_basil_ransom multiply = -1 }
+    }
+}

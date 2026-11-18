@@ -1,0 +1,113 @@
+﻿# PAUSED 2026-09-23: Roman world / Rus church rework; retained for restoration.
+# rus_tithe = {
+# 	get_payer_list = {
+# 		every_international_organization_member = {
+# 			limit = { 
+# 				OR = {
+# 					has_special_status_in_international_organization = {
+# 						type = special_status:rus_religion_mos_members
+# 						international_organization = root
+# 					}	
+# 					has_special_status_in_international_organization = {
+# 						type = special_status:rus_religion_normal_members
+# 						international_organization = root
+# 					}	
+# 				}			
+# 			}
+# 			every_estate = {
+# 			limit = {
+# 				OR = {
+# 					estate_type = estate_type:clergy_estate
+# 					trigger_if = {
+# 						limit = {
+# 							c:BYZ = { has_variable = allow_rus_tithe_burghers }
+# 						}
+# 						estate_type = estate_type:burghers_estate
+# 					}
+# 					trigger_if = {
+# 						limit = {
+# 							c:BYZ = { has_variable = allow_rus_tithe_burghers }
+# 						}
+# 						estate_type = estate_type:nobles_estate
+# 					}
+# 				}
+# 			}
+# 			add_to_local_variable_list = {
+# 				name = payers
+# 				target = this
+# 			}
+# 		}
+# 		}
+# 	}
+# 	get_payee_list = {
+# 		every_country_with_special_status_of_type = {
+# 			type = rus_religion_king
+# 			add_to_local_variable_list = {
+# 				name = payees
+# 				target = this
+# 			}
+# 		}
+# 	}	
+# 	price = oe_byz_bank_org_leader_pay_price
+# 	uses_maintenance = no
+# 	price_multiplier = {
+# 		every_international_organization_member = {
+# 			add = {
+# 				every_estate = {
+# 					limit = {
+# 						estate_type = estate_type:clergy_estate
+# 					}
+# 					add = estate_taxable_income
+# 					multiply = 0.4
+# 				}
+# 			}
+# 			if = {
+# 				limit = {
+# 					c:BYZ = { has_variable = allow_rus_tithe_burghers }
+# 				}
+# 				add = {
+# 				every_estate = {
+# 					limit = {
+# 						estate_type = estate_type:burghers_estate
+# 					}
+# 					add = estate_taxable_income
+# 					multiply = 0.08
+# 				}
+# 			}			
+# 			}
+# 			if = {
+# 				limit = {
+# 					c:BYZ = { has_variable = allow_rus_tithe_burghers }
+# 				}
+# 				add = {
+# 				every_estate = {
+# 					limit = {
+# 						estate_type = estate_type:nobles_estate
+# 					}
+# 					add = estate_taxable_income
+# 					multiply = 0.08
+# 				}
+# 			}			
+# 			}
+# 		}
+# 	}
+# 	proportion_for_payer = {
+# 		add = {
+# 			desc = "BASE"
+# 			value = estate_taxable_income
+# 		}
+# 		multiply = 0.08
+# 		if = {
+# 			limit = {
+# 				estate_type = estate_type:clergy_estate
+# 			}
+# 			multiply = 5
+# 		}
+# 	}
+# 	proportion_for_payee = {
+# 		add = {
+# 			desc = "BASE"
+# 			value = 1
+# 		}
+# 	}
+# }

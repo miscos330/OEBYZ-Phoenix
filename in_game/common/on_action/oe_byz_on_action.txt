@@ -1,0 +1,1298 @@
+﻿on_game_start  = {#@@@游戏开始扳机
+	on_actions = {
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_byz_open_situation
+
+		oe_byz_game_start_combint
+		oe_byzt_create_army_strat
+        # oe_byz_nobles_game_start # PAUSED: domestic dynasties
+        oe_nf_startup
+	        # Consolidated in the small historical-character patch.
+        # oe_byz_initialize_co_emperor
+        # Consolidated in the small historical-character patch.
+        # oe_byz_initialize_latin_death_markers
+        # Consolidated in the small historical-character patch.
+        # oe_byz_initialize_andronikos_identity
+        # Consolidated in the small historical-character patch.
+        # oe_byz_initialize_john_v_education
+        oe_byz_initialize_historical_character_patch
+        oe_court_startup
+        oe_nf_post_court_startup
+        # PAUSED 2026-09-26: noble politics.
+        # oe_np_startup
+    }
+}
+oe_byz_game_start_combint = {#开局拜占庭设置
+	effect = {
+		province_definition:thessaly_province = {
+			every_location_in_province_definition = {
+		construct_building ={ building_type = building_type:oe_byz_bad_thief_greek
+						cost_multiplier = 0
+				cost_multiplier_reason = "game_concept_event"}					
+			}
+		}
+		c:BYZ = {
+			set_variable = allow_oe_peasants_own_theme_negative_I
+		random_cabinet = {
+			limit = {NOT = {exists = cabinet_member}}
+			add_to_cabinet = character:byz_john_xiv_kalekas
+		}
+		}
+		character:byz_john_xiv_kalekas = {
+			add_character_modifier = {
+				 modifier = oe_byz_religion_leader
+				 mode = add_and_extend 
+				 days = -1
+			}
+		}
+		
+# PAUSED 2026-09-23: Roman world / Rus church rework; retained for restoration.
+# international_organization:rus_religion = {
+# 			international_organization_add_special_status = {
+# 				type = special_status:rus_religion_king
+# 				country = c:BYZ
+# 			}
+# 			international_organization_remove_special_status = {
+# 				type = special_status:rus_religion_normal_members
+# 				country = c:BYZ			
+# 			}
+# 		}
+
+		#雇佣兵
+		c:BYZ = {
+			create_mercenary = {
+				name = oe_unit_tokobolo
+				home = location:sivas
+				categories = {
+					army_light_cavalry = 3
+					army_light_infantry = 2
+				}
+				cost_multiplier = 0.8
+				months = 120
+				save_scope_as = target_unit_I
+			}			
+			hire_mercenary = scope:target_unit_I
+			create_mercenary = {
+				name = oe_unit_kuman_alan
+				home = location:maykop
+				categories = {
+					army_light_cavalry = 3
+					army_light_infantry = 3
+				}
+				cost_multiplier = 0.8
+				months = 120
+				save_scope_as = target_unit_II
+			}			
+			hire_mercenary = scope:target_unit_II
+			create_mercenary = {
+				name = oe_unit_latin_knight
+				home = location:naples
+				categories = {
+					army_heavy_cavalry = 1
+					army_light_infantry = 1
+				}
+				cost_multiplier = 1
+				months = 120
+				save_scope_as = target_unit_III
+			}			
+			hire_mercenary = scope:target_unit_III
+		}
+		
+	}
+}
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_byz_open_situation = {
+# 	effect = {
+# 		activate_situation = situation:empire_debt
+# 		activate_situation = situation:john_war
+# 		
+# 	}
+# }
+
+oe_byzt_create_army_strat = {#塞萨洛尼基开局设置
+	effect = {
+        character:byz_ioannes_synadenos = {
+            if = { limit = { NOT = { owner = c:BYT01 } } move_country = c:BYT01 }
+        }
+        c:BYT01 = {
+            if = { limit = { NOT = { ruler = character:byz_ioannes_synadenos } } set_new_ruler = character:byz_ioannes_synadenos }
+        }
+		c:BYT01 = {
+			add_manpower = 3
+			# FIX 2026-11-17 (author decision): no food-access relation on founding (popup spam; themes cancelled it the next month).
+		}
+		c:BYT01.ruler = {
+			add_trait = trait:oe_character_war_score_trait_VI
+		}
+		# NEW 2026-11-17 theme-rework: BYT01 governs the historical Thessalonica region (8) instead of macedonia_area.
+		# Region data may not be assigned yet (on_game_start order is not fixed), so assign it here first; the effect is idempotent.
+		oe_theme_regions_assign = yes
+		c:BYT01 = { set_variable = { name = oe_theme_region_id value = 8 } set_variable = { name = oe_theme_distance value = 2 } }
+		c:BYZ = {
+			every_owned_location = {
+				limit = { var:oe_theme_region ?= 8 }
+				construct_building = {
+					building_type = building_type:oe_byz_theme_system
+					owner = c:BYT01
+				cost_multiplier = 0
+				cost_multiplier_reason = "game_concept_event"
+				}
+			}
+		}
+		location:thessaloniki = {
+			while =  {
+				count = 3
+				create_sub_unit_with_owner = {
+					type = oe_byz_theme_subject_soldier_I
+					owner = c:BYT01
+				}
+			}
+			while =  {
+				count = 6
+				create_sub_unit_with_owner = {
+					type = n_cog
+					owner = c:BYT01
+				}
+			}
+		}
+
+	}
+}
+monthly_country_pulse  = {#@@@每月扳机
+	on_actions = {
+        oe_byz_migrate_andronikos_abilities
+        oe_byz_migrate_historical_character_patch
+        oe_byz_andronikos_health_check
+		
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_rr_country_monthly_check
+
+		
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# oe_corruption_calculate
+
+		
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_byz_check_oe_byz_rr_rome_hope
+
+		oe_byz_cabinet_experience
+	
+        oe_byz_maintain_latin_death_markers
+        # Consolidated in the small historical-character patch.
+        # oe_byz_migrate_andronikos_identity
+        # Consolidated in the small historical-character patch.
+        # oe_byz_migrate_john_v_education
+    }
+}
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_rr_country_monthly_check = {#军事领主诞生
+# 	trigger = {
+# 		is_subject_type = oe_sub_rr_indep
+# 	}
+# 	effect = {
+# 		c:BYZ = {
+# 			every_subject = {
+# 				limit = {
+# 					is_subject_type = oe_sub_rr_indep
+# 					at_war = no
+# 				}
+# 				ruler = {
+# 					remove_trait = trait:oe_rr_attach_south_ita_trait
+# 				}
+# 				change_country_type = location
+# 				remove_reform = government_reform:oe_byz_rr_mil_subject
+# 				add_reform = government_reform:oe_byz_rr_mil_subject_end_I
+# 			}
+# 		}
+# 	}
+# }
+
+
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# oe_corruption_calculate = {#腐败度计算
+# 	trigger = {
+# 		tag = BYZ
+# 	}
+# 	effect = {
+# 		c:BYZ = {
+# 		if = {
+# 			limit = {
+# 				var:oe_corruption >= 0
+# 		}
+# 		change_variable = {
+# 			name = oe_corruption
+# 		subtract = {
+# 			value = "payment_maintenance(international_organization:oe_byz_policy_org|oe_byz_plicy_org_ldec_corrupt_pay)"
+# 			multiply = 1
+# 		}
+# 		}
+# 	}
+# 		change_variable = {
+# 			name = oe_corruption
+# 			add = 0.5
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_byz_check_oe_byz_rr_rome_hope = {#复兴狂热每四年-1
+# 	trigger = {
+# 		tag = BYZ
+# 		has_global_variable = phoenix_nirvana_is_end
+# 	}
+# 	effect = {
+# 		c:BYZ = {
+# 			change_variable = {
+# 				name = oe_byz_rr_rome_hope_var
+# 				subtract = 0.02
+# 			}
+# 		if = {
+# 			limit = {
+# 				var:oe_byz_rr_rome_hope_var <= 0
+# 			}
+# 			trigger_event_silently = rome_reconquista.3
+# 		}
+# 		}
+# 	}
+# }
+
+oe_byz_cabinet_experience = {#内阁经验
+	trigger = {
+		tag = BYZ
+	}
+	effect = {
+		every_cabinet_character = {
+			limit = {
+				owner = c:BYZ			
+			}
+		if = {
+			limit = {
+					NOT = {
+						has_variable = oe_byz_cabinet_experience_var
+					}				
+			}
+			set_variable = {
+				name = oe_byz_cabinet_experience_var
+				value = 0
+			}		
+		} 	
+			change_variable = {
+				name = oe_byz_cabinet_experience_var
+				add = 1
+			}
+		if = {
+			limit = {
+					var:oe_byz_cabinet_experience_var >= 1	
+					var:oe_byz_cabinet_experience_var <= 12	
+					NOT = { has_character_modifier = oe_character_cabinet_experience_modifier_I }		
+			}
+				add_character_modifier = { modifier = oe_character_cabinet_experience_modifier_I years = -1 mode = replace }			
+		}
+		if = {
+			limit = {
+					var:oe_byz_cabinet_experience_var > 12
+					var:oe_byz_cabinet_experience_var <= 48	
+					NOT = { has_character_modifier = oe_character_cabinet_experience_modifier_II }
+			}
+				add_character_modifier = { modifier = oe_character_cabinet_experience_modifier_II years = -1 mode = replace }	
+				remove_character_modifier = oe_character_cabinet_experience_modifier_I		
+		}
+		if = {
+			limit = {
+					var:oe_byz_cabinet_experience_var > 48
+					var:oe_byz_cabinet_experience_var <= 96	
+					NOT = { has_character_modifier = oe_character_cabinet_experience_modifier_III }			
+			}
+				add_character_modifier = { modifier = oe_character_cabinet_experience_modifier_III years = -1 mode = replace }	
+				remove_character_modifier = oe_character_cabinet_experience_modifier_II		
+		}
+		if = {
+			limit = {
+					var:oe_byz_cabinet_experience_var > 96
+					var:oe_byz_cabinet_experience_var <= 192	
+					NOT = { has_character_modifier = oe_character_cabinet_experience_modifier_IV }			
+			}
+				add_character_modifier = { modifier = oe_character_cabinet_experience_modifier_IV years = -1 mode = replace }
+				remove_character_modifier = oe_character_cabinet_experience_modifier_III		
+		}
+		if = {
+			limit = {
+					var:oe_byz_cabinet_experience_var > 192	
+					NOT = { has_character_modifier = oe_character_cabinet_experience_modifier_V }			
+			}
+				add_character_modifier = { modifier = oe_character_cabinet_experience_modifier_V years = -1 mode = replace }
+				remove_character_modifier = oe_character_cabinet_experience_modifier_IV		
+		}				
+		}
+	}
+}
+
+
+on_character_death = {#@@@角色死亡扳机
+	on_actions = {
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_byz_kanta_death
+
+		oe_oe_byz_religion_leader_death
+		
+# PAUSED 2026-09-23: Rus church story and supporting logic.
+# oe_byz_mos_king_death
+
+	
+        oe_byz_oc_latin_death
+        oe_byz_oc_latinI_death
+    }
+}
+oe_byz_oc_latin_death = {
+    trigger = {
+        country_exists = c:BYZ
+        c:BYZ = { NOT = { has_variable = oe_byz_sic_succession_fired } }
+        scope:target = {
+            OR = {
+                this = character:sic_federico_iii_sicily
+                has_character_modifier = oe_sic_death
+            }
+        }
+    }
+    effect = {
+        c:BYZ = {
+            set_variable = oe_byz_sic_succession_fired
+            trigger_event_non_silently = oe_flavor_byz.400
+        }
+    }
+}
+oe_byz_oc_latinI_death = {
+    trigger = {
+        country_exists = c:BYZ
+        c:BYZ = { NOT = { has_variable = oe_byz_nap_succession_fired } }
+        scope:target = {
+            OR = {
+                this = character:nap_robert_i_anjou
+                has_character_modifier = oe_nap_death
+            }
+        }
+    }
+    effect = {
+        c:BYZ = {
+            set_variable = oe_byz_nap_succession_fired
+            trigger_event_non_silently = oe_flavor_byz.401
+        }
+    }
+}
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_byz_kanta_death = {#坎帝去世
+# 	trigger = {
+# 		 scope:target = character:byz_john_kantakouzenos
+# 	}
+# 	effect = {
+# 
+# 			c:BYZ ?= {trigger_event_non_silently = oe_flavor_byz.600}
+# 			
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: Rus church story and supporting logic.
+# oe_byz_mos_king_death = {#伊凡一世去世
+# 	trigger = {
+# 		 scope:target = character:mos_ivan_i_danilovich_kalita_rurikovich
+# 	}
+# 	effect = {
+# 		if = {
+# 			limit = { country_exists = c:VLR }
+# 		c:VLR = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:fiefdom
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:UGL }
+# 		c:UGL = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:fiefdom
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:NZH }
+# 				c:NZH = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:fiefdom
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:KOS }
+# 				c:KOS = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:fiefdom
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:SZL }
+# 				c:SZL = {#苏兹达尔
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:GLM }
+# 				c:GLM = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:RSO }
+# 				c:RSO = {#罗斯托夫
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:BLO }
+# 				c:BLO = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:DMI }
+# 				c:DMI = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:MRM }
+# 				c:MRM = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:YAR }
+# 				c:YAR = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:VYT }
+# 				c:VYT = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:TRS }
+# 				c:TRS = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:YRV }
+# 				c:YRV = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 				if = {
+# 			limit = { country_exists = c:SKY }
+# 				c:SKY = {
+# 			make_subject_of = {
+# 				target = c:MOS
+# 				type = subject_type:vassal
+# 			}	
+# 		}}
+# 		c:MOS = {
+# 			add_country_modifier = { modifier = oe_mos_subject_mod_I years = 50 mode = add_and_extend }
+# 		}
+# 			c:BYZ ?= {trigger_event_non_silently = oe_flavor_byz.902}
+# 		
+# 	}
+# }
+
+oe_oe_byz_religion_leader_death = {#普世牧首去世
+	trigger = {
+		scope:target = {
+			has_character_modifier = oe_byz_religion_leader
+		}
+	}
+	effect = {
+		c:BYZ = {
+			trigger_event_silently = oe_flavor_byz.403
+		}
+	}
+}
+on_location_changed_owner = {#@@@夺取地点扳机
+on_actions = {
+	oe_byzt_theme_house
+	oe_byz_phoenix_rebuild_army
+	oe_byz_war_hurt
+}
+}
+oe_byzt_theme_house = {#军区治所
+	effect = {
+		if = {
+			limit = {
+				scope:winner ?= c:BYZ
+				NOT = { oe_theme_location_occupied_trigger = yes }
+			}
+			# NEW 2026-11-17 theme-rework: inside a historical region, join whichever theme (any type) holds the region.
+			if = {
+				limit = { has_variable = oe_theme_region }
+				save_scope_as = oe_theme_new_location
+				c:BYZ = {
+					random_owned_location = {
+						limit = {
+							var:oe_theme_region ?= scope:oe_theme_new_location.var:oe_theme_region
+							any_buildings_in_location = { oe_theme_building_trigger = yes owner ?= { oe_theme_member_trigger = yes } }
+						}
+						random_buildings_in_location = {
+							limit = { oe_theme_building_trigger = yes owner ?= { oe_theme_member_trigger = yes } }
+							owner = { save_scope_as = oe_theme_region_owner }
+						}
+					}
+				}
+				if = {
+					limit = { exists = scope:oe_theme_region_owner }
+					oe_theme_construct_post = { owner = scope:oe_theme_region_owner }
+				}
+			}
+			# Outside the historical regions: original area rule (ordinary themes), now guarded against a missing seat.
+			else = {
+		root.area = {
+			every_location_in_area = {
+				limit = { has_building = building_type:oe_byz_theme_system_noble }
+				every_buildings_in_location = {
+					limit = { building_type = building_type:oe_byz_theme_system_noble }
+					save_scope_as = target_building
+				}
+			}
+		}
+				if = {
+					limit = { exists = scope:target_building }
+						construct_building = {
+					building_type = building_type:oe_byz_theme_system
+					owner = scope:target_building.owner
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+				}
+				}
+			}
+			}
+	}
+}
+oe_byz_phoenix_rebuild_army = {
+    # This hook is on_location_changed_owner: root is the acquired location.
+    trigger = { scope:winner ?= c:BYZ exists = scope:loser }
+    effect = {
+        if = { limit = { location_rank = location_rank:megalopolis } c:BYZ = { oe_ir_change_army_score = { math = add value = 3 } } }
+        else_if = { limit = { location_rank = location_rank:city } c:BYZ = { oe_ir_change_army_score = { math = add value = 2 } } }
+        else_if = { limit = { location_rank = location_rank:town } c:BYZ = { oe_ir_change_army_score = { math = add value = 1 } } }
+    }
+}
+oe_byz_war_hurt = {#战争造成盗匪
+	effect = {
+		if = {
+			limit = {
+				scope:winner ?= c:BYZ
+				root.location_rank = location_rank:rural_settlement
+				scope:winner = {
+				NOT = {
+					has_variable = won_fate_of_the_phoenix_disaster_variable
+				}
+				}
+
+			}
+			random_list = {
+				75 = {}
+				25 = {
+					root = {
+		construct_building ={ building_type = building_type:oe_byz_bad_thief_greek
+						cost_multiplier = 0
+				cost_multiplier_reason = "game_concept_event"}
+					}
+				}
+			}
+		}
+	}
+}
+on_location_occupied = {#@@@占领地点扳机
+	on_actions = {
+
+		
+# PAUSED 2026-09-23: Byzantine occupation-to-conquest mechanic.
+# oe_byz_occupy_antolia_on_action
+
+
+	}
+	# FIX 2026-11-17: an `effect` written directly in this hardcoded on_action replaces vanilla's
+	# effect in _hardcoded.txt (the engine keeps only the most recent `effect`). The whole block
+	# below is paused, so it is kept as comments only. New logic must go into a named on_action
+	# appended through `on_actions = { ... }` (see oe_hegemony_britain.txt).
+	# effect = {
+		# PAUSED 2026-09-26: Turkish occupation no longer transfers Byzantine ownership.
+# if = {#土耳其占领拜占庭地
+# 		limit = {	
+# 			root = {
+# 					culture = culture:turkish_culture
+# 				}
+# 				scope:target.owner ?= c:BYZ
+# 				scope:target.region = region:anatolia_region
+# 			}
+# 
+# 
+# 				scope:target = {
+# 					change_location_owner = root
+# 				}
+# 				
+# 			
+# 		}
+		
+# PAUSED 2026-09-24: retained as comments at user request.
+# if = {#军事远征
+# 			limit = {
+# 				root = {
+# 					is_subject_type = oe_sub_rr_indep
+# 					has_reform = government_reform:oe_byz_rr_mil_subject
+# 				}
+# 			}
+# 			scope:target = {
+# 					change_location_owner = root
+# 				}
+# 		}
+
+	#	}
+	}
+
+
+# PAUSED 2026-09-23: Byzantine occupation-to-conquest mechanic.
+# oe_byz_occupy_antolia_on_action = {#拜占庭占领土耳其地
+# 	trigger = {
+# 			OR = { root = c:BYZ
+# 			root = { is_subject_of = c:BYZ  }
+# 	}
+# 				scope:target.owner ?= {
+# 					culture = culture:turkish_culture
+# 				}
+# 	}
+# 	effect = {			
+# 			scope:target = {
+# 				if = {
+# 					limit = {
+# 						is_province_capital = yes
+# 					}
+# 				scope:target.province = {
+# 					every_location_in_province = {
+# 						limit = {
+# 							owner = scope:target.owner
+# 						}
+# 							change_location_owner = c:BYZ
+# 						}
+# 					}
+# 					scope:target.province = {
+# 					every_location_in_province = {
+# 						limit = {
+# 							NOT = {
+# 								has_global_variable = oe_byz_occupy_antolia_on_action_over_var
+# 							}
+# 							owner = scope:target.owner
+# 						culture_percentage = { 
+# 						culture = culture:greek_culture
+# 						value >= 1
+# 						}
+# 						culture_percentage = { 
+# 						culture = culture:turkish_culture
+# 						value >= 1
+# 						}
+# 						}
+# 							change_integration_level = conquered
+# 							while = {
+# 								count = 5
+# 								add_location_modifier = { 
+# 				modifier =  oe_byz_occupy_antolia_on_action_mod
+#                 years = 30
+# 				mode = add_and_extend
+# 				}
+# 							}
+# 						}
+# 					}
+# 				}
+# 				else_if = {
+# 					limit = {
+# 						is_province_capital = no
+# 					}
+# 				scope:target = {
+# 					change_location_owner = c:BYZ
+# 					}
+# 					if = {
+# 						limit = {
+# 							NOT = {
+# 								has_global_variable = oe_byz_occupy_antolia_on_action_over_var
+# 							}
+# 						culture_percentage = { 
+# 						culture = culture:greek_culture
+# 						value >= 1
+# 						}
+# 						culture_percentage = { 
+# 						culture = culture:turkish_culture
+# 						value >= 1
+# 						}
+# 						}
+# 						scope:target = {
+# 							change_integration_level = conquered
+# 							while = {
+# 								count = 5
+# 								add_location_modifier = { 
+# 				modifier =  oe_byz_occupy_antolia_on_action_mod
+#                 years = 30
+# 				mode = add_and_extend
+# 				}
+# 							}
+# 							
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 	
+# }
+	
+on_siege_won = {#@@@围城胜利扳机
+	# FIX 2026-11-17: the effect used to sit directly in this hardcoded on_action and replaced
+	# vanilla's on_siege_won effect. It now lives in a named on_action that is appended here.
+	on_actions = {
+		oe_byz_siege_won_turkish_transfer
+	}
+}
+
+oe_byz_siege_won_turkish_transfer = {#围城胜利：土耳其文化地点转给东罗马
+		effect = {
+		if = {
+		limit = {
+                root = { NOT = { has_reform = government_reform:oe_heg_expedition_reform } }
+                NOT = { oe_belisarius_capture_context = yes }
+                # Protect both before and after mass-campaign hooks, regardless of on_action ordering.
+                scope:target = {
+                    NOT = {
+                        OR = {
+                            oe_heg_iberia_campaign_location = yes
+                            oe_heg_france_campaign_location = yes
+                            oe_heg_britain_campaign_location = yes
+                            AND = {
+                                OR = { region = region:iberia_region region = region:france_region oe_heg_britain_location = yes }
+                                owner = { oe_heg_byz_bloc = yes }
+                            }
+                        }
+                    }
+                }	
+						OR = { root = c:BYZ
+			root = { is_subject_of = c:BYZ  }
+		}
+				scope:target.owner ?= {
+					culture = culture:turkish_culture
+				}}
+				scope:target = {
+					oe_transfer_conquest_without_core = { recipient = c:BYZ }
+				}
+		}
+		
+# PAUSED 2026-09-24: retained as comments at user request.
+# if = {#军事远征
+# 			limit = {
+# 				root = {
+# 					is_subject_type = oe_sub_rr_indep
+# 					has_reform = government_reform:oe_byz_rr_mil_subject
+# 				}
+# 			}
+# 			scope:target = {
+# 					change_location_owner = root
+# 				}
+# 		}
+
+	}
+}
+
+four_yearly_country_pulse = {#@@@四年触发扳机
+	on_actions = {
+
+		
+	}
+}
+oe_byz_give_army_for_theme = {#军区补充兵力（已暂停）
+	effect = {
+		while = {
+			limit = {
+				any_subject = { # FIX 2026-11-17: `filter` is only valid with count = all / percent; conditions moved inline
+					overlord = c:BYZ is_subject_type = oe_empire_theme
+					army_size <= 2
+				}
+			}
+		c:BYZ = {
+		every_subject = {
+		if = {
+			limit = {
+				is_subject_type = oe_empire_theme
+				army_size <= 2
+			}
+			save_scope_as = target_country
+		}}}
+		scope:target_country.capital = {
+			while =  {
+				count = 3
+				create_sub_unit_with_owner = {
+					type = oe_byz_theme_subject_soldier_I
+					owner = scope:target_country
+				}
+			}
+			if = {
+				limit = { is_coastal = yes }
+			while =  {
+				count = 4
+				create_sub_unit_with_owner = {
+					type = n_cog
+					owner = scope:target_country
+				}
+			}
+		}
+		}
+	}
+	}
+}
+on_bankruptcy = {#@@@国家破产扳机
+	on_actions = {
+		oe_byz_break
+	}
+}	
+oe_byz_break = {#拜占庭破产
+	trigger = {
+		root = c:BYZ
+	}
+	effect = {
+		while = {
+			limit = {
+				any_subject = { # FIX 2026-11-17: `filter` is only valid with count = all / percent; conditions moved inline
+					overlord = c:BYZ is_subject_type = oe_bank
+					is_subject_type = oe_bank
+				}
+				
+		 }
+		 c:BYZ = {
+		 every_subject = {
+			if = {
+			limit = {
+				is_subject_type = oe_bank
+			}
+			save_scope_as = target_country
+		}		
+		 }
+			annex_country = { country = scope:target_country }
+		}
+	}
+	}
+}
+on_battle_won_character = {#@@@角色战斗胜利扳机
+	on_actions = {
+		
+# PAUSED 2026-09-23: replaced by Imperial Reforms.
+# oe_byz_ruler_battle_won
+
+		oe_character_war_score
+	}
+}
+
+# PAUSED 2026-09-23: replaced by Imperial Reforms.
+# oe_byz_ruler_battle_won = {#拜拜君主战斗胜利
+# 	trigger = {
+# 		root = c:BYZ.ruler
+# 	}
+# 	effect = {
+# 		if = {
+# 			limit = {
+# 				root = c:BYZ.ruler
+# 				NOT = { has_global_variable = phoenix_nirvana_situation_over }
+# 			}
+# 			c:BYZ = {
+# 			trigger_event_silently = phoenix_nirvana.500}
+# 		}
+# 	}
+# }
+
+oe_character_war_score = {#战功
+	trigger = {
+		root = {
+			OR = {
+				owner = c:BYZ
+				owner = {
+					is_subject_type = oe_empire_theme
+				}
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				root = {
+					NOT = {
+						has_variable = oe_character_war_score_var
+					}
+				}
+			}
+			root = {
+			set_variable = {
+				name = oe_character_war_score_var
+				value = 0
+			}
+		}
+		} 
+		root = {
+			change_variable = {
+				name = oe_character_war_score_var
+				add = 1
+			}
+		}
+		if = {
+			limit = {
+				root = {
+					var:oe_character_war_score_var = 1
+				}
+			}
+			root = {
+				add_character_modifier = { modifier = oe_character_war_score_modifier_I years = -1 mode = replace }
+			}
+		}
+		if = {
+			limit = {
+				root = {
+					var:oe_character_war_score_var >= 2
+					var:oe_character_war_score_var < 5
+					NOT = { has_character_modifier = oe_character_war_score_modifier_II }
+				}
+			}
+			root = {
+				add_character_modifier = { modifier = oe_character_war_score_modifier_II years = -1 mode = replace }
+				remove_character_modifier = oe_character_war_score_modifier_I
+			}
+		}
+		if = {
+			limit = {
+				root = {
+					var:oe_character_war_score_var >= 5
+					var:oe_character_war_score_var < 15
+					NOT = { has_character_modifier = oe_character_war_score_modifier_III }
+				}
+			}
+			root = {
+				add_character_modifier = { modifier = oe_character_war_score_modifier_III years = -1 mode = replace }
+				remove_character_modifier = oe_character_war_score_modifier_II
+			}
+		}
+		if = {
+			limit = {
+				root = {
+					var:oe_character_war_score_var >= 15
+					var:oe_character_war_score_var < 25
+					NOT = { has_character_modifier = oe_character_war_score_modifier_IV }
+				}
+			}
+			root = {
+				add_character_modifier = { modifier = oe_character_war_score_modifier_IV years = -1 mode = replace }
+				remove_character_modifier = oe_character_war_score_modifier_III
+			}
+		}
+		if = {
+			limit = {
+				root = {
+					var:oe_character_war_score_var >= 25
+					NOT = { has_character_modifier = oe_character_war_score_modifier_V }
+				}
+			}
+			root = {
+				add_character_modifier = { modifier = oe_character_war_score_modifier_V years = -1 mode = replace }
+				remove_character_modifier = oe_character_war_score_modifier_IV
+			}
+		}		
+	}
+}
+on_battle_lost_character = {#@@@角色战斗失败扳机
+	on_actions = {
+		oe_byz_ruler_battle_lose
+	}
+}
+oe_byz_ruler_battle_lose = {#拜拜君主战斗失败
+	trigger = {
+		exists = c:BYZ.ruler # FIX 2026-11-18: no ruler during a regency (r5 log: 'Invalid right side ... ruler')
+		root = c:BYZ.ruler
+	}
+	effect = {
+		if = {
+			limit = {
+				root = c:BYZ.ruler
+				c:BYZ = { NOT = { has_variable = oe_ir_army_3_done } }
+			}
+			c:BYZ = {
+			trigger_event_silently = phoenix_nirvana.501}
+		}
+	}
+}
+on_great_battle_won = {#@@@重大战斗胜利扳机
+	on_actions = {
+		
+# PAUSED 2026-09-23: replaced by Imperial Reforms.
+# oe_byz_great_battle_won
+
+	}
+}
+
+# PAUSED 2026-09-23: replaced by Imperial Reforms.
+# oe_byz_great_battle_won = {#拜拜重大战役获胜
+# 	trigger = {
+# 		root = c:BYZ
+# 	}
+# 	effect = {
+# 		if = {
+# 			limit = {
+# 				root = c:BYZ
+# 				NOT = { has_global_variable = phoenix_nirvana_situation_over }
+# 			}
+# 			c:BYZ = {
+# 			trigger_event_silently = phoenix_nirvana.502}
+# 		}
+# 
+# 	}
+# }
+
+on_ending_war = {#@@@战争结束扳机
+	on_actions = {
+		oe_byz_phoenix_trigger
+	}
+}
+oe_byz_phoenix_trigger = {#拜拜战争胜负
+	trigger = {
+		root = c:BYZ
+	}
+	effect = {
+		if = {
+			limit = {
+				scope:winner = c:BYZ
+				c:BYZ = { NOT = { has_variable = oe_ir_army_3_done } }
+			}
+			c:BYZ = {
+			trigger_event_silently = phoenix_nirvana.504}
+		}
+		else_if = {
+			limit = {
+				scope:loser = c:BYZ
+				c:BYZ = { NOT = { has_variable = oe_ir_army_3_done } }
+			}
+			c:BYZ = {
+			trigger_event_silently = phoenix_nirvana.505}
+		}
+	}
+}
+on_insult = {#@@@收到外交侮辱扳机
+	on_actions = {
+		oe_byz_bei_ma
+	}
+}
+oe_byz_bei_ma = {#拜拜被骂了
+	trigger = {
+		scope:recipient = c:BYZ
+	}
+	effect = {
+		if = {
+			limit = {
+				scope:recipient = c:BYZ
+				c:BYZ = { NOT = { has_variable = oe_ir_army_3_done } }
+			}
+			c:BYZ = {
+			trigger_event_silently = phoenix_nirvana.501}
+		}
+	}
+}
+on_battle_won = {#@@@普通战斗胜利
+	on_actions = {
+		
+	}
+}
+on_new_ruler = {#@@@新统治者上任扳机
+	on_actions = {
+		byz_new_ruler_appear
+		oe_empire_theme_ruler_change
+	}
+}
+byz_new_ruler_appear = {#拜拜新统治者上任
+	trigger = {
+		root = c:BYZ
+	}
+	effect = {
+		if = {
+			limit = {
+				scope:new_ruler = {
+					has_character_modifier = oe_byz_select_as_second_empire_mod
+				}
+			
+			}
+			scope:new_ruler = {
+				remove_character_modifier = oe_byz_select_as_second_empire_mod
+			}
+		}
+		# PAUSED 2026-10-01: this branch started a civil war without any supporting population.
+# if = {
+# 			limit = {
+# 				scope:new_ruler = {
+# 					NOT = {
+# 						dynasty = scope:old_ruler.dynasty
+# 					}
+# 				}
+# 			}
+# 			c:BYZ = {
+# 		create_rebel = {
+# 			category = pretender
+# 			name = byz_oe_pretender_rebel_I
+# 			save_scope_as = target_rebels
+# 		}
+# 		scope:old_ruler.dynasty = {
+# 		every_character_in_dynasty = {
+# 			change_character_allegiance = scope:target_rebels
+# 		}}
+# 		scope:target_rebels = {
+# 			start_civil_war = {
+# 				save_scope_as = target_country
+# 				set_variable = {
+# 					name = will_not_surrender
+# 					years = 3
+# 				}
+# 			}
+# 		}		
+# 		
+# 			}
+# 		}
+        oe_byz_start_old_dynasty_restoration = yes
+	}
+}
+oe_empire_theme_ruler_change = {#军区新统治者
+	trigger = {
+		root = {
+			is_subject_type = oe_empire_theme 
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				scope:new_ruler = {
+					NOT = { has_trait = oe_character_war_score_trait_VI }
+				}
+			}
+			scope:new_ruler = {
+				add_trait = trait:oe_character_war_score_trait_VI
+			}
+		}
+	}
+}
+
+
+
+
+
+
+# Runs only at game start; score reads the character modifier directly.
+oe_byz_initialize_co_emperor = {
+    effect = { oe_byz_restore_historical_co_emperor = yes }
+}
+
+# Game-start restoration and a bounded old-save repair while either historical character is alive.
+oe_byz_initialize_latin_death_markers = {
+    effect = { oe_byz_restore_latin_death_markers = yes }
+}
+oe_byz_maintain_latin_death_markers = {
+    trigger = { tag = BYZ }
+    effect = { oe_byz_restore_latin_death_markers = yes }
+}
+
+oe_byz_initialize_andronikos_identity = {
+    effect = { oe_byz_repair_andronikos_identity = yes }
+}
+
+# Existing saves repair on Byzantium's next monthly pulse, once per save.
+oe_byz_migrate_andronikos_identity = {
+    trigger = {
+        tag = BYZ
+        NOT = { has_global_variable = oe_byz_andronikos_identity_repaired }
+    }
+    effect = { oe_byz_repair_andronikos_identity = yes }
+}
+
+oe_byz_initialize_john_v_education = {
+    effect = { oe_byz_repair_john_v_education = yes }
+}
+
+oe_byz_migrate_john_v_education = {
+    trigger = {
+        tag = BYZ
+        NOT = { has_global_variable = oe_byz_john_v_education_repaired }
+    }
+    effect = { oe_byz_repair_john_v_education = yes }
+}
+
+# Small runtime setup instead of duplicating vanilla character_db records.
+oe_byz_initialize_historical_character_patch = {
+    effect = { oe_byz_initialize_historical_characters = yes }
+}
+oe_byz_migrate_historical_character_patch = {
+    trigger = {
+        tag = BYZ
+        NOT = { has_global_variable = oe_byz_historical_character_patch_applied }
+    }
+    effect = { oe_byz_apply_historical_character_patch = yes }
+}
+
+# Run before the earlier identity migration so only already-patched saves qualify.
+oe_byz_migrate_andronikos_abilities = {
+    trigger = {
+        tag = BYZ
+        NOT = { has_global_variable = oe_byz_andronikos_abilities_repaired }
+    }
+    effect = { oe_byz_repair_andronikos_capped_abilities = yes }
+}
+
+# Monthly safety net for health changes made outside the immediate loss helper.
+# No decay and no iteration over countries, characters or populations.
+oe_byz_andronikos_health_check = {
+    trigger = {
+        tag = BYZ
+        NOT = { has_variable = oe_andronikos_illness_queued }
+        NOT = { has_variable = oe_andronikos_illness_resolved }
+        exists = character:byz_andronikos_iii_palaiologos
+        character:byz_andronikos_iii_palaiologos ?= {
+            is_alive = yes
+            owner = c:BYZ
+            has_trait = oe_byz_andronikos_iii_I
+            modifier:oe_andronikos_health <= 0
+        }
+    }
+    effect = { oe_byz_check_andronikos_health = yes }
+}

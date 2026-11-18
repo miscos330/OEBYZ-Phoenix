@@ -1,0 +1,22 @@
+﻿# Location scope; include both whole regions, independent of the IO land exclusions.
+oe_rw_hegemony_land = {
+    is_ownable = yes
+    OR = { region = region:balkan_region region = region:anatolia_region }
+}
+
+# Country scope. No requirement to hold Constantinople or to be independent.
+oe_rw_end_contest_visible = {
+    oe_roman_world_territorial_country_trigger = yes
+    is_member_of_international_organization = international_organization:oe_byz_roman_world
+    international_organization:oe_byz_roman_world = {
+        NOT = { has_variable = oe_rw_contest_ended }
+    }
+}
+oe_rw_end_contest_allowed = {
+    oe_rw_end_contest_visible = yes
+    oe_rw_hegemony_total_locations > 0
+    custom_tooltip = {
+        text = OE_RW_HEGEMONY_THRESHOLD
+        oe_rw_hegemony_owned_locations >= oe_rw_hegemony_required_locations
+    }
+}

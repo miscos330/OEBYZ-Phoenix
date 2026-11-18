@@ -1,0 +1,15 @@
+﻿# One dispatch per BYZ monthly pulse after the supply project is unlocked.
+# Defer the actual provincial food transaction until the following day. No daily polling.
+monthly_country_pulse = {
+    on_actions = { oe_egypt_supply_monthly_dispatch }
+}
+
+oe_egypt_supply_monthly_dispatch = {
+    trigger = {
+        tag = BYZ
+        has_variable = oe_works_egypt_supply_unlocked
+    }
+    effect = {
+        trigger_event_silently = { id = oe_egypt_supply.1 days = 1 }
+    }
+}

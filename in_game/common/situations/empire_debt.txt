@@ -1,0 +1,339 @@
+﻿# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# empire_debt = {
+# 	monthly_spawn_chance = monthly_spawn_chance_unique
+# 	hint_tag = hint_empire_debt
+# 	can_start = {
+# 		current_date > 1337.4.1
+# 		current_date < 1340
+# 	}
+# 	can_end = {
+# 		has_global_variable = oe_byz_empire_debt_situation_over
+# 	}
+# 	visible = {
+# 			capital = {
+# 						OR = {
+# 							region = region:balkan_region
+# 							region = region:anatolia_region
+# 							region = region:italy_region
+# 							area = area:catalonia_area
+# 						}
+# 					}
+# 			
+# 	}
+# 	on_start = {
+# 		c:BYZ = {
+# 			trigger_event_non_silently = empire_debt.1
+# 		}
+# 		every_country = {#筛选国家
+# 			limit = {			
+# 					capital = {
+# 						OR = {
+# 							region = region:balkan_region
+# 							region = region:anatolia_region
+# 							region = region:italy_region
+# 							area = area:catalonia_area
+# 						}
+# 					}				
+# 			}
+# 			add_to_global_variable_list = { name = east_trade_score target = this }
+# 			
+# 		}
+# 		ordered_in_global_list = {#地中海贸易主导国
+# 			variable = east_trade_score
+# 			limit = { is_subject = no }
+# 			order_by = {
+# 			add = {
+# 				value = monthly_income_trade_and_tax
+# 				multiply = 0.1
+# 			}
+# 			if = {
+# 				limit = { capital = {
+# 					is_coastal = yes
+# 				}}
+# 				add = {
+# 					value = capital.modifier:harbor_suitability	
+# 					multiply = 100
+# 				}
+# 			}
+# 			add = {
+# 				value = navy_size
+# 				multiply = 0.5
+# 			}	
+# 				add = {
+# 				value = total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = num_of_trades
+# 				multiply = 1
+# 			}		
+# 			} 
+# 			max = 1
+# 			check_range_bounds = no 
+# 			situation:empire_debt = {
+# 				set_variable = {
+# 					name = strongest_east_trade_country
+# 					value = prev
+# 				}
+# 				set_variable = {
+# 					name = strongest_east_trade_country_total_score_variable
+# 					value = {
+# 						add = {
+# 							value = var:strongest_east_trade_country.monthly_income_trade_and_tax
+# 							multiply = 0.1
+# 						} 
+# 									if = {
+# 				limit = { var:strongest_east_trade_country.capital = {
+# 					is_coastal = yes
+# 				}}
+# 						add = {
+# 							value = var:strongest_east_trade_country.capital.modifier:harbor_suitability	
+# 							multiply = 100
+# 						}}
+# 						add = {
+# 				value = var:strongest_east_trade_country.navy_size
+# 				multiply = 0.5
+# 			}	
+# 						add = {
+# 				value = var:strongest_east_trade_country.total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 						add = {
+# 				value = var:strongest_east_trade_country.num_of_trades
+# 				multiply = 1
+# 			}	
+# 					}
+# 				}
+# 							set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_alex_cloves
+# 				value = {
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.02
+# 					}
+# 				}
+# 			}
+# 							set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_alex_pepper
+# 				value = {
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.2
+# 					}
+# 				}
+# 			}
+# 										set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_alex_porcelain
+# 				value = {
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.03
+# 					}
+# 				}
+# 			}
+# 										set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_alex_lacquerware
+# 				value = {
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.03
+# 					}
+# 				}
+# 			}
+# 							set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_kafa_fur
+# 				value = {
+# 					add = {
+# 						value = location:kaffa.market.total_merchant_power
+# 						multiply = 0.15
+# 					}
+# 				}
+# 			}
+# 							set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_kafa_slaves
+# 				value = {
+# 					add = {
+# 						value = location:kaffa.market.total_merchant_power
+# 						multiply = 0.07
+# 					}
+# 				}
+# 			}
+# 			}
+# 		}
+# 		ordered_in_global_list = {#地中海贸易第二主导国  
+# 			variable = east_trade_score
+# 			limit = { 
+# 				this != situation:empire_debt.var:strongest_east_trade_country
+# 				is_subject = no
+# 			}
+# 			order_by = {
+# 					
+# 			add = {
+# 				value = monthly_income_trade_and_tax
+# 				multiply = 0.1
+# 			}
+# 			if = {
+# 				limit = { capital = {
+# 					is_coastal = yes
+# 				}}
+# 				add = {
+# 					value = capital.modifier:harbor_suitability	
+# 					multiply = 100
+# 				}
+# 			}
+# 			add = {
+# 				value = navy_size
+# 				multiply = 0.5
+# 			}	
+# 				add = {
+# 				value = total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = num_of_trades
+# 				multiply = 1
+# 			}		
+# 			} 
+# 			max = 1
+# 			check_range_bounds = no 
+# 			situation:empire_debt = {
+# 				set_variable = {
+# 					name = second_strongest_east_trade_country
+# 					value = prev
+# 				}
+# 				set_variable = {
+# 					name = second_strongest_east_trade_country_total_score_variable
+# 					value = {
+# 
+# 												add = {
+# 							value = var:second_strongest_east_trade_country.monthly_income_trade_and_tax
+# 							multiply = 0.1
+# 						} 
+# 									if = {
+# 				limit = { var:second_strongest_east_trade_country.capital = {
+# 					is_coastal = yes
+# 				}}
+# 						add = {
+# 							value = var:second_strongest_east_trade_country.capital.modifier:harbor_suitability	
+# 							multiply = 100
+# 						}}
+# 											add = {
+# 				value = var:second_strongest_east_trade_country.navy_size
+# 				multiply = 0.5
+# 			}	
+# 							add = {
+# 				value = var:second_strongest_east_trade_country.total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = var:second_strongest_east_trade_country.num_of_trades
+# 				multiply = 1
+# 			}	
+# 					}
+# 				}
+# 			}
+# 		}
+# 		ordered_in_global_list = {#地中海贸易第三主导国  
+# 			variable = east_trade_score
+# 			limit = {
+# 				this != situation:empire_debt.var:strongest_east_trade_country 
+# 				this != situation:empire_debt.var:second_strongest_east_trade_country
+# 				is_subject = no
+# 			}
+# 			order_by = {
+# 					
+# 			add = {
+# 				value = monthly_income_trade_and_tax
+# 				multiply = 0.1
+# 			}
+# 			if = {
+# 				limit = { capital = {
+# 					is_coastal = yes
+# 				}}
+# 				add = {
+# 					value = capital.modifier:harbor_suitability	
+# 					multiply = 100
+# 				}
+# 			}
+# 			add = {
+# 				value = navy_size
+# 				multiply = 0.5
+# 			}	
+# 				add = {
+# 				value = total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = num_of_trades
+# 				multiply = 1
+# 			}			
+# 			} 
+# 			max = 1
+# 			check_range_bounds = no 
+# 			situation:empire_debt = {
+# 				set_variable = {
+# 					name = third_strongest_east_trade_country
+# 					value = prev
+# 				}
+# 				set_variable = {
+# 					name = third_strongest_east_trade_country_total_score_variable
+# 					value = {
+# 
+# 						add = {
+# 							value = var:third_strongest_east_trade_country.monthly_income_trade_and_tax
+# 							multiply = 0.1
+# 						} 
+# 									if = {
+# 				limit = { var:third_strongest_east_trade_country.capital = {
+# 					is_coastal = yes
+# 				}}
+# 						add = {
+# 							value = var:third_strongest_east_trade_country.capital.modifier:harbor_suitability	
+# 							multiply = 100
+# 						}}
+# 						add = {
+# 				value = var:third_strongest_east_trade_country.navy_size
+# 				multiply = 0.5
+# 						}	
+# 						add = {
+# 				value = var:third_strongest_east_trade_country.total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = var:third_strongest_east_trade_country.num_of_trades
+# 				multiply = 1
+# 			}		
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# 	on_monthly = {
+# 		empire_debt_recalculate_top_3 = yes
+# 		east_trade_goods_jiaofu = yes
+# 	}
+# 	on_ending = {}
+# 	tooltip = {
+# 
+# 	}
+# 	map_color = {
+# 				if = {
+# 			limit = {
+# 				has_owner = yes
+# 
+# 				has_building = building_type:oe_byz_bad_thief_greek
+# 			}
+# 			value = green
+# 		}
+# 	}
+# }
+
+empire_debt = {
+    monthly_spawn_chance = monthly_spawn_chance_unique
+    can_start = { always = no }
+    can_end = { always = yes }
+    visible = { always = no }
+    on_start = {}
+    on_monthly = {}
+    on_ending = {}
+}

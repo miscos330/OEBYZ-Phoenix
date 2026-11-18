@@ -1,0 +1,60 @@
+﻿pe_byz_vs_ser = {
+	cost = {
+		add = {
+			desc = "DIPLOREASON_BASE"
+			value = 100
+		}
+	}
+	base_antagonism = 25
+	antagonism_type = antagonism_subjugate_neighbor_native
+	potential = {
+		scope:war = {
+			is_no_cb_war = no
+			casus_belli ?= casus_belli:oe_cb_byz_vs_ser
+		}
+		scope:loser = {
+			tag = SER
+		}
+	}
+	allow = {
+		scope:loser = {
+			is_subject = no
+		}
+	}
+
+	effect = {
+		scope:loser = {
+			every_owned_location = {
+				limit = {
+					NOT = {
+						OR = {
+							area = area:serbia_area
+							area = area:bulgaria_area
+						}
+					}
+				}
+				change_location_owner = scope:winner
+			}
+		}
+		province_definition:zeta_province = {
+			every_location_in_province_definition = {
+				limit = {
+					owner = scope:loser
+				}
+				change_location_owner = scope:winner
+			}
+		}
+	
+				scope:loser = {
+			make_subject_of = {
+				target = scope:winner
+				type = subject_type:oe_rome_sub
+				war = scope:war
+			}
+		}	
+	}
+
+	ai_desire = {
+		value = 10
+	}
+}

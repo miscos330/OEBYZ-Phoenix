@@ -1,0 +1,122 @@
+﻿namespace = oe_pillars_settings
+oe_pillars_settings.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_pillars_settings.1.t
+    desc = oe_pillars_settings.1.d
+    trigger = { oe_court_actor = yes }
+    option = {
+        name = oe_pillars_settings.1.a
+        custom_tooltip = {
+            text = OE_SETTINGS_RESTORE_BUREAUCRACY_TT
+            set_variable = oe_settings_bureaucracy_restored
+            add_country_modifier = { modifier = oe_settings_bureaucracy_permission years = -1 mode = replace }
+        }
+    }
+    option = {
+        name = oe_pillars_settings.1.food_on
+        trigger = { NOT = { has_country_modifier = oe_settings_food_support } }
+        add_country_modifier = { modifier = oe_settings_food_support years = -1 mode = replace }
+    }
+    option = {
+        name = oe_pillars_settings.1.food_off
+        trigger = { has_country_modifier = oe_settings_food_support }
+        remove_country_modifier = oe_settings_food_support
+    }
+    option = {
+        name = oe_pillars_settings.1.open_ark
+        trigger = {
+            tag = BYZ
+            has_country_modifier = oe_discovery_of_the_ark
+            has_ruler = yes
+            NOT = { has_variable = oe_ark_opened }
+        }
+        custom_tooltip = OE_SETTINGS_OPEN_ARK_TT
+        hidden_effect = {
+            if = {
+                limit = {
+                    tag = BYZ
+                    has_country_modifier = oe_discovery_of_the_ark
+                    has_ruler = yes
+                    NOT = { has_variable = oe_ark_opened }
+                }
+                # Consume the opportunity before a ruler's death can trigger succession.
+                set_variable = oe_ark_opened
+                ruler = { save_scope_as = oe_ark_current_ruler }
+                random_list = {
+                    50 = { kill_character = scope:oe_ark_current_ruler }
+                    50 = {
+                        scope:oe_ark_current_ruler = {
+                            add_character_modifier = { modifier = oe_obtained_holy_grail years = -1 mode = replace }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    option = {
+        name = oe_pillars_settings.1.clear_movements
+        ai_chance = { factor = 0 }
+        custom_tooltip = OE_SETTINGS_CLEAR_MOVEMENTS_TT
+        # Click-only global cleanup. Culture/religion lookups miss broken old-save
+        # movements whose target culture is absent. Do not enumerate on hover.
+        hidden_effect = {
+            every_movement = { destroy_movement = yes }
+        }
+    }
+    option = {
+        name = oe_pillars_settings.1.limit_mongols
+        ai_chance = { factor = 0 }
+        custom_tooltip = OE_SETTINGS_LIMIT_MONGOLS_TT
+        # One world pass on click only; no hover enumeration or monthly on_action.
+        hidden_effect = {
+            every_country = {
+                limit = { culture = culture:mongolian_culture }
+                add_country_modifier = { modifier = oe_settings_limit_mongols years = -1 mode = replace }
+            }
+        }
+    }
+    option = {
+        name = oe_pillars_settings.1.market_reduce
+        ai_chance = { factor = 0 }
+        custom_tooltip = OE_SETTINGS_MARKET_REDUCE_TT
+        hidden_effect = {
+            fire_generic_action = {
+                type = oe_settings_market_reduce
+                actor = root
+                recipient = root
+            }
+        }
+    }
+    option = {
+        name = oe_pillars_settings.1.market_clear
+        ai_chance = { factor = 0 }
+        custom_tooltip = OE_SETTINGS_MARKET_CLEAR_TT
+        hidden_effect = {
+            fire_generic_action = {
+                type = oe_settings_market_clear
+                actor = root
+                recipient = root
+            }
+        }
+    }
+    option = {
+        name = oe_pillars_settings.1.debug
+        ai_will_select = { value = 0 }
+        custom_tooltip = OE_SETTINGS_OPEN_DEBUG_TT
+        hidden_effect = { trigger_event_non_silently = oe_pillars_debug.1 }
+    }
+# PAUSED 2026-11-01: theme supervisory offices, per user request.
+#     option = {
+#         name = oe_pillars_settings.1.theme_supervisory_offices
+#         trigger = { tag = BYZ location:constantinople = { owner = c:BYZ } }
+#         ai_chance = { factor = 0 }
+#         custom_tooltip = OE_SETTINGS_THEME_SUPERVISORY_OFFICES_TT
+#         hidden_effect = {
+#             every_subject = {
+#                 limit = { oe_theme_convertible_trigger = yes }
+#                 oe_theme_ensure_supervisory_office_effect = yes
+#             }
+#         }
+#     }
+}

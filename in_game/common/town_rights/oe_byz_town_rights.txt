@@ -1,0 +1,71 @@
+﻿city_of_hero = {
+	kept_at_conquest = no
+	potential = {
+		OR = {
+			has_or_had_tag = BYZ
+			has_or_had_tag = ROM
+		}
+	}
+	
+	allow = {
+		scope:target = {
+			this = location:alasehir
+		} 		
+	}
+	
+	location_modifier = {
+		local_food_capacity = 1000
+		local_defensive = 1
+		local_cultural_tradition = 0.25
+	}
+
+	color = goods_coffee
+}
+oe_rights_heart_of_orthodox = {
+	kept_at_conquest = no
+	potential = {
+		OR = {
+			has_or_had_tag = BYZ
+			has_or_had_tag = ROM
+		}
+	}
+	
+	allow = {
+		scope:target = {
+			this = location:constantinople
+		} 		
+	}	
+	location_modifier = {
+		local_clergy_estate_unrest = -0.5
+		local_max_literacy = 5
+		local_clergy_desired_pop = 10
+		local_clergy_estate_power = 0.33
+	}
+
+	color = goods_coffee
+}
+# This right is unique to Thessaloniki, but may be granted again after revocation.
+oe_rights_thessaloniki_mint = {
+    kept_at_conquest = no
+    # Automatic upgrade is performed by oe_ir_coinage, with no second grant or fee.
+    potential = { OR = { has_or_had_tag = BYZ has_or_had_tag = ROM } }
+    allow = {
+        custom_tooltip = {
+            text = oe_mint_before_coinage_reform_tt
+            NOT = { oe_mint_coinage_reformed = yes }
+        }
+        scope:target = {
+            this = location:thessaloniki
+            NOR = {
+                has_town_rights = town_rights_type:oe_rights_thessaloniki_mint
+                has_town_rights = town_rights_type:oe_rights_imperial_mint
+            }
+        }
+    }
+    location_modifier = {
+        local_jewelry_guild_building_levels = 5
+        local_jewelry_output_modifier = 0.05
+    }
+    country_modifier = { minting_inflation_threshold = 0.01 }
+    color = goods_jewelry
+}

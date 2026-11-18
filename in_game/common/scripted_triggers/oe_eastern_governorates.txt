@@ -1,0 +1,90 @@
+﻿# Country scope, includes indirect subjects, but never independent allies.
+oe_heg_byz_bloc = { OR = { this = c:BYZ is_subject_or_below_of = c:BYZ } }
+# Location scope: strictly military occupation of foreign land, per user clarification.
+# A location owned by BYZ or its subjects NEVER qualifies, even after recapture.
+oe_heg_military_occupation = {
+    is_ownable = yes
+    has_owner = yes
+    controller = { oe_heg_byz_bloc = yes is_at_war_with = prev.owner }
+    owner = { NOT = { oe_heg_byz_bloc = yes } }
+}
+oe_heg_held_over_year = {
+    oe_heg_military_occupation = yes
+    has_variable = oe_heg_hold_days
+    var:oe_heg_hold_days >= 366
+}
+# Character scope. Native eligibility excludes minors, regents, artists, explorers,
+# religious figures and characters blocked from ruling. Do not remove BYZ's ruler.
+oe_heg_governor_candidate = {
+    owner = c:BYZ
+    can_become_a_ruler = yes
+    in_cabinet = no
+    is_ruler = no
+}
+oe_heg_three_candidates = { any_character = { count >= 3 oe_heg_governor_candidate = yes } }
+oe_heg_action_visible = {
+    custom_tooltip = {
+        text = OE_HEG_ROMAN_LEGITIMACY_REQUIRED
+        has_special_status_in_international_organization = {
+            type = special_status:oe_byz_roman_world_byz
+            international_organization = international_organization:oe_byz_roman_world
+        }
+    }
+    tag = BYZ
+    is_member_of_international_organization = international_organization:oe_byz_roman_world
+}
+oe_heg_common_allowed = {
+    custom_tooltip = { text = OE_HEG_EGYPT_PLAN_REQUIRED has_variable = oe_heg_egypt_plan_done }
+    oe_heg_action_visible = yes
+    international_organization:oe_byz_roman_world = {
+        custom_tooltip = { text = OE_HEG_END_CONTEST_REQUIRED has_variable = oe_rw_contest_ended }
+    }
+    custom_tooltip = { text = OE_HEG_NO_PENDING_GOVERNOR NOT = { has_variable = oe_heg_pending_governorate } }
+    custom_tooltip = { text = OE_HEG_THREE_CANDIDATES oe_heg_three_candidates = yes }
+}
+oe_heg_syria_allowed = {
+    oe_heg_common_allowed = yes
+    NOT = { has_variable = oe_heg_syria_done }
+    custom_tooltip = {
+        text = OE_HEG_SYRIA_YEAR
+        OR = {
+            location:aleppo = { oe_heg_held_over_year = yes }
+            location:damascus = { oe_heg_held_over_year = yes }
+        }
+    }
+}
+oe_heg_jerusalem_allowed = {
+    oe_heg_common_allowed = yes
+    NOT = { has_variable = oe_heg_jerusalem_done }
+    custom_tooltip = { text = OE_HEG_JERUSALEM_YEAR location:jerusalem = { oe_heg_held_over_year = yes } }
+}
+oe_heg_egypt_allowed = {
+    oe_heg_common_allowed = yes
+    NOT = { has_variable = oe_heg_egypt_done }
+    custom_tooltip = {
+        text = OE_HEG_LEVANT_OWNERSHIP
+        location:aleppo = { owner = { oe_heg_byz_bloc = yes } }
+        location:damascus = { owner = { oe_heg_byz_bloc = yes } }
+        location:jerusalem = { owner = { oe_heg_byz_bloc = yes } }
+    }
+    custom_tooltip = { text = OE_HEG_ALEXANDRIA_YEAR location:alexandria = { oe_heg_held_over_year = yes } }
+}
+oe_heg_tracking_needed = {
+    tag = BYZ
+    # Explicit any-unfinished condition. Do not use a multi-child NOT (native NOR semantics).
+    OR = {
+        NOT = { has_variable = oe_heg_syria_done }
+        NOT = { has_variable = oe_heg_jerusalem_done }
+        NOT = { has_variable = oe_heg_egypt_done }
+        NOT = { has_variable = oe_heg_rome_done }
+        NOT = { has_variable = oe_heg_venice_done }
+    }
+}
+oe_heg_key_location = {
+    OR = { this = location:aleppo this = location:damascus this = location:jerusalem this = location:alexandria this = location:rome this = location:venice }
+}
+
+oe_heg_governor_destination_valid = {
+    exists = scope:oe_heg_new_country
+    scope:oe_heg_new_country = { is_subject_of = c:BYZ has_variable = oe_heg_governorate }
+}

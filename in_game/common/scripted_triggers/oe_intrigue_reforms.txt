@@ -1,0 +1,61 @@
+﻿# IO scope. A negotiated dynasty stays recorded even if its head or registry slot changes.
+oe_bi_negotiable_slot = {
+    has_variable = oe_nf_dynasty_$slot$
+    var:oe_nf_influence_$slot$ < 400
+    NOT = { oe_nf_is_political_ally = { slot = $slot$ } }
+    exists = var:oe_nf_head_$slot$
+    var:oe_nf_head_$slot$ = { oe_nf_living = yes }
+    var:oe_nf_dynasty_$slot$ = { save_temporary_scope_as = oe_bi_negotiable_family }
+    NOT = { any_in_list = { variable = oe_bi_negotiated_families this = scope:oe_bi_negotiable_family } }
+}
+oe_bi_has_negotiable_house = { OR = {
+    oe_bi_negotiable_slot = { slot = 1 }
+    oe_bi_negotiable_slot = { slot = 2 }
+    oe_bi_negotiable_slot = { slot = 3 }
+    oe_bi_negotiable_slot = { slot = 4 }
+} }
+oe_bi_negotiable_head = {
+    oe_nf_living = yes
+    save_temporary_scope_as = oe_bi_negotiation_head
+    international_organization:oe_byz_empire_pillars = { OR = {
+        AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:oe_bi_negotiation_head oe_bi_negotiable_slot = { slot = 1 } }
+        AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:oe_bi_negotiation_head oe_bi_negotiable_slot = { slot = 2 } }
+        AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:oe_bi_negotiation_head oe_bi_negotiable_slot = { slot = 3 } }
+        AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:oe_bi_negotiation_head oe_bi_negotiable_slot = { slot = 4 } }
+    } }
+}
+oe_bi_force_ready = {
+    oe_bi_active = yes
+    has_variable = oe_bi_capital_purged
+    custom_tooltip = { text = OE_BI_REQUIRE_100_MANPOWER manpower >= 0.1 }
+    international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 2 oe_bi_has_rival_head = yes }
+}
+oe_bi_negotiate_ready = {
+    oe_bi_active = yes
+    NOT = { has_variable = oe_bi_negotiate_cooldown }
+    international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 2 oe_bi_has_negotiable_house = yes }
+}
+oe_bi_assert_authority_ready = {
+    oe_bi_active = yes
+    NOT = { has_variable = oe_bi_assert_authority_cooldown }
+    custom_tooltip = { text = OE_BI_PAY_ROYAL_COST stability >= -95 legitimacy >= 5 }
+}
+oe_bi_curb_ready = {
+    oe_bi_active = yes
+    NOT = { has_variable = oe_bi_curb_cooldown }
+    international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 5 oe_bi_has_rival_head = yes }
+}
+oe_ir_reclaim_privileges_ready = {
+    oe_court_actor = yes
+    has_variable = oe_ir_succession_done
+    NOT = { has_variable = oe_ir_reclaim_privileges_done }
+    international_organization:oe_byz_empire_pillars = {
+        custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        custom_tooltip = { text = OE_IR_SUCCESSION_NO_RIVAL NOT = { OR = {
+            AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_influence_1 > 200 NOT = { oe_nf_is_political_ally = { slot = 1 } } }
+            AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_influence_2 > 200 NOT = { oe_nf_is_political_ally = { slot = 2 } } }
+            AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_influence_3 > 200 NOT = { oe_nf_is_political_ally = { slot = 3 } } }
+            AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_influence_4 > 200 NOT = { oe_nf_is_political_ally = { slot = 4 } } }
+        } } }
+    }
+}

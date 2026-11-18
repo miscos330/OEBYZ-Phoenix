@@ -1,0 +1,169 @@
+﻿# Cheap historic start check; do not poll every country from five decision tooltips.
+oe_march_german_identity_started = {
+    OR = {
+        c:BYZ = { has_variable = oe_rw_german_romanization_started }
+        culture:oe_german_greek_culture = { has_variable = oe_identity_fixed_30y_scheduled }
+        culture:oe_german_greek_culture = { any_movement_in_culture = { movement_type = movement_definition:oe_german_identity_movement } }
+    }
+}
+
+# Country scope, direct ownership of every conquerable location in the prerequisite area.
+oe_caucasian_march_land_owned = {
+    area:georgia_area = {
+        any_location_in_area = { is_ownable = yes }
+        NOT = { any_location_in_area = {
+            is_ownable = yes
+            NOT = { AND = { has_owner = yes owner = c:BYZ } }
+        } }
+    }
+}
+# Location scope; subjects' holdings are never part of the grant.
+oe_caucasian_march_grant_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = c:BYZ
+    OR = {
+        province_definition = province_definition:tuapse_province
+        AND = { region = region:caucasus_region NOT = { area = area:armenian_highlands_area } }
+    }
+}
+oe_caucasian_march_allowed = {
+    tag = BYZ
+    NOT = { has_variable = oe_caucasian_march_founded }
+    custom_tooltip = { text = OE_MARCH_CAUCASIAN_TERRITORY_REQUIRED oe_caucasian_march_land_owned = yes }
+}
+
+# Country scope, direct ownership of every conquerable location in the prerequisite area.
+oe_bohemian_march_land_owned = {
+    area:bohemia_area = {
+        any_location_in_area = { is_ownable = yes }
+        NOT = { any_location_in_area = {
+            is_ownable = yes
+            NOT = { AND = { has_owner = yes owner = c:BYZ } }
+        } }
+    }
+}
+# Location scope; subjects' holdings are never part of the grant.
+oe_bohemian_march_grant_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = c:BYZ
+    OR = { area = area:bohemia_area area = area:moravia_area }
+}
+oe_bohemian_march_allowed = {
+    tag = BYZ
+    NOT = { has_variable = oe_bohemian_march_founded }
+    custom_tooltip = { text = OE_MARCH_BOHEMIAN_TERRITORY_REQUIRED oe_bohemian_march_land_owned = yes }
+}
+
+# Country scope, direct ownership of every conquerable location in the prerequisite area.
+oe_dutch_march_land_owned = {
+    area:holland_area = {
+        any_location_in_area = { is_ownable = yes }
+        NOT = { any_location_in_area = {
+            is_ownable = yes
+            NOT = { AND = { has_owner = yes owner = c:BYZ } }
+        } }
+    }
+}
+# Location scope; subjects' holdings are never part of the grant.
+oe_dutch_march_grant_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = c:BYZ
+    OR = { area = area:holland_area area = area:friesland_area }
+}
+oe_dutch_march_allowed = {
+    tag = BYZ
+    NOT = { has_variable = oe_dutch_march_founded }
+    custom_tooltip = { text = OE_MARCH_DUTCH_TERRITORY_REQUIRED oe_dutch_march_land_owned = yes }
+    custom_tooltip = { text = OE_MARCH_GERMAN_IDENTITY_REQUIRED oe_march_german_identity_started = yes }
+}
+
+# Country scope, direct ownership of every conquerable location in the prerequisite area.
+oe_upper_german_march_land_owned = {
+    area:rhineland_area = {
+        any_location_in_area = { is_ownable = yes }
+        NOT = { any_location_in_area = {
+            is_ownable = yes
+            NOT = { AND = { has_owner = yes owner = c:BYZ } }
+        } }
+    }
+}
+# Location scope; subjects' holdings are never part of the grant.
+oe_upper_german_march_grant_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = c:BYZ
+    region = region:north_german_region
+    NOT = { OR = {
+        area = area:wallonia_area
+        area = area:flanders_area
+        area = area:brabant_area
+        area = area:holland_area
+        area = area:friesland_area
+        this = location:mainz
+        this = location:oppenheim
+        this = location:worms
+    } }
+    # Exclude the Rhineland, except the specifically granted eastern enclaves.
+    OR = {
+        NOT = { area = area:rhineland_area }
+        province_definition = province_definition:bergisches_land_province
+        this = location:wied
+        this = location:dusseldorf
+        this = location:altenkirchen
+    }
+}
+oe_upper_german_march_allowed = {
+    tag = BYZ
+    NOT = { has_variable = oe_upper_german_march_founded }
+    custom_tooltip = { text = OE_MARCH_UPPER_GERMAN_TERRITORY_REQUIRED oe_upper_german_march_land_owned = yes }
+    custom_tooltip = { text = OE_MARCH_GERMAN_IDENTITY_REQUIRED oe_march_german_identity_started = yes }
+}
+
+# Country scope, direct ownership of every conquerable location in the prerequisite area.
+oe_lower_german_march_land_owned = {
+    area:upper_rhine_area = {
+        any_location_in_area = { is_ownable = yes }
+        NOT = { any_location_in_area = {
+            is_ownable = yes
+            NOT = { AND = { has_owner = yes owner = c:BYZ } }
+        } }
+    }
+}
+# Location scope; subjects' holdings are never part of the grant.
+oe_lower_german_march_grant_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = c:BYZ
+    OR = { area = area:swabia_area area = area:bavaria_area area = area:franconia_area area = area:upper_rhine_area }
+    # User confirmed: "Heidelberg province" means the native Palatinate province.
+    OR = { NOT = { province_definition = province_definition:palatinate_province } this = location:heidelberg }
+}
+oe_lower_german_march_allowed = {
+    tag = BYZ
+    NOT = { has_variable = oe_lower_german_march_founded }
+    custom_tooltip = { text = OE_MARCH_LOWER_GERMAN_TERRITORY_REQUIRED oe_lower_german_march_land_owned = yes }
+    custom_tooltip = { text = OE_MARCH_GERMAN_IDENTITY_REQUIRED oe_march_german_identity_started = yes }
+}
+
+# Location scope: direct Byzantine ownership, not occupation or subjects' land.
+oe_nubian_march_grant_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = c:BYZ
+    region = region:nubia_region
+}
+
+# Country scope: no full-region ownership requirement or extra cost.
+oe_nubian_march_allowed = {
+    tag = BYZ
+    NOT = { has_variable = oe_nubian_march_founded }
+    custom_tooltip = {
+        text = OE_NUBIAN_MARCH_TERRITORY_REQUIRED
+        region:nubia_region = {
+            any_location_in_region = { oe_nubian_march_grant_location = yes }
+        }
+    }
+}

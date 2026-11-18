@@ -1,0 +1,65 @@
+﻿oe_heg_plan_iberia_effect = {
+    add_gold = -1000
+    set_variable = oe_heg_iberia_plan_done
+    international_organization:oe_byz_roman_world = {
+        set_variable = oe_rw_iberia_included
+        oe_heg_sync_campaign_territory = yes
+    }
+}
+# BYZ country scope. Snapshot before declarations, since alliances can join targets to earlier wars.
+oe_heg_mass_invade_iberia_effect = {
+    add_gold = -1000
+    every_country = {
+        limit = { has_variable = oe_heg_iberia_campaign_target }
+        remove_variable = oe_heg_iberia_campaign_target
+    }
+    # Remove any residual flags from wars in which every designated enemy already made peace.
+    every_current_war = { remove_variable = oe_heg_iberia_campaign_war }
+    every_country = {
+        limit = { oe_heg_mass_iberia_target = yes }
+        set_variable = oe_heg_iberia_campaign_target
+        add_to_list = oe_heg_iberia_targets
+    }
+    every_in_list = {
+        list = oe_heg_iberia_targets
+        save_scope_as = oe_heg_iberia_enemy
+        c:BYZ = {
+            if = {
+                limit = { NOT = { is_at_war_with = scope:oe_heg_iberia_enemy } }
+                add_casus_belli = { target = scope:oe_heg_iberia_enemy type = casus_belli:oe_heg_capital_invasion }
+                declare_war_with_cb = { target = scope:oe_heg_iberia_enemy type = casus_belli:oe_heg_capital_invasion }
+            }
+        }
+    }
+    # Second pass includes designated countries called into wars during the first pass.
+    every_in_list = {
+        list = oe_heg_iberia_targets
+        every_current_war = {
+            limit = {
+                OR = {
+                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+                }
+            }
+            set_variable = oe_heg_iberia_campaign_war
+        }
+    }
+    # Native diplomacy may reject an impossible declaration: do not charge for zero eligible wars.
+    if = {
+        limit = { NOT = { any_country = { oe_heg_iberia_target_active = yes } } }
+        add_gold = 1000
+    }
+    else = { oe_heg_begin_mass_invasion = yes }
+    every_in_list = {
+        list = oe_heg_iberia_targets
+        if = { limit = { NOT = { oe_heg_iberia_target_active = yes } } remove_variable = oe_heg_iberia_campaign_target }
+    }
+}
+# Both fort sieges and unfortified occupations arrive in location scope.
+oe_heg_iberia_capture = {
+    controller = { save_scope_as = oe_heg_iberia_captor }
+    if = {
+        limit = { oe_heg_iberia_capture_allowed = yes }
+        oe_transfer_conquest_without_core = { recipient = c:BYZ }
+    }
+}

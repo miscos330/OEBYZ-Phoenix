@@ -1,0 +1,568 @@
+﻿# One 512 x 640 panel, with a 2 / 3 / 2 court hierarchy.
+# Portrait, native office ribbon, benefit and number; character names remain in portrait tooltips.
+types oe_court_widgets {
+    type oe_court_unified_panel = widget {
+        name = "oe_court_unified_panel"
+        size = { 512 640 }
+        layoutpolicy_horizontal = fixed
+        layoutpolicy_vertical = fixed
+        background = {
+            texture = "gfx/interface/component_decoration/ios/oe_pillars/court_offices_unified.dds"
+            spriteType = stretched
+        }
+        
+# PAUSED 2026-09-26: Panel headings are opt-in; keep the page tab label.
+# text_single = {
+#             position = { 24 13 } size = { 464 24 }
+#             text = "OE_COURT_TITLE"
+#             fontsize = 19 default_format = "#bold #yellow_titles"
+#             align = center autoresize = no
+#             tooltip = "OE_COURT_DESC"
+#         }
+
+        widget = {
+            name = "oe_court_chancellor_seat"
+            position = { 104 64 } size = { 136 157 }
+            widget = {
+                name = "oe_court_chancellor_portrait_host"
+                position = { 26 0 } size = { 84 96 }
+                button_regular_diamond = {
+                    name = "oe_court_chancellor_empty_portrait"
+                    size = { 100% 100% }
+                    text = "OE_COURT_VACANT"
+                    fontsize = 14
+                    datacontext = "[GetGenericAction('oe_court_chancellor_appoint')]"
+                    tooltipwidget = { using = io_generic_action_button_tooltip }
+                    visible = "[And(Not(GetScriptedGui('oe_court_chancellor_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)),PdxGuiWidget.IsUberButtonVisible)]"
+                    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                    scripted_action_tooltip = {
+                        click_type = left
+                        click_mode = single
+                        action_name = "oe_court_chancellor_appoint"
+                        actor = "[InternationalOrganizationsView.GetPlayer]"
+                        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                    }
+                }
+                widget = {
+                    size = { 100% 100% } visible = "[GetScriptedGui('oe_court_chancellor_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                    datacontext = "[GetCountry('BYZ').MakeScope.GetVariable('oe_court_chancellor').GetCharacter]"
+                    using = character_portrait_bg
+                    portrait_standard_head_framed_button = {
+                        size = { 72 86 } position = { 6 7 }
+                    }
+                }
+                widget = {
+                    size = { 20 20 } position = { 68 -3 }
+                    visible = "[And(GetScriptedGui('oe_court_chancellor_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End),GetScriptedGui('oe_court_chancellor_dismiss').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                    tooltip = "OE_COURT_DISMISS_TT"
+                    button_regular_diamond = {
+                        size = { 100% 100% } text = "×" fontsize = 17
+                        tooltip = "OE_COURT_DISMISS_TT"
+                        enabled = "[GetScriptedGui('oe_court_chancellor_dismiss').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        onclick = "[GetScriptedGui('oe_court_chancellor_dismiss').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                    }
+                }
+            }
+            widget = {
+                name = "oe_court_chancellor_office_ribbon"
+                position = { 0 90 } size = { 136 26 }
+                using = bg_name_banner
+                blockoverride "bg_name_banner_margin" { margin = { 0 0 } }
+                tooltip = "oe_court_chancellor_desc"
+                text_single = {
+                    position = { 7 1 } size = { 122 23 }
+                    text = "#bold #Y [Localize('oe_court_chancellor')]#!#!"
+                    using = Font_Type_Headers
+                    fontsize = 15 fontsize_min = 12
+                    align = center autoresize = no elide = right
+                    alwaystransparent = yes
+                }
+            }
+            
+            text_single = {
+                name = "oe_court_chancellor_benefit_label"
+                position = { 0 119 } size = { 136 18 }
+                text = "oe_court_chancellor_benefit" default_format = "#high"
+                fontsize = 14 fontsize_min = 11 align = center autoresize = no elide = right
+                tooltip = "oe_court_chancellor_desc"
+            }
+            text_single = {
+                name = "oe_court_chancellor_benefit_value"
+                position = { 0 138 } size = { 136 19 }
+                text = "#bold #G +[GuiScope.SetRoot(GetCountry('BYZ').MakeScope).ScriptValue('oe_court_chancellor_display')|2]#!#!"
+                fontsize = 16 align = center autoresize = no
+                tooltip = "oe_court_chancellor_desc"
+            }
+        }
+        widget = {
+            name = "oe_court_judge_seat"
+            position = { 272 64 } size = { 136 157 }
+            widget = {
+                name = "oe_court_judge_portrait_host"
+                position = { 26 0 } size = { 84 96 }
+                button_regular_diamond = {
+                    name = "oe_court_judge_empty_portrait"
+                    size = { 100% 100% }
+                    text = "OE_COURT_VACANT"
+                    fontsize = 14
+                    datacontext = "[GetGenericAction('oe_court_judge_appoint')]"
+                    tooltipwidget = { using = io_generic_action_button_tooltip }
+                    visible = "[And(Not(GetScriptedGui('oe_court_judge_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)),PdxGuiWidget.IsUberButtonVisible)]"
+                    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                    scripted_action_tooltip = {
+                        click_type = left
+                        click_mode = single
+                        action_name = "oe_court_judge_appoint"
+                        actor = "[InternationalOrganizationsView.GetPlayer]"
+                        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                    }
+                }
+                widget = {
+                    size = { 100% 100% } visible = "[GetScriptedGui('oe_court_judge_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                    datacontext = "[GetCountry('BYZ').MakeScope.GetVariable('oe_court_judge').GetCharacter]"
+                    using = character_portrait_bg
+                    portrait_standard_head_framed_button = {
+                        size = { 72 86 } position = { 6 7 }
+                    }
+                }
+                widget = {
+                    size = { 20 20 } position = { 68 -3 }
+                    visible = "[And(GetScriptedGui('oe_court_judge_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End),GetScriptedGui('oe_court_judge_dismiss').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                    tooltip = "OE_COURT_DISMISS_TT"
+                    button_regular_diamond = {
+                        size = { 100% 100% } text = "×" fontsize = 17
+                        tooltip = "OE_COURT_DISMISS_TT"
+                        enabled = "[GetScriptedGui('oe_court_judge_dismiss').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        onclick = "[GetScriptedGui('oe_court_judge_dismiss').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                    }
+                }
+            }
+            widget = {
+                name = "oe_court_judge_office_ribbon"
+                position = { 0 90 } size = { 136 26 }
+                using = bg_name_banner
+                blockoverride "bg_name_banner_margin" { margin = { 0 0 } }
+                tooltip = "oe_court_judge_desc"
+                text_single = {
+                    position = { 7 1 } size = { 122 23 }
+                    text = "#bold #Y [Localize('oe_court_judge')]#!#!"
+                    using = Font_Type_Headers
+                    fontsize = 15 fontsize_min = 12
+                    align = center autoresize = no elide = right
+                    alwaystransparent = yes
+                }
+            }
+            
+            text_single = {
+                name = "oe_court_judge_benefit_label"
+                position = { 0 119 } size = { 136 18 }
+                text = "oe_court_judge_benefit" default_format = "#high"
+                fontsize = 14 fontsize_min = 11 align = center autoresize = no elide = right
+                tooltip = "oe_court_judge_desc"
+            }
+            text_single = {
+                name = "oe_court_judge_benefit_value"
+                position = { 0 138 } size = { 136 19 }
+                text = "#bold #G +[GuiScope.SetRoot(GetCountry('BYZ').MakeScope).ScriptValue('oe_court_judge_display')|2]#!#!"
+                fontsize = 16 align = center autoresize = no
+                tooltip = "oe_court_judge_desc"
+            }
+        }
+        widget = {
+            name = "oe_court_secretary_seat"
+            position = { 36 248 } size = { 136 157 }
+            widget = {
+                name = "oe_court_secretary_portrait_host"
+                position = { 26 0 } size = { 84 96 }
+                button_regular_diamond = {
+                    name = "oe_court_secretary_empty_portrait"
+                    size = { 100% 100% }
+                    text = "OE_COURT_VACANT"
+                    fontsize = 14
+                    datacontext = "[GetGenericAction('oe_court_secretary_appoint')]"
+                    tooltipwidget = { using = io_generic_action_button_tooltip }
+                    visible = "[And(Not(GetScriptedGui('oe_court_secretary_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)),PdxGuiWidget.IsUberButtonVisible)]"
+                    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                    scripted_action_tooltip = {
+                        click_type = left
+                        click_mode = single
+                        action_name = "oe_court_secretary_appoint"
+                        actor = "[InternationalOrganizationsView.GetPlayer]"
+                        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                    }
+                }
+                widget = {
+                    size = { 100% 100% } visible = "[GetScriptedGui('oe_court_secretary_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                    datacontext = "[GetCountry('BYZ').MakeScope.GetVariable('oe_court_secretary').GetCharacter]"
+                    using = character_portrait_bg
+                    portrait_standard_head_framed_button = {
+                        size = { 72 86 } position = { 6 7 }
+                    }
+                }
+                widget = {
+                    size = { 20 20 } position = { 68 -3 }
+                    visible = "[And(GetScriptedGui('oe_court_secretary_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End),GetScriptedGui('oe_court_secretary_dismiss').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                    tooltip = "OE_COURT_DISMISS_TT"
+                    button_regular_diamond = {
+                        size = { 100% 100% } text = "×" fontsize = 17
+                        tooltip = "OE_COURT_DISMISS_TT"
+                        enabled = "[GetScriptedGui('oe_court_secretary_dismiss').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        onclick = "[GetScriptedGui('oe_court_secretary_dismiss').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                    }
+                }
+            }
+            widget = {
+                name = "oe_court_secretary_office_ribbon"
+                position = { 0 90 } size = { 136 26 }
+                using = bg_name_banner
+                blockoverride "bg_name_banner_margin" { margin = { 0 0 } }
+                tooltip = "oe_court_secretary_desc"
+                text_single = {
+                    position = { 7 1 } size = { 122 23 }
+                    text = "#bold #Y [Localize('oe_court_secretary')]#!#!"
+                    using = Font_Type_Headers
+                    fontsize = 15 fontsize_min = 12
+                    align = center autoresize = no elide = right
+                    alwaystransparent = yes
+                }
+            }
+            
+            text_single = {
+                name = "oe_court_secretary_benefit_label"
+                position = { 0 119 } size = { 136 18 }
+                text = "oe_court_secretary_benefit" default_format = "#high"
+                fontsize = 14 fontsize_min = 11 align = center autoresize = no elide = right
+                tooltip = "oe_court_secretary_desc"
+            }
+            text_single = {
+                name = "oe_court_secretary_benefit_value"
+                position = { 0 138 } size = { 136 19 }
+                text = "#bold #G +[GuiScope.SetRoot(GetCountry('BYZ').MakeScope).ScriptValue('oe_court_secretary_display')|2]%#!#!"
+                fontsize = 16 align = center autoresize = no
+                tooltip = "oe_court_secretary_desc"
+            }
+        }
+        widget = {
+            name = "oe_court_taxmaster_seat"
+            position = { 188 248 } size = { 136 157 }
+            widget = {
+                name = "oe_court_taxmaster_portrait_host"
+                position = { 26 0 } size = { 84 96 }
+                button_regular_diamond = {
+                    name = "oe_court_taxmaster_empty_portrait"
+                    size = { 100% 100% }
+                    text = "OE_COURT_VACANT"
+                    fontsize = 14
+                    datacontext = "[GetGenericAction('oe_court_taxmaster_appoint')]"
+                    tooltipwidget = { using = io_generic_action_button_tooltip }
+                    visible = "[And(Not(GetScriptedGui('oe_court_taxmaster_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)),PdxGuiWidget.IsUberButtonVisible)]"
+                    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                    scripted_action_tooltip = {
+                        click_type = left
+                        click_mode = single
+                        action_name = "oe_court_taxmaster_appoint"
+                        actor = "[InternationalOrganizationsView.GetPlayer]"
+                        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                    }
+                }
+                widget = {
+                    size = { 100% 100% } visible = "[GetScriptedGui('oe_court_taxmaster_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                    datacontext = "[GetCountry('BYZ').MakeScope.GetVariable('oe_court_taxmaster').GetCharacter]"
+                    using = character_portrait_bg
+                    portrait_standard_head_framed_button = {
+                        size = { 72 86 } position = { 6 7 }
+                    }
+                }
+                widget = {
+                    size = { 20 20 } position = { 68 -3 }
+                    visible = "[And(GetScriptedGui('oe_court_taxmaster_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End),GetScriptedGui('oe_court_taxmaster_dismiss').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                    tooltip = "OE_COURT_DISMISS_TT"
+                    button_regular_diamond = {
+                        size = { 100% 100% } text = "×" fontsize = 17
+                        tooltip = "OE_COURT_DISMISS_TT"
+                        enabled = "[GetScriptedGui('oe_court_taxmaster_dismiss').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        onclick = "[GetScriptedGui('oe_court_taxmaster_dismiss').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                    }
+                }
+            }
+            widget = {
+                name = "oe_court_taxmaster_office_ribbon"
+                position = { 0 90 } size = { 136 26 }
+                using = bg_name_banner
+                blockoverride "bg_name_banner_margin" { margin = { 0 0 } }
+                tooltip = "oe_court_taxmaster_desc"
+                text_single = {
+                    position = { 7 1 } size = { 122 23 }
+                    text = "#bold #Y [Localize('oe_court_taxmaster')]#!#!"
+                    using = Font_Type_Headers
+                    fontsize = 15 fontsize_min = 12
+                    align = center autoresize = no elide = right
+                    alwaystransparent = yes
+                }
+            }
+            
+            text_single = {
+                name = "oe_court_taxmaster_benefit_label"
+                position = { 0 119 } size = { 136 18 }
+                text = "oe_court_taxmaster_benefit" default_format = "#high"
+                fontsize = 14 fontsize_min = 11 align = center autoresize = no elide = right
+                tooltip = "oe_court_taxmaster_desc"
+            }
+            text_single = {
+                name = "oe_court_taxmaster_benefit_value"
+                position = { 0 138 } size = { 136 19 }
+                text = "#bold #G +[GuiScope.SetRoot(GetCountry('BYZ').MakeScope).ScriptValue('oe_court_taxmaster_display')|2]%#!#!"
+                fontsize = 16 align = center autoresize = no
+                tooltip = "oe_court_taxmaster_desc"
+            }
+        }
+        widget = {
+            name = "oe_court_ceremonies_seat"
+            position = { 340 248 } size = { 136 157 }
+            widget = {
+                name = "oe_court_ceremonies_portrait_host"
+                position = { 26 0 } size = { 84 96 }
+                button_regular_diamond = {
+                    name = "oe_court_ceremonies_empty_portrait"
+                    size = { 100% 100% }
+                    text = "OE_COURT_VACANT"
+                    fontsize = 14
+                    datacontext = "[GetGenericAction('oe_court_ceremonies_appoint')]"
+                    tooltipwidget = { using = io_generic_action_button_tooltip }
+                    visible = "[And(Not(GetScriptedGui('oe_court_ceremonies_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)),PdxGuiWidget.IsUberButtonVisible)]"
+                    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                    scripted_action_tooltip = {
+                        click_type = left
+                        click_mode = single
+                        action_name = "oe_court_ceremonies_appoint"
+                        actor = "[InternationalOrganizationsView.GetPlayer]"
+                        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                    }
+                }
+                widget = {
+                    size = { 100% 100% } visible = "[GetScriptedGui('oe_court_ceremonies_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                    datacontext = "[GetCountry('BYZ').MakeScope.GetVariable('oe_court_ceremonies').GetCharacter]"
+                    using = character_portrait_bg
+                    portrait_standard_head_framed_button = {
+                        size = { 72 86 } position = { 6 7 }
+                    }
+                }
+                widget = {
+                    size = { 20 20 } position = { 68 -3 }
+                    visible = "[And(GetScriptedGui('oe_court_ceremonies_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End),GetScriptedGui('oe_court_ceremonies_dismiss').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                    tooltip = "OE_COURT_DISMISS_TT"
+                    button_regular_diamond = {
+                        size = { 100% 100% } text = "×" fontsize = 17
+                        tooltip = "OE_COURT_DISMISS_TT"
+                        enabled = "[GetScriptedGui('oe_court_ceremonies_dismiss').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        onclick = "[GetScriptedGui('oe_court_ceremonies_dismiss').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                    }
+                }
+            }
+            widget = {
+                name = "oe_court_ceremonies_office_ribbon"
+                position = { 0 90 } size = { 136 26 }
+                using = bg_name_banner
+                blockoverride "bg_name_banner_margin" { margin = { 0 0 } }
+                tooltip = "oe_court_ceremonies_desc"
+                text_single = {
+                    position = { 7 1 } size = { 122 23 }
+                    text = "#bold #Y [Localize('oe_court_ceremonies')]#!#!"
+                    using = Font_Type_Headers
+                    fontsize = 15 fontsize_min = 12
+                    align = center autoresize = no elide = right
+                    alwaystransparent = yes
+                }
+            }
+            
+            text_single = {
+                name = "oe_court_ceremonies_benefit_label"
+                position = { 0 119 } size = { 136 18 }
+                text = "oe_court_ceremonies_benefit" default_format = "#high"
+                fontsize = 14 fontsize_min = 11 align = center autoresize = no elide = right
+                tooltip = "oe_court_ceremonies_desc"
+            }
+            text_single = {
+                name = "oe_court_ceremonies_benefit_value"
+                position = { 0 138 } size = { 136 19 }
+                text = "#bold #G +[GuiScope.SetRoot(GetCountry('BYZ').MakeScope).ScriptValue('oe_court_ceremonies_display')|2]#!#!"
+                fontsize = 16 align = center autoresize = no
+                tooltip = "oe_court_ceremonies_desc"
+            }
+        }
+        widget = {
+            name = "oe_court_admiral_seat"
+            position = { 104 432 } size = { 136 157 }
+            widget = {
+                name = "oe_court_admiral_portrait_host"
+                position = { 26 0 } size = { 84 96 }
+                button_regular_diamond = {
+                    name = "oe_court_admiral_empty_portrait"
+                    size = { 100% 100% }
+                    text = "OE_COURT_VACANT"
+                    fontsize = 14
+                    datacontext = "[GetGenericAction('oe_court_admiral_appoint')]"
+                    tooltipwidget = { using = io_generic_action_button_tooltip }
+                    visible = "[And(Not(GetScriptedGui('oe_court_admiral_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)),PdxGuiWidget.IsUberButtonVisible)]"
+                    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                    scripted_action_tooltip = {
+                        click_type = left
+                        click_mode = single
+                        action_name = "oe_court_admiral_appoint"
+                        actor = "[InternationalOrganizationsView.GetPlayer]"
+                        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                    }
+                }
+                widget = {
+                    size = { 100% 100% } visible = "[GetScriptedGui('oe_court_admiral_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                    datacontext = "[GetCountry('BYZ').MakeScope.GetVariable('oe_court_admiral').GetCharacter]"
+                    using = character_portrait_bg
+                    portrait_standard_head_framed_button = {
+                        size = { 72 86 } position = { 6 7 }
+                    }
+                }
+                widget = {
+                    size = { 20 20 } position = { 68 -3 }
+                    visible = "[And(GetScriptedGui('oe_court_admiral_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End),GetScriptedGui('oe_court_admiral_dismiss').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                    tooltip = "OE_COURT_DISMISS_TT"
+                    button_regular_diamond = {
+                        size = { 100% 100% } text = "×" fontsize = 17
+                        tooltip = "OE_COURT_DISMISS_TT"
+                        enabled = "[GetScriptedGui('oe_court_admiral_dismiss').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        onclick = "[GetScriptedGui('oe_court_admiral_dismiss').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                    }
+                }
+            }
+            widget = {
+                name = "oe_court_admiral_office_ribbon"
+                position = { 0 90 } size = { 136 26 }
+                using = bg_name_banner
+                blockoverride "bg_name_banner_margin" { margin = { 0 0 } }
+                tooltip = "oe_court_admiral_desc"
+                text_single = {
+                    position = { 7 1 } size = { 122 23 }
+                    text = "#bold #Y [Localize('oe_court_admiral')]#!#!"
+                    using = Font_Type_Headers
+                    fontsize = 15 fontsize_min = 12
+                    align = center autoresize = no elide = right
+                    alwaystransparent = yes
+                }
+            }
+            
+            text_single = {
+                name = "oe_court_admiral_benefit_label"
+                position = { 0 119 } size = { 136 18 }
+                text = "oe_court_admiral_benefit" default_format = "#high"
+                fontsize = 14 fontsize_min = 11 align = center autoresize = no elide = right
+                tooltip = "oe_court_admiral_desc"
+            }
+            text_single = {
+                name = "oe_court_admiral_benefit_value"
+                position = { 0 138 } size = { 136 19 }
+                text = "#bold #G +[GuiScope.SetRoot(GetCountry('BYZ').MakeScope).ScriptValue('oe_court_admiral_display')|2]#!#!"
+                fontsize = 16 align = center autoresize = no
+                tooltip = "oe_court_admiral_desc"
+            }
+        }
+        widget = {
+            name = "oe_court_domestikos_seat"
+            position = { 272 432 } size = { 136 157 }
+            widget = {
+                name = "oe_court_domestikos_portrait_host"
+                position = { 26 0 } size = { 84 96 }
+                button_regular_diamond = {
+                    name = "oe_court_domestikos_empty_portrait"
+                    size = { 100% 100% }
+                    text = "OE_COURT_VACANT"
+                    fontsize = 14
+                    datacontext = "[GetGenericAction('oe_court_domestikos_appoint')]"
+                    tooltipwidget = { using = io_generic_action_button_tooltip }
+                    visible = "[And(Not(GetScriptedGui('oe_court_domestikos_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)),PdxGuiWidget.IsUberButtonVisible)]"
+                    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                    scripted_action_tooltip = {
+                        click_type = left
+                        click_mode = single
+                        action_name = "oe_court_domestikos_appoint"
+                        actor = "[InternationalOrganizationsView.GetPlayer]"
+                        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                    }
+                }
+                widget = {
+                    size = { 100% 100% } visible = "[GetScriptedGui('oe_court_domestikos_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                    datacontext = "[GetCountry('BYZ').MakeScope.GetVariable('oe_court_domestikos').GetCharacter]"
+                    using = character_portrait_bg
+                    portrait_standard_head_framed_button = {
+                        size = { 72 86 } position = { 6 7 }
+                    }
+                }
+                widget = {
+                    size = { 20 20 } position = { 68 -3 }
+                    visible = "[And(GetScriptedGui('oe_court_domestikos_filled').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End),GetScriptedGui('oe_court_domestikos_dismiss').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                    tooltip = "OE_COURT_DISMISS_TT"
+                    button_regular_diamond = {
+                        size = { 100% 100% } text = "×" fontsize = 17
+                        tooltip = "OE_COURT_DISMISS_TT"
+                        enabled = "[GetScriptedGui('oe_court_domestikos_dismiss').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        onclick = "[GetScriptedGui('oe_court_domestikos_dismiss').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                    }
+                }
+            }
+            widget = {
+                name = "oe_court_domestikos_office_ribbon"
+                position = { 0 90 } size = { 136 26 }
+                using = bg_name_banner
+                blockoverride "bg_name_banner_margin" { margin = { 0 0 } }
+                tooltip = "oe_court_domestikos_desc"
+                text_single = {
+                    position = { 7 1 } size = { 122 23 }
+                    text = "#bold #Y [Localize('oe_court_domestikos')]#!#!"
+                    using = Font_Type_Headers
+                    fontsize = 15 fontsize_min = 12
+                    align = center autoresize = no elide = right
+                    alwaystransparent = yes
+                }
+            }
+            
+            text_single = {
+                name = "oe_court_domestikos_benefit_label"
+                position = { 0 119 } size = { 136 18 }
+                text = "oe_court_domestikos_benefit" default_format = "#high"
+                fontsize = 14 fontsize_min = 11 align = center autoresize = no elide = right
+                tooltip = "oe_court_domestikos_desc"
+            }
+            text_single = {
+                name = "oe_court_domestikos_benefit_value"
+                position = { 0 138 } size = { 136 19 }
+                text = "#bold #G +[GuiScope.SetRoot(GetCountry('BYZ').MakeScope).ScriptValue('oe_court_domestikos_display')|2]#!#!"
+                fontsize = 16 align = center autoresize = no
+                tooltip = "oe_court_domestikos_desc"
+            }
+        }
+        widget = {
+            name = "oe_court_auto_toggle_host"
+            position = { 448 580 } size = { 52 52 }
+            tooltip = "OE_COURT_AUTO_TT"
+            button_automation_shortcut = {
+                name = "oe_court_auto_toggle_button"
+                size = { 48 48 }
+                using = snd_UI_checkbutton_round
+                enabled = "[GetScriptedGui('oe_court_auto_toggle').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                onclick = "[GetScriptedGui('oe_court_auto_toggle').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                tooltip = "OE_COURT_AUTO_TT"
+            }
+            widget = {
+                position = { 30 30 } size = { 22 22 }
+                alwaystransparent = yes
+                visible = "[GetScriptedGui('oe_court_auto_state').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                background = {
+                    using = bg_button_light_round_texture
+                    modify_texture = { using = color_dark_blue_texture }
+                }
+                text_single = {
+                    size = { 22 22 } align = center fontsize = 20
+                    raw_text = "#bold #G ✓#!#!" autoresize = no alwaystransparent = yes
+                }
+            }
+        }
+    }
+}

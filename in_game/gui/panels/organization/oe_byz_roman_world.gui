@@ -1,0 +1,1258 @@
+﻿# The HRE's card decoration and native country flags, with a local filter variable.
+# Do not call HRE-only rank-filter APIs for this organization.
+organization_panel = {
+    blockoverride "abilities_widget" {}
+    blockoverride "organization_art_header" {
+        widget = {
+            layoutpolicy_horizontal = expanding
+            size = { -1 220 }
+            icon = {
+                size = { 100% 100% }
+                texture = "[InternationalOrganizationsView.GetIllustration]"
+                texture_density = 2
+                spriteType = stretched
+                spriteborder = { 0 0 }
+            }
+        }
+    }
+
+    blockoverride "country_header_character_visible" { visible = no }
+    blockoverride "organization_overview_filtered_list" {
+        scrollarea = {
+            using = layoutpolicy_expanding
+            scrollbarpolicy_horizontal = always_off
+            scrollbar_vertical = { using = Scrollbar_Vertical }
+            scrollwidget = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 12 12 }
+                    spacing = 12
+                    card_common = {
+                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
+                    blockoverride "common_header_text_full" { text_single = { text = "OE_ROMAN_WORLD_SHARED_HERITAGE" fontsize = 20 } }
+                    blockoverride "common_bottom_content" {
+                        text_single = {
+                            margin = { 12 10 }
+                            layoutpolicy_horizontal = expanding
+                            multiline = yes
+                            autoresize = yes
+                            fontsize = 17
+                            text = "OE_ROMAN_WORLD_OVERVIEW"
+                        }
+                    }
+                }
+                    # Restoration belongs to the overview, above cultural assimilation.
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_end'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tw_grant_title'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ttb_buy_peace'),EqualTo_string(GenericAction.GetKey, 'oe_ttb_stop_peace'))))]"
+                                layoutpolicy_horizontal = expanding
+                                size = { -1 56 }
+                                using = bg_paper_card
+                                using = bg_cabinet_card_frame
+                                button_regular_diamond = {
+                                    parentanchor = center
+                                    size = { 390 40 }
+                                    fontsize = 18
+                                    text = "[GenericAction.GetNameWithNoTooltip]"
+                                    tooltipwidget = { using = io_generic_action_button_tooltip }
+                                    visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                    scripted_action_tooltip = {
+                                        click_type = left
+                                        click_mode = single
+                                        actor = "[InternationalOrganizationsView.GetPlayer]"
+                                        action_name = "[GenericAction.GetKey]"
+                                        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    oe_rw_assimilation_panel = {}
+                }
+            }
+        }
+    }
+    blockoverride "organization_panel_members_area" {
+        vbox = { using = oe_roman_world_roster }
+    }
+
+    blockoverride "io_overview_actions" {}
+    blockoverride "organization_custom_tabs" {
+        button_secondary_tab_alt = {
+            using = layoutpolicy_expanding
+            visible = "[Not(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_rw_contest_ended').IsSet)]"
+            blockoverride "tab_text" { text = "OE_ROMAN_CONTEST_TAB" }
+            tooltip = "OE_ROMAN_CONTEST_RULES"
+            onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_roman_contest')]"
+            down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_roman_contest')]"
+        }
+        button_secondary_tab_alt = {
+            using = layoutpolicy_expanding
+            visible = "[GetScriptedGui('oe_rw_hegemony_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.MakeScope).End)]"
+            blockoverride "tab_text" { text = "OE_RW_HEGEMONY_TAB" }
+            tooltip = "OE_RW_HEGEMONY_DESC"
+            onclick = "[InternationalOrganizationsView.Vars.Set('organizations','oe_hegemony')]"
+            down = "[Or(InternationalOrganizationsView.Vars.HasValue('organizations','oe_hegemony'),And(InternationalOrganizationsView.Vars.HasValue('organizations','oe_roman_contest'),InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_rw_contest_ended').IsSet))]"
+        }
+        button_secondary_tab_alt = {
+        using = layoutpolicy_expanding
+        visible = "[GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+        blockoverride "tab_text" { text = "OE_CITY_TAB" }
+        tooltip = "OE_CITY_TAB_DESC"
+        onclick = "[GetScriptedGui('oe_city_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+        onclick = "[InternationalOrganizationsView.Vars.Set('organizations','oe_constantinople')]"
+        down = "[InternationalOrganizationsView.Vars.HasValue('organizations','oe_constantinople')]"
+    }
+        button_secondary_tab_alt = {
+            using = layoutpolicy_expanding
+            blockoverride "tab_text" { text = "OE_WORKS_TAB" }
+            tooltip = "OE_WORKS_TAB_DESC"
+            onclick = "[InternationalOrganizationsView.Vars.Set('organizations','oe_imperial_works')]"
+            down = "[InternationalOrganizationsView.Vars.HasValue('organizations','oe_imperial_works')]"
+        }
+    }
+    blockoverride "organization_custom_contents" {
+        scrollarea = {
+            using = layoutpolicy_expanding
+            visible = "[And(Not(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_rw_contest_ended').IsSet),InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_roman_contest'))]"
+            scrollbarpolicy_horizontal = always_off
+            scrollbar_vertical = { using = Scrollbar_Vertical }
+            scrollwidget = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 12 12 }
+                    spacing = 14
+                    card_common = {
+                        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
+                        blockoverride "common_header_text_full" { text_single = { text = "OE_ROMAN_CONTEST_LEADERS" fontsize = 20 } }
+                        blockoverride "common_bottom_content" {
+                            vbox = {
+                                layoutpolicy_horizontal = expanding
+                                margin = { 10 12 }
+                                spacing = 14
+                                hbox = {
+                                    layoutpolicy_horizontal = expanding
+                                    spacing = 8
+                                    widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 156 }
+                                        using = bg_paper_card
+                                        using = bg_cabinet_card_frame
+                                        vbox = {
+                                            size = { 100% 100% }
+                                            margin = { 6 8 }
+                                            spacing = 7
+                                            text_single = { layoutpolicy_horizontal = expanding fontsize = 18 text = "OE_ROMAN_CONTEST_RANK_1" }
+                                            vbox = {
+                                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_roman_contest_rank_1').GetCountry]"
+                                                visible = "[Country.IsValid]"
+                                                layoutpolicy_horizontal = expanding
+                                                spacing = 6
+                                                hbox = { layoutpolicy_horizontal = expanding expand = {} country_flag_small_plus = { size = { 50 36 } } expand = {} }
+                                                text_single = { layoutpolicy_horizontal = expanding maximumsize = { 132 24 } fontsize = 17 text = "[Country.GetNameWithNoTooltip]" tooltip = "[Country.GetName]" }
+                                                text_single = { layoutpolicy_horizontal = expanding fontsize = 24 text = "[GuiScope.SetRoot(Country.MakeScope).ScriptValue('oe_roman_world_contest_score')|1]" tooltip = "OE_ROMAN_CONTEST_SCORE_BREAKDOWN" }
+                                            }
+                                            text_single = { visible = "[Not(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_roman_contest_rank_1').GetCountry.IsValid)]" layoutpolicy_horizontal = expanding fontsize = 18 text = "OE_ROMAN_CONTEST_VACANT" }
+                                        }
+                                    }
+                                    widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 156 }
+                                        using = bg_paper_card
+                                        using = bg_cabinet_card_frame
+                                        vbox = {
+                                            size = { 100% 100% }
+                                            margin = { 6 8 }
+                                            spacing = 7
+                                            text_single = { layoutpolicy_horizontal = expanding fontsize = 18 text = "OE_ROMAN_CONTEST_RANK_2" }
+                                            vbox = {
+                                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_roman_contest_rank_2').GetCountry]"
+                                                visible = "[Country.IsValid]"
+                                                layoutpolicy_horizontal = expanding
+                                                spacing = 6
+                                                hbox = { layoutpolicy_horizontal = expanding expand = {} country_flag_small_plus = { size = { 50 36 } } expand = {} }
+                                                text_single = { layoutpolicy_horizontal = expanding maximumsize = { 132 24 } fontsize = 17 text = "[Country.GetNameWithNoTooltip]" tooltip = "[Country.GetName]" }
+                                                text_single = { layoutpolicy_horizontal = expanding fontsize = 24 text = "[GuiScope.SetRoot(Country.MakeScope).ScriptValue('oe_roman_world_contest_score')|1]" tooltip = "OE_ROMAN_CONTEST_SCORE_BREAKDOWN" }
+                                            }
+                                            text_single = { visible = "[Not(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_roman_contest_rank_2').GetCountry.IsValid)]" layoutpolicy_horizontal = expanding fontsize = 18 text = "OE_ROMAN_CONTEST_VACANT" }
+                                        }
+                                    }
+                                    widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 156 }
+                                        using = bg_paper_card
+                                        using = bg_cabinet_card_frame
+                                        vbox = {
+                                            size = { 100% 100% }
+                                            margin = { 6 8 }
+                                            spacing = 7
+                                            text_single = { layoutpolicy_horizontal = expanding fontsize = 18 text = "OE_ROMAN_CONTEST_RANK_3" }
+                                            vbox = {
+                                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_roman_contest_rank_3').GetCountry]"
+                                                visible = "[Country.IsValid]"
+                                                layoutpolicy_horizontal = expanding
+                                                spacing = 6
+                                                hbox = { layoutpolicy_horizontal = expanding expand = {} country_flag_small_plus = { size = { 50 36 } } expand = {} }
+                                                text_single = { layoutpolicy_horizontal = expanding maximumsize = { 132 24 } fontsize = 17 text = "[Country.GetNameWithNoTooltip]" tooltip = "[Country.GetName]" }
+                                                text_single = { layoutpolicy_horizontal = expanding fontsize = 24 text = "[GuiScope.SetRoot(Country.MakeScope).ScriptValue('oe_roman_world_contest_score')|1]" tooltip = "OE_ROMAN_CONTEST_SCORE_BREAKDOWN" }
+                                            }
+                                            text_single = { visible = "[Not(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_roman_contest_rank_3').GetCountry.IsValid)]" layoutpolicy_horizontal = expanding fontsize = 18 text = "OE_ROMAN_CONTEST_VACANT" }
+                                        }
+                                    }
+                                }
+                                text_single = { layoutpolicy_horizontal = expanding fontsize = 20 text = "OE_ROMAN_CONTEST_QUOTE" align = left }
+                                text_single = { layoutpolicy_horizontal = expanding fontsize = 17 text = "OE_ROMAN_CONTEST_QUOTE_SOURCE" align = right }
+                            }
+                        }
+                    }
+                    
+                    card_common = {
+                        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
+                        blockoverride "common_header_text_full" { text_single = { text = "OE_ROMAN_CONTEST_ACTIONS" fontsize = 20 } }
+                        blockoverride "common_bottom_content" {
+                            vbox = {
+                                layoutpolicy_horizontal = expanding
+                                margin = { 12 12 }
+                                datamodel = "[InternationalOrganizationsView.GetActions]"
+                                item = {
+                                    widget = {
+                                        visible = "[Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_rw_divide_bulgaria_serbia'), EqualTo_string(GenericAction.GetKey, 'oe_rw_found_moldavian_governorate')),Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_guarantee_cilicia'), EqualTo_string(GenericAction.GetKey, 'oe_cilicia_protectorate')),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_press_claims'), Or(EqualTo_string(GenericAction.GetKey, 'oe_rw_recruit_turkic_mercenaries'), Or(EqualTo_string(GenericAction.GetKey, 'oe_rw_classical_revival'), Or(EqualTo_string(GenericAction.GetKey, 'oe_rw_recognize_local_rule'), Or(EqualTo_string(GenericAction.GetKey, 'oe_rw_mobilize_border'), Or(EqualTo_string(GenericAction.GetKey, 'oe_rw_latin_instructors_action'), Or(EqualTo_string(GenericAction.GetKey, 'oe_rw_study_roman_tactics'), EqualTo_string(GenericAction.GetKey, 'oe_rw_challenge_empire'))))))))))]"
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 56 }
+                                        using = bg_paper_card
+                                        using = bg_cabinet_card_frame
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 390 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                action_name = "[GenericAction.GetKey]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                
+                    card_common = {
+                        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
+                        blockoverride "common_header_text_full" { text_single = { text = "OE_RW_END_CONTEST_HEADER" fontsize = 20 } }
+                        blockoverride "common_bottom_content" {
+                            vbox = {
+                                layoutpolicy_horizontal = expanding margin = { 12 12 } spacing = 10
+                                text_single = { text = "OE_RW_HEGEMONY_PROGRESS" fontsize = 17 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding tooltip = "OE_RW_HEGEMONY_COUNT_RULES" }
+                                widget = {
+                                    layoutpolicy_horizontal = expanding size = { -1 48 }
+                                    datacontext = "[GetGenericAction('oe_rw_end_contest')]"
+                                    button_regular_diamond = {
+                                        parentanchor = center
+                                        size = { 390 40 }
+                                        fontsize = 18
+                                        text = "[GenericAction.GetNameWithNoTooltip]"
+                                        tooltipwidget = { using = io_generic_action_button_tooltip }
+                                        visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                        enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                        scripted_action_tooltip = {
+                                            click_type = left
+                                            click_mode = single
+                                            actor = "[InternationalOrganizationsView.GetPlayer]"
+                                            action_name = "[GenericAction.GetKey]"
+                                            parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+}
+            }
+        }
+    
+scrollarea = {
+        using = layoutpolicy_expanding
+        visible = "[And(GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),InternationalOrganizationsView.Vars.HasValue('organizations','oe_constantinople'))]"
+        scrollbarpolicy_horizontal = always_off
+        scrollbar_vertical = { using = Scrollbar_Vertical }
+        scrollwidget = {
+            vbox = {
+                layoutpolicy_horizontal = expanding margin = { 10 10 } spacing = 8
+                text_single = { text = "OE_CITY_OWNER" fontsize = 17 }
+                text_single = { text = "OE_CITY_MAP_HINT" fontsize = 17 }
+                text_single = { text = "OE_CITY_QUEUE_STATUS" fontsize = 16 }
+                widget = {
+                    layoutpolicy_horizontal = expanding size = { -1 420 }
+                    background = { texture = "gfx/interface/illustrations/international_organization_types/oe_constantinople_plan.dds" spriteType = stretched }
+                    # Invisible hit rectangle: walls. The background and all hit areas use this same map widget.
+                    button = {
+                        name = "oe_city_hit_walls"
+                        ignore_layout = yes
+                        parentanchor = left|top widgetanchor = left|top
+                        position = { 9% 37% } size = { 14% 50% }
+                        alwaystransparent = no
+                        enabled = "[GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltip = "OE_CITY_WALLS"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','walls')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','none')]"
+                    }
+# Invisible hit rectangle: blachernae. The background and all hit areas use this same map widget.
+                    button = {
+                        name = "oe_city_hit_blachernae"
+                        ignore_layout = yes
+                        parentanchor = left|top widgetanchor = left|top
+                        position = { 20% 7% } size = { 18% 22% }
+                        alwaystransparent = no
+                        enabled = "[GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltip = "OE_CITY_BLACHERNAE"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','blachernae')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','none')]"
+                    }
+# Invisible hit rectangle: apostles. The background and all hit areas use this same map widget.
+                    button = {
+                        name = "oe_city_hit_apostles"
+                        ignore_layout = yes
+                        parentanchor = left|top widgetanchor = left|top
+                        position = { 39% 32% } size = { 19% 20% }
+                        alwaystransparent = no
+                        enabled = "[GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltip = "OE_CITY_APOSTLES"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','apostles')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','none')]"
+                    }
+# Invisible hit rectangle: mese. The background and all hit areas use this same map widget.
+                    button = {
+                        name = "oe_city_hit_mese"
+                        ignore_layout = yes
+                        parentanchor = left|top widgetanchor = left|top
+                        position = { 32% 54% } size = { 24% 23% }
+                        alwaystransparent = no
+                        enabled = "[GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltip = "OE_CITY_MESE"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','mese')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','none')]"
+                    }
+# Invisible hit rectangle: east. The background and all hit areas use this same map widget.
+                    button = {
+                        name = "oe_city_hit_east"
+                        ignore_layout = yes
+                        parentanchor = left|top widgetanchor = left|top
+                        position = { 65% 36% } size = { 28% 26% }
+                        alwaystransparent = no
+                        enabled = "[GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltip = "OE_CITY_EAST"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','east')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','none')]"
+                    }
+# Invisible hit rectangle: horn. The background and all hit areas use this same map widget.
+                    button = {
+                        name = "oe_city_hit_horn"
+                        ignore_layout = yes
+                        parentanchor = left|top widgetanchor = left|top
+                        position = { 40% 18% } size = { 24% 13% }
+                        alwaystransparent = no
+                        enabled = "[GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltip = "OE_CITY_HORN"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','horn')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','none')]"
+                    }
+# Invisible hit rectangle: south. The background and all hit areas use this same map widget.
+                    button = {
+                        name = "oe_city_hit_south"
+                        ignore_layout = yes
+                        parentanchor = left|top widgetanchor = left|top
+                        position = { 58% 64% } size = { 26% 16% }
+                        alwaystransparent = no
+                        enabled = "[GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltip = "OE_CITY_SOUTH"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','south')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','none')]"
+                    }
+                    # Invisible hit rectangle: north. The background and all hit areas use this same map widget.
+                    button = {
+                        name = "oe_city_hit_north"
+                        ignore_layout = yes
+                        parentanchor = left|top widgetanchor = left|top
+                        position = { 58% 3% } size = { 26% 14% }
+                        alwaystransparent = no
+                        enabled = "[GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltip = "OE_CITY_NORTH"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','north')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','none')]"
+                    }
+widget = {
+                        ignore_layout = yes
+                        parentanchor = left|top widgetanchor = left|top
+                        position = { 3% 4% } size = { 94% 92% }
+                        visible = "[And(GetScriptedGui('oe_city_access').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),Or(InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'walls'),Or(InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'blachernae'),Or(InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'apostles'),Or(InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'mese'),Or(InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'east'),Or(InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'horn'),Or(InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'south'),InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'north')))))))))]"
+                        widget = {
+        size = { 100% 100% }
+        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'walls')]"
+        using = bg_paper_card using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% } margin = { 14 12 } spacing = 8
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_single = { text = "OE_CITY_WALLS" fontsize = 21 }
+                expand = {}
+                button_regular = { size = { 64 30 } text = "OE_CITY_CLOSE" tooltip = "OE_CITY_CLOSE" onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','none')]" }
+            }
+            text_single = { text = "OE_CITY_WALLS_DESC" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+            scrollarea = {
+                using = layoutpolicy_expanding scrollbarpolicy_horizontal = always_off
+                scrollbar_vertical = { using = Scrollbar_Vertical }
+                scrollwidget = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 7
+                        text_single = { text = "OE_CITY_BUILT" fontsize = 18 }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_walls_types')]" item = { widget = {
+    datacontext = "[Scope.GetBuildingType]"
+    layoutpolicy_horizontal = expanding size = { -1 48 }
+    using = bg_paper_card using = bg_cabinet_card_frame
+    visible = "[GetScriptedGui('oe_city_has_building').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+    hbox = {
+        size = { 100% 100% } margin = { 8 6 } spacing = 8
+        icon = { size = { 30 30 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 16 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "OE_CITY_LEVELS" fontsize = 16 }
+    }
+} }
+                        }
+                        button_regular = {
+                            tooltip = "OE_CITY_ADD"
+                            layoutpolicy_horizontal = expanding size = { -1 34 }
+                            text = "OE_CITY_ADD"
+                            visible = "[GetScriptedGui('oe_city_district_projects_walls').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_city_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','walls')]"
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 6
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_catalog','walls')]"
+                            text_single = { text = "OE_CITY_BUILDABLE" fontsize = 18 }
+                            vbox = {
+                                layoutpolicy_horizontal = expanding spacing = 5
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_walls_types')]" item = { widget = {
+        datacontext = "[Scope.GetBuildingType]"
+        layoutpolicy_horizontal = expanding size = { -1 112 }
+        using = bg_paper_card using = bg_cabinet_card_frame
+        visible = "[GetScriptedGui('oe_city_expansion').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+        hbox = {
+            size = { 100% 100% } margin = { 8 8 } spacing = 8
+            icon = { size = { 36 36 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+            vbox = {
+                layoutpolicy_horizontal = expanding spacing = 5
+                text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 17 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_PROJECT_SUMMARY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_REQUIRE_500K" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_outer_population').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_RUM" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_rum_movement').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_MANUEL_ACADEMY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_manuel_academy_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_OSMAN_COMPANY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_osman_company_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_BELISARIUS_COLUMN" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_belisarius_column_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PALACE" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_palace').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_1454" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_1454').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_EXPEL" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_expel').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PORT" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_port').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+            }
+            button_regular = {
+                size = { 66 34 } text = "OE_CITY_EXPAND"
+                enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                action_tooltip = {
+                    title = "OE_CITY_EXPAND"
+                    description = "OE_CITY_EXPAND_DESC"
+                    enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                    on_action = "[GetScriptedGui('oe_city_expansion').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                }
+            }
+        }
+    } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+widget = {
+        size = { 100% 100% }
+        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'blachernae')]"
+        using = bg_paper_card using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% } margin = { 14 12 } spacing = 8
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_single = { text = "OE_CITY_BLACHERNAE" fontsize = 21 }
+                expand = {}
+                button_regular = { size = { 64 30 } text = "OE_CITY_CLOSE" tooltip = "OE_CITY_CLOSE" onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','none')]" }
+            }
+            text_single = { text = "OE_CITY_BLACHERNAE_DESC" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+            scrollarea = {
+                using = layoutpolicy_expanding scrollbarpolicy_horizontal = always_off
+                scrollbar_vertical = { using = Scrollbar_Vertical }
+                scrollwidget = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 7
+                        text_single = { text = "OE_CITY_BUILT" fontsize = 18 }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_blachernae_types')]" item = { widget = {
+    datacontext = "[Scope.GetBuildingType]"
+    layoutpolicy_horizontal = expanding size = { -1 48 }
+    using = bg_paper_card using = bg_cabinet_card_frame
+    visible = "[GetScriptedGui('oe_city_has_building').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+    hbox = {
+        size = { 100% 100% } margin = { 8 6 } spacing = 8
+        icon = { size = { 30 30 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 16 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "OE_CITY_LEVELS" fontsize = 16 }
+    }
+} }
+                        }
+                        button_regular = {
+                            tooltip = "OE_CITY_ADD"
+                            layoutpolicy_horizontal = expanding size = { -1 34 }
+                            text = "OE_CITY_ADD"
+                            visible = "[GetScriptedGui('oe_city_district_projects_blachernae').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_city_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','blachernae')]"
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 6
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_catalog','blachernae')]"
+                            text_single = { text = "OE_CITY_BUILDABLE" fontsize = 18 }
+                            vbox = {
+                                layoutpolicy_horizontal = expanding spacing = 5
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_blachernae_types')]" item = { widget = {
+        datacontext = "[Scope.GetBuildingType]"
+        layoutpolicy_horizontal = expanding size = { -1 112 }
+        using = bg_paper_card using = bg_cabinet_card_frame
+        visible = "[GetScriptedGui('oe_city_expansion').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+        hbox = {
+            size = { 100% 100% } margin = { 8 8 } spacing = 8
+            icon = { size = { 36 36 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+            vbox = {
+                layoutpolicy_horizontal = expanding spacing = 5
+                text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 17 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_PROJECT_SUMMARY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_REQUIRE_500K" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_outer_population').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_RUM" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_rum_movement').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_MANUEL_ACADEMY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_manuel_academy_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_OSMAN_COMPANY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_osman_company_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_BELISARIUS_COLUMN" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_belisarius_column_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PALACE" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_palace').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_1454" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_1454').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_EXPEL" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_expel').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PORT" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_port').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+            }
+            button_regular = {
+                size = { 66 34 } text = "OE_CITY_EXPAND"
+                enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                action_tooltip = {
+                    title = "OE_CITY_EXPAND"
+                    description = "OE_CITY_EXPAND_DESC"
+                    enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                    on_action = "[GetScriptedGui('oe_city_expansion').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                }
+            }
+        }
+    } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+widget = {
+        size = { 100% 100% }
+        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'apostles')]"
+        using = bg_paper_card using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% } margin = { 14 12 } spacing = 8
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_single = { text = "OE_CITY_APOSTLES" fontsize = 21 }
+                expand = {}
+                button_regular = { size = { 64 30 } text = "OE_CITY_CLOSE" tooltip = "OE_CITY_CLOSE" onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','none')]" }
+            }
+            text_single = { text = "OE_CITY_APOSTLES_DESC" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+            scrollarea = {
+                using = layoutpolicy_expanding scrollbarpolicy_horizontal = always_off
+                scrollbar_vertical = { using = Scrollbar_Vertical }
+                scrollwidget = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 7
+                        text_single = { text = "OE_CITY_BUILT" fontsize = 18 }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_apostles_types')]" item = { widget = {
+    datacontext = "[Scope.GetBuildingType]"
+    layoutpolicy_horizontal = expanding size = { -1 48 }
+    using = bg_paper_card using = bg_cabinet_card_frame
+    visible = "[GetScriptedGui('oe_city_has_building').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+    hbox = {
+        size = { 100% 100% } margin = { 8 6 } spacing = 8
+        icon = { size = { 30 30 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 16 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "OE_CITY_LEVELS" fontsize = 16 }
+    }
+} }
+                        }
+                        button_regular = {
+                            tooltip = "OE_CITY_ADD"
+                            layoutpolicy_horizontal = expanding size = { -1 34 }
+                            text = "OE_CITY_ADD"
+                            visible = "[GetScriptedGui('oe_city_district_projects_apostles').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_city_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','apostles')]"
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 6
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_catalog','apostles')]"
+                            text_single = { text = "OE_CITY_BUILDABLE" fontsize = 18 }
+                            vbox = {
+                                layoutpolicy_horizontal = expanding spacing = 5
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_apostles_types')]" item = { widget = {
+        datacontext = "[Scope.GetBuildingType]"
+        layoutpolicy_horizontal = expanding size = { -1 112 }
+        using = bg_paper_card using = bg_cabinet_card_frame
+        visible = "[GetScriptedGui('oe_city_expansion').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+        hbox = {
+            size = { 100% 100% } margin = { 8 8 } spacing = 8
+            icon = { size = { 36 36 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+            vbox = {
+                layoutpolicy_horizontal = expanding spacing = 5
+                text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 17 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_PROJECT_SUMMARY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_REQUIRE_500K" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_outer_population').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_RUM" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_rum_movement').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_MANUEL_ACADEMY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_manuel_academy_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_OSMAN_COMPANY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_osman_company_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_BELISARIUS_COLUMN" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_belisarius_column_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PALACE" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_palace').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_1454" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_1454').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_EXPEL" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_expel').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PORT" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_port').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+            }
+            button_regular = {
+                size = { 66 34 } text = "OE_CITY_EXPAND"
+                enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                action_tooltip = {
+                    title = "OE_CITY_EXPAND"
+                    description = "OE_CITY_EXPAND_DESC"
+                    enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                    on_action = "[GetScriptedGui('oe_city_expansion').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                }
+            }
+        }
+    } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+widget = {
+        size = { 100% 100% }
+        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'mese')]"
+        using = bg_paper_card using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% } margin = { 14 12 } spacing = 8
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_single = { text = "OE_CITY_MESE" fontsize = 21 }
+                expand = {}
+                button_regular = { size = { 64 30 } text = "OE_CITY_CLOSE" tooltip = "OE_CITY_CLOSE" onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','none')]" }
+            }
+            text_single = { text = "OE_CITY_MESE_DESC" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+            scrollarea = {
+                using = layoutpolicy_expanding scrollbarpolicy_horizontal = always_off
+                scrollbar_vertical = { using = Scrollbar_Vertical }
+                scrollwidget = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 7
+                        text_single = { text = "OE_CITY_BUILT" fontsize = 18 }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_mese_types')]" item = { widget = {
+    datacontext = "[Scope.GetBuildingType]"
+    layoutpolicy_horizontal = expanding size = { -1 48 }
+    using = bg_paper_card using = bg_cabinet_card_frame
+    visible = "[GetScriptedGui('oe_city_has_building').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+    hbox = {
+        size = { 100% 100% } margin = { 8 6 } spacing = 8
+        icon = { size = { 30 30 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 16 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "OE_CITY_LEVELS" fontsize = 16 }
+    }
+} }
+                        }
+                        button_regular = {
+                            tooltip = "OE_CITY_ADD"
+                            layoutpolicy_horizontal = expanding size = { -1 34 }
+                            text = "OE_CITY_ADD"
+                            visible = "[GetScriptedGui('oe_city_district_projects_mese').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_city_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','mese')]"
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 6
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_catalog','mese')]"
+                            text_single = { text = "OE_CITY_BUILDABLE" fontsize = 18 }
+                            vbox = {
+                                layoutpolicy_horizontal = expanding spacing = 5
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_mese_types')]" item = { widget = {
+        datacontext = "[Scope.GetBuildingType]"
+        layoutpolicy_horizontal = expanding size = { -1 112 }
+        using = bg_paper_card using = bg_cabinet_card_frame
+        visible = "[GetScriptedGui('oe_city_expansion').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+        hbox = {
+            size = { 100% 100% } margin = { 8 8 } spacing = 8
+            icon = { size = { 36 36 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+            vbox = {
+                layoutpolicy_horizontal = expanding spacing = 5
+                text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 17 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_PROJECT_SUMMARY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_REQUIRE_500K" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_outer_population').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_RUM" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_rum_movement').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_MANUEL_ACADEMY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_manuel_academy_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_OSMAN_COMPANY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_osman_company_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_BELISARIUS_COLUMN" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_belisarius_column_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PALACE" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_palace').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_1454" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_1454').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_EXPEL" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_expel').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PORT" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_port').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+            }
+            button_regular = {
+                size = { 66 34 } text = "OE_CITY_EXPAND"
+                enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                action_tooltip = {
+                    title = "OE_CITY_EXPAND"
+                    description = "OE_CITY_EXPAND_DESC"
+                    enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                    on_action = "[GetScriptedGui('oe_city_expansion').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                }
+            }
+        }
+    } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+widget = {
+        size = { 100% 100% }
+        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'east')]"
+        using = bg_paper_card using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% } margin = { 14 12 } spacing = 8
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_single = { text = "OE_CITY_EAST" fontsize = 21 }
+                expand = {}
+                button_regular = { size = { 64 30 } text = "OE_CITY_CLOSE" tooltip = "OE_CITY_CLOSE" onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','none')]" }
+            }
+            text_single = { text = "OE_CITY_EAST_DESC" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+            scrollarea = {
+                using = layoutpolicy_expanding scrollbarpolicy_horizontal = always_off
+                scrollbar_vertical = { using = Scrollbar_Vertical }
+                scrollwidget = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 7
+                        text_single = { text = "OE_CITY_BUILT" fontsize = 18 }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_east_types')]" item = { widget = {
+    datacontext = "[Scope.GetBuildingType]"
+    layoutpolicy_horizontal = expanding size = { -1 48 }
+    using = bg_paper_card using = bg_cabinet_card_frame
+    visible = "[GetScriptedGui('oe_city_has_building').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+    hbox = {
+        size = { 100% 100% } margin = { 8 6 } spacing = 8
+        icon = { size = { 30 30 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 16 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "OE_CITY_LEVELS" fontsize = 16 }
+    }
+} }
+                        }
+                        button_regular = {
+                            tooltip = "OE_CITY_ADD"
+                            layoutpolicy_horizontal = expanding size = { -1 34 }
+                            text = "OE_CITY_ADD"
+                            visible = "[GetScriptedGui('oe_city_district_projects_east').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_city_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','east')]"
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 6
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_catalog','east')]"
+                            text_single = { text = "OE_CITY_BUILDABLE" fontsize = 18 }
+                            vbox = {
+                                layoutpolicy_horizontal = expanding spacing = 5
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_east_types')]" item = { widget = {
+        datacontext = "[Scope.GetBuildingType]"
+        layoutpolicy_horizontal = expanding size = { -1 112 }
+        using = bg_paper_card using = bg_cabinet_card_frame
+        visible = "[GetScriptedGui('oe_city_expansion').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+        hbox = {
+            size = { 100% 100% } margin = { 8 8 } spacing = 8
+            icon = { size = { 36 36 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+            vbox = {
+                layoutpolicy_horizontal = expanding spacing = 5
+                text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 17 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_PROJECT_SUMMARY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_REQUIRE_500K" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_outer_population').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_RUM" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_rum_movement').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_MANUEL_ACADEMY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_manuel_academy_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_OSMAN_COMPANY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_osman_company_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_BELISARIUS_COLUMN" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_belisarius_column_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PALACE" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_palace').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_1454" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_1454').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_EXPEL" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_expel').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PORT" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_port').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+            }
+            button_regular = {
+                size = { 66 34 } text = "OE_CITY_EXPAND"
+                enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                action_tooltip = {
+                    title = "OE_CITY_EXPAND"
+                    description = "OE_CITY_EXPAND_DESC"
+                    enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                    on_action = "[GetScriptedGui('oe_city_expansion').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                }
+            }
+        }
+    } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+widget = {
+        size = { 100% 100% }
+        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'horn')]"
+        using = bg_paper_card using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% } margin = { 14 12 } spacing = 8
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_single = { text = "OE_CITY_HORN" fontsize = 21 }
+                expand = {}
+                button_regular = { size = { 64 30 } text = "OE_CITY_CLOSE" tooltip = "OE_CITY_CLOSE" onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','none')]" }
+            }
+            text_single = { text = "OE_CITY_HORN_DESC" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+            scrollarea = {
+                using = layoutpolicy_expanding scrollbarpolicy_horizontal = always_off
+                scrollbar_vertical = { using = Scrollbar_Vertical }
+                scrollwidget = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 7
+                        text_single = { text = "OE_CITY_BUILT" fontsize = 18 }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_horn_types')]" item = { widget = {
+    datacontext = "[Scope.GetBuildingType]"
+    layoutpolicy_horizontal = expanding size = { -1 48 }
+    using = bg_paper_card using = bg_cabinet_card_frame
+    visible = "[GetScriptedGui('oe_city_has_building').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+    hbox = {
+        size = { 100% 100% } margin = { 8 6 } spacing = 8
+        icon = { size = { 30 30 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 16 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "OE_CITY_LEVELS" fontsize = 16 }
+    }
+} }
+                        }
+                        button_regular = {
+                            tooltip = "OE_CITY_ADD"
+                            layoutpolicy_horizontal = expanding size = { -1 34 }
+                            text = "OE_CITY_ADD"
+                            visible = "[GetScriptedGui('oe_city_district_projects_horn').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_city_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','horn')]"
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 6
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_catalog','horn')]"
+                            text_single = { text = "OE_CITY_BUILDABLE" fontsize = 18 }
+                            vbox = {
+                                layoutpolicy_horizontal = expanding spacing = 5
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_horn_types')]" item = { widget = {
+        datacontext = "[Scope.GetBuildingType]"
+        layoutpolicy_horizontal = expanding size = { -1 112 }
+        using = bg_paper_card using = bg_cabinet_card_frame
+        visible = "[GetScriptedGui('oe_city_expansion').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+        hbox = {
+            size = { 100% 100% } margin = { 8 8 } spacing = 8
+            icon = { size = { 36 36 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+            vbox = {
+                layoutpolicy_horizontal = expanding spacing = 5
+                text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 17 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_PROJECT_SUMMARY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_REQUIRE_500K" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_outer_population').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_RUM" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_rum_movement').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_MANUEL_ACADEMY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_manuel_academy_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_OSMAN_COMPANY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_osman_company_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_BELISARIUS_COLUMN" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_belisarius_column_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PALACE" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_palace').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_1454" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_1454').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_EXPEL" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_expel').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PORT" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_port').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+            }
+            button_regular = {
+                size = { 66 34 } text = "OE_CITY_EXPAND"
+                enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                action_tooltip = {
+                    title = "OE_CITY_EXPAND"
+                    description = "OE_CITY_EXPAND_DESC"
+                    enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                    on_action = "[GetScriptedGui('oe_city_expansion').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                }
+            }
+        }
+    } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+widget = {
+        size = { 100% 100% }
+        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'south')]"
+        using = bg_paper_card using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% } margin = { 14 12 } spacing = 8
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_single = { text = "OE_CITY_SOUTH" fontsize = 21 }
+                expand = {}
+                button_regular = { size = { 64 30 } text = "OE_CITY_CLOSE" tooltip = "OE_CITY_CLOSE" onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','none')]" }
+            }
+            text_single = { text = "OE_CITY_SOUTH_DESC" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+            scrollarea = {
+                using = layoutpolicy_expanding scrollbarpolicy_horizontal = always_off
+                scrollbar_vertical = { using = Scrollbar_Vertical }
+                scrollwidget = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 7
+                        text_single = { text = "OE_CITY_BUILT" fontsize = 18 }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_south_types')]" item = { widget = {
+    datacontext = "[Scope.GetBuildingType]"
+    layoutpolicy_horizontal = expanding size = { -1 48 }
+    using = bg_paper_card using = bg_cabinet_card_frame
+    visible = "[GetScriptedGui('oe_city_has_building').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+    hbox = {
+        size = { 100% 100% } margin = { 8 6 } spacing = 8
+        icon = { size = { 30 30 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 16 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "OE_CITY_LEVELS" fontsize = 16 }
+    }
+} }
+                        }
+                        button_regular = {
+                            tooltip = "OE_CITY_ADD"
+                            layoutpolicy_horizontal = expanding size = { -1 34 }
+                            text = "OE_CITY_ADD"
+                            visible = "[GetScriptedGui('oe_city_district_projects_south').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_city_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','south')]"
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 6
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_catalog','south')]"
+                            text_single = { text = "OE_CITY_BUILDABLE" fontsize = 18 }
+                            vbox = {
+                                layoutpolicy_horizontal = expanding spacing = 5
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_south_types')]" item = { widget = {
+        datacontext = "[Scope.GetBuildingType]"
+        layoutpolicy_horizontal = expanding size = { -1 112 }
+        using = bg_paper_card using = bg_cabinet_card_frame
+        visible = "[GetScriptedGui('oe_city_expansion').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+        hbox = {
+            size = { 100% 100% } margin = { 8 8 } spacing = 8
+            icon = { size = { 36 36 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+            vbox = {
+                layoutpolicy_horizontal = expanding spacing = 5
+                text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 17 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_PROJECT_SUMMARY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_REQUIRE_500K" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_outer_population').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_RUM" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_rum_movement').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_MANUEL_ACADEMY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_manuel_academy_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_OSMAN_COMPANY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_osman_company_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_BELISARIUS_COLUMN" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_belisarius_column_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PALACE" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_palace').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_1454" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_1454').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_EXPEL" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_expel').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PORT" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_port').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+            }
+            button_regular = {
+                size = { 66 34 } text = "OE_CITY_EXPAND"
+                enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                action_tooltip = {
+                    title = "OE_CITY_EXPAND"
+                    description = "OE_CITY_EXPAND_DESC"
+                    enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                    on_action = "[GetScriptedGui('oe_city_expansion').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                }
+            }
+        }
+    } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+                    widget = {
+        size = { 100% 100% }
+        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_district', 'north')]"
+        using = bg_paper_card using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% } margin = { 14 12 } spacing = 8
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_single = { text = "OE_CITY_NORTH" fontsize = 21 }
+                expand = {}
+                button_regular = { size = { 64 30 } text = "OE_CITY_CLOSE" tooltip = "OE_CITY_CLOSE" onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_district','none')]" }
+            }
+            text_single = { text = "OE_CITY_NORTH_DESC" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+            scrollarea = {
+                using = layoutpolicy_expanding scrollbarpolicy_horizontal = always_off
+                scrollbar_vertical = { using = Scrollbar_Vertical }
+                scrollwidget = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 7
+                        text_single = { text = "OE_CITY_BUILT" fontsize = 18 }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_north_types')]" item = { widget = {
+    datacontext = "[Scope.GetBuildingType]"
+    layoutpolicy_horizontal = expanding size = { -1 48 }
+    using = bg_paper_card using = bg_cabinet_card_frame
+    visible = "[GetScriptedGui('oe_city_has_building').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+    hbox = {
+        size = { 100% 100% } margin = { 8 6 } spacing = 8
+        icon = { size = { 30 30 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 16 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes tooltipwidget = { using = BuildingType_tooltip } }
+        text_single = { text = "OE_CITY_LEVELS" fontsize = 16 }
+    }
+} }
+                        }
+                        button_regular = {
+                            tooltip = "OE_CITY_ADD"
+                            layoutpolicy_horizontal = expanding size = { -1 34 }
+                            text = "OE_CITY_ADD"
+                            visible = "[GetScriptedGui('oe_city_district_projects_north').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_city_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_city_catalog','north')]"
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding spacing = 6
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_city_catalog','north')]"
+                            text_single = { text = "OE_CITY_BUILDABLE" fontsize = 18 }
+                            vbox = {
+                                layoutpolicy_horizontal = expanding spacing = 5
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_city_north_types')]" item = { widget = {
+        datacontext = "[Scope.GetBuildingType]"
+        layoutpolicy_horizontal = expanding size = { -1 112 }
+        using = bg_paper_card using = bg_cabinet_card_frame
+        visible = "[GetScriptedGui('oe_city_expansion').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+        hbox = {
+            size = { 100% 100% } margin = { 8 8 } spacing = 8
+            icon = { size = { 36 36 } texture = "[GetBuildingIcon(BuildingType.Self)]" tooltipwidget = { using = BuildingType_tooltip } }
+            vbox = {
+                layoutpolicy_horizontal = expanding spacing = 5
+                text_single = { text = "[BuildingType.GetNameWithNoTooltip]" fontsize = 17 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_PROJECT_SUMMARY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes }
+                text_single = { text = "OE_CITY_REQUIRE_500K" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_outer_population').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_RUM" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_rum_movement').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_MANUEL_ACADEMY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_manuel_academy_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_OSMAN_COMPANY" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_osman_company_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_UNLOCK_BELISARIUS_COLUMN" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_belisarius_column_event').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PALACE" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_palace').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_1454" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_1454').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_EXPEL" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_expel').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+                text_single = { text = "OE_CITY_REQUIRE_PORT" fontsize = 15 layoutpolicy_horizontal = expanding autoresize = yes multiline = yes visible = "[GetScriptedGui('oe_city_requires_port').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]" }
+            }
+            button_regular = {
+                size = { 66 34 } text = "OE_CITY_EXPAND"
+                enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                action_tooltip = {
+                    title = "OE_CITY_EXPAND"
+                    description = "OE_CITY_EXPAND_DESC"
+                    enabled = "[GetScriptedGui('oe_city_expansion').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                    on_action = "[GetScriptedGui('oe_city_expansion').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('city_building_type',BuildingType.MakeScope).End)]"
+                }
+            }
+        }
+    } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+                }
+            }
+        }
+    }
+
+        oe_rw_hegemony_page = {}
+        oe_rw_imperial_works_page = {}
+    }
+}
+
+template oe_roman_world_country_grid {
+flowcontainer = {
+    layoutpolicy_horizontal = expanding
+    wrap_count = 3
+    ignoreinvisible = yes
+    spacing = 8
+    datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.GetMembers]"
+    item = {
+        widget = {
+            size = { 150 96 }
+            visible = "[Or(Not(Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'byz'), Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'beylik'), Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'prince'), Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'latin_duchy'), InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'orthodox_kingdom')))))), Or(And(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'byz'), Country.HasSpecialStatus(InternationalOrganizationsView.GetInternationalOrganization, 'oe_byz_roman_world_byz')), Or(And(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'beylik'), Country.HasSpecialStatus(InternationalOrganizationsView.GetInternationalOrganization, 'oe_byz_roman_world_beylik')), Or(And(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'prince'), Country.HasSpecialStatus(InternationalOrganizationsView.GetInternationalOrganization, 'oe_byz_roman_world_prince')), Or(And(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'latin_duchy'), Country.HasSpecialStatus(InternationalOrganizationsView.GetInternationalOrganization, 'oe_byz_roman_world_latin_duchy')), And(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'orthodox_kingdom'), Country.HasSpecialStatus(InternationalOrganizationsView.GetInternationalOrganization, 'oe_byz_roman_world_orthodox_kingdom')))))))]"
+            using = bg_paper_card
+            using = bg_cabinet_card_frame
+            vbox = {
+                size = { 100% 100% }
+                margin = { 6 7 }
+                spacing = 4
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    expand = {}
+                    country_flag_small_plus = { size = { 40 30 } }
+                    expand = {}
+                }
+                text_single = {
+                    layoutpolicy_horizontal = expanding
+                    maximumsize = { 138 24 }
+                    fontsize = 17
+                    text = "[Country.GetNameWithNoTooltip]"
+                    tooltip = "[Country.GetName]"
+                }
+                text_single = {
+                    layoutpolicy_horizontal = expanding
+                    maximumsize = { 138 22 }
+                    fontsize = 15
+                    text = "[Country.GetCapital.GetName]"
+                }
+            }
+        }
+    }
+}
+}
+
+template oe_roman_world_roster {
+    using = layoutpolicy_expanding
+    spacing = 8
+    margin = { 10 8 }
+    hbox = {
+        layoutpolicy_horizontal = expanding
+        spacing = 2
+button_secondary_tab_alt = {
+    size = { 66 42 }
+    blockoverride "tab_text" { text = "OE_ROMAN_FILTER_ALL" fontsize = 15 }
+    tooltip = "OE_ROMAN_FILTER_ALL_DESC"
+    onclick = "[InternationalOrganizationsView.Vars.Set('oe_roman_world_filter', 'all')]"
+    down = "[Not(Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'byz'), Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'beylik'), Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'prince'), Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'latin_duchy'), InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'orthodox_kingdom'))))))]"
+}
+button_secondary_tab_alt = {
+    size = { 80 42 }
+    blockoverride "tab_text" { text = "OE_ROMAN_FILTER_BYZ" fontsize = 15 }
+    tooltip = "oe_byz_roman_world_byz_desc"
+    onclick = "[InternationalOrganizationsView.Vars.Set('oe_roman_world_filter', 'byz')]"
+    down = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'byz')]"
+}
+button_secondary_tab_alt = {
+    size = { 80 42 }
+    blockoverride "tab_text" { text = "OE_ROMAN_FILTER_BEYLIK" fontsize = 15 }
+    tooltip = "oe_byz_roman_world_beylik_desc"
+    onclick = "[InternationalOrganizationsView.Vars.Set('oe_roman_world_filter', 'beylik')]"
+    down = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'beylik')]"
+}
+button_secondary_tab_alt = {
+    size = { 80 42 }
+    blockoverride "tab_text" { text = "OE_ROMAN_FILTER_PRINCE" fontsize = 15 }
+    tooltip = "oe_byz_roman_world_prince_desc"
+    onclick = "[InternationalOrganizationsView.Vars.Set('oe_roman_world_filter', 'prince')]"
+    down = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'prince')]"
+}
+button_secondary_tab_alt = {
+    size = { 80 42 }
+    blockoverride "tab_text" { text = "OE_ROMAN_FILTER_LATIN_DUCHY" fontsize = 15 }
+    tooltip = "oe_byz_roman_world_latin_duchy_desc"
+    onclick = "[InternationalOrganizationsView.Vars.Set('oe_roman_world_filter', 'latin_duchy')]"
+    down = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'latin_duchy')]"
+}
+button_secondary_tab_alt = {
+    size = { 94 42 }
+    blockoverride "tab_text" { text = "OE_ROMAN_FILTER_ORTHODOX_KINGDOM" fontsize = 15 }
+    tooltip = "oe_byz_roman_world_orthodox_kingdom_desc"
+    onclick = "[InternationalOrganizationsView.Vars.Set('oe_roman_world_filter', 'orthodox_kingdom')]"
+    down = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'orthodox_kingdom')]"
+}
+
+    }
+    scrollarea = {
+        using = layoutpolicy_expanding
+        scrollbarpolicy_horizontal = always_off
+        scrollbar_vertical = { using = Scrollbar_Vertical }
+        scrollwidget = {
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                spacing = 12
+                margin = { 2 6 }
+                
+                card_common = {
+    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+    blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
+    blockoverride "common_header_text_full" { text_single = { visible = "[Not(Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'byz'), Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'beylik'), Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'prince'), Or(InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'latin_duchy'), InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'orthodox_kingdom'))))))]" fontsize = 20 raw_text = "[GetDataModelSize(InternationalOrganizationsView.GetInternationalOrganization.GetMembers)] [Localize('OE_ROMAN_FILTER_ALL')]" }
+text_single = { visible = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'byz')]" fontsize = 20 text = "oe_byz_roman_world_byz" }
+text_single = { visible = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'beylik')]" fontsize = 20 text = "oe_byz_roman_world_beylik" }
+text_single = { visible = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'prince')]" fontsize = 20 text = "oe_byz_roman_world_prince" }
+text_single = { visible = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'latin_duchy')]" fontsize = 20 text = "oe_byz_roman_world_latin_duchy" }
+text_single = { visible = "[InternationalOrganizationsView.Vars.HasValue('oe_roman_world_filter', 'orthodox_kingdom')]" fontsize = 20 text = "oe_byz_roman_world_orthodox_kingdom" }
+ }
+    blockoverride "common_bottom_content" {
+        vbox = {
+            layoutpolicy_horizontal = expanding margin = { 8 10 }
+            using = oe_roman_world_country_grid
+        }
+    }
+}
+                
+            }
+        }
+    }
+}

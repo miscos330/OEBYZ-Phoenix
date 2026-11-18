@@ -1,0 +1,187 @@
+﻿# Country scope, same dispatcher as ordinary Pillars status reconciliation.
+oe_theme_classify_special_member_effect = {
+    if = {
+        limit = { oe_pillars_naval_theme_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_naval_theme country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_naval_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_naval_theme country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_naval_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+    if = {
+        limit = { oe_pillars_administrative_theme_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_administrative_theme country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_administrative_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_administrative_theme country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_administrative_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+    if = {
+        limit = { oe_pillars_frontier_theme_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_frontier_theme country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_frontier_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_frontier_theme country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_frontier_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+
+if = {
+        limit = { oe_pillars_italian_theme_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_italian_theme country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_italian_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_italian_theme country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_italian_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+if = {
+        limit = { oe_pillars_latin_theme_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_latin_theme country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_latin_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_latin_theme country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_latin_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+}
+
+# Same action context; new offices exist before any old office is destroyed.
+oe_theme_convert_to_ordinary_effect = {
+    scope:oe_theme_converted_country = {
+        add_reform = government_reform:oe_byz_theme_system_subject
+        set_capital = scope:oe_theme_new_capital
+    }
+    scope:oe_theme_new_capital = {
+        construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    every_in_list = {
+        list = oe_theme_conversion_locations
+        construct_building = { building_type = building_type:oe_byz_theme_system owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    scope:oe_theme_converted_country = {
+        every_owned_building = {
+            limit = {
+                oe_theme_building_trigger = yes
+                NOT = { OR = { building_type = building_type:oe_byz_theme_system_noble building_type = building_type:oe_byz_theme_system } }
+            }
+            location = { destroy_building = prev }
+        }
+    }
+}
+# Same action context; new offices exist before any old office is destroyed.
+oe_theme_convert_to_naval_effect = {
+    scope:oe_theme_converted_country = {
+        add_reform = government_reform:oe_byz_theme_naval_subject
+        set_capital = scope:oe_theme_new_capital
+    }
+    scope:oe_theme_new_capital = {
+        construct_building = { building_type = building_type:oe_byz_theme_naval_seat owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        oe_theme_create_ten_current_age_galleys = { owner = scope:oe_theme_converted_country }
+    }
+    every_in_list = {
+        list = oe_theme_conversion_locations
+        limit = { this != scope:oe_theme_new_capital }
+        construct_building = { building_type = building_type:oe_byz_theme_naval_post owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    scope:oe_theme_converted_country = {
+        every_owned_building = {
+            limit = {
+                oe_theme_building_trigger = yes
+                NOT = { OR = { building_type = building_type:oe_byz_theme_naval_seat building_type = building_type:oe_byz_theme_naval_post } }
+            }
+            location = { destroy_building = prev }
+        }
+    }
+}
+# Same action context; new offices exist before any old office is destroyed.
+oe_theme_convert_to_administrative_effect = {
+    scope:oe_theme_converted_country = {
+        add_reform = government_reform:oe_byz_theme_administrative_subject
+        set_capital = scope:oe_theme_new_capital
+        leave_all_wars_with = c:BYZ
+    }
+    scope:oe_theme_new_capital = {
+        construct_building = { building_type = building_type:oe_byz_theme_administrative_seat owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    every_in_list = {
+        list = oe_theme_conversion_locations
+        limit = { this != scope:oe_theme_new_capital }
+        construct_building = { building_type = building_type:oe_byz_theme_administrative_post owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    scope:oe_theme_converted_country = {
+        every_owned_building = {
+            limit = {
+                oe_theme_building_trigger = yes
+                NOT = { OR = { building_type = building_type:oe_byz_theme_administrative_seat building_type = building_type:oe_byz_theme_administrative_post } }
+            }
+            location = { destroy_building = prev }
+        }
+    }
+}
+# Same action context; new offices exist before any old office is destroyed.
+oe_theme_convert_to_frontier_effect = {
+    scope:oe_theme_converted_country = {
+        add_reform = government_reform:oe_byz_theme_frontier_subject
+        set_capital = scope:oe_theme_new_capital
+    }
+    scope:oe_theme_new_capital = {
+        construct_building = { building_type = building_type:oe_byz_theme_frontier_seat owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    every_in_list = {
+        list = oe_theme_conversion_locations
+        limit = { this != scope:oe_theme_new_capital }
+        construct_building = { building_type = building_type:oe_byz_theme_frontier_post owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    scope:oe_theme_converted_country = {
+        every_owned_building = {
+            limit = {
+                oe_theme_building_trigger = yes
+                NOT = { OR = { building_type = building_type:oe_byz_theme_frontier_seat building_type = building_type:oe_byz_theme_frontier_post } }
+            }
+            location = { destroy_building = prev }
+        }
+    }
+}

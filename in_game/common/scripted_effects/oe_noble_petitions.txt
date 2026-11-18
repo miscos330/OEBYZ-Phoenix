@@ -1,0 +1,138 @@
+﻿# Event-local saved scopes pin the dynasty, nominee and target until the answer.
+oe_npet_capture = {
+    save_scope_value_as = { name = oe_npet_slot value = $slot$ }
+    var:oe_nf_dynasty_$slot$ = {
+        save_scope_as = oe_npet_family
+        random_character_in_dynasty = {
+            limit = { oe_npet_candidate_$kind$ = yes }
+            save_scope_as = oe_npet_nominee
+        }
+    }
+}
+oe_npet_prepare = {
+    oe_court_clear_invalid = yes
+    oe_nf_refresh = yes
+    clear_saved_scope = oe_npet_family
+    clear_saved_scope = oe_npet_nominee
+    clear_saved_scope = oe_npet_slot
+    clear_saved_scope = oe_npet_office
+    clear_saved_scope = oe_npet_cabinet
+    clear_saved_scope = oe_npet_theme
+    clear_saved_scope = oe_npet_previous
+    international_organization:oe_byz_empire_pillars = {
+        if = { limit = { oe_npet_house = { slot = 1 kind = $kind$ } } var:oe_nf_head_1 = { add_to_list = oe_npet_heads } }
+        if = { limit = { oe_npet_house = { slot = 2 kind = $kind$ } } var:oe_nf_head_2 = { add_to_list = oe_npet_heads } }
+        if = { limit = { oe_npet_house = { slot = 3 kind = $kind$ } } var:oe_nf_head_3 = { add_to_list = oe_npet_heads } }
+        if = { limit = { oe_npet_house = { slot = 4 kind = $kind$ } } var:oe_nf_head_4 = { add_to_list = oe_npet_heads } }
+    }
+    random_in_list = {
+        list = oe_npet_heads
+        save_scope_as = oe_npet_head
+        international_organization:oe_byz_empire_pillars = {
+            if = { limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:oe_npet_head } oe_npet_capture = { slot = 1 kind = $kind$ } }
+            if = { limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:oe_npet_head } oe_npet_capture = { slot = 2 kind = $kind$ } }
+            if = { limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:oe_npet_head } oe_npet_capture = { slot = 3 kind = $kind$ } }
+            if = { limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:oe_npet_head } oe_npet_capture = { slot = 4 kind = $kind$ } }
+        }
+    }
+    oe_npet_pick_target_$kind$ = yes
+}
+oe_npet_pick_target_1 = {
+    random_list = {
+        1 = { save_scope_value_as = { name = oe_npet_office value = 1 } var:oe_court_chancellor ?= { save_scope_as = oe_npet_previous } }
+        1 = { save_scope_value_as = { name = oe_npet_office value = 2 } var:oe_court_judge ?= { save_scope_as = oe_npet_previous } }
+        1 = { save_scope_value_as = { name = oe_npet_office value = 3 } var:oe_court_secretary ?= { save_scope_as = oe_npet_previous } }
+        1 = { save_scope_value_as = { name = oe_npet_office value = 4 } var:oe_court_taxmaster ?= { save_scope_as = oe_npet_previous } }
+        1 = { save_scope_value_as = { name = oe_npet_office value = 5 } var:oe_court_ceremonies ?= { save_scope_as = oe_npet_previous } }
+        1 = { save_scope_value_as = { name = oe_npet_office value = 6 } var:oe_court_admiral ?= { save_scope_as = oe_npet_previous } }
+        1 = { save_scope_value_as = { name = oe_npet_office value = 7 } var:oe_court_domestikos ?= { save_scope_as = oe_npet_previous } }
+    }
+}
+oe_npet_pick_target_2 = {
+    random_cabinet = { save_scope_as = oe_npet_cabinet cabinet_member ?= { save_scope_as = oe_npet_previous } }
+}
+oe_npet_pick_target_3 = {
+    random_subject = {
+        limit = {
+            oe_npet_theme_target = yes
+            save_temporary_scope_as = oe_npet_checked_theme
+            scope:oe_npet_nominee = { is_eligible_heir_baseline = scope:oe_npet_checked_theme }
+        }
+        save_scope_as = oe_npet_theme
+        ruler ?= { save_scope_as = oe_npet_previous }
+    }
+}
+oe_npet_pay_influence = {
+    international_organization:oe_byz_empire_pillars = {
+        if = { limit = { oe_npet_slot_matches = { slot = 1 } } oe_nf_change_influence = { slot = 1 amount = $amount$ } }
+        if = { limit = { oe_npet_slot_matches = { slot = 2 } } oe_nf_change_influence = { slot = 2 amount = $amount$ } }
+        if = { limit = { oe_npet_slot_matches = { slot = 3 } } oe_nf_change_influence = { slot = 3 amount = $amount$ } }
+        if = { limit = { oe_npet_slot_matches = { slot = 4 } } oe_nf_change_influence = { slot = 4 amount = $amount$ } }
+    }
+}
+# Direct appointment deliberately bypasses the normal five-legitimacy dismissal action.
+oe_npet_replace_office = {
+    var:oe_court_$role$ ?= { remove_variable = oe_court_office_held }
+    set_variable = { name = oe_court_$role$ value = scope:oe_npet_nominee }
+    scope:oe_npet_nominee = { set_variable = oe_court_office_held }
+}
+oe_npet_accept_1 = {
+    if = {
+        limit = { oe_npet_can_accept = { kind = 1 } }
+        if = { limit = { scope:oe_npet_office = 1 } oe_npet_replace_office = { role = chancellor } }
+        if = { limit = { scope:oe_npet_office = 2 } oe_npet_replace_office = { role = judge } }
+        if = { limit = { scope:oe_npet_office = 3 } oe_npet_replace_office = { role = secretary } }
+        if = { limit = { scope:oe_npet_office = 4 } oe_npet_replace_office = { role = taxmaster } }
+        if = { limit = { scope:oe_npet_office = 5 } oe_npet_replace_office = { role = ceremonies } }
+        if = { limit = { scope:oe_npet_office = 6 } oe_npet_replace_office = { role = admiral } }
+        if = { limit = { scope:oe_npet_office = 7 } oe_npet_replace_office = { role = domestikos } }
+        oe_npet_pay_influence = { amount = -75 }
+        oe_nf_refresh = yes
+    }
+}
+oe_npet_accept_2 = {
+    if = {
+        limit = { oe_npet_can_accept = { kind = 2 } }
+        # Re-read the saved slot's current holder: never dismiss a former holder from another slot.
+        scope:oe_npet_cabinet = { cabinet_member ?= { save_scope_as = oe_npet_displaced } }
+        if = { limit = { scope:oe_npet_cabinet = { exists = cabinet_member } } remove_from_cabinet = scope:oe_npet_displaced }
+        scope:oe_npet_cabinet = { add_to_cabinet = scope:oe_npet_nominee }
+        if = {
+            limit = { scope:oe_npet_cabinet = { cabinet_member = scope:oe_npet_nominee } }
+            oe_npet_pay_influence = { amount = -50 }
+            oe_court_clear_invalid = yes
+            oe_court_auto_fill = yes
+            oe_nf_refresh = yes
+        }
+    }
+}
+oe_npet_accept_3 = {
+    if = {
+        limit = { oe_npet_can_accept = { kind = 3 } }
+        scope:oe_npet_theme = { ruler ?= { save_scope_as = oe_npet_displaced } }
+        if = { limit = { scope:oe_npet_nominee = { in_cabinet = yes } } remove_from_cabinet = scope:oe_npet_nominee }
+        scope:oe_npet_nominee = { move_country = scope:oe_npet_theme }
+        scope:oe_npet_theme = { set_new_ruler = scope:oe_npet_nominee }
+        if = {
+            limit = { scope:oe_npet_theme = { ruler = scope:oe_npet_nominee } }
+            scope:oe_npet_nominee = { add_trait = trait:oe_character_war_score_trait_VI }
+            if = {
+                limit = { exists = scope:oe_npet_displaced scope:oe_npet_displaced = { NOT = { oe_nf_theme_governor = yes } } }
+                scope:oe_npet_displaced = { remove_trait = trait:oe_character_war_score_trait_VI }
+            }
+            oe_npet_pay_influence = { amount = -50 }
+            oe_court_clear_invalid = yes
+            oe_court_auto_fill = yes
+            oe_nf_refresh = yes
+        }
+    }
+}
+oe_npet_refuse = {
+    if = {
+        limit = { oe_npet_can_accept = { kind = $kind$ } }
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority add = -2 }
+            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        }
+    }
+}

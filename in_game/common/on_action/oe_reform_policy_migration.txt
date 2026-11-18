@@ -1,0 +1,26 @@
+﻿on_game_start = { on_actions = { oe_reform_policy_migration } }
+oe_reform_policy_migration = {
+    effect = {
+        c:BYZ ?= {
+            if = {
+                limit = { has_variable = oe_ir_guilds_done NOT = { has_variable = oe_guild_mining_policy_applied } }
+                unlock_policy_effect = { type = oe_state_guild_mining }
+                add_policy = policy:oe_state_guild_mining
+                set_variable = oe_guild_mining_policy_applied
+            }
+            if = {
+                limit = {
+                    NOT = { has_variable = oe_professional_army_law_migrated }
+                    OR = {
+                        has_reform = government_reform:oe_byz_lose_army
+                        has_reform = government_reform:oe_byz_rebuild_army
+                        has_reform = government_reform:oe_byz_veteran_army
+                        has_reform = government_reform:oe_byz_phoenix_army
+                    }
+                }
+                if = { limit = { NOT = { has_policy = oe_professional_army_tradition } } add_policy = policy:oe_professional_army_tradition }
+                set_variable = oe_professional_army_law_migrated
+            }
+        }
+    }
+}

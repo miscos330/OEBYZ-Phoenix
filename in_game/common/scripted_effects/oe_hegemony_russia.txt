@@ -1,0 +1,81 @@
+﻿oe_heg_plan_black_sea_effect = {
+    add_gold = -1000
+    set_variable = oe_heg_black_sea_plan_done
+    international_organization:oe_byz_roman_world = {
+        set_variable = oe_rw_crimea_included
+        area:crimea_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+    }
+}
+oe_heg_invade_russia_effect = {
+    add_gold = -200
+    add_political_influence = -20
+    add_stability = -5
+    add_casus_belli = { target = scope:target_country type = casus_belli:oe_heg_capital_invasion }
+}
+# Snapshot the direct Byzantine holdings before creating any country.
+oe_heg_restore_bosporus_effect = {
+    region:steppes_region = {
+        every_location_in_region = { limit = { oe_heg_bosporus_grant_location = yes } add_to_list = oe_bosporus_grant_locations }
+        ordered_location_in_region = {
+            limit = { oe_heg_bosporus_grant_location = yes }
+            order_by = population
+            max = 1
+            check_range_bounds = no
+            save_scope_as = oe_bosporus_capital
+        }
+    }
+    scope:oe_bosporus_capital = {
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_black_sea_kingdom
+            save_scope_as = oe_new_bosporus_kingdom
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:gothic_culture
+            change_religion = religion:orthodox
+            set_country_rank = country_rank:rank_kingdom
+            change_country_name = OE_BOSPORUS_KINGDOM
+            change_country_adjective = OE_BOSPORUS_KINGDOM_ADJ
+            change_country_flag = FEO
+            set_capital = scope:oe_bosporus_capital
+            oe_heg_stabilize_africa_effect = yes
+            if = {
+                limit = { has_ruler = no }
+                create_character = {
+                    age = 35 culture = culture:gothic_culture religion = religion:orthodox
+                    estate = estate_type:nobles_estate save_scope_as = oe_bosporus_ruler
+                }
+                set_new_ruler = scope:oe_bosporus_ruler
+            }
+        }
+    }
+    every_in_list = { list = oe_bosporus_grant_locations change_location_owner = scope:oe_new_bosporus_kingdom }
+    add_gold = -1000
+    add_political_influence = -50
+    set_variable = oe_heg_bosporus_restored
+    international_organization:oe_byz_roman_world = { add_country_to_international_organization = scope:oe_new_bosporus_kingdom }
+    location:kaffa = { add_location_modifier = { modifier = oe_black_sea_free_port years = -1 mode = replace } }
+    location:tana = { add_location_modifier = { modifier = oe_black_sea_free_port years = -1 mode = replace } }
+    location:theodoro = { add_location_modifier = { modifier = oe_black_sea_free_port years = -1 mode = replace } }
+    oe_rw_start_gothic_romanization = yes
+}
+# Starts from eligible Crimean population within the regional bloc; no global/pop scan.
+oe_rw_start_gothic_romanization = {
+    if = {
+        limit = { culture:gothic_culture = { NOT = { has_variable = oe_identity_fixed_30y_scheduled } } }
+        region:steppes_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_gothic_spread_location = yes }
+                order_by = { value = population multiply = "culture_percentage(culture:crimean)" }
+                max = 1
+                check_range_bounds = no
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_gothic_identity_movement
+                    supporters = { value = population multiply = "culture_percentage(culture:crimean)" multiply = 0.1 }
+                }
+                oe_identity_schedule_30_years = { holder = culture:gothic_culture event = oe_identity_expiry.21 }
+            }
+        }
+    }
+}

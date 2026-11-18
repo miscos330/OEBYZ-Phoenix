@@ -1,0 +1,25 @@
+﻿# Resolve the historical child directly; never substitute the current heir or ruler.
+oe_byz_repair_john_v_education = {
+    if = {
+        limit = { NOT = { has_global_variable = oe_byz_john_v_education_repaired } }
+        character:byz_john_v_palaiologos ?= {
+            if = {
+                limit = { is_alive = yes }
+                if = {
+                    limit = { has_trait = child_idiot }
+                    remove_trait = trait:child_idiot
+                }
+                # Preserve a later bespoke childhood phase already present in an old save.
+                if = {
+                    limit = {
+                        is_child = yes
+                        NOT = { has_trait = child_byz_john_V }
+                        NOT = { has_trait = child_byz_john_V_after_1341 }
+                    }
+                    add_trait = trait:child_byz_john_V
+                }
+            }
+        }
+        set_global_variable = oe_byz_john_v_education_repaired
+    }
+}

@@ -1,0 +1,97 @@
+﻿# Phoenix owns Roman restoration; disable both native formation-menu routes.
+
+REPLACE:ROM_f = {
+	level = 5
+	required_locations_fraction = 0.75
+	rule = fantasy
+	
+	potential = { always = no }
+
+	allow = { always = no }
+
+	name = ROM
+	flag = ROM
+	adjective = ROM_ADJ
+	tag = ROM
+	color = map_ROM
+
+	regions = {
+		italy_region
+		iberia_region
+		france_region
+		balkan_region
+		great_britain_region
+		anatolia_region
+		south_german_region
+		crescent_region
+		egypt_region
+		maghreb_region
+		carpathia_region
+		caucasus_region
+	}
+	form_effect = {
+		if = {
+			limit = {
+				NOT = { court_language = language:latin_language }
+			}
+			set_court_language = dialect:roman_dialect
+		}
+		if = {
+			limit = { NOT = { capital = location:rome } }
+			move_capital_event_effect = {
+				from = root.capital
+				to = location:rome
+			}
+		}
+		if = {
+			limit = { has_dlc = "d008_fate_of_the_phoenix" }
+			unlock_casus_belli_effect = { type = cb_restore_roman_borders }
+		}
+	}
+}
+
+REPLACE:ROM_BYZ_f = {
+	level = 5
+	required_locations_fraction = 0.25
+	rule = historical
+
+	capital_required = no
+	potential_requires_own = no
+	
+	potential = { always = no }
+
+	allow = { always = no }
+
+	name = ROM
+	flag = ROM
+	adjective = ROM_ADJ
+	tag = ROM
+	color = map_ROM
+
+	regions = {
+		italy_region
+	}
+	form_effect = {
+		if = {
+			limit = { NOT = { capital = location:rome } }
+			move_capital_event_effect = {
+				from = root.capital
+				to = location:rome
+			}
+		}
+		province_definition:marittima_province = {
+			every_ownable_location_in_province_definition = {
+				limit = { owner = root }
+				change_integration_level = integrated
+			}
+		}
+		if = {
+			limit = { has_societal_value = societal_value_type:latinization_vs_hellenization }
+			change_societal_value = { type = latinization_vs_hellenization value = societal_value_huge_move_to_left }
+		}
+		if = {
+			limit = { has_dlc = "d008_fate_of_the_phoenix" }
+			unlock_casus_belli_effect = { type = cb_restore_roman_borders }
+		}
+	}
+}

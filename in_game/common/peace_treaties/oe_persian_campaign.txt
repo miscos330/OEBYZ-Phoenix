@@ -1,0 +1,104 @@
+﻿pe_oe_end_timur = {
+    cost = { value = 100 }
+    base_antagonism = 50
+    antagonism_type = antagonism_peace_treaty_demands
+    potential = {
+        oe_historical_timur_alive = yes
+        scope:winner = { tag = BYZ }
+        scope:loser = { tag = TIM }
+        scope:war = {
+            is_no_cb_war = no
+            casus_belli ?= casus_belli:oe_cb_confront_timur
+            is_an_attacker = scope:winner
+            original_defender_leader ?= scope:loser
+        }
+    }
+    allow = {
+        oe_historical_timur_alive = yes
+        scope:loser = { any_owned_location = { oe_timur_treaty_location = yes } }
+    }
+    effect = {
+        custom_tooltip = {
+            text = OE_END_TIMUR_EFFECT
+            scope:loser = { every_owned_location = { limit = { oe_timur_treaty_location = yes } add_to_list = oe_timur_ceded_locations } }
+            every_in_list = {
+                list = oe_timur_ceded_locations
+                change_location_owner = scope:winner
+                change_location_controller = scope:winner
+                # This treaty explicitly grants conquered land without Byzantine cores.
+                oe_reset_new_conquest_integration = { recipient = scope:winner }
+            }
+        }
+    }
+    ai_desire = { value = 100 }
+}
+pe_oe_caucasus_vassal = {
+    cost = { value = 50 }
+    base_antagonism = 25
+    antagonism_type = antagonism_subjugate_neighbor_native
+    blocks_full_annexation = yes
+    potential = {
+        scope:winner = { tag = BYZ }
+        scope:loser = { OR = { tag = GEO tag = ARM } }
+        scope:war = {
+            is_no_cb_war = no
+            casus_belli ?= casus_belli:oe_cb_caucasus_vassal
+            is_an_attacker = scope:winner
+            original_defender_leader ?= scope:loser
+        }
+    }
+    allow = { scope:loser = { country_type = location is_subject = no } }
+    effect = {
+        scope:loser = { make_subject_of = { target = scope:winner type = subject_type:oe_rome_sub war = scope:war } }
+    }
+    ai_desire = { value = 100 }
+}
+
+pe_oe_rule_caucasus = {
+    cost = { value = 50 }
+    base_antagonism = 25
+    antagonism_type = antagonism_peace_treaty_demands
+    potential = {
+        scope:winner = { tag = BYZ }
+        scope:loser = { tag = GEO }
+        scope:war = {
+            is_no_cb_war = no
+            casus_belli ?= casus_belli:oe_cb_caucasus_vassal
+            is_an_attacker = scope:winner
+            original_defender_leader ?= scope:loser
+        }
+    }
+    allow = {
+        scope:loser = {
+            OR = {
+                any_owned_location = { region = region:caucasus_region }
+                any_subject_or_below = { any_owned_location = { region = region:caucasus_region } }
+            }
+        }
+    }
+    effect = {
+        custom_tooltip = {
+            text = OE_RULE_CAUCASUS_EFFECT
+            scope:loser = {
+                every_owned_location = {
+                    limit = { region = region:caucasus_region }
+                    add_to_list = oe_rule_caucasus_locations
+                }
+                every_subject_or_below = {
+                    every_owned_location = {
+                        limit = { region = region:caucasus_region }
+                        add_to_list = oe_rule_caucasus_locations
+                    }
+                }
+            }
+            every_in_list = {
+                list = oe_rule_caucasus_locations
+                change_location_owner = scope:winner
+                change_location_controller = scope:winner
+                # This treaty explicitly grants no Byzantine cores, as with the Timur treaty.
+                oe_reset_new_conquest_integration = { recipient = scope:winner }
+            }
+        }
+    }
+    ai_desire = { value = 100 }
+}

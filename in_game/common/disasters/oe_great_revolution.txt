@@ -1,0 +1,38 @@
+﻿oe_great_revolution = {
+    image = "gfx/interface/illustrations/disaster/oe_great_revolution.dds"
+    fire_only_once = yes
+    monthly_spawn_chance = oe_gr_spawn_chance
+    can_start = {
+        # FIX 2026-11-17 屏蔽：和 situations/oe_bells_of_revolution.txt 一起关闭。重新开放时删掉下一行即可
+        always = no
+        tag = BYZ
+        is_situation_active = situation:oe_bells_of_revolution
+        situation:oe_bells_of_revolution = { trigger_if = { limit = { has_variable = oe_bells_clamor } var:oe_bells_clamor > 50 } trigger_else = { always = no } }
+        NOT = { has_variable = oe_gr_started }
+    }
+    modifier = {
+        court_spending_efficiency = 0.2
+        global_estate_satisfaction_recovery = -0.01
+        global_crown_estate_power = -0.5
+    }
+    can_end = {
+        custom_tooltip = {
+            text = oe_gr_end_condition_tt
+            has_variable = oe_gr_end_requested
+        }
+    }
+    on_start = {
+        set_variable = oe_gr_started
+        oe_court_abolish_offices = yes
+        oe_gr_track_emperor = yes
+        set_variable = { name = oe_gr_radicalism value = 0 }
+        set_variable = { name = oe_gr_people value = 0 }
+        set_variable = { name = oe_gr_soldiers value = 0 }
+        set_variable = { name = oe_gr_muster value = 0 }
+        set_global_variable = oe_bells_end_requested
+        end_situation = situation:oe_bells_of_revolution
+        trigger_event_non_silently = oe_great_revolution.1
+    }
+    on_monthly = { oe_gr_monthly = yes }
+    on_end = { set_variable = oe_gr_ended }
+}

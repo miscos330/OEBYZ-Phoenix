@@ -1,0 +1,57 @@
+﻿oe_army_ability_kill_mus = {
+	toggle = yes
+	army_only = yes	
+	map = yes
+	confirm = yes
+
+	hidden = { always = yes } # Retired with the military-discipline law.
+	allow = {
+		is_army = yes
+		in_combat = no
+		is_moving = no
+		is_exiled = no
+		in_siege = no
+		has_commander = yes	
+			unit_location = {
+		NOT = { OR = {
+			has_location_modifier = oe_army_ability_kill_mus_mod
+			has_location_modifier = oe_army_ability_kill_unrome_mod
+		} }
+	}	
+	
+	}
+
+	start_effect = {
+		unit_location = {
+			every_pop = {
+				limit = {
+					NOT = {
+						religion = religion:orthodox
+					}
+				}
+				add_pop_size = {
+					value = pop_size
+					multiply = -0.2
+				}
+			}
+			add_location_modifier = { 
+				modifier =  oe_army_ability_kill_mus_mod
+                years = 2
+				mode = add_and_extend
+				}
+		}
+		commander = {
+			add_character_modifier = {
+				modifier = oe_army_ability_kill_mus_character_mod
+				years = -1
+				mode = add_and_extend
+			}			
+		}
+		owner = {
+			add_gold = {
+				value = unit_location.population
+				multiply = 0.5
+			}
+		}
+	}
+}

@@ -1,0 +1,25 @@
+﻿oe_byz_adopt_roman_culture = {
+    message = yes
+    on_own_nation = yes
+    potential = { scope:actor = { tag = BYZ } }
+    ai_tick = never
+    allow = { scope:actor = { tag = BYZ } }
+    select_trigger = {
+        looking_for_a = character
+        source = actor
+        target_flag = recipient
+        name = "OE_ROMAN_CULTURE_CHOOSE_CHARACTER"
+        none_available_msg_key = "OE_ROMAN_CULTURE_NO_CANDIDATE"
+        column = { data = name }
+        visible = { oe_byz_roman_culture_candidate = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { tag = BYZ }
+                scope:recipient = { oe_byz_roman_culture_candidate = yes }
+            }
+            scope:recipient = { change_character_culture = culture:greek_culture }
+        }
+    }
+}

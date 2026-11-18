@@ -1,0 +1,106 @@
+﻿oe_byz_policy_org = {
+	has_target = no
+	unique = yes
+	expel_members_who_are_targets_of_other_members = no
+	disband_if_no_leader = no
+	has_leader_country = yes
+	leader_type = character
+	leader_change_trigger_type = none
+	leader_change_method = none
+	leader = {
+		leader_country ?= {
+			if = {
+				limit = { 
+					has_regent = yes
+					has_heir = yes
+				}
+				heir = {
+					add_to_list = leaders
+				}
+			}
+			else = {
+				ruler ?= {
+					add_to_list = leaders
+				}
+			}
+		}
+	}
+	create_visible_trigger = {
+		always = no
+	}
+
+	invite_visible_trigger = {
+		always = yes
+	}
+
+	can_declare_war = {
+		always = yes
+	}
+	
+	variables = {
+
+	}
+
+	leader_modifier = {
+		subject_opinions = 15
+		court_spending_efficiency = -0.02
+	}
+
+	can_lead_trigger = {
+		has_or_had_tag = BYZ
+	}
+
+	can_join_trigger = {
+		OR = {
+		tag = BYZ
+		
+# PAUSED 2026-09-24: retained as comments at user request.
+# is_subject_type = oe_real_gov
+
+		}
+	}
+	
+	can_leave_trigger = {
+		always = no
+	}
+	
+	auto_leave_trigger = {
+		always = no
+	}
+
+	auto_disband_trigger = {
+		Not = { country_exists = c:BYZ }
+	}
+
+	on_joined = {
+
+	}
+
+	on_left = {
+	}
+
+
+
+
+	ai_desire_to_join = {
+
+	}
+
+	ai_desire_to_allow_new_member = {
+
+	}
+
+	payments_implemented = {
+		oe_byz_plicy_org_leader_pay
+		
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# oe_byz_plicy_org_ldec_corrupt_pay
+
+	}
+
+	special_statuses_implemented = {
+		oe_byz_policy_org_real_empire_king
+		oe_byz_policy_org_real_power_country
+		oe_byz_policy_org_low_power_country
+	}	
+}

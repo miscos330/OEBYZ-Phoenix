@@ -1,0 +1,68 @@
+﻿# Constant historical character lookup; no world character scan.
+oe_historical_timur_alive = {
+    exists = character:chg_timur_lame_borjigin
+    character:chg_timur_lame_borjigin = { is_alive = yes }
+}
+oe_cb_confront_timur_allowed = {
+    tag = BYZ
+    oe_historical_timur_alive = yes
+    exists = scope:target
+    scope:target = { tag = TIM NOT = { is_subject_or_below_of = c:BYZ } }
+}
+oe_cb_caucasus_vassal_allowed = {
+    tag = BYZ
+    exists = scope:target
+    scope:target = { OR = { tag = GEO tag = ARM } NOT = { is_subject_or_below_of = c:BYZ } }
+}
+oe_timur_treaty_location = {
+    OR = { region = region:persia_region region = region:caucasus_region region = region:crescent_region }
+}
+oe_heg_levant_owned = {
+    area:levant_area = {
+        any_location_in_area = { is_ownable = yes }
+        NOT = { any_location_in_area = {
+            is_ownable = yes
+            NOT = { AND = { has_owner = yes owner = { oe_heg_byz_bloc = yes } } }
+        } }
+    }
+}
+oe_heg_plan_persia_allowed = {
+    oe_heg_campaign_access = yes
+    NOT = { has_variable = oe_heg_persia_plan_done }
+    gold >= 1000
+    custom_tooltip = { text = OE_HEG_PERSIA_LEVANT_REQUIRED oe_heg_levant_owned = yes }
+}
+oe_heg_invade_persia_target = {
+    country_type = location
+    num_locations > 0
+    NOT = { oe_heg_byz_bloc = yes }
+    exists = capital
+    capital = { OR = { region = region:crescent_region region = region:persia_region region = region:caucasus_region } }
+}
+oe_heg_invade_persia_allowed = {
+    oe_heg_campaign_access = yes
+    gold >= 200
+    political_influence >= 20
+    stability >= 3
+}
+oe_heg_persia_grant_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = { oe_heg_byz_bloc = yes }
+    region = region:persia_region
+}
+oe_heg_restore_persia_allowed = {
+    oe_heg_campaign_access = yes
+    NOT = { has_variable = oe_heg_persia_restored }
+    custom_tooltip = {
+        text = OE_HEG_PERSIA_LAND_REQUIRED
+        region:persia_region = { any_location_in_region = { oe_heg_persia_grant_location = yes } }
+    }
+}
+# Religion revival is geographically bounded, including foreign-held Persian locations.
+oe_rw_zoroastrian_spread_location = {
+    is_ownable = yes
+    has_owner = yes
+    region = region:persia_region
+    OR = { "religion_percentage(religion:sunni)" > 0 "religion_percentage(religion:shia)" > 0 }
+}

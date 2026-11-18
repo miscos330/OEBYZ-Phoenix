@@ -1,0 +1,50 @@
+﻿oe_tx_edict_visible = {
+    scope = country
+    is_shown = { oe_tx_actor_unlocked = yes }
+}
+oe_tx_panel_visible = {
+    scope = country
+    is_shown = {
+        tag = BYZ
+        has_variable = oe_tx_partner
+    }
+}
+oe_tx_panel_invalid = { scope = country is_shown = { has_variable = oe_tx_invalid } }
+oe_tx_cancel = {
+    scope = country
+    is_shown = { tag = BYZ has_variable = oe_tx_partner }
+    is_valid = { tag = BYZ has_variable = oe_tx_partner }
+    effect = { if = { limit = { tag = BYZ } oe_tx_clear = yes } }
+}
+oe_tx_refresh_gui = {
+    scope = country
+    is_shown = { tag = BYZ has_variable = oe_tx_partner }
+    is_valid = { tag = BYZ has_variable = oe_tx_partner }
+    effect = { if = { limit = { tag = BYZ has_variable = oe_tx_partner } oe_tx_refresh = yes } }
+}
+oe_tx_remove_give = {
+    scope = country
+    saved_scopes = { target_location }
+    is_shown = { tag = BYZ has_variable = oe_tx_partner }
+    is_valid = { tag = BYZ is_target_in_variable_list = { name = oe_tx_give target = scope:target_location } }
+    effect = {
+        if = {
+            limit = { tag = BYZ is_target_in_variable_list = { name = oe_tx_give target = scope:target_location } }
+            remove_list_variable = { name = oe_tx_give target = scope:target_location }
+            oe_tx_refresh = yes
+        }
+    }
+}
+oe_tx_remove_take = {
+    scope = country
+    saved_scopes = { target_location }
+    is_shown = { tag = BYZ has_variable = oe_tx_partner }
+    is_valid = { tag = BYZ is_target_in_variable_list = { name = oe_tx_take target = scope:target_location } }
+    effect = {
+        if = {
+            limit = { tag = BYZ is_target_in_variable_list = { name = oe_tx_take target = scope:target_location } }
+            remove_list_variable = { name = oe_tx_take target = scope:target_location }
+            oe_tx_refresh = yes
+        }
+    }
+}

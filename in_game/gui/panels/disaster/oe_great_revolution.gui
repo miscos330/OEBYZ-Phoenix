@@ -1,0 +1,142 @@
+﻿disaster_panel = {
+    # Native extension point above the illustration; do not override panel_content.
+    blockoverride "disaster_subheader" {
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            size = { -1 50 }
+            margin = { 10 5 }
+            spacing = 5
+            tooltip = "oe_gr_radicalism_tooltip"
+            background = { texture = "gfx/interface/progressbars/tension_header_bg.dds" }
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_single = { text = "oe_gr_radicalism" fontsize = 16 default_format = "#yellow_titles" }
+                expand = {}
+                text_single = { raw_text = "[DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_gr_radicalism').GetValue|2] / 100" fontsize = 15 }
+            }
+            progressbar = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 12 }
+                min = 0
+                max = 100
+                value = "[FixedPointToFloat(DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_gr_radicalism').GetValue)]"
+                tooltip = "oe_gr_radicalism_tooltip"
+                progresstexture = "gfx/interface/progressbars/progress_bar_red_alt.dds"
+                noprogresstexture = "gfx/interface/icons/unit_view/moral_bar_transparent.dds"
+                spriteType = Corneredstretched
+                spriteborder = { 12 0 }
+                texture_density = 2
+            }
+        }
+    }
+    # Keep the native illustration container and remove portraits obscuring the painting.
+    blockoverride "main_image" {
+        icon = {
+            layoutpolicy_horizontal = expanding
+            size = { -1 220 }
+            texture = "[GetDisasterIllustration(DisasterView.GetDisaster.Self)]"
+        }
+    }
+    blockoverride "disaster_secondary_tab" {}
+    blockoverride "disaster_main_content_subheader" {}
+    blockoverride "main_content" {
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            spacing = 12
+            text_multi = { layoutpolicy_horizontal = expanding autoresize = yes text = "oe_gr_overview" fontsize = 14 }
+            # Independent imperial person: never substitute the republican president.
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                using = bg_cabinet_card_frame
+                margin = { 12 12 }
+                spacing = 8
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    spacing = 14
+                    visible = "[GetScriptedGui('oe_gr_emperor_alive').IsShown(GuiScope.SetRoot(DisasterView.GetDisaster.GetOwner.MakeScope).End)]"
+                    portrait_standard_head_framed_button = {
+                        size = { 84 96 }
+                        datacontext = "[DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_gr_emperor').GetCharacter]"
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 6
+                        text_multi = { layoutpolicy_horizontal = expanding autoresize = yes text = "oe_gr_emperor_identity" fontsize = 16 default_format = "#yellow_titles" }
+                        text_single = { text = "oe_gr_emperor_age" fontsize = 14 }
+                        text_multi = {
+                            layoutpolicy_horizontal = expanding autoresize = yes fontsize = 14
+                            visible = "[GetScriptedGui('oe_gr_emperor_detained').IsShown(GuiScope.SetRoot(DisasterView.GetDisaster.GetOwner.MakeScope).End)]"
+                            text = "oe_gr_emperor_detained_status"
+                        }
+                        text_multi = {
+                            layoutpolicy_horizontal = expanding autoresize = yes fontsize = 14
+                            visible = "[GetScriptedGui('oe_gr_emperor_free').IsShown(GuiScope.SetRoot(DisasterView.GetDisaster.GetOwner.MakeScope).End)]"
+                            text = "oe_gr_emperor_free_status"
+                        }
+                    }
+                }
+                text_multi = {
+                    layoutpolicy_horizontal = expanding autoresize = yes fontsize = 14
+                    visible = "[GetScriptedGui('oe_gr_emperor_succession_pending').IsShown(GuiScope.SetRoot(DisasterView.GetDisaster.GetOwner.MakeScope).End)]"
+                    text = "oe_gr_emperor_pending_status"
+                }
+                text_multi = {
+                    layoutpolicy_horizontal = expanding autoresize = yes fontsize = 14
+                    visible = "[GetScriptedGui('oe_gr_emperor_extinct').IsShown(GuiScope.SetRoot(DisasterView.GetDisaster.GetOwner.MakeScope).End)]"
+                    text = "oe_gr_emperor_extinct_status"
+                }
+                text_multi = {
+                    layoutpolicy_horizontal = expanding autoresize = yes fontsize = 14
+                    visible = "[GetScriptedGui('oe_gr_emperor_unassigned').IsShown(GuiScope.SetRoot(DisasterView.GetDisaster.GetOwner.MakeScope).End)]"
+                    text = "oe_gr_emperor_unassigned_status"
+                }
+            }
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                using = bg_cabinet_card_frame
+                margin = { 12 12 }
+                spacing = 10
+                text_single = { text = "oe_gr_reactionary_muster" fontsize = 17 default_format = "#yellow_titles" }
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    spacing = 18
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 4
+                        text_single = { text = "oe_gr_people_pool" fontsize = 14 }
+                        text_single = { raw_text = "[DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_gr_people').GetValue|0]" fontsize = 21 default_format = "#yellow_titles" }
+                        text_single = { text = "oe_gr_people_monthly" fontsize = 13 }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 4
+                        text_single = { text = "oe_gr_soldier_pool" fontsize = 14 }
+                        text_single = { raw_text = "[DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_gr_soldiers').GetValue|0]" fontsize = 21 default_format = "#yellow_titles" }
+                        text_single = { text = "oe_gr_soldiers_monthly" fontsize = 13 }
+                    }
+                }
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    text_single = { text = "oe_gr_muster_progress" fontsize = 14 }
+                    expand = {}
+                    text_single = { raw_text = "[DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_gr_muster').GetValue|2] / 100" fontsize = 14 }
+                }
+                progressbar = {
+                    layoutpolicy_horizontal = expanding
+                    size = { -1 16 }
+                    min = 0
+                    max = 100
+                    value = "[FixedPointToFloat(DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_gr_muster').GetValue)]"
+                    tooltip = "oe_gr_muster_tooltip"
+                    progresstexture = "gfx/interface/progressbars/progress_bar_red_alt.dds"
+                    noprogresstexture = "gfx/interface/icons/unit_view/moral_bar_transparent.dds"
+                    spriteType = Corneredstretched
+                    spriteborder = { 12 0 }
+                    texture_density = 2
+                }
+                text_multi = { layoutpolicy_horizontal = expanding autoresize = yes text = "oe_gr_muster_summary" fontsize = 14 }
+                text_multi = { layoutpolicy_horizontal = expanding autoresize = yes text = "oe_gr_muster_rules" fontsize = 13 }
+            }
+        }
+    }
+}

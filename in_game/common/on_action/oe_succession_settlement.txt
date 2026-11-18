@@ -1,0 +1,28 @@
+﻿# Native country hooks; ruler and regent remain distinct.
+on_new_ruler = { on_actions = { oe_nf_succession_house_cleanup } }
+on_ruler_death = { on_actions = { oe_nf_andronikos_ruler_death } }
+on_character_death = { on_actions = { oe_nf_andronikos_character_death } }
+on_regency_start = { on_actions = { oe_nf_regency_ambition_check } }
+monthly_country_pulse = { on_actions = { oe_nf_regency_ambition_check } }
+oe_nf_succession_house_cleanup = {
+    trigger = { tag = BYZ }
+    effect = { oe_nf_refresh = yes }
+}
+oe_nf_andronikos_ruler_death = {
+    trigger = { tag = BYZ scope:old_ruler = character:byz_andronikos_iii_palaiologos }
+    effect = { oe_nf_note_andronikos_death = yes }
+}
+# Also cover his death after abdication. Both hooks share an idempotent dispatcher.
+oe_nf_andronikos_character_death = {
+    trigger = { country_exists = c:BYZ scope:target = character:byz_andronikos_iii_palaiologos }
+    effect = { c:BYZ = { oe_nf_note_andronikos_death = yes } }
+}
+oe_nf_after_andronikos_death = {
+    effect = {
+        if = { limit = { oe_nf_kantakouzenos_ambition_ready = yes } trigger_event_non_silently = oe_succession_settlement.1 }
+    }
+}
+oe_nf_regency_ambition_check = {
+    trigger = { oe_nf_kantakouzenos_ambition_ready = yes }
+    effect = { trigger_event_non_silently = oe_succession_settlement.1 }
+}

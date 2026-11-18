@@ -1,0 +1,244 @@
+﻿# One hidden daily event observes SIX named locations; never scans the world.
+# Variables persist across saves. Only actual observed days are counted.
+oe_heg_observe_occupation = {
+    if = {
+        limit = { oe_heg_military_occupation = yes }
+        if = {
+            limit = { has_variable = oe_heg_hold_days }
+            if = {
+                limit = { NOT = { has_variable = oe_heg_counted_today } }
+                change_variable = { name = oe_heg_hold_days add = 1 }
+                set_variable = { name = oe_heg_hold_days value = { value = var:oe_heg_hold_days max = 366 } }
+                set_variable = { name = oe_heg_counted_today value = yes days = 1 }
+            }
+        }
+        else = {
+            set_variable = { name = oe_heg_hold_days value = 0 }
+            set_variable = { name = oe_heg_counted_today value = yes days = 1 }
+        }
+    }
+    else = { remove_variable = oe_heg_hold_days remove_variable = oe_heg_counted_today }
+}
+oe_heg_start_tracking = {
+    if = {
+        limit = { oe_heg_tracking_needed = yes NOT = { has_variable = oe_heg_tracker_alive } }
+        # Claim the queue before dispatch, so simultaneous hooks cannot start two loops.
+        set_variable = { name = oe_heg_tracker_alive value = yes days = 3 }
+        trigger_event_silently = oe_eastern_governorates.900
+    }
+}
+oe_heg_pick_governors = {
+    ordered_character = {
+        limit = { oe_heg_governor_candidate = yes  }
+        order_by = total_abilities
+        max = 1
+        check_range_bounds = no
+        save_scope_as = oe_heg_candidate_1
+    }
+    ordered_character = {
+        limit = { oe_heg_governor_candidate = yes NOT = { this = scope:oe_heg_candidate_1 } }
+        order_by = total_abilities
+        max = 1
+        check_range_bounds = no
+        save_scope_as = oe_heg_candidate_2
+    }
+    ordered_character = {
+        limit = { oe_heg_governor_candidate = yes NOT = { this = scope:oe_heg_candidate_1 } NOT = { this = scope:oe_heg_candidate_2 } }
+        order_by = total_abilities
+        max = 1
+        check_range_bounds = no
+        save_scope_as = oe_heg_candidate_3
+    }
+}
+
+oe_heg_create_syria = {
+    oe_heg_pick_governors = yes
+    if = {
+        limit = { location:aleppo = { oe_heg_held_over_year = yes } }
+        location:aleppo = { save_scope_as = oe_heg_capital }
+    }
+    else = { location:damascus = { save_scope_as = oe_heg_capital } }
+    province_definition:halab_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    province_definition:ayntab_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    province_definition:hims_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    province_definition:latakia_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    province_definition:tadmur_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    province_definition:deir_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    province_definition:shaam_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    # Snapshot the occupied list BEFORE altering any ownership or controller.
+    scope:oe_heg_capital = {
+        change_location_owner = c:BYZ
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_rome_sub_II
+            reforms = { oe_roman_province }
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:greek_culture
+            change_religion = religion:orthodox
+            set_variable = oe_heg_governorate
+            change_country_name = OE_HEG_SYRIA_COUNTRY
+            change_country_adjective = OE_HEG_SYRIA_ADJ
+            change_country_flag = BYZ
+            set_capital = scope:oe_heg_capital
+            save_scope_as = oe_heg_new_country
+        }
+    }
+    every_in_list = {
+        list = oe_heg_grant_locations
+        change_location_owner = scope:oe_heg_new_country
+        change_location_controller = scope:oe_heg_new_country
+    }
+    set_variable = oe_heg_syria_done
+    set_variable = { name = oe_heg_syria_country value = scope:oe_heg_new_country }
+    set_variable = { name = oe_heg_pending_governorate value = scope:oe_heg_new_country }
+    trigger_event_non_silently = oe_eastern_governorates.1
+}
+
+oe_heg_create_jerusalem = {
+    oe_heg_pick_governors = yes
+    location:jerusalem = { save_scope_as = oe_heg_capital }
+    province_definition:filastin_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    province_definition:sharat_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    province_definition:hawran_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    province_definition:lebanon_province = {
+        every_location_in_province_definition = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    # Snapshot the occupied list BEFORE altering any ownership or controller.
+    scope:oe_heg_capital = {
+        change_location_owner = c:BYZ
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_rome_sub_II
+            reforms = { oe_roman_province }
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:greek_culture
+            change_religion = religion:orthodox
+            set_variable = oe_heg_governorate
+            change_country_name = OE_HEG_JERUSALEM_COUNTRY
+            change_country_adjective = OE_HEG_JERUSALEM_ADJ
+            change_country_flag = BYZ
+            set_capital = scope:oe_heg_capital
+            save_scope_as = oe_heg_new_country
+        }
+    }
+    every_in_list = {
+        list = oe_heg_grant_locations
+        change_location_owner = scope:oe_heg_new_country
+        change_location_controller = scope:oe_heg_new_country
+    }
+    set_variable = oe_heg_jerusalem_done
+    set_variable = { name = oe_heg_jerusalem_country value = scope:oe_heg_new_country }
+    set_variable = { name = oe_heg_pending_governorate value = scope:oe_heg_new_country }
+    trigger_event_non_silently = oe_eastern_governorates.1
+}
+
+oe_heg_create_egypt = {
+    oe_heg_pick_governors = yes
+    location:alexandria = { save_scope_as = oe_heg_capital }
+    region:egypt_region = {
+        every_location_in_region = {
+            limit = { oe_heg_military_occupation = yes }
+            add_to_list = oe_heg_grant_locations
+        }
+    }
+    # Snapshot the occupied list BEFORE altering any ownership or controller.
+    scope:oe_heg_capital = {
+        change_location_owner = c:BYZ
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_sub_mam
+            reforms = { oe_roman_province }
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:greek_culture
+            change_religion = religion:orthodox
+            set_variable = oe_heg_governorate
+            change_country_name = OE_HEG_EGYPT_COUNTRY
+            change_country_adjective = OE_HEG_EGYPT_ADJ
+            change_country_flag = BYZ
+            set_capital = scope:oe_heg_capital
+            save_scope_as = oe_heg_new_country
+        }
+    }
+    every_in_list = {
+        list = oe_heg_grant_locations
+        change_location_owner = scope:oe_heg_new_country
+        change_location_controller = scope:oe_heg_new_country
+    }
+    set_variable = oe_heg_egypt_done
+    set_variable = { name = oe_heg_egypt_country value = scope:oe_heg_new_country }
+    set_variable = { name = oe_heg_pending_governorate value = scope:oe_heg_new_country }
+    trigger_event_non_silently = oe_eastern_governorates.1
+}
+
+# Country scope=BYZ; chosen character is passed explicitly by the event option.
+oe_heg_appoint_governor = {
+    if = {
+        limit = {
+            exists = scope:oe_heg_new_country
+            scope:oe_heg_new_country = { is_subject_of = c:BYZ }
+            $candidate$ = { oe_heg_governor_candidate = yes }
+        }
+        $candidate$ = { move_country = scope:oe_heg_new_country }
+        scope:oe_heg_new_country = { set_new_ruler = $candidate$ }
+        remove_variable = oe_heg_pending_governorate
+    }
+}

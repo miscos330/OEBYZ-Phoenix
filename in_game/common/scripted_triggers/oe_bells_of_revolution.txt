@@ -1,0 +1,77 @@
+﻿# Country scope. Landless countries qualify through the BYZ subject tree, not a missing capital.
+oe_bells_observer = {
+    OR = {
+        tag = BYZ
+        AND = { country_exists = c:BYZ is_subject_or_below_of = c:BYZ }
+        AND = {
+            exists = capital
+            capital = {
+                OR = {
+                    continent = continent:europe
+                    region = region:maghreb_region
+                    region = region:anatolia_region
+                    region = region:egypt_region
+                    region = region:crescent_region
+                }
+            }
+        }
+    }
+}
+oe_bells_participant = {
+    is_situation_active = situation:oe_bells_of_revolution
+    country_exists = c:BYZ
+    NOT = { tag = BYZ }
+    oe_bells_observer = yes
+}
+oe_bells_byz_subject = { country_exists = c:BYZ is_subject_or_below_of = c:BYZ }
+oe_bells_external_power = {
+    NOT = { oe_bells_byz_subject = yes }
+    OR = { is_subject = no is_subject_type = tributary }
+}
+oe_bells_bordering_bloc = {
+    any_neighbor_country = {
+        OR = { tag = BYZ is_subject_or_below_of = c:BYZ }
+    }
+}
+oe_bells_rebel = { var:oe_bells_camp ?= 1 }
+oe_bells_royalist = { var:oe_bells_camp ?= 2 }
+oe_bells_neutral = {
+    OR = { NOT = { has_variable = oe_bells_camp } var:oe_bells_camp ?= 0 }
+}
+oe_bells_ai_should_switch = {
+    oe_bells_participant = yes
+    NOT = { has_variable = oe_bells_choice_pending }
+    oe_bells_best_weight >= oe_bells_switch_threshold
+    oe_bells_best_camp != oe_bells_current_camp
+}
+
+# BYZ-only actions. Foreign participants intentionally use a different gate.
+oe_bells_byz_actor = {
+    tag = BYZ
+    is_situation_active = situation:oe_bells_of_revolution
+}
+# Character scope. Only free, living thinkers contribute to monthly pressure.
+oe_bells_active_thinker = { is_alive = yes has_character_modifier = oe_bells_dangerous_thinker }
+oe_bells_detained_thinker = { is_alive = yes has_character_modifier = oe_bells_detained }
+oe_bells_protected_thinker = {
+    OR = {
+        has_character_modifier = oe_bells_dangerous_thinker
+        has_character_modifier = oe_bells_detained
+    }
+}
+# Location scope. Towns and rural settlements are not eligible.
+oe_bells_protest_location = {
+    owner = c:BYZ
+    is_capital = no
+    OR = { location_rank = location_rank:city location_rank = location_rank:megalopolis }
+    NOT = { has_location_modifier = oe_bells_protesters_dispersed }
+    NOT = { has_location_modifier = oe_bells_protesters_gathered }
+}
+oe_bells_can_gather_protesters = {
+    NOT = { has_variable = oe_bells_protest_pending }
+    any_owned_location = { oe_bells_protest_location = yes }
+}
+oe_bells_can_demand_release = {
+    NOT = { has_variable = oe_bells_release_pending }
+    any_in_list = { variable = oe_bells_thinkers oe_bells_detained_thinker = yes }
+}

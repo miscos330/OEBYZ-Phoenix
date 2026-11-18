@@ -1,0 +1,30 @@
+﻿# Country scope. Called on cancellation, minister replacement/death and success.
+# Keep the monotonic generation: delayed callbacks from older jobs must be inert.
+oe_sm_clear_job = {
+    if = {
+        limit = { exists = var:oe_sm_origin_definition exists = var:oe_sm_destination_definition }
+        remove_migration = { owner = this from = var:oe_sm_origin_definition to = var:oe_sm_destination_definition }
+    }
+    remove_variable = oe_sm_active
+    remove_variable = oe_sm_elapsed
+    remove_variable = oe_sm_cabinet
+    remove_variable = oe_sm_origin_definition
+    remove_variable = oe_sm_destination_definition
+}
+oe_sm_complete_job = {
+    var:oe_sm_destination_definition = {
+        save_scope_as = oe_sm_completed_destination
+        every_location_in_province_definition = {
+            limit = { is_ownable = yes has_owner = no }
+            change_location_owner = root
+            change_location_controller = root
+            add_core = root
+            change_integration_level = core
+        }
+    }
+    # Remove active state before stopping the cabinet, so its deactivation
+    # callback cannot grant completion or remove a newer assignment.
+    var:oe_sm_cabinet = { save_scope_as = oe_sm_finishing_cabinet }
+    oe_sm_clear_job = yes
+    scope:oe_sm_finishing_cabinet ?= { stop_cabinet_action = {} }
+}

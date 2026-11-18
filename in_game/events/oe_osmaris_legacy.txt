@@ -1,0 +1,59 @@
+﻿namespace = oe_flavor_byz
+oe_flavor_byz.1009 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_flavor_byz.1009.t
+    desc = oe_flavor_byz.1009.d
+    historical_info = oe_flavor_byz.1009.historical_info
+    fire_only_once = yes
+    image = "gfx/interface/illustrations/events/oe_osmaris_manuel.dds"
+    hide_portraits = yes
+    trigger = { oe_osmaris_memorial_ready = yes }
+    immediate = { set_variable = oe_osmaris_memorial_presented }
+    option = { name = oe_flavor_byz.1009.a custom_tooltip = { text = oe_flavor_byz.1009.a.tt oe_osmaris_memorial_accept = yes } }
+}
+oe_flavor_byz.1010 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_flavor_byz.1010.t
+    desc = oe_flavor_byz.1010.d
+    historical_info = oe_flavor_byz.1010.historical_info
+    fire_only_once = yes
+    dynamic_historical_event = { tag = BYZ from = 1413.1.1 to = 1421.12.31 monthly_chance = 80 }
+    image = "gfx/interface/illustrations/events/oe_osmaris_constantine.dds"
+    hide_portraits = yes
+    trigger = { oe_osmaris_constantine_ready = yes }
+    immediate = { oe_osmaris_introduce_constantine = yes }
+    option = {
+        name = oe_flavor_byz.1010.a
+        trigger = { oe_osmaris_constantine_can_aid = yes }
+        custom_tooltip = { text = oe_flavor_byz.1010.a.tt oe_osmaris_aid_constantine = yes }
+    }
+    option = {
+        name = oe_flavor_byz.1010.b
+        trigger = { oe_osmaris_constantine_can_choose = yes }
+        custom_tooltip = { text = oe_flavor_byz.1010.b.tt oe_osmaris_decline_constantine = yes }
+    }
+    option = {
+        name = oe_flavor_byz.1010.lapsed
+        trigger = { NOT = { oe_osmaris_constantine_can_choose = yes } }
+        custom_tooltip = oe_flavor_byz.1010.lapsed.tt
+    }
+}
+oe_flavor_byz.1011 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_flavor_byz.1011.t
+    desc = oe_flavor_byz.1011.d
+    historical_info = oe_flavor_byz.1011.historical_info
+    fire_only_once = yes
+    image = "gfx/interface/illustrations/events/oe_osmaris_constantine.dds"
+    hide_portraits = yes
+    trigger = { tag = BYZ has_variable = oe_osmaris_investment_made NOT = { has_variable = oe_osmaris_investment_returned } exists = international_organization:oe_byz_empire_pillars }
+    immediate = {
+        international_organization:oe_byz_empire_pillars = {
+            save_scope_value_as = { name = oe_osmaris_return_amount value = { value = oe_pillars_purse_monthly_income min = 0 multiply = 24 } }
+        }
+    }
+    option = { name = oe_flavor_byz.1011.a custom_tooltip = { text = oe_flavor_byz.1011.a.tt oe_osmaris_collect_return = yes } }
+}

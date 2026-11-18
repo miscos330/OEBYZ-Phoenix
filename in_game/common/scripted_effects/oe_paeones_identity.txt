@@ -1,0 +1,35 @@
+﻿oe_rw_start_paeones_romanization = {
+    if = {
+        limit = { oe_rw_start_paeones_romanization_allowed = yes }
+        region:carpathia_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_paeones_origin = yes }
+                max = 1
+                order_by = {
+                    value = population
+                    multiply = "culture_percentage(culture:hungarian)"
+                    # Prefer the historic centres, irrespective of direct/subject ownership.
+                    if = { limit = { OR = { this = location:buda this = location:pest } } add = 1000000 }
+                }
+                # The old one-shot start could create only one movement of this culture.
+                # Rebuild that movement once, retaining all already converted population.
+                culture:oe_paeones_culture = {
+                    random_movement_in_culture = { destroy_movement = yes }
+                }
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_paeones_identity_movement
+                    supporters = {
+                        value = population
+                        multiply = "culture_percentage(culture:hungarian)"
+                        multiply = 0.1
+                    }
+                }
+                oe_identity_schedule_30_years = { holder = culture:oe_paeones_culture event = oe_identity_expiry.13 }
+                c:BYZ = {
+                    set_variable = oe_rw_paeones_romanization_started
+                    set_variable = oe_rw_paeones_movement_corrected
+                }
+            }
+        }
+    }
+}

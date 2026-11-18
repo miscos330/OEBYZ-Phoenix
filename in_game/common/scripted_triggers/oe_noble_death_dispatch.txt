@@ -1,0 +1,23 @@
+﻿# Character scope: identify heads by the IO's stored reference, even during death bookkeeping.
+oe_nf_death_tracked = {
+    save_temporary_scope_as = oe_nf_death_candidate
+    OR = {
+        AND = {
+            trigger_if = { limit = { has_dynasty = yes } dynasty = { oe_nf_registered_family = yes } }
+            trigger_else = { always = no }
+        }
+        international_organization:oe_byz_empire_pillars = { OR = {
+            oe_nf_death_head_slot = { slot = 1 }
+            oe_nf_death_head_slot = { slot = 2 }
+            oe_nf_death_head_slot = { slot = 3 }
+            oe_nf_death_head_slot = { slot = 4 }
+        } }
+    }
+}
+oe_nf_death_head_slot = {
+    trigger_if = {
+        limit = { has_variable = oe_nf_dynasty_$slot$ has_variable = oe_nf_head_$slot$ }
+        var:oe_nf_head_$slot$ = scope:oe_nf_death_candidate
+    }
+    trigger_else = { always = no }
+}

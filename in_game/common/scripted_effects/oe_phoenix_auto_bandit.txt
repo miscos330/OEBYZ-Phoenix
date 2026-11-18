@@ -1,0 +1,53 @@
+﻿# All effects use country scope; no subject-owned locations are selected.
+oe_phoenix_auto_bandit_stop = {
+    if = {
+        limit = { has_country_modifier = oe_phoenix_auto_bandit_modifier }
+        remove_country_modifier = oe_phoenix_auto_bandit_modifier
+    }
+    remove_variable = oe_phoenix_auto_bandit_months
+}
+
+oe_phoenix_auto_bandit_start = {
+    if = {
+        limit = { oe_phoenix_auto_bandit_can_start = yes }
+        if = {
+            limit = { oe_phoenix_has_bandit_stronghold = yes }
+            set_variable = { name = oe_phoenix_auto_bandit_months value = 0 }
+            add_country_modifier = { modifier = oe_phoenix_auto_bandit_modifier days = -1 mode = replace }
+        }
+        else = { oe_phoenix_auto_bandit_stop = yes }
+    }
+}
+
+# Called only once from the active disaster, after the existing monthly raid roll.
+oe_phoenix_auto_bandit_monthly = {
+    if = {
+        limit = { tag = BYZ has_country_modifier = oe_phoenix_auto_bandit_modifier }
+        if = {
+            limit = { NOT = { oe_phoenix_has_bandit_stronghold = yes } }
+            oe_phoenix_auto_bandit_stop = yes
+        }
+        else = {
+            # Fixed monthly costs; stability investment is not a flat stability delta.
+            add_stability = modifier:oe_phoenix_auto_bandit_monthly_stability
+            add_manpower = { value = modifier:oe_phoenix_auto_bandit_monthly_manpower divide = 1000 }
+            if = {
+                limit = { NOT = { has_variable = oe_phoenix_auto_bandit_months } }
+                set_variable = { name = oe_phoenix_auto_bandit_months value = 0 }
+            }
+            change_variable = { name = oe_phoenix_auto_bandit_months add = 1 }
+            if = {
+                limit = { var:oe_phoenix_auto_bandit_months >= 4 }
+                random_owned_location = {
+                    limit = { has_building = building_type:oe_byz_bad_thief_greek }
+                    destroy_building = "building(building_type:oe_byz_bad_thief_greek|c:BYZ)"
+                }
+                set_variable = { name = oe_phoenix_auto_bandit_months value = 0 }
+                if = {
+                    limit = { NOT = { oe_phoenix_has_bandit_stronghold = yes } }
+                    oe_phoenix_auto_bandit_stop = yes
+                }
+            }
+        }
+    }
+}

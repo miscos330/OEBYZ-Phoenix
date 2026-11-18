@@ -1,0 +1,137 @@
+﻿namespace = oe_rw_renaissance
+
+oe_rw_renaissance.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = international_organization_event
+    title = oe_rw_renaissance.1.title
+    desc = oe_rw_renaissance.1.desc
+    image = "gfx/interface/illustrations/institutions/renaissance.dds"
+    trigger = {
+        international_organization:oe_byz_roman_world = {
+            has_variable = oe_rw_renaissance_started
+            var:oe_rw_renaissance_stage = 0
+            NOT = { has_variable = oe_rw_renaissance_finished }
+        }
+    }
+    immediate = {
+        international_organization:oe_byz_roman_world = {
+            set_variable = { name = oe_rw_renaissance_stage value = 1 }
+        }
+    }
+    option = {
+        name = oe_rw_renaissance.1.a
+        add_gold = { value = monthly_income_trade_and_tax multiply = -6 }
+        add_research_progress = 5
+        custom_tooltip = {
+            text = OE_RW_RENAISSANCE_ADD_SCORE
+            international_organization:oe_byz_roman_world = { change_variable = { name = oe_rw_renaissance_score add = 1 } }
+        }
+        ai_chance = { base = 70 }
+    }
+    option = {
+        name = oe_rw_renaissance.1.b
+        add_prestige = 5
+        ai_chance = { base = 30 }
+    }
+    after = {
+        international_organization:oe_byz_roman_world = {
+            remove_variable = oe_rw_renaissance_event_pending
+            set_variable = { name = oe_rw_renaissance_wait value = yes years = 1 }
+        }
+    }
+}
+
+oe_rw_renaissance.2 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = international_organization_event
+    title = oe_rw_renaissance.2.title
+    desc = oe_rw_renaissance.2.desc
+    image = "gfx/interface/illustrations/institutions/renaissance.dds"
+    trigger = {
+        international_organization:oe_byz_roman_world = {
+            has_variable = oe_rw_renaissance_started
+            var:oe_rw_renaissance_stage = 1
+            NOT = { has_variable = oe_rw_renaissance_finished }
+        }
+    }
+    immediate = {
+        international_organization:oe_byz_roman_world = {
+            set_variable = { name = oe_rw_renaissance_stage value = 2 }
+        }
+    }
+    option = {
+        name = oe_rw_renaissance.2.a
+        add_gold = { value = monthly_income_trade_and_tax multiply = -6 }
+        create_character = {
+            culture = culture:tuscan
+            religion = religion:catholic
+            estate = estate_type:burghers_estate
+            min_age = 25
+            max_age = 45
+            birth_location = location:florence
+            artist = painter
+            artist_skill = { 0.5 0.75 }
+        }
+        custom_tooltip = {
+            text = OE_RW_RENAISSANCE_ADD_SCORE
+            international_organization:oe_byz_roman_world = { change_variable = { name = oe_rw_renaissance_score add = 1 } }
+        }
+        ai_chance = { base = 70 }
+    }
+    option = {
+        name = oe_rw_renaissance.2.b
+        add_prestige = 5
+        ai_chance = { base = 30 }
+    }
+    after = {
+        international_organization:oe_byz_roman_world = {
+            remove_variable = oe_rw_renaissance_event_pending
+            set_variable = { name = oe_rw_renaissance_wait value = yes years = 1 }
+        }
+    }
+}
+
+oe_rw_renaissance.3 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = international_organization_event
+    title = oe_rw_renaissance.3.title
+    desc = oe_rw_renaissance.3.desc
+    image = "gfx/interface/illustrations/institutions/renaissance.dds"
+    trigger = {
+        international_organization:oe_byz_roman_world = {
+            has_variable = oe_rw_renaissance_started
+            var:oe_rw_renaissance_stage = 2
+            NOT = { has_variable = oe_rw_renaissance_finished }
+        }
+    }
+    immediate = {
+        international_organization:oe_byz_roman_world = {
+            set_variable = { name = oe_rw_renaissance_stage value = 3 }
+            set_variable = { name = oe_rw_renaissance_third_seen value = yes }
+        }
+    }
+    option = {
+        name = oe_rw_renaissance.3.a
+        add_estate_satisfaction = { type = estate_type:clergy_estate value = -0.15 }
+        add_stability = -7
+        custom_tooltip = {
+            text = OE_RW_RENAISSANCE_ADD_SCORE
+            international_organization:oe_byz_roman_world = { change_variable = { name = oe_rw_renaissance_score add = 1 } }
+        }
+        ai_chance = { base = 70 }
+    }
+    option = {
+        name = oe_rw_renaissance.3.b
+        add_estate_satisfaction = { type = estate_type:clergy_estate value = 0.05 }
+        add_legitimacy = 5
+        add_gold = { value = monthly_income_trade_and_tax multiply = 12 }
+        ai_chance = { base = 30 }
+    }
+    after = {
+        oe_rw_renaissance_settle = yes
+    }
+}
+

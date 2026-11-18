@@ -1,0 +1,59 @@
+﻿# BYZ country scope. Rechecked by the event, including events queued in old saves.
+oe_raid_disaster_active = {
+    tag = BYZ
+    any_active_disaster = { disaster_type = disaster_type:oe_fate_of_the_phoenix }
+}
+# Location scope. Never choose a foreign, urban, or already affected location.
+oe_raid_rural_target = {
+    owner ?= c:BYZ # FIX 2026-11-17: neighbouring sea/wasteland locations have no owner
+    location_rank = location_rank:rural_settlement
+    NOT = { has_location_modifier = oe_enemy_attack_mod }
+}
+# Attacker country scope: a real border with a valid rural victim is required.
+oe_raid_border_attacker = {
+    is_subject = no
+    any_owned_location = {
+        any_neighbor_location = { oe_raid_rural_target = yes }
+    }
+}
+oe_raid_ser_attacker = {
+    tag = SER
+    oe_raid_border_attacker = yes
+    NOT = { is_at_war_with = c:BYZ }
+    NOT = { has_truce_with = c:BYZ }
+}
+oe_raid_turk_attacker = {
+    # Same Turkish/Turkoman country classification as the Roman civilization circle.
+    oe_roman_world_beylik_trigger = yes
+    oe_raid_border_attacker = yes
+    NOT = { is_at_war_with = c:BYZ }
+    NOT = { has_truce_with = c:BYZ }
+}
+# Victim country scope. Pairwise war/truce restrictions are checked on attackers.
+oe_raid_ser_available = {
+    oe_raid_disaster_active = yes
+    country_exists = c:SER
+    c:SER = { oe_raid_ser_attacker = yes }
+}
+oe_raid_turk_available = {
+    oe_raid_disaster_active = yes
+    any_neighbor_country = { oe_raid_turk_attacker = yes }
+}
+oe_raid_pirate_available = {
+    oe_raid_disaster_active = yes
+    NOT = { has_variable = oe_ir_expel_done }
+    any_owned_location = { oe_raid_rural_target = yes is_coastal = yes }
+}
+oe_raid_bandit_available = {
+    oe_raid_disaster_active = yes
+    # Retain the old domestic-bandit eligibility; only its pool and outcomes change.
+    at_war = no
+    has_raised_levies = no
+    any_owned_location = { oe_raid_rural_target = yes }
+}
+# Event-local target. A stale open event can be dismissed without charging the player.
+oe_raid_can_resolve = {
+    oe_raid_disaster_active = yes
+    exists = scope:target_location
+    scope:target_location = { owner = root }
+}

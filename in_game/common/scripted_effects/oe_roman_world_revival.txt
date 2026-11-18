@@ -1,0 +1,50 @@
+﻿# International organization scope. Expiring variables are checked by the existing daily location pulse.
+# Event routing follows the current Roman claimant, so conquest does not strand a delayed country event.
+oe_rw_renaissance_pulse = {
+    if = {
+        limit = {
+            has_variable = oe_rw_renaissance_started
+            NOT = { has_variable = oe_rw_renaissance_finished }
+            NOT = { has_variable = oe_rw_renaissance_wait }
+            NOT = { has_variable = oe_rw_renaissance_event_pending }
+            international_organization_has_leader = yes
+            leader_country = { oe_roman_world_byz_trigger = yes }
+        }
+        if = {
+            limit = { var:oe_rw_renaissance_stage = 1 }
+            set_variable = { name = oe_rw_renaissance_event_pending value = yes }
+            leader_country = { trigger_event_silently = oe_rw_renaissance.2 }
+        }
+        else_if = {
+            limit = { var:oe_rw_renaissance_stage = 2 }
+            set_variable = { name = oe_rw_renaissance_event_pending value = yes }
+            leader_country = { trigger_event_silently = oe_rw_renaissance.3 }
+        }
+    }
+}
+
+# Country scope, executed only after the third option's score change.
+oe_rw_renaissance_settle = {
+    if = {
+        limit = { international_organization:oe_byz_roman_world = { NOT = { has_variable = oe_rw_renaissance_finished } } }
+        if = {
+            limit = { international_organization:oe_byz_roman_world = { var:oe_rw_renaissance_score >= 2 } }
+            add_prestige = 20
+        }
+        if = {
+            limit = {
+                international_organization:oe_byz_roman_world = { var:oe_rw_renaissance_score = 3 }
+                institution:renaissance = { has_spawned = no }
+            }
+            custom_tooltip = {
+                text = OE_RW_RENAISSANCE_BIRTHPLACE_SECURED
+                location:constantinople = { set_variable = { name = oe_rw_renaissance_birthplace value = yes } }
+            }
+        }
+        international_organization:oe_byz_roman_world = {
+            set_variable = { name = oe_rw_renaissance_finished value = yes }
+            remove_variable = oe_rw_renaissance_event_pending
+            remove_variable = oe_rw_renaissance_wait
+        }
+    }
+}

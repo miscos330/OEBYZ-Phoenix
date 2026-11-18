@@ -1,0 +1,14 @@
+﻿# Clear the GUI pointer directly; no periodic character/world scanning.
+on_character_death = { on_actions = { oe_byz_co_emperor_died } }
+oe_byz_co_emperor_died = {
+    trigger = {
+        country_exists = c:BYZ
+        c:BYZ ?= { has_variable = oe_byz_co_emperor_display var:oe_byz_co_emperor_display = scope:target }
+    }
+    effect = { c:BYZ = { remove_variable = oe_byz_co_emperor_display } }
+}
+on_new_ruler = { on_actions = { oe_byz_co_emperor_became_ruler } }
+oe_byz_co_emperor_became_ruler = {
+    trigger = { tag = BYZ has_variable = oe_byz_co_emperor_display var:oe_byz_co_emperor_display = scope:new_ruler }
+    effect = { remove_variable = oe_byz_co_emperor_display }
+}

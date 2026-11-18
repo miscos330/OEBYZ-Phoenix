@@ -1,0 +1,73 @@
+﻿oe_byz_empire_disapper_religion = {
+	
+	message = yes
+	on_own_nation = yes
+	
+	
+	potential = {
+		scope:actor = {
+			tag = BYZ
+		}
+	}
+
+	ai_tick = never
+
+	allow = {
+	}
+
+	select_trigger = {
+	    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+	    only_color_selectable = yes
+	    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = location
+		target_flag = target_location
+		name = "oe_byz_empire_kill_dis_religion_text"
+		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+		column = {
+			data = name
+		}
+		visible = {
+			has_building = building_type:orthodox_monastery
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = character
+		source = actor
+		target_flag = recipient
+		name = "choose_character"
+		column = {
+			data = name
+		}
+		visible = {
+            NOT = { oe_bells_protected_thinker = yes }
+			owner = c:BYZ
+			NOT = { has_estate = estate_type:crown_estate }
+			is_adult = yes
+		}
+	}
+
+
+	
+	effect = {
+        if = {
+            limit = { exists = scope:recipient scope:recipient = { NOT = { oe_bells_protected_thinker = yes } } }
+
+		scope:actor = {
+		add_estate_satisfaction = {
+			type = scope:recipient.estate_type
+			value = -0.05
+		}
+		}
+		scope:recipient = {
+			move_country = scope:target_location.owner
+			add_character_modifier = {
+				modifier = oe_empire_kill_mod_join_religion_house
+				years = -1
+				mode = add_and_extend
+			}
+		}
+	
+        }
+    }		
+}

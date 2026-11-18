@@ -1,0 +1,57 @@
+﻿# Action context. Jurisdiction is the chosen province's area, on direct BYZ land.
+oe_it_theme_create_offices = {
+    scope:oe_it_theme_capital = {
+        create_building_country_in_location = {
+            religion = religion:orthodox
+            culture = culture:oe_roman_noble_culture
+            subject_type = subject_type:$subject_type$
+            overlord = c:BYZ
+            ruler = random
+            reforms = { $reform$ }
+            hidden_effect = {
+                change_government_type = government_type:monarchy
+                change_heir_selection = heir_selection:oe_rome_province_elect
+            }
+            save_scope_as = oe_it_theme_country
+        }
+        construct_building = { building_type = building_type:$seat$ owner = scope:oe_it_theme_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+    }
+    scope:target.area = {
+        every_location_in_area = {
+            limit = { owner = c:BYZ region = region:italy_region this != scope:oe_it_theme_capital }
+            construct_building = { building_type = building_type:$post$ owner = scope:oe_it_theme_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        }
+    }
+}
+
+# Capital location scope. The caller passes the selected theme as owner.
+# This helper creates exactly three infantry subunits, with no ships or extra manpower.
+oe_it_theme_create_three_current_age_infantry = {
+    while = {
+        count = 3
+        if = {
+            limit = { current_age = age_1_traditions }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_2_renaissance }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_II owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_3_discovery }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_III owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_4_reformation }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_IV owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_5_absolutism }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_V owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_6_revolutions }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_VI owner = $owner$ }
+        }
+    }
+}

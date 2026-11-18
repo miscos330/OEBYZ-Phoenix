@@ -1,0 +1,55 @@
+﻿oe_byz_roman_world = {
+    has_target = no
+    unique = yes
+    has_leader_country = yes
+    leader_type = character
+    leader_change_trigger_type = none
+    leader_change_method = none
+    disband_if_no_leader = no
+    expel_members_who_are_targets_of_other_members = no
+    expel_members_who_are_attackers_at_war_with_other_members = no
+    expel_members_who_are_defenders_at_war_with_other_members = no
+    can_invite_countries = no
+    show_leave_message = no
+    subject_limited = no
+    background_texture = "gfx/interface/illustrations/international_organization_types/oe_byz_roman_world.dds"
+    leader = { leader_country ?= { ruler ?= { add_to_list = leaders } } }
+    can_lead_trigger = { oe_roman_world_byz_trigger = yes }
+    create_visible_trigger = { always = no }
+    invite_visible_trigger = { always = no }
+    join_visible_trigger = { always = no }
+    can_join_trigger = { oe_roman_world_territorial_country_trigger = yes }
+    can_leave_trigger = { always = no }
+    auto_leave_trigger = { NOT = { oe_roman_world_territorial_country_trigger = yes } }
+    auto_disband_trigger = { always = no }
+    can_declare_war = { always = yes }
+    on_creation = { oe_roman_world_sync_effect = yes }
+    on_joined = {
+        scope:recipient = { save_scope_as = oe_roman_world_org }
+        oe_roman_world_classify_effect = yes
+        scope:recipient = {
+            oe_roman_world_recalculate_contest = yes
+            oe_roman_world_ensure_contest_tick = yes
+        }
+    }
+    monthly_effect = { hidden_effect = { oe_roman_world_sync_effect = yes } }
+    land_ownership_rule = oe_byz_roman_world_land_ownership
+    # Antagonism multipliers: members -66%, outsiders +25%.
+    antagonism_modifier_for_taking_land_from_fellow_member = -0.66
+	antagonism_modifier_for_taking_land_from_member_as_outsider = 0.25
+
+    leader_modifier = {
+        subject_loyalty = 15
+        # Current engine uses efficiency, not the removed court_spending_efficiency.
+        # 1 / 1.02 - 1, rounded to the supported four decimals: about +2% base spending.
+        court_spending_efficiency = -0.0196
+    }
+
+    special_statuses_implemented = {
+        oe_byz_roman_world_byz
+        oe_byz_roman_world_beylik
+        oe_byz_roman_world_prince
+        oe_byz_roman_world_latin_duchy
+        oe_byz_roman_world_orthodox_kingdom
+    }
+}

@@ -1,0 +1,786 @@
+﻿# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# empire_debt_recalculate_top_3 = {#局势分数计算
+# 	ordered_in_global_list = {  #最强
+# 		variable = east_trade_score
+# 		limit = { is_subject = no }
+# 		order_by = {
+# 			
+# 			if = {
+# 				limit = {
+# 					NOT = { country_exists = this }
+# 				}
+# 				subtract = {
+# 					value = 1000
+# 					multiply = 10
+# 				}
+# 			}
+# 			add = {
+# 				value = monthly_income_trade_and_tax
+# 				multiply = 0.1
+# 			}
+# 			if = {
+# 				limit = { capital = {
+# 					is_coastal = yes
+# 				}}
+# 				add = {
+# 					value = capital.modifier:harbor_suitability	
+# 					multiply = 100
+# 				}
+# 			}
+# 			add = {
+# 				value = navy_size
+# 				multiply = 0.5
+# 			}	
+# 				add = {
+# 				value = total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = num_of_trades
+# 				multiply = 1
+# 			}	
+# 			multiply = 1.1
+# 		} 
+# 		max = 1
+# 		check_range_bounds = no 
+# 			situation:empire_debt = {
+# 				set_variable = {
+# 					name = strongest_east_trade_country
+# 					value = prev
+# 				}
+# 				set_variable = {#显示
+# 					name = strongest_east_trade_country_total_score_variable
+# 					value = {
+# 						add = {
+# 							value = var:strongest_east_trade_country.monthly_income_trade_and_tax
+# 							multiply = 0.1
+# 						} 
+# 									if = {
+# 				limit = { var:strongest_east_trade_country.capital = {
+# 					is_coastal = yes
+# 				}}
+# 						add = {
+# 							value = var:strongest_east_trade_country.capital.modifier:harbor_suitability	
+# 							multiply = 100
+# 						}}
+# 						add = {
+# 				value = var:strongest_east_trade_country.navy_size
+# 				multiply = 0.5
+# 			}	
+# 						add = {
+# 				value = var:strongest_east_trade_country.total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 						add = {
+# 				value = var:strongest_east_trade_country.num_of_trades
+# 				multiply = 1
+# 			}	
+# 			multiply = 1.1
+# 					}
+# 				}
+# 							set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_alex_cloves
+# 				value = {
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.01
+# 					}
+# 					if = {
+# 						limit = { 
+# 							OR = {
+# 								current_month = 9
+# 								current_month = 10
+# 							}
+# 						 }
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.03
+# 					} 
+# 						add = {
+# 						value = location:hormuz.market.total_merchant_power
+# 						multiply = 0.01
+# 					} 
+# 						add = {
+# 						value = location:adan.market.total_merchant_power
+# 						multiply = 0.02
+# 					} 
+# 						add = {
+# 						value = location:kayal.market.total_merchant_power
+# 						multiply = 0.03
+# 					} 
+# 					}
+# 				}
+# 			}
+# 							set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_alex_pepper
+# 				value = {
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.02
+# 					}
+# 					if = {
+# 						limit = { 
+# 							OR = {
+# 								current_month = 9
+# 								current_month = 10
+# 								current_month = 11
+# 							}
+# 						 }
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.05
+# 					} 
+# 						add = {
+# 						value = location:hormuz.market.total_merchant_power
+# 						multiply = 0.05
+# 					} 
+# 						add = {
+# 						value = location:adan.market.total_merchant_power
+# 						multiply = 0.15
+# 					} 
+# 						add = {
+# 						value = location:kayal.market.total_merchant_power
+# 						multiply = 0.1
+# 					} 
+# 					}
+# 				}
+# 			}
+# 										set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_alex_porcelain
+# 				value = {
+# 					add = {
+# 						value = location:samarkand.market.total_merchant_power
+# 						multiply = 0.01
+# 					}
+# 				if = {
+# 						limit = { 
+# 							OR = {
+# 								current_month = 8
+# 								current_month = 9
+# 							}
+# 						 }
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.01
+# 					} 
+# 						add = {
+# 						value = location:hormuz.market.total_merchant_power
+# 						multiply = 0.01
+# 					} 
+# 						add = {
+# 						value = location:adan.market.total_merchant_power
+# 						multiply = 0.02
+# 					} 
+# 						add = {
+# 						value = location:kayal.market.total_merchant_power
+# 						multiply = 0.01
+# 					} 
+# 					}
+# 				if = {
+# 						limit = { 
+# 							OR = {
+# 								current_month = 4
+# 								current_month = 5
+# 								current_month = 6
+# 								current_month = 7
+# 								current_month = 8
+# 								current_month = 9
+# 								current_month = 10
+# 							}
+# 						 }
+# 					add = {
+# 						value = location:samarkand.market.total_merchant_power
+# 						multiply = 0.01
+# 					} 
+# 						add = {
+# 						value = location:yangguan.market.total_merchant_power
+# 						multiply = 0.01
+# 					} 
+# 					}
+# 				}
+# 			}
+# 										set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_alex_lacquerware
+# 				value = {
+# 					add = {
+# 						value = location:samarkand.market.total_merchant_power
+# 						multiply = 0.02
+# 					}
+# 				if = {
+# 						limit = { 
+# 							OR = {
+# 								current_month = 8
+# 								current_month = 9
+# 							}
+# 						 }
+# 					add = {
+# 						value = location:alexandria.market.total_merchant_power
+# 						multiply = 0.02
+# 					} 
+# 						add = {
+# 						value = location:hormuz.market.total_merchant_power
+# 						multiply = 0.02
+# 					} 
+# 						add = {
+# 						value = location:adan.market.total_merchant_power
+# 						multiply = 0.04
+# 					} 
+# 						add = {
+# 						value = location:kayal.market.total_merchant_power
+# 						multiply = 0.03
+# 					} 
+# 					}
+# 				if = {
+# 						limit = { 
+# 							OR = {
+# 								current_month = 4
+# 								current_month = 5
+# 								current_month = 6
+# 								current_month = 7
+# 								current_month = 8
+# 								current_month = 9
+# 								current_month = 10
+# 							}
+# 						 }
+# 					add = {
+# 						value = location:samarkand.market.total_merchant_power
+# 						multiply = 0.02
+# 					} 
+# 						add = {
+# 						value = location:yangguan.market.total_merchant_power
+# 						multiply = 0.02
+# 					} 
+# 					}
+# 				}
+# 			}
+# 							set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_kafa_fur
+# 				value = {
+# 			add = {
+# 						value = location:kaffa.market.total_merchant_power
+# 						multiply = 0.01
+# 					}
+# 			add = {
+# 						value = location:moscow.market.total_merchant_power
+# 						multiply = 0.01
+# 					}
+# 				if = {
+# 						limit = { 
+# 							OR = {
+# 								current_month = 3
+# 								current_month = 4
+# 								current_month = 9
+# 								current_month = 10
+# 								current_month = 11
+# 							}
+# 						 }
+# 			add = {
+# 						value = location:moscow.market.total_merchant_power
+# 						multiply = 0.18
+# 					}
+# 								add = {
+# 						value = location:novgorod.market.total_merchant_power
+# 						multiply = 0.07
+# 					}
+# 					}
+# 									if = {
+# 						limit = { 
+# 							OR = {
+# 								current_month = 5
+# 								current_month = 6
+# 								current_month = 7
+# 								current_month = 8
+# 							}
+# 						 }
+# 			add = {
+# 						value = location:moscow.market.total_merchant_power
+# 						multiply = 0.05
+# 					}
+# 								add = {
+# 						value = location:novgorod.market.total_merchant_power
+# 						multiply = 0.1
+# 					}
+# 					}
+# 				}
+# 			}
+# 							set_variable = {
+# 				name = oe_ed_east_trade_goods_quantity_kafa_slaves
+# 				value = {
+# 			add = {
+# 						value = location:kaffa.market.total_merchant_power
+# 						multiply = 0.07
+# 					}
+# 				if = {
+# 						limit = { 
+# 							OR = {
+# 								current_month = 4
+# 								current_month = 5
+# 								current_month = 6
+# 
+# 							}
+# 						 }
+# 					add = {
+# 						value = location:kaffa.market.total_merchant_power
+# 						multiply = 0.1
+# 					} 
+# 					}
+# 				}
+# 			}
+# 			}
+# 	}
+# 	
+# 	if = {#次强
+# 		limit = {
+# 			global_variable_list_size = {
+# 				name = east_trade_score
+# 				value > 1
+# 			}
+# 		}
+# 		ordered_in_global_list = {	#2nd strongest  
+# 			variable = east_trade_score
+# 			limit = { 
+# 				trigger_if = {
+# 					limit = { NOT = { has_global_variable = oe_byz_ed_own_whole_east_trade_appear } }
+# 				this != situation:empire_debt.var:strongest_east_trade_country}
+# 				is_subject = no
+# 			}
+# 			order_by = {
+# 			if = {
+# 				limit = {
+# 					NOT = {country_exists = this}
+# 				}
+# 				subtract = {
+# 					value = 1000
+# 					multiply = 10
+# 				}
+# 			}				
+# 
+# 			add = {
+# 				value = monthly_income_trade_and_tax
+# 				multiply = 0.1
+# 			}
+# 			if = {
+# 				limit = { capital = {
+# 					is_coastal = yes
+# 				}}
+# 				add = {
+# 					value = capital.modifier:harbor_suitability	
+# 					multiply = 100
+# 				}
+# 			}
+# 			add = {
+# 				value = navy_size
+# 				multiply = 0.5
+# 			}	
+# 				add = {
+# 				value = total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = num_of_trades
+# 				multiply = 1
+# 			}	
+# 			} 
+# 			max = 1
+# 			check_range_bounds = no
+# 			situation:empire_debt = {
+# 				set_variable = {
+# 					name = second_strongest_east_trade_country
+# 					value = prev
+# 				}
+# 				set_variable = {
+# 					name = second_strongest_east_trade_country_total_score_variable
+# 					value = {
+# 												add = {
+# 							value = var:second_strongest_east_trade_country.monthly_income_trade_and_tax
+# 							multiply = 0.1
+# 						} 
+# 									if = {
+# 				limit = { var:second_strongest_east_trade_country.capital = {
+# 					is_coastal = yes
+# 				}}
+# 						add = {
+# 							value = var:second_strongest_east_trade_country.capital.modifier:harbor_suitability	
+# 							multiply = 100
+# 						}}
+# 											add = {
+# 				value = var:second_strongest_east_trade_country.navy_size
+# 				multiply = 0.5
+# 			}	
+# 							add = {
+# 				value = var:second_strongest_east_trade_country.total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = var:second_strongest_east_trade_country.num_of_trades
+# 				multiply = 1
+# 			}	
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# 	else = {
+# 		situation:empire_debt = {
+# 			remove_variable = second_strongest_east_trade_country
+# 			remove_variable = second_strongest_east_trade_country_total_score_variable
+# 		}
+# 	}
+# 
+# 	if = {#三强
+# 		limit = {
+# 			global_variable_list_size = {
+# 				name = east_trade_score
+# 				value > 2
+# 			}
+# 		}
+# 		ordered_in_global_list = { #3rd Strongest 
+# 			variable = east_trade_score
+# 			limit = { 
+# 								trigger_if = {
+# 					limit = { NOT = { has_global_variable = oe_byz_ed_own_whole_east_trade_appear } }
+# 				this != situation:empire_debt.var:strongest_east_trade_country 
+# 				this != situation:empire_debt.var:second_strongest_east_trade_country}
+# 				is_subject = no
+# 			}
+# 			order_by = {
+# 				if = {
+# 				limit = {
+# 					NOT = { country_exists = this }
+# 				}
+# 				subtract = {
+# 					value = 1000
+# 					multiply = 10
+# 				}
+# 			}			
+# 
+# 			add = {
+# 				value = monthly_income_trade_and_tax
+# 				multiply = 0.1
+# 			}
+# 			if = {
+# 				limit = { capital = {
+# 					is_coastal = yes
+# 				}}
+# 				add = {
+# 					value = capital.modifier:harbor_suitability	
+# 					multiply = 100
+# 				}
+# 			}
+# 			add = {
+# 				value = navy_size
+# 				multiply = 0.5
+# 			}	
+# 				add = {
+# 				value = total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = num_of_trades
+# 				multiply = 1
+# 			}	
+# 			} 
+# 			max = 1
+# 			check_range_bounds = no 
+# 			situation:empire_debt = {
+# 				set_variable = {
+# 					name = third_strongest_east_trade_country
+# 					value = prev
+# 				}
+# 				set_variable = {
+# 					name = third_strongest_east_trade_country_total_score_variable
+# 					value = {
+# 						add = {
+# 							value = var:third_strongest_east_trade_country.monthly_income_trade_and_tax
+# 							multiply = 0.1
+# 						} 
+# 									if = {
+# 				limit = { var:third_strongest_east_trade_country.capital = {
+# 					is_coastal = yes
+# 				}}
+# 						add = {
+# 							value = var:third_strongest_east_trade_country.capital.modifier:harbor_suitability	
+# 							multiply = 100
+# 						}}
+# 						add = {
+# 				value = var:third_strongest_east_trade_country.navy_size
+# 				multiply = 0.5
+# 						}	
+# 						add = {
+# 				value = var:third_strongest_east_trade_country.total_merchant_capacity
+# 				multiply = 1
+# 			}	
+# 				add = {
+# 				value = var:third_strongest_east_trade_country.num_of_trades
+# 				multiply = 1
+# 			}							
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# 	else = {
+# 		situation:rise_of_the_ottomans = {
+# 			remove_variable = third_strongest_east_trade_country
+# 			remove_variable = third_strongest_east_trade_country_total_score_variable
+# 		}
+# 	}
+# }
+# east_trade_goods_jiaofu = {#货物交付
+# 	var:strongest_east_trade_country.capital = {
+# 		save_scope_as = target_locationI
+# 	}
+# 	var:second_strongest_east_trade_country.capital = {
+# 		save_scope_as = target_locationII
+# 	}
+# 	var:third_strongest_east_trade_country.capital = {
+# 		save_scope_as = target_locationIII
+# 	}
+# 	var:strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:cloves
+#    					amount = oe_ed_cloves_jiesuanI
+# 					location = scope:target_locationI
+# 				}
+# 	}
+# 	if = {
+# 		NOT = { has_global_variable = rus_religion_own_all_fur_trade }
+# 		var:strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:fur
+#    					amount = oe_ed_fur_jiesuanI
+# 					location = scope:target_locationI
+# 				}
+# 	}}
+# 		var:strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:slaves_goods
+#    					amount = oe_ed_slaves_goods_jiesuanI
+# 					location = scope:target_locationI
+# 				}
+# 	}	var:strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:pepper
+#    					amount = oe_ed_pepper_jiesuanI
+# 					location = scope:target_locationI
+# 				}
+# 	}	var:strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:porcelain
+#    					amount = oe_ed_porcelain_jiesuanI
+# 					location = scope:target_locationI
+# 				}
+# 	}	var:strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:lacquerware
+#    					amount = oe_ed_lacquerware_jiesuanI
+# 					location = scope:target_locationI
+# 				}
+# 	}
+# 		var:second_strongest_east_trade_country.capital.market = {#次强国结算
+# 			sell_goods_from_location = {
+# 					goods = goods:cloves
+#    					amount = oe_ed_cloves_jiesuanII
+# 					location = scope:target_locationII
+# 				}
+# 	}
+# 	if = {
+# 		NOT = { has_global_variable = rus_religion_own_all_fur_trade }
+# 		var:second_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:fur
+#    					amount = oe_ed_fur_jiesuanII
+# 					location = scope:target_locationII
+# 				}
+# 	}}	
+# 	var:second_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:slaves_goods
+#    					amount = oe_ed_slaves_goods_jiesuanII
+# 					location = scope:target_locationII
+# 				}
+# 	}	var:second_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:pepper
+#    					amount = oe_ed_pepper_jiesuanII
+# 					location = scope:target_locationII
+# 				}
+# 	}	var:second_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:porcelain
+#    					amount = oe_ed_porcelain_jiesuanII
+# 					location = scope:target_locationII
+# 				}
+# 	}	var:second_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:lacquerware
+#    					amount = oe_ed_lacquerware_jiesuanII
+# 					location = scope:target_locationII
+# 				}
+# 	}
+# 	var:third_strongest_east_trade_country.capital.market = {#三强国结算
+# 			sell_goods_from_location = {
+# 					goods = goods:cloves
+#    					amount = oe_ed_cloves_jiesuanIII
+# 					location = scope:target_locationIII
+# 				}
+# 	}
+# 	if = {
+# 		NOT = { has_global_variable = rus_religion_own_all_fur_trade }
+# 		var:third_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:fur
+#    					amount = oe_ed_fur_jiesuanIII
+# 					location = scope:target_locationIII
+# 				}
+# 	}
+# 	}
+# 		var:third_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:slaves_goods
+#    					amount = oe_ed_slaves_goods_jiesuanIII
+# 					location = scope:target_locationIII
+# 				}
+# 	}	var:third_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:pepper
+#    					amount = oe_ed_pepper_jiesuanIII
+# 					location = scope:target_locationIII
+# 				}
+# 	}	var:third_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:porcelain
+#    					amount = oe_ed_porcelain_jiesuanIII
+# 					location = scope:target_locationIII
+# 				}
+# 	}	var:third_strongest_east_trade_country.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:lacquerware
+#    					amount = oe_ed_lacquerware_jiesuanIII
+# 					location = scope:target_locationIII
+# 				}
+# 	}
+# 	if = {
+# 		limit = { has_global_variable = rus_religion_own_all_fur_trade }
+# 		c:BYZ.capital.market = {
+# 			sell_goods_from_location = {
+# 					goods = goods:fur
+#    					amount = {
+# 						value = oe_ed_fur_jiesuanI
+# 						add = oe_ed_fur_jiesuanII
+# 						add = oe_ed_fur_jiesuanIII
+# 					}
+# 					location = c:BYZ.capital
+# 				}			
+# 		}
+# 	}
+# if = {
+# 	limit = {
+# 		current_month = 9
+# 	}
+# 		location:nanchang.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_porcelain_demands
+# 			scale = oe_ed_porcelain_jiesuanI
+# 			months = 3
+# 		}
+# 		}
+# }
+# if = {
+# 	limit = {
+# 		current_month = 9
+# 	}
+# 		location:temasek.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_cloves_demands
+# 			scale = oe_ed_cloves_jiesuanI
+# 			months = 3
+# 		}
+# 		}
+# }
+# if = {
+# 	limit = {
+# 		current_month = 9
+# 	}
+# 		location:moscow.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_fur_demands
+# 			scale = oe_ed_fur_jiesuanI
+# 			months = 3
+# 		}
+# 		}
+# }
+# if = {
+# 	limit = {
+# 		current_month = 11
+# 	}
+# 		location:kayal.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_pepper_demands
+# 			scale = oe_ed_pepper_jiesuanI
+# 			months = 3
+# 		}
+# 		}
+# }
+# if = {#圣诞节消费
+# 	limit = {
+# 		current_month = 12
+# 	}
+# 		location:prague.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_pepper_demands_chirsmas
+# 			scale = oe_ed_pepper_chrismas
+# 			months = 2
+# 		}
+# 		}
+# 		location:vienna.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_pepper_demands_chirsmas
+# 			scale = oe_ed_pepper_chrismas
+# 			months = 2
+# 		}
+# 		}
+# 				location:london.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_pepper_demands_chirsmas
+# 			scale = oe_ed_pepper_chrismas
+# 			months = 2
+# 		}
+# 		}
+# 				location:genoa.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_pepper_demands_chirsmas
+# 			scale = oe_ed_pepper_chrismas
+# 			months = 2
+# 		}
+# 		}
+# 				location:venice.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_pepper_demands_chirsmas
+# 			scale = oe_ed_pepper_chrismas
+# 			months = 2
+# 		}
+# 		}
+# 				location:paris.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_pepper_demands_chirsmas
+# 			scale = oe_ed_pepper_chrismas
+# 			months = 2
+# 		}
+# 		}
+# 				location:constantinople.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_pepper_demands_chirsmas
+# 			scale = oe_ed_pepper_chrismas
+# 			months = 2
+# 		}
+# 		}
+# 				location:lubeck.market = {
+# 		add_temporary_demand = {
+# 			type = demand:oe_ed_east_pepper_demands_chirsmas
+# 			scale = oe_ed_pepper_chrismas
+# 			months = 2
+# 		}
+# 		}
+# }
+# }

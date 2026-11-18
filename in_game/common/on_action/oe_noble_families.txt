@@ -1,0 +1,79 @@
+﻿# Startup is dispatched before court appointments in oe_byz_on_action.
+oe_nf_startup = { effect = { c:BYZ ?= { oe_nf_initialize = yes } } }
+monthly_country_pulse = { on_actions = { oe_nf_monthly } }
+on_battle_won_character = { on_actions = { oe_nf_battle_victory } }
+on_character_death = { on_actions = { oe_nf_character_death } }
+on_character_marriage = { on_actions = { oe_nf_marriage } }
+
+oe_nf_monthly = {
+    trigger = { tag = BYZ }
+    effect = {
+        oe_nf_initialize = yes
+        oe_court_clear_invalid = yes
+        oe_court_auto_fill = yes
+        oe_nf_refresh = yes
+        international_organization:oe_byz_empire_pillars = {
+            oe_nf_clean_territories = yes
+            oe_nf_expand_five_years = { slot = 1 }
+            oe_nf_expand_five_years = { slot = 2 }
+            oe_nf_expand_five_years = { slot = 3 }
+            oe_nf_expand_five_years = { slot = 4 }
+        }
+        oe_nf_refresh = yes
+        international_organization:oe_byz_empire_pillars = {
+            if = {
+                limit = { has_variable = oe_nf_dynasty_1 }
+                oe_nf_change_influence = { slot = 1 amount = var:oe_nf_monthly_1 }
+            }
+            if = {
+                limit = { has_variable = oe_nf_dynasty_2 }
+                oe_nf_change_influence = { slot = 2 amount = var:oe_nf_monthly_2 }
+            }
+            if = {
+                limit = { has_variable = oe_nf_dynasty_3 }
+                oe_nf_change_influence = { slot = 3 amount = var:oe_nf_monthly_3 }
+            }
+            if = {
+                limit = { has_variable = oe_nf_dynasty_4 }
+                oe_nf_change_influence = { slot = 4 amount = var:oe_nf_monthly_4 }
+            }
+        }
+    }
+}
+# Native root is the victorious commander. Count each army/navy victory once.
+oe_nf_battle_victory = {
+    trigger = {
+        country_exists = c:BYZ
+        has_dynasty = yes
+        dynasty = { oe_nf_registered_family = yes }
+        OR = { is_general_of = c:BYZ is_admiral_of = c:BYZ }
+    }
+    effect = { oe_nf_member_influence = { amount = 10 } }
+}
+# Native root is the country; scope:target is the person who dies.
+oe_nf_character_death = {
+    trigger = { country_exists = c:BYZ exists = scope:target scope:target = { oe_nf_death_tracked = yes } }
+    effect = { scope:target = { oe_nf_note_character_death = yes } }
+}
+# Native root/target are the two spouses; award per family member, including two of the same house.
+oe_nf_marriage = {
+    trigger = {
+        country_exists = c:BYZ
+        OR = {
+            AND = { has_dynasty = yes dynasty = { oe_nf_registered_family = yes } }
+            AND = { exists = scope:target.dynasty scope:target.dynasty = { oe_nf_registered_family = yes } }
+        }
+    }
+    effect = {
+        if = { limit = { has_dynasty = yes } oe_nf_member_influence = { amount = 5 } }
+        if = { limit = { exists = scope:target scope:target != root } scope:target = { if = { limit = { has_dynasty = yes } oe_nf_member_influence = { amount = 5 } } } }
+        c:BYZ = { oe_nf_refresh = yes }
+    }
+}
+
+oe_nf_post_court_startup = { effect = { c:BYZ ?= { oe_nf_refresh = yes } } }
+on_character_birth = { on_actions = { oe_nf_birth } }
+oe_nf_birth = {
+    trigger = { country_exists = c:BYZ scope:character = { has_dynasty = yes dynasty = { oe_nf_registered_family = yes } } }
+    effect = { c:BYZ = { oe_nf_refresh = yes } }
+}

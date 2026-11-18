@@ -1,0 +1,74 @@
+﻿# Location scope; permanent geographic protection is stored only on the IO.
+oe_nf_province_protected = {
+    province_definition = { save_temporary_scope_as = oe_nf_checked_province }
+    international_organization:oe_byz_empire_pillars = {
+        any_in_list = { variable = oe_nf_protected_provinces this = scope:oe_nf_checked_province }
+    }
+}
+# IO scope. Authority expenditure also credits two influence per point.
+oe_nf_interaction_ready = {
+    c:BYZ = { oe_court_actor = yes }
+    has_variable = oe_nf_dynasty_$slot$
+    var:oe_pillars_authority >= $cost$
+}
+oe_nf_redeem_ready = {
+    oe_nf_interaction_ready = { slot = $slot$ cost = 1 }
+    custom_tooltip = { text = OE_NF_REDEEM_FUNDS gold >= oe_pillars_purse_monthly_income }
+}
+oe_nf_relief_ready = {
+    oe_nf_interaction_ready = { slot = $slot$ cost = 2 }
+    custom_tooltip = { text = OE_NF_RELIEF_COOLDOWN NOT = { has_variable = oe_nf_relief_cooldown } }
+}
+oe_nf_recommend_ready = {
+    oe_nf_interaction_ready = { slot = $slot$ cost = 1 }
+    custom_tooltip = { text = OE_NF_RECOMMEND_COOLDOWN NOT = { has_variable = oe_nf_recommend_cooldown_$slot$ } }
+}
+# IO scope; count only currently registered houses with a selectable living head.
+oe_nf_mediation_slot = {
+    has_variable = oe_nf_dynasty_$slot$
+    var:oe_nf_influence_$slot$ > 50
+    exists = var:oe_nf_head_$slot$
+    var:oe_nf_head_$slot$ = { oe_nf_living = yes }
+}
+oe_nf_mediation_ready = {
+    c:BYZ = { oe_court_actor = yes }
+    custom_tooltip = { text = OE_NF_MEDIATION_COOLDOWN NOT = { has_variable = oe_nf_mediation_cooldown } }
+    custom_tooltip = {
+        text = OE_NF_MEDIATION_TWO_HOUSES
+        OR = {
+            AND = { oe_nf_mediation_slot = { slot = 1 } oe_nf_mediation_slot = { slot = 2 } }
+            AND = { oe_nf_mediation_slot = { slot = 1 } oe_nf_mediation_slot = { slot = 3 } }
+            AND = { oe_nf_mediation_slot = { slot = 1 } oe_nf_mediation_slot = { slot = 4 } }
+            AND = { oe_nf_mediation_slot = { slot = 2 } oe_nf_mediation_slot = { slot = 3 } }
+            AND = { oe_nf_mediation_slot = { slot = 2 } oe_nf_mediation_slot = { slot = 4 } }
+            AND = { oe_nf_mediation_slot = { slot = 3 } oe_nf_mediation_slot = { slot = 4 } }
+        }
+    }
+    NOT = { OR = {
+        AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_influence_1 > 300 }
+        AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_influence_2 > 300 }
+        AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_influence_3 > 300 }
+        AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_influence_4 > 300 }
+    } }
+}
+oe_nf_mediation_head = {
+    oe_nf_living = yes
+    save_temporary_scope_as = oe_nf_checked_head
+    international_organization:oe_byz_empire_pillars = { OR = {
+        AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:oe_nf_checked_head var:oe_nf_influence_1 > 50 }
+        AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:oe_nf_checked_head var:oe_nf_influence_2 > 50 }
+        AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:oe_nf_checked_head var:oe_nf_influence_3 > 50 }
+        AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:oe_nf_checked_head var:oe_nf_influence_4 > 50 }
+    } }
+}
+oe_nf_antimonopoly_ready = {
+    c:BYZ = { oe_court_actor = yes has_variable = oe_ir_offices_done }
+    var:oe_pillars_authority >= 5
+}
+# Province selector is limited to provinces containing directly owned imperial land.
+oe_nf_antimonopoly_target = {
+    any_location_in_province = { owner = c:BYZ }
+    province_definition = {
+        any_location_in_province_definition = { oe_nf_controlled = yes }
+    }
+}

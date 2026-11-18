@@ -1,0 +1,255 @@
+﻿namespace = oe_exp_nile
+oe_exp_nile.1 = {
+    type = country_event
+    title = oe_exp_nile.1.t
+    desc = oe_exp_nile.1.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_lower_nile_exploration.dds"
+    option = {
+        name = oe_exp_nile.1.a
+    }
+}
+oe_exp_nile.2 = {
+    type = country_event
+    title = oe_exp_nile.2.t
+    desc = oe_exp_nile.2.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_lower_nile_exploration.dds"
+    option = {
+        name = oe_exp_nile.2.a
+        trigger = {
+            gold >= 20
+        }
+        custom_tooltip = oe_exp_nile.2.a.tt
+        add_gold = -20
+        resume_expedition = scope:expedition
+        scope:expedition = {
+            change_variable = {
+                name = oe_exp_clues
+                add = 20
+            }
+            clamp_variable = {
+                name = oe_exp_clues
+                min = 0
+                max = 100
+            }
+            pause_expedition = 45
+        }
+    }
+    option = {
+        name = oe_exp_nile.2.b
+        custom_tooltip = oe_exp_nile.2.b.tt
+        resume_expedition = scope:expedition
+        scope:expedition = {
+            change_variable = {
+                name = oe_exp_clues
+                add = 10
+            }
+            clamp_variable = {
+                name = oe_exp_clues
+                min = 0
+                max = 100
+            }
+            pause_expedition = 90
+        }
+    }
+}
+oe_exp_nile.3 = {
+    type = country_event
+    title = oe_exp_nile.3.t
+    desc = oe_exp_nile.3.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_lower_nile_exploration.dds"
+    option = {
+        name = oe_exp_nile.3.a
+        trigger = {
+            gold >= 20
+        }
+        custom_tooltip = oe_exp_nile.3.a.tt
+        add_gold = -20
+        resume_expedition = scope:expedition
+        scope:expedition = {
+            change_variable = {
+                name = oe_exp_provisions
+                add = 15
+            }
+            clamp_variable = {
+                name = oe_exp_provisions
+                min = 0
+                max = 100
+            }
+            pause_expedition = 30
+        }
+    }
+    option = {
+        name = oe_exp_nile.3.b
+        custom_tooltip = oe_exp_nile.3.b.tt
+        resume_expedition = scope:expedition
+        scope:expedition = {
+            change_variable = {
+                name = oe_exp_provisions
+                add = -10
+            }
+            clamp_variable = {
+                name = oe_exp_provisions
+                min = 0
+                max = 100
+            }
+            pause_expedition = 75
+        }
+    }
+}
+oe_exp_nile.4 = {
+    type = country_event
+    title = oe_exp_nile.4.t
+    desc = oe_exp_nile.4.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_lower_nile_exploration.dds"
+    option = {
+        name = oe_exp_nile.4.a
+        trigger = {
+            gold >= 25
+        }
+        custom_tooltip = oe_exp_nile.4.a.tt
+        add_gold = -25
+        resume_expedition = scope:expedition
+        scope:expedition = {
+            change_variable = {
+                name = oe_exp_clues
+                add = 30
+            }
+            clamp_variable = {
+                name = oe_exp_clues
+                min = 0
+                max = 100
+            }
+            pause_expedition = 90
+        }
+    }
+    option = {
+        name = oe_exp_nile.4.b
+        custom_tooltip = oe_exp_nile.4.b.tt
+        resume_expedition = scope:expedition
+        scope:expedition = {
+            change_variable = {
+                name = oe_exp_clues
+                add = 20
+            }
+            clamp_variable = {
+                name = oe_exp_clues
+                min = 0
+                max = 100
+            }
+            change_variable = {
+                name = oe_exp_guards
+                add = -3
+            }
+            clamp_variable = {
+                name = oe_exp_guards
+                min = 0
+                max = 40
+            }
+            pause_expedition = 90
+        }
+    }
+}
+oe_exp_nile.5 = {
+    type = country_event
+    title = oe_exp_nile.5.t
+    desc = oe_exp_nile.5.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_lower_nile_exploration.dds"
+    option = {
+        name = oe_exp_nile.5.a
+        custom_tooltip = oe_exp_nile.5.a.tt
+        if = {
+            limit = {
+                NOT = {
+                    has_global_variable = oe_ark_recovered
+                }
+                NOT = {
+                    exists = work_of_art:oe_ark_of_the_covenant
+                }
+            }
+            random = {
+                chance = {
+                    value = 5
+                    if = {
+                        limit = {
+                            scope:expedition = {
+                                var:oe_exp_clues >= 60
+                            }
+                        }
+                        add = 10
+                    }
+                    if = {
+                        limit = {
+                            scope:expedition = {
+                                var:oe_exp_clues >= 80
+                            }
+                        }
+                        add = 10
+                    }
+                }
+                scope:expedition = {
+                    set_variable = {
+                        name = oe_nile_ark_found
+                        value = 1
+                    }
+                }
+            }
+        }
+        resume_expedition = scope:expedition
+        scope:expedition = {
+            if = {
+                limit = {
+                    var:oe_exp_provisions < 25
+                }
+                pause_expedition = 150
+            }
+            else = {
+                pause_expedition = 90
+            }
+        }
+    }
+    option = {
+        name = oe_exp_nile.5.b
+        custom_tooltip = oe_exp_nile.5.b.tt
+        resume_expedition = scope:expedition
+        scope:expedition = {
+            pause_expedition = 30
+        }
+    }
+}
+oe_exp_nile.6 = {
+    type = country_event
+    title = oe_exp_nile.6.t
+    desc = oe_exp_nile.6.d
+    outcome = positive
+    image = "gfx/interface/illustrations/events/oe_lower_nile_exploration.dds"
+    option = {
+        name = oe_exp_nile.6.a
+        custom_tooltip = oe_exp_nile.6.a.tt
+    }
+}
+oe_exp_nile.7 = {
+    type = country_event
+    title = oe_exp_nile.7.t
+    desc = oe_exp_nile.7.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_lower_nile_exploration.dds"
+    option = {
+        name = oe_exp_nile.7.a
+        custom_tooltip = oe_exp_nile.7.a.tt
+    }
+}
+oe_exp_nile.8 = {
+    type = country_event
+    title = oe_exp_nile.8.t
+    desc = oe_exp_nile.8.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_lower_nile_exploration.dds"
+    option = {
+        name = oe_exp_nile.8.a
+    }
+}

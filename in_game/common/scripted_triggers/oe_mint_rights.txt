@@ -1,0 +1,26 @@
+﻿# Country scope. Subject-held mint locations use the emperor's reform status.
+oe_mint_coinage_reformed = {
+    OR = {
+        has_variable = oe_ir_coinage_done
+        AND = {
+            country_exists = c:BYZ
+            c:BYZ = { has_variable = oe_ir_coinage_done }
+        }
+    }
+}
+
+# Country scope; DHE checks only Genoa and the locations in Tuscany, once per month.
+oe_genoa_mint_event_ready = {
+    tag = BYZ
+    has_variable = oe_ir_coinage_done
+    NOT = { has_variable = oe_genoa_imperial_mint_unlocked }
+    location:genoa = { has_owner = yes owner = { oe_heg_byz_bloc = yes } }
+    area:tuscany_area = {
+        NOT = {
+            any_location_in_area = {
+                is_ownable = yes
+                NOT = { AND = { has_owner = yes owner = { oe_heg_byz_bloc = yes } } }
+            }
+        }
+    }
+}

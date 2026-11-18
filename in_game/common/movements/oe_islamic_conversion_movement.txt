@@ -1,0 +1,97 @@
+﻿oe_islamic_conversion_movement = {
+    religion = orthodox
+    required_religions = { sunni shia }
+    potential = {
+        always = yes
+    }
+    allow = { always = no }
+    monthly_spawn_chance = { value = 0 }
+    location_stagnation_chance = {
+        value = 0
+        if = {
+            limit = { NOT = { oe_islamic_conversion_spread_location = yes } }
+            value = 1
+        }
+    }
+    calc_interval_days = 10
+    environmental_infection = {
+        value = 0.1
+        if = {
+            limit = { NOT = { oe_islamic_conversion_spread_location = yes } }
+            value = 0
+        }
+    }
+    r0 = {
+        value = { 0.05 0.15 }
+        if = {
+            limit = { NOT = { oe_islamic_conversion_spread_location = yes } }
+            value = 0
+        }
+    }
+    location_spread_threshold = {
+        value = 0.05
+        if = {
+            limit = { NOT = { oe_islamic_conversion_spread_location = yes } }
+            value = 1
+        }
+    }
+    development = neutral
+    literacy = positive
+    local_control = positive
+    pop_satisfaction = neutral
+    specific_pop_type_effect = {
+        pop_type = nobles
+        multiplier = 2.0
+    }
+    specific_pop_type_effect = {
+        pop_type = burghers
+        multiplier = 1.5
+    }
+    specific_pop_type_effect = {
+        pop_type = clergy
+        multiplier = 1.5
+    }
+    specific_pop_type_effect = {
+        pop_type = peasants
+        multiplier = 1.2
+    }
+    specific_pop_type_effect = {
+        pop_type = tribesmen
+        multiplier = 0.5
+    }
+    specific_pop_type_effect = {
+        pop_type = laborers
+        multiplier = 1.2
+    }
+    specific_pop_type_effect = {
+        pop_type = slaves
+        multiplier = 0.1
+    }
+    map_color = {
+        if = {
+            limit = {
+                "religion_percentage(religion:orthodox)" = 0
+            }
+            value = define:NMapColors|MAP_COLOR_NULL
+        }
+        else_if = {
+            limit = {
+                dominant_religion = religion:orthodox
+            }
+            value = define:NMapColors|MAP_COLOR_HIGH
+        }
+        else_if = {
+            limit = {
+                "religion_percentage(religion:orthodox)" > 0.05
+            }
+            value = define:NMapColors|MAP_COLOR_MID
+        }
+        else = {
+            value = define:NMapColors|MAP_COLOR_LOW
+        }
+    }
+    
+    
+    specific_pop_type_effect = { religion = sunni multiplier = 2.0 }
+    specific_pop_type_effect = { religion = shia multiplier = 2.0 }
+}

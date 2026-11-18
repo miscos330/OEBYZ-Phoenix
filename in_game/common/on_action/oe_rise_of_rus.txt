@@ -1,0 +1,44 @@
+﻿# New-campaign setup only. No monthly/daily polling or old-save union reset.
+on_game_start = { on_actions = { oe_rus_lithuanian_opening } }
+oe_rus_lithuanian_opening = {
+    trigger = {
+        current_date = 1337.4.1
+        country_exists = c:LIT
+        country_exists = c:KIE
+        NOT = { c:LIT = { has_variable = oe_rus_kyiv_union_initialized } }
+    }
+    effect = {
+        # 1337 restoration (user decision 8, 2026-11-18): this union is a gameplay setting kept for the author's Rus content
+        # (oe_rus_can_integrate_kyiv). Historically Kyiv's prince in 1337 was Fyodor (Teodoras), now held to be Gediminas's
+        # brother, and Kyiv still paid tribute to the Horde (a Tatar baskak rode with him in 1331); it passed to Lithuania
+        # only after 1362. See work/plan_20261117/research_1337/regions/rus.md R1.
+        # Native setup gives Kyiv a tributary tie to the Horde. Remove that
+        # dependency before forming the requested Lithuanian personal union.
+        if = {
+            limit = { c:KIE = { is_subject_of = c:GLH } }
+            c:GLH = { cancel_subject = c:KIE }
+        }
+        c:KIE = {
+            if = {
+                limit = { ruler != c:LIT.ruler }
+                set_new_ruler = c:LIT.ruler # FIX 2026-11-17: set_ruler is not an effect
+            }
+        }
+        c:LIT = {
+            if = {
+                limit = { NOT = { in_union_with = c:KIE } }
+                create_union = c:KIE
+            }
+            # Native helper applies the seniority law, stores the common ruler
+            # and assigns the leader country and senior-partner status together.
+            set_senior_partner = yes
+            union = {
+                international_organization_add_special_status = {
+                    type = special_status:junior_partner
+                    country = c:KIE
+                }
+            }
+            set_variable = oe_rus_kyiv_union_initialized
+        }
+    }
+}

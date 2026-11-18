@@ -1,0 +1,83 @@
+﻿namespace = oe_byzantine_intrigue
+oe_byzantine_intrigue.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    image = "gfx/interface/illustrations/disaster/oe_byzantine_intrigue.dds"
+    title = oe_byzantine_intrigue.1.t
+    desc = oe_byzantine_intrigue.1.d
+    trigger = { tag = BYZ }
+    option = {
+        name = oe_byzantine_intrigue.1.a
+        add_legitimacy = -5
+        add_stability = -10
+        if = { limit = { international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_political_ally } } trigger_event_non_silently = oe_byzantine_intrigue.2 }
+    }
+}
+oe_byzantine_intrigue.2 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    image = "gfx/interface/illustrations/disaster/oe_byzantine_intrigue.dds"
+    title = oe_byzantine_intrigue.2.t
+    desc = oe_byzantine_intrigue.2.d
+    trigger = { tag = BYZ international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_political_ally } }
+    immediate = {
+        international_organization:oe_byz_empire_pillars = {
+            save_scope_as = oe_bi_support_pillars
+            var:oe_nf_political_ally = { save_scope_as = oe_bi_support_family }
+        }
+    }
+    option = {
+        name = oe_byzantine_intrigue.2.a
+        add_stability = 7
+        custom_tooltip = {
+            text = OE_BI_ALLY_AUTHORITY_GAIN
+            scope:oe_bi_support_pillars = {
+                set_variable = { name = oe_pillars_authority value = { value = var:oe_pillars_authority add = 2 min = 0 max = 100 } }
+            }
+        }
+    }
+}
+oe_byzantine_intrigue.3 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    image = "gfx/interface/illustrations/disaster/oe_byzantine_intrigue.dds"
+    title = oe_byzantine_intrigue.3.t
+    desc = oe_byzantine_intrigue.3.d
+    trigger = { tag = BYZ }
+    option = {
+        name = oe_byzantine_intrigue.3.a
+        add_legitimacy = 5
+        add_stability = 5
+        custom_tooltip = { text = OE_BI_END_INFLUENCE_TT international_organization:oe_byz_empire_pillars = { oe_bi_reduce_rivals = { amount = -100 } } }
+    }
+}
+oe_byzantine_intrigue.4 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    image = "gfx/interface/illustrations/disaster/oe_byzantine_intrigue.dds"
+    title = oe_byzantine_intrigue.4.t
+    desc = oe_byzantine_intrigue.4.d
+    trigger = { oe_bi_coup_ready = yes }
+    option = {
+        name = oe_byzantine_intrigue.4.a
+        custom_tooltip = { text = OE_BI_COUP_TT oe_bi_coup = yes }
+    }
+}
+oe_byzantine_intrigue.5 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    image = "gfx/interface/illustrations/disaster/oe_byzantine_intrigue.dds"
+    title = oe_byzantine_intrigue.5.t
+    desc = oe_byzantine_intrigue.5.d
+    trigger = { oe_bi_civil_war_event_ready = yes }
+    immediate = { oe_bi_civil_war = yes remove_variable = oe_bi_forced_civil_war }
+    option = {
+        name = oe_byzantine_intrigue.5.a
+        custom_tooltip = OE_BI_CIVIL_WAR_TT
+    }
+}

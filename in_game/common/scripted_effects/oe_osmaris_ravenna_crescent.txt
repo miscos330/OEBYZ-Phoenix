@@ -1,0 +1,45 @@
+﻿# Location scope AFTER a successful personal conquest, not ordinary manual grants.
+oe_belisarius_record_italian_conquest = {
+    if = {
+        limit = {
+            region = region:italy_region owner = c:BYZ
+            NOT = { has_variable = oe_belisarius_italian_location_counted }
+            c:BYZ = { NOT = { has_variable = oe_belisarius_ravenna_presented } }
+        }
+        set_variable = oe_belisarius_italian_location_counted
+        c:BYZ = {
+            if = { limit = { NOT = { has_variable = oe_belisarius_italian_conquests } } set_variable = { name = oe_belisarius_italian_conquests value = 0 } }
+            change_variable = { name = oe_belisarius_italian_conquests add = 1 }
+        }
+    }
+}
+oe_belisarius_try_ravenna = {
+    if = { limit = { oe_belisarius_ravenna_ready = yes } trigger_event_non_silently = oe_flavor_byz.1017 }
+}
+oe_belisarius_try_crescent = {
+    if = { limit = { oe_belisarius_crescent_ready = yes } trigger_event_non_silently = oe_flavor_byz.1018 }
+}
+oe_belisarius_accept_laurels = {
+    if = {
+        limit = { has_variable = oe_belisarius_ravenna_presented NOT = { has_variable = oe_belisarius_ravenna_resolved } }
+        set_variable = oe_belisarius_ravenna_resolved
+        international_organization:oe_byz_empire_pillars ?= {
+            change_variable = { name = oe_pillars_authority subtract = 10 }
+            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        }
+    }
+}
+oe_belisarius_retire_from_command = {
+    if = {
+        limit = {
+            has_variable = oe_belisarius_ravenna_presented NOT = { has_variable = oe_belisarius_ravenna_resolved }
+            oe_osmaris_belisarius_available = yes
+        }
+        set_variable = oe_belisarius_ravenna_resolved
+        if = { limit = { character:oe_osmaris_belisarius = { in_cabinet = yes } } remove_from_cabinet = character:oe_osmaris_belisarius }
+        remove_commander = character:oe_osmaris_belisarius
+        character:oe_osmaris_belisarius = { add_trait = trait:oe_belisarius_retired }
+        # Keep his family, estate, religion and residence; this is secular retirement.
+        oe_court_clear_invalid = yes oe_court_auto_fill = yes oe_nf_refresh = yes
+    }
+}

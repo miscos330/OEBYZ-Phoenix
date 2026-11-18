@@ -1,0 +1,80 @@
+﻿# Country scope. Direct ownership is required; subjects do not satisfy this.
+oe_works_egypt_owned = {
+    custom_tooltip = {
+        text = OE_WORKS_EGYPT_OWNED_TT
+        region:egypt_region = {
+            NOT = { any_location_in_region = { is_ownable = yes NOT = { AND = { has_owner = yes owner = c:BYZ } } } }
+        }
+    }
+}
+oe_works_egypt_actor = { oe_works_actor = yes oe_works_egypt_owned = yes }
+# Location scope. In these two areas, river-bearing agricultural settlements are
+# the Nile and its delta branches. Excludes Alexandria province, desert and lakes.
+oe_works_egypt_agricultural = {
+    is_ownable = yes
+    OR = { area = area:lower_egypt_area area = area:upper_egypt_area }
+    NOT = { province_definition = province_definition:alexandria_province }
+    has_river = yes
+    location_rank = location_rank:rural_settlement
+    OR = {
+        raw_material ?= { is_food = yes }
+        raw_material = goods:fiber_crops
+        raw_material = goods:sugar
+    }
+}
+oe_works_egypt_owned_farm = { oe_works_egypt_agricultural = yes has_owner = yes owner = c:BYZ }
+oe_works_egypt_planned = { has_variable = oe_works_egypt_plan_done }
+oe_works_egypt_canal_target = {
+    oe_works_egypt_owned_farm = yes
+    area = area:lower_egypt_area
+    NOT = { has_variable = oe_works_egypt_canal_site }
+    NOT = { any_buildings_in_location = { building_type = building_type:oe_egypt_canal OR = { building_level > 0 building_levels_under_construction > 0 } } }
+}
+oe_works_egypt_plan_allowed = {
+    oe_works_egypt_actor = yes
+    NOT = { has_variable = oe_works_egypt_plan_done }
+    gold >= 5000
+}
+oe_works_aswan_allowed = {
+    oe_works_egypt_actor = yes oe_works_egypt_planned = yes
+    NOT = { has_variable = oe_works_aswan_started }
+    gold >= 10000
+}
+oe_works_egypt_supply_allowed = {
+    oe_works_egypt_actor = yes oe_works_egypt_planned = yes
+    NOT = { has_variable = oe_works_egypt_supply_unlocked }
+    gold >= 2000
+}
+oe_works_egypt_canal_allowed = {
+    oe_works_egypt_actor = yes oe_works_egypt_planned = yes
+    gold >= 5000
+    custom_tooltip = { text = OE_WORKS_EGYPT_CANAL_COOLDOWN_TT NOT = { has_variable = oe_works_egypt_canal_cooldown } }
+    custom_tooltip = { text = OE_WORKS_EGYPT_THREE_CANALS_TT OR = { NOT = { has_variable = oe_works_egypt_canals } var:oe_works_egypt_canals < 3 } }
+    area:lower_egypt_area = { any_location_in_area = { oe_works_egypt_canal_target = yes } }
+}
+oe_works_egypt_smallholders_allowed = {
+    oe_works_egypt_actor = yes oe_works_egypt_planned = yes
+    NOT = { has_variable = oe_works_egypt_land_policy_done }
+    has_estate_privilege = estate_privilege:oe_peasants_own_theme_IV
+}
+oe_works_egypt_landowners_allowed = {
+    oe_works_egypt_actor = yes oe_works_egypt_planned = yes
+    NOT = { has_variable = oe_works_egypt_land_policy_done }
+    has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV
+}
+# Country scope. Alexandria remains the departure port and planning market;
+# the actual delivery is to Constantinople's province, regardless of its market.
+oe_egypt_supply_operational = {
+    has_variable = oe_works_egypt_supply_unlocked
+    owns = location:alexandria
+    owns = location:constantinople
+    exists = location:alexandria.market
+    exists = location:constantinople.province
+    location:alexandria.market = { location = location:alexandria }
+}
+# Province scope. Called only within Lower/Upper Egypt's bounded province lists.
+oe_egypt_supply_source_province = {
+    owner = c:BYZ
+    province_food > 0
+    NOT = { this = location:constantinople.province }
+}

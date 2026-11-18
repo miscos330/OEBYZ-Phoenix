@@ -1,0 +1,70 @@
+﻿oe_rise_of_rus = {
+    monthly_spawn_chance = monthly_spawn_chance_unique
+    can_start = {
+        NOT = { has_global_variable = oe_rus_started }
+        NOT = { country_exists = c:RUS }
+        NOT = { oe_rus_era_closed = yes }
+        OR = {
+            NOT = { country_exists = c:GLH }
+            c:GLH ?= { num_locations_owned_or_owned_by_subjects_or_below < 300 }
+        }
+        culture_group:russian_group = {
+            any_country_in_culture_group = { oe_rus_country = yes is_subject = no }
+        }
+    }
+    visible = {
+        OR = {
+            religion = religion:orthodox
+            capital ?= { sub_continent = sub_continent:eastern_europe }
+            capital ?= { region = region:scandinavian_region }
+        }
+    }
+    outcome = {
+        name = oe_rus_outcome_russia
+        desc = oe_rus_outcome_russia_desc
+        trigger = { country_exists = c:RUS }
+    }
+    outcome = {
+        name = oe_rus_outcome_age
+        desc = oe_rus_outcome_age_desc
+        trigger = { oe_rus_era_closed = yes }
+    }
+    on_start = {
+        set_global_variable = oe_rus_started
+        oe_rus_collapse_yoke = yes
+        oe_rus_recalculate = yes
+        every_country = { trigger_event_non_silently = oe_rise_of_rus.1 }
+    }
+    on_monthly = { oe_rus_recalculate = yes }
+    on_ended = {
+        oe_rus_clear_ranking = yes
+        every_in_global_list = {
+            variable = oe_rus_score_holders
+            remove_variable = oe_rus_score
+            remove_variable = oe_rus_personal_score
+            remove_variable = oe_rus_score_controller
+        }
+        clear_global_variable_list = oe_rus_score_holders
+        clear_global_variable_list = oe_rus_candidates
+        remove_variable = oe_rus_next_rank
+    }
+    tooltip = {
+        if = {
+            limit = { has_owner = yes owner = { has_variable = oe_rus_rank } }
+            custom_tooltip = oe_rus_map_top_tt
+        }
+    }
+    map_color = {
+        if = { limit = { has_owner = yes owner ?= { tag = BYZ } } value = owner.country_color }
+        else_if = {
+            limit = { has_owner = yes owner ?= { has_variable = oe_rus_rank } }
+            value = owner.country_color
+        }
+        else_if = {
+            limit = { has_owner = yes owner ?= { has_variable = oe_rus_score_controller var:oe_rus_score_controller = { has_variable = oe_rus_rank } } }
+            value = owner.var:oe_rus_score_controller.country_color
+        }
+        else_if = { limit = { has_owner = yes owner ?= { oe_rus_country = yes } } value = rgb { 0.94 0.89 0.58 } }
+        else = { value = define:NMapColors|DEFAULT_COLOR }
+    }
+}

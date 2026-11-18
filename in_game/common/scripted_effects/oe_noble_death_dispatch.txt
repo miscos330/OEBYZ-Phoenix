@@ -1,0 +1,48 @@
+﻿# Character scope. Do not wait for is_alive or the country's character list to change.
+oe_nf_note_character_death = {
+    save_scope_as = oe_nf_deceased_person
+    international_organization:oe_byz_empire_pillars = {
+        if = {
+            limit = { NOT = { any_in_list = { variable = oe_nf_deceased_characters this = scope:oe_nf_deceased_person } } }
+            add_to_variable_list = { name = oe_nf_deceased_characters target = scope:oe_nf_deceased_person }
+        }
+        oe_nf_retire_dead_head = { slot = 1 }
+        oe_nf_retire_dead_head = { slot = 2 }
+        oe_nf_retire_dead_head = { slot = 3 }
+        oe_nf_retire_dead_head = { slot = 4 }
+    }
+    c:BYZ = { oe_nf_refresh = yes oe_nf_queue_death_refresh = yes }
+}
+# IO scope. Clearing the exact old head before refreshing makes duplicate hooks idempotent.
+oe_nf_retire_dead_head = {
+    if = {
+        limit = { has_variable = oe_nf_dynasty_$slot$ has_variable = oe_nf_head_$slot$ }
+        if = {
+            limit = { var:oe_nf_head_$slot$ = scope:oe_nf_deceased_person }
+            oe_nf_change_influence = { slot = $slot$ amount = -50 }
+            remove_variable = oe_nf_head_$slot$
+        }
+    }
+}
+# BYZ scope. One queued refresh per death batch; no monthly income or influence tick is applied.
+oe_nf_queue_death_refresh = {
+    if = {
+        limit = { NOT = { has_variable = oe_nf_death_refresh_queued } }
+        set_variable = { name = oe_nf_death_refresh_queued value = 1 days = 2 }
+        trigger_event_non_silently = { on_action = oe_nf_delayed_death_refresh days = 1 }
+    }
+}
+
+# Disabled: use the existing monthly refresh; no recurring daily polling.
+# # BYZ scope. Expiring queue locks recover even if a delayed callback was lost.
+# oe_nf_queue_head_watchdog = {
+#     if = {
+#         limit = {
+#             tag = BYZ
+#             international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_initialized }
+#             NOT = { has_variable = oe_nf_head_watchdog_queued }
+#         }
+#         set_variable = { name = oe_nf_head_watchdog_queued value = 1 days = 2 }
+#         trigger_event_non_silently = { on_action = oe_nf_head_watchdog days = 1 }
+#     }
+# }

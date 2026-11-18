@@ -1,0 +1,380 @@
+﻿oe_nf_form_alliance = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_ally_form_ready = yes } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = character source = actor target_flag = target_head
+        name = "OE_NF_ALLIANCE_CHOOSE_HEAD"
+        column = { data = character_info }
+        interaction_source_list = { international_organization:oe_byz_empire_pillars = {
+            if = { limit = { has_variable = oe_nf_dynasty_1 exists = var:oe_nf_head_1 } var:oe_nf_head_1 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_2 exists = var:oe_nf_head_2 } var:oe_nf_head_2 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_3 exists = var:oe_nf_head_3 } var:oe_nf_head_3 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_4 exists = var:oe_nf_head_4 } var:oe_nf_head_4 = { add_to_list = source } }
+        } }
+        visible = { oe_nf_alliance_head_target = yes }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_form_political_alliance = yes }
+        }
+    }
+}
+
+oe_nf_pressure = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_pressure_ready = yes } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = character source = actor target_flag = target_head
+        name = "OE_NF_ALLIANCE_CHOOSE_HEAD"
+        column = { data = character_info }
+        interaction_source_list = { international_organization:oe_byz_empire_pillars = {
+            if = { limit = { has_variable = oe_nf_dynasty_1 exists = var:oe_nf_head_1 } var:oe_nf_head_1 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_2 exists = var:oe_nf_head_2 } var:oe_nf_head_2 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_3 exists = var:oe_nf_head_3 } var:oe_nf_head_3 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_4 exists = var:oe_nf_head_4 } var:oe_nf_head_4 = { add_to_list = source } }
+        } }
+        visible = { oe_nf_alliance_head_target = yes }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_pressure_house = yes }
+        }
+    }
+}
+
+oe_nf_honors_1 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_honors_ready = { slot = 1 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_grant_honors = { slot = 1 } }
+        }
+    }
+}
+
+oe_nf_ally_support_1 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } international_organization:oe_byz_empire_pillars = { oe_nf_is_political_ally = { slot = 1 } } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_ally_support_ready = { slot = 1 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_political_ally_support = { slot = 1 } }
+        }
+    }
+}
+
+oe_nf_ally_pressure_1 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } international_organization:oe_byz_empire_pillars = { oe_nf_is_political_ally = { slot = 1 } } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_ally_pressure_ready = { slot = 1 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = character source = actor target_flag = target_head
+        name = "OE_NF_ALLIANCE_CHOOSE_HEAD"
+        column = { data = character_info }
+        interaction_source_list = { international_organization:oe_byz_empire_pillars = {
+            if = { limit = { has_variable = oe_nf_dynasty_1 exists = var:oe_nf_head_1 } var:oe_nf_head_1 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_2 exists = var:oe_nf_head_2 } var:oe_nf_head_2 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_3 exists = var:oe_nf_head_3 } var:oe_nf_head_3 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_4 exists = var:oe_nf_head_4 } var:oe_nf_head_4 = { add_to_list = source } }
+        } }
+        visible = { oe_nf_alliance_rival_target = yes }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_political_ally_pressure = { slot = 1 } }
+        }
+    }
+}
+
+oe_nf_honors_2 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_honors_ready = { slot = 2 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_grant_honors = { slot = 2 } }
+        }
+    }
+}
+
+oe_nf_ally_support_2 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } international_organization:oe_byz_empire_pillars = { oe_nf_is_political_ally = { slot = 2 } } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_ally_support_ready = { slot = 2 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_political_ally_support = { slot = 2 } }
+        }
+    }
+}
+
+oe_nf_ally_pressure_2 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } international_organization:oe_byz_empire_pillars = { oe_nf_is_political_ally = { slot = 2 } } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_ally_pressure_ready = { slot = 2 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = character source = actor target_flag = target_head
+        name = "OE_NF_ALLIANCE_CHOOSE_HEAD"
+        column = { data = character_info }
+        interaction_source_list = { international_organization:oe_byz_empire_pillars = {
+            if = { limit = { has_variable = oe_nf_dynasty_1 exists = var:oe_nf_head_1 } var:oe_nf_head_1 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_2 exists = var:oe_nf_head_2 } var:oe_nf_head_2 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_3 exists = var:oe_nf_head_3 } var:oe_nf_head_3 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_4 exists = var:oe_nf_head_4 } var:oe_nf_head_4 = { add_to_list = source } }
+        } }
+        visible = { oe_nf_alliance_rival_target = yes }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_political_ally_pressure = { slot = 2 } }
+        }
+    }
+}
+
+oe_nf_honors_3 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_honors_ready = { slot = 3 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_grant_honors = { slot = 3 } }
+        }
+    }
+}
+
+oe_nf_ally_support_3 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } international_organization:oe_byz_empire_pillars = { oe_nf_is_political_ally = { slot = 3 } } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_ally_support_ready = { slot = 3 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_political_ally_support = { slot = 3 } }
+        }
+    }
+}
+
+oe_nf_ally_pressure_3 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } international_organization:oe_byz_empire_pillars = { oe_nf_is_political_ally = { slot = 3 } } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_ally_pressure_ready = { slot = 3 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = character source = actor target_flag = target_head
+        name = "OE_NF_ALLIANCE_CHOOSE_HEAD"
+        column = { data = character_info }
+        interaction_source_list = { international_organization:oe_byz_empire_pillars = {
+            if = { limit = { has_variable = oe_nf_dynasty_1 exists = var:oe_nf_head_1 } var:oe_nf_head_1 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_2 exists = var:oe_nf_head_2 } var:oe_nf_head_2 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_3 exists = var:oe_nf_head_3 } var:oe_nf_head_3 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_4 exists = var:oe_nf_head_4 } var:oe_nf_head_4 = { add_to_list = source } }
+        } }
+        visible = { oe_nf_alliance_rival_target = yes }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_political_ally_pressure = { slot = 3 } }
+        }
+    }
+}
+
+oe_nf_honors_4 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_honors_ready = { slot = 4 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_grant_honors = { slot = 4 } }
+        }
+    }
+}
+
+oe_nf_ally_support_4 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } international_organization:oe_byz_empire_pillars = { oe_nf_is_political_ally = { slot = 4 } } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_ally_support_ready = { slot = 4 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_political_ally_support = { slot = 4 } }
+        }
+    }
+}
+
+oe_nf_ally_pressure_4 = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } international_organization:oe_byz_empire_pillars = { oe_nf_is_political_ally = { slot = 4 } } }
+    allow = { international_organization:oe_byz_empire_pillars = { oe_nf_ally_pressure_ready = { slot = 4 } } }
+    select_trigger = {
+        looking_for_a = international_organization source = actor target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = character source = actor target_flag = target_head
+        name = "OE_NF_ALLIANCE_CHOOSE_HEAD"
+        column = { data = character_info }
+        interaction_source_list = { international_organization:oe_byz_empire_pillars = {
+            if = { limit = { has_variable = oe_nf_dynasty_1 exists = var:oe_nf_head_1 } var:oe_nf_head_1 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_2 exists = var:oe_nf_head_2 } var:oe_nf_head_2 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_3 exists = var:oe_nf_head_3 } var:oe_nf_head_3 = { add_to_list = source } }
+            if = { limit = { has_variable = oe_nf_dynasty_4 exists = var:oe_nf_head_4 } var:oe_nf_head_4 = { add_to_list = source } }
+        } }
+        visible = { oe_nf_alliance_rival_target = yes }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_court_actor = yes } scope:recipient = { this = international_organization:oe_byz_empire_pillars } }
+            international_organization:oe_byz_empire_pillars = { oe_nf_political_ally_pressure = { slot = 4 } }
+        }
+    }
+}
+

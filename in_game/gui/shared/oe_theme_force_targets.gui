@@ -1,0 +1,137 @@
+template oe_pillars_force_targets_panel {
+    widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 286 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        vbox = {
+            size = { 100% 100% }
+            margin = { 12 10 }
+            spacing = 6
+            text_single = { layoutpolicy_horizontal = expanding multiline = yes autoresize = yes fontsize = 15 text = "OE_TFR_PANEL_HELP" tooltip = "OE_TFR_COST_TT" }
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                margin = { 8 0 }
+                spacing = 12
+                text_single = { layoutpolicy_horizontal = expanding fontsize = 14 align = left|nobaseline text = "OE_TFR_COUNTRY" }
+                text_single = { size = { 72 20 } fontsize = 14 align = center|nobaseline text = "OE_TFR_UNIT" }
+                text_single = { size = { 100 20 } fontsize = 14 align = right|nobaseline text = "OE_TFR_CURRENT" }
+                text_single = { size = { 166 20 } fontsize = 14 align = center|nobaseline text = "OE_TFR_TARGET" }
+            }
+            scrollarea = {
+                using = layoutpolicy_expanding
+                scrollbarpolicy_horizontal = always_off
+                scrollbar_vertical = { using = Scrollbar_Vertical }
+                scrollwidget = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 4
+                        ignoreinvisible = yes
+                        datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.GetMembers]"
+                        item = {
+                            widget = {
+                                layoutpolicy_horizontal = expanding
+                                size = { -1 50 }
+                                visible = "[GetScriptedGui('oe_tfr_row_visible').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+                                using = bg_paper_card
+                                hbox = {
+                                    size = { 100% 100% }
+                                    margin = { 8 5 }
+                                    spacing = 12
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        autoresize = no
+                                        elide = right
+                                        fontsize = 17
+                                        align = left|nobaseline
+                                        text = "[Country.GetNameWithNoTooltip]"
+                                        tooltip = "[Country.GetName]"
+                                    }
+                                    text_single = {
+                                        size = { 72 40 }
+                                        fontsize = 15
+                                        align = center|nobaseline
+                                        text = "[SelectLocalization(GetScriptedGui('oe_tfr_row_naval').IsShown(GuiScope.SetRoot(Country.MakeScope).End), 'OE_TFR_SHIPS', 'OE_TFR_SOLDIERS')]"
+                                    }
+                                    text_single = {
+                                        size = { 100 40 }
+                                        fontsize = 17
+                                        align = right|nobaseline
+                                        raw_text = "[GuiScope.SetRoot(Country.MakeScope).ScriptValue('oe_tfr_current_display')|0]"
+                                        tooltip = "OE_TFR_SIZE_TT"
+                                    }
+                                    hbox = {
+                                        size = { 166 40 }
+                                        spacing = 4
+                                        widget = {
+                                            size = { 132 40 }
+                                            using = editbox_background
+                                            tooltip = "OE_TFR_TARGET_TT"
+                                            text_single = {
+                                                size = { 100% 100% }
+                                                margin = { 8 0 }
+                                                autoresize = no
+                                                align = center|nobaseline
+                                                fontsize = 20
+                                                raw_text = "[GuiScope.SetRoot(Country.MakeScope).ScriptValue('oe_tfr_target_display')|0]"
+                                            }
+                                        }
+                                        vbox = {
+                                            size = { 30 40 }
+                                            spacing = 2
+                                            enabled = "[EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'BYZ')]"
+                                            ui_direction_button = {
+                                                size = { 30 19 }
+                                                blockoverride "button_texture" { texture = "gfx/interface/icons/flat_icons/arrow_up.dds" }
+                                                enabled = "[Or(GetScriptedGui('oe_tfr_row_naval').IsShown(GuiScope.SetRoot(Country.MakeScope).End), LessThan_CFixedPoint(GuiScope.SetRoot(Country.MakeScope).ScriptValue('oe_tfr_target_display'), '(CFixedPoint)100000'))]"
+                                                action_tooltip = {
+                                                    click_type = left
+                                                    click_mode = single
+                                                    click_modifier = default
+                                                    title = "OE_TFR_INCREASE"
+                                                }
+                                                action_tooltip = {
+                                                    click_type = left
+                                                    click_mode = single
+                                                    click_modifier = shift
+                                                    title = "OE_TFR_INCREASE_FAST"
+                                                }
+                                                click_modifiers = {
+                                                    ondefault = "[GetScriptedGui('oe_tfr_increase').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('target_country', Country.MakeScope).End)]"
+                                                    onshift = "[GetScriptedGui('oe_tfr_increase_fast').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('target_country', Country.MakeScope).End)]"
+                                                }
+                                                tooltipwidget = { BasicFunctionalTooltip = {} }
+                                            }
+                                            ui_direction_button = {
+                                                size = { 30 19 }
+                                                blockoverride "button_texture" { texture = "gfx/interface/icons/flat_icons/arrow_down.dds" }
+                                                enabled = "[GreaterThan_CFixedPoint(GuiScope.SetRoot(Country.MakeScope).ScriptValue('oe_tfr_target_display'), '(CFixedPoint)0')]"
+                                                action_tooltip = {
+                                                    click_type = left
+                                                    click_mode = single
+                                                    click_modifier = default
+                                                    title = "OE_TFR_DECREASE"
+                                                }
+                                                action_tooltip = {
+                                                    click_type = left
+                                                    click_mode = single
+                                                    click_modifier = shift
+                                                    title = "OE_TFR_DECREASE_FAST"
+                                                }
+                                                click_modifiers = {
+                                                    ondefault = "[GetScriptedGui('oe_tfr_decrease').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('target_country', Country.MakeScope).End)]"
+                                                    onshift = "[GetScriptedGui('oe_tfr_decrease_fast').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).AddScope('target_country', Country.MakeScope).End)]"
+                                                }
+                                                tooltipwidget = { BasicFunctionalTooltip = {} }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

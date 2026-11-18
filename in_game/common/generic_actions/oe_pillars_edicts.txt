@@ -1,0 +1,150 @@
+﻿oe_pillars_bread_and_circuses = {
+    type = internationalorganization
+    show_message = no
+    potential = {}
+    allow = {
+        scope:actor = { tag = BYZ }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_2 var:oe_pillars_authority >= 2 }
+            custom_tooltip = { text = oe_pillars_bread_and_circuses_afford gold >= oe_pillars_bread_cost }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    cooldown = { type = oe_pillars_bread_and_circuses_cooldown months = 12 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_empire_pillars
+            scope:actor = { tag = BYZ }
+        }
+    }
+    effect = {
+        scope:recipient = {
+            save_scope_value_as = { name = oe_pillars_order_cost value = oe_pillars_bread_cost }
+            add_gold = { value = scope:oe_pillars_order_cost multiply = -1 }
+            change_variable = { name = oe_pillars_authority add = -2 }
+        }
+        scope:recipient = {
+            change_variable = { name = oe_pillars_public_opinion add = 3 }
+            set_variable = { name = oe_pillars_public_opinion value = { value = var:oe_pillars_public_opinion min = 0 max = 100 } }
+        }
+        scope:actor = { add_stability = 7 }
+    }
+}
+
+oe_pillars_reward_officials = {
+    type = internationalorganization
+    show_message = no
+    potential = {}
+    allow = {
+        scope:actor = { tag = BYZ }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_2 var:oe_pillars_authority >= 2 }
+            custom_tooltip = { text = oe_pillars_reward_officials_afford gold >= oe_pillars_officials_cost }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    cooldown = { type = oe_pillars_reward_officials_cooldown months = 0 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_empire_pillars
+            scope:actor = { tag = BYZ }
+        }
+    }
+    effect = {
+        scope:recipient = {
+            save_scope_value_as = { name = oe_pillars_order_cost value = oe_pillars_officials_cost }
+            add_gold = { value = scope:oe_pillars_order_cost multiply = -1 }
+            change_variable = { name = oe_pillars_authority add = -2 }
+        }
+        scope:actor = { add_legitimacy = 3 }
+    }
+}
+
+oe_pillars_adjust_imperial_style = {
+    type = internationalorganization
+    show_message = no
+    potential = {}
+    allow = { scope:actor = { tag = BYZ NOT = { has_variable = oe_pillars_appearance_pending } } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    cooldown = { type = oe_pillars_adjust_imperial_style_cooldown months = 0 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_empire_pillars
+            scope:actor = { tag = BYZ is_ai = no }
+        }
+    }
+    effect = {
+        scope:actor = {
+            set_variable = oe_pillars_appearance_pending
+            trigger_event_non_silently = oe_flavor_byz.801
+        }
+    }
+}
+
+oe_pillars_upgrade_metropolis = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = { scope:actor = { tag = BYZ gold >= 10000 } }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = location
+        source = actor
+        target_flag = target_location
+        name = "oe_pillars_upgrade_metropolis_choose"
+        none_available_msg_key = "oe_pillars_upgrade_metropolis_none"
+        column = { data = name }
+        column = { data = population }
+        interaction_source_list = {
+            scope:actor = { every_owned_location = { limit = { oe_upgrade_metropolis_target = yes } add_to_list = source } }
+        }
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        visible = { oe_upgrade_metropolis_target = yes }
+        enabled = { oe_upgrade_metropolis_target = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { tag = BYZ gold >= 10000 }
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:target_location = { oe_upgrade_metropolis_target = yes }
+            }
+            scope:target_location = { change_location_rank = location_rank:megalopolis }
+            if = {
+                limit = { scope:target_location = { location_rank = location_rank:megalopolis } }
+                scope:actor = { add_gold = -10000 }
+            }
+        }
+    }
+}

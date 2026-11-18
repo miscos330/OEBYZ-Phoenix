@@ -1,0 +1,652 @@
+﻿# Disabled 2026-10-25: deposition of the Prince of Epirus.
+oe_byz_latin_attack = {
+    type = disaster
+    show_message = no
+    potential = { always = no }
+    allow = { always = no }
+    automation_tick = never
+    ai_tick = never
+    effect = {}
+}
+oe_bbyz_phoe_own_greek_country = {#和同胞和平统一
+	type = disaster
+	show_message = no
+	potential = {
+	}
+
+	allow = {
+	
+
+
+		scope:actor = {
+			at_war = no
+			has_raised_levies = no
+			num_locations_owned_or_owned_by_subjects_or_below > 200
+			societal_value:latinization_vs_hellenization >= 75
+		}
+	}
+
+	automation_tick = never
+	automation_tick_frequency = 12
+	price = price:oe_byz_create_theme_price
+
+	cooldown = {
+		type = oe_bbyz_phoe_own_greek_country_cooldown_key
+		months = 0
+	}
+
+	select_trigger = {
+		looking_for_a = disaster
+		name = "choose_disaster"
+		target_flag = recipient
+		column = {
+			data = name
+		}
+		visible = {
+			disaster_type = disaster_type:oe_fate_of_the_phoenix
+			disaster_is_active = yes
+			
+		}
+	}
+	select_trigger = {
+	    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+	    only_color_selectable = yes
+	    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = country
+		target_flag = target_country
+		name = "oe_byz_selcet_oe_rome_sub_country"
+		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+		column = {
+			data = name
+		}
+		column = {
+			data = great_power_score
+		}
+		visible = {
+			root.culture = {
+			has_culture_group = culture_group:greek_group
+			}
+			root = {
+			country_type = location
+			NOT = {
+				is_subject_of = scope:actor
+			}
+			}
+		}
+	}
+	effect = { 
+			custom_tooltip = {
+				text = oe_bbyz_phoe_own_greek_country_tt
+				scope:target_country = {
+			make_subject_of = {
+				target = scope:actor
+				type = subject_type:oe_rome_sub
+			}	
+		}			
+			}
+
+	}
+}
+oe_byz_destroy_thief = {#剿灭流寇
+	type = disaster
+	show_message = no
+	potential = {
+	}
+	allow = {
+		scope:actor = {
+			at_war = no
+			has_raised_levies = no
+		}
+	}
+	automation_tick = never
+	automation_tick_frequency = 12
+	price = price:oe_byz_destroy_thief_price
+	cooldown = {
+		type = oe_byz_destroy_thief_cooldown_key
+		months = 1
+	}
+	select_trigger = {
+		looking_for_a = disaster
+		name = "choose_disaster"
+		target_flag = recipient
+		column = {
+			data = name
+		}
+		visible = {
+			disaster_type = disaster_type:oe_fate_of_the_phoenix
+			disaster_is_active = yes
+
+		}
+	}
+
+		select_trigger = {
+		    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+		    only_color_selectable = yes
+		    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = province
+		target_flag = target
+		name = "choose_province"
+		none_available_msg_key = "no_provinces_available"
+		column = { data = owner_flag }
+		column = { data = name }
+		column = { data = population }
+		visible = {
+				any_location_in_province = {
+					owner = c:BYZ
+					has_building = building_type:oe_byz_bad_thief_greek
+				}
+		}
+	}
+		effect = { 
+			scope:target = {
+				every_location_in_province = {
+					destroy_building = "building(building_type:oe_byz_bad_thief_greek|c:BYZ)"
+				}
+			}
+		
+	}
+}
+
+# PAUSED 2026-09-23: replaced by Imperial Reforms.
+# oe_byz_reform_peasantI = {#重建中央军
+# 	type = disaster
+# 	show_message = no
+# 	potential = {
+# 	}
+# 	allow = {
+# 		scope:actor = {
+# 		has_variable = oe_byz_reform_peasantI_reach_100
+# 		Not = {has_variable = oe_byz_reform_peasantI_start}
+# 			at_war = no
+# 			has_raised_levies = no
+# 		}
+# 	}
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_press_claims_price
+# 	cooldown = {
+# 		type = oe_byz_reform_peasantI_cooldown_key
+# 		years = 10
+# 	}
+# 	select_trigger = {
+# 		looking_for_a = disaster
+# 		name = "choose_disaster"
+# 		target_flag = recipient
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			disaster_type = disaster_type:oe_fate_of_the_phoenix
+# 			disaster_is_active = yes
+# 
+# 		}
+# 	}
+# 		effect = { 
+# 			
+# 		custom_tooltip = {
+# 			text = oe_byz_reform_peasantI_tt
+# 			scope:actor = {
+# 			set_global_variable = phoenix_nirvana_situation_over
+# 			trigger_event_non_silently = phoenix_nirvana.507
+# 			}
+# 		}
+# 		
+# 	}
+# }
+
+oe_byz_phoe_invest_army = {#投资军备
+	type = internationalorganization
+	show_message = no
+	potential = {
+	
+scope:actor = { tag = BYZ }
+}
+	allow = {
+		scope:actor = {
+			at_war = no
+			has_raised_levies = no
+		}
+	
+scope:actor = { tag = BYZ }
+}
+	automation_tick = never
+	automation_tick_frequency = 12
+	price = price:oe_byz_phoe_invest_army_price
+	cooldown = {
+		type = oe_byz_phoe_invest_army_cooldown_key
+		months = 6
+	}
+	select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+		effect = { 
+		custom_tooltip = {
+			text = oe_byz_phoe_invest_army_tt
+			scope:actor = {
+				trigger_event_silently = phoenix_nirvana.506
+			}
+		}
+		
+	}
+}
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_byz_reform_nobleI = {#恢复乡村权威
+# 	type = disaster
+# 	show_message = no
+# 	potential = {
+# 	}
+# 	allow = {
+# 		scope:actor = {
+# 		Not = {has_variable = oe_byz_reform_nobleI_start}
+# 		stability > 50
+# 		government_power > 50
+# 			at_war = no
+# 			has_raised_levies = no
+# 		}
+# 	}
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_press_claims_price
+# 	cooldown = {
+# 		type = oe_byz_reform_nobleI_cooldown_key
+# 		years = 10
+# 	}
+# 	select_trigger = {
+# 		looking_for_a = disaster
+# 		name = "choose_disaster"
+# 		target_flag = recipient
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			disaster_type = disaster_type:oe_fate_of_the_phoenix
+# 			disaster_is_active = yes
+# 
+# 		}
+# 	}
+# 		effect = { 
+# 		custom_tooltip = {
+# 			text = oe_byz_reform_nobleI_tt
+# 			scope:actor = {
+# 				trigger_event_silently = phoenix_nirvana.300
+# 			}
+# 		}
+# 		
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_byz_fate_Basileus = {#皇权至上
+# 	type = disaster
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			at_war = no
+# 			has_raised_levies = no
+# 			OR = {
+# 					has_estate_privilege = estate_privilege:oe_peasants_own_theme_IV
+# 					has_estate_privilege = estate_privilege:oe_peasants_own_theme_III	
+# 					has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV
+# 					has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_III			
+# 			}
+# 			has_variable = oe_byz_lose_army_unlock
+# 			government_power > 95	
+# 			stability > 70	
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_latin_attack_price
+# 
+# 	cooldown = {
+# 		type = oe_byz_fate_Basileus_cooldown_key
+# 		years = 10
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = disaster
+# 		name = "choose_disaster"
+# 		target_flag = recipient
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 			Not = {has_variable = oe_byz_fate_Basileus_over}
+# 						}
+# 			disaster_type = disaster_type:oe_fate_of_the_phoenix
+# 			disaster_is_active = yes
+# 		}
+# 	}
+# 	effect = { 
+# 		unlock_casus_belli_effect = { type = cb_restore_roman_borders }
+# 			custom_tooltip = {
+# 				text = oe_byz_fate_Basileus_tt
+# 				
+# 				scope:actor = {
+# 					set_variable = oe_byz_fate_Basileus_over
+# 					
+# # PAUSED 2026-09-23: estate privilege rework; retained for restoration.
+# # set_variable = unlock_oe_peasants_privilege
+# 
+# 					
+# # PAUSED 2026-09-23: estate privilege rework; retained for restoration.
+# # revoke_estate_privilege = estate_privilege:oe_byz_heavy_work
+# 
+# 					trigger_event_silently = phoenix_nirvana.600
+# 				}
+# 			}
+# 
+# 	}
+# }
+
+oe_protect_peasants = {#保护自由农民
+	type = disaster
+	show_message = no
+	potential = {
+	}
+
+	allow = {
+
+
+
+		scope:actor = {
+			at_war = no
+			has_raised_levies = no
+			government_power > 30
+			stability > 30
+			NOT = {
+				has_estate_privilege = estate_privilege:oe_peasants_own_theme_IV
+			}
+		}
+	}
+
+	automation_tick = never
+	automation_tick_frequency = 12
+	price = price:oe_protect_peasants_price
+
+	cooldown = {
+		type = oe_protect_peasants_cooldown_key
+		years = 3
+	}
+
+	select_trigger = {
+		looking_for_a = disaster
+		name = "choose_disaster"
+		target_flag = recipient
+		column = {
+			data = name
+		}
+		visible = {
+			scope:actor = {
+			Not = {has_variable = oe_byz_fate_Basileus_over}
+						}
+			disaster_type = disaster_type:oe_fate_of_the_phoenix
+			disaster_is_active = yes
+		}
+	}
+	effect = { 
+		scope:actor = {
+			add_country_modifier = { modifier = oe_noble_unhappy_mod years = 3 mode = add_and_extend }
+		}
+		if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_negative_IV
+				set_variable = allow_oe_peasants_own_theme_negative_III
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_III			
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_III
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_negative_III
+				set_variable = allow_oe_peasants_own_theme_negative_II
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_III
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_II		
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_II
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_negative_II
+				set_variable = allow_oe_peasants_own_theme_negative_I
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_II
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_I		
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_I
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_negative_I
+				set_variable = allow_oe_peasants_own_theme_I
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_I
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_I		
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_I
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_I
+				set_variable = allow_oe_peasants_own_theme_II
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_I
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_II	
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_II
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_II
+				set_variable = allow_oe_peasants_own_theme_III
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_II
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_III	
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_III
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_III
+				set_variable = allow_oe_peasants_own_theme_IV
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_III
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_IV
+			}
+		}
+	}
+}
+oe_protect_noble = {#与军事贵族合作
+	type = disaster
+	show_message = no
+	potential = {
+	}
+
+	allow = {
+
+
+
+		scope:actor = {
+			at_war = no
+			has_raised_levies = no
+			government_power > 30
+			stability > 30
+			NOT = {
+				has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV
+			}
+		}
+	}
+
+	automation_tick = never
+	automation_tick_frequency = 12
+	price = price:oe_protect_noble_price
+
+	cooldown = {
+		type = oe_protect_noble_cooldown_key
+		years = 3
+	}
+
+	select_trigger = {
+		looking_for_a = disaster
+		name = "choose_disaster"
+		target_flag = recipient
+		column = {
+			data = name
+		}
+		visible = {
+			scope:actor = {
+			Not = {has_variable = oe_byz_fate_Basileus_over}
+						}
+			disaster_type = disaster_type:oe_fate_of_the_phoenix
+			disaster_is_active = yes
+		}
+	}
+	effect = { 
+		scope:actor = {
+			add_country_modifier = { modifier = oe_peasants_unhappy_mod years = 3 mode = add_and_extend }
+		}
+		if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_III
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_negative_III
+				set_variable = allow_oe_peasants_own_theme_negative_IV
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_III
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV	
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_II
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_negative_II
+				set_variable = allow_oe_peasants_own_theme_negative_III
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_II
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_III	
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_I
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_negative_I
+				set_variable = allow_oe_peasants_own_theme_negative_II
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_I
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_II	
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_I
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_I
+				set_variable = allow_oe_peasants_own_theme_negative_I
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_I
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_I	
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_II
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_II
+				set_variable = allow_oe_peasants_own_theme_I
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_II
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_I
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_III
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_III
+				set_variable = allow_oe_peasants_own_theme_II
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_III
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_II
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					has_estate_privilege = estate_privilege:oe_peasants_own_theme_IV
+				}
+				
+			}
+			scope:actor = {
+				remove_variable = allow_oe_peasants_own_theme_IV
+				set_variable = allow_oe_peasants_own_theme_III
+			revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_IV
+			grant_estate_privilege = estate_privilege:oe_peasants_own_theme_III
+			}
+		}
+	}
+}

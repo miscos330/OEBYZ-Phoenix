@@ -1,0 +1,52 @@
+﻿oe_osmaris_basil_available = {
+    exists = character:oe_osmaris_basil
+    character:oe_osmaris_basil = {
+        oe_nf_living = yes owner = c:BYZ is_adult = yes
+        dynasty = dynasty:ottomans_dynasty
+        is_ruler = no
+    }
+}
+oe_osmaris_basil_trade_ready = {
+    oe_court_actor = yes has_variable = oe_osman_chain_active
+    NOT = { has_variable = oe_osman_expelled }
+    NOT = { has_variable = oe_osmaris_basil_trade_done }
+    oe_orhan_house_room = yes
+    OR = {
+        AND = {
+            NOT = { exists = character:oe_osmaris_basil }
+            NOT = { has_variable = oe_osmaris_basil_introduced }
+        }
+        oe_osmaris_basil_available = yes
+    }
+}
+oe_osmaris_basil_can_reward = {
+    oe_osmaris_basil_trade_ready = yes
+    oe_osmaris_basil_available = yes
+}
+oe_osmaris_timurid_reach = {
+    country_exists = c:TIM
+    c:TIM = {
+        any_owned_location = {
+            OR = { region = region:crescent_region region = region:anatolia_region }
+        }
+    }
+}
+oe_osmaris_basil_capture_ready = {
+    tag = BYZ has_variable = oe_osman_chain_active
+    has_variable = oe_osmaris_basil_trade_done
+    NOT = { has_variable = oe_osman_expelled }
+    NOT = { has_variable = oe_osmaris_basil_capture_presented }
+    NOT = { has_variable = oe_osmaris_basil_capture_resolved }
+    oe_osmaris_basil_available = yes
+    oe_osmaris_timurid_reach = yes
+}
+oe_osmaris_basil_captive_valid = {
+    tag = BYZ has_variable = oe_osmaris_basil_capture_presented
+    NOT = { has_variable = oe_osmaris_basil_capture_resolved }
+    NOT = { has_variable = oe_osman_expelled }
+    oe_osmaris_basil_available = yes
+}
+oe_osmaris_basil_can_ransom = {
+    oe_osmaris_basil_captive_valid = yes
+    gold >= scope:oe_osmaris_basil_ransom
+}

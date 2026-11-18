@@ -1,0 +1,89 @@
+﻿oe_heg_expedition = { # Roman-alliance values; autonomous expedition wars.
+	subject_pays = subject_oe_rome_sub_tax
+	color = subject_vassal
+	level = 2
+
+	join_offensive_wars_always = {#加入战争
+		always = no
+	}
+	join_defensive_wars_always = {
+		always = no
+	}
+	can_be_annexed = no
+	subject_can_cancel = no
+	overlord_can_cancel = no
+
+	
+	diplomatic_capacity_cost_scale = 0.5
+	can_change_rank = no
+	can_change_heir_selection = no
+	has_overlords_ruler = no 
+	
+	has_limited_diplomacy = no
+	food_access = yes
+	
+	can_overlord_build_roads = yes
+	can_overlord_build_buildings = yes
+	can_overlord_build_rgos = yes
+
+	great_power_score_transfer = 0.25 # the amount of Great Power Score that is transferred from the Subject to the Overlord
+	
+	institution_spread_to_overlord = monthly_institution_spread_severe
+	institution_spread_to_subject = monthly_institution_spread_severe
+	
+	strength_vs_overlord = -0.5
+
+	overlord_modifier = {
+		monthly_prestige = 0.01
+		monthly_towards_latinization = 0.02		
+	}
+
+	subject_modifier = {
+
+		blocked_from_conversion = yes
+	}
+	
+	creation_visible = {
+		always = no
+	}
+
+	visible_through_diplomacy = {
+		always = no
+	}
+
+	visible_through_treaty = {
+		always = no
+	}
+
+	enabled_through_diplomacy = {
+		always = no
+	}
+    # Expedition soldiers fight their own wars without calling their overlord.
+    # 1.4: protection/calls are governed by join_defensive_wars_* above/below.
+    # Old unsupported scalar keys, retained only as migration notes:
+    # overlord_protects_external = no
+    # overlord_protects_other_subjects = no
+    join_offensive_wars_can_call = { always = no }
+    join_defensive_wars_can_call = { always = no }
+    allow_declaring_wars = { always = no }
+    on_monthly = {
+        if = {
+            limit = { at_war = no NOT = { has_variable = oe_heg_expedition_launching } }
+            oe_heg_finish_expedition = yes
+        }
+    }
+    on_enable = {
+        if = {
+            limit = { NOT = { has_reform = government_reform:oe_heg_expedition_supply_reform } }
+            add_reform = government_reform:oe_heg_expedition_supply_reform
+        }
+    }
+
+    on_disable = {
+        if = {
+            limit = { has_reform = government_reform:oe_heg_expedition_supply_reform }
+            remove_reform = government_reform:oe_heg_expedition_supply_reform
+        }
+    }
+
+}

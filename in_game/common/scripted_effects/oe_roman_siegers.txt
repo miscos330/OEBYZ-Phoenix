@@ -1,0 +1,58 @@
+﻿# Country scope. Explicit callback target avoids privilege-removal timing ambiguity.
+# Only Roman Besiegers change; existing age and regiment identity are retained.
+
+oe_roman_siegers_convert = {
+    if = {
+        limit = { tag = BYZ }
+        every_country_sub_unit = {
+            limit = {
+                OR = {
+                    sub_unit_type = unit_type:oe_roman_sieger_3_normal
+                    sub_unit_type = unit_type:oe_roman_sieger_4_normal
+                    sub_unit_type = unit_type:oe_roman_sieger_5_normal
+                    sub_unit_type = unit_type:oe_roman_sieger_6_normal
+                    sub_unit_type = unit_type:oe_roman_sieger_3_imperial
+                    sub_unit_type = unit_type:oe_roman_sieger_4_imperial
+                    sub_unit_type = unit_type:oe_roman_sieger_5_imperial
+                    sub_unit_type = unit_type:oe_roman_sieger_6_imperial
+                }
+            }
+            if = {
+                limit = {
+                    OR = { sub_unit_type = unit_type:oe_roman_sieger_3_normal sub_unit_type = unit_type:oe_roman_sieger_3_imperial }
+                }
+                if = {
+                    limit = { NOT = { sub_unit_type = unit_type:oe_roman_sieger_3_$FORM$ } }
+                    change_subunit_type = unit_type:oe_roman_sieger_3_$FORM$
+                }
+            }
+            else_if = {
+                limit = {
+                    OR = { sub_unit_type = unit_type:oe_roman_sieger_4_normal sub_unit_type = unit_type:oe_roman_sieger_4_imperial }
+                }
+                if = {
+                    limit = { NOT = { sub_unit_type = unit_type:oe_roman_sieger_4_$FORM$ } }
+                    change_subunit_type = unit_type:oe_roman_sieger_4_$FORM$
+                }
+            }
+            else_if = {
+                limit = {
+                    OR = { sub_unit_type = unit_type:oe_roman_sieger_5_normal sub_unit_type = unit_type:oe_roman_sieger_5_imperial }
+                }
+                if = {
+                    limit = { NOT = { sub_unit_type = unit_type:oe_roman_sieger_5_$FORM$ } }
+                    change_subunit_type = unit_type:oe_roman_sieger_5_$FORM$
+                }
+            }
+            else_if = {
+                limit = {
+                    OR = { sub_unit_type = unit_type:oe_roman_sieger_6_normal sub_unit_type = unit_type:oe_roman_sieger_6_imperial }
+                }
+                if = {
+                    limit = { NOT = { sub_unit_type = unit_type:oe_roman_sieger_6_$FORM$ } }
+                    change_subunit_type = unit_type:oe_roman_sieger_6_$FORM$
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,454 @@
+﻿oe_ir_offices = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_offices_done } }
+            current_ruler_term_years > 10
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_offices_done
+            oe_ir_upgrade_court_reform = yes
+            revoke_estate_privilege = estate_privilege:oe_noble_rule_area
+        }
+    }
+}
+
+oe_ir_central = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_central_done } }
+            has_variable = oe_ir_offices_done
+            custom_tooltip = {
+                text = OE_IR_NON_CROWN_POWER_LOW
+                NOT = {
+                    any_estate = {
+                        estate_type != estate_type:crown_estate
+                        power >= 0.4
+                    }
+                }
+            }
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_central_done
+            add_country_modifier = { modifier = oe_ir_central_modifier years = -1 mode = replace }
+        }
+    }
+}
+
+oe_ir_expel = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_expel_done } }
+            own_entire_area = area:morea_area
+own_entire_area = area:aegean_archipelago_area
+own_entire_area = area:northern_greece_area
+own_entire_area = area:west_anatolia_area
+own_entire_area = area:marmara_area
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_20 var:oe_pillars_authority >= 20 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -20 } }
+        scope:actor = {
+            set_variable = oe_ir_expel_done
+            unlock_policy_effect = { type = oe_precious_metals_control }
+            location:constantinople = { oe_city_remove_foreign_quarters = yes }
+            set_variable = unlock_oe_byz_empire_invest
+revoke_estate_privilege = estate_privilege:oe_byz_empire_invest
+        }
+    }
+}
+
+oe_ir_guilds = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_guilds_done } }
+            has_variable = oe_ir_expel_done
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_guilds_done
+            unlock_policy_effect = { type = oe_state_guild_mining }
+            add_policy = policy:oe_state_guild_mining
+            set_variable = oe_guild_mining_policy_applied
+            
+        }
+    }
+}
+
+oe_ir_east = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_east_done } }
+            oe_ir_owns_east = yes
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_east_done
+            add_country_modifier = { modifier = oe_eastern_mediterranean_hegemony years = -1 mode = replace }
+            
+        }
+    }
+}
+
+oe_ir_army_1 = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_army_1_done } }
+            oe_ir_army_progress >= 100
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_20 var:oe_pillars_authority >= 20 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -20 } }
+        scope:actor = {
+            set_variable = oe_ir_army_1_done
+            custom_tooltip = { text = OE_REFORM_HETAIREIA_UPGRADE_TT oe_hi_refresh = yes }
+            set_variable = oe_byz_lose_army_unlock
+remove_reform = government_reform:oe_byz_lose_army
+add_reform = government_reform:oe_byz_rebuild_army
+        }
+    }
+}
+
+oe_ir_army_2 = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_army_2_done } }
+            has_variable = oe_ir_army_1_done
+oe_ir_army_progress >= 500
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_20 var:oe_pillars_authority >= 20 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -20 } }
+        scope:actor = {
+            set_variable = oe_ir_army_2_done
+            unlock_policy_effect = { type = byz_tagmata_policy_upgraded }
+            custom_tooltip = { text = OE_REFORM_HETAIREIA_UPGRADE_TT oe_hi_refresh = yes }
+            remove_reform = government_reform:oe_byz_rebuild_army
+add_reform = government_reform:oe_byz_veteran_army
+        }
+    }
+}
+
+oe_ir_army_3 = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_army_3_done } }
+            has_variable = oe_ir_army_2_done
+oe_ir_army_progress >= 3000
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_army_3_done
+            custom_tooltip = { text = OE_REFORM_HETAIREIA_UPGRADE_TT oe_hi_refresh = yes }
+            remove_reform = government_reform:oe_byz_veteran_army
+remove_reform = government_reform:oe_byz_rebuild_army
+add_reform = government_reform:oe_byz_phoenix_army
+        }
+    }
+}
+
+oe_ir_artillery = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_artillery_done } }
+            has_variable = oe_ir_army_1_done
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_artillery_done
+            custom_tooltip = { text = OE_REFORM_SIEGERS_UPGRADE_TT oe_roman_siegers_convert = { FORM = imperial } }
+            add_country_modifier = { modifier = oe_ir_artillery_modifier years = -1 mode = replace }
+        }
+    }
+}
+
+oe_ir_sea = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_sea_done } }
+            has_variable = oe_ir_expel_done
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_sea_done
+            unlock_policy_effect = { type = oe_rhodian_maritime_law }
+            unlock_policy_effect = { type = oe_rhodian_antipiracy_law }
+            add_country_modifier = { modifier = oe_ir_sea_modifier years = -1 mode = replace }
+        }
+    }
+}
+
+oe_ir_faith = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_faith_done } }
+            has_variable = oe_ir_central_done
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_faith_done
+            add_country_modifier = { modifier = oe_ir_faith_modifier years = -1 mode = replace }
+        }
+    }
+}
+
+oe_ir_law = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_law_done } }
+            has_variable = oe_ir_central_done
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_law_done
+            add_country_modifier = { modifier = oe_ir_law_modifier years = -1 mode = replace }
+        }
+    }
+}

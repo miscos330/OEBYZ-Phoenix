@@ -1,0 +1,438 @@
+﻿namespace = oe_great_revolution
+
+oe_great_revolution.1 = {
+    type = country_event
+    category = disaster_event
+    title = oe_great_revolution.1.t
+    desc = oe_great_revolution.1.d
+    outcome = negative
+    image = "gfx/interface/illustrations/events/oe_gr_street_revolt.dds"
+    trigger = { tag = BYZ oe_gr_active = yes NOT = { has_variable = oe_gr_opening_resolved } }
+    option = {
+        name = oe_great_revolution.1.a
+        trigger = { in_civil_war = no num_locations > 1 owns = location:constantinople }
+        ai_chance = { base = 25 }
+        add_stability = -100
+        custom_tooltip = oe_gr_escape_tt
+        hidden_effect = { set_variable = oe_gr_opening_resolved oe_gr_emperor_escape = yes }
+    }
+    option = {
+        name = oe_great_revolution.1.b
+        ai_chance = { base = 75 }
+        custom_tooltip = oe_gr_republic_tt
+        add_stability = -30
+        add_legitimacy = -100
+        oe_gr_add_instability_two = yes
+        oe_gr_lose_authority_fifty = yes
+        custom_tooltip = oe_gr_new_identity_tt
+        add_country_modifier = { modifier = oe_gr_unstable_credit years = -1 mode = replace }
+        custom_tooltip = oe_gr_radicalism_plus_30_tt
+        hidden_effect = { set_variable = oe_gr_opening_resolved oe_gr_establish_republic = yes }
+    }
+}
+
+oe_great_revolution.2 = {
+    type = country_event
+    category = disaster_event
+    title = oe_great_revolution.2.t
+    desc = oe_great_revolution.2.d
+    outcome = negative
+    image = "gfx/interface/illustrations/situation/oe_bells_of_revolution.dds"
+    option = { name = oe_great_revolution.2.a custom_tooltip = oe_gr_uprising_happened_tt }
+}
+
+oe_great_revolution.3 = {
+    type = country_event
+    category = disaster_event
+    title = oe_great_revolution.3.t
+    desc = oe_great_revolution.3.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_gr_republican_assembly.dds"
+    trigger = { tag = BYZ oe_gr_active = yes has_variable = oe_gr_succession_pending has_variable = oe_gr_emperor_nominee }
+    immediate = {
+        var:oe_gr_late_emperor = { save_scope_as = oe_gr_late_emperor }
+        var:oe_gr_emperor_nominee = { save_scope_as = oe_gr_emperor_successor }
+    }
+    option = {
+        name = oe_great_revolution.3.a
+        custom_tooltip = oe_gr_succession_tt
+        hidden_effect = { oe_gr_install_emperor_successor = yes }
+    }
+}
+
+oe_great_revolution.4 = {
+    type = country_event
+    category = disaster_event
+    title = {
+        first_valid = {
+            triggered_desc = { trigger = { has_variable = oe_gr_royal_house } desc = oe_great_revolution.4.t }
+            triggered_desc = { desc = oe_great_revolution.4.t_fallback }
+        }
+    }
+    desc = oe_great_revolution.4.d
+    outcome = neutral
+    image = "gfx/interface/illustrations/events/oe_gr_republican_assembly.dds"
+    trigger = {
+        tag = BYZ oe_gr_active = yes has_variable = oe_gr_succession_pending
+        NOT = { has_variable = oe_gr_emperor_nominee }
+        NOT = { has_variable = oe_gr_royal_line_extinct }
+    }
+    immediate = {
+        var:oe_gr_late_emperor = { save_scope_as = oe_gr_late_emperor }
+        if = { limit = { has_variable = oe_gr_royal_house } var:oe_gr_royal_house = { save_scope_as = oe_gr_extinct_house } }
+    }
+    option = {
+        name = oe_great_revolution.4.a
+        custom_tooltip = oe_gr_extinction_tt
+        hidden_effect = {
+            if = {
+                limit = { NOT = { has_variable = oe_gr_royal_line_extinct } }
+                set_variable = oe_gr_royal_line_extinct
+                remove_variable = oe_gr_succession_pending
+                remove_variable = oe_gr_emperor
+                remove_variable = oe_gr_detained_emperor
+                change_variable = { name = oe_gr_muster subtract = 10 }
+                clamp_variable = { name = oe_gr_muster min = 0 max = 100 }
+            }
+        }
+    }
+}
+
+oe_great_revolution.5 = {
+    type = country_event
+    category = disaster_event
+    title = oe_great_revolution.5.t
+    desc = oe_great_revolution.5.d
+    outcome = negative
+    image = "gfx/interface/illustrations/situation/oe_bells_of_revolution.dds"
+    trigger = { oe_gr_full_revolution = yes exists = scope:oe_gr_refusing_army }
+    option = {
+        name = oe_great_revolution.5.a
+        trigger = { always = yes }
+        ai_will_select = { value = 40 }
+        custom_tooltip = oe_gr_disbanded_soldiers_tt
+        hidden_effect = { oe_gr_disband_refusing_army = yes }
+    }
+    option = {
+        name = oe_great_revolution.5.b
+        trigger = { always = yes }
+        ai_will_select = { value = 60 }
+        custom_tooltip = oe_gr_keep_army_tt
+        hidden_effect = { oe_gr_keep_refusing_army = yes }
+    }
+}
+
+oe_great_revolution.6 = {
+    type = country_event
+    category = disaster_event
+    title = oe_great_revolution.5.t
+    desc = oe_great_revolution.5.d
+    outcome = negative
+    image = "gfx/interface/illustrations/situation/oe_bells_of_revolution.dds"
+    trigger = { oe_gr_full_revolution = yes exists = scope:oe_gr_refusing_army }
+    option = {
+        name = oe_great_revolution.5.a
+        trigger = { always = yes }
+        ai_will_select = { value = 40 }
+        custom_tooltip = oe_gr_disbanded_soldiers_tt
+        hidden_effect = { oe_gr_disband_refusing_army = yes }
+    }
+    option = {
+        name = oe_great_revolution.5.b
+        trigger = { always = yes }
+        ai_will_select = { value = 60 }
+        custom_tooltip = oe_gr_keep_army_tt
+        hidden_effect = { oe_gr_keep_refusing_army = yes }
+    }
+}
+
+oe_great_revolution.7 = {
+    type = country_event
+    category = disaster_event
+    title = oe_great_revolution.5.t
+    desc = oe_great_revolution.5.d
+    outcome = negative
+    image = "gfx/interface/illustrations/situation/oe_bells_of_revolution.dds"
+    trigger = { oe_gr_full_revolution = yes exists = scope:oe_gr_refusing_army }
+    option = {
+        name = oe_great_revolution.5.a
+        trigger = { always = yes }
+        ai_will_select = { value = 40 }
+        custom_tooltip = oe_gr_disbanded_soldiers_tt
+        hidden_effect = { oe_gr_disband_refusing_army = yes }
+    }
+    option = {
+        name = oe_great_revolution.5.b
+        trigger = { always = yes }
+        ai_will_select = { value = 60 }
+        custom_tooltip = oe_gr_keep_army_tt
+        hidden_effect = { oe_gr_keep_refusing_army = yes }
+    }
+}
+
+
+oe_great_revolution.10 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.10.t
+    desc = oe_great_revolution.10.d
+    image = "gfx/interface/illustrations/events/oe_gr_street_revolt.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_rural_resistance_seen } has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV NOT = { has_variable = oe_gr_peasants_settlement } }
+    immediate = { set_variable = oe_gr_rural_resistance_seen }
+    option = {
+        name = oe_great_revolution.10.a
+        ai_will_select = { value = 100 }
+        oe_gr_add_instability_two = yes
+        add_stability = -7
+        oe_gr_add_radicalism_five = yes
+        remove_law = law:peasants_rights_laws
+        hidden_effect = { set_variable = oe_gr_peasants_settlement }
+        unlock_law_effect = { type = oe_gr_peasants_power_law }
+        unlock_policy_effect = { type = oe_gr_rural_resistance_policy }
+        add_policy = policy:oe_gr_rural_resistance_policy
+    }
+}
+
+oe_great_revolution.11 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.11.t
+    desc = oe_great_revolution.11.d
+    image = "gfx/interface/illustrations/situation/oe_bells_of_revolution.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_rural_waiting_seen } has_estate_privilege = estate_privilege:oe_peasants_own_theme_IV NOT = { has_variable = oe_gr_peasants_settlement } }
+    immediate = { set_variable = oe_gr_rural_waiting_seen }
+    option = {
+        name = oe_great_revolution.11.a
+        ai_will_select = { value = 100 }
+        oe_gr_add_instability_one = yes
+        remove_law = law:peasants_rights_laws
+        hidden_effect = { set_variable = oe_gr_peasants_settlement }
+        unlock_law_effect = { type = oe_gr_peasants_power_law }
+        unlock_policy_effect = { type = oe_gr_rural_ignorance_policy }
+        add_policy = policy:oe_gr_rural_ignorance_policy
+    }
+}
+
+oe_great_revolution.12 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.12.t
+    desc = oe_great_revolution.12.d
+    image = "gfx/interface/illustrations/events/oe_gr_republican_assembly.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_clergy_waiting_seen } }
+    immediate = { set_variable = oe_gr_clergy_waiting_seen }
+    option = {
+        name = oe_great_revolution.12.a
+        ai_will_select = { value = 100 }
+        oe_gr_add_instability_one = yes
+        add_stability = -7
+        oe_gr_add_radicalism_five = yes
+        remove_law = law:clergy_rights_laws
+        hidden_effect = { set_variable = oe_gr_clergy_settlement }
+        unlock_law_effect = { type = oe_gr_clergy_power_law }
+        unlock_policy_effect = { type = oe_gr_church_noncooperation_policy }
+        add_policy = policy:oe_gr_church_noncooperation_policy
+        custom_tooltip = oe_gr_revoke_clergy_privileges_tt
+        hidden_effect = {
+            if = { limit = { has_estate_privilege = estate_privilege:oe_clergy_episcopal_council } revoke_estate_privilege = estate_privilege:oe_clergy_episcopal_council }
+            if = { limit = { has_estate_privilege = estate_privilege:oe_clergy_athos_autonomy } revoke_estate_privilege = estate_privilege:oe_clergy_athos_autonomy }
+            if = { limit = { has_estate_privilege = estate_privilege:oe_clergy_episcopal_visitations } revoke_estate_privilege = estate_privilege:oe_clergy_episcopal_visitations }
+            if = { limit = { has_estate_privilege = estate_privilege:oe_clergy_public_liturgy } revoke_estate_privilege = estate_privilege:oe_clergy_public_liturgy }
+        }
+    }
+}
+
+oe_great_revolution.13 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.13.t
+    desc = oe_great_revolution.13.d
+    image = "gfx/interface/illustrations/events/oe_gr_republican_assembly.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_noble_refusal_seen } }
+    immediate = { set_variable = oe_gr_noble_refusal_seen }
+    option = {
+        name = oe_great_revolution.13.a
+        ai_will_select = { value = 100 }
+        oe_gr_add_instability_two = yes
+        add_stability = -20
+        oe_gr_lose_authority_twenty = yes
+        oe_gr_add_radicalism_five = yes
+        remove_law = law:nobles_rights_laws
+        hidden_effect = { set_variable = oe_gr_nobles_settlement }
+        unlock_law_effect = { type = oe_gr_nobles_power_law }
+        unlock_policy_effect = { type = oe_gr_noble_disloyalty_policy }
+        add_policy = policy:oe_gr_noble_disloyalty_policy
+        custom_tooltip = oe_gr_revoke_noble_privileges_tt
+        hidden_effect = {
+            if = { limit = { has_estate_privilege = estate_privilege:oe_noble_imperial_marriages } revoke_estate_privilege = estate_privilege:oe_noble_imperial_marriages }
+            if = { limit = { has_estate_privilege = estate_privilege:oe_noble_household_retinue } revoke_estate_privilege = estate_privilege:oe_noble_household_retinue }
+            if = { limit = { has_estate_privilege = estate_privilege:oe_noble_court_dignities } revoke_estate_privilege = estate_privilege:oe_noble_court_dignities }
+            if = { limit = { has_estate_privilege = estate_privilege:oe_noble_sponsored_navy } revoke_estate_privilege = estate_privilege:oe_noble_sponsored_navy }
+            if = { limit = { has_estate_privilege = estate_privilege:oe_noble_frontier_fortresses } revoke_estate_privilege = estate_privilege:oe_noble_frontier_fortresses }
+        }
+    }
+}
+
+oe_great_revolution.14 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.14.t
+    desc = oe_great_revolution.14.d
+    image = "gfx/interface/illustrations/situation/oe_bells_of_revolution.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_burgher_support_seen } }
+    immediate = { set_variable = oe_gr_burgher_support_seen }
+    option = {
+        name = oe_great_revolution.14.a
+        ai_will_select = { value = 100 }
+        oe_gr_remove_instability_one = yes
+        add_republican_tradition = 20
+        add_stability = 7
+        remove_law = law:burghers_rights_laws
+        hidden_effect = { set_variable = oe_gr_burghers_settlement }
+        unlock_law_effect = { type = oe_gr_burghers_power_law }
+        unlock_policy_effect = { type = oe_gr_republican_bulwark_policy }
+        add_policy = policy:oe_gr_republican_bulwark_policy
+    }
+}
+
+oe_great_revolution.15 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.15.t
+    desc = oe_great_revolution.15.d
+    image = "gfx/interface/illustrations/events/oe_gr_republican_assembly.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_bureaucrat_hesitation_seen } }
+    immediate = { set_variable = oe_gr_bureaucrat_hesitation_seen }
+    option = {
+        name = oe_great_revolution.15.a
+        ai_will_select = { value = 100 }
+        oe_gr_add_instability_two = yes
+        add_political_influence = -50
+        oe_gr_lose_authority_twenty = yes
+        oe_gr_add_radicalism_five = yes
+        remove_law = law:bureaucracy_law
+        remove_law = law:cabinet_laws
+        hidden_effect = { set_variable = oe_gr_administration_crisis }
+        add_country_modifier = { modifier = oe_gr_state_machinery_failure years = -1 mode = replace }
+    }
+}
+
+oe_great_revolution.16 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.16.t
+    desc = oe_great_revolution.16.d
+    image = "gfx/interface/illustrations/events/oe_gr_street_revolt.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_provincial_defiance_seen } }
+    immediate = { set_variable = oe_gr_provincial_defiance_seen }
+    option = {
+        name = oe_great_revolution.16.a
+        ai_will_select = { value = 100 }
+        oe_gr_add_instability_two = yes
+        oe_gr_lose_authority_twenty = yes
+        oe_gr_add_radicalism_five = yes
+        add_country_modifier = { modifier = oe_gr_provincial_defiance years = -1 mode = replace }
+    }
+}
+
+oe_great_revolution.20 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.20.t
+    desc = oe_great_revolution.20.d
+    image = "gfx/interface/illustrations/events/oe_gr_republican_assembly.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_preparation_seen }  }
+    immediate = { set_variable = oe_gr_preparation_seen }
+    option = {
+        name = oe_great_revolution.20.a
+        ai_will_select = { value = 100 }
+        add_estate_satisfaction = { type = estate_type:burghers_estate value = 0.25 }
+        add_estate_satisfaction = { type = estate_type:peasants_estate value = 0.25 }
+        add_political_influence = 20
+        oe_gr_recruit_three_founders = yes
+        add_country_modifier = { modifier = oe_gr_newborn_republic years = 50 mode = replace }
+    }
+}
+
+oe_great_revolution.21 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.21.t
+    desc = oe_great_revolution.21.d
+    image = "gfx/interface/illustrations/events/oe_gr_republican_assembly.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_assembly_seen }  }
+    immediate = { set_variable = oe_gr_assembly_seen }
+    option = {
+        name = oe_great_revolution.21.a
+        ai_will_select = { value = 100 }
+        remove_law = law:distribution_of_power_law
+        hidden_effect = { set_variable = oe_gr_civic_assembly_established }
+        unlock_law_effect = { type = oe_gr_republic_power_structure_law }
+        unlock_policy_effect = { type = oe_gr_civic_assembly_policy }
+        add_policy = policy:oe_gr_civic_assembly_policy
+        add_country_modifier = { modifier = oe_gr_chaotic_civic_assembly years = 25 mode = replace }
+        set_parliament_type = parliament_type:oe_roman_republic
+        custom_tooltip = oe_gr_imperial_council_disabled_tt
+    }
+}
+
+oe_great_revolution.22 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.22.t
+    desc = oe_great_revolution.22.d
+    image = "gfx/interface/illustrations/events/oe_gr_republican_assembly.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_naming_seen } NOT = { has_variable = oe_gr_republic_name_chosen } }
+    immediate = { set_variable = oe_gr_naming_seen }
+    option = {
+        name = oe_gr_roman_republic_name
+        ai_will_select = { value = 60 }
+        oe_gr_choose_republic_name = { name = oe_gr_roman_republic_name }
+    }
+    option = {
+        name = oe_gr_roman_federation_name
+        ai_will_select = { value = 15 }
+        oe_gr_choose_republic_name = { name = oe_gr_roman_federation_name }
+    }
+    option = {
+        name = oe_gr_senate_people_name
+        ai_will_select = { value = 15 }
+        oe_gr_choose_republic_name = { name = oe_gr_senate_people_name }
+    }
+    option = {
+        name = oe_gr_spqr_name
+        ai_will_select = { value = 10 }
+        oe_gr_choose_republic_name = { name = oe_gr_spqr_name }
+    }
+}
+
+oe_great_revolution.23 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_great_revolution.23.t
+    desc = oe_great_revolution.23.d
+    image = "gfx/interface/illustrations/events/oe_gr_republican_assembly.dds"
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_foundation_seen } has_variable = oe_gr_republic_name_chosen NOT = { has_variable = oe_gr_republic_founded } }
+    immediate = { set_variable = oe_gr_foundation_seen }
+    option = {
+        name = oe_great_revolution.23.a
+        ai_will_select = { value = 100 }
+        add_political_influence = 50
+        add_all_estate_satisfaction = { value = 0.1 }
+        add_stability = 7
+        add_republican_tradition = 50
+        custom_tooltip = oe_gr_foundation_complete_tt
+        hidden_effect = { set_variable = oe_gr_republic_founded }
+    }
+}

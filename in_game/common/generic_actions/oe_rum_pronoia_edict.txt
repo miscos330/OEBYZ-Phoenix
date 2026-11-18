@@ -1,0 +1,30 @@
+﻿oe_pillars_enact_rum_pronoia = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_rum_pronoia_visible = yes } }
+    allow = { scope:actor = { oe_rum_pronoia_allowed = yes } }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:actor = { oe_rum_pronoia_allowed = yes }
+            }
+            scope:recipient = { change_variable = { name = oe_pillars_authority add = -10 } }
+            scope:actor = {
+                set_variable = oe_rum_pronoia_enacted
+                custom_tooltip = { text = OE_RUM_PRONOIA_UPGRADE_TT oe_hetaireia_pronoia_upgrade = yes }
+            }
+        }
+    }
+}

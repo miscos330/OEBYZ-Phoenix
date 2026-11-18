@@ -1,0 +1,102 @@
+﻿# PAUSED 2026-09-26: Noble politics paused by user; retained for possible restoration.
+# # House scope. All influence writers share the same bounds.
+# oe_np_change_influence = {
+#     oe_np_initialize_house = yes
+#     change_variable = { name = oe_np_influence add = $amount$ }
+#     clamp_variable = { name = oe_np_influence min = 0 max = 1000 }
+# }
+# # BYZ scope. Only the monthly pulse calls this; startup, ranking refresh and actions never tick it.
+# oe_np_tick_influence = {
+#     every_subject_or_below = {
+#         limit = { is_subject_type = oe_noble }
+#         oe_np_initialize_house = yes
+#         oe_np_calculate_house = yes
+#         oe_np_change_influence = { amount = oe_np_monthly_influence_change }
+#     }
+#     oe_np_refresh = yes
+# }
+# # Character scope. Dynasty membership counts even when the character resides abroad.
+# # Battle eligibility is restricted to BYZ commands by the calling on_action.
+# oe_np_family_influence = {
+#     if = {
+#         limit = { has_dynasty = yes country_exists = c:BYZ }
+#         save_scope_as = oe_np_event_character
+#         c:BYZ = {
+#             every_subject_or_below = {
+#                 limit = { is_subject_type = oe_noble }
+#                 oe_np_initialize_house = yes
+#                 if = {
+#                     limit = {
+#                         has_variable = oe_np_dynasty
+#                         var:oe_np_dynasty = scope:oe_np_event_character.dynasty
+#                     }
+#                     oe_np_change_influence = { amount = $amount$ }
+#                 }
+#             }
+#         }
+#     }
+# }
+# # House scope, called only after the complete interaction has been revalidated.
+# # Reusable contract: every authority point spent in a house interaction gives that house two influence.
+# oe_npi_spend_authority = {
+#     if = {
+#         limit = {
+#             oe_np_is_house = yes
+#             international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= $amount$ }
+#         }
+#         save_scope_value_as = { name = oe_npi_authority_price value = $amount$ }
+#         international_organization:oe_byz_empire_pillars = {
+#             change_variable = { name = oe_pillars_authority subtract = scope:oe_npi_authority_price }
+#         }
+#         oe_np_change_influence = { amount = oe_npi_authority_influence_gain }
+#     }
+# }
+# # BYZ scope. The new courtier is a recommended client, not a newly invented member of the patron dynasty.
+# oe_npi_receive_recommended_client = {
+#     random_list = {
+#         1 = {
+#             create_character = {
+#                 culture = culture:greek_culture
+#                 religion = religion:orthodox
+#                 estate = estate_type:nobles_estate
+#                 age = { 25 45 }
+#                 adm = { 66 90 } dip = { 25 65 } mil = { 25 65 }
+#                 save_scope_as = oe_npi_recommended
+#             }
+#         }
+#         1 = {
+#             create_character = {
+#                 culture = culture:greek_culture
+#                 religion = religion:orthodox
+#                 estate = estate_type:nobles_estate
+#                 age = { 25 45 }
+#                 adm = { 25 65 } dip = { 66 90 } mil = { 25 65 }
+#                 save_scope_as = oe_npi_recommended
+#             }
+#         }
+#         1 = {
+#             create_character = {
+#                 culture = culture:greek_culture
+#                 religion = religion:orthodox
+#                 estate = estate_type:nobles_estate
+#                 age = { 25 45 }
+#                 adm = { 25 65 } dip = { 25 65 } mil = { 66 90 }
+#                 save_scope_as = oe_npi_recommended
+#             }
+#         }
+#     }
+#     # Traits can affect the final ability. Raise only the shortfall if all three finish at 65 or less.
+#     scope:oe_npi_recommended = {
+#         if = {
+#             limit = { NOT = { OR = { adm > 65 dip > 65 mil > 65 } } }
+#             add_adm = { value = 66 subtract = adm }
+#         }
+#     }
+# }
+
+# Compatibility no-ops: cannot award influence, charge resources or create characters.
+oe_np_change_influence = {}
+oe_np_tick_influence = {}
+oe_np_family_influence = {}
+oe_npi_spend_authority = {}
+oe_npi_receive_recommended_client = {}

@@ -1,0 +1,323 @@
+﻿types OeBellsOfRevolution {
+    type oe_bells_history_row = widget {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        
+    hbox = {
+        layoutpolicy_horizontal = expanding
+        size = { 100% 100% }
+        minimumsize = { -1 58 }
+        using = bg_cabinet_card_frame
+        margin = { 5 4 }
+        spacing = 8
+        vbox = {
+            size = { 76 -1 }
+            text_single = { align = left raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariableFromVariableMap('oe_bells_log_year', MakeScopeValue(Scope.GetValue)).GetValue|0]-[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariableFromVariableMap('oe_bells_log_month', MakeScopeValue(Scope.GetValue)).GetValue|0]" fontsize = 13 }
+            text_single = { align = left raw_text = "№ [Scope.GetValue|0]" fontsize = 11 default_format = "#subtle_name" }
+        }
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            text_single = { layoutpolicy_horizontal = expanding autoresize = yes text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariableFromVariableMap('oe_bells_log_actor', MakeScopeValue(Scope.GetValue)).GetCountry.GetName]" fontsize = 14 }
+            text_single = { layoutpolicy_horizontal = expanding autoresize = yes text = "[Localize(SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariableFromVariableMap('oe_bells_log_reason', MakeScopeValue(Scope.GetValue)).GetFlagName)]" fontsize = 13 }
+        }
+        vbox = {
+            size = { 108 -1 }
+            text_single = { layoutpolicy_horizontal = expanding align = right text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariableFromVariableMap('oe_bells_log_delta', MakeScopeValue(Scope.GetValue)).GetValue|+=2]" }
+            text_single = { layoutpolicy_horizontal = expanding align = right text = "oe_bells_log_result" fontsize = 12 }
+        }
+    }
+
+    }
+}
+
+# Override the extension points declared by the current native situation_panel.
+# panel_content is already overridden by the base type and is not this panel's insertion point.
+situation_panel = {
+    blockoverride "situation_top_subheader_content" {
+        hbox = {
+            layoutpolicy_horizontal = expanding
+            size = { -1 45 }
+            margin = { 8 4 }
+            spacing = 8
+            background = { texture = "gfx/interface/progressbars/tension_header_bg.dds" }
+            icon = { size = { 28 28 } texture = "gfx/interface/icons/situations/oe_bells_of_revolution.dds" }
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                spacing = 4
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    text_single = { text = "oe_bells_clamor" fontsize = 15 }
+                    expand = {}
+                    text_single = { raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_bells_clamor').GetValue|2] / 100" fontsize = 14 }
+                }
+                progressbar = {
+                    layoutpolicy_horizontal = expanding
+                    size = { -1 10 }
+                    min = 0
+                    max = 100
+                    value = "[FixedPointToFloat(SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_bells_clamor').GetValue)]"
+                    progresstexture = "gfx/interface/progressbars/progress_bar_red_alt.dds"
+                    noprogresstexture = "gfx/interface/icons/unit_view/moral_bar_transparent.dds"
+                    texture_density = 2
+                    spriteType = Corneredstretched
+                    spriteborder = { 12 0 }
+                }
+            }
+            button_regular = {
+                size = { 85 28 }
+                text = "oe_bells_history_button" tooltip = "oe_bells_history_button"
+                onclick = "[SituationView.Vars.Toggle('oe_bells_history_open')]"
+            }
+        }
+    }
+    blockoverride "situation_subheader_content" {}
+    blockoverride "situation_panel_main_content_top" {}
+    blockoverride "situation_panel_main_content" {
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            spacing = 10
+            text_multi = { layoutpolicy_horizontal = expanding autoresize = yes text = "oe_bells_overview" }
+            text_multi = { layoutpolicy_horizontal = expanding autoresize = yes text = "oe_bells_monthly_breakdown" fontsize = 14 }
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                spacing = 8
+                visible = "[SituationView.Vars.Exists('oe_bells_history_open')]"
+                using = bg_cabinet_card_frame
+                margin = { 8 8 }
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    spacing = 6
+                    button_regular = {
+                        size = { 96 28 } text = "oe_bells_newest_first" tooltip = "oe_bells_newest_first"
+                        down = "[SituationView.Vars.NotExistOrHasValue('oe_bells_sort', 'newest')]"
+                        onclick = "[SituationView.Vars.Set('oe_bells_sort', 'newest')]"
+                    }
+                    button_regular = {
+                        size = { 96 28 } text = "oe_bells_oldest_first" tooltip = "oe_bells_oldest_first"
+                        down = "[SituationView.Vars.HasValue('oe_bells_sort', 'oldest')]"
+                        onclick = "[SituationView.Vars.Set('oe_bells_sort', 'oldest')]"
+                    }
+                    expand = {}
+                    button_regular = {
+                        size = { 72 28 } text = "oe_bells_prev_page" tooltip = "oe_bells_prev_page"
+                        enabled = "[GetScriptedGui('oe_bells_history_prev').IsValid(GuiScope.SetRoot(Player.MakeScope).End)]"
+                        onclick = "[GetScriptedGui('oe_bells_history_prev').Execute(GuiScope.SetRoot(Player.MakeScope).End)]"
+                    }
+                    button_regular = {
+                        size = { 72 28 } text = "oe_bells_next_page" tooltip = "oe_bells_next_page"
+                        enabled = "[GetScriptedGui('oe_bells_history_next').IsValid(GuiScope.SetRoot(Player.MakeScope).End)]"
+                        onclick = "[GetScriptedGui('oe_bells_history_next').Execute(GuiScope.SetRoot(Player.MakeScope).End)]"
+                    }
+                }
+                text_single = { text = "oe_bells_history_count" fontsize = 12 }
+                text_multi = {
+                    layoutpolicy_horizontal = expanding autoresize = yes text = "oe_bells_no_history"
+                    visible = "[Not(DataModelHasItems(SituationView.GetActiveSituation.GetSituation.MakeScope.GetList('oe_bells_history')))]"
+                }
+                scrollarea = {
+                    layoutpolicy_horizontal = expanding
+                    size = { -1 250 }
+                    visible = "[DataModelHasItems(SituationView.GetActiveSituation.GetSituation.MakeScope.GetList('oe_bells_history'))]"
+                    scrollbarpolicy_horizontal = always_off
+                    scrollbar_vertical = { using = Scrollbar_Vertical }
+                    scrollwidget = {
+                        vbox = {
+                            layoutpolicy_horizontal = expanding
+                            vbox = {
+                                layoutpolicy_horizontal = expanding
+                                visible = "[SituationView.Vars.HasValue('oe_bells_sort', 'oldest')]"
+                                datamodel = "[DataModelFirst(DataModelSkipFirst(SituationView.GetActiveSituation.GetSituation.MakeScope.GetList('oe_bells_history'), FixedPointToInt(Player.MakeScope.GetVariable('oe_bells_history_offset').GetValueWithDefault('(CFixedPoint)0'))), '(int32)100')]"
+                                item = { oe_bells_history_row = {} }
+                            }
+                            vbox = {
+                                layoutpolicy_horizontal = expanding
+                                bottomtotop = yes
+                                visible = "[SituationView.Vars.NotExistOrHasValue('oe_bells_sort', 'newest')]"
+                                datamodel = "[DataModelFirst(DataModelSkipFirst(SituationView.GetActiveSituation.GetSituation.MakeScope.GetList('oe_bells_history'), Max_int32(Subtract_int32(Subtract_int32(GetDataModelSize(SituationView.GetActiveSituation.GetSituation.MakeScope.GetList('oe_bells_history')), FixedPointToInt(Player.MakeScope.GetVariable('oe_bells_history_offset').GetValueWithDefault('(CFixedPoint)0'))), '(int32)100'), '(int32)0')), Min_int32('(int32)100', Max_int32(Subtract_int32(GetDataModelSize(SituationView.GetActiveSituation.GetSituation.MakeScope.GetList('oe_bells_history')), FixedPointToInt(Player.MakeScope.GetVariable('oe_bells_history_offset').GetValueWithDefault('(CFixedPoint)0'))), '(int32)0')))]"
+                                item = { oe_bells_history_row = {} }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    blockoverride "situation_panel_main_actions" {
+        vbox = { layoutpolicy_horizontal = expanding using = situations_actions }
+        card_common = {
+            layoutpolicy_horizontal = expanding
+            visible = "[GetScriptedGui('oe_bells_revolutionary_panel').IsShown(GuiScope.SetRoot(SituationView.GetPlayer.MakeScope).End)]"
+            blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+            blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/rebels/fist.dds" }
+            blockoverride "common_header_text_full" { text_single = { text = "oe_bells_revolutionary_actions_title" fontsize = 20 } }
+            blockoverride "common_bottom_content" {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 12 12 }
+                    spacing = 6
+                    targetted_button_regular = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 32 }
+                        datacontext = "[GetGenericAction('oe_bells_establish_press')]"
+                        text = "[GenericAction.GetNameWithNoTooltip]"
+                        visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                        enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                        tooltipwidget = { using = generic_action_tooltip }
+                        scripted_action_tooltip = {
+                            click_type = left
+                            click_mode = single
+                            action_name = "oe_bells_establish_press"
+                            actor = "[SituationView.GetPlayer]"
+                            parameter = { parameter_name = "recipient" parameter_value = "[SituationView.GetActiveSituation.GetSituation]" }
+                        }
+                    }
+                    targetted_button_regular = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 32 }
+                        datacontext = "[GetGenericAction('oe_bells_refuse_taxes')]"
+                        text = "[GenericAction.GetNameWithNoTooltip]"
+                        visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                        enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                        tooltipwidget = { using = generic_action_tooltip }
+                        scripted_action_tooltip = {
+                            click_type = left
+                            click_mode = single
+                            action_name = "oe_bells_refuse_taxes"
+                            actor = "[SituationView.GetPlayer]"
+                            parameter = { parameter_name = "recipient" parameter_value = "[SituationView.GetActiveSituation.GetSituation]" }
+                        }
+                    }
+                    targetted_button_regular = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 32 }
+                        datacontext = "[GetGenericAction('oe_bells_army_propaganda')]"
+                        text = "[GenericAction.GetNameWithNoTooltip]"
+                        visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                        enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                        tooltipwidget = { using = generic_action_tooltip }
+                        scripted_action_tooltip = {
+                            click_type = left
+                            click_mode = single
+                            action_name = "oe_bells_army_propaganda"
+                            actor = "[SituationView.GetPlayer]"
+                            parameter = { parameter_name = "recipient" parameter_value = "[SituationView.GetActiveSituation.GetSituation]" }
+                        }
+                    }
+                    targetted_button_regular = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 32 }
+                        datacontext = "[GetGenericAction('oe_bells_salon_propaganda')]"
+                        text = "[GenericAction.GetNameWithNoTooltip]"
+                        visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                        enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                        tooltipwidget = { using = generic_action_tooltip }
+                        scripted_action_tooltip = {
+                            click_type = left
+                            click_mode = single
+                            action_name = "oe_bells_salon_propaganda"
+                            actor = "[SituationView.GetPlayer]"
+                            parameter = { parameter_name = "recipient" parameter_value = "[SituationView.GetActiveSituation.GetSituation]" }
+                        }
+                    }
+                    targetted_button_regular = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 32 }
+                        datacontext = "[GetGenericAction('oe_bells_court_clergy_sympathizers')]"
+                        text = "[GenericAction.GetNameWithNoTooltip]"
+                        visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                        enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                        tooltipwidget = { using = generic_action_tooltip }
+                        scripted_action_tooltip = {
+                            click_type = left
+                            click_mode = single
+                            action_name = "oe_bells_court_clergy_sympathizers"
+                            actor = "[SituationView.GetPlayer]"
+                            parameter = { parameter_name = "recipient" parameter_value = "[SituationView.GetActiveSituation.GetSituation]" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    # Native illustration, start date and scrolling remain inherited once.
+    blockoverride "situation_panel_main_content_bottom" {
+        situation_side_cards = {
+            blockoverride "left_header_content" {
+                text_single = { layoutpolicy_horizontal = expanding autoresize = yes text = "oe_bells_rebels" fontsize = 15 default_format = "#yellow_titles" }
+                text_single = { raw_text = "[GetDataModelSize(GetGlobalList('oe_bells_rebels'))]" fontsize = 14 }
+            }
+            blockoverride "left_bottom_content" {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    text_multi = {
+                        layoutpolicy_horizontal = expanding autoresize = yes
+                        text = "oe_bells_no_members"
+                        visible = "[Not(DataModelHasItems(GetGlobalList('oe_bells_rebels')))]"
+                    }
+                    scrollarea = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 160 }
+                        visible = "[DataModelHasItems(GetGlobalList('oe_bells_rebels'))]"
+                        scrollbarpolicy_horizontal = always_off
+                        scrollbar_vertical = { using = Scrollbar_Vertical }
+                        scrollwidget = {
+                            vbox = {
+                                layoutpolicy_horizontal = expanding
+                                spacing = 5
+                                datamodel = "[GetGlobalList('oe_bells_rebels')]"
+                                item = {
+                                    hbox = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 29 } spacing = 6
+                                        datacontext = "[Scope.GetCountry]"
+                                        visible = "[Country.IsValid]"
+                                        country_flag_small = { size = { 36 24 } tooltipwidget = { using = CountryTooltip } }
+                                        text_single = { layoutpolicy_horizontal = expanding autoresize = yes text = "[Country.GetName]" fontsize = 13 }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            blockoverride "right_header_content" {
+                text_single = { layoutpolicy_horizontal = expanding autoresize = yes text = "oe_bells_royalists" fontsize = 15 default_format = "#yellow_titles" }
+                text_single = { raw_text = "[GetDataModelSize(GetGlobalList('oe_bells_royalists'))]" fontsize = 14 }
+            }
+            blockoverride "right_bottom_content" {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    text_multi = {
+                        layoutpolicy_horizontal = expanding autoresize = yes
+                        text = "oe_bells_no_members"
+                        visible = "[Not(DataModelHasItems(GetGlobalList('oe_bells_royalists')))]"
+                    }
+                    scrollarea = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 160 }
+                        visible = "[DataModelHasItems(GetGlobalList('oe_bells_royalists'))]"
+                        scrollbarpolicy_horizontal = always_off
+                        scrollbar_vertical = { using = Scrollbar_Vertical }
+                        scrollwidget = {
+                            vbox = {
+                                layoutpolicy_horizontal = expanding
+                                spacing = 5
+                                datamodel = "[GetGlobalList('oe_bells_royalists')]"
+                                item = {
+                                    hbox = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 29 } spacing = 6
+                                        datacontext = "[Scope.GetCountry]"
+                                        visible = "[Country.IsValid]"
+                                        country_flag_small = { size = { 36 24 } tooltipwidget = { using = CountryTooltip } }
+                                        text_single = { layoutpolicy_horizontal = expanding autoresize = yes text = "[Country.GetName]" fontsize = 13 }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

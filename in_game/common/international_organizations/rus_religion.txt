@@ -1,0 +1,155 @@
+﻿# PAUSED 2026-09-23: Roman world / Rus church rework; retained for restoration.
+# rus_religion = {
+# 	has_target = no
+# 	unique = yes
+# 	expel_members_who_are_targets_of_other_members = no
+# 	disband_if_no_leader = no
+# 	has_leader_country = yes
+# 	leader_type = character
+# 	leader_change_trigger_type = none
+# 	leader_change_method = none
+# 	leader = {
+# 		leader_country ?= {
+# 			if = {
+# 				limit = { 
+# 					has_regent = yes
+# 					has_heir = yes
+# 				}
+# 				heir = {
+# 					add_to_list = leaders
+# 				}
+# 			}
+# 			else = {
+# 				ruler ?= {
+# 					add_to_list = leaders
+# 				}
+# 			}
+# 		}
+# 	}
+# 	
+# 	create_visible_trigger = {
+# 		always = no
+# 	}
+# 
+# 	invite_visible_trigger = {
+# 		always = yes
+# 	}
+# 
+# 	can_declare_war = {
+# 		always = yes
+# 	}
+# 	
+# 	variables = {
+# 
+# 	}
+# 
+# 	can_lead_trigger = {
+# 		has_or_had_tag = BYZ
+# 	}
+# 
+# 	can_join_trigger = {
+# 		OR = {
+# 		tag = BYZ
+# 		AND = {
+# 			religion = religion:orthodox
+# 			culture = {
+# 				has_culture_group = culture_group:russian_group
+# 			}
+# 			c:BYZ = {
+# 				has_variable = rus_religion_allow_rus_join
+# 			}
+# 		}
+# 		}
+# 	}
+# 	
+# 	can_leave_trigger = {
+# 		always = no
+# 	}
+# 	
+# 	auto_leave_trigger = {
+# 		NOT = {
+# 			religion = religion:orthodox
+# 		}
+# 	}
+# 
+# 	auto_disband_trigger = {
+# 		always = no
+# 	}
+# 
+# 	on_joined = {
+# 		international_organization:rus_religion = {
+# 			international_organization_add_special_status = {
+# 				type = special_status:rus_religion_normal_members
+# 				country = root
+# 			}			
+# 		}		
+# 	}
+# 
+# 	on_left = {
+# 	}
+# 
+# 
+# 
+# 
+# 	ai_desire_to_join = {
+# 		if = {
+# 			limit = { country_rank_level > 1 }
+# 			subtract = {
+# 				desc = "game_concept_country_rank"
+# 				value = {
+# 					value = country_rank_level
+# 					multiply = 50
+# 				}
+# 			}
+# 		}
+# 		subtract = {
+# 			desc = "game_concept_tax_base"
+# 			value = country_tax_base
+# 			multiply = 1
+# 		}
+# 		add = {
+# 			desc = "game_concept_opinion"
+# 			value = {
+# 				value = "root.opinion(scope:actor)"
+# 				divide = 1     # max ±200 at ±200 opinion
+# 			}
+# 		}
+# 		add = {
+# 			desc = "game_concept_diplomatic_reputation"
+# 			value = {
+# 				value = "scope:actor.modifier:diplomatic_reputation"
+# 				multiply = 5
+# 			}
+# 		}
+# 		add = {
+# 			desc = "oe_game_concept_tolerance"
+# 			value = {
+# 				value = "scope:actor.modifier:tolerance_own"
+# 				multiply = 20
+# 			}
+# 		}
+# 		if = {
+# 			limit = {
+# 				at_war = yes
+# 			}
+# 			subtract = {
+# 				desc = "IS_AT_WAR"
+# 				value = 1000
+# 			}
+# 		}		
+# 	}
+# 
+# 	ai_desire_to_allow_new_member = {
+# 
+# 	}
+# 
+# 	payments_implemented = {
+# 		rus_tithe
+# 	}
+# 
+# 	special_statuses_implemented = {
+# 		rus_religion_king
+# 		rus_religion_mos_members
+# 		rus_religion_normal_members
+# 	}	
+# }

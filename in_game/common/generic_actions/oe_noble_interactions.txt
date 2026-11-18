@@ -1,0 +1,200 @@
+﻿# PAUSED 2026-09-26: Noble politics paused by user; retained for possible restoration.
+# oe_npi_support = {
+#     type = internationalorganization
+#     show_in_gui_list = no
+#     show_message = no
+#     ai_tick = never
+#     automation_tick = never
+#     potential = { scope:actor = { oe_npi_actor = yes } }
+#     allow = {
+#         scope:actor = { oe_npi_support_actor = yes }
+#         scope:target_country = { oe_npi_support_target = yes }
+#     }
+#     select_trigger = {
+#         looking_for_a = international_organization
+#         source = actor
+#         target_flag = recipient
+#         name = "choose_international_organization"
+#         column = { data = name }
+#         visible = { this = international_organization:oe_byz_empire_pillars }
+#     }
+#     select_trigger = {
+#         looking_for_a = country
+#         source = actor
+#         target_flag = target_country
+#         name = "OE_NPI_SELECT_HOUSE"
+#         column = { data = name }
+#         interaction_source_list = {
+#             scope:actor = { every_subject_or_below = { limit = { is_subject_type = oe_noble } add_to_list = source } }
+#         }
+#         visible = { oe_np_is_house = yes }
+#         enabled = { oe_npi_support_target = yes }
+#     }
+#     effect = {
+#         if = {
+#             limit = {
+#                 scope:actor = { oe_npi_support_actor = yes }
+#                 scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+#                 scope:target_country = { oe_npi_support_target = yes }
+#             }
+#             custom_tooltip = {
+#                 text = OE_NPI_SUPPORT_EFFECT
+#                 hidden_effect = {
+#                     # Snapshot once, before either balance changes: transfer exactly the same amount.
+#                     international_organization:oe_byz_empire_pillars = {
+#                         save_scope_value_as = { name = oe_npi_support_payment value = oe_npi_support_price }
+#                         add_gold = { value = scope:oe_npi_support_payment multiply = -1 }
+#                         change_variable = { name = oe_pillars_authority add = 2 }
+#                         clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+#                     }
+#                     scope:target_country = { add_gold = scope:oe_npi_support_payment }
+#                     scope:actor = { set_variable = { name = oe_npi_support_cd months = 12 } }
+#                     scope:actor = { oe_np_refresh = yes }
+#                 }
+#             }
+#         }
+#     }
+# }
+# 
+# oe_npi_honor = {
+#     type = internationalorganization
+#     show_in_gui_list = no
+#     show_message = no
+#     ai_tick = never
+#     automation_tick = never
+#     potential = { scope:actor = { oe_npi_actor = yes } }
+#     allow = {
+#         scope:actor = { oe_npi_authority_actor = yes }
+#         scope:target_country = { oe_npi_honor_target = yes }
+#     }
+#     select_trigger = {
+#         looking_for_a = international_organization
+#         source = actor
+#         target_flag = recipient
+#         name = "choose_international_organization"
+#         column = { data = name }
+#         visible = { this = international_organization:oe_byz_empire_pillars }
+#     }
+#     select_trigger = {
+#         looking_for_a = country
+#         source = actor
+#         target_flag = target_country
+#         name = "OE_NPI_SELECT_HOUSE"
+#         column = { data = name }
+#         interaction_source_list = {
+#             scope:actor = { every_subject_or_below = { limit = { is_subject_type = oe_noble } add_to_list = source } }
+#         }
+#         visible = { oe_np_is_house = yes }
+#         enabled = { oe_npi_honor_target = yes }
+#     }
+#     effect = {
+#         if = {
+#             limit = {
+#                 scope:actor = { oe_npi_authority_actor = yes }
+#                 scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+#                 scope:target_country = { oe_npi_honor_target = yes }
+#             }
+#             custom_tooltip = {
+#                 text = OE_NPI_HONOR_EFFECT
+#                 hidden_effect = {
+#                     scope:target_country = {
+#                         oe_npi_spend_authority = { amount = 1 }
+#                         add_opinion = { modifier = oe_npi_court_honor_opinion target = c:BYZ }
+#                         add_country_modifier = { modifier = oe_npi_court_honor years = 3 mode = replace }
+#                         set_variable = { name = oe_npi_honor_cd months = 36 }
+#                     }
+#                     scope:actor = { oe_np_refresh = yes }
+#                 }
+#             }
+#         }
+#     }
+# }
+# 
+# oe_npi_recommend = {
+#     type = internationalorganization
+#     show_in_gui_list = no
+#     show_message = no
+#     ai_tick = never
+#     automation_tick = never
+#     potential = { scope:actor = { oe_npi_actor = yes } }
+#     allow = {
+#         scope:actor = { oe_npi_authority_actor = yes }
+#         scope:target_country = { oe_npi_recommend_target = yes }
+#     }
+#     select_trigger = {
+#         looking_for_a = international_organization
+#         source = actor
+#         target_flag = recipient
+#         name = "choose_international_organization"
+#         column = { data = name }
+#         visible = { this = international_organization:oe_byz_empire_pillars }
+#     }
+#     select_trigger = {
+#         looking_for_a = country
+#         source = actor
+#         target_flag = target_country
+#         name = "OE_NPI_SELECT_HOUSE"
+#         column = { data = name }
+#         interaction_source_list = {
+#             scope:actor = { every_subject_or_below = { limit = { is_subject_type = oe_noble } add_to_list = source } }
+#         }
+#         visible = { oe_np_is_house = yes }
+#         enabled = { oe_npi_recommend_target = yes }
+#     }
+#     effect = {
+#         if = {
+#             limit = {
+#                 scope:actor = { oe_npi_authority_actor = yes }
+#                 scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+#                 scope:target_country = { oe_npi_recommend_target = yes }
+#             }
+#             custom_tooltip = {
+#                 text = OE_NPI_RECOMMEND_EFFECT
+#                 hidden_effect = {
+#                     scope:target_country = {
+#                         save_scope_as = oe_npi_patron
+#                         oe_npi_spend_authority = { amount = 1 }
+#                         set_variable = { name = oe_npi_recommend_cd months = 36 }
+#                     }
+#                     scope:actor = {
+#                         oe_npi_receive_recommended_client = yes
+#                         trigger_event_non_silently = oe_noble_interactions.1
+#                     }
+#                     scope:actor = { oe_np_refresh = yes }
+#                 }
+#             }
+#         }
+#     }
+# }
+# 
+
+oe_npi_support = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    ai_tick = never
+    automation_tick = never
+    potential = { always = no }
+    allow = { always = no }
+    effect = {}
+}
+oe_npi_honor = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    ai_tick = never
+    automation_tick = never
+    potential = { always = no }
+    allow = { always = no }
+    effect = {}
+}
+oe_npi_recommend = {
+    type = internationalorganization
+    show_in_gui_list = no
+    show_message = no
+    ai_tick = never
+    automation_tick = never
+    potential = { always = no }
+    allow = { always = no }
+    effect = {}
+}

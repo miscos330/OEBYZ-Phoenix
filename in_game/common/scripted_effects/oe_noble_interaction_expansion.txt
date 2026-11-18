@@ -1,0 +1,130 @@
+﻿# Location scope. Remove only this house and its registry entry, leaving other urban houses intact.
+oe_nf_remove_control = {
+    if = { limit = { has_location_modifier = oe_nf_land_$slot$ } remove_location_modifier = oe_nf_land_$slot$ }
+    if = { limit = { has_location_modifier = oe_nf_industry_$slot$ } remove_location_modifier = oe_nf_industry_$slot$ }
+    save_scope_as = oe_nf_released_location
+    international_organization:oe_byz_empire_pillars = {
+        remove_list_variable = { name = oe_nf_locations_$slot$ target = scope:oe_nf_released_location }
+    }
+}
+# IO scope; validate the target again before either purse or authority is charged.
+oe_nf_redeem = {
+    if = {
+        limit = {
+            oe_nf_redeem_ready = { slot = $slot$ }
+            scope:target_location = { oe_nf_controls_slot = { slot = $slot$ } }
+        }
+        add_gold = { value = oe_pillars_purse_monthly_income multiply = -1 }
+        oe_nf_spend_interaction_authority = { slot = $slot$ amount = 1 }
+        scope:target_location = { oe_nf_remove_control = { slot = $slot$ } }
+        c:BYZ = { oe_nf_refresh = yes }
+    }
+}
+oe_nf_relief = {
+    if = {
+        limit = { oe_nf_relief_ready = { slot = $slot$ } }
+        oe_nf_spend_interaction_authority = { slot = $slot$ amount = 2 }
+        change_variable = { name = oe_pillars_public_opinion add = 2 }
+        clamp_variable = { name = oe_pillars_public_opinion min = 0 max = 100 }
+        set_variable = { name = oe_nf_relief_cooldown value = 1 months = 3 }
+    }
+}
+oe_nf_recommend = {
+    if = {
+        limit = { oe_nf_recommend_ready = { slot = $slot$ } }
+        oe_nf_spend_interaction_authority = { slot = $slot$ amount = 1 }
+        set_variable = { name = oe_nf_recommend_cooldown_$slot$ value = 1 months = 3 }
+        var:oe_nf_dynasty_$slot$ = { save_scope_as = oe_nf_patron_family }
+        c:BYZ = {
+            oe_nf_receive_retainer = yes
+            trigger_event_non_silently = oe_noble_clients.1
+        }
+    }
+}
+oe_nf_receive_retainer = {
+    random_list = {
+        1 = {
+            create_character = {
+                culture = culture:greek_culture
+                religion = religion:orthodox
+                estate = estate_type:nobles_estate
+                age = { 25 45 }
+                adm = { 66 90 } dip = { 25 65 } mil = { 25 65 }
+                save_scope_as = oe_nf_recommended
+            }
+        }
+        1 = {
+            create_character = {
+                culture = culture:greek_culture
+                religion = religion:orthodox
+                estate = estate_type:nobles_estate
+                age = { 25 45 }
+                adm = { 25 65 } dip = { 66 90 } mil = { 25 65 }
+                save_scope_as = oe_nf_recommended
+            }
+        }
+        1 = {
+            create_character = {
+                culture = culture:greek_culture
+                religion = religion:orthodox
+                estate = estate_type:nobles_estate
+                age = { 25 45 }
+                adm = { 25 65 } dip = { 25 65 } mil = { 66 90 }
+                save_scope_as = oe_nf_recommended
+            }
+        }
+    }
+    # Traits can affect the final ability. Raise only the shortfall if all three finish at 65 or less.
+    scope:oe_nf_recommended = {
+        if = {
+            limit = { NOT = { OR = { adm > 65 dip > 65 mil > 65 } } }
+            add_adm = { value = 66 subtract = adm }
+        }
+    }
+}
+# IO scope; both selected heads must still represent distinct eligible houses.
+oe_nf_mediate = {
+    if = {
+        limit = {
+            oe_nf_mediation_ready = yes
+            scope:first_head = { oe_nf_mediation_head = yes }
+            scope:second_head = { oe_nf_mediation_head = yes this != scope:first_head }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_1 OR = { var:oe_nf_head_1 = scope:first_head var:oe_nf_head_1 = scope:second_head } }
+            oe_nf_change_influence = { slot = 1 amount = -25 }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_2 OR = { var:oe_nf_head_2 = scope:first_head var:oe_nf_head_2 = scope:second_head } }
+            oe_nf_change_influence = { slot = 2 amount = -25 }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_3 OR = { var:oe_nf_head_3 = scope:first_head var:oe_nf_head_3 = scope:second_head } }
+            oe_nf_change_influence = { slot = 3 amount = -25 }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_4 OR = { var:oe_nf_head_4 = scope:first_head var:oe_nf_head_4 = scope:second_head } }
+            oe_nf_change_influence = { slot = 4 amount = -25 }
+        }
+        change_variable = { name = oe_pillars_authority add = 1 }
+        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        set_variable = { name = oe_nf_mediation_cooldown value = 1 months = 12 }
+    }
+}
+oe_nf_end_monopoly = {
+    if = {
+        limit = { oe_nf_antimonopoly_ready = yes scope:target_province = { oe_nf_antimonopoly_target = yes } }
+        change_variable = { name = oe_pillars_authority subtract = 5 }
+        scope:target_province.province_definition = { save_scope_as = oe_nf_banned_province }
+        add_to_variable_list = { name = oe_nf_protected_provinces target = scope:oe_nf_banned_province }
+        scope:oe_nf_banned_province = {
+            every_location_in_province_definition = {
+                oe_nf_remove_control = { slot = 1 }
+                oe_nf_remove_control = { slot = 2 }
+                oe_nf_remove_control = { slot = 3 }
+                oe_nf_remove_control = { slot = 4 }
+            }
+        }
+        c:BYZ = { oe_nf_refresh = yes }
+    }
+}

@@ -1,0 +1,70 @@
+﻿# Country scope, shared by Egypt and Africa actions.
+oe_heg_campaign_access = {
+    oe_heg_action_visible = yes
+    international_organization:oe_byz_roman_world = {
+        custom_tooltip = { text = OE_HEG_END_CONTEST_REQUIRED has_variable = oe_rw_contest_ended }
+    }
+}
+oe_heg_africa_access = {
+    oe_heg_campaign_access = yes
+    custom_tooltip = {
+        text = OE_HEG_AFRICA_ALEXANDRIA
+        location:alexandria = { owner = { oe_heg_byz_bloc = yes } }
+    }
+}
+oe_heg_egypt_plan_allowed = {
+    oe_heg_campaign_access = yes
+    NOT = { has_variable = oe_heg_egypt_plan_done }
+    gold >= 1000
+    location:alexandria = { has_owner = yes owner = { NOT = { oe_heg_byz_bloc = yes } } }
+}
+oe_heg_africa_plan_allowed = {
+    oe_heg_africa_access = yes
+    NOT = { has_variable = oe_heg_africa_plan_done }
+    gold >= 1000
+}
+# Country and location selectors. A foothold must be rural, coastal and in the target region.
+oe_heg_africa_target = {
+    country_type = location
+    capital = { region = region:maghreb_region }
+    NOT = { oe_heg_byz_bloc = yes }
+    any_owned_location = { oe_heg_africa_foothold = yes }
+}
+oe_heg_africa_foothold = {
+    region = region:maghreb_region
+    location_rank = location_rank:rural_settlement
+    is_coastal = yes
+    is_ownable = yes
+    has_owner = yes
+    owner = { NOT = { oe_heg_byz_bloc = yes } }
+}
+oe_heg_africa_expedition_allowed = {
+    oe_heg_africa_access = yes
+    custom_tooltip = { text = OE_HEG_AFRICA_PLAN_REQUIRED has_variable = oe_heg_africa_plan_done }
+    NOT = { has_variable = oe_heg_africa_expedition_done }
+    any_country = { oe_heg_africa_target = yes }
+}
+oe_heg_active_expedition = {
+    country_type = location
+    is_subject_of = c:BYZ
+    has_reform = government_reform:oe_heg_expedition_reform
+}
+oe_heg_expedition_order_allowed = {
+    oe_heg_africa_access = yes
+    any_subject = { oe_heg_active_expedition = yes }
+}
+# Native dependency duration reads existing saves; exactly ten years is insufficient.
+oe_pillars_alliance_integration_target = {
+    is_subject_of = c:BYZ
+    is_subject_type = oe_rome_sub
+    dependency_length_days = { target = c:BYZ value > 3650 }
+    oe_tm_integration_ok = yes # NEW 2026-11-18 territory rework (gen_territory_middle.py)
+}
+oe_pillars_alliance_integration_allowed = {
+    tag = BYZ
+    is_member_of_international_organization = international_organization:oe_byz_empire_pillars
+    international_organization:oe_byz_empire_pillars = {
+        custom_tooltip = { text = OE_HEG_AUTHORITY_5 var:oe_pillars_authority >= 5 }
+    }
+    any_subject = { oe_pillars_alliance_integration_target = yes }
+}

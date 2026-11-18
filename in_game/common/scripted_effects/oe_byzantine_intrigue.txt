@@ -1,0 +1,184 @@
+﻿# IO scope; ordinary actions do not grant the interaction authority-spending influence rebate.
+oe_bi_reduce_rivals = {
+    if = { limit = { has_variable = oe_nf_dynasty_1 NOT = { oe_nf_is_political_ally = { slot = 1 } } } oe_nf_change_influence = { slot = 1 amount = $amount$ } }
+    if = { limit = { has_variable = oe_nf_dynasty_2 NOT = { oe_nf_is_political_ally = { slot = 2 } } } oe_nf_change_influence = { slot = 2 amount = $amount$ } }
+    if = { limit = { has_variable = oe_nf_dynasty_3 NOT = { oe_nf_is_political_ally = { slot = 3 } } } oe_nf_change_influence = { slot = 3 amount = $amount$ } }
+    if = { limit = { has_variable = oe_nf_dynasty_4 NOT = { oe_nf_is_political_ally = { slot = 4 } } } oe_nf_change_influence = { slot = 4 amount = $amount$ } }
+}
+# Country scope.
+oe_bi_purge_capital = {
+    if = {
+        limit = { oe_bi_purge_ready = yes }
+        set_variable = oe_bi_capital_purged
+        add_stability = -7
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority subtract = 2 }
+            oe_bi_reduce_rivals = { amount = -50 }
+        }
+    }
+}
+oe_bi_bribe_house = {
+    if = {
+        limit = { oe_bi_bribe_ready = yes scope:target_head = { oe_bi_rival_head = yes } }
+        set_variable = { name = oe_bi_bribe_cooldown value = 1 months = 3 }
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority subtract = 2 }
+            add_gold = { value = oe_bi_bribe_price multiply = -1 }
+            if = { limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:target_head } oe_nf_change_influence = { slot = 1 amount = -25 } }
+            if = { limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:target_head } oe_nf_change_influence = { slot = 2 amount = -25 } }
+            if = { limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:target_head } oe_nf_change_influence = { slot = 3 amount = -25 } }
+            if = { limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:target_head } oe_nf_change_influence = { slot = 4 amount = -25 } }
+        }
+    }
+}
+# Country scope. Snapshot the strongest eligible head before any deaths trigger succession callbacks.
+oe_bi_choose_usurper = {
+    clear_saved_scope = oe_bi_usurper
+    save_scope_value_as = { name = oe_bi_highest_influence value = -1 }
+    international_organization:oe_byz_empire_pillars = {
+        if = {
+            limit = { has_variable = oe_nf_dynasty_1 NOT = { oe_nf_is_political_ally = { slot = 1 } } var:oe_nf_influence_1 > scope:oe_bi_highest_influence exists = var:oe_nf_head_1 var:oe_nf_head_1 = { oe_bi_coup_candidate = yes } }
+            save_scope_value_as = { name = oe_bi_highest_influence value = var:oe_nf_influence_1 }
+            var:oe_nf_head_1 = { save_scope_as = oe_bi_usurper }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_2 NOT = { oe_nf_is_political_ally = { slot = 2 } } var:oe_nf_influence_2 > scope:oe_bi_highest_influence exists = var:oe_nf_head_2 var:oe_nf_head_2 = { oe_bi_coup_candidate = yes } }
+            save_scope_value_as = { name = oe_bi_highest_influence value = var:oe_nf_influence_2 }
+            var:oe_nf_head_2 = { save_scope_as = oe_bi_usurper }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_3 NOT = { oe_nf_is_political_ally = { slot = 3 } } var:oe_nf_influence_3 > scope:oe_bi_highest_influence exists = var:oe_nf_head_3 var:oe_nf_head_3 = { oe_bi_coup_candidate = yes } }
+            save_scope_value_as = { name = oe_bi_highest_influence value = var:oe_nf_influence_3 }
+            var:oe_nf_head_3 = { save_scope_as = oe_bi_usurper }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_4 NOT = { oe_nf_is_political_ally = { slot = 4 } } var:oe_nf_influence_4 > scope:oe_bi_highest_influence exists = var:oe_nf_head_4 var:oe_nf_head_4 = { oe_bi_coup_candidate = yes } }
+            save_scope_value_as = { name = oe_bi_highest_influence value = var:oe_nf_influence_4 }
+            var:oe_nf_head_4 = { save_scope_as = oe_bi_usurper }
+        }
+    }
+}
+oe_bi_coup = {
+    if = {
+        limit = { oe_bi_coup_ready = yes }
+        oe_bi_choose_usurper = yes
+        if = {
+            limit = { exists = scope:oe_bi_usurper }
+            clear_saved_scope = oe_bi_old_ruler
+            clear_saved_scope = oe_bi_old_heir
+            clear_saved_scope = oe_bi_old_regent
+            ruler ?= { save_scope_as = oe_bi_old_ruler }
+            heir ?= { save_scope_as = oe_bi_old_heir }
+            regent ?= { save_scope_as = oe_bi_old_regent }
+            set_variable = oe_bi_coup_in_progress
+            set_variable = oe_nf_kantakouzenos_ambition_seen # NEW 2026-11-18 theme stages 4-5: a coup skips the Kantakouzenos regency event
+            # Kill the original heir first, and the original sovereign last; never follow a changing ruler reference.
+            scope:oe_bi_old_heir ?= { kill_character_silently = this }
+            scope:oe_bi_old_regent ?= {
+                if = {
+                    limit = { is_alive = yes trigger_if = { limit = { exists = scope:oe_bi_old_heir } this != scope:oe_bi_old_heir } }
+                    kill_character_silently = this
+                }
+            }
+            scope:oe_bi_old_ruler ?= {
+                if = {
+                    limit = {
+                        is_alive = yes
+                        trigger_if = { limit = { exists = scope:oe_bi_old_heir } this != scope:oe_bi_old_heir }
+                        trigger_if = { limit = { exists = scope:oe_bi_old_regent } this != scope:oe_bi_old_regent }
+                    }
+                    kill_character_silently = this
+                }
+            }
+            scope:oe_bi_usurper = { move_country = c:BYZ }
+            set_new_ruler = scope:oe_bi_usurper
+            remove_variable = oe_bi_coup_in_progress
+            oe_nf_refresh = yes
+            international_organization:oe_byz_empire_pillars = {
+                if = { limit = { has_variable = oe_nf_dynasty_1 } oe_nf_change_influence = { slot = 1 amount = -300 } }
+                if = { limit = { has_variable = oe_nf_dynasty_2 } oe_nf_change_influence = { slot = 2 amount = -300 } }
+                if = { limit = { has_variable = oe_nf_dynasty_3 } oe_nf_change_influence = { slot = 3 amount = -300 } }
+                if = { limit = { has_variable = oe_nf_dynasty_4 } oe_nf_change_influence = { slot = 4 amount = -300 } }
+            }
+            oe_court_clear_invalid = yes
+            oe_court_auto_fill = yes
+            oe_nf_refresh = yes
+        }
+    }
+}
+# Country scope. Capture defectors before land changes can relocate their residence.
+oe_bi_civil_war = {
+    if = {
+        limit = { oe_bi_civil_war_event_ready = yes }
+        clear_saved_scope = oe_bi_rebel_country
+        international_organization:oe_byz_empire_pillars = {
+            clear_saved_scope = oe_bi_defector_family_1
+            if = {
+                limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_influence_1 > 300 }
+                var:oe_nf_dynasty_1 = {
+                    save_scope_as = oe_bi_defector_family_1
+                    every_character_in_dynasty = { limit = { oe_nf_living = yes owner = c:BYZ } add_to_list = oe_bi_defectors }
+                }
+            }
+            clear_saved_scope = oe_bi_defector_family_2
+            if = {
+                limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_influence_2 > 300 }
+                var:oe_nf_dynasty_2 = {
+                    save_scope_as = oe_bi_defector_family_2
+                    every_character_in_dynasty = { limit = { oe_nf_living = yes owner = c:BYZ } add_to_list = oe_bi_defectors }
+                }
+            }
+            clear_saved_scope = oe_bi_defector_family_3
+            if = {
+                limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_influence_3 > 300 }
+                var:oe_nf_dynasty_3 = {
+                    save_scope_as = oe_bi_defector_family_3
+                    every_character_in_dynasty = { limit = { oe_nf_living = yes owner = c:BYZ } add_to_list = oe_bi_defectors }
+                }
+            }
+            clear_saved_scope = oe_bi_defector_family_4
+            if = {
+                limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_influence_4 > 300 }
+                var:oe_nf_dynasty_4 = {
+                    save_scope_as = oe_bi_defector_family_4
+                    every_character_in_dynasty = { limit = { oe_nf_living = yes owner = c:BYZ } add_to_list = oe_bi_defectors }
+                }
+            }
+        }
+        save_scope_value_as = { name = oe_bi_rebel_quota value = oe_bi_rebel_location_target }
+        # Choose populated non-capital locations first, ensuring the native rebellion has a base.
+        ordered_owned_location = {
+            limit = { is_capital = no }
+            order_by = population
+            max = scope:oe_bi_rebel_quota
+            add_to_list = oe_bi_rebel_locations
+        }
+        create_rebel = { category = estate estate = nobles_estate name = OE_BI_REBEL_NAME save_scope_as = oe_bi_rebels }
+        every_in_list = {
+            list = oe_bi_rebel_locations
+            every_pop = { limit = { owner = c:BYZ } change_pop_allegiance = scope:oe_bi_rebels }
+        }
+        scope:oe_bi_rebels = { start_civil_war = { save_scope_as = oe_bi_rebel_country } }
+        if = {
+            limit = { exists = scope:oe_bi_rebel_country }
+            # Engine secession follows rebel support; make the promised starting territory exact for the selected set.
+            every_in_list = {
+                list = oe_bi_rebel_locations
+                if = { limit = { owner = c:BYZ } change_location_owner = scope:oe_bi_rebel_country }
+            }
+            international_organization:oe_byz_empire_pillars = {
+                if = { limit = { exists = scope:oe_bi_defector_family_1 has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = scope:oe_bi_defector_family_1 } oe_nf_unregister_house = { slot = 1 } }
+                if = { limit = { exists = scope:oe_bi_defector_family_2 has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = scope:oe_bi_defector_family_2 } oe_nf_unregister_house = { slot = 2 } }
+                if = { limit = { exists = scope:oe_bi_defector_family_3 has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = scope:oe_bi_defector_family_3 } oe_nf_unregister_house = { slot = 3 } }
+                if = { limit = { exists = scope:oe_bi_defector_family_4 has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = scope:oe_bi_defector_family_4 } oe_nf_unregister_house = { slot = 4 } }
+            }
+            every_in_list = {
+                list = oe_bi_defectors
+                if = { limit = { is_alive = yes } move_country = scope:oe_bi_rebel_country }
+            }
+            oe_court_clear_invalid = yes
+            oe_court_auto_fill = yes
+            oe_nf_refresh = yes
+        }
+    }
+}

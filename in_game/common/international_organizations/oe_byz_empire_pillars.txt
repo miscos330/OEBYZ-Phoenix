@@ -1,0 +1,152 @@
+﻿oe_byz_empire_pillars = {
+    has_target = no
+    unique = yes
+    has_leader_country = yes
+    leader_type = character
+    leader_change_trigger_type = none
+    leader_change_method = none
+    disband_if_no_leader = no
+    should_show_ruler_history = yes
+    expel_members_who_are_targets_of_other_members = no
+    expel_members_who_target_the_leader = no
+    expel_members_who_are_attackers_at_war_with_other_members = no
+    expel_members_who_are_defenders_at_war_with_other_members = no
+    show_leave_message = no
+    subject_limited = no
+    background_texture = "gfx/interface/illustrations/international_organization_types/oe_byz_empire_pillars.dds"
+    # Location scope: highlight existing bandit strongholds in Byzantine-owned land.
+    map_color_override = {
+        if = { limit = { oe_nf_selected_territory = yes } value = rgb { 245 195 65 } }
+        else_if = {
+            limit = { has_owner = yes owner = c:BYZ has_building = building_type:oe_byz_bad_thief_greek }
+            value = rgb { 40 200 70 }
+        }
+    }
+    # Purple stripes mark family holdings; bandit strongholds remain green otherwise.
+    secondary_map_color_override = {
+        if = { limit = { oe_nf_controlled = yes } value = rgb { 155 65 195 } }
+        else_if = {
+            limit = { has_owner = yes owner = c:BYZ has_building = building_type:oe_byz_bad_thief_greek }
+            value = rgb { 40 200 70 }
+        }
+    }
+    tooltip = {
+        if = {
+            limit = {
+                has_owner = yes
+                owner = c:BYZ
+                has_building = building_type:oe_byz_bad_thief_greek
+            }
+            custom_tooltip = { text = oe_byz_bad_thief_greek }
+        }
+            if = { limit = { oe_nf_controls_slot = { slot = 1 } } custom_tooltip = { text = OE_NF_MAP_HOUSE_1 } }
+
+        if = { limit = { oe_nf_controls_slot = { slot = 2 } } custom_tooltip = { text = OE_NF_MAP_HOUSE_2 } }
+
+        if = { limit = { oe_nf_controls_slot = { slot = 3 } } custom_tooltip = { text = OE_NF_MAP_HOUSE_3 } }
+        if = { limit = { oe_nf_controls_slot = { slot = 4 } } custom_tooltip = { text = OE_NF_MAP_HOUSE_4 } }
+    }
+    leader = { leader_country ?= { ruler ?= { add_to_list = leaders } } }
+    can_lead_trigger = { tag = BYZ }
+    create_visible_trigger = { always = no }
+    invite_visible_trigger = { always = no }
+    join_visible_trigger = { always = no }
+    can_join_trigger = { oe_pillars_eligible_trigger = yes }
+    can_leave_trigger = { always = no }
+    auto_leave_trigger = { NOT = { oe_pillars_eligible_trigger = yes } }
+    auto_disband_trigger = { NOT = { country_exists = c:BYZ } }
+    can_declare_war = { always = yes }
+    on_creation = {
+        oe_pillars_initialize_resources_effect = yes
+        oe_pillars_sync_effect = yes
+    }
+    on_joined = {
+        scope:recipient = { save_scope_as = oe_pillars_org }
+        oe_pillars_classify_member_effect = yes
+    }
+    monthly_effect = {
+        hidden_effect = {
+            oe_pillars_sync_effect = yes
+            oe_pillars_authority_payment_effect = yes
+        }
+    }
+    gold = yes
+    international_organization_modifier = {
+        unlock_contribute_to_organization_treasury = no
+        unlock_withdraw_from_organization_treasury = no
+    }
+    variables = {
+        oe_pillars_authority = {
+            format = "OE_PILLARS_AUTHORITY_VALUE"
+            change_format = "VARIABLE_CHANGE_FORMAT"
+            min = 0
+            max = 100
+            start = 25
+            monthly_change = { value = -0.2 
+if = { limit = { c:BYZ ?= { has_variable = oe_ir_offices_done } } add = 0.05 }
+
+                add = {
+                    desc = "oe_court_chancellor"
+                    value = oe_court_chancellor_bonus
+                }
+}
+        }
+        oe_pillars_public_opinion = {
+            format = "OE_PILLARS_OPINION_VALUE"
+            change_format = "VARIABLE_CHANGE_FORMAT"
+            min = 0
+            max = 100
+            start = 27
+            monthly_change = {
+                value = 50
+                subtract = var:oe_pillars_public_opinion
+                divide = 100
+            
+if = { limit = { c:BYZ ?= { has_variable = oe_ir_offices_done } } add = 0.05 }
+
+                add = {
+                    desc = "oe_court_judge"
+                    value = oe_court_judge_bonus
+                }
+
+                add = {
+                    desc = "oe_bells_alienated_people"
+                    value = oe_bells_pillars_opinion_delta
+                }
+}
+        }
+    }
+    
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# leader_modifier = {
+#         army_tradition_from_battle = 0.1
+#         prestige_from_land_battle = 0.1
+#     }
+
+    # Country scope, applied only to the imperial leader; recalculated from live opinion.
+    leader_modifier = {
+        scale = { value = oe_pillars_opinion_discontent_scale }
+        monthly_peasants_estate_rebel_growth = 0.001
+        peasants_estate_target_satisfaction = -0.2
+        peasants_estate_max_tax = -0.2
+    }
+
+    payments_implemented = {
+        oe_byz_empire_theme_org_leader_pay_for_army
+        oe_byz_empire_theme_org_leader_pay_for_soldier
+        
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# oe_byz_roman_world_estate_tax
+
+        oe_pillars_nobles_contribution
+        oe_pillars_clergy_contribution
+        # oe_pillars_houses_contribution # PAUSED: no house income
+        oe_pillars_authority_budget
+        oe_pillars_egypt_food_budget
+    }
+    special_statuses_implemented = { oe_pillars_empire oe_pillars_noble oe_pillars_theme oe_pillars_naval_theme oe_pillars_administrative_theme oe_pillars_frontier_theme oe_pillars_italian_theme oe_pillars_latin_theme oe_pillars_subject 
+        oe_pillars_bank
+}
+    ai_desire_to_join = { value = 100 }
+    ai_desire_to_allow_new_member = { value = 100 }
+}

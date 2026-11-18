@@ -1,0 +1,34 @@
+﻿oe_belisarius_ravenna_ready = {
+    oe_court_actor = yes oe_osmaris_belisarius_available = yes
+    has_variable = oe_belisarius_italian_conquests var:oe_belisarius_italian_conquests >= 30
+    NOT = { has_variable = oe_belisarius_ravenna_presented }
+    NOT = { has_variable = oe_osman_expelled }
+}
+oe_belisarius_crescent_war = {
+    any_enemy = {
+        is_subject = no exists = capital
+        capital = { region = region:crescent_region }
+    }
+}
+oe_belisarius_crescent_ready = {
+    oe_court_actor = yes has_variable = oe_belisarius_rising_presented
+    oe_osmaris_belisarius_available = yes
+    NOT = { has_variable = oe_belisarius_crescent_presented }
+    NOT = { has_variable = oe_osman_expelled }
+    oe_belisarius_crescent_war = yes
+}
+# Location scope. Shared transfer rule for the two personal conquest permissions.
+oe_belisarius_authorized_enemy_land = {
+    NOT = { oe_conquest_is_native_civil_war = { recipient = c:BYZ } }
+    is_ownable = yes has_owner = yes
+    owner = { is_at_war_with = c:BYZ NOT = { oe_heg_byz_bloc = yes } }
+    OR = {
+        AND = { region = region:italy_region c:BYZ = { has_variable = oe_belisarius_italian_command } }
+        AND = { region = region:crescent_region c:BYZ = { has_variable = oe_belisarius_crescent_command } }
+    }
+}
+oe_belisarius_capture_context = {
+    oe_belisarius_command_context = yes
+    NOT = { has_variable = oe_belisarius_capture_in_progress }
+    scope:target = { oe_belisarius_authorized_enemy_land = yes controller = { oe_heg_byz_bloc = yes } }
+}

@@ -1,0 +1,39 @@
+﻿# Country scope. All country forms qualify for membership.
+oe_pillars_eligible_trigger = {
+    OR = {
+        tag = BYZ
+        is_subject_of = c:BYZ
+        AND = { exists = top_overlord top_overlord = c:BYZ }
+    }
+}
+oe_pillars_empire_trigger = { tag = BYZ }
+# PAUSED 2026-09-26: noble countries replaced by domestic dynasties.
+# oe_pillars_noble_trigger = {
+#     oe_pillars_eligible_trigger = yes
+#     OR = { tag = BBY tag = BAP tag = BSY }
+# }
+oe_pillars_noble_trigger = { always = no }
+
+oe_pillars_theme_trigger = {
+    oe_pillars_eligible_trigger = yes
+    NOT = { tag = BYZ }
+    NOT = { oe_pillars_noble_trigger = yes }
+    has_reform = government_reform:oe_byz_theme_system_subject
+
+    NOT = { oe_pillars_bank_trigger = yes }
+}
+oe_pillars_subject_trigger = {
+    oe_pillars_eligible_trigger = yes
+    NOT = { tag = BYZ }
+    NOT = { oe_pillars_noble_trigger = yes }
+    NOT = { oe_pillars_theme_trigger = yes }
+    country_type = location
+    num_locations > 0
+
+    NOT = { oe_pillars_bank_trigger = yes }
+}
+
+oe_pillars_bank_trigger = {
+    oe_pillars_eligible_trigger = yes
+    tag = OBY
+}

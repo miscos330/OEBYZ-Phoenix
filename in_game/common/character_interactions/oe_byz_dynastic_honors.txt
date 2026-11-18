@@ -1,0 +1,113 @@
+﻿oe_byz_claim_imperial_leadership = {
+    message = yes
+    on_own_nation = yes
+    on_other_nation = no
+    ai_tick = never
+    potential = { scope:actor = { oe_byz_needs_imperial_leadership = yes } }
+    allow = { scope:actor = { prestige >= 5 } }
+    select_trigger = {
+        looking_for_a = character
+        source = actor
+        target_flag = recipient
+        name = choose_character
+        column = { data = name }
+        visible = { is_ruler_of = c:BYZ }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_byz_needs_imperial_leadership = yes prestige >= 5 }
+                scope:recipient = { is_ruler_of = c:BYZ }
+            }
+            scope:actor = { add_prestige = -5 }
+            international_organization:oe_byz_empire_pillars = { set_leader_country = c:BYZ }
+            international_organization:oe_byz_roman_world = { set_leader_country = c:BYZ }
+            update_leadership = international_organization:oe_byz_empire_pillars
+            update_leadership = international_organization:oe_byz_roman_world
+        }
+    }
+}
+
+oe_byz_adopt_child = {
+    message = yes
+    on_own_nation = yes
+    on_other_nation = no
+    ai_tick = never
+    potential = { scope:actor = { tag = BYZ has_ruler = yes ruler = { has_dynasty = yes } } }
+    allow = {
+        scope:actor = {
+            legitimacy >= 10
+            custom_tooltip = { text = OE_BYZ_ADOPTION_FIVE_YEARS NOT = { has_variable = oe_byz_adopt_child_cooldown } }
+        }
+    }
+    cooldown = { type = oe_byz_adopt_child years = 5 }
+    select_trigger = {
+        looking_for_a = character
+        source = actor
+        target_flag = recipient
+        name = choose_character
+        none_available_msg_key = OE_BYZ_NO_ADOPTION_CANDIDATE
+        column = { data = name }
+        visible = { oe_byz_adoption_candidate = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = {
+                    tag = BYZ legitimacy >= 10
+                    ruler = { has_dynasty = yes }
+                    NOT = { has_variable = oe_byz_adopt_child_cooldown }
+                }
+                scope:recipient = { oe_byz_adoption_candidate = yes }
+            }
+            scope:actor = {
+                add_legitimacy = -10
+                set_variable = { name = oe_byz_adopt_child_cooldown years = 5 }
+            }
+            scope:recipient = {
+                change_dynasty = scope:actor.ruler.dynasty
+                add_character_modifier = { modifier = oe_byz_royal_adopted_child years = -1 mode = replace }
+            }
+        }
+    }
+}
+
+oe_byz_adopt_from_family = {
+    message = yes
+    on_own_nation = yes
+    on_other_nation = no
+    ai_tick = never
+    potential = { scope:actor = { tag = BYZ has_ruler = yes ruler = { has_dynasty = yes } } }
+    allow = {
+        scope:actor = {
+            legitimacy >= 10
+            custom_tooltip = { text = OE_BYZ_ADOPTION_THREE_YEARS NOT = { has_variable = oe_byz_adopt_family_cooldown } }
+        }
+    }
+    cooldown = { type = oe_byz_adopt_from_family years = 3 }
+    select_trigger = {
+        looking_for_a = character
+        source = actor
+        target_flag = recipient
+        name = choose_character
+        column = { data = name }
+        visible = { is_ruler_of = c:BYZ }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = {
+                    tag = BYZ legitimacy >= 10
+                    NOT = { has_variable = oe_byz_adopt_family_cooldown }
+                }
+                scope:recipient = { is_ruler_of = c:BYZ has_dynasty = yes }
+            }
+            scope:recipient = { save_scope_as = oe_adopting_ruler }
+            scope:actor = {
+                add_legitimacy = -10
+                set_variable = { name = oe_byz_adopt_family_cooldown years = 3 }
+                trigger_event_non_silently = oe_byz_family_adoption.1
+            }
+        }
+    }
+}

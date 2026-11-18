@@ -1,0 +1,39 @@
+﻿# NEW 2026-11-17 stage 3: AI Russia never used the situation action oe_ra_attack_tributary (AI does not pick a situation
+# and a target through select_trigger). The situation now acts for AI Russia directly with the same cost and CB.
+# Players still use the action; nothing here runs for a human Russia.
+
+monthly_country_pulse = { on_actions = { oe_ra_ai_tributary_pulse } }
+
+oe_ra_ai_tributary_pulse = {
+    trigger = {
+        tag = RUS
+        is_ai = yes
+        oe_ra_actor = yes
+        at_war = no
+        NOT = { has_variable = oe_ra_ai_tributary_cd }
+    }
+    effect = {
+        # Look again in a year whatever happens, so the check stays cheap.
+        set_variable = { name = oe_ra_ai_tributary_cd months = 12 }
+        save_scope_as = actor
+        if = {
+            limit = {
+                gold >= oe_ra_tributary_war_cost
+                any_subject = { oe_ra_tributary_war_target = yes military_strength < scope:actor.military_strength }
+            }
+            random = {
+                chance = 50
+                random_subject = {
+                    limit = { oe_ra_tributary_war_target = yes military_strength < scope:actor.military_strength }
+                    save_scope_as = target
+                }
+                if = {
+                    limit = { exists = scope:target }
+                    add_gold = { value = oe_ra_tributary_war_cost multiply = -1 }
+                    add_casus_belli = { target = scope:target type = casus_belli:oe_ra_imperial_tributary_war }
+                    declare_war_with_cb = { target = scope:target type = casus_belli:oe_ra_imperial_tributary_war }
+                }
+            }
+        }
+    }
+}

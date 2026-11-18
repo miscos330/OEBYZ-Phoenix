@@ -1,0 +1,73 @@
+﻿# PAUSED 2026-09-26: Noble politics paused by user; retained for possible restoration.
+# # Refresh from one country only; no world-wide monthly character scans.
+# monthly_country_pulse = { on_actions = { oe_np_monthly } }
+# on_dependency_gained = { on_actions = { oe_np_subject_changed } }
+# on_subject_created = { on_actions = { oe_np_subject_changed } }
+# on_subject_type_changed = { on_actions = { oe_np_subject_changed } }
+# oe_np_startup = { effect = { c:BYZ ?= { oe_np_refresh = yes } } }
+# oe_np_monthly = {
+#     trigger = { tag = BYZ }
+#     effect = { oe_np_tick_influence = yes }
+# }
+# oe_np_subject_changed = {
+#     trigger = { oe_np_is_house = yes }
+#     effect = { c:BYZ ?= { oe_np_refresh = yes } }
+# }
+# 
+# # Use exactly one hook per event; do not also register these on generic battle/death/royal-marriage hooks.
+# on_battle_won_character = { on_actions = { oe_np_battle_victory } }
+# on_ruler_death = { on_actions = { oe_np_house_ruler_death } }
+# on_character_marriage = { on_actions = { oe_np_family_marriage } }
+# 
+# # Native root = victorious character. Covers army and navy commanders serving BYZ.
+# oe_np_battle_victory = {
+#     trigger = {
+#         country_exists = c:BYZ
+#         has_dynasty = yes
+#         OR = { is_general_of = c:BYZ is_admiral_of = c:BYZ }
+#     }
+#     effect = {
+#         oe_np_family_influence = { amount = 10 }
+#         c:BYZ = { oe_np_refresh = yes }
+#     }
+# }
+# # Native root = the country whose ruler died, scope:old_ruler = deceased ruler.
+# oe_np_house_ruler_death = {
+#     trigger = { oe_np_is_house = yes }
+#     effect = {
+#         oe_np_change_influence = { amount = -50 }
+#         c:BYZ = { oe_np_refresh = yes }
+#     }
+# }
+# # Native root/target are the two spouses; the hook fires for the marriage, not once for each spouse.
+# oe_np_family_marriage = {
+#     # Most world marriages are irrelevant: filter before any scoring/refresh work.
+#     trigger = {
+#         country_exists = c:BYZ
+#         c:BYZ = {
+#             any_subject_or_below = {
+#                 is_subject_type = oe_noble
+#                 has_variable = oe_np_dynasty
+#                 OR = {
+#                     AND = {
+#                         root = { has_dynasty = yes }
+#                         var:oe_np_dynasty = root.dynasty
+#                     }
+#                     AND = {
+#                         exists = scope:target
+#                         scope:target = { has_dynasty = yes }
+#                         var:oe_np_dynasty = scope:target.dynasty
+#                     }
+#                 }
+#             }
+#         }
+#     }
+#     effect = {
+#         oe_np_family_influence = { amount = 5 }
+#         if = {
+#             limit = { exists = scope:target scope:target != root }
+#             scope:target = { oe_np_family_influence = { amount = 5 } }
+#         }
+#         c:BYZ = { oe_np_refresh = yes }
+#     }
+# }

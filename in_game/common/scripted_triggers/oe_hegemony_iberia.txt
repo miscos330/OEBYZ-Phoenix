@@ -1,0 +1,74 @@
+﻿# Country scopes. "Iberian" here means capital in Iberia, irrespective of culture or faith.
+oe_heg_plan_iberia_allowed = {
+    oe_heg_campaign_access = yes
+    NOT = { has_variable = oe_heg_iberia_plan_done }
+    gold >= 1000
+}
+oe_heg_iberia_action_allowed = {
+    oe_heg_campaign_access = yes
+    custom_tooltip = { text = OE_HEG_IBERIA_PLAN_REQUIRED has_variable = oe_heg_iberia_plan_done }
+}
+oe_heg_invade_iberia_target = {
+    country_type = location
+    NOT = { oe_heg_byz_bloc = yes }
+    any_owned_location = { region = region:iberia_region }
+}
+oe_heg_invade_iberia_allowed = {
+    oe_heg_iberia_action_allowed = yes
+    gold >= 100
+    any_country = { oe_heg_invade_iberia_target = yes }
+}
+oe_heg_mass_iberia_target = {
+    country_type = location
+    NOT = { oe_heg_byz_bloc = yes }
+    capital = { region = region:iberia_region }
+}
+# This country must still oppose BYZ in a war explicitly registered at campaign launch.
+# A later ordinary war never gains this ability merely from a stale country flag.
+oe_heg_iberia_target_active = {
+    has_variable = oe_heg_iberia_campaign_target
+    NOT = { oe_heg_byz_bloc = yes }
+    is_at_war_with = c:BYZ
+    # NEW 2026-11-17: custom_tooltip silences the 'scope dependent values in localization' warning.
+    custom_tooltip = {
+        text = OE_HC_IN_CAMPAIGN_WAR
+        any_current_war = {
+            has_variable = oe_heg_iberia_campaign_war
+            OR = {
+                AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+                AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+            }
+        }
+    }
+}
+oe_heg_mass_invade_iberia_allowed = {
+    oe_heg_iberia_action_allowed = yes
+    gold >= 1000
+    any_country = { oe_heg_mass_iberia_target = yes }
+    custom_tooltip = {
+        text = OE_HEG_IBERIA_NO_ACTIVE_CAMPAIGN
+        NOT = { any_country = { oe_heg_iberia_target_active = yes } }
+    }
+}
+# Location scope; also protects capitals from the older Turkish siege transfer rule.
+oe_heg_iberia_campaign_location = {
+    region = region:iberia_region
+    has_owner = yes
+    owner = { oe_heg_iberia_target_active = yes }
+}
+# Location scope, after saving the actual controller as oe_heg_iberia_captor.
+oe_heg_iberia_capture_allowed = {
+    oe_heg_iberia_campaign_location = yes
+    is_ownable = yes
+    is_capital = no
+    controller = { oe_heg_byz_bloc = yes is_at_war_with = prev.owner }
+    owner = {
+        any_current_war = {
+            has_variable = oe_heg_iberia_campaign_war
+            OR = {
+                AND = { is_an_attacker = c:BYZ is_an_attacker = scope:oe_heg_iberia_captor is_a_defender = prev }
+                AND = { is_a_defender = c:BYZ is_a_defender = scope:oe_heg_iberia_captor is_an_attacker = prev }
+            }
+        }
+    }
+}

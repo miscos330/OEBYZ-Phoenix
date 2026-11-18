@@ -1,0 +1,40 @@
+﻿oe_osmaris_start_varna_clock = {
+    if = {
+        limit = { oe_osmaris_varna_date_window = yes NOT = { has_variable = oe_osmaris_varna_clock_alive } }
+        set_variable = { name = oe_osmaris_varna_clock_alive value = yes days = 3 }
+        trigger_event_silently = oe_osmaris_varna_clock.1
+    }
+}
+oe_osmaris_introduce_belisarius = {
+    if = {
+        limit = { NOT = { exists = character:oe_osmaris_manuel_ii } NOT = { has_variable = oe_osmaris_manuel_ii_introduced } }
+        # Establish the historical father without forcing his separate retirement event.
+        oe_osmaris_introduce_manuel_ii = yes
+    }
+    if = {
+        limit = { NOT = { exists = character:oe_osmaris_belisarius } NOT = { has_variable = oe_osmaris_belisarius_introduced } }
+        set_variable = oe_osmaris_belisarius_introduced
+        create_character = {
+            first_name = oe_osmaris_belisarius_name
+            birth_date = 1432.3.30 birth_location = location:edirne
+            dynasty = dynasty:ottomans_dynasty culture = culture:oe_tur_greek_culture
+            religion = religion:orthodox estate = estate_type:nobles_estate female = no
+            adm = 70 dip = 65 mil = 60
+            script = oe_osmaris_belisarius save_scope_as = oe_osmaris_belisarius_person
+        }
+        character:oe_osmaris_belisarius ?= { change_father = character:oe_osmaris_manuel_ii }
+    }
+    character:oe_osmaris_belisarius ?= { save_scope_as = oe_osmaris_belisarius_person }
+}
+oe_osmaris_accept_varna_destiny = {
+    if = {
+        limit = { oe_osmaris_varna_can_choose = yes }
+        set_variable = oe_osmaris_varna_resolved
+        character:oe_osmaris_belisarius = {
+            add_trait = trait:oe_osmaris_fatih_trait
+            add_character_modifier = { modifier = oe_osmaris_fatih_personal days = -1 mode = add }
+            set_nickname = oe_osmaris_fatih_name
+        }
+        oe_osmaris_reward_house = { member = character:oe_osmaris_belisarius }
+    }
+}

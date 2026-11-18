@@ -1,0 +1,44 @@
+﻿namespace = oe_siberian_migration
+# Exactly one callback per active month, with an immutable assignment token.
+oe_siberian_migration.1 = {
+    type = country_event
+    title = empty_text # FIX 2026-11-17 P2：隐藏事件按原版写法补 title
+    hidden = yes
+    trigger = {
+        has_variable = oe_sm_active
+        var:oe_sm_generation = scope:oe_sm_job_generation
+    }
+    immediate = {
+        if = {
+            limit = {
+                tag = RUS
+                exists = var:oe_sm_cabinet
+                var:oe_sm_cabinet = { has_cabinet_action = yes cabinet_action = cabinet_action:oe_rus_siberian_migration }
+                exists = var:oe_sm_origin_definition
+                exists = var:oe_sm_destination_definition
+            }
+            change_variable = { name = oe_sm_elapsed add = 1 }
+            if = {
+                limit = { var:oe_sm_elapsed >= 60 }
+                trigger_event_non_silently = oe_siberian_migration.2
+            }
+            else = { trigger_event_silently = { id = oe_siberian_migration.1 months = 1 } }
+        }
+        else = { oe_sm_clear_job = yes }
+    }
+}
+oe_siberian_migration.2 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_siberian_migration.2.t
+    desc = oe_siberian_migration.2.d
+    image = "gfx/interface/illustrations/situation/oe_russian_ambition.dds"
+    trigger = {
+        has_variable = oe_sm_active
+        var:oe_sm_generation = scope:oe_sm_job_generation
+        var:oe_sm_elapsed >= 60
+    }
+    immediate = { oe_sm_complete_job = yes }
+    option = { name = oe_siberian_migration.2.a }
+}

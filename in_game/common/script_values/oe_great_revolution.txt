@@ -1,0 +1,80 @@
+﻿# Disaster spawn probability is a fraction (0..1), not the 0..100 random-effect scale.
+oe_gr_spawn_chance = {
+    value = 0
+    if = { limit = { situation:oe_bells_of_revolution = { var:oe_bells_clamor > 90 } } value = 0.5 }
+    else_if = { limit = { situation:oe_bells_of_revolution = { var:oe_bells_clamor > 75 } } value = 0.1 }
+    else_if = { limit = { situation:oe_bells_of_revolution = { var:oe_bells_clamor > 70 } } value = 0.05 }
+    else_if = { limit = { situation:oe_bells_of_revolution = { var:oe_bells_clamor > 60 } } value = 0.03 }
+    else_if = { limit = { situation:oe_bells_of_revolution = { var:oe_bells_clamor > 50 } } value = 0.01 }
+}
+# Pools and display values use PERSONS. Native population/army strength use thousands.
+oe_gr_total_people = { value = total_population multiply = 1000 }
+oe_gr_total_soldiers = { value = army_size multiply = 1000 }
+oe_gr_radicalism_natural = { value = var:oe_gr_radicalism multiply = 0.005 }
+oe_gr_radicalism_other = { value = modifier:oe_gr_monthly_radicalism }
+oe_gr_radicalism_delta = { value = oe_gr_radicalism_natural add = oe_gr_radicalism_other }
+oe_gr_people_delta = {
+    value = 0
+    if = { limit = { oe_gr_full_revolution = yes in_civil_war = no } value = total_population multiply = 0.5 }
+}
+oe_gr_soldiers_delta = {
+    value = 0
+    if = { limit = { oe_gr_full_revolution = yes in_civil_war = no } value = var:oe_gr_people divide = 10000 }
+}
+oe_gr_people_pressure = {
+    value = 0
+    if = { limit = { total_population > 0 } value = var:oe_gr_people divide = oe_gr_total_people }
+}
+oe_gr_soldier_pressure = {
+    value = var:oe_gr_soldiers
+    # A disarmed country uses a one-person floor, rather than dividing by zero.
+    divide = { value = oe_gr_total_soldiers min = 1 }
+}
+oe_gr_muster_delta = {
+    value = 0
+    if = {
+        limit = { oe_gr_full_revolution = yes in_civil_war = no }
+        add = oe_gr_people_pressure
+        add = oe_gr_soldier_pressure
+        add = oe_gr_emperor_muster_delta
+    }
+}
+oe_gr_emperor_muster_delta = {
+    value = 0
+    if = { limit = { has_variable = oe_gr_royal_line_extinct } value = -0.2 }
+    else_if = {
+        limit = { has_variable = oe_gr_emperor var:oe_gr_emperor = { is_alive = yes } }
+        value = var:oe_gr_emperor.modifier:oe_gr_emperor_monthly_muster
+    }
+}
+oe_gr_spawn_soldiers = { value = var:oe_gr_soldiers floor = yes }
+oe_gr_spawn_regiments = { value = oe_gr_spawn_soldiers divide = 2500 ceiling = yes }
+oe_gr_spawn_strength = { value = oe_gr_spawn_soldiers divide = 1000 }
+# A seeded province supplies the native revolt; the remaining locations are sampled without replacement.
+oe_gr_secession_count = {
+    value = num_locations
+    multiply = var:oe_gr_land_fraction
+    ceiling = yes
+    max = { value = num_locations subtract = 1 }
+    min = 1
+}
+oe_gr_army_target = { value = var:oe_gr_army_before multiply = 0.8 }
+oe_gr_initial_people = {
+    value = 0
+    add = { value = num_pop_type_in_country:nobles multiply = 800 }
+    add = { value = num_pop_type_in_country:clergy multiply = 850 }
+    add = { value = num_pop_type_in_country:burghers multiply = 200 }
+    add = { value = num_pop_type_in_country:peasants multiply = 150 }
+    add = { value = num_pop_type_in_country:laborers multiply = 150 }
+    add = { value = num_pop_type_in_country:soldiers multiply = 150 }
+    add = { value = num_pop_type_in_country:slaves multiply = 150 }
+}
+oe_gr_initial_soldiers = {
+    value = 0
+    add = { value = num_pop_type_in_country:nobles multiply = 100 }
+    add = { value = num_pop_type_in_country:burghers multiply = 20 }
+}
+# Snapshot once when each refusal event is dispatched. Tooltip and payment use
+# these same country variables; preview does not re-evaluate a destructive effect.
+oe_gr_refusal_soldiers_gain = { value = scope:oe_gr_refusing_army.unit_strength multiply = 2000 }
+oe_gr_refusal_gold_cost = { value = monthly_income_total min = 0 }

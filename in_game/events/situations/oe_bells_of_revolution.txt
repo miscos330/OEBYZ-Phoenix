@@ -1,0 +1,567 @@
+﻿namespace = oe_bells
+
+oe_bells.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.1.t
+    desc = oe_bells.1.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    # The start callback may run before the situation's active flag is exposed.
+    trigger = { has_global_variable = oe_bells_started country_exists = c:BYZ NOT = { tag = BYZ } oe_bells_observer = yes }
+    on_trigger_fail = { remove_variable = oe_bells_choice_pending }
+
+    option = {
+        name = oe_bells.rebel.option
+        oe_bells_choose_camp = { camp = 1 }
+        ai_will_select = { value = oe_bells_rebel_weight }
+    }
+
+    option = {
+        name = oe_bells.royalist.option
+        oe_bells_choose_camp = { camp = 2 }
+        ai_will_select = { value = oe_bells_royalist_weight }
+    }
+
+    option = {
+        name = oe_bells.neutral.option
+        oe_bells_choose_camp = { camp = 0 }
+        ai_will_select = { value = oe_bells_neutral_weight }
+    }
+}
+
+
+oe_bells.2 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.2.t
+    desc = oe_bells.2.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_participant = yes }
+    on_trigger_fail = { remove_variable = oe_bells_choice_pending }
+
+    option = {
+        name = oe_bells.rebel.option
+        trigger = { NOT = { oe_bells_rebel = yes } }
+        oe_bells_choose_camp = { camp = 1 }
+        ai_will_select = { value = 0 if = { limit = { oe_bells_best_camp = 1 } value = 100 } }
+    }
+
+    option = {
+        name = oe_bells.royalist.option
+        trigger = { NOT = { oe_bells_royalist = yes } }
+        oe_bells_choose_camp = { camp = 2 }
+        ai_will_select = { value = 0 if = { limit = { oe_bells_best_camp = 2 } value = 100 } }
+    }
+
+    option = {
+        name = oe_bells.neutral.option
+        trigger = { NOT = { oe_bells_neutral = yes } }
+        oe_bells_choose_camp = { camp = 0 }
+        ai_will_select = { value = 0 if = { limit = { oe_bells_best_camp = 0 } value = 100 } }
+    }
+}
+
+oe_bells.3 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.3.t
+    desc = oe_bells.3.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { tag = BYZ has_global_variable = oe_bells_started NOT = { has_variable = oe_bells_opening_seen } }
+    immediate = { set_variable = oe_bells_opening_seen }
+    option = {
+        name = oe_bells.3.a
+        custom_tooltip = oe_bells_opening_clamor_tt
+        hidden_effect = { oe_bells_change_clamor = { amount = 10 reason = oe_bells_opening_record } }
+        add_stability = -20
+        hidden_effect = { trigger_event_non_silently = { id = oe_bells.4 days = 30 } }
+    }
+}
+oe_bells.4 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.4.t
+    desc = oe_bells.4.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = {
+        tag = BYZ
+        is_situation_active = situation:oe_bells_of_revolution
+    }
+    immediate = { oe_bells_create_thinker = yes }
+    option = {
+        name = oe_bells.4.a
+        add_stability = -7
+        custom_tooltip = oe_bells_thinker_alive_tt
+    }
+}
+oe_bells.5 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.5.t
+    desc = oe_bells.5.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { tag = BYZ has_global_variable = oe_bells_started NOT = { has_global_variable = oe_bells_end_requested } }
+    option = {
+        name = oe_bells.5.a
+        add_country_modifier = { modifier = oe_bells_alienated_people years = 30 mode = replace }
+    }
+}
+oe_bells.6 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.6.t
+    desc = oe_bells.6.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = {
+        tag = BYZ
+        has_global_variable = oe_bells_started
+        NOT = { has_global_variable = oe_bells_end_requested }
+        exists = scope:oe_bells_rebellious_subject
+    }
+    option = {
+        name = oe_bells.6.a
+        add_country_modifier = { modifier = oe_bells_rebellious_subjects years = 20 mode = add }
+    }
+}
+
+oe_bells.7 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.7.t
+    desc = oe_bells.7.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes NOT = { has_variable = oe_bells_coffeehouses_seen } }
+    immediate = { set_variable = oe_bells_coffeehouses_seen }
+    option = {
+        name = oe_bells.7.a
+        add_legitimacy = -10
+        add_country_modifier = { modifier = oe_bells_dangerous_salons years = 50 mode = replace }
+    }
+}
+
+oe_bells.8 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.8.t
+    desc = oe_bells.8.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes NOT = { has_variable = oe_bells_hippodrome_seen } }
+    immediate = { set_variable = oe_bells_hippodrome_seen }
+    option = {
+        name = oe_bells.8.a
+        add_legitimacy = -30
+        add_stability = -7
+        add_country_modifier = { modifier = oe_bells_republican_calls years = 50 mode = replace }
+    }
+}
+
+oe_bells.9 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.9.t
+    desc = oe_bells.9.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes NOT = { has_variable = oe_bells_mese_seen } }
+    immediate = { set_variable = oe_bells_mese_seen }
+    option = {
+        name = oe_bells.9.a
+        add_legitimacy = -50
+        add_stability = 7
+        add_country_modifier = { modifier = oe_bells_protest_crackdown years = 10 mode = replace }
+        ai_will_select = { value = 50 }
+    }
+    option = {
+        name = oe_bells.9.b
+        add_stability = -20
+        add_legitimacy = -20
+        oe_bells_change_clamor = { amount = 5 reason = oe_bells_mese_record }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.10 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.10.t
+    desc = oe_bells.10.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes any_owned_location = { oe_bells_protest_location = yes } }
+    on_trigger_fail = { remove_variable = oe_bells_protest_pending }
+    immediate = {
+        set_variable = oe_bells_protest_pending
+        random_owned_location = {
+            limit = { oe_bells_protest_location = yes }
+            save_scope_as = oe_bells_protest_target
+        }
+    }
+    option = {
+        name = oe_bells.10.a
+        add_stability = -7
+        oe_bells_change_clamor = { amount = 1 reason = oe_bells_protest_dispersed_record }
+        scope:oe_bells_protest_target ?= {
+            if = {
+                limit = { owner = c:BYZ }
+                add_location_modifier = { modifier = oe_bells_protesters_dispersed years = 5 mode = replace }
+            }
+        }
+        hidden_effect = { remove_variable = oe_bells_protest_pending }
+        ai_will_select = { value = 50 }
+    }
+    option = {
+        name = oe_bells.10.b
+        oe_bells_change_clamor = { amount = 3 reason = oe_bells_protest_ignored_record }
+        scope:oe_bells_protest_target ?= {
+            if = {
+                limit = { owner = c:BYZ }
+                add_location_modifier = { modifier = oe_bells_protesters_gathered years = 5 mode = replace }
+            }
+        }
+        hidden_effect = { remove_variable = oe_bells_protest_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.11 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.11.t
+    desc = oe_bells.11.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes any_in_list = { variable = oe_bells_thinkers oe_bells_detained_thinker = yes } }
+    on_trigger_fail = { remove_variable = oe_bells_release_pending }
+    immediate = {
+        set_variable = oe_bells_release_pending
+        random_in_list = {
+            variable = oe_bells_thinkers
+            limit = { oe_bells_detained_thinker = yes }
+            save_scope_as = oe_bells_detained_target
+        }
+    }
+    option = {
+        name = oe_bells.11.a
+        trigger = { scope:oe_bells_detained_target = { oe_bells_detained_thinker = yes } }
+        if = {
+            limit = { scope:oe_bells_detained_target = { oe_bells_detained_thinker = yes } }
+            scope:oe_bells_detained_target = {
+                remove_character_modifier = oe_bells_detained
+                add_character_modifier = { modifier = oe_bells_dangerous_thinker years = -1 mode = replace }
+            }
+            add_stability = 7
+            custom_tooltip = oe_bells_thinker_alive_tt
+        }
+        hidden_effect = { remove_variable = oe_bells_release_pending }
+        ai_will_select = { value = 50 }
+    }
+    option = {
+        name = oe_bells.11.b
+        trigger = { scope:oe_bells_detained_target = { oe_bells_detained_thinker = yes } }
+        add_legitimacy = -5
+        oe_bells_change_clamor = { amount = 1 reason = oe_bells_release_refused_record }
+        hidden_effect = { remove_variable = oe_bells_release_pending }
+        ai_will_select = { value = 50 }
+    }
+    # A prisoner can die while a player leaves the dialog open.
+    option = {
+        name = oe_bells.11.c
+        trigger = { NOT = { scope:oe_bells_detained_target = { oe_bells_detained_thinker = yes } } }
+        hidden_effect = { remove_variable = oe_bells_release_pending }
+        ai_will_select = { value = 100 }
+    }
+}
+
+oe_bells.12 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.12.t
+    desc = oe_bells.12.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes NOT = { has_country_modifier = oe_bells_clandestine_press } }
+    on_trigger_fail = { remove_variable = oe_bells_event_12_pending }
+    immediate = { set_variable = oe_bells_event_12_pending }
+    option = {
+        name = oe_bells.12.a
+        add_stability = -33
+        add_country_modifier = { modifier = oe_bells_clandestine_press years = 20 mode = replace }
+        hidden_effect = { remove_variable = oe_bells_event_12_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.13 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.13.t
+    desc = oe_bells.13.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes NOT = { has_country_modifier = oe_bells_university_manifesto } }
+    on_trigger_fail = { remove_variable = oe_bells_event_13_pending }
+    immediate = { set_variable = oe_bells_event_13_pending }
+    option = {
+        name = oe_bells.13.a
+        add_stability = -20
+        add_legitimacy = -20
+        add_country_modifier = { modifier = oe_bells_university_manifesto years = 20 mode = replace }
+        hidden_effect = { remove_variable = oe_bells_event_13_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.14 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.14.t
+    desc = oe_bells.14.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes NOT = { has_country_modifier = oe_bells_defecting_historiographer } }
+    on_trigger_fail = { remove_variable = oe_bells_event_14_pending }
+    immediate = { set_variable = oe_bells_event_14_pending }
+    option = {
+        name = oe_bells.14.a
+        add_legitimacy = -20
+        add_country_modifier = { modifier = oe_bells_defecting_historiographer years = 20 mode = replace }
+        hidden_effect = { remove_variable = oe_bells_event_14_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.15 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.15.t
+    desc = oe_bells.15.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes NOT = { has_country_modifier = oe_bells_army_republican_societies } }
+    on_trigger_fail = { remove_variable = oe_bells_event_15_pending }
+    immediate = { set_variable = oe_bells_event_15_pending }
+    option = {
+        name = oe_bells.15.a
+        add_stability = -50
+        add_country_modifier = { modifier = oe_bells_army_republican_societies years = 15 mode = replace }
+        hidden_effect = { remove_variable = oe_bells_event_15_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.16 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.16.t
+    desc = oe_bells.16.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes  }
+    on_trigger_fail = { remove_variable = oe_bells_event_16_pending }
+    immediate = { set_variable = oe_bells_event_16_pending }
+    option = {
+        name = oe_bells.16.a
+        add_stability = -7
+        hidden_effect = { remove_variable = oe_bells_event_16_pending }
+        ai_will_select = { value = 50 }
+    }
+    option = {
+        name = oe_bells.16.b
+        oe_bells_change_clamor = { amount = 1 reason = oe_bells_satire_ignored_record }
+        hidden_effect = { remove_variable = oe_bells_event_16_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.17 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.17.t
+    desc = oe_bells.17.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes  }
+    on_trigger_fail = { remove_variable = oe_bells_event_17_pending }
+    immediate = { set_variable = oe_bells_event_17_pending }
+    option = {
+        name = oe_bells.17.a
+        add_stability = -7
+        hidden_effect = { remove_variable = oe_bells_event_17_pending }
+        ai_will_select = { value = 50 }
+    }
+    option = {
+        name = oe_bells.17.b
+        oe_bells_change_clamor = { amount = 1 reason = oe_bells_students_allowed_record }
+        hidden_effect = { remove_variable = oe_bells_event_17_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.18 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.18.t
+    desc = oe_bells.18.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes  }
+    on_trigger_fail = { remove_variable = oe_bells_event_18_pending }
+    immediate = { set_variable = oe_bells_event_18_pending }
+    option = {
+        name = oe_bells.18.a
+        add_legitimacy = -10
+        oe_bells_change_clamor = { amount = -1 reason = oe_bells_guards_punished_record }
+        hidden_effect = { remove_variable = oe_bells_event_18_pending }
+        ai_will_select = { value = 50 }
+    }
+    option = {
+        name = oe_bells.18.b
+        oe_bells_change_clamor = { amount = 1 reason = oe_bells_guards_pardoned_record }
+        hidden_effect = { remove_variable = oe_bells_event_18_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.19 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.19.t
+    desc = oe_bells.19.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes  }
+    on_trigger_fail = { remove_variable = oe_bells_event_19_pending }
+    immediate = { set_variable = oe_bells_event_19_pending }
+    option = {
+        name = oe_bells.19.a
+        trigger = { political_influence >= 10 }
+        if = {
+            limit = { political_influence >= 10 }
+            add_political_influence = -10
+            add_legitimacy = -5
+            oe_bells_change_clamor = { amount = -1 reason = oe_bells_clergy_mediation_record }
+        }
+        hidden_effect = { remove_variable = oe_bells_event_19_pending }
+        ai_will_select = { value = 50 }
+    }
+    option = {
+        name = oe_bells.19.b
+        add_stability = -3
+        oe_bells_change_clamor = { amount = 1 reason = oe_bells_preacher_rebuked_record }
+        hidden_effect = { remove_variable = oe_bells_event_19_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+oe_bells.20 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.20.t
+    desc = oe_bells.20.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = { oe_bells_byz_actor = yes  }
+    on_trigger_fail = { remove_variable = oe_bells_event_20_pending }
+    immediate = { set_variable = oe_bells_event_20_pending }
+    option = {
+        name = oe_bells.20.a
+        add_legitimacy = -5
+        add_estate_satisfaction = { type = estate_type:burghers_estate value = -0.05 }
+        hidden_effect = { remove_variable = oe_bells_event_20_pending }
+        ai_will_select = { value = 50 }
+    }
+    option = {
+        name = oe_bells.20.b
+        oe_bells_change_clamor = { amount = 1 reason = oe_bells_guild_ignored_record }
+        hidden_effect = { remove_variable = oe_bells_event_20_pending }
+        ai_will_select = { value = 50 }
+    }
+}
+
+# First reaching 10 clamor. Shared text and behavior, independent popup ID.
+oe_bells.21 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.4.t
+    desc = oe_bells.4.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = {
+        tag = BYZ
+        is_situation_active = situation:oe_bells_of_revolution
+    }
+    immediate = { oe_bells_create_thinker = yes }
+    option = {
+        name = oe_bells.4.a
+        add_stability = -7
+        custom_tooltip = oe_bells_thinker_alive_tt
+    }
+}
+
+# First reaching 25 clamor. Shared text and behavior, independent popup ID.
+oe_bells.22 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.4.t
+    desc = oe_bells.4.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = {
+        tag = BYZ
+        is_situation_active = situation:oe_bells_of_revolution
+    }
+    immediate = { oe_bells_create_thinker = yes }
+    option = {
+        name = oe_bells.4.a
+        add_stability = -7
+        custom_tooltip = oe_bells_thinker_alive_tt
+    }
+}
+
+# First reaching 35 clamor. Shared text and behavior, independent popup ID.
+oe_bells.23 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.4.t
+    desc = oe_bells.4.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = {
+        tag = BYZ
+        is_situation_active = situation:oe_bells_of_revolution
+    }
+    immediate = { oe_bells_create_thinker = yes }
+    option = {
+        name = oe_bells.4.a
+        add_stability = -7
+        custom_tooltip = oe_bells_thinker_alive_tt
+    }
+}
+
+# First reaching 75 clamor. Shared text and behavior, independent popup ID.
+oe_bells.24 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_bells.4.t
+    desc = oe_bells.4.d
+    image = "gfx/interface/illustrations/events/oe_bells_of_revolution_bellringer.dds"
+    trigger = {
+        tag = BYZ
+        is_situation_active = situation:oe_bells_of_revolution
+    }
+    immediate = { oe_bells_create_thinker = yes }
+    option = {
+        name = oe_bells.4.a
+        add_stability = -7
+        custom_tooltip = oe_bells_thinker_alive_tt
+    }
+}

@@ -1,0 +1,174 @@
+﻿namespace = empire_debt
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# empire_debt.1 = {#局势开始
+# 	type = country_event
+# 	category = situation_event
+# 	image = "gfx/interface/illustrations/institutions/renaissance.dds"
+# 	title = empire_debt.1.t
+# 	desc = empire_debt.1.d
+# 	immediate = {
+# 
+# 	}
+# 	option = {
+# 		name = empire_debt.1.a
+# 		c:GEN = {
+# 			create_relation = { 
+# 				first = c:BYZ
+# 				second = c:GEN
+# 				type = relation_type:sound_toll_exemption
+# 			}
+# 		}
+# 		c:VEN = {
+# 			create_relation = { 
+# 				first = c:BYZ
+# 				second = c:VEN
+# 				type = relation_type:sound_toll_exemption
+# 			}
+# 		}
+# 	}
+# }
+
+empire_debt.100 = {#贬值货币
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	category = situation_event
+	image = "gfx/interface/illustrations/situation/treaty_of_tordesillas.dds"
+	title = empire_debt.100.t
+	desc = empire_debt.100.d
+	immediate = {
+	}
+	option = {
+		name = empire_debt.100.a
+		change_gold_effect = { scale = 10 }
+		add_inflation = 0.05
+		custom_tooltip = {
+		text = empire_debt.100.tt
+		if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money
+			}
+			set_variable = oe_byz_empier_money_I_no
+			set_variable = oe_byz_empier_money_bII_allow
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money_bII
+		}
+				else_if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money_bII
+			}
+			remove_variable = oe_byz_empier_money_bII_allow
+			set_variable = oe_byz_empier_money_bIII_allow
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money_bII
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money_bIII
+		}
+				else_if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money_bIII
+			}
+			remove_variable = oe_byz_empier_money_bIII_allow
+			set_variable = oe_byz_empier_money_bIV_allow
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money_bIII
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money_bIV
+		}
+				else_if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money_bIV
+			}
+			remove_variable = oe_byz_empier_money_bIV_allow
+			set_variable = oe_byz_ed_money_break
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money_bIV
+			set_bankruptcy = yes
+		}
+			else_if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money_gI
+			}
+			remove_variable = oe_byz_empier_money_gI_allow
+			remove_variable = oe_byz_empier_money_I_no
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money_gI
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money
+		}
+			else_if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money_gII
+			}
+			remove_variable = oe_byz_empier_money_gII_allow
+			set_variable = oe_byz_empier_money_gI_allow
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money_gII
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money_gI
+			add_stability = -13
+			add_government_power = -13
+		}
+	}
+	}
+}
+empire_debt.101 = {#升值货币
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	category = situation_event
+	image = "gfx/interface/illustrations/situation/treaty_of_tordesillas.dds"
+	title = empire_debt.101.t
+	desc = empire_debt.101.d
+	immediate = {
+	}
+	option = {
+		name = empire_debt.101.a
+		change_gold_effect = { scale = -5 }
+		add_stability = 3
+		add_government_power = 3
+		custom_tooltip = {
+		text = empire_debt.101.tt
+		if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money
+			}
+			set_variable = oe_byz_empier_money_I_no
+			set_variable = oe_byz_empier_money_gI_allow
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money_gI
+		}
+				else_if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money_bII
+			}
+			remove_variable = oe_byz_empier_money_I_no
+			remove_variable = oe_byz_empier_money_bII_allow
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money_bII
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money
+		}
+				else_if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money_bIII
+			}
+			remove_variable = oe_byz_empier_money_bIII_allow
+			set_variable = oe_byz_empier_money_bII_allow
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money_bIII
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money_bII
+		}
+				else_if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money_bIV
+			}
+			remove_variable = oe_byz_empier_money_bIV_allow
+			set_variable = oe_byz_empier_money_bIII_allow
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money_bIV
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money_bIII
+		}
+			else_if = {
+			limit = {
+				has_estate_privilege = estate_privilege:oe_byz_empier_money_gI
+			}
+			set_variable = oe_byz_empier_money_gII_allow
+			remove_variable = oe_byz_empier_money_gI_allow
+			revoke_estate_privilege = estate_privilege:oe_byz_empier_money_gI
+			grant_estate_privilege = estate_privilege:oe_byz_empier_money_gII
+			add_stability = 10
+			add_government_power = 10
+		}
+	}
+	}
+}
+
+
+

@@ -1,0 +1,32 @@
+﻿oe_rsc_live = {
+    tag = BYZ
+    exists = scope:expedition
+    has_variable = oe_rsc_active
+    var:oe_rsc_active = scope:expedition
+}
+oe_rsc_venue_eligible = {
+    has_owner = yes
+    owner = { religion = religion:orthodox }
+}
+oe_rsc_has_independent_rus = {
+    culture_group:russian_group = {
+        any_country_in_culture_group = { oe_rus_country = yes oe_rus_controller = yes }
+    }
+}
+oe_rsc_has_venue = {
+    OR = {
+        location:kyiv = { oe_rsc_venue_eligible = yes }
+        location:moscow = { oe_rsc_venue_eligible = yes }
+        location:tver = { oe_rsc_venue_eligible = yes }
+        location:novgorod = { oe_rsc_venue_eligible = yes }
+        location:smolensk = { oe_rsc_venue_eligible = yes }
+        location:nizhny_novgorod = { oe_rsc_venue_eligible = yes }
+        location:ryazan = { oe_rsc_venue_eligible = yes }
+    }
+}
+oe_rsc_stop_candidate = {
+    oe_rus_country = yes
+    capital != scope:expedition.var:oe_rsc_venue
+    capital != scope:expedition.expedition_current_location
+    NOT = { scope:expedition = { is_target_in_variable_list = { name = oe_rsc_visited target = prev } } }
+}

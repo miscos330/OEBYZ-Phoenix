@@ -1,0 +1,295 @@
+﻿# ALL house variables and member/death lists live on the Empire Pillars international_organization:oe_byz_empire_pillars.
+# Characters and dynasties are references only. Country wrappers serve existing court hooks.
+oe_nf_change_influence = {
+    change_variable = { name = oe_nf_influence_$slot$ add = $amount$ }
+    clamp_variable = { name = oe_nf_influence_$slot$ min = 0 max = 1000 }
+}
+oe_nf_register_slot = {
+    if = {
+        limit = { scope:oe_nf_register_family = { NOT = { oe_nf_is_ruling_dynasty = yes } } }
+        remove_variable = oe_nf_succession_pending_$slot$
+        remove_variable = oe_nf_succession_building_$slot$
+        set_variable = { name = oe_nf_dynasty_$slot$ value = scope:oe_nf_register_family }
+        set_variable = { name = oe_nf_head_$slot$ value = scope:oe_nf_register_head }
+        set_variable = { name = oe_nf_influence_$slot$ value = $initial$ }
+        remove_variable = oe_nf_recommend_cooldown_$slot$
+        remove_variable = oe_daily_house_1_cooldown_$slot$
+        remove_variable = oe_daily_house_2_cooldown_$slot$
+        remove_variable = oe_daily_house_3_cooldown_$slot$
+        remove_variable = oe_daily_house_4_cooldown_$slot$
+        remove_variable = oe_daily_house_9_cooldown_$slot$
+        remove_variable = oe_daily_house_11_cooldown_$slot$
+        set_variable = { name = oe_nf_expansion_wait_$slot$ value = 1 months = 60 }
+        clear_variable_list = oe_nf_locations_$slot$
+        oe_nf_refresh_slot = { slot = $slot$ }
+    }
+}
+# international_organization:oe_byz_empire_pillars scope. Membership, head, and influence remain independent records on the international_organization:oe_byz_empire_pillars.
+oe_nf_refresh_slot = {
+    oe_nf_remove_ruling_house = { slot = $slot$ }
+    if = {
+        limit = { has_variable = oe_nf_dynasty_$slot$ NOT = { has_variable = oe_nf_succession_building_$slot$ } }
+        var:oe_nf_dynasty_$slot$ = { save_scope_as = oe_nf_family }
+        if = {
+            limit = { scope:oe_nf_family = { any_character_in_dynasty = { oe_nf_successor_eligible = yes } } }
+            if = {
+                limit = {
+                    NOT = { oe_nf_head_valid = { slot = $slot$ } }
+                }
+                # IO house leadership is independent of the engine's dynasty_head.
+                # All living members qualify, including women and minors.
+                # Remove the old reference after charging so a failed selection cannot debit twice.
+                if = {
+                    limit = { oe_nf_head_dead = { slot = $slot$ } }
+                    oe_nf_change_influence = { slot = $slot$ amount = -50 }
+                }
+                remove_variable = oe_nf_head_$slot$
+                clear_saved_scope = oe_nf_successor
+                c:BYZ = {
+                    ordered_character = {
+                        limit = { oe_nf_living = yes has_dynasty = yes dynasty = scope:oe_nf_family }
+                        order_by = age_in_days max = 1
+                        save_scope_as = oe_nf_successor
+                        international_organization:oe_byz_empire_pillars = {
+                            set_variable = { name = oe_nf_head_$slot$ value = scope:oe_nf_successor }
+                        }
+                    }
+                }
+                # Fallback: living members in Byzantine subjects, including indirect subjects.
+                if = {
+                    limit = { NOT = { exists = var:oe_nf_head_$slot$ } }
+                    scope:oe_nf_family = {
+                        ordered_character_in_dynasty = {
+                            limit = { oe_nf_successor_eligible = yes }
+                            order_by = age_in_days max = 1
+                            save_scope_as = oe_nf_successor
+                            international_organization:oe_byz_empire_pillars = {
+                                set_variable = { name = oe_nf_head_$slot$ value = scope:oe_nf_successor }
+                            }
+                        }
+                    }
+                }
+            }
+            remove_variable = oe_nf_succession_pending_$slot$
+            clear_variable_list = oe_nf_members_$slot$
+            set_variable = { name = oe_nf_monthly_$slot$ value = -2 }
+            if = {
+                limit = { c:BYZ = { has_variable = oe_ir_reclaim_privileges_done } }
+                change_variable = { name = oe_nf_monthly_$slot$ subtract = 1 }
+            }
+            if = {
+                limit = { oe_nf_is_political_ally = { slot = $slot$ } }
+                change_variable = { name = oe_nf_monthly_$slot$ add = 1 }
+            }
+            if = {
+                limit = { c:BYZ = { NOT = { has_variable = oe_ir_offices_done } } }
+                change_variable = { name = oe_nf_monthly_$slot$ add = 2 }
+            }
+            if = {
+                limit = { scope:oe_nf_family = dynasty:ottomans_dynasty }
+                change_variable = { name = oe_nf_monthly_$slot$ add = oe_osmaris_company_influence }
+            }
+            clear_saved_scope = oe_nf_current_head
+            var:oe_nf_head_$slot$ ?= { save_scope_as = oe_nf_current_head }
+            scope:oe_nf_family = {
+                ordered_character_in_dynasty = {
+                    limit = { oe_nf_living = yes }
+                    order_by = age_in_days
+                    if = {
+                        limit = { this != scope:oe_nf_current_head }
+                        save_scope_as = oe_nf_member
+                        international_organization:oe_byz_empire_pillars = { add_to_variable_list = { name = oe_nf_members_$slot$ target = scope:oe_nf_member } }
+                    }
+                    if = {
+                        limit = { owner = c:BYZ in_cabinet = yes }
+                        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1 } }
+                    }
+                    if = {
+                        limit = { OR = { is_general_of = c:BYZ is_admiral_of = c:BYZ } }
+                        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 0.25 } }
+                    }
+                    if = {
+                        limit = { oe_nf_theme_governor = yes }
+                        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1 } }
+                    }
+                    if = {
+                        limit = { oe_nf_landed_ruler = yes }
+                        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1 } }
+                    }
+                }
+            }
+            every_in_list = {
+                variable = oe_nf_locations_$slot$
+                international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 0.1 } }
+            }
+            c:BYZ = {
+                if = {
+                    limit = { oe_court_chancellor_filled = yes var:oe_court_chancellor = { oe_nf_living = yes has_dynasty = yes dynasty = scope:oe_nf_family } }
+                    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1.5 } }
+                }
+                if = {
+                    limit = { oe_court_judge_filled = yes var:oe_court_judge = { oe_nf_living = yes has_dynasty = yes dynasty = scope:oe_nf_family } }
+                    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1.5 } }
+                }
+                if = {
+                    limit = { oe_court_secretary_filled = yes var:oe_court_secretary = { oe_nf_living = yes has_dynasty = yes dynasty = scope:oe_nf_family } }
+                    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1.5 } }
+                }
+                if = {
+                    limit = { oe_court_taxmaster_filled = yes var:oe_court_taxmaster = { oe_nf_living = yes has_dynasty = yes dynasty = scope:oe_nf_family } }
+                    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1.5 } }
+                }
+                if = {
+                    limit = { oe_court_ceremonies_filled = yes var:oe_court_ceremonies = { oe_nf_living = yes has_dynasty = yes dynasty = scope:oe_nf_family } }
+                    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1.5 } }
+                }
+                if = {
+                    limit = { oe_court_admiral_filled = yes var:oe_court_admiral = { oe_nf_living = yes has_dynasty = yes dynasty = scope:oe_nf_family } }
+                    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1.5 } }
+                }
+                if = {
+                    limit = { oe_court_domestikos_filled = yes var:oe_court_domestikos = { oe_nf_living = yes has_dynasty = yes dynasty = scope:oe_nf_family } }
+                    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_nf_monthly_$slot$ add = 1.5 } }
+                }
+            }
+        }
+        else = {
+            # Keep the house and its holdings until the emperor settles succession.
+            if = {
+                limit = { oe_nf_head_dead = { slot = $slot$ } }
+                oe_nf_change_influence = { slot = $slot$ amount = -50 }
+            }
+            remove_variable = oe_nf_head_$slot$
+            set_variable = { name = oe_nf_monthly_$slot$ value = 0 }
+            clear_variable_list = oe_nf_members_$slot$
+            oe_nf_request_succession = { slot = $slot$ }
+        }
+    }
+}
+# BYZ scope wrapper. No effect invoked here calls court automation back.
+oe_nf_refresh = {
+    international_organization:oe_byz_empire_pillars ?= {
+        oe_nf_refresh_slot = { slot = 1 }
+        oe_nf_refresh_slot = { slot = 2 }
+        oe_nf_refresh_slot = { slot = 3 }
+        oe_nf_refresh_slot = { slot = 4 }
+        # Retain only synchronous death notifications not yet reflected by is_alive.
+        clear_variable_list = oe_nf_pending_deaths
+        every_in_list = {
+            variable = oe_nf_deceased_characters
+            limit = { is_alive = yes }
+            save_scope_as = oe_nf_dying
+            international_organization:oe_byz_empire_pillars = { add_to_variable_list = { name = oe_nf_pending_deaths target = scope:oe_nf_dying } }
+        }
+        clear_variable_list = oe_nf_deceased_characters
+        every_in_list = {
+            variable = oe_nf_pending_deaths
+            save_scope_as = oe_nf_dying
+            international_organization:oe_byz_empire_pillars = { add_to_variable_list = { name = oe_nf_deceased_characters target = scope:oe_nf_dying } }
+        }
+        clear_variable_list = oe_nf_pending_deaths
+    }
+}
+oe_nf_initialize = {
+    if = {
+        limit = { tag = BYZ }
+        international_organization:oe_byz_empire_pillars ?= {
+            if = {
+                limit = { NOT = { has_variable = oe_nf_initialized } }
+                set_variable = oe_nf_initialized
+                set_variable = { name = oe_nf_house_limit value = 3 }
+                character:byz_john_kantakouzenos = {
+                    save_scope_as = oe_nf_register_head
+                    dynasty = { save_scope_as = oe_nf_register_family }
+                }
+                oe_nf_register_slot = { slot = 1 initial = 122 }
+                character:byz_alexios_apokaukos = {
+                    save_scope_as = oe_nf_register_head
+                    dynasty = { save_scope_as = oe_nf_register_family }
+                }
+                oe_nf_register_slot = { slot = 2 initial = 92 }
+                character:byz_ioannes_synadenos = {
+                    save_scope_as = oe_nf_register_head
+                    dynasty = { save_scope_as = oe_nf_register_family }
+                }
+                oe_nf_register_slot = { slot = 3 initial = 84 }
+                oe_nf_seed_territories = yes
+            }
+        }
+        # oe_nf_queue_head_watchdog = yes # Disabled: existing monthly pulse is the fallback.
+    }
+}
+# Selected living character scope; the first vacant international_organization:oe_byz_empire_pillars slot receives the family.
+oe_nf_register = {
+    if = {
+        limit = { oe_nf_promotion_character = yes }
+        save_scope_as = oe_nf_register_head
+        dynasty = { save_scope_as = oe_nf_register_family }
+        international_organization:oe_byz_empire_pillars = {
+            if = {
+                limit = { NOT = { has_variable = oe_nf_dynasty_1 } }
+                oe_nf_register_slot = { slot = 1 initial = $initial$ }
+            }
+            else_if = {
+                limit = { NOT = { has_variable = oe_nf_dynasty_2 } }
+                oe_nf_register_slot = { slot = 2 initial = $initial$ }
+            }
+            else_if = {
+                limit = { NOT = { has_variable = oe_nf_dynasty_3 } }
+                oe_nf_register_slot = { slot = 3 initial = $initial$ }
+            }
+            else_if = {
+                limit = { NOT = { has_variable = oe_nf_dynasty_4 } }
+                oe_nf_register_slot = { slot = 4 initial = $initial$ }
+            }
+        }
+    }
+}
+# Member scope: family influence is looked up on the international_organization:oe_byz_empire_pillars, never on the character.
+oe_nf_member_influence = {
+    dynasty = { save_scope_as = oe_nf_event_family }
+    international_organization:oe_byz_empire_pillars = {
+        if = {
+            limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = scope:oe_nf_event_family }
+            oe_nf_change_influence = { slot = 1 amount = $amount$ }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = scope:oe_nf_event_family }
+            oe_nf_change_influence = { slot = 2 amount = $amount$ }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = scope:oe_nf_event_family }
+            oe_nf_change_influence = { slot = 3 amount = $amount$ }
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = scope:oe_nf_event_family }
+            oe_nf_change_influence = { slot = 4 amount = $amount$ }
+        }
+    }
+}
+# international_organization:oe_byz_empire_pillars scope; all political-support entry points share this validation and effect.
+oe_nf_support_slot = {
+    if = {
+        limit = {
+            c:BYZ = { oe_nf_support_actor = yes }
+            exists = var:oe_nf_head_$slot$
+            var:oe_nf_head_$slot$ = { oe_nf_living = yes }
+            has_variable = oe_nf_dynasty_$slot$
+        }
+        c:BYZ = { add_legitimacy = -3 }
+        change_variable = { name = oe_pillars_authority add = 2 }
+        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        set_variable = { name = oe_nf_support_cooldown value = 1 months = 12 }
+        oe_nf_change_influence = { slot = $slot$ amount = 3 }
+    }
+}
+# international_organization:oe_byz_empire_pillars scope. Future authority-spending interactions pass the selected slot explicitly.
+oe_nf_spend_interaction_authority = {
+    if = {
+        limit = { has_variable = oe_nf_dynasty_$slot$ var:oe_pillars_authority >= $amount$ }
+        change_variable = { name = oe_pillars_authority subtract = $amount$ }
+        # Macro parameters must be scalar: evaluate the doubled cost in the native effect.
+        change_variable = { name = oe_nf_influence_$slot$ add = { value = $amount$ multiply = 2 } }
+        clamp_variable = { name = oe_nf_influence_$slot$ min = 0 max = 1000 }
+    }
+}

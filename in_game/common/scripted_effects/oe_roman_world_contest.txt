@@ -1,0 +1,63 @@
+﻿# Organization scope. All territorial members compete, including subjects.
+# Clear old winners first so eliminated members and fewer than three entrants cannot leave stale ranks.
+oe_roman_world_recalculate_contest = {
+    save_scope_as = oe_roman_contest_org
+    remove_variable = oe_roman_contest_rank_1
+    remove_variable = oe_roman_contest_rank_2
+    remove_variable = oe_roman_contest_rank_3
+    ordered_international_organization_member = {
+        limit = {
+            oe_roman_world_territorial_country_trigger = yes
+
+        }
+        order_by = oe_roman_world_contest_score
+        max = 1
+        check_range_bounds = no
+        scope:oe_roman_contest_org = {
+            set_variable = { name = oe_roman_contest_rank_1 value = prev }
+        }
+    }
+    if = {
+        limit = { has_variable = oe_roman_contest_rank_1 }
+    ordered_international_organization_member = {
+        limit = {
+            oe_roman_world_territorial_country_trigger = yes
+            this != scope:oe_roman_contest_org.var:oe_roman_contest_rank_1
+        }
+        order_by = oe_roman_world_contest_score
+        max = 1
+        check_range_bounds = no
+        scope:oe_roman_contest_org = {
+            set_variable = { name = oe_roman_contest_rank_2 value = prev }
+        }
+    }
+    }
+    if = {
+        limit = { has_variable = oe_roman_contest_rank_2 }
+    ordered_international_organization_member = {
+        limit = {
+            oe_roman_world_territorial_country_trigger = yes
+            this != scope:oe_roman_contest_org.var:oe_roman_contest_rank_1
+            this != scope:oe_roman_contest_org.var:oe_roman_contest_rank_2
+        }
+        order_by = oe_roman_world_contest_score
+        max = 1
+        check_range_bounds = no
+        scope:oe_roman_contest_org = {
+            set_variable = { name = oe_roman_contest_rank_3 value = prev }
+        }
+    }
+    }
+}
+
+# One daily hidden location event. Constantinople persists through conquest and country annexation.
+# The pending flag prevents game-start, monthly and membership hooks from multiplying the queue.
+oe_roman_world_ensure_contest_tick = {
+    location:constantinople = {
+        if = {
+            limit = { NOT = { has_variable = oe_roman_contest_tick_pending } }
+            set_variable = { name = oe_roman_contest_tick_pending value = yes }
+            trigger_event_silently = { id = oe_roman_contest.1 days = 1 }
+        }
+    }
+}

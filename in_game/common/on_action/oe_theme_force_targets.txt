@@ -1,0 +1,15 @@
+﻿yearly_country_pulse = { on_actions = { oe_tfr_yearly_dispatch } }
+oe_tfr_yearly_dispatch = {
+    trigger = {
+        tag = BYZ
+        exists = international_organization:oe_byz_empire_pillars
+        OR = { NOT = { has_variable = oe_tfr_last_year } var:oe_tfr_last_year < current_year }
+    }
+    effect = {
+        set_variable = { name = oe_tfr_last_year value = current_year }
+        every_subject = {
+            limit = { oe_tfr_eligible_theme = yes oe_tfr_target_display > 0 gold >= 1000 exists = capital }
+            oe_tfr_reinforce_country = yes
+        }
+    }
+}

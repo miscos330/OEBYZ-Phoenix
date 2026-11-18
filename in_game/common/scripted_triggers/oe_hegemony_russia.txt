@@ -1,0 +1,65 @@
+﻿# Country scope. Black Sea Strategy is the entry action, exempt from its own completion prerequisite.
+oe_heg_plan_black_sea_allowed = {
+    oe_heg_campaign_access = yes
+    NOT = { has_variable = oe_heg_black_sea_plan_done }
+    gold >= 1000
+}
+oe_heg_crimea_owned = {
+    area:crimea_area = {
+        any_location_in_area = { is_ownable = yes }
+        NOT = { any_location_in_area = {
+            is_ownable = yes
+            NOT = { AND = { has_owner = yes owner = { oe_heg_byz_bloc = yes } } }
+        } }
+    }
+}
+oe_heg_russia_action_allowed = {
+    oe_heg_campaign_access = yes
+    custom_tooltip = { text = OE_HEG_BLACK_SEA_PLAN_REQUIRED has_variable = oe_heg_black_sea_plan_done }
+    custom_tooltip = { text = OE_HEG_CRIMEA_REQUIRED oe_heg_crimea_owned = yes }
+}
+oe_heg_invade_russia_target = {
+    country_type = location
+    num_locations > 0
+    NOT = { oe_heg_byz_bloc = yes }
+    exists = capital
+    capital = { OR = { region = region:steppes_region region = region:ruthenia_region region = region:russian_region } }
+}
+oe_heg_invade_russia_allowed = {
+    oe_heg_russia_action_allowed = yes
+    gold >= 200
+    political_influence >= 20
+    stability >= 5
+}
+# Location scope; keep precisely the named imperial enclaves and Tuapse province.
+oe_heg_bosporus_grant_location = {
+    is_ownable = yes
+    owner = c:BYZ
+    region = region:steppes_region
+    NOT = { OR = {
+        this = location:taman
+        this = location:tana
+        this = location:theodoro
+        this = location:lusta
+        this = location:soldaia
+        this = location:kaffa
+        this = location:vosporo
+        province_definition = province_definition:tuapse_province
+    } }
+}
+oe_heg_restore_bosporus_allowed = {
+    oe_heg_russia_action_allowed = yes
+    NOT = { has_variable = oe_heg_bosporus_restored }
+    gold >= 1000
+    political_influence >= 50
+    custom_tooltip = {
+        text = OE_HEG_BOSPORUS_LAND_REQUIRED
+        region:steppes_region = { any_location_in_region = { oe_heg_bosporus_grant_location = yes } }
+    }
+}
+oe_rw_gothic_spread_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = { oe_heg_byz_bloc = yes }
+    "culture_percentage(culture:crimean)" > 0
+}

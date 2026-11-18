@@ -1,0 +1,40 @@
+﻿# Country scope; snapshot the area before creation changes ownership.
+oe_found_moldavian_march_effect = {
+    area:moldavia_area = {
+        every_location_in_area = { limit = { is_ownable = yes owner = c:BYZ } add_to_list = oe_march_grant_locations }
+        ordered_location_in_area = {
+            limit = { is_ownable = yes owner = c:BYZ }
+            order_by = population
+            max = 1
+            check_range_bounds = no
+            save_scope_as = oe_march_capital
+        }
+    }
+    scope:oe_march_capital = {
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_roman_march
+            save_scope_as = oe_new_moldavian_march
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:oe_moldova_greek_culture
+            change_religion = religion:orthodox
+            change_country_name = OE_MOLDAVIAN_MARCH
+            change_country_adjective = OE_MOLDAVIAN_MARCH_ADJ
+            change_country_flag = MOL
+            set_capital = scope:oe_march_capital
+            if = {
+                limit = { has_ruler = no }
+                create_character = {
+                    age = 35 culture = culture:oe_moldova_greek_culture religion = religion:orthodox
+                    estate = estate_type:nobles_estate save_scope_as = oe_march_ruler
+                }
+                set_new_ruler = scope:oe_march_ruler
+            }
+        }
+    }
+    every_in_list = { list = oe_march_grant_locations change_location_owner = scope:oe_new_moldavian_march }
+    set_variable = oe_moldavian_march_founded
+    international_organization:oe_byz_roman_world ?= { add_country_to_international_organization = scope:oe_new_moldavian_march }
+}

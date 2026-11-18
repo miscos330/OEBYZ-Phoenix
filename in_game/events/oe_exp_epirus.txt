@@ -1,0 +1,293 @@
+﻿namespace = oe_exp_epirus
+
+oe_exp_epirus.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_exp_epirus.1.t
+    desc = oe_exp_epirus.1.d
+    image = "gfx/interface/illustrations/events/oe_pacify_epirus.dds"
+    trigger = {
+        oe_epi_event_active = yes
+        scope:expedition = { var:oe_epi_stage = 1 }
+    }
+    option = {
+        name = oe_exp_epirus.1.a
+        trigger = { oe_epi_event_active = yes  }
+        add_political_influence = 25
+        resume_expedition = scope:expedition
+    }
+    option = {
+        name = oe_exp_epirus.inactive
+        trigger = { NOT = { oe_epi_event_active = yes } }
+    }
+}
+
+oe_exp_epirus.2 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_exp_epirus.2.t
+    desc = oe_exp_epirus.2.d
+    image = "gfx/interface/illustrations/events/oe_pacify_epirus.dds"
+    trigger = {
+        oe_epi_event_active = yes
+        scope:expedition = { var:oe_epi_stage = 2 }
+    }
+    immediate = {
+        save_scope_value_as = { name = oe_epi_gold_cost value = { value = c:EPI.monthly_income_total min = 0 multiply = 12 } }
+    }
+    option = {
+        name = oe_exp_epirus.2.a
+        trigger = { oe_epi_event_active = yes gold >= scope:oe_epi_gold_cost }
+        add_gold = { value = scope:oe_epi_gold_cost multiply = -1 }
+        add_political_influence = 10
+        resume_expedition = scope:expedition
+    }
+    option = {
+        name = oe_exp_epirus.2.b
+        trigger = { oe_epi_event_active = yes manpower >= 0.1 }
+        add_manpower = -0.1
+        custom_tooltip = oe_epi_wait_60_tt
+        resume_expedition = scope:expedition
+        scope:expedition = { pause_expedition = 60 }
+    }
+    option = {
+        name = oe_exp_epirus.2.c
+        trigger = { oe_epi_event_active = yes  }
+        fail_expedition = scope:expedition
+    }
+    option = {
+        name = oe_exp_epirus.inactive
+        trigger = { NOT = { oe_epi_event_active = yes } }
+    }
+}
+
+oe_exp_epirus.3 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_exp_epirus.3.t
+    desc = oe_exp_epirus.3.d
+    image = "gfx/interface/illustrations/events/oe_pacify_epirus.dds"
+    trigger = {
+        oe_epi_event_active = yes
+        scope:expedition = { var:oe_epi_stage = 3 }
+    }
+    immediate = {
+        save_scope_value_as = { name = oe_epi_gold_cost value = { value = monthly_income_total min = 0 multiply = 6 } }
+        oe_epi_prepare_assault = yes
+    }
+    option = {
+        name = oe_exp_epirus.3.a
+        trigger = { oe_epi_event_active = yes gold >= scope:oe_epi_gold_cost }
+        add_gold = { value = scope:oe_epi_gold_cost multiply = -1 }
+        add_political_influence = 25
+        scope:expedition = { set_variable = { name = oe_epi_stage value = 5 } }
+        resume_expedition = scope:expedition
+    }
+    option = {
+        name = oe_exp_epirus.3.b
+        trigger = { oe_epi_event_active = yes  }
+        custom_tooltip = oe_epi_wait_180_tt
+        scope:expedition = {
+            set_variable = { name = oe_epi_stage value = 4 }
+            pause_expedition = 180
+        }
+        # Remain stalled while the dated event is pending; do not leave Arta at the timer boundary.
+        trigger_event_non_silently = { id = oe_exp_epirus.4 days = 180 }
+    }
+    option = {
+        name = oe_exp_epirus.3.c
+        trigger = { oe_epi_event_active = yes exists = scope:oe_epi_assault_target scope:oe_epi_assault_target = { oe_epi_assault_army = yes } }
+        custom_tooltip = oe_epi_destroy_army_tt
+        scope:oe_epi_assault_target = { destroy_unit = yes }
+        scope:expedition = { set_variable = { name = oe_epi_stage value = 5 } }
+        resume_expedition = scope:expedition
+    }
+    option = {
+        name = oe_exp_epirus.3.d
+        trigger = { oe_epi_event_active = yes  }
+        fail_expedition = scope:expedition
+    }
+    option = {
+        name = oe_exp_epirus.inactive
+        trigger = { NOT = { oe_epi_event_active = yes } }
+    }
+}
+
+oe_exp_epirus.4 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_exp_epirus.4.t
+    desc = oe_exp_epirus.4.d
+    image = "gfx/interface/illustrations/events/oe_pacify_epirus.dds"
+    trigger = {
+        oe_epi_event_active = yes
+        scope:expedition = { var:oe_epi_stage = 4 }
+    }
+    immediate = {
+        save_scope_value_as = { name = oe_epi_lenient_gold value = { value = c:EPI.monthly_income_total min = 0 multiply = 3 } }
+        save_scope_value_as = { name = oe_epi_harsh_gold value = { value = c:EPI.monthly_income_total min = 0 multiply = 36 } }
+    }
+    option = {
+        name = oe_exp_epirus.4.a
+        trigger = { oe_epi_event_active = yes  }
+        add_gold = scope:oe_epi_lenient_gold
+        add_political_influence = 10
+        scope:expedition = { set_variable = { name = oe_epi_stage value = 5 } }
+        resume_expedition = scope:expedition
+    }
+    option = {
+        name = oe_exp_epirus.4.b
+        trigger = { oe_epi_event_active = yes political_influence > 50 }
+        add_political_influence = -25
+        add_gold = scope:oe_epi_harsh_gold
+        location:arta = { change_prosperity = -0.3 }
+        scope:expedition = { set_variable = { name = oe_epi_stage value = 5 } }
+        resume_expedition = scope:expedition
+    }
+    option = {
+        name = oe_exp_epirus.inactive
+        trigger = { NOT = { oe_epi_event_active = yes } }
+    }
+}
+
+oe_exp_epirus.5 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_exp_epirus.5.t
+    desc = oe_exp_epirus.5.d
+    image = "gfx/interface/illustrations/events/oe_pacify_epirus.dds"
+    trigger = {
+        oe_epi_event_active = yes
+        scope:expedition = { var:oe_epi_stage = 6 }
+    }
+    immediate = {
+        save_scope_value_as = { name = oe_epi_gold_cost value = { value = monthly_income_total min = 0 multiply = 6 } }
+        oe_epi_prepare_assault = yes
+    }
+    option = {
+        name = oe_exp_epirus.5.a
+        trigger = { oe_epi_event_active = yes gold >= scope:oe_epi_gold_cost }
+        add_gold = { value = scope:oe_epi_gold_cost multiply = -1 }
+        add_political_influence = 25
+        oe_epi_resolve_final_siege = yes
+    }
+    option = {
+        name = oe_exp_epirus.5.b
+        trigger = { oe_epi_event_active = yes  }
+        custom_tooltip = oe_epi_wait_365_tt
+        scope:expedition = {
+            set_variable = { name = oe_epi_stage value = 7 }
+            pause_expedition = 365
+        }
+        trigger_event_silently = { id = oe_exp_epirus.6 days = 365 }
+    }
+    option = {
+        name = oe_exp_epirus.5.c
+        trigger = { oe_epi_event_active = yes exists = scope:oe_epi_assault_target scope:oe_epi_assault_target = { oe_epi_assault_army = yes } }
+        custom_tooltip = oe_epi_destroy_army_tt
+        scope:oe_epi_assault_target = { destroy_unit = yes }
+        oe_epi_resolve_final_siege = yes
+    }
+    option = {
+        name = oe_exp_epirus.5.d
+        trigger = { oe_epi_event_active = yes  }
+        fail_expedition = scope:expedition
+    }
+    option = {
+        name = oe_exp_epirus.inactive
+        trigger = { NOT = { oe_epi_event_active = yes } }
+    }
+}
+
+# No choice popup: a guarded timer dispatches the actual escape/surrender event.
+oe_exp_epirus.6 = {
+    type = country_event
+    title = empty_text # FIX 2026-11-17 P2：隐藏事件按原版写法补 title
+    hidden = yes
+    trigger = {
+        oe_epi_event_active = yes
+        scope:expedition = { var:oe_epi_stage = 7 }
+    }
+    immediate = { oe_epi_resolve_final_siege = yes }
+}
+
+oe_exp_epirus.7 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_exp_epirus.7.t
+    desc = oe_exp_epirus.7.d
+    image = "gfx/interface/illustrations/events/oe_pacify_epirus.dds"
+    trigger = {
+        oe_epi_event_active = yes
+        scope:expedition = { var:oe_epi_stage = 8 }
+    }
+    option = {
+        name = oe_exp_epirus.7.a
+        trigger = { oe_epi_event_active = yes  }
+        add_legitimacy = -10
+        add_political_influence = -50
+        character:epi_nikephoros_ii_orsini ?= {
+            if = {
+                limit = { is_alive = yes }
+                if = {
+                    limit = { country_exists = c:NAP }
+                    move_country = c:NAP
+                }
+                else_if = {
+                    limit = { exists = location:naples.owner }
+                    move_country = location:naples.owner
+                }
+                set_character_location = location:naples
+            }
+        }
+        custom_tooltip = oe_epi_completion_tt
+        oe_epi_complete_expedition = yes
+    }
+    option = {
+        name = oe_exp_epirus.inactive
+        trigger = { NOT = { oe_epi_event_active = yes } }
+    }
+}
+
+oe_exp_epirus.8 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_exp_epirus.8.t
+    desc = oe_exp_epirus.8.d
+    image = "gfx/interface/illustrations/events/oe_pacify_epirus.dds"
+    trigger = {
+        oe_epi_event_active = yes
+        scope:expedition = { var:oe_epi_stage = 8 }
+    }
+    immediate = {
+        save_scope_value_as = { name = oe_epi_submission_gold value = { value = monthly_income_total min = 0 multiply = 3 } }
+    }
+    option = {
+        name = oe_exp_epirus.8.a
+        trigger = { oe_epi_event_active = yes  }
+        add_legitimacy = 10
+        add_gold = scope:oe_epi_submission_gold
+        character:epi_nikephoros_ii_orsini ?= {
+            if = {
+                limit = { is_alive = yes }
+                move_country = root
+                set_character_location = location:thessaloniki
+            }
+        }
+        custom_tooltip = oe_epi_completion_tt
+        oe_epi_complete_expedition = yes
+    }
+    option = {
+        name = oe_exp_epirus.inactive
+        trigger = { NOT = { oe_epi_event_active = yes } }
+    }
+}
+
+oe_exp_epirus.9 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_exp_epirus.9.t
+    desc = oe_exp_epirus.9.d
+    image = "gfx/interface/illustrations/events/oe_pacify_epirus.dds"
+    option = { name = oe_exp_epirus.9.a }
+}

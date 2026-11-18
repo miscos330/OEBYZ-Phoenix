@@ -1,0 +1,107 @@
+﻿oe_heg_plan_france = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_heg_action_visible = yes NOT = { has_variable = oe_heg_france_plan_done } } }
+    allow = { scope:actor = { oe_heg_plan_france_allowed = yes } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_heg_plan_france_allowed = yes }
+                
+            }
+            custom_tooltip = {
+                text = oe_heg_plan_france_effect
+                scope:actor = { oe_heg_plan_france_effect = yes }
+            }
+        }
+    }
+}
+oe_heg_invade_france = {
+    cooldown = { type = oe_heg_invade_france_cooldown months = 3 }
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_heg_action_visible = yes } }
+    allow = { scope:actor = { oe_heg_invade_france_allowed = yes } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    select_trigger = {
+        # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        looking_for_a = country
+        target_flag = target_country
+        name = "OE_HEG_CHOOSE_INVASION_TARGET"
+        none_available_msg_key = "OE_HEG_NO_TARGETS"
+        column = { data = name }
+        column = { data = great_power_score }
+        visible = { oe_heg_invade_france_target = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_heg_invade_france_allowed = yes }
+                scope:target_country = { oe_heg_invade_france_target = yes }
+            }
+            custom_tooltip = {
+                text = oe_heg_invade_france_effect
+                scope:actor = { oe_heg_buy_capital_invasion = yes }
+            }
+        }
+    }
+}
+oe_heg_mass_invade_france = {
+    type = internationalorganization
+    show_message = no
+    # NEW 2026-11-17 conquest campaigns phase 2: replaced by oe_hc_france_declare. Delete 'always = no' to restore.
+    potential = { always = no scope:actor = { oe_heg_action_visible = yes } }
+    allow = { scope:actor = { oe_heg_mass_invade_france_allowed = yes } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_heg_mass_invade_france_allowed = yes }
+                
+            }
+            custom_tooltip = {
+                text = oe_heg_mass_invade_france_effect
+                scope:actor = { oe_heg_mass_invade_france_effect = yes }
+            }
+        }
+    }
+}

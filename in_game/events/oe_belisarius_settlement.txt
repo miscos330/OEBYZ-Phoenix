@@ -1,0 +1,17 @@
+﻿namespace = oe_belisarius_settlement
+# One queued reconciliation per batch of actual conquests; never a recurring pulse.
+oe_belisarius_settlement.1 = {
+    type = country_event
+    title = empty_text # FIX 2026-11-17 P2：隐藏事件按原版写法补 title
+    hidden = yes
+    interface_lock = no
+    immediate = {
+        every_in_list = {
+            variable = oe_belisarius_pending_noncores
+            limit = { owner = root }
+            oe_reset_new_conquest_integration = { recipient = root }
+        }
+        clear_variable_list = oe_belisarius_pending_noncores
+        remove_variable = oe_belisarius_settlement_queued
+    }
+}

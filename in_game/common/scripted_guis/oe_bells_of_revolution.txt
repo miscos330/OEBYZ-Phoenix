@@ -1,0 +1,35 @@
+﻿# Pure viewer pagination; no situation, camp, cost or history mutations.
+oe_bells_history_prev = {
+    scope = country
+    is_valid = { has_variable = oe_bells_history_offset var:oe_bells_history_offset > 0 }
+    effect = {
+        if = {
+            limit = { has_variable = oe_bells_history_offset }
+            change_variable = { name = oe_bells_history_offset subtract = 100 }
+            clamp_variable = { name = oe_bells_history_offset min = 0 }
+        }
+    }
+}
+oe_bells_history_next = {
+    scope = country
+    is_valid = {
+        situation:oe_bells_of_revolution = {
+            var:oe_bells_log_sequence > root.oe_bells_history_next_offset
+        }
+    }
+    effect = {
+        if = {
+            limit = {
+                situation:oe_bells_of_revolution = {
+                    var:oe_bells_log_sequence > root.oe_bells_history_next_offset
+                }
+            }
+            set_variable = { name = oe_bells_history_offset value = oe_bells_history_next_offset }
+        }
+    }
+}
+
+oe_bells_revolutionary_panel = {
+    scope = country
+    is_shown = { oe_bells_byz_actor = yes }
+}

@@ -1,0 +1,88 @@
+﻿# The vanilla family is ottomans_dynasty. Never store variables on a dynasty.
+oe_osman_escort = {
+    if = {
+        limit = { NOT = { has_variable = oe_osman_arrived } NOT = { has_variable = oe_osman_expelled } }
+        set_variable = oe_osman_arrived
+        dynasty:ottomans_dynasty = {
+            every_character_in_dynasty = { limit = { is_alive = yes } move_country = c:BYZ }
+        }
+    }
+}
+oe_osman_open_fate = {
+    if = {
+        limit = { NOT = { has_variable = oe_osman_fate_pending } NOT = { has_variable = oe_osman_fate_shown } }
+        set_variable = oe_osman_fate_pending
+        oe_osman_escort = yes
+        trigger_event_non_silently = oe_flavor_byz.1000
+    }
+}
+oe_osman_settle = {
+    if = {
+        limit = { NOT = { has_variable = oe_osman_expelled } NOT = { has_variable = oe_osman_conversion_waiting } }
+        set_variable = oe_flavor_byz_1000_a_var
+        set_variable = oe_osman_conversion_waiting
+        set_variable = { name = oe_osman_conversion_due value = 1 years = 3 }
+        # Characters have country residence, not a separate editable location residence.
+        # Constantinople is the narrative seat; their actual character owner is Byzantium.
+        dynasty:ottomans_dynasty = {
+            every_character_in_dynasty = { limit = { is_alive = yes } move_country = c:BYZ }
+        }
+        trigger_event_non_silently = { id = oe_flavor_byz.1002 years = 3 }
+    }
+}
+oe_osman_convert_person = {
+    change_character_religion = religion:orthodox
+    change_character_culture = culture:oe_tur_greek_culture
+    if = { limit = { this = character:tur_orhan } set_first_name = oe_osmaris_john set_nickname = oe_osmaris_pious }
+    else_if = { limit = { this = character:tur_murad } set_first_name = oe_osmaris_manuel }
+}
+oe_osman_convert_family = {
+    dynasty:ottomans_dynasty = {
+        # The Roman-language surname is Osmaris, without a patronymic suffix.
+        set_dynasty_name_type = default
+        every_character_in_dynasty = { limit = { is_alive = yes } oe_osman_convert_person = yes }
+    }
+}
+oe_osman_accept_conversion = {
+    if = {
+        limit = { NOT = { has_variable = oe_osman_chain_active } NOT = { has_variable = oe_osman_expelled } }
+        set_variable = oe_osman_chain_active
+        oe_osman_convert_family = yes
+        international_organization:oe_byz_empire_pillars ?= {
+            change_variable = { name = oe_pillars_authority add = 2 }
+            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        }
+    }
+}
+oe_osman_expel = {
+    # Permanent stop flag is written BEFORE removal and its character callbacks.
+    set_variable = oe_osman_expelled
+    remove_variable = oe_osman_chain_active
+    remove_variable = oe_osman_conversion_waiting
+    remove_variable = oe_osman_conversion_due
+    remove_variable = oe_flavor_byz_1000_a_var
+    dynasty:ottomans_dynasty = {
+        every_character_in_dynasty = {
+            limit = { is_alive = yes }
+            # Vanilla banishment uses vanished when a character must disappear from play.
+            kill_character_silently = { target = this reason = vanished }
+        }
+    }
+    oe_court_clear_invalid = yes
+    oe_court_auto_fill = yes
+    if = { limit = { exists = international_organization:oe_byz_empire_pillars } oe_nf_refresh = yes }
+}
+# Character scope. Applies equally to natural births and historical create_character calls.
+oe_osman_sync_person = {
+    if = {
+        limit = { is_alive = yes has_dynasty = yes dynasty = dynasty:ottomans_dynasty country_exists = c:BYZ }
+        if = {
+            limit = { c:BYZ = { has_variable = oe_osman_expelled } }
+            kill_character_silently = { target = this reason = vanished }
+        }
+        else_if = {
+            limit = { c:BYZ = { has_variable = oe_osman_chain_active } }
+            oe_osman_convert_person = yes
+        }
+    }
+}

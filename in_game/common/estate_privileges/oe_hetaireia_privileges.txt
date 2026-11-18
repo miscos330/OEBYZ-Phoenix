@@ -1,0 +1,201 @@
+﻿# PAUSED 2026-09-30: replaced by imperial-reform military progression.
+# oe_hetaireia_tax_exemption = {
+#     estate = oe_imperial_hetaireia_estate
+#     potential = { tag = BYZ }
+#     allow = { }
+#     can_revoke = { }
+#     country_modifier = {
+#         oe_imperial_hetaireia_estate_target_satisfaction = 0.20
+#         global_oe_imperial_hetaireia_estate_power = 0.33
+#         oe_imperial_hetaireia_estate_max_tax = -1
+#     }
+# }
+# 
+# oe_hetaireia_rum_pronoia = {
+#     estate = oe_imperial_hetaireia_estate
+#     potential = { tag = BYZ }
+#     allow = { }
+#     can_revoke = { }
+#     country_modifier = {
+#         oe_imperial_hetaireia_estate_target_satisfaction = 0.05
+#         global_oe_imperial_hetaireia_estate_power = 0.33
+#         tax_income_efficiency = -0.025
+#     }
+#     # No implementation delay: this fires immediately at full enactment.
+#     on_fully_activated = {
+#         custom_tooltip = {
+#             text = OE_RUM_PRONOIA_UPGRADE_TT
+#             oe_hetaireia_pronoia_upgrade = yes
+#         }
+#     }
+#     on_deactivate = {
+#         custom_tooltip = {
+#             text = OE_RUM_PRONOIA_DOWNGRADE_TT
+#             oe_hetaireia_pronoia_downgrade = yes
+#         }
+#     }
+# }
+# 
+# # Linear heavy-infantry chain. Cavalry Pronoia remains independent.
+# 
+# oe_hetaireia_elite_selection = {
+#     estate = oe_imperial_hetaireia_estate
+#     potential = { tag = BYZ }
+#     allow = { }
+#     can_revoke = { NOT = { has_estate_privilege = estate_privilege:oe_hetaireia_cultural_education } }
+#     country_modifier = {
+#         oe_imperial_hetaireia_estate_target_satisfaction = 0.05
+#         global_oe_imperial_hetaireia_estate_power = 0.10
+#         global_manpower_modifier = -0.10
+#     }
+#     on_fully_activated = {
+#         hidden_effect = {
+#             set_variable = oe_hi_grant_elite_selection
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_grant_elite_selection
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+#     on_deactivate = {
+#         hidden_effect = {
+#             set_variable = oe_hi_revoke_elite_selection
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_revoke_elite_selection
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+# }
+# 
+# oe_hetaireia_cultural_education = {
+#     estate = oe_imperial_hetaireia_estate
+#     potential = { tag = BYZ }
+#     allow = { has_estate_privilege = estate_privilege:oe_hetaireia_elite_selection }
+#     can_revoke = { NOT = { has_estate_privilege = estate_privilege:oe_hetaireia_path_to_glory } }
+#     country_modifier = {
+#         oe_imperial_hetaireia_estate_target_satisfaction = 0.05
+#         global_oe_imperial_hetaireia_estate_power = 0.10
+#         army_maintenance_efficiency = -0.10
+#     }
+#     on_fully_activated = {
+#         hidden_effect = {
+#             set_variable = oe_hi_grant_cultural_education
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_grant_cultural_education
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+#     on_deactivate = {
+#         hidden_effect = {
+#             set_variable = oe_hi_revoke_cultural_education
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_revoke_cultural_education
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+# }
+# 
+# oe_hetaireia_path_to_glory = {
+#     estate = oe_imperial_hetaireia_estate
+#     potential = { tag = BYZ }
+#     allow = { has_estate_privilege = estate_privilege:oe_hetaireia_cultural_education }
+#     can_revoke = { NOT = { has_estate_privilege = estate_privilege:oe_hetaireia_military_band } }
+#     country_modifier = {
+#         oe_imperial_hetaireia_estate_target_satisfaction = 0.05
+#         global_oe_imperial_hetaireia_estate_power = 0.10
+#         oe_imperial_hetaireia_estate_allowed_in_cabinet = yes
+#     }
+#     on_fully_activated = {
+#         hidden_effect = {
+#             set_variable = oe_hi_grant_path_to_glory
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_grant_path_to_glory
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+#     on_deactivate = {
+#         hidden_effect = {
+#             set_variable = oe_hi_revoke_path_to_glory
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_revoke_path_to_glory
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+# }
+# 
+# oe_hetaireia_military_band = {
+#     estate = oe_imperial_hetaireia_estate
+#     potential = { tag = BYZ }
+#     allow = { has_estate_privilege = estate_privilege:oe_hetaireia_path_to_glory }
+#     can_revoke = { NOT = { has_estate_privilege = estate_privilege:oe_hetaireia_medical_corps } }
+#     country_modifier = {
+#         oe_imperial_hetaireia_estate_target_satisfaction = 0.05
+#         global_oe_imperial_hetaireia_estate_power = 0.10
+#         cultural_influence_modifier = 0.10
+#     }
+#     on_fully_activated = {
+#         hidden_effect = {
+#             set_variable = oe_hi_grant_military_band
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_grant_military_band
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+#     on_deactivate = {
+#         hidden_effect = {
+#             set_variable = oe_hi_revoke_military_band
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_revoke_military_band
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+# }
+# 
+# oe_hetaireia_medical_corps = {
+#     estate = oe_imperial_hetaireia_estate
+#     potential = { tag = BYZ }
+#     allow = { has_estate_privilege = estate_privilege:oe_hetaireia_military_band }
+#     can_revoke = { }
+#     country_modifier = {
+#         oe_imperial_hetaireia_estate_target_satisfaction = 0.05
+#         global_oe_imperial_hetaireia_estate_power = 0.10
+#     }
+#     on_fully_activated = {
+#         hidden_effect = {
+#             set_variable = oe_hi_grant_medical_corps
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_grant_medical_corps
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+#     on_deactivate = {
+#         hidden_effect = {
+#             set_variable = oe_hi_revoke_medical_corps
+#             oe_hi_refresh = yes
+#             remove_variable = oe_hi_revoke_medical_corps
+#         }
+#         custom_tooltip = OE_HI_REFRESH_TT
+#     }
+# }
+# 
+# oe_hetaireia_imperial_artillery = {
+#     estate = oe_imperial_hetaireia_estate
+#     potential = { oe_roman_siegers_unlocked = yes }
+#     allow = { }
+#     can_revoke = { }
+#     country_modifier = {
+#         oe_imperial_hetaireia_estate_target_satisfaction = 0.05
+#         global_oe_imperial_hetaireia_estate_power = 0.33
+#     }
+#     on_fully_activated = {
+#         custom_tooltip = {
+#             text = OE_ROMAN_SIEGERS_UPGRADE_TT
+#             oe_roman_siegers_convert = { FORM = imperial }
+#         }
+#     }
+#     on_deactivate = {
+#         custom_tooltip = {
+#             text = OE_ROMAN_SIEGERS_DOWNGRADE_TT
+#             oe_roman_siegers_convert = { FORM = normal }
+#         }
+#     }
+# }

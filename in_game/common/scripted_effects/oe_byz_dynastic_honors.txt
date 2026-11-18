@@ -1,0 +1,29 @@
+﻿# Country scope. Called once when the government card is created, never daily.
+# A valid title holder stays displayed if their country changes.
+oe_byz_refresh_co_emperor_display = {
+    if = {
+        limit = {
+            tag = BYZ
+            NOT = {
+                has_variable = oe_byz_co_emperor_display
+                var:oe_byz_co_emperor_display = { is_alive = yes has_character_modifier = oe_byz_select_as_second_empire_mod }
+            }
+        }
+        remove_variable = oe_byz_co_emperor_display
+        every_character = {
+            limit = { is_alive = yes has_character_modifier = oe_byz_select_as_second_empire_mod }
+            save_scope_as = oe_display_co_emperor
+            c:BYZ = { set_variable = { name = oe_byz_co_emperor_display value = scope:oe_display_co_emperor } }
+        }
+        every_subject = {
+            limit = { oe_theme_member_trigger = yes }
+            ruler ?= {
+                if = {
+                    limit = { is_alive = yes has_character_modifier = oe_byz_select_as_second_empire_mod }
+                    save_scope_as = oe_display_co_emperor
+                    c:BYZ = { set_variable = { name = oe_byz_co_emperor_display value = scope:oe_display_co_emperor } }
+                }
+            }
+        }
+    }
+}

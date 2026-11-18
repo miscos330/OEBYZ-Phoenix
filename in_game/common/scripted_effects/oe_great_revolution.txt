@@ -1,0 +1,384 @@
+﻿# Country scope. No daily hook or population/location scan in the monthly path.
+oe_gr_monthly = {
+    # Constant-time fallback for missed native death callbacks; never scan characters monthly.
+    if = {
+        limit = { has_variable = oe_gr_emperor var:oe_gr_emperor = { is_alive = no } }
+        oe_gr_queue_emperor_succession = yes
+    }
+    change_variable = { name = oe_gr_radicalism add = oe_gr_radicalism_delta }
+    clamp_variable = { name = oe_gr_radicalism min = 0 max = 100 }
+    if = {
+        limit = { oe_gr_full_revolution = yes in_civil_war = no }
+        # All monthly rates use opening balances; newcomers contribute next month.
+        set_variable = { name = oe_gr_tick_people value = oe_gr_people_delta }
+        set_variable = { name = oe_gr_tick_soldiers value = oe_gr_soldiers_delta }
+        set_variable = { name = oe_gr_tick_muster value = oe_gr_muster_delta }
+        change_variable = { name = oe_gr_people add = var:oe_gr_tick_people }
+        change_variable = { name = oe_gr_soldiers add = var:oe_gr_tick_soldiers }
+        change_variable = { name = oe_gr_muster add = var:oe_gr_tick_muster }
+        clamp_variable = { name = oe_gr_muster min = 0 max = 100 }
+        remove_variable = oe_gr_tick_people
+        remove_variable = oe_gr_tick_soldiers
+        remove_variable = oe_gr_tick_muster
+        if = {
+            limit = { var:oe_gr_muster >= 100 oe_gr_can_muster = yes }
+            oe_gr_reactionary_uprising = yes
+        }
+    }
+}
+
+# Snapshot once on civil-war creation. Lists live only within this effect chain.
+oe_gr_snapshot_country = {
+    clear_saved_scope = oe_gr_origin
+    clear_saved_scope = oe_gr_protected
+    clear_saved_scope = oe_gr_rebel_faction
+    clear_saved_scope = oe_gr_rebel_country
+    save_scope_as = oe_gr_parent
+    set_variable = { name = oe_gr_army_before value = 0 }
+    every_owned_location = {
+        add_to_list = oe_gr_original_locations
+        if = { limit = { is_core_of = scope:oe_gr_parent } add_to_list = oe_gr_original_cores }
+    }
+    every_army = {
+        add_to_list = oe_gr_original_armies
+        scope:oe_gr_parent = { change_variable = { name = oe_gr_army_before add = prev.unit_strength } }
+    }
+    every_navy = { add_to_list = oe_gr_original_navies }
+}
+
+# Samples locations without replacement, includes the uprising's birthplace,
+# and leaves the protected location with the parent even if native secession selected it.
+oe_gr_pick_secession = {
+    set_variable = { name = oe_gr_land_left value = oe_gr_secession_count }
+    scope:oe_gr_origin = {
+        set_variable = oe_gr_selected_location
+        add_to_list = oe_gr_seceding_locations
+    }
+    change_variable = { name = oe_gr_land_left add = -1 }
+    every_owned_location = {
+        limit = { this != scope:oe_gr_origin this != scope:oe_gr_protected }
+        add_to_list = oe_gr_available_locations
+    }
+    while = {
+        limit = { var:oe_gr_land_left > 0 }
+        random_in_list = {
+            list = oe_gr_available_locations
+            set_variable = oe_gr_selected_location
+            add_to_list = oe_gr_seceding_locations
+            remove_from_list = oe_gr_available_locations
+        }
+        change_variable = { name = oe_gr_land_left add = -1 }
+    }
+}
+
+oe_gr_seed_civil_war = {
+    # Only a single uprising location needs supporting pops; do not scan the country.
+    scope:oe_gr_origin = {
+        every_pop = {
+            limit = { owner = scope:oe_gr_parent }
+            change_pop_allegiance = scope:oe_gr_rebel_faction
+        }
+    }
+    scope:oe_gr_rebel_faction = {
+        start_civil_war = {
+            save_scope_as = oe_gr_rebel_country
+            set_variable = { name = will_not_surrender years = 3 }
+        }
+    }
+}
+
+# Reconcile native secession to the preselected partition. Never remove a core.
+oe_gr_enforce_partition = {
+    scope:oe_gr_protected = {
+        if = { limit = { owner != scope:oe_gr_parent } change_location_owner = scope:oe_gr_parent }
+    }
+    every_in_list = {
+        list = oe_gr_original_locations
+        if = {
+            limit = { NOT = { has_variable = oe_gr_selected_location } owner != scope:oe_gr_parent }
+            change_location_owner = scope:oe_gr_parent
+        }
+    }
+    every_in_list = {
+        list = oe_gr_seceding_locations
+        if = { limit = { owner != scope:oe_gr_rebel_country } change_location_owner = scope:oe_gr_rebel_country }
+    }
+    scope:oe_gr_rebel_country = { set_capital = scope:oe_gr_origin }
+    every_in_list = {
+        list = oe_gr_original_cores
+        if = { limit = { NOT = { is_core_of = scope:oe_gr_parent } } add_core = scope:oe_gr_parent }
+    }
+    every_in_list = { list = oe_gr_original_locations remove_variable = oe_gr_selected_location }
+    # Prevent the native split from implicitly granting extra parent armies/navies.
+    every_in_list = { list = oe_gr_original_armies change_unit_owner = scope:oe_gr_parent }
+    every_in_list = { list = oe_gr_original_navies change_unit_owner = scope:oe_gr_parent }
+}
+
+oe_gr_emperor_escape = {
+    set_variable = oe_gr_emperor_escaped
+    oe_gr_snapshot_country = yes
+    location:constantinople = { save_scope_as = oe_gr_origin }
+    random_owned_location = {
+        limit = { this != location:constantinople }
+        save_scope_as = oe_gr_protected
+    }
+    random_list = {
+        1 = { set_variable = { name = oe_gr_land_fraction value = 0.51 } }
+        1 = { set_variable = { name = oe_gr_land_fraction value = 0.6 } }
+        1 = { set_variable = { name = oe_gr_land_fraction value = 0.7 } }
+        1 = { set_variable = { name = oe_gr_land_fraction value = 0.8 } }
+    }
+    oe_gr_pick_secession = yes
+    create_rebel = { category = estate estate = burghers_estate name = oe_gr_revolutionaries save_scope_as = oe_gr_rebel_faction }
+    oe_gr_seed_civil_war = yes
+    if = {
+        limit = { exists = scope:oe_gr_rebel_country }
+        oe_gr_enforce_partition = yes
+        scope:oe_gr_rebel_country = { change_government_type = government_type:republic }
+        set_variable = { name = oe_gr_army_to_transfer value = oe_gr_army_target }
+        # Existing formations retain their subunits, experience and commanders.
+        # The last whole formation may exceed the 80% threshold.
+        while = {
+            limit = { var:oe_gr_army_to_transfer > 0 any_in_list = { list = oe_gr_original_armies } }
+            random_in_list = {
+                list = oe_gr_original_armies
+                scope:oe_gr_parent = { change_variable = { name = oe_gr_army_to_transfer subtract = prev.unit_strength } }
+                change_unit_owner = scope:oe_gr_rebel_country
+                remove_from_list = oe_gr_original_armies
+            }
+        }
+    }
+    remove_variable = oe_gr_army_before
+    remove_variable = oe_gr_army_to_transfer
+    remove_variable = oe_gr_land_left
+    remove_variable = oe_gr_land_fraction
+}
+
+oe_gr_reactionary_uprising = {
+    oe_gr_snapshot_country = yes
+    location:constantinople = { save_scope_as = oe_gr_protected }
+    # Province first, then a non-Constantinople location inside it.
+    random_province = {
+        limit = {
+            any_location_in_province = {
+                owner = scope:oe_gr_parent
+                this != location:constantinople
+                any_pop = { owner = scope:oe_gr_parent }
+            }
+        }
+        random_location_in_province = {
+            limit = { owner = scope:oe_gr_parent this != location:constantinople any_pop = { owner = scope:oe_gr_parent } }
+            save_scope_as = oe_gr_origin
+        }
+    }
+    if = {
+        limit = { exists = scope:oe_gr_origin }
+        random_list = {
+            1 = { set_variable = { name = oe_gr_land_fraction value = 0.81 } }
+            1 = { set_variable = { name = oe_gr_land_fraction value = 0.85 } }
+            1 = { set_variable = { name = oe_gr_land_fraction value = 0.9 } }
+            1 = { set_variable = { name = oe_gr_land_fraction value = 0.95 } }
+        }
+        oe_gr_pick_secession = yes
+        create_rebel = { category = estate estate = nobles_estate name = oe_gr_reactionaries save_scope_as = oe_gr_rebel_faction }
+        oe_gr_seed_civil_war = yes
+        if = {
+            limit = { exists = scope:oe_gr_rebel_country }
+            oe_gr_enforce_partition = yes
+            set_variable = { name = oe_gr_regiments_left value = oe_gr_spawn_regiments }
+            set_variable = { name = oe_gr_strength_left value = oe_gr_spawn_strength }
+            scope:oe_gr_rebel_country = {
+                change_government_type = government_type:monarchy
+                add_gold = scope:oe_gr_parent.var:oe_gr_people
+                # Original parent units have already been returned; replace any
+                # engine-created rebel regiments with precisely the stored pool.
+                every_country_sub_unit = { limit = { is_regiment = yes } destroy_subunit = yes }
+            }
+            while = {
+                limit = { var:oe_gr_regiments_left > 0 }
+                scope:oe_gr_origin = { create_sub_unit_with_owner = { type = a_hunters owner = scope:oe_gr_rebel_country } }
+                change_variable = { name = oe_gr_regiments_left add = -1 }
+            }
+            scope:oe_gr_rebel_country = {
+                every_country_sub_unit = {
+                    limit = { is_regiment = yes sub_unit_type = unit_type:a_hunters }
+                    # Full 2,500-man regiments plus one partial regiment.
+                    if = {
+                        limit = { subunit_strength > scope:oe_gr_parent.var:oe_gr_strength_left }
+                        add_subunit_strength = { value = scope:oe_gr_parent.var:oe_gr_strength_left subtract = subunit_strength }
+                    }
+                    scope:oe_gr_parent = { change_variable = { name = oe_gr_strength_left subtract = prev.subunit_strength } }
+                }
+            }
+            set_variable = { name = oe_gr_people value = 0 }
+            set_variable = { name = oe_gr_soldiers value = 0 }
+            set_variable = { name = oe_gr_muster value = 0 }
+            trigger_event_non_silently = oe_great_revolution.2
+        }
+    }
+    remove_variable = oe_gr_army_before
+    remove_variable = oe_gr_land_left
+    remove_variable = oe_gr_land_fraction
+    remove_variable = oe_gr_regiments_left
+    remove_variable = oe_gr_strength_left
+}
+
+oe_gr_establish_republic = {
+    # Set the branch guard before changing government or ruler.
+    set_variable = oe_gr_republican_path
+    if = {
+        limit = { has_variable = oe_gr_emperor var:oe_gr_emperor = { is_alive = yes } }
+        var:oe_gr_emperor = {
+            add_character_modifier = { modifier = oe_gr_imprisoned_emperor years = -1 mode = replace }
+        }
+        set_variable = { name = oe_gr_detained_emperor value = var:oe_gr_emperor }
+    }
+    change_government_type = government_type:republic
+    change_heir_selection = heir_selection:republic_4_year_terms
+    create_character = {
+        age = 45
+        culture = root.culture
+        religion = root.religion
+        estate = estate_type:burghers_estate
+        adm = { 40 70 }
+        dip = { 40 70 }
+        mil = { 40 70 }
+        save_scope_as = oe_gr_provisional_president
+    }
+    set_new_ruler = scope:oe_gr_provisional_president
+    # Pool accounting represents political support, not population removal.
+    set_variable = { name = oe_gr_people value = oe_gr_initial_people }
+    set_variable = { name = oe_gr_soldiers value = oe_gr_initial_soldiers }
+    change_variable = { name = oe_gr_radicalism add = 30 }
+    clamp_variable = { name = oe_gr_radicalism min = 0 max = 100 }
+    set_variable = { name = oe_gr_army_refusals_left value = 3 }
+    trigger_event_non_silently = { on_action = oe_gr_begin_army_refusals days = 3 }
+    oe_gr_schedule_estate_reactions = yes
+    change_country_name = oe_gr_rome_name
+    change_country_adjective = oe_gr_roman_adjective
+    change_country_color = map_ROM
+    oe_gr_schedule_republic_foundation = yes
+}
+
+# Track the imperial person independently of the republican head of government.
+oe_gr_track_emperor = {
+    if = {
+        limit = { has_ruler = yes }
+        set_variable = { name = oe_gr_emperor value = ruler }
+        if = {
+            limit = { ruler = { has_dynasty = yes } }
+            set_variable = { name = oe_gr_royal_house value = ruler.dynasty }
+        }
+    }
+}
+
+# Called by both native death hooks. Clear the current pointer before scheduling,
+# so the same death cannot enqueue two succession events.
+oe_gr_queue_emperor_succession = {
+    if = {
+        limit = { has_variable = oe_gr_emperor NOT = { has_variable = oe_gr_succession_pending } }
+        set_variable = { name = oe_gr_late_emperor value = var:oe_gr_emperor }
+        set_variable = oe_gr_succession_pending
+        remove_variable = oe_gr_emperor
+        remove_variable = oe_gr_detained_emperor
+        trigger_event_non_silently = { on_action = oe_gr_resolve_emperor_succession days = 1 }
+    }
+}
+
+# One descendant traversal per death, including grandchildren through deceased children.
+oe_gr_select_emperor_successor = {
+    remove_variable = oe_gr_emperor_nominee
+    save_scope_as = oe_gr_crown_country
+    var:oe_gr_late_emperor = {
+        ordered_descendant = {
+            limit = { is_alive = yes }
+            order_by = age_in_days
+            max = 1
+            check_range_bounds = no
+            scope:oe_gr_crown_country = { set_variable = { name = oe_gr_emperor_nominee value = prev } }
+        }
+    }
+    if = {
+        limit = { has_variable = oe_gr_emperor_nominee }
+        trigger_event_non_silently = oe_great_revolution.3
+    }
+    else = { trigger_event_non_silently = oe_great_revolution.4 }
+}
+
+oe_gr_install_emperor_successor = {
+    if = {
+        limit = { has_variable = oe_gr_emperor_nominee var:oe_gr_emperor_nominee = { is_alive = yes } }
+        set_variable = { name = oe_gr_emperor value = var:oe_gr_emperor_nominee }
+        if = {
+            limit = { var:oe_gr_emperor = { has_dynasty = yes } }
+            set_variable = { name = oe_gr_royal_house value = var:oe_gr_emperor.dynasty }
+        }
+        else = { remove_variable = oe_gr_royal_house }
+        if = {
+            limit = { has_variable = oe_gr_republican_path }
+            var:oe_gr_emperor = { add_character_modifier = { modifier = oe_gr_imprisoned_emperor years = -1 mode = replace } }
+            set_variable = { name = oe_gr_detained_emperor value = var:oe_gr_emperor }
+        }
+        else = { set_new_ruler = var:oe_gr_emperor }
+        remove_variable = oe_gr_emperor_nominee
+        remove_variable = oe_gr_succession_pending
+    }
+    # A candidate may die while the event is open. Re-evaluate instead of crowning a dead person.
+    else = { oe_gr_select_emperor_successor = yes }
+}
+
+# Three distinct formations, selected in descending current strength. No world/population scan.
+# After the first event (three days after the republican choice), each response opens the next.
+oe_gr_dispatch_army_refusal = {
+    if = {
+        limit = { oe_gr_full_revolution = yes has_variable = oe_gr_army_refusals_left var:oe_gr_army_refusals_left > 0 }
+        clear_saved_scope = oe_gr_refusing_army
+        ordered_army = {
+            limit = {
+                owner = root
+                unit_strength > 0
+                unit_location = { owner = root }
+                NOT = { has_variable = oe_gr_refusal_handled }
+            }
+            order_by = unit_strength
+            max = 1
+            check_range_bounds = no
+            set_variable = oe_gr_refusal_handled
+            save_scope_as = oe_gr_refusing_army
+        }
+        if = {
+            limit = { exists = scope:oe_gr_refusing_army }
+            set_variable = { name = oe_gr_refusal_people value = oe_gr_refusal_soldiers_gain }
+            set_variable = { name = oe_gr_refusal_gold value = oe_gr_refusal_gold_cost }
+            change_variable = { name = oe_gr_army_refusals_left subtract = 1 }
+            # Different event IDs avoid retriggering the event currently being answered.
+            if = { limit = { var:oe_gr_army_refusals_left = 2 } trigger_event_non_silently = oe_great_revolution.5 }
+            else_if = { limit = { var:oe_gr_army_refusals_left = 1 } trigger_event_non_silently = oe_great_revolution.6 }
+            else = { trigger_event_non_silently = oe_great_revolution.7 }
+        }
+        else = { remove_variable = oe_gr_army_refusals_left }
+    }
+    else = { remove_variable = oe_gr_army_refusals_left }
+}
+
+# Country scope. Both event choices call their continuation explicitly, after all
+# mutations, without relying on a self-retrigger in the event's after block.
+oe_gr_disband_refusing_army = {
+    if = {
+        limit = { exists = scope:oe_gr_refusing_army scope:oe_gr_refusing_army = { owner = root } }
+        change_variable = { name = oe_gr_soldiers add = var:oe_gr_refusal_people }
+        scope:oe_gr_refusing_army = { destroy_unit = yes }
+    }
+    oe_gr_dispatch_army_refusal = yes
+}
+oe_gr_keep_refusing_army = {
+    if = {
+        limit = { exists = scope:oe_gr_refusing_army scope:oe_gr_refusing_army = { owner = root } }
+        scope:oe_gr_refusing_army = {
+            add_unit_modifier = { modifier = oe_gr_confined_army days = 1000 mode = replace decaying = no }
+        }
+        add_legitimacy = -10
+        add_gold = { value = var:oe_gr_refusal_gold multiply = -1 }
+    }
+    oe_gr_dispatch_army_refusal = yes
+}

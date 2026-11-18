@@ -1,0 +1,158 @@
+﻿# Resolve each contributor exactly once through the legal subject/union graph.
+# Bounded native loop: avoid recursive scripted-effect expansion.
+oe_rus_resolve_controller = {
+    save_scope_as = oe_rus_controller_country
+    while = {
+        count = 32
+        limit = {
+            scope:oe_rus_controller_country = {
+                OR = {
+                    is_subject = yes
+                    AND = { exists = union.leader_country NOT = { union.leader_country = this } }
+                }
+            }
+        }
+        scope:oe_rus_controller_country = {
+            if = { limit = { is_subject = yes } top_overlord = { save_scope_as = oe_rus_controller_country } }
+            else = { union.leader_country = { save_scope_as = oe_rus_controller_country } }
+        }
+    }
+}
+oe_rus_clear_ranking = {
+    every_in_global_list = {
+        variable = oe_rus_top_three
+        save_scope_as = oe_rus_old_power
+        every_in_global_list = {
+            variable = oe_rus_top_three
+            limit = { this != scope:oe_rus_old_power }
+            remove_opinion = { target = scope:oe_rus_old_power modifier = oe_rus_rivalry }
+        }
+        remove_country_modifier = oe_rus_ambition
+        remove_variable = oe_rus_rank
+    }
+    clear_global_variable_list = oe_rus_top_three
+    remove_variable = oe_rus_first
+    remove_variable = oe_rus_second
+    remove_variable = oe_rus_third
+}
+oe_rus_recalculate = {
+    # Old contributor/controller caches are cleaned even after a tag changes
+    # culture, capital, overlord or union. No pop iteration and no daily poll.
+    every_in_global_list = {
+        variable = oe_rus_score_holders
+        remove_variable = oe_rus_score
+        remove_variable = oe_rus_personal_score
+        remove_variable = oe_rus_score_controller
+    }
+    clear_global_variable_list = oe_rus_score_holders
+    clear_global_variable_list = oe_rus_candidates
+    culture_group:russian_group = {
+        every_country_in_culture_group = {
+            limit = { oe_rus_country = yes }
+            add_to_global_variable_list = { name = oe_rus_candidates target = this }
+            set_variable = { name = oe_rus_personal_score value = oe_rus_own_score }
+        }
+    }
+    every_in_global_list = {
+        variable = oe_rus_candidates
+        save_scope_as = oe_rus_contributor
+        oe_rus_resolve_controller = yes
+        set_variable = { name = oe_rus_score_controller value = scope:oe_rus_controller_country }
+        add_to_global_variable_list = { name = oe_rus_score_holders target = this }
+        scope:oe_rus_controller_country = {
+            if = {
+                limit = { NOT = { has_variable = oe_rus_score } }
+                set_variable = { name = oe_rus_score value = 0 }
+                add_to_global_variable_list = { name = oe_rus_score_holders target = this }
+            }
+            change_variable = { name = oe_rus_score add = scope:oe_rus_contributor.var:oe_rus_personal_score }
+        }
+    }
+    oe_rus_clear_ranking = yes
+    set_variable = { name = oe_rus_next_rank value = 0 }
+    ordered_in_global_list = {
+        variable = oe_rus_candidates
+        limit = { oe_rus_controller = yes has_variable = oe_rus_score }
+        order_by = var:oe_rus_score
+        max = 3
+        check_range_bounds = no
+        situation:oe_rise_of_rus = { change_variable = { name = oe_rus_next_rank add = 1 } }
+        set_variable = { name = oe_rus_rank value = situation:oe_rise_of_rus.var:oe_rus_next_rank }
+        add_to_global_variable_list = { name = oe_rus_top_three target = this }
+        add_country_modifier = { modifier = oe_rus_ambition years = -1 mode = replace }
+        if = {
+            limit = { var:oe_rus_rank = 1 }
+            situation:oe_rise_of_rus = { set_variable = { name = oe_rus_first value = prev } }
+        }
+        else_if = {
+            limit = { var:oe_rus_rank = 2 }
+            situation:oe_rise_of_rus = { set_variable = { name = oe_rus_second value = prev } }
+        }
+        else = { situation:oe_rise_of_rus = { set_variable = { name = oe_rus_third value = prev } } }
+    }
+    every_in_global_list = {
+        variable = oe_rus_top_three
+        save_scope_as = oe_rus_power
+        every_in_global_list = {
+            variable = oe_rus_top_three
+            limit = { this != scope:oe_rus_power }
+            add_opinion = { target = scope:oe_rus_power modifier = oe_rus_rivalry }
+        }
+    }
+}
+oe_rus_collapse_yoke = {
+    if = {
+        limit = { exists = international_organization:tatar_yoke }
+        international_organization:tatar_yoke = {
+            every_country_with_special_status_of_type = {
+                type = tatar_tax_collector
+                trigger_event_non_silently = oe_rise_of_rus.2
+            }
+            every_international_organization_member = {
+                limit = { NOT = { tag = GLH } }
+                add_stability = 20
+                add_gold = oe_rus_annual_income
+            }
+        }
+        destroy_international_organization_no_instigator = {
+            target = international_organization:tatar_yoke
+            reason = oe_rus_yoke_dissolved
+        }
+    }
+}
+
+# Country scope. Freeze the full subject tree before annexing any member.
+# Core assignment happens after annexation so transfer callbacks cannot undo it.
+oe_rus_unify_russia_effect = {
+    if = {
+        limit = { oe_rus_unification_allowed = yes }
+        set_global_variable = oe_rus_unification_completed
+        save_scope_as = oe_rus_unifier
+        every_subject_or_below = {
+            limit = { exists = capital capital = { region = region:russian_region } }
+            add_to_list = oe_rus_unification_targets
+        }
+        every_in_list = {
+            list = oe_rus_unification_targets
+            limit = { country_exists = this }
+            save_scope_as = oe_rus_unification_target
+            scope:oe_rus_unifier = { annex_country = { country = scope:oe_rus_unification_target reason = Diplomatic } }
+        }
+        region:russian_region = {
+            every_location_in_region = {
+                limit = { is_ownable = yes }
+                add_core = scope:oe_rus_unifier
+                if = {
+                    limit = { has_owner = yes owner = scope:oe_rus_unifier }
+                    change_integration_level = core
+                }
+            }
+        }
+        situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
+    }
+}
+
+# Sender-country scope. User 2026-10-28: accumulate within the shared opinion bounds; no resets.
+oe_rus_set_return_opinion = {
+    add_opinion = { target = $TARGET$ modifier = oe_rus_return_gifts scale = $VALUE$ }
+}

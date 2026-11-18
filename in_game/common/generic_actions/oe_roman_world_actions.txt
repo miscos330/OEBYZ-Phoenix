@@ -1,0 +1,124 @@
+﻿oe_rw_recruit_turkic_mercenaries = {
+    type = internationalorganization
+    potential = {}
+    allow = { scope:actor = { is_member_of_international_organization = international_organization:oe_byz_roman_world } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    price = price:oe_rw_turkic_mercenaries_price
+    cooldown = { type = oe_rw_turkic_mercenaries_cooldown years = 1 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_roman_world
+            scope:actor = { is_member_of_international_organization = international_organization:oe_byz_roman_world }
+        }
+    }
+    effect = {
+        scope:actor = {
+            create_mercenary = {
+                name = oe_rw_turkic_mercenary_company
+                home = scope:actor.capital
+                categories = { army_light_cavalry = 3 army_light_infantry = 2 }
+                months = 120
+                cost_multiplier = 0.8
+                save_scope_as = oe_rw_turkic_company
+            }
+            hire_mercenary = scope:oe_rw_turkic_company
+        }
+    }
+}
+
+oe_rw_classical_revival = {
+    type = internationalorganization
+    potential = {
+        institution:renaissance = { has_spawned = no }
+        international_organization:oe_byz_roman_world ?= { NOT = { has_variable = oe_rw_renaissance_third_seen } }
+    }
+    allow = {
+        scope:actor = { has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_byz international_organization = international_organization:oe_byz_roman_world } }
+        international_organization:oe_byz_roman_world = {
+            custom_tooltip = { text = OE_RW_REVIVAL_ONCE NOT = { has_variable = oe_rw_renaissance_started } }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    price = price:oe_rw_classical_revival_price
+    cooldown = { type = oe_rw_classical_revival_cooldown years = 10 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_roman_world
+            scope:actor = { has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_byz international_organization = international_organization:oe_byz_roman_world } institution:renaissance = { has_spawned = no }
+            international_organization:oe_byz_roman_world = { NOT = { has_variable = oe_rw_renaissance_third_seen } } }
+        }
+    }
+    effect = {
+        scope:recipient = {
+            set_variable = { name = oe_rw_renaissance_started value = yes }
+            set_variable = { name = oe_rw_renaissance_score value = 0 }
+            set_variable = { name = oe_rw_renaissance_stage value = 0 }
+            set_variable = { name = oe_rw_renaissance_event_pending value = yes }
+        }
+        scope:actor = { trigger_event_silently = oe_rw_renaissance.1 }
+    }
+}
+
+oe_rw_recognize_local_rule = {
+    type = internationalorganization
+    potential = {}
+    allow = { scope:actor = { has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_byz international_organization = international_organization:oe_byz_roman_world } } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    cooldown = { type = oe_rw_recognition_cooldown years = 1 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_roman_world
+            scope:actor = { has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_byz international_organization = international_organization:oe_byz_roman_world } }
+        }
+    }
+    select_trigger = {
+        # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        looking_for_a = country
+        target_flag = target
+        name = "OE_RW_RECOGNITION_TARGET"
+        none_available_msg_key = "OE_RW_RECOGNITION_NO_TARGET"
+        column = { data = name }
+        visible = {
+            oe_roman_world_territorial_country_trigger = yes
+            is_member_of_international_organization = international_organization:oe_byz_roman_world
+            this != scope:actor
+            is_neighbor_of = scope:actor
+        }
+        enabled = {
+            custom_tooltip = { text = OE_RW_NOT_ALREADY_RECOGNIZED NOT = { has_variable = oe_rw_recognized_local_rule } }
+        }
+    }
+    effect = {
+        scope:target = {
+            set_variable = { name = oe_rw_recognized_local_rule value = yes years = 10 }
+        }
+        scope:actor = {
+            # Reward is measured against the target's tax/trade income, not the actor's.
+            add_gold = { value = scope:target.monthly_income_trade_and_tax multiply = 6 }
+            add_country_modifier = { modifier = oe_rw_recognition_concessions years = 1 mode = replace }
+        }
+    }
+}

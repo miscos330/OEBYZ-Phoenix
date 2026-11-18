@@ -1,0 +1,40 @@
+﻿# Province scope: full provincial grant must respect existing territorial protections.
+oe_nf_integration_target = {
+    any_location_in_province = { owner = c:BYZ integration_progress < 100 }
+    NOT = {
+        any_location_in_province = {
+            owner = c:BYZ
+            NOT = { OR = {
+                oe_nf_controls_slot = { slot = $slot$ }
+                oe_nf_can_control = { slot = $slot$ }
+            } }
+        }
+    }
+}
+# IO scope: no authority cost and no cooldown for assistance with integration.
+oe_nf_integration_ready = {
+    c:BYZ = { oe_court_actor = yes }
+    has_variable = oe_nf_dynasty_$slot$
+}
+oe_nf_confiscation_ready = {
+    c:BYZ = { oe_court_actor = yes }
+    has_variable = oe_nf_dynasty_$slot$
+    OR = {
+        var:oe_nf_influence_$slot$ < 300
+        c:BYZ = {
+            in_civil_war = no
+            any_owned_location = { is_capital = no any_pop = { owner = c:BYZ } }
+        }
+    }
+}
+# A current head identifies a house; foreign-resident heads are allowed, but only domestic members are seized.
+oe_nf_confiscation_head = {
+    oe_nf_living = yes
+    save_temporary_scope_as = oe_nf_confiscation_checked_head
+    international_organization:oe_byz_empire_pillars = { OR = {
+        AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:oe_nf_confiscation_checked_head oe_nf_confiscation_ready = { slot = 1 } }
+        AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:oe_nf_confiscation_checked_head oe_nf_confiscation_ready = { slot = 2 } }
+        AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:oe_nf_confiscation_checked_head oe_nf_confiscation_ready = { slot = 3 } }
+        AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:oe_nf_confiscation_checked_head oe_nf_confiscation_ready = { slot = 4 } }
+    } }
+}

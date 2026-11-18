@@ -1,0 +1,134 @@
+﻿# Three mutually exclusive building-country institutions.
+oe_byz_theme_frontier_subject ={#帝国军区属国
+	major = yes
+	potential = {
+		country_type = building
+		is_subject_type = oe_empire_theme_frontier
+		is_subject_of = c:BYZ
+	}
+	allow = {
+		is_subject_type = oe_empire_theme_frontier
+	}
+	locked = {
+		is_locked_mechanic = {
+			mechanic = government_reform
+			type = oe_byz_theme_frontier_subject
+		}
+	}
+	country_modifier = {
+		government_reform_slots = 1
+		global_crown_estate_power = 1
+		monthly_towards_quality = 0.5
+		expected_army_size = 10	
+		max_manpower = 10
+		
+	}
+	country_modifier = {
+		scale = {
+			value = army_size
+			multiply = 1
+		}
+		army_maintenance_efficiency = -0.2
+	}
+	
+    # Building-country themes receive their law benefits directly from this reform.
+    # Passive modifiers: no pulses or member/location scans are required.
+    country_modifier = {
+        potential_trigger = {
+            custom_tooltip = {
+                text = OE_THEME_MILITARY_LAW_ACTIVE
+                is_subject_type = oe_empire_theme_frontier
+                is_subject_of = c:BYZ
+                exists = international_organization:oe_byz_empire_pillars
+                international_organization:oe_byz_empire_pillars = {
+                    OR = {
+                        international_organization_has_policy = policy:oe_byz_theme_governor_administration
+                        international_organization_has_policy = policy:oe_byz_empire_theme_org_law_army_rule_II_I
+                    }
+                }
+            }
+        }
+        scale = { value = oe_theme_law_pay_ratio }
+        army_maintenance_efficiency = 8
+    }
+    country_modifier = {
+        potential_trigger = {
+            custom_tooltip = {
+                text = OE_THEME_MILITARY_LAW_ACTIVE
+                is_subject_type = oe_empire_theme_frontier
+                is_subject_of = c:BYZ
+                exists = international_organization:oe_byz_empire_pillars
+                international_organization:oe_byz_empire_pillars = {
+                    OR = {
+                        international_organization_has_policy = policy:oe_byz_theme_governor_administration
+                        international_organization_has_policy = policy:oe_byz_empire_theme_org_law_army_rule_II_I
+                    }
+                }
+            }
+        }
+        food_consumption_modifier = -0.2
+    }
+    country_modifier = {
+        potential_trigger = {
+            custom_tooltip = {
+                text = OE_THEME_CENTRAL_LAW_ACTIVE
+                is_subject_type = oe_empire_theme_frontier
+                is_subject_of = c:BYZ
+                exists = international_organization:oe_byz_empire_pillars
+                international_organization:oe_byz_empire_pillars = {
+                    international_organization_has_policy = policy:oe_byz_empire_theme_org_law_army_rule_II_I
+                }
+            }
+        }
+        loyalty_to_overlord = 50
+    }
+	days = 3
+}
+
+oe_byz_theme_naval_subject = {
+    major = yes
+    potential = { country_type = building is_subject_type = oe_empire_theme_naval is_subject_of = c:BYZ }
+    allow = { is_subject_type = oe_empire_theme_naval }
+    locked = { is_locked_mechanic = { mechanic = government_reform type = oe_byz_theme_naval_subject } }
+    country_modifier = {
+        government_reform_slots = 1
+        global_crown_estate_power = 1
+        expected_navy_size = 50
+        max_sailors = 10
+        naval_morale_modifier = 0.2
+        naval_morale_recovery = 0.2
+    }
+    country_modifier = {
+        potential_trigger = { custom_tooltip = { text = OE_THEME_CENTRAL_LAW_ACTIVE oe_theme_central_law_trigger = yes } }
+        loyalty_to_overlord = 50
+    }
+    country_modifier = {
+        potential_trigger = { custom_tooltip = { text = OE_THEME_MILITARY_LAW_ACTIVE oe_theme_military_law_trigger = yes } }
+        scale = { value = oe_theme_naval_maintenance_efficiency }
+        navy_maintenance_efficiency = 1
+    }
+    country_modifier = {
+        potential_trigger = { custom_tooltip = { text = OE_THEME_MILITARY_LAW_ACTIVE oe_theme_military_law_trigger = yes } }
+        food_consumption_modifier = -0.2
+    }
+    days = 3
+}
+
+oe_byz_theme_administrative_subject = {
+    major = yes
+    potential = { country_type = building is_subject_type = oe_empire_theme_administrative is_subject_of = c:BYZ }
+    allow = { is_subject_type = oe_empire_theme_administrative }
+    locked = { is_locked_mechanic = { mechanic = government_reform type = oe_byz_theme_administrative_subject } }
+    country_modifier = {
+        government_reform_slots = 1
+        global_crown_estate_power = 1
+        monthly_towards_centralization = 0.5
+        building_upkeep_efficiency = 0.2
+    }
+    country_modifier = {
+        potential_trigger = { custom_tooltip = { text = OE_THEME_CENTRAL_LAW_ACTIVE oe_theme_central_law_trigger = yes } }
+        loyalty_to_overlord = 50
+    }
+    days = 3
+}
+

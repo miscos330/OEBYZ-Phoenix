@@ -1,0 +1,57 @@
+﻿# NEW 2026-11-18 Y5 princes Lu and Zhao (gen_yuan_y5.py). Generated; edit tools_20261117/gen_yuan_y5.py, not this file.
+# TEST ONLY: readings for the report event oe_yz_dev.1 (any scope). 0 = missing where a country does not exist.
+oe_yz_dev_lu_exists = { value = 0 if = { limit = { country_exists = c:YLU } value = 1 } }
+# 1 vassal of CHI, 9 other subject type of CHI, -1 exists but not CHI's subject, 0 does not exist
+oe_yz_dev_lu_type = {
+    value = 0
+    if = {
+        limit = { country_exists = c:YLU }
+        value = -1
+        if = { limit = { c:YLU = { is_subject_of = c:CHI is_subject_type = vassal } } value = 1 }
+        else_if = { limit = { c:YLU = { is_subject_of = c:CHI } } value = 9 }
+    }
+}
+oe_yz_dev_lu_locations = { value = 0 if = { limit = { country_exists = c:YLU } value = c:YLU.num_locations } }
+oe_yz_dev_lu_liberty = { value = 0 if = { limit = { country_exists = c:YLU } value = c:YLU.liberty_desire } }
+oe_yz_dev_lu_in_mk = {
+    value = 0
+    if = {
+        limit = {
+            country_exists = c:YLU
+            exists = international_organization:middle_kingdom
+            c:YLU = { is_member_of_international_organization = international_organization:middle_kingdom }
+        }
+        value = 1
+    }
+}
+oe_yz_dev_zw_exists = { value = 0 if = { limit = { country_exists = c:YZW } value = 1 } }
+# 1 vassal of CHI, 9 other subject type of CHI, -1 exists but not CHI's subject, 0 does not exist
+oe_yz_dev_zw_type = {
+    value = 0
+    if = {
+        limit = { country_exists = c:YZW }
+        value = -1
+        if = { limit = { c:YZW = { is_subject_of = c:CHI is_subject_type = vassal } } value = 1 }
+        else_if = { limit = { c:YZW = { is_subject_of = c:CHI } } value = 9 }
+    }
+}
+oe_yz_dev_zw_locations = { value = 0 if = { limit = { country_exists = c:YZW } value = c:YZW.num_locations } }
+oe_yz_dev_zw_liberty = { value = 0 if = { limit = { country_exists = c:YZW } value = c:YZW.liberty_desire } }
+oe_yz_dev_zw_in_mk = {
+    value = 0
+    if = {
+        limit = {
+            country_exists = c:YZW
+            exists = international_organization:middle_kingdom
+            c:YZW = { is_member_of_international_organization = international_organization:middle_kingdom }
+        }
+        value = 1
+    }
+}
+# 1 if Sangge Bula still rules the Khongirad country
+oe_yz_dev_lu_ruler = { value = 0 if = { limit = { country_exists = c:YLU c:YLU = { ruler = character:oe_yz_sangge_bula } } value = 1 } }
+# 1 if the Ongud country's religion is nestorianism
+oe_yz_dev_zw_religion = { value = 0 if = { limit = { country_exists = c:YZW c:YZW = { religion = religion:nestorianism } } value = 1 } }
+oe_yz_dev_hcn_locations = { value = 0 if = { limit = { country_exists = c:HCN } value = c:HCN.num_locations } }
+oe_yz_dev_chi_locations = { value = 0 if = { limit = { country_exists = c:CHI } value = c:CHI.num_locations } }
+oe_yz_dev_chi_subjects = { value = 0 if = { limit = { country_exists = c:CHI } c:CHI = { every_subject = { add = 1 } } } }

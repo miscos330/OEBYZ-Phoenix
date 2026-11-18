@@ -1,0 +1,30 @@
+﻿# Engine manpower/population/army-strength units are thousands.
+# Levy score uses native available land levies; regular_army_size is the
+# native established regular-army strength (not hired mercenaries).
+oe_rus_own_score = {
+    value = country_tax_base
+    add = country_total_army_levy_size
+    add = { value = regular_army_size multiply = 10 }
+    add = { value = manpower multiply = 0.5 }
+    add = { value = total_population divide = 10 }
+    every_owned_non_rural_location = {
+        limit = { OR = { location_rank = location_rank:city location_rank = location_rank:megalopolis } }
+        add = 10
+    }
+}
+oe_rus_annual_income = { value = monthly_income_total min = 0 multiply = 12 }
+oe_rus_tribute_cost = { value = monthly_income_total min = 0 multiply = 6 }
+oe_rus_purchase_cost = { value = monthly_income_total min = 0 multiply = 36 }
+oe_rus_kremlin_cost = { value = monthly_income_total min = 0 multiply = 3 }
+
+# Host-country scope; taxable estate income, not total country income.
+oe_rsc_three_months_clergy_income = {
+    value = 0
+    every_estate = {
+        limit = { estate_type = estate_type:clergy_estate }
+        add = { value = estate_taxable_income min = 0 }
+    }
+    multiply = 3
+}
+
+oe_rus_mercenary_cost = { value = monthly_income_total min = 0 multiply = 3 }

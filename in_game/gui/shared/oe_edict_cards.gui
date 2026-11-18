@@ -1,0 +1,48 @@
+﻿# NEW 2026-11-17 UI-3: one card template for every Imperial Pillars edict (military, fiscal, civil groups).
+# Vanilla style: icon, the action button, and the first line of the action's description; hover for full conditions.
+template oe_edict_card {
+    layoutpolicy_horizontal = expanding
+    size = { -1 70 }
+    using = bg_paper_card
+    using = bg_cabinet_card_frame
+    hbox = {
+        size = { 100% 100% }
+        margin = { 10 6 }
+        spacing = 10
+        widget = {
+            size = { 44 44 }
+            icon = { size = { 100% 100% } visible = "[GenericAction.HasIcon]" texture = "[GenericAction.GetIcon]" }
+            icon = { size = { 100% 100% } visible = "[Not(GenericAction.HasIcon)]" texture = "[InternationalOrganizationsView.GetInternationalOrganization.GetIcon]" }
+        }
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            spacing = 3
+            button_regular_diamond = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 34 }
+                fontsize = 17
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+            text_single = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 20 }
+                autoresize = no
+                elide = right
+                fontsize = 13
+                default_format = "#weak"
+                text = "[Localize(Concatenate(GenericAction.GetKey, '_card'))]"
+                tooltip = "[Localize(Concatenate(GenericAction.GetKey, '_card'))]"
+            }
+        }
+    }
+}

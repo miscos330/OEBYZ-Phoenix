@@ -1,0 +1,32 @@
+﻿# Location scope: required territorial handover, shared by the treaty's filters.
+oe_hungarian_handover_location = {
+    OR = {
+        region = region:balkan_region
+        area = area:wallachia_area
+        area = area:moldavia_area
+    }
+}
+# Country scope. Only a potential opponent's own land is inspected, with early exit.
+oe_roman_recovery_cb_target = {
+    tag = BYZ
+    exists = international_organization:oe_byz_roman_world
+    trigger_if = {
+        limit = { exists = scope:target }
+        scope:target = {
+            country_type = location
+            NOT = { tag = BYZ }
+            NOT = { is_subject_or_below_of = c:BYZ }
+            any_owned_location = {
+                is_owned_by_international_organization = international_organization:oe_byz_roman_world
+            }
+        }
+    }
+    trigger_else = { always = no }
+}
+
+# Location scope: only land directly owned by HUN is selected by the caller.
+oe_hungarian_dominion_location = {
+    region = region:carpathia_region
+    NOT = { area = area:wallachia_area }
+    NOT = { area = area:moldavia_area }
+}

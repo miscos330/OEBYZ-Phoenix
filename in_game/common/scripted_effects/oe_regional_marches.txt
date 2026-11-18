@@ -1,0 +1,291 @@
+﻿# Country scope. Snapshot every eligible holding, then use a seed in the fully owned prerequisite area.
+oe_found_caucasian_march_effect = {
+    region:caucasus_region = {
+        every_location_in_region = { limit = { oe_caucasian_march_grant_location = yes } add_to_list = oe_caucasian_march_locations }
+    }
+    province_definition:tuapse_province = {
+        every_location_in_province_definition = { limit = { oe_caucasian_march_grant_location = yes } add_to_list = oe_caucasian_march_locations }
+    }
+    area:georgia_area = {
+        ordered_location_in_area = {
+            limit = { oe_caucasian_march_grant_location = yes }
+            order_by = population
+            max = 1
+            check_range_bounds = no
+            save_scope_as = oe_caucasian_march_capital
+        }
+    }
+    scope:oe_caucasian_march_capital = {
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_roman_march
+            save_scope_as = oe_new_caucasian_march
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:greek_culture
+            change_religion = religion:orthodox
+            change_country_name = OE_CAUCASIAN_MARCH
+            change_country_adjective = OE_CAUCASIAN_MARCH_ADJ
+            change_country_flag = GEO
+            set_capital = scope:oe_caucasian_march_capital
+            add_country_modifier = { modifier = oe_caucasian_march_modifier years = -1 mode = replace }
+            if = {
+                limit = { has_ruler = no }
+                create_character = {
+                    age = 35 culture = culture:greek_culture religion = religion:orthodox
+                    estate = estate_type:nobles_estate save_scope_as = oe_caucasian_march_ruler
+                }
+                set_new_ruler = scope:oe_caucasian_march_ruler
+            }
+        }
+    }
+    every_in_list = { list = oe_caucasian_march_locations change_location_owner = scope:oe_new_caucasian_march }
+    set_variable = oe_caucasian_march_founded
+    international_organization:oe_byz_roman_world ?= { add_country_to_international_organization = scope:oe_new_caucasian_march }
+}
+
+# Country scope. Snapshot every eligible holding, then use a seed in the fully owned prerequisite area.
+oe_found_bohemian_march_effect = {
+    area:bohemia_area = {
+        every_location_in_area = { limit = { oe_bohemian_march_grant_location = yes } add_to_list = oe_bohemian_march_locations }
+    }
+    area:moravia_area = {
+        every_location_in_area = { limit = { oe_bohemian_march_grant_location = yes } add_to_list = oe_bohemian_march_locations }
+    }
+    area:bohemia_area = {
+        ordered_location_in_area = {
+            limit = { oe_bohemian_march_grant_location = yes }
+            order_by = population
+            max = 1
+            check_range_bounds = no
+            save_scope_as = oe_bohemian_march_capital
+        }
+    }
+    scope:oe_bohemian_march_capital = {
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_roman_march
+            save_scope_as = oe_new_bohemian_march
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:czech
+            change_religion = religion:orthodox
+            change_country_name = OE_BOHEMIAN_MARCH
+            change_country_adjective = OE_BOHEMIAN_MARCH_ADJ
+            change_country_flag = BOH
+            set_capital = scope:oe_bohemian_march_capital
+            if = {
+                limit = { has_ruler = no }
+                create_character = {
+                    age = 35 culture = culture:czech religion = religion:orthodox
+                    estate = estate_type:nobles_estate save_scope_as = oe_bohemian_march_ruler
+                }
+                set_new_ruler = scope:oe_bohemian_march_ruler
+            }
+        }
+    }
+    every_in_list = { list = oe_bohemian_march_locations change_location_owner = scope:oe_new_bohemian_march }
+    set_variable = oe_bohemian_march_founded
+    international_organization:oe_byz_roman_world ?= { add_country_to_international_organization = scope:oe_new_bohemian_march }
+}
+
+# Country scope. Snapshot every eligible holding, then use a seed in the fully owned prerequisite area.
+oe_found_dutch_march_effect = {
+    area:holland_area = {
+        every_location_in_area = { limit = { oe_dutch_march_grant_location = yes } add_to_list = oe_dutch_march_locations }
+    }
+    area:friesland_area = {
+        every_location_in_area = { limit = { oe_dutch_march_grant_location = yes } add_to_list = oe_dutch_march_locations }
+    }
+    area:holland_area = {
+        ordered_location_in_area = {
+            limit = { oe_dutch_march_grant_location = yes }
+            order_by = population
+            max = 1
+            check_range_bounds = no
+            save_scope_as = oe_dutch_march_capital
+        }
+    }
+    scope:oe_dutch_march_capital = {
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_roman_march
+            save_scope_as = oe_new_dutch_march
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:oe_german_greek_culture
+            change_religion = religion:orthodox
+            change_country_name = OE_DUTCH_MARCH
+            change_country_adjective = OE_DUTCH_MARCH_ADJ
+            change_country_flag = HOL
+            set_capital = scope:oe_dutch_march_capital
+            if = {
+                limit = { has_ruler = no }
+                create_character = {
+                    age = 35 culture = culture:oe_german_greek_culture religion = religion:orthodox
+                    estate = estate_type:nobles_estate save_scope_as = oe_dutch_march_ruler
+                }
+                set_new_ruler = scope:oe_dutch_march_ruler
+            }
+        }
+    }
+    every_in_list = { list = oe_dutch_march_locations change_location_owner = scope:oe_new_dutch_march }
+    set_variable = oe_dutch_march_founded
+    international_organization:oe_byz_roman_world ?= { add_country_to_international_organization = scope:oe_new_dutch_march }
+}
+
+# Country scope. Snapshot every eligible holding, then use a seed in the fully owned prerequisite area.
+oe_found_upper_german_march_effect = {
+    region:north_german_region = {
+        every_location_in_region = { limit = { oe_upper_german_march_grant_location = yes } add_to_list = oe_upper_german_march_locations }
+    }
+    area:rhineland_area = {
+        ordered_location_in_area = {
+            limit = { oe_upper_german_march_grant_location = yes }
+            order_by = population
+            max = 1
+            check_range_bounds = no
+            save_scope_as = oe_upper_german_march_capital
+        }
+    }
+    scope:oe_upper_german_march_capital = {
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_roman_march
+            save_scope_as = oe_new_upper_german_march
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:oe_german_greek_culture
+            change_religion = religion:orthodox
+            change_country_name = OE_UPPER_GERMAN_MARCH
+            change_country_adjective = OE_UPPER_GERMAN_MARCH_ADJ
+            change_country_flag = BYZ
+            set_capital = scope:oe_upper_german_march_capital
+            if = {
+                limit = { has_ruler = no }
+                create_character = {
+                    age = 35 culture = culture:oe_german_greek_culture religion = religion:orthodox
+                    estate = estate_type:nobles_estate save_scope_as = oe_upper_german_march_ruler
+                }
+                set_new_ruler = scope:oe_upper_german_march_ruler
+            }
+        }
+    }
+    every_in_list = { list = oe_upper_german_march_locations change_location_owner = scope:oe_new_upper_german_march }
+    set_variable = oe_upper_german_march_founded
+    international_organization:oe_byz_roman_world ?= { add_country_to_international_organization = scope:oe_new_upper_german_march }
+}
+
+# Country scope. Snapshot every eligible holding, then use a seed in the fully owned prerequisite area.
+oe_found_lower_german_march_effect = {
+    area:swabia_area = {
+        every_location_in_area = { limit = { oe_lower_german_march_grant_location = yes } add_to_list = oe_lower_german_march_locations }
+    }
+    area:bavaria_area = {
+        every_location_in_area = { limit = { oe_lower_german_march_grant_location = yes } add_to_list = oe_lower_german_march_locations }
+    }
+    area:franconia_area = {
+        every_location_in_area = { limit = { oe_lower_german_march_grant_location = yes } add_to_list = oe_lower_german_march_locations }
+    }
+    area:upper_rhine_area = {
+        every_location_in_area = { limit = { oe_lower_german_march_grant_location = yes } add_to_list = oe_lower_german_march_locations }
+    }
+    area:upper_rhine_area = {
+        ordered_location_in_area = {
+            limit = { oe_lower_german_march_grant_location = yes }
+            order_by = population
+            max = 1
+            check_range_bounds = no
+            save_scope_as = oe_lower_german_march_capital
+        }
+    }
+    scope:oe_lower_german_march_capital = {
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_roman_march
+            save_scope_as = oe_new_lower_german_march
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:oe_german_greek_culture
+            change_religion = religion:orthodox
+            change_country_name = OE_LOWER_GERMAN_MARCH
+            change_country_adjective = OE_LOWER_GERMAN_MARCH_ADJ
+            change_country_flag = BYZ
+            set_capital = scope:oe_lower_german_march_capital
+            if = {
+                limit = { has_ruler = no }
+                create_character = {
+                    age = 35 culture = culture:oe_german_greek_culture religion = religion:orthodox
+                    estate = estate_type:nobles_estate save_scope_as = oe_lower_german_march_ruler
+                }
+                set_new_ruler = scope:oe_lower_german_march_ruler
+            }
+        }
+    }
+    every_in_list = { list = oe_lower_german_march_locations change_location_owner = scope:oe_new_lower_german_march }
+    set_variable = oe_lower_german_march_founded
+    international_organization:oe_byz_roman_world ?= { add_country_to_international_organization = scope:oe_new_lower_german_march }
+}
+
+# Snapshot all eligible holdings before the new country changes ownership.
+oe_found_nubian_march_effect = {
+    region:nubia_region = {
+        every_location_in_region = {
+            limit = { oe_nubian_march_grant_location = yes }
+            add_to_list = oe_nubian_march_locations
+        }
+    }
+    ordered_in_list = {
+        list = oe_nubian_march_locations
+        order_by = population
+        max = 1
+        check_range_bounds = no
+        save_scope_as = oe_nubian_march_capital
+    }
+    if = {
+        limit = { exists = scope:oe_nubian_march_capital }
+        scope:oe_nubian_march_capital = {
+            create_country_from_location = {
+                overlord = c:BYZ
+                subject_type = subject_type:oe_roman_march
+                save_scope_as = oe_new_nubian_march
+                change_government_type = government_type:monarchy
+                change_country_type = location
+                change_heir_selection = heir_selection:cognatic_primogeniture
+                change_culture = culture:nubian
+                change_religion = religion:orthodox
+                change_country_name = OE_NUBIAN_MARCH
+                change_country_adjective = OE_NUBIAN_MARCH_ADJ
+                change_country_flag = MAK
+                set_capital = scope:oe_nubian_march_capital
+                if = {
+                    limit = { has_ruler = no }
+                    create_character = {
+                        age = 35
+                        culture = culture:nubian
+                        religion = religion:orthodox
+                        estate = estate_type:nobles_estate
+                        save_scope_as = oe_nubian_march_ruler
+                    }
+                    set_new_ruler = scope:oe_nubian_march_ruler
+                }
+            }
+        }
+        if = {
+            limit = { exists = scope:oe_new_nubian_march }
+            every_in_list = {
+                list = oe_nubian_march_locations
+                change_location_owner = scope:oe_new_nubian_march
+            }
+            set_variable = oe_nubian_march_founded
+            international_organization:oe_byz_roman_world ?= {
+                add_country_to_international_organization = scope:oe_new_nubian_march
+            }
+        }
+    }
+}

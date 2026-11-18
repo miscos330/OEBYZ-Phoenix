@@ -1,0 +1,38 @@
+﻿# Country event scope. Select once on opening the event and revalidate in the assault option.
+oe_epi_prepare_assault = {
+    random_army = {
+        limit = { oe_epi_assault_army = yes }
+        save_scope_as = oe_epi_assault_target
+    }
+}
+
+# Country event scope, with the living expedition saved as scope:expedition.
+oe_epi_resolve_final_siege = {
+    if = {
+        limit = {
+            oe_epi_event_active = yes
+            scope:expedition = {
+                OR = { var:oe_epi_stage = 6 var:oe_epi_stage = 7 }
+            }
+        }
+        scope:expedition = { set_variable = { name = oe_epi_stage value = 8 } }
+        if = {
+            limit = { scope:expedition = { has_variable = oe_epi_led_by_andronikos } }
+            trigger_event_non_silently = oe_exp_epirus.8
+        }
+        else = {
+            random_list = {
+                50 = { trigger_event_non_silently = oe_exp_epirus.7 }
+                50 = { trigger_event_non_silently = oe_exp_epirus.8 }
+            }
+        }
+    }
+}
+
+oe_epi_complete_expedition = {
+    scope:expedition = {
+        set_variable = oe_epi_success
+        set_variable = { name = oe_epi_stage value = 9 }
+    }
+    end_expedition = scope:expedition
+}

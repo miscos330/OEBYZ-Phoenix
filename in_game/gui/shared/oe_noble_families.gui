@@ -1,0 +1,1230 @@
+﻿# 512 px panels matching the existing seven-office panel. No panel headings.
+# House storage is on the IO. Each row reads stable slot keys directly; no outer Character/Scope cycle.
+types oe_noble_family_widgets {
+    type oe_nf_family_panel = vbox {
+        size = { 512 -1 }
+        layoutpolicy_horizontal = fixed
+        margin = { 16 16 }
+        spacing = 8
+        background = {
+            texture = "gfx/interface/component_decoration/ios/oe_pillars/noble_families_panel.dds"
+            spriteType = corneredstretched
+            spriteBorder = { 20 20 }
+        }
+        text_single = {
+            size = { 480 24 } fontsize = 15 align = right
+            text = "OE_NF_CAPACITY"
+            tooltip = "OE_NF_CAPACITY_TT"
+        }
+        vbox = {
+                    datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_1').GetDynasty]"
+                    visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_1').IsSet]"
+                    size = { 480 -1 } spacing = 6
+                    margin = { 20 12 }
+                    background = {
+                        texture = "gfx/interface/component_decoration/ios/oe_pillars/noble_families_row.dds"
+                        spriteType = corneredstretched
+                        spriteBorder = { 24 12 }
+                    }
+                    text_single = {
+                        size = { 440 24 } fontsize = 17 fontsize_min = 13
+                        raw_text = "#bold #Y [Dynasty.GetNameWithNoTooltip]#!#!"
+                        tooltip = "[Dynasty.GetName]" autoresize = no elide = right
+                    }
+                    hbox = {
+                        size = { 440 -1 } spacing = 6
+                        widget = {
+                            size = { 50 92 }
+                            dynasty_shield_big = {
+                                position = { 0 15 }
+                                blockoverride "size" { size = { 50 42 } }
+                            }
+                        }
+                        widget = {
+                            size = { 68 92 }
+                            using = character_portrait_bg
+                            widget = {
+                                size = { 68 92 }
+                                visible = "[GetScriptedGui('oe_nf_head_visible_1').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_1').GetCharacter]"
+                                portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                            }
+                            text_single = {
+                                position = { 0 32 } size = { 68 24 } fontsize = 12 align = center
+                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_1').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End))]"
+                                text = "OE_NF_HEAD_VACANT"
+                            }
+                        }
+                        vbox = {
+                            size = { 140 -1 } spacing = 2
+                            dynamicgridbox = {
+                                size = { 140 -1 }
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_members_1')]"
+                                datamodel_wrap = 3
+                                item = {
+                                    widget = {
+                                        size = { 40 48 }
+                                        datacontext = "[Scope.GetCharacter]"
+                                        portrait_standard_head_framed_button = { size = { 36 44 } position = { 2 2 } }
+                                    }
+                                }
+                            }
+                        }
+                        vbox = {
+                            size = { 52 -1 } spacing = 5
+                            widget = { size = { 1 10 } }
+                            text_single = { size = { 52 20 } text = "OE_NF_INFLUENCE" fontsize = 14 align = center }
+                            text_single = {
+                                size = { 52 25 } fontsize = 18 align = center
+                                raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_1').GetValue|1]#!#!"
+                                tooltip = "OE_NF_INFLUENCE_TT_1"
+                            }
+                        }
+                        widget = {
+                            size = { 62 92 }
+                            button_regular = {
+                                position = { 0 28 } size = { 62 30 }
+                                text = "OE_NF_INTERACT" fontsize = 14
+                                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '1')]"
+                                onclick = "[GetScriptedGui('oe_nf_show_territories_1').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                tooltip = "OE_NF_INTERACT_TT"
+                            }
+                        }
+                        widget = {
+                            size = { 28 92 }
+                            icon = {
+                                position = { 0 28 } size = { 28 30 }
+                                texture = "gfx/interface/component_decoration/ios/oe_pillars/imperial_eagle.dds"
+                                visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_1').IsSet]"
+                                tooltip = "OE_NF_POLITICAL_ALLY_BADGE"
+                            }
+                        }
+                    }
+                    vbox = {
+                        name = "oe_nf_interaction_popup_1"
+                        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_nf_open_family', '1')]"
+                        size = { 440 -1 } spacing = 6 margin = { 8 8 }
+                        using = bg_dark_paper_card
+                        hbox = {
+                            layoutpolicy_horizontal = expanding
+                            expand = {}
+                            button_regular = {
+                                size = { 24 24 } text = "×" fontsize = 16
+                                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                                onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            }
+                        }
+                        text_single = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_1').IsSet]"
+                            text = "OE_NF_POLITICAL_ALLY_BADGE" fontsize = 16
+                        }
+
+                        # IO-owned location list; each leaf binds only Location.
+                        dynamicgridbox = {
+                            size = { 424 -1 } datamodel_wrap = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_locations_1')]"
+                            item = {
+                                widget = {
+                                    size = { 84 24 }
+                                    datacontext = "[Scope.GetLocation]"
+                                    onmousehierarchyenter = "[PdxGuiWidget.SetHighlightLocation(Location.Self)]"
+                                    text_single = {
+                                        size = { 80 22 } fontsize = 13 fontsize_min = 11 autoresize = no elide = right
+                                        text = "[Location.GetName]" tooltip = "[Location.GetName]"
+                                    }
+                                }
+                            }
+                        }
+                        text_single = {
+                            visible = "[IsDataModelEmpty(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_locations_1'))]"
+                            text = "OE_NF_NO_TERRITORIES" fontsize = 14
+                        }
+                        button_regular = {
+                            size = { 424 34 }
+                            text = "oe_nf_request_support" fontsize = 16
+                            tooltip = "OE_NF_SUPPORT_BUTTON_1"
+                            enabled = "[GetScriptedGui('oe_nf_support_1').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_nf_support_1').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_integrate_1')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_integrate_1"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_redeem_1')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_redeem_1"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_relief_1')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_relief_1"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_recommend_1')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_recommend_1"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_honors_1')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_honors_1"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_1').IsSet]"
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_ally_support_1')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_ally_support_1"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_1').IsSet]"
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_ally_pressure_1')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_ally_pressure_1"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+
+                    }
+                    widget = { size = { 1 4 } }
+                }
+vbox = {
+                    datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_2').GetDynasty]"
+                    visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_2').IsSet]"
+                    size = { 480 -1 } spacing = 6
+                    margin = { 20 12 }
+                    background = {
+                        texture = "gfx/interface/component_decoration/ios/oe_pillars/noble_families_row.dds"
+                        spriteType = corneredstretched
+                        spriteBorder = { 24 12 }
+                    }
+                    text_single = {
+                        size = { 440 24 } fontsize = 17 fontsize_min = 13
+                        raw_text = "#bold #Y [Dynasty.GetNameWithNoTooltip]#!#!"
+                        tooltip = "[Dynasty.GetName]" autoresize = no elide = right
+                    }
+                    hbox = {
+                        size = { 440 -1 } spacing = 6
+                        widget = {
+                            size = { 50 92 }
+                            dynasty_shield_big = {
+                                position = { 0 15 }
+                                blockoverride "size" { size = { 50 42 } }
+                            }
+                        }
+                        widget = {
+                            size = { 68 92 }
+                            using = character_portrait_bg
+                            widget = {
+                                size = { 68 92 }
+                                visible = "[GetScriptedGui('oe_nf_head_visible_2').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_2').GetCharacter]"
+                                portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                            }
+                            text_single = {
+                                position = { 0 32 } size = { 68 24 } fontsize = 12 align = center
+                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_2').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End))]"
+                                text = "OE_NF_HEAD_VACANT"
+                            }
+                        }
+                        vbox = {
+                            size = { 140 -1 } spacing = 2
+                            dynamicgridbox = {
+                                size = { 140 -1 }
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_members_2')]"
+                                datamodel_wrap = 3
+                                item = {
+                                    widget = {
+                                        size = { 40 48 }
+                                        datacontext = "[Scope.GetCharacter]"
+                                        portrait_standard_head_framed_button = { size = { 36 44 } position = { 2 2 } }
+                                    }
+                                }
+                            }
+                        }
+                        vbox = {
+                            size = { 52 -1 } spacing = 5
+                            widget = { size = { 1 10 } }
+                            text_single = { size = { 52 20 } text = "OE_NF_INFLUENCE" fontsize = 14 align = center }
+                            text_single = {
+                                size = { 52 25 } fontsize = 18 align = center
+                                raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_2').GetValue|1]#!#!"
+                                tooltip = "OE_NF_INFLUENCE_TT_2"
+                            }
+                        }
+                        widget = {
+                            size = { 62 92 }
+                            button_regular = {
+                                position = { 0 28 } size = { 62 30 }
+                                text = "OE_NF_INTERACT" fontsize = 14
+                                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '2')]"
+                                onclick = "[GetScriptedGui('oe_nf_show_territories_2').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                tooltip = "OE_NF_INTERACT_TT"
+                            }
+                        }
+                        widget = {
+                            size = { 28 92 }
+                            icon = {
+                                position = { 0 28 } size = { 28 30 }
+                                texture = "gfx/interface/component_decoration/ios/oe_pillars/imperial_eagle.dds"
+                                visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_2').IsSet]"
+                                tooltip = "OE_NF_POLITICAL_ALLY_BADGE"
+                            }
+                        }
+                    }
+                    vbox = {
+                        name = "oe_nf_interaction_popup_2"
+                        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_nf_open_family', '2')]"
+                        size = { 440 -1 } spacing = 6 margin = { 8 8 }
+                        using = bg_dark_paper_card
+                        hbox = {
+                            layoutpolicy_horizontal = expanding
+                            expand = {}
+                            button_regular = {
+                                size = { 24 24 } text = "×" fontsize = 16
+                                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                                onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            }
+                        }
+                        text_single = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_2').IsSet]"
+                            text = "OE_NF_POLITICAL_ALLY_BADGE" fontsize = 16
+                        }
+
+                        # IO-owned location list; each leaf binds only Location.
+                        dynamicgridbox = {
+                            size = { 424 -1 } datamodel_wrap = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_locations_2')]"
+                            item = {
+                                widget = {
+                                    size = { 84 24 }
+                                    datacontext = "[Scope.GetLocation]"
+                                    onmousehierarchyenter = "[PdxGuiWidget.SetHighlightLocation(Location.Self)]"
+                                    text_single = {
+                                        size = { 80 22 } fontsize = 13 fontsize_min = 11 autoresize = no elide = right
+                                        text = "[Location.GetName]" tooltip = "[Location.GetName]"
+                                    }
+                                }
+                            }
+                        }
+                        text_single = {
+                            visible = "[IsDataModelEmpty(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_locations_2'))]"
+                            text = "OE_NF_NO_TERRITORIES" fontsize = 14
+                        }
+                        button_regular = {
+                            size = { 424 34 }
+                            text = "oe_nf_request_support" fontsize = 16
+                            tooltip = "OE_NF_SUPPORT_BUTTON_2"
+                            enabled = "[GetScriptedGui('oe_nf_support_2').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_nf_support_2').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_integrate_2')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_integrate_2"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_redeem_2')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_redeem_2"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_relief_2')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_relief_2"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_recommend_2')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_recommend_2"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_honors_2')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_honors_2"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_2').IsSet]"
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_ally_support_2')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_ally_support_2"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_2').IsSet]"
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_ally_pressure_2')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_ally_pressure_2"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+
+                    }
+                    widget = { size = { 1 4 } }
+                }
+vbox = {
+                    datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_3').GetDynasty]"
+                    visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_3').IsSet]"
+                    size = { 480 -1 } spacing = 6
+                    margin = { 20 12 }
+                    background = {
+                        texture = "gfx/interface/component_decoration/ios/oe_pillars/noble_families_row.dds"
+                        spriteType = corneredstretched
+                        spriteBorder = { 24 12 }
+                    }
+                    text_single = {
+                        size = { 440 24 } fontsize = 17 fontsize_min = 13
+                        raw_text = "#bold #Y [Dynasty.GetNameWithNoTooltip]#!#!"
+                        tooltip = "[Dynasty.GetName]" autoresize = no elide = right
+                    }
+                    hbox = {
+                        size = { 440 -1 } spacing = 6
+                        widget = {
+                            size = { 50 92 }
+                            dynasty_shield_big = {
+                                position = { 0 15 }
+                                blockoverride "size" { size = { 50 42 } }
+                            }
+                        }
+                        widget = {
+                            size = { 68 92 }
+                            using = character_portrait_bg
+                            widget = {
+                                size = { 68 92 }
+                                visible = "[GetScriptedGui('oe_nf_head_visible_3').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_3').GetCharacter]"
+                                portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                            }
+                            text_single = {
+                                position = { 0 32 } size = { 68 24 } fontsize = 12 align = center
+                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_3').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End))]"
+                                text = "OE_NF_HEAD_VACANT"
+                            }
+                        }
+                        vbox = {
+                            size = { 140 -1 } spacing = 2
+                            dynamicgridbox = {
+                                size = { 140 -1 }
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_members_3')]"
+                                datamodel_wrap = 3
+                                item = {
+                                    widget = {
+                                        size = { 40 48 }
+                                        datacontext = "[Scope.GetCharacter]"
+                                        portrait_standard_head_framed_button = { size = { 36 44 } position = { 2 2 } }
+                                    }
+                                }
+                            }
+                        }
+                        vbox = {
+                            size = { 52 -1 } spacing = 5
+                            widget = { size = { 1 10 } }
+                            text_single = { size = { 52 20 } text = "OE_NF_INFLUENCE" fontsize = 14 align = center }
+                            text_single = {
+                                size = { 52 25 } fontsize = 18 align = center
+                                raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_3').GetValue|1]#!#!"
+                                tooltip = "OE_NF_INFLUENCE_TT_3"
+                            }
+                        }
+                        widget = {
+                            size = { 62 92 }
+                            button_regular = {
+                                position = { 0 28 } size = { 62 30 }
+                                text = "OE_NF_INTERACT" fontsize = 14
+                                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '3')]"
+                                onclick = "[GetScriptedGui('oe_nf_show_territories_3').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                tooltip = "OE_NF_INTERACT_TT"
+                            }
+                        }
+                        widget = {
+                            size = { 28 92 }
+                            icon = {
+                                position = { 0 28 } size = { 28 30 }
+                                texture = "gfx/interface/component_decoration/ios/oe_pillars/imperial_eagle.dds"
+                                visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_3').IsSet]"
+                                tooltip = "OE_NF_POLITICAL_ALLY_BADGE"
+                            }
+                        }
+                    }
+                    vbox = {
+                        name = "oe_nf_interaction_popup_3"
+                        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_nf_open_family', '3')]"
+                        size = { 440 -1 } spacing = 6 margin = { 8 8 }
+                        using = bg_dark_paper_card
+                        hbox = {
+                            layoutpolicy_horizontal = expanding
+                            expand = {}
+                            button_regular = {
+                                size = { 24 24 } text = "×" fontsize = 16
+                                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                                onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            }
+                        }
+                        text_single = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_3').IsSet]"
+                            text = "OE_NF_POLITICAL_ALLY_BADGE" fontsize = 16
+                        }
+
+                        # IO-owned location list; each leaf binds only Location.
+                        dynamicgridbox = {
+                            size = { 424 -1 } datamodel_wrap = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_locations_3')]"
+                            item = {
+                                widget = {
+                                    size = { 84 24 }
+                                    datacontext = "[Scope.GetLocation]"
+                                    onmousehierarchyenter = "[PdxGuiWidget.SetHighlightLocation(Location.Self)]"
+                                    text_single = {
+                                        size = { 80 22 } fontsize = 13 fontsize_min = 11 autoresize = no elide = right
+                                        text = "[Location.GetName]" tooltip = "[Location.GetName]"
+                                    }
+                                }
+                            }
+                        }
+                        text_single = {
+                            visible = "[IsDataModelEmpty(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_locations_3'))]"
+                            text = "OE_NF_NO_TERRITORIES" fontsize = 14
+                        }
+                        button_regular = {
+                            size = { 424 34 }
+                            text = "oe_nf_request_support" fontsize = 16
+                            tooltip = "OE_NF_SUPPORT_BUTTON_3"
+                            enabled = "[GetScriptedGui('oe_nf_support_3').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_nf_support_3').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_integrate_3')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_integrate_3"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_redeem_3')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_redeem_3"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_relief_3')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_relief_3"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_recommend_3')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_recommend_3"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_honors_3')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_honors_3"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_3').IsSet]"
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_ally_support_3')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_ally_support_3"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_3').IsSet]"
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_ally_pressure_3')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_ally_pressure_3"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+
+                    }
+                    widget = { size = { 1 4 } }
+                }
+vbox = {
+                    datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_4').GetDynasty]"
+                    visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_4').IsSet]"
+                    size = { 480 -1 } spacing = 6
+                    margin = { 20 12 }
+                    background = {
+                        texture = "gfx/interface/component_decoration/ios/oe_pillars/noble_families_row.dds"
+                        spriteType = corneredstretched
+                        spriteBorder = { 24 12 }
+                    }
+                    text_single = {
+                        size = { 440 24 } fontsize = 17 fontsize_min = 13
+                        raw_text = "#bold #Y [Dynasty.GetNameWithNoTooltip]#!#!"
+                        tooltip = "[Dynasty.GetName]" autoresize = no elide = right
+                    }
+                    hbox = {
+                        size = { 440 -1 } spacing = 6
+                        widget = {
+                            size = { 50 92 }
+                            dynasty_shield_big = {
+                                position = { 0 15 }
+                                blockoverride "size" { size = { 50 42 } }
+                            }
+                        }
+                        widget = {
+                            size = { 68 92 }
+                            using = character_portrait_bg
+                            widget = {
+                                size = { 68 92 }
+                                visible = "[GetScriptedGui('oe_nf_head_visible_4').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
+                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_4').GetCharacter]"
+                                portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                            }
+                            text_single = {
+                                position = { 0 32 } size = { 68 24 } fontsize = 12 align = center
+                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_4').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End))]"
+                                text = "OE_NF_HEAD_VACANT"
+                            }
+                        }
+                        vbox = {
+                            size = { 140 -1 } spacing = 2
+                            dynamicgridbox = {
+                                size = { 140 -1 }
+                                datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_members_4')]"
+                                datamodel_wrap = 3
+                                item = {
+                                    widget = {
+                                        size = { 40 48 }
+                                        datacontext = "[Scope.GetCharacter]"
+                                        portrait_standard_head_framed_button = { size = { 36 44 } position = { 2 2 } }
+                                    }
+                                }
+                            }
+                        }
+                        vbox = {
+                            size = { 52 -1 } spacing = 5
+                            widget = { size = { 1 10 } }
+                            text_single = { size = { 52 20 } text = "OE_NF_INFLUENCE" fontsize = 14 align = center }
+                            text_single = {
+                                size = { 52 25 } fontsize = 18 align = center
+                                raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_4').GetValue|1]#!#!"
+                                tooltip = "OE_NF_INFLUENCE_TT_4"
+                            }
+                        }
+                        widget = {
+                            size = { 62 92 }
+                            button_regular = {
+                                position = { 0 28 } size = { 62 30 }
+                                text = "OE_NF_INTERACT" fontsize = 14
+                                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '4')]"
+                                onclick = "[GetScriptedGui('oe_nf_show_territories_4').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                tooltip = "OE_NF_INTERACT_TT"
+                            }
+                        }
+                        widget = {
+                            size = { 28 92 }
+                            icon = {
+                                position = { 0 28 } size = { 28 30 }
+                                texture = "gfx/interface/component_decoration/ios/oe_pillars/imperial_eagle.dds"
+                                visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_4').IsSet]"
+                                tooltip = "OE_NF_POLITICAL_ALLY_BADGE"
+                            }
+                        }
+                    }
+                    vbox = {
+                        name = "oe_nf_interaction_popup_4"
+                        visible = "[InternationalOrganizationsView.Vars.HasValue('oe_nf_open_family', '4')]"
+                        size = { 440 -1 } spacing = 6 margin = { 8 8 }
+                        using = bg_dark_paper_card
+                        hbox = {
+                            layoutpolicy_horizontal = expanding
+                            expand = {}
+                            button_regular = {
+                                size = { 24 24 } text = "×" fontsize = 16
+                                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                                onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            }
+                        }
+                        text_single = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_4').IsSet]"
+                            text = "OE_NF_POLITICAL_ALLY_BADGE" fontsize = 16
+                        }
+
+                        # IO-owned location list; each leaf binds only Location.
+                        dynamicgridbox = {
+                            size = { 424 -1 } datamodel_wrap = 5
+                            datamodel = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_locations_4')]"
+                            item = {
+                                widget = {
+                                    size = { 84 24 }
+                                    datacontext = "[Scope.GetLocation]"
+                                    onmousehierarchyenter = "[PdxGuiWidget.SetHighlightLocation(Location.Self)]"
+                                    text_single = {
+                                        size = { 80 22 } fontsize = 13 fontsize_min = 11 autoresize = no elide = right
+                                        text = "[Location.GetName]" tooltip = "[Location.GetName]"
+                                    }
+                                }
+                            }
+                        }
+                        text_single = {
+                            visible = "[IsDataModelEmpty(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetList('oe_nf_locations_4'))]"
+                            text = "OE_NF_NO_TERRITORIES" fontsize = 14
+                        }
+                        button_regular = {
+                            size = { 424 34 }
+                            text = "oe_nf_request_support" fontsize = 16
+                            tooltip = "OE_NF_SUPPORT_BUTTON_4"
+                            enabled = "[GetScriptedGui('oe_nf_support_4').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            onclick = "[GetScriptedGui('oe_nf_support_4').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_integrate_4')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_integrate_4"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_redeem_4')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_redeem_4"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_relief_4')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_relief_4"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_recommend_4')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_recommend_4"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_honors_4')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_honors_4"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_4').IsSet]"
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_ally_support_4')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_ally_support_4"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_ally_4').IsSet]"
+                            size = { 424 38 }
+                            datacontext = "[GetGenericAction('oe_nf_ally_pressure_4')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_ally_pressure_4"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+
+                    }
+                    widget = { size = { 1 4 } }
+                }
+        text_single = {
+            visible = "[EqualTo_CFixedPoint(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.MakeScope).ScriptValue('oe_nf_house_count'), '(CFixedPoint)0')]"
+            text = "OE_NF_EMPTY" fontsize = 15 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding
+        }
+    }
+    type oe_nf_actions_panel = vbox {
+        size = { 512 -1 }
+        layoutpolicy_horizontal = fixed
+        margin = { 20 20 } spacing = 8
+        background = {
+            texture = "gfx/interface/component_decoration/ios/oe_pillars/noble_families_panel.dds"
+            spriteType = corneredstretched
+            spriteBorder = { 20 20 }
+        }
+        widget = {
+            size = { 472 40 }
+            datacontext = "[GetGenericAction('oe_nf_promote_house')]"
+            button_regular_diamond = {
+                size = { 100% 38 }
+                fontsize = 17
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    action_name = "oe_nf_promote_house"
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+        text_single = {
+            size = { 472 -1 } fontsize = 14 multiline = yes autoresize = yes
+            text = "OE_NF_PROMOTE_HINT"
+        }
+        block "oe_nf_additional_actions" { vbox = { size = { 472 -1 } spacing = 6
+                        widget = {
+                            size = { 472 38 }
+                            datacontext = "[GetGenericAction('oe_nf_confiscate_house')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_confiscate_house"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 472 38 }
+                            datacontext = "[GetGenericAction('oe_nf_mediate_dispute')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_mediate_dispute"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            size = { 472 38 }
+                            datacontext = "[GetGenericAction('oe_nf_form_alliance')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_form_alliance"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+widget = {
+                            size = { 472 38 }
+                            datacontext = "[GetGenericAction('oe_nf_pressure')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_pressure"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+                        widget = {
+                            size = { 472 38 }
+                            datacontext = "[GetGenericAction('oe_nf_oppose_monopoly')]"
+                            button_regular_diamond = {
+                                size = { 100% 36 }
+                                fontsize = 16
+                                text = "[GenericAction.GetNameWithNoTooltip]"
+                                tooltipwidget = { using = io_generic_action_button_tooltip }
+                                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                scripted_action_tooltip = {
+                                    click_type = left
+                                    click_mode = single
+                                    action_name = "oe_nf_oppose_monopoly"
+                                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                }
+                            }
+                        }
+        } }
+    }
+}

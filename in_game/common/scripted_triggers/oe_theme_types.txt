@@ -1,0 +1,118 @@
+﻿# Country scope. Italy is intentionally excluded by the four-type whitelist.
+oe_theme_convertible_trigger = {
+    country_type = building
+    is_subject_of = c:BYZ
+    exists = capital
+    OR = {
+        is_subject_type = oe_empire_theme
+        is_subject_type = oe_empire_theme_naval
+        is_subject_type = oe_empire_theme_administrative
+        is_subject_type = oe_empire_theme_frontier
+    }
+}
+oe_theme_military_law_trigger = {
+    oe_theme_member_trigger = yes
+    exists = international_organization:oe_byz_empire_pillars
+    international_organization:oe_byz_empire_pillars = {
+        OR = {
+            international_organization_has_policy = policy:oe_byz_theme_governor_administration
+            international_organization_has_policy = policy:oe_byz_empire_theme_org_law_army_rule_II_I
+        }
+    }
+}
+oe_theme_central_law_trigger = {
+    oe_theme_member_trigger = yes
+    exists = international_organization:oe_byz_empire_pillars
+    international_organization:oe_byz_empire_pillars = {
+        international_organization_has_policy = policy:oe_byz_empire_theme_org_law_army_rule_II_I
+    }
+}
+# Building scope. The owner here is the building country, not the host country.
+oe_theme_building_trigger = {
+    OR = {
+        building_type = building_type:oe_byz_theme_system_noble
+        building_type = building_type:oe_byz_theme_naval_seat
+        building_type = building_type:oe_byz_theme_administrative_seat
+        building_type = building_type:oe_byz_theme_frontier_seat
+        building_type = building_type:oe_byz_theme_system
+        building_type = building_type:oe_byz_theme_naval_post
+        building_type = building_type:oe_byz_theme_administrative_post
+        building_type = building_type:oe_byz_theme_frontier_post
+        building_type = building_type:oe_byz_theme_italian_seat
+        building_type = building_type:oe_byz_theme_latin_seat
+        building_type = building_type:oe_byz_theme_italian_post
+        building_type = building_type:oe_byz_theme_latin_post
+    }
+}
+# Location scope. Used only for selecting/converting already-owned theme buildings.
+oe_theme_conversion_location_trigger = {
+    owner = c:BYZ
+    any_buildings_in_location = {
+        owner = scope:oe_theme_converted_country
+        oe_theme_building_trigger = yes
+    }
+}
+oe_theme_location_occupied_trigger = {
+    OR = {
+        has_building = building_type:oe_byz_theme_system_noble
+        has_building = building_type:oe_byz_theme_naval_seat
+        has_building = building_type:oe_byz_theme_administrative_seat
+        has_building = building_type:oe_byz_theme_frontier_seat
+        has_building = building_type:oe_byz_theme_system
+        has_building = building_type:oe_byz_theme_naval_post
+        has_building = building_type:oe_byz_theme_administrative_post
+        has_building = building_type:oe_byz_theme_frontier_post
+        has_building = building_type:oe_byz_theme_italian_seat
+        has_building = building_type:oe_byz_theme_latin_seat
+        has_building = building_type:oe_byz_theme_italian_post
+        has_building = building_type:oe_byz_theme_latin_post
+    }
+}
+oe_pillars_naval_theme_trigger = {
+    country_type = building
+    is_subject_of = c:BYZ
+    is_subject_type = oe_empire_theme_naval
+    has_reform = government_reform:oe_byz_theme_naval_subject
+}
+oe_pillars_administrative_theme_trigger = {
+    country_type = building
+    is_subject_of = c:BYZ
+    is_subject_type = oe_empire_theme_administrative
+    has_reform = government_reform:oe_byz_theme_administrative_subject
+}
+oe_pillars_frontier_theme_trigger = {
+    country_type = building
+    is_subject_of = c:BYZ
+    is_subject_type = oe_empire_theme_frontier
+    has_reform = government_reform:oe_byz_theme_frontier_subject
+}
+oe_theme_army_payment_trigger = {
+    OR = {
+        oe_pillars_theme_trigger = yes
+        oe_pillars_naval_theme_trigger = yes
+        oe_pillars_frontier_theme_trigger = yes
+        oe_pillars_latin_theme_trigger = yes
+    }
+}
+oe_theme_manpower_payment_trigger = {
+    OR = {
+        oe_pillars_theme_trigger = yes
+        oe_pillars_frontier_theme_trigger = yes
+        oe_pillars_latin_theme_trigger = yes
+    }
+}
+
+# Six military/civil districts; deliberately not used by conversion selection.
+oe_theme_member_trigger = {
+    country_type = building
+    is_subject_of = c:BYZ
+    exists = capital
+    OR = {
+        is_subject_type = oe_empire_theme
+        is_subject_type = oe_empire_theme_naval
+        is_subject_type = oe_empire_theme_administrative
+        is_subject_type = oe_empire_theme_frontier
+        is_subject_type = oe_empire_theme_italian
+        is_subject_type = oe_empire_theme_latin
+    }
+}

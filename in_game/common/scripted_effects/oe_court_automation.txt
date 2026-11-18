@@ -1,0 +1,85 @@
+﻿# Country scope. No replacement of valid incumbents; no generated candidates or resource costs.
+oe_court_auto_fill = {
+    if = {
+        limit = { oe_court_actor = yes oe_court_offices_active = yes has_variable = oe_court_auto_enabled }
+        oe_court_clear_invalid = yes
+        if = {
+            limit = { NOT = { oe_court_chancellor_filled = yes } }
+            ordered_character = {
+                limit = { oe_court_candidate = yes }
+                order_by = adm
+                max = 1
+                set_variable = oe_court_office_held
+                save_scope_as = oe_court_auto_appointee
+                c:BYZ = { set_variable = { name = oe_court_chancellor value = scope:oe_court_auto_appointee } }
+            }
+        }
+        if = {
+            limit = { NOT = { oe_court_judge_filled = yes } }
+            ordered_character = {
+                limit = { oe_court_candidate = yes }
+                order_by = adm
+                max = 1
+                set_variable = oe_court_office_held
+                save_scope_as = oe_court_auto_appointee
+                c:BYZ = { set_variable = { name = oe_court_judge value = scope:oe_court_auto_appointee } }
+            }
+        }
+        if = {
+            limit = { NOT = { oe_court_secretary_filled = yes } }
+            ordered_character = {
+                limit = { oe_court_candidate = yes }
+                order_by = adm
+                max = 1
+                set_variable = oe_court_office_held
+                save_scope_as = oe_court_auto_appointee
+                c:BYZ = { set_variable = { name = oe_court_secretary value = scope:oe_court_auto_appointee } }
+            }
+        }
+        if = {
+            limit = { NOT = { oe_court_taxmaster_filled = yes } }
+            ordered_character = {
+                limit = { oe_court_candidate = yes }
+                order_by = dip
+                max = 1
+                set_variable = oe_court_office_held
+                save_scope_as = oe_court_auto_appointee
+                c:BYZ = { set_variable = { name = oe_court_taxmaster value = scope:oe_court_auto_appointee } }
+            }
+        }
+        if = {
+            limit = { NOT = { oe_court_ceremonies_filled = yes } }
+            ordered_character = {
+                limit = { oe_court_candidate = yes }
+                order_by = dip
+                max = 1
+                set_variable = oe_court_office_held
+                save_scope_as = oe_court_auto_appointee
+                c:BYZ = { set_variable = { name = oe_court_ceremonies value = scope:oe_court_auto_appointee } }
+            }
+        }
+        if = {
+            limit = { NOT = { oe_court_admiral_filled = yes } }
+            ordered_character = {
+                limit = { oe_court_candidate = yes }
+                order_by = mil
+                max = 1
+                set_variable = oe_court_office_held
+                save_scope_as = oe_court_auto_appointee
+                c:BYZ = { set_variable = { name = oe_court_admiral value = scope:oe_court_auto_appointee } }
+            }
+        }
+        if = {
+            limit = { NOT = { oe_court_domestikos_filled = yes } }
+            ordered_character = {
+                limit = { oe_court_candidate = yes }
+                order_by = mil
+                max = 1
+                set_variable = oe_court_office_held
+                save_scope_as = oe_court_auto_appointee
+                c:BYZ = { set_variable = { name = oe_court_domestikos value = scope:oe_court_auto_appointee } }
+            }
+        }
+        if = { limit = { international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_initialized } } oe_nf_refresh = yes }
+    }
+}

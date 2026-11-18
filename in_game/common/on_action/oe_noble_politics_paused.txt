@@ -1,0 +1,22 @@
+﻿# Migration only: no scoring, influence changes, economic costs, or new characters.
+on_game_start = { on_actions = { oe_np_pause_startup_cleanup } }
+monthly_country_pulse = { on_actions = { oe_np_pause_monthly_cleanup } }
+oe_np_pause_startup_cleanup = { effect = { every_country = { oe_np_paused_cleanup = yes } } }
+oe_np_pause_monthly_cleanup = {
+    trigger = {
+        OR = {
+            tag = BYZ
+            has_variable = oe_npi_honor_cd
+            has_variable = oe_npi_support_cd
+            has_variable = oe_npi_recommend_cd
+            has_country_modifier = oe_npi_court_honor
+        }
+    }
+    effect = {
+        oe_np_paused_cleanup = yes
+        if = {
+            limit = { tag = BYZ }
+            every_subject_or_below = { oe_np_paused_cleanup = yes }
+        }
+    }
+}

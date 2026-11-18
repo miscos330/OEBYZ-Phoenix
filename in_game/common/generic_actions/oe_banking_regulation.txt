@@ -1,0 +1,589 @@
+﻿oe_ir_banking = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_banking_done } }
+            has_variable = oe_ir_central_done
+            has_embraced_institution = institution:banking
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = {
+                    tag = BYZ
+                    NOT = { has_variable = oe_ir_banking_done }
+                    has_variable = oe_ir_central_done
+                    has_embraced_institution = institution:banking
+                }
+                scope:recipient = {
+                    this = international_organization:oe_byz_empire_pillars
+                    var:oe_pillars_authority >= 50
+                }
+            }
+            scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+            scope:actor = {
+                set_variable = oe_ir_banking_done
+                add_country_modifier = { modifier = oe_ir_banking_modifier years = -1 mode = replace }
+            }
+            custom_tooltip = OE_BANKING_UNLOCK_FOUNDING
+        }
+    }
+}
+
+oe_pillars_found_chartered_bank = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ has_variable = oe_ir_banking_done } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            has_variable = oe_ir_banking_done
+            has_embraced_institution = institution:banking
+            oe_chartered_bank_available = yes
+        }
+    }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    select_trigger = {
+        # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        looking_for_a = location
+        source = actor
+        target_flag = bank_seat
+        name = "OE_BANKING_CHOOSE_SEAT"
+        none_available_msg_key = "OE_BANKING_NO_SEAT"
+        column = { data = name }
+        interaction_source_list = {
+            location:thessaloniki = { add_to_list = source }
+            location:genoa = { add_to_list = source }
+            location:venice = { add_to_list = source }
+            location:ankara = { add_to_list = source }
+            location:theodoro = { add_to_list = source }
+            location:athens = { add_to_list = source }
+            location:beirut = { add_to_list = source }
+            location:alexandria = { add_to_list = source }
+            location:rome = { add_to_list = source }
+            location:tunis = { add_to_list = source }
+            location:palermo = { add_to_list = source }
+        }
+        visible = {
+            OR = {
+                AND = { this = location:thessaloniki scope:actor = { NOT = { has_variable = oe_byz_org_build_saisa_bank_over } } }
+                AND = { this = location:genoa scope:actor = { NOT = { has_variable = oe_byz_org_build_genoa_bank_over } } }
+                AND = { this = location:venice scope:actor = { NOT = { has_variable = oe_byz_org_build_ven_bank_over } } }
+                AND = { this = location:ankara scope:actor = { NOT = { has_variable = oe_byz_org_build_annatolia_bank_over } } }
+                AND = { this = location:theodoro scope:actor = { NOT = { has_variable = oe_byz_org_build_diodro_bank_over } } }
+                AND = { this = location:athens scope:actor = { NOT = { has_variable = oe_byz_org_build_ath_bank_over } } }
+                AND = { this = location:beirut scope:actor = { NOT = { has_variable = oe_byz_org_build_lifant_bank_over } } }
+                AND = { this = location:alexandria scope:actor = { NOT = { has_variable = oe_byz_org_build_egypt_bank_over } } }
+                AND = { this = location:rome scope:actor = { NOT = { has_variable = oe_byz_org_build_roman_bank_over } } }
+                AND = { this = location:tunis scope:actor = { NOT = { has_variable = oe_byz_org_build_nor_afrac_bank_over } } }
+                AND = { this = location:palermo scope:actor = { NOT = { has_variable = oe_byz_org_build_sisic_bank_over } } }
+            }
+        }
+        enabled = { oe_chartered_bank_seat_ready = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { tag = BYZ has_variable = oe_ir_banking_done has_embraced_institution = institution:banking }
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:bank_seat = { oe_chartered_bank_seat_ready = yes }
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:thessaloniki } scope:actor = { oe_byz_org_build_saisa_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_saisa_bank_tt
+		
+                		location:thessaloniki = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = TSBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                		scope:actor = {
+                			set_variable = oe_byz_org_build_saisa_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:genoa } scope:actor = { oe_byz_org_build_genoa_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_genoa_bank_tt
+		
+                		location:genoa = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = GEBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                		scope:actor = {
+                			set_variable = oe_byz_org_build_genoa_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:venice } scope:actor = { oe_byz_org_build_ven_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_ven_bank_tt
+		
+                		location:venice = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = VEBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                		scope:actor = {
+                			set_variable = oe_byz_org_build_ven_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:ankara } scope:actor = { oe_byz_org_build_annatolia_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_annatolia_bank_tt
+		
+                		location:ankara = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = ATBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                		location:smyrna = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}
+                				location:bursa = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}		
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                		scope:actor = {
+                			set_variable = oe_byz_org_build_annatolia_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:theodoro } scope:actor = { oe_byz_org_build_diodro_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_diodro_bank_tt
+		
+                		location:theodoro = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = DOBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                		location:tana = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}	
+                		location:kaffa = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}			
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                		scope:actor = {
+                			set_variable = oe_byz_org_build_diodro_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:athens } scope:actor = { oe_byz_org_build_ath_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_ath_bank_tt
+		
+                		location:athens = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = YDBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                		location:thessaloniki = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}	
+                		location:constantinople = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}	
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                				scope:actor = {
+                			set_variable = oe_byz_org_build_ath_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:beirut } scope:actor = { oe_byz_org_build_lifant_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_lifant_bank_tt
+		
+                		location:beirut = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = LFBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                		location:damascus = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}	
+                				location:aleppo = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}			
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                						scope:actor = {
+                			set_variable = oe_byz_org_build_lifant_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:alexandria } scope:actor = { oe_byz_org_build_egypt_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_egypt_bank_tt
+		
+                		location:alexandria = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = EGBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                		location:cairo = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}					
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                		scope:actor = {
+                			set_variable = oe_byz_org_build_egypt_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:rome } scope:actor = { oe_byz_org_build_roman_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_roman_bank_tt
+		
+                		location:rome = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = ROBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                				location:constantinople = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}			
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                		scope:actor = {
+                			set_variable = oe_byz_org_build_roman_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:tunis } scope:actor = { oe_byz_org_build_nor_afrac_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_nor_afrac_bank_tt
+		
+                		location:tunis = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = NFBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                						location:palermo = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}			
+                						location:rome = {
+                					oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }		
+                		}			
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                				scope:actor = {
+                			set_variable = oe_byz_org_build_nor_afrac_bank_over
+                		}
+                	}
+            }
+            if = {
+                limit = { scope:bank_seat = { this = location:palermo } scope:actor = { oe_byz_org_build_sisic_bank_ready = yes } }
+                custom_tooltip = {
+                			text = oe_byz_org_build_sisic_bank_tt
+		
+                		location:palermo = {
+                				create_building_country_in_location = {
+                							religion = religion:orthodox
+                							culture = culture:greek_culture
+                							subject_type = subject_type:oe_bank
+                							overlord = c:BYZ
+                							ruler = random
+                							reforms = {
+                							banking_country
+                							}
+                							name = {
+                								name = SSBK
+                							}
+                							hidden_effect = {
+                						change_heir_selection = heir_selection:bank_selection
+                						change_government_type = government_type:republic
+                							}
+                							save_scope_as = target_building_country
+                				}
+                				oe_construct_chartered_bank_effect = { OWNER = scope:target_building_country }
+                		}
+                		scope:target_building_country = {
+                			add_gold = {
+                				value = 3000
+                			}
+                		}
+                		international_organization:oe_byz_bank_org ?= {
+                		add_country_to_international_organization = scope:target_building_country
+                		}
+                				scope:actor = {
+                			set_variable = oe_byz_org_build_sisic_bank_over
+                		}
+                	}
+            }
+            international_organization:oe_byz_empire_pillars = {
+                add_country_to_international_organization = scope:target_building_country
+            }
+        }
+    }
+}

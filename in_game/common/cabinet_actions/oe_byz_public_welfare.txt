@@ -1,0 +1,110 @@
+﻿oe_byz_promote_births = {
+    ability = adm
+    allow_multiple = yes
+    potential = { oe_byz_logothetes_services_available = yes }
+    
+    select_trigger = {
+        looking_for_a = province
+        source = actor
+        target_flag = target
+        name = oe_byz_welfare_choose_province
+        none_available_msg_key = oe_byz_welfare_no_province
+        column = { data = name }
+        column = { data = population }
+        visible = {
+            any_location_in_province = { is_ownable = yes owner ?= scope:actor }
+            NOT = { cabinet_already_performing_same_task_on_target = { cabinet_action = oe_byz_promote_births interaction_target = target } }
+        }
+        # Assignment-only quota. Top-level allow is rechecked for running actions.
+        enabled = {
+            scope:actor = {
+                custom_tooltip = {
+                    text = OE_BYZ_WELFARE_MAX_THREE
+                    NOT = {
+                        any_cabinet = {
+                            has_cabinet_action = yes
+                            cabinet_action = cabinet_action:oe_byz_promote_births
+                            count >= 3
+                        }
+                    }
+                }
+            }
+        }
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        only_color_selectable = yes
+    }
+    is_finished = {
+        OR = {
+            NOT = { oe_byz_logothetes_services_available = yes }
+            NOT = { scope:target = { any_location_in_province = { is_ownable = yes owner ?= root } } }
+        }
+    }
+    # Native ongoing modifier: automatically scaled by cabinet efficiency and removed on cancellation.
+    # Like native reduced_paperwork: target coverage is handled by the cabinet system.
+    location_modifier = {
+        local_population_growth = 0.001
+    }
+    map_marker = { show_for_owner = yes }
+}
+
+oe_byz_imperial_healthcare = {
+    ability = adm
+    allow_multiple = yes
+    potential = { oe_byz_logothetes_services_available = yes }
+    
+    select_trigger = {
+        looking_for_a = region
+        source = actor
+        target_flag = target
+        name = oe_byz_welfare_choose_region
+        none_available_msg_key = oe_byz_welfare_no_region
+        column = { data = name }
+        column = { data = population }
+        visible = {
+            any_location_in_region = { is_ownable = yes owner ?= scope:actor }
+            NOT = { cabinet_already_performing_same_task_on_target = { cabinet_action = oe_byz_imperial_healthcare interaction_target = target } }
+        }
+        # Assignment-only quota. Top-level allow is rechecked for running actions.
+        enabled = {
+            scope:actor = {
+                custom_tooltip = {
+                    text = OE_BYZ_WELFARE_MAX_THREE
+                    NOT = {
+                        any_cabinet = {
+                            has_cabinet_action = yes
+                            cabinet_action = cabinet_action:oe_byz_imperial_healthcare
+                            count >= 3
+                        }
+                    }
+                }
+            }
+        }
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        only_color_selectable = yes
+    }
+    is_finished = {
+        OR = {
+            NOT = { oe_byz_logothetes_services_available = yes }
+            NOT = { scope:target = { any_location_in_region = { is_ownable = yes owner ?= root } } }
+        }
+    }
+    # Native ongoing modifier: automatically scaled by cabinet efficiency and removed on cancellation.
+    # Like native reduced_paperwork: target coverage is handled by the cabinet system.
+    location_modifier = {
+        local_disease_resistance = 0.05
+        local_monthly_prosperity = 0.001
+        local_migration_attraction = 0.1
+    }
+    map_marker = { show_for_owner = yes }
+}
+
+oe_byz_trade_directorate = {
+    ability = dip
+    allow_multiple = no
+    potential = { oe_byz_logothetes_services_available = yes }
+    is_finished = { NOT = { oe_byz_logothetes_services_available = yes } }
+    country_modifier = {
+        export_efficiency = 0.01
+        import_efficiency = 0.01
+    }
+}

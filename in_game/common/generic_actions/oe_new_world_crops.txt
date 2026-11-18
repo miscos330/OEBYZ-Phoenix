@@ -1,0 +1,77 @@
+﻿# Explicit button in Imperial Works' first (Aegean) panel.
+# Requires Age of Discovery or later. No discovery, market-supply or Columbian Exchange situation prerequisite.
+oe_works_transplant_new_world_crops = {
+    type = internationalorganization
+    show_message = no
+    show_in_gui_list = no
+    automation_tick = never
+    ai_tick = never
+    potential = { scope:actor = { oe_works_actor = yes } }
+    allow = { scope:actor = { oe_nw_crop_allowed = yes } }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = choose_international_organization
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_roman_world }
+    }
+    select_trigger = {
+        looking_for_a = goods
+        target_flag = target_good
+        interaction_source_list = {
+            goods:chili = { add_to_list = source }
+            goods:maize = { add_to_list = source }
+            goods:potato = { add_to_list = source }
+            goods:tobacco = { add_to_list = source }
+            goods:cocoa = { add_to_list = source }
+        }
+        name = OE_NW_CROP_CHOOSE_GOOD
+        column = { data = name }
+        visible = { oe_nw_crop_good = yes }
+        enabled = { oe_nw_crop_good = yes }
+    }
+    select_trigger = {
+        looking_for_a = location
+        source = actor
+        target_flag = target_location
+        interaction_source_list = {
+            scope:actor = {
+                every_owned_location = { add_to_list = source }
+                every_subject_or_below = { every_owned_location = { add_to_list = source } }
+            }
+        }
+        name = OE_NW_CROP_CHOOSE_LOCATION
+        none_available_msg_key = OE_NW_CROP_NO_LOCATION
+        column = { data = name }
+        column = { data = raw_material }
+        column = { data = population }
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        visible = { oe_nw_crop_target = yes }
+        enabled = { oe_nw_crop_target = yes }
+    }
+    effect = {
+        # Recheck money, ownership and suitability before any payment or mutation.
+        if = {
+            limit = {
+                scope:actor = { oe_nw_crop_allowed = yes }
+                exists = scope:recipient
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                exists = scope:target_good
+                scope:target_good = { oe_nw_crop_good = yes }
+                exists = scope:target_location
+                scope:target_location = { oe_nw_crop_target = yes }
+            }
+            scope:actor = { add_gold = -200 }
+            scope:target_location = {
+                change_raw_material = scope:target_good
+                add_location_modifier = {
+                    modifier = oe_new_world_crop_transplant
+                    years = 5
+                    mode = replace
+                }
+            }
+        }
+    }
+}

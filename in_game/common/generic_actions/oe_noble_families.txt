@@ -1,0 +1,58 @@
+﻿oe_nf_promote_house = {
+    type = internationalorganization
+    show_message = no
+    ai_tick = never
+    automation_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } }
+    allow = {
+        scope:actor = {
+            oe_court_actor = yes
+            international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_initialized }
+            custom_tooltip = { text = OE_NF_ROOM oe_nf_house_count < international_organization:oe_byz_empire_pillars.var:oe_nf_house_limit }
+            custom_tooltip = { text = OE_NF_CANDIDATE any_dynasty = { oe_nf_promotion_family = yes } }
+        }
+        international_organization:oe_byz_empire_pillars = { custom_tooltip = { text = OE_NF_AUTHORITY var:oe_pillars_authority >= 1 } }
+    }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = character
+        source = actor
+        interaction_source_list = {
+            scope:actor = {
+                every_dynasty = {
+                    limit = { oe_nf_promotion_family = yes }
+                    ordered_character_in_dynasty = {
+                        limit = { oe_nf_living = yes owner = c:BYZ }
+                        order_by = age_in_days
+                        max = 1
+                        add_to_list = source
+                    }
+                }
+            }
+        }
+        target_flag = target_character
+        name = "OE_NF_SELECT"
+        none_available_msg_key = "OE_NF_NONE"
+        column = { data = character_info }
+        visible = { oe_nf_promotion_character = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_nf_can_promote = yes }
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:target_character = { oe_nf_promotion_character = yes }
+            }
+            scope:recipient = { change_variable = { name = oe_pillars_authority add = -1 } }
+            scope:target_character = { oe_nf_register = { initial = 0 } }
+            scope:actor = { oe_nf_refresh = yes }
+        }
+    }
+}

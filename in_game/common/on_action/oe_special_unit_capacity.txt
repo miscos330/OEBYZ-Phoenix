@@ -1,0 +1,23 @@
+﻿on_game_start = { on_actions = { oe_su_initialize_capacity } }
+oe_su_initialize_capacity = { effect = { c:BYZ ?= { oe_su_refresh_capacity = yes } } }
+
+# Monthly country hook performs one BYZ-only pass, including culture changes and
+# scripted building/ownership changes. No daily tick, no global location scan.
+monthly_country_pulse = { on_actions = { oe_su_monthly_capacity } }
+oe_su_monthly_capacity = {
+    trigger = { tag = BYZ }
+    effect = { oe_su_refresh_capacity = yes }
+}
+
+# A barracks location changing hands needs fresh capacities after its transfer.
+on_location_changed_owner = { on_actions = { oe_su_barracks_changed_owner } }
+oe_su_barracks_changed_owner = {
+    trigger = {
+        has_building = building_type:oe_hetaireia_barracks
+        OR = {
+            AND = { exists = scope:loser scope:loser ?= { tag = BYZ } }
+            AND = { exists = scope:winner scope:winner ?= { tag = BYZ } }
+        }
+    }
+    effect = { c:BYZ ?= { oe_su_refresh_capacity = yes oe_su_queue_capacity_refresh = yes } }
+}

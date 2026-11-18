@@ -1,0 +1,108 @@
+﻿oe_byz_empire_kill_eye = {
+	
+	message = yes
+	on_own_nation = yes
+	
+	
+	potential = {
+		scope:actor = {
+			tag = BYZ
+		}
+	}
+
+	ai_tick = never
+
+	allow = {
+	}
+
+
+
+	select_trigger = {
+		looking_for_a = character
+		source = actor
+		target_flag = recipient
+		name = "choose_character"
+		column = {
+			data = name
+		}
+		visible = {
+            NOT = { oe_bells_protected_thinker = yes }
+			owner = c:BYZ
+			NOT = { has_estate = estate_type:crown_estate }
+			is_adult = yes
+
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = goods
+		target_flag = target_goods
+		name = "oe_byz_empire_kill_text"
+		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+		column = {
+			data = name
+		}
+		visible = {
+			OR = {
+				root = goods:tools
+				root = goods:weaponry
+				root = goods:firearms
+				root = goods:cannons
+			}
+		}
+	}
+	
+	effect = {
+        if = {
+            limit = { exists = scope:recipient scope:recipient = { NOT = { oe_bells_protected_thinker = yes } } }
+
+		scope:actor = {
+		add_estate_satisfaction = {
+			type = scope:recipient.estate_type
+			value = -0.05
+		}
+		}
+		scope:recipient = {
+		if = {
+			limit = { scope:target_goods = goods:tools 
+			NOT = { has_character_modifier = oe_empire_kill_mod_lose_eye }
+		}
+			add_character_modifier = {
+				modifier = oe_empire_kill_mod_lose_eye
+				years = -1
+				mode = add_and_extend
+			}
+		}
+				if = {
+			limit = { scope:target_goods = goods:weaponry 
+		NOT = { has_character_modifier = oe_empire_kill_mod_lose_nose }}
+			add_character_modifier = {
+				modifier = oe_empire_kill_mod_lose_nose
+				years = -1
+				mode = add_and_extend
+			}
+		}
+				if = {
+			limit = { scope:target_goods = goods:firearms 
+		NOT = { has_character_modifier = oe_empire_kill_mod_lose_mouse }}
+			add_character_modifier = {
+				modifier = oe_empire_kill_mod_lose_mouse
+				years = -1
+				mode = add_and_extend
+			}
+		}
+				if = {
+			limit = { scope:target_goods = goods:cannons 
+		NOT = { has_character_modifier = oe_empire_kill_mod_lose_hand }}
+			add_character_modifier = {
+				modifier = oe_empire_kill_mod_lose_hand
+				years = -1
+				mode = add_and_extend
+			}
+		}
+	}
+
+	
+        }
+    }		
+}

@@ -1,0 +1,54 @@
+﻿# IO scope. The flag precedes dispatch, so repeated death/court/monthly callbacks cannot duplicate it.
+oe_nf_request_succession = {
+    if = {
+        limit = {
+            oe_nf_succession_needed = { slot = $slot$ }
+            NOT = { has_variable = oe_nf_succession_pending_$slot$ }
+            NOT = { has_variable = oe_nf_succession_suppressed_$slot$ }
+        }
+        set_variable = oe_nf_succession_pending_$slot$
+        c:BYZ = { trigger_event_non_silently = oe_nf_succession.$slot$ }
+    }
+}
+oe_nf_restore_collateral_branch = {
+    if = {
+        limit = { oe_nf_succession_choice_valid = { slot = $slot$ } }
+        set_variable = { name = oe_nf_succession_building_$slot$ value = 1 days = 1 }
+        var:oe_nf_dynasty_$slot$ = { save_scope_as = oe_nf_succession_family }
+        culture:greek_culture = { save_scope_as = oe_nf_succession_culture }
+        if = {
+            limit = { scope:oe_nf_succession_family = dynasty:ottomans_dynasty }
+            culture:oe_tur_greek_culture = { save_scope_as = oe_nf_succession_culture }
+        }
+        c:BYZ = {
+            create_character = {
+                dynasty = scope:oe_nf_succession_family culture = scope:oe_nf_succession_culture
+                religion = religion:orthodox estate = estate_type:nobles_estate
+                female = no age = 35
+                save_scope_as = oe_nf_collateral_head
+            }
+            create_character = {
+                culture = scope:oe_nf_succession_culture religion = religion:orthodox
+                estate = estate_type:nobles_estate female = yes age = 30
+                save_scope_as = oe_nf_collateral_spouse
+            }
+            scope:oe_nf_collateral_head = { marry_character = scope:oe_nf_collateral_spouse }
+            create_character = {
+                dynasty = scope:oe_nf_succession_family culture = scope:oe_nf_succession_culture
+                religion = religion:orthodox estate = estate_type:nobles_estate
+                female = no age = 8 father = scope:oe_nf_collateral_head mother = scope:oe_nf_collateral_spouse
+                save_scope_as = oe_nf_collateral_son
+            }
+        }
+        set_variable = { name = oe_nf_head_$slot$ value = scope:oe_nf_collateral_head }
+        remove_variable = oe_nf_succession_pending_$slot$
+        remove_variable = oe_nf_succession_building_$slot$
+        oe_nf_refresh_slot = { slot = $slot$ }
+    }
+}
+oe_nf_end_house_line = {
+    if = {
+        limit = { oe_nf_succession_choice_valid = { slot = $slot$ } }
+        oe_nf_unregister_house = { slot = $slot$ }
+    }
+}

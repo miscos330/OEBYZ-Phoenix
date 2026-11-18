@@ -1,0 +1,29 @@
+﻿oe_byz_demand_orthodox_conversion = {
+    message = yes
+    on_own_nation = yes
+    potential = { scope:actor = { tag = BYZ } }
+    ai_tick = never
+    allow = { scope:actor = { oe_byz_orthodox_conversion_allowed = yes } }
+    select_trigger = {
+        looking_for_a = character
+        source = actor
+        target_flag = recipient
+        name = "OE_CONVERSION_CHOOSE_CHARACTER"
+        none_available_msg_key = "OE_CONVERSION_NO_CANDIDATE"
+        column = { data = name }
+        visible = { oe_byz_orthodox_conversion_candidate = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_byz_orthodox_conversion_allowed = yes }
+                scope:recipient = { oe_byz_orthodox_conversion_candidate = yes }
+            }
+            custom_tooltip = {
+                text = OE_CONVERSION_AUTHORITY_COST
+                international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -1 } }
+            }
+            scope:recipient = { change_character_religion = religion:orthodox }
+        }
+    }
+}

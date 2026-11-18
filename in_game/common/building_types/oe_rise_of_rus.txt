@@ -1,0 +1,64 @@
+﻿oe_rus_kremlin = {
+    is_special = yes
+    max_levels = 1
+    pop_type = soldiers
+    employment_size = 1
+    category = defense_category
+    rural_settlement = no
+    town = no
+    city = yes
+    megalopolis = yes
+    forbidden_for_estates = yes
+    build_time = 365
+    country_potential = { culture = { has_culture_group = culture_group:russian_group } }
+    location_potential = { has_variable = oe_rus_kremlin_unlocked oe_rus_region = yes is_capital = no }
+    allow = { owner = scope:actor is_capital = no scope:actor = { oe_rus_kremlin_capacity = yes } }
+    remove_if = {
+        OR = {
+            location = { is_capital = yes }
+            NOT = { owner = { culture = { has_culture_group = culture_group:russian_group } } }
+            # Keep the five oldest commissioned Kremlins. The serial is unique,
+            # so simultaneous checks cannot remove every building at overcap.
+            AND = {
+                has_variable = oe_rus_kremlin_serial
+                owner = {
+                    any_owned_building = {
+                        count >= 5
+                        OR = {
+                            building_type = building_type:kremlin
+                            AND = {
+                                building_type = building_type:oe_rus_kremlin
+                                has_variable = oe_rus_kremlin_serial
+                                var:oe_rus_kremlin_serial < root.var:oe_rus_kremlin_serial
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    on_built = {
+        if = {
+            limit = { NOT = { has_variable = oe_rus_kremlin_serial } }
+            if = {
+                limit = { NOT = { has_global_variable = oe_rus_kremlin_serial_counter } }
+                set_global_variable = { name = oe_rus_kremlin_serial_counter value = 0 }
+            }
+            change_global_variable = { name = oe_rus_kremlin_serial_counter add = 1 }
+            set_variable = { name = oe_rus_kremlin_serial value = global_var:oe_rus_kremlin_serial_counter }
+        }
+    }
+    unique_production_methods = {
+        oe_rus_kremlin_maintenance = {
+            weaponry = 0.2 leather = 0.2 tar = 0.1
+            category = building_maintenance icon_type = building_type icon = oe_rus_kremlin
+        }
+    }
+    construction_demand = castle_construction
+    modifier = {
+        local_proximity_source = 60
+        fort_level = 1
+        local_garrison_size = 0.1
+        local_defensive = 0.33
+    }
+}

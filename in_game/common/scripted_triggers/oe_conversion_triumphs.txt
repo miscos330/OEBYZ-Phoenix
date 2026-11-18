@@ -1,0 +1,95 @@
+﻿# Character scope. Children and women qualify; foreign and dead characters do not.
+oe_byz_orthodox_conversion_candidate = {
+    is_alive = yes
+    owner = c:BYZ
+    OR = { has_estate = estate_type:crown_estate has_estate = estate_type:nobles_estate }
+    NOT = { religion = religion:orthodox }
+}
+# Country scope; rechecked immediately before spending authority.
+oe_byz_orthodox_conversion_allowed = {
+    tag = BYZ
+    exists = international_organization:oe_byz_empire_pillars
+    international_organization:oe_byz_empire_pillars = {
+        custom_tooltip = { text = OE_CONVERSION_AUTHORITY_REQUIRED var:oe_pillars_authority >= 1 }
+    }
+}
+# Direct subjects only; no change to their ruler, faith or subject type.
+oe_heg_stabilize_africa_target = {
+    country_type = location
+    is_subject_of = c:BYZ
+    capital = { region = region:maghreb_region }
+    NOT = { has_reform = government_reform:oe_roman_province }
+}
+oe_heg_stabilize_africa_allowed = {
+    oe_heg_campaign_access = yes
+    any_subject = { oe_heg_stabilize_africa_target = yes }
+}
+# Location scope: ownership, not control; includes subjects of subjects, not allies.
+oe_heg_triumph_owned_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = { oe_heg_byz_bloc = yes }
+}
+
+oe_heg_triumph_africa_location = { region = region:maghreb_region }
+oe_heg_triumph_africa_allowed = {
+    oe_heg_campaign_access = yes
+    exists = international_organization:oe_byz_empire_pillars
+    NOT = { has_variable = oe_heg_triumph_africa_done }
+    NOT = { has_variable = oe_heg_triumph_africa_pending }
+    # NEW 2026-11-17 conquest campaign phase 1: the region's campaign must have ended in victory or peace.
+    custom_tooltip = { text = OE_HC_TRIUMPH_REQUIRES has_variable = oe_hc_africa_won }
+    custom_tooltip = { text = OE_HEG_TRIUMPH_LAND_REQUIRED region:maghreb_region = { any_location_in_region = { oe_heg_triumph_owned_location = yes } } }
+}
+
+oe_heg_triumph_egypt_location = { OR = { region = region:egypt_region area = area:levant_area } }
+oe_heg_triumph_egypt_allowed = {
+    oe_heg_campaign_access = yes
+    exists = international_organization:oe_byz_empire_pillars
+    NOT = { has_variable = oe_heg_triumph_egypt_done }
+    NOT = { has_variable = oe_heg_triumph_egypt_pending }
+    # NEW 2026-11-17 conquest campaign phase 1: the region's campaign must have ended in victory or peace.
+    custom_tooltip = { text = OE_HC_TRIUMPH_REQUIRES has_variable = oe_hc_egypt_won }
+    custom_tooltip = { text = OE_HEG_TRIUMPH_LAND_REQUIRED OR = { region:egypt_region = { any_location_in_region = { oe_heg_triumph_owned_location = yes } } area:levant_area = { any_location_in_area = { oe_heg_triumph_owned_location = yes } } } }
+}
+
+oe_heg_triumph_italy_location = { region = region:italy_region }
+oe_heg_triumph_italy_allowed = {
+    oe_heg_campaign_access = yes
+    exists = international_organization:oe_byz_empire_pillars
+    NOT = { has_variable = oe_heg_triumph_italy_done }
+    NOT = { has_variable = oe_heg_triumph_italy_pending }
+    # NEW 2026-11-17 conquest campaign phase 1: the region's campaign must have ended in victory or peace.
+    custom_tooltip = { text = OE_HC_TRIUMPH_REQUIRES has_variable = oe_hc_italy_won }
+    custom_tooltip = { text = OE_HEG_TRIUMPH_LAND_REQUIRED region:italy_region = { any_location_in_region = { oe_heg_triumph_owned_location = yes } } }
+}
+
+oe_heg_triumph_france_location = { region = region:france_region }
+oe_heg_triumph_france_allowed = {
+    oe_heg_campaign_access = yes
+    exists = international_organization:oe_byz_empire_pillars
+    NOT = { has_variable = oe_heg_triumph_france_done }
+    NOT = { has_variable = oe_heg_triumph_france_pending }
+    custom_tooltip = { text = OE_HC_TRIUMPH_REQUIRES has_variable = oe_hc_france_won }
+    custom_tooltip = { text = OE_HEG_TRIUMPH_LAND_REQUIRED region:france_region = { any_location_in_region = { oe_heg_triumph_owned_location = yes } } }
+}
+
+oe_heg_triumph_iberia_location = { region = region:iberia_region }
+oe_heg_triumph_iberia_allowed = {
+    oe_heg_campaign_access = yes
+    exists = international_organization:oe_byz_empire_pillars
+    NOT = { has_variable = oe_heg_triumph_iberia_done }
+    NOT = { has_variable = oe_heg_triumph_iberia_pending }
+    custom_tooltip = { text = OE_HC_TRIUMPH_REQUIRES has_variable = oe_hc_iberia_won }
+    custom_tooltip = { text = OE_HEG_TRIUMPH_LAND_REQUIRED region:iberia_region = { any_location_in_region = { oe_heg_triumph_owned_location = yes } } }
+}
+
+oe_heg_triumph_britain_location = { OR = { area = area:west_country_area area = area:home_counties_area area = area:east_anglia_area area = area:midlands_area area = area:wales_area area = area:northumbria_area } }
+oe_heg_triumph_britain_allowed = {
+    oe_heg_campaign_access = yes
+    exists = international_organization:oe_byz_empire_pillars
+    NOT = { has_variable = oe_heg_triumph_britain_done }
+    NOT = { has_variable = oe_heg_triumph_britain_pending }
+    custom_tooltip = { text = OE_HC_TRIUMPH_REQUIRES has_variable = oe_hc_britain_won }
+    custom_tooltip = { text = OE_HEG_TRIUMPH_LAND_REQUIRED OR = { area:west_country_area = { any_location_in_area = { oe_heg_triumph_owned_location = yes } } area:home_counties_area = { any_location_in_area = { oe_heg_triumph_owned_location = yes } } area:east_anglia_area = { any_location_in_area = { oe_heg_triumph_owned_location = yes } } area:midlands_area = { any_location_in_area = { oe_heg_triumph_owned_location = yes } } area:wales_area = { any_location_in_area = { oe_heg_triumph_owned_location = yes } } area:northumbria_area = { any_location_in_area = { oe_heg_triumph_owned_location = yes } } } }
+}

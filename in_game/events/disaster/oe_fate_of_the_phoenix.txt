@@ -1,0 +1,307 @@
+﻿namespace = oe_fate_of_the_phoenix
+#=====================================
+#OEBYZ
+#=====================================
+
+#开局说明性事件
+oe_fate_of_the_phoenix.21 = {
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	category = disaster_event
+	title = oe_fate_of_the_phoenix.21.t
+	desc = oe_fate_of_the_phoenix.21.d
+
+	fire_only_once = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		c:BYZ.ruler = {
+			save_scope_as = target_character
+		}
+	}
+
+	image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+
+	option = {	
+		name = oe_fate_of_the_phoenix.21.a
+		custom_tooltip = {
+			text = oe_fate_of_the_phoenix.21.tt
+			trigger_event_non_silently = oe_fate_of_the_phoenix.22
+		}
+		
+	}
+}
+
+oe_fate_of_the_phoenix.22 = {
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	category = disaster_event
+	title = oe_fate_of_the_phoenix.22.t
+	desc = oe_fate_of_the_phoenix.22.d
+
+	fire_only_once = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		c:BYZ.ruler = {
+			save_scope_as = target_character
+		}
+	}
+
+	image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+
+	option = {	
+		name = oe_fate_of_the_phoenix.22.a
+		custom_tooltip = {
+			text = oe_fate_of_the_phoenix.22.tt
+			trigger_event_non_silently = oe_fate_of_the_phoenix.23
+		}
+	}
+}
+
+oe_fate_of_the_phoenix.23 = {
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	category = disaster_event
+	title = oe_fate_of_the_phoenix.23.t
+	desc = oe_fate_of_the_phoenix.23.d
+
+	fire_only_once = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		c:BYZ.ruler = {
+			save_scope_as = target_character
+		}
+	}
+
+	image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+
+	option = {	
+		name = oe_fate_of_the_phoenix.23.a
+		custom_tooltip = {
+			text = oe_fate_of_the_phoenix.23.tt
+		}
+		while = {
+			count = 25
+			random_owned_location = {
+				limit = {
+						NOT = {
+							has_building = building_type:oe_byz_bad_thief_greek
+						}			
+						location_rank = location_rank:rural_settlement		
+				}
+		construct_building ={ building_type = building_type:oe_byz_bad_thief_greek
+						cost_multiplier = 0
+				cost_multiplier_reason = "game_concept_event"}	
+			}
+		}
+	}
+}
+
+#边境袭击
+# Retired attacker relays and Bulgarian/Hungarian raid. No effects or dispatchers.
+# Tombstones safely invalidate delayed events already stored in older saves.
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_fate_of_the_phoenix.100 = { type = country_event hidden = yes orphan = yes trigger = { always = no } }
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_fate_of_the_phoenix.101 = { type = country_event hidden = yes orphan = yes trigger = { always = no } }
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_fate_of_the_phoenix.102 = { type = country_event hidden = yes orphan = yes trigger = { always = no } }
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_fate_of_the_phoenix.202 = { type = country_event hidden = yes orphan = yes trigger = { always = no } }
+
+
+oe_fate_of_the_phoenix.200 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_fate_of_the_phoenix.200.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { scope:oe_raid_defended = 1 } desc = OE_RAID_TURK_DEFENDED_DESC }
+            triggered_desc = { desc = oe_fate_of_the_phoenix.200.d }
+        }
+    }
+    image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+    trigger = { oe_raid_turk_available = yes }
+    immediate = {
+        random_neighbor_country = {
+            limit = { oe_raid_turk_attacker = yes }
+            save_scope_as = oe_raid_attacker
+            ruler_or_regent ?= { save_scope_as = target_character }
+        }
+        random_owned_location = {
+            limit = { oe_raid_rural_target = yes is_neighbor_of = scope:oe_raid_attacker }
+            save_scope_as = target_location
+        }
+        oe_raid_roll_defense = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.200.a
+        trigger = { oe_raid_can_resolve = yes NOT = { scope:oe_raid_defended = 1 } }
+        oe_raid_accept_effect = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.200.b
+        trigger = { oe_raid_can_resolve = yes NOT = { scope:oe_raid_defended = 1 } manpower >= oe_raid_patrol_manpower }
+        oe_raid_patrol_effect = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.200.c
+        exclusive = yes
+        trigger = { oe_raid_can_resolve = yes scope:oe_raid_defended = 1 }
+        oe_raid_defended_effect = yes
+    }
+    option = {
+        name = OE_RAID_NO_LONGER_RELEVANT
+        trigger = { NOT = { oe_raid_can_resolve = yes } }
+        custom_tooltip = OE_RAID_NO_LONGER_RELEVANT_TT
+    }
+}
+
+oe_fate_of_the_phoenix.201 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_fate_of_the_phoenix.201.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { scope:oe_raid_defended = 1 } desc = OE_RAID_SER_DEFENDED_DESC }
+            triggered_desc = { desc = oe_fate_of_the_phoenix.201.d }
+        }
+    }
+    image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+    trigger = { oe_raid_ser_available = yes }
+    immediate = {
+        c:SER = {
+            save_scope_as = oe_raid_attacker
+            ruler_or_regent ?= { save_scope_as = target_character }
+        }
+        random_owned_location = {
+            limit = { oe_raid_rural_target = yes is_neighbor_of = scope:oe_raid_attacker }
+            save_scope_as = target_location
+        }
+        oe_raid_roll_defense = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.201.a
+        trigger = { oe_raid_can_resolve = yes NOT = { scope:oe_raid_defended = 1 } }
+        oe_raid_accept_effect = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.201.b
+        trigger = { oe_raid_can_resolve = yes NOT = { scope:oe_raid_defended = 1 } manpower >= oe_raid_patrol_manpower }
+        oe_raid_patrol_effect = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.201.c
+        exclusive = yes
+        trigger = { oe_raid_can_resolve = yes scope:oe_raid_defended = 1 }
+        oe_raid_defended_effect = yes
+    }
+    option = {
+        name = OE_RAID_NO_LONGER_RELEVANT
+        trigger = { NOT = { oe_raid_can_resolve = yes } }
+        custom_tooltip = OE_RAID_NO_LONGER_RELEVANT_TT
+    }
+}
+
+oe_fate_of_the_phoenix.203 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_fate_of_the_phoenix.203.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { scope:oe_raid_defended = 1 } desc = OE_RAID_PIRATE_DEFENDED_DESC }
+            triggered_desc = { desc = oe_fate_of_the_phoenix.203.d }
+        }
+    }
+    image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+    trigger = { oe_raid_pirate_available = yes }
+    immediate = {
+        random_owned_location = {
+            limit = { oe_raid_rural_target = yes is_coastal = yes }
+            save_scope_as = target_location
+        }
+        oe_raid_roll_defense = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.203.a
+        trigger = { oe_raid_can_resolve = yes NOT = { scope:oe_raid_defended = 1 } }
+        oe_raid_accept_effect = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.203.b
+        trigger = { oe_raid_can_resolve = yes NOT = { scope:oe_raid_defended = 1 } manpower >= oe_raid_patrol_manpower }
+        oe_raid_patrol_effect = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.203.c
+        exclusive = yes
+        trigger = { oe_raid_can_resolve = yes scope:oe_raid_defended = 1 }
+        oe_raid_defended_effect = yes
+    }
+    option = {
+        name = OE_RAID_NO_LONGER_RELEVANT
+        trigger = { NOT = { oe_raid_can_resolve = yes } }
+        custom_tooltip = OE_RAID_NO_LONGER_RELEVANT_TT
+    }
+}
+
+oe_fate_of_the_phoenix.204 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = disaster_event
+    title = oe_fate_of_the_phoenix.204.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { scope:oe_raid_defended = 1 } desc = OE_RAID_BANDIT_DEFENDED_DESC }
+            triggered_desc = { desc = oe_fate_of_the_phoenix.204.d }
+        }
+    }
+    image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+    trigger = { oe_raid_bandit_available = yes }
+    immediate = {
+        random_owned_location = {
+            limit = { oe_raid_rural_target = yes }
+            save_scope_as = target_location
+        }
+        oe_raid_roll_defense = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.204.a
+        trigger = { oe_raid_can_resolve = yes NOT = { scope:oe_raid_defended = 1 } }
+        oe_raid_accept_effect = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.204.b
+        trigger = { oe_raid_can_resolve = yes NOT = { scope:oe_raid_defended = 1 } manpower >= oe_raid_patrol_manpower }
+        oe_raid_patrol_effect = yes
+    }
+    option = {
+        name = oe_fate_of_the_phoenix.204.c
+        exclusive = yes
+        trigger = { oe_raid_can_resolve = yes scope:oe_raid_defended = 1 }
+        oe_raid_defended_effect = yes
+    }
+    option = {
+        name = OE_RAID_NO_LONGER_RELEVANT
+        trigger = { NOT = { oe_raid_can_resolve = yes } }
+        custom_tooltip = OE_RAID_NO_LONGER_RELEVANT_TT
+    }
+}

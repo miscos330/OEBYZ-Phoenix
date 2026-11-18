@@ -1,0 +1,42 @@
+﻿oe_pillars_reinforce_theme = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = { scope:actor = { oe_theme_reinforcement_allowed = yes } }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        looking_for_a = country
+        target_flag = target_country
+        name = "OE_THEME_REINFORCEMENT_SELECT"
+        none_available_msg_key = "OE_THEME_REINFORCEMENT_NONE"
+        column = { data = name }
+        column = { data = great_power_score }
+        visible = { oe_theme_reinforcement_target = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:actor = { oe_theme_reinforcement_allowed = yes }
+                scope:target_country = { oe_theme_reinforcement_target = yes }
+            }
+            scope:actor = { add_manpower = -1 }
+            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -1 } }
+            scope:target_country = { add_gold = -50 }
+            scope:target_country.capital = { oe_theme_create_reinforcement_package = { owner = scope:target_country } }
+        }
+    }
+}

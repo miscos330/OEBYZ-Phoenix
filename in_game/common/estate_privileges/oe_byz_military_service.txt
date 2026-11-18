@@ -1,0 +1,29 @@
+﻿oe_peasants_military_service_land = {
+    estate = peasants_estate
+    potential = { has_or_had_tag = BYZ }
+    allow = { NOT = { has_estate_privilege = estate_privilege:oe_peasants_military_service_tax } }
+    can_revoke = { }
+    country_modifier = {
+		peasants_estate_target_satisfaction = 0.05
+		global_peasants_estate_power = 0.33
+        peasants_estate_max_tax = -0.10
+        monthly_towards_quantity = 0.1
+        food_consumption_modifier = -0.1
+        global_manpower_modifier = 0.10
+    }
+}
+oe_peasants_military_service_tax = {
+    estate = peasants_estate
+    potential = { has_or_had_tag = BYZ }
+    allow = { NOT = { has_estate_privilege = estate_privilege:oe_peasants_military_service_land } }
+    can_revoke = { }
+    country_modifier = {
+        # Old saves can already contain both: land takes precedence until one is revoked.
+        potential_trigger = { NOT = { has_estate_privilege = estate_privilege:oe_peasants_military_service_land } }
+		peasants_estate_target_satisfaction = 0.05
+		global_peasants_estate_power = 0.33
+        peasants_estate_max_tax = 0.05
+        global_peasant_enfranchisment = 0.05
+        global_manpower_modifier = -0.05
+    }
+}

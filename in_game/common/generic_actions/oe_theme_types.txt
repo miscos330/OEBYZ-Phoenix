@@ -1,0 +1,157 @@
+﻿oe_pillars_convert_theme_type = {
+    type = internationalorganization
+    show_message = no
+    # 2026-11-18 territory rework: hidden; the course choice (oe_theme_set_focus, gen_theme_admin.py) replaces it.
+    potential = { always = no }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            any_subject = { oe_theme_convertible_trigger = yes }
+        }
+    }
+    automation_tick = never
+    ai_tick = never
+    price = price:oe_theme_conversion_price
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    select_trigger = {
+        looking_for_a = location
+        target_flag = theme_capital
+        name = "oe_theme_conversion_choose_country"
+        none_available_msg_key = "oe_theme_conversion_no_country"
+        tooltip_msg_key = "oe_theme_picker_map_tt"
+        column = { data = oe_theme_picker_name }
+        column = { data = oe_theme_picker_army_size }
+        column = { data = oe_theme_picker_tax_base }
+        interaction_source_list = {
+            scope:actor = {
+                every_subject = {
+                    limit = { oe_theme_convertible_trigger = yes capital = { owner = c:BYZ } }
+                    capital = {
+                        set_variable = { name = oe_theme_picker_country value = prev }
+                        add_to_list = source
+                    }
+                }
+            }
+        }
+        visible = { oe_theme_picker_capital_trigger = yes }
+        enabled = { oe_theme_picker_capital_trigger = yes }
+        # Countries own foreign offices, not the host province. Color their offices
+        # through the building owner; capital locations are the clickable targets.
+        only_color_selectable = no
+        map_color = {
+            if = {
+                limit = { owner = c:BYZ }
+                ordered_buildings_in_location = {
+                    limit = { oe_theme_building_trigger = yes owner = { oe_theme_convertible_trigger = yes } }
+                    order_by = building_level
+                    max = 1
+                    owner = { value = country_color }
+                }
+            }
+        }
+    }
+    select_trigger = {
+        looking_for_a = subject_type
+        target_flag = theme_type
+        name = "oe_theme_conversion_choose_type"
+        none_available_msg_key = "oe_theme_conversion_no_type"
+        column = { data = subject_type_attribute_column }
+        column = { data = subject_type_icon }
+        visible = {
+            OR = {
+                this = subject_type:oe_empire_theme
+                this = subject_type:oe_empire_theme_naval
+                this = subject_type:oe_empire_theme_administrative
+                this = subject_type:oe_empire_theme_frontier
+            }
+        }
+        enabled = {
+            custom_tooltip = { text = oe_theme_conversion_different_type scope:theme_capital.var:oe_theme_picker_country.subject_type != root }
+            trigger_if = {
+                limit = { this = subject_type:oe_empire_theme_naval }
+                custom_tooltip = {
+                    text = oe_theme_conversion_coastal_seat
+                    scope:theme_capital = { owner = c:BYZ is_coastal = yes }
+                }
+            }
+        }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { tag = BYZ }
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:theme_capital = { oe_theme_picker_capital_trigger = yes }
+                scope:theme_type = {
+                    OR = {
+                        this = subject_type:oe_empire_theme
+                        this = subject_type:oe_empire_theme_naval
+                        this = subject_type:oe_empire_theme_administrative
+                        this = subject_type:oe_empire_theme_frontier
+                    }
+                }
+                scope:theme_capital.var:oe_theme_picker_country.subject_type != scope:theme_type
+                trigger_if = {
+                    limit = { scope:theme_type = subject_type:oe_empire_theme_naval }
+                    scope:theme_capital = { is_coastal = yes }
+                }
+            }
+            scope:theme_capital.var:oe_theme_picker_country = { save_scope_as = target_country }
+            scope:target_country = {
+                save_scope_as = oe_theme_converted_country
+                set_variable = { name = oe_theme_conversion_in_progress value = yes }
+                capital = { save_scope_as = oe_theme_new_capital }
+            }
+            
+            # Deduplicate locations through the native foreign-building-location iterator.
+            scope:target_country = {
+                every_owned_foreign_building_location = {
+                    limit = { oe_theme_conversion_location_trigger = yes }
+                    add_to_list = oe_theme_conversion_locations
+                }
+                change_subject_type = scope:theme_type
+                if = { limit = { has_reform = government_reform:oe_byz_theme_system_subject } remove_reform = government_reform:oe_byz_theme_system_subject }
+                if = { limit = { has_reform = government_reform:oe_byz_theme_naval_subject } remove_reform = government_reform:oe_byz_theme_naval_subject }
+                if = { limit = { has_reform = government_reform:oe_byz_theme_administrative_subject } remove_reform = government_reform:oe_byz_theme_administrative_subject }
+                if = { limit = { has_reform = government_reform:oe_byz_theme_frontier_subject } remove_reform = government_reform:oe_byz_theme_frontier_subject }
+            }
+            if = {
+                limit = { scope:theme_type = subject_type:oe_empire_theme }
+                oe_theme_convert_to_ordinary_effect = yes
+            }
+            else_if = {
+                limit = { scope:theme_type = subject_type:oe_empire_theme_naval }
+                oe_theme_convert_to_naval_effect = yes
+            }
+            else_if = {
+                limit = { scope:theme_type = subject_type:oe_empire_theme_administrative }
+                oe_theme_convert_to_administrative_effect = yes
+            }
+            else_if = {
+                limit = { scope:theme_type = subject_type:oe_empire_theme_frontier }
+                oe_theme_convert_to_frontier_effect = yes
+            }
+            international_organization:oe_byz_empire_pillars = {
+                save_scope_as = oe_pillars_org
+                if = {
+                    limit = { scope:oe_theme_converted_country = { NOT = { is_member_of_international_organization = prev } } }
+                    add_country_to_international_organization = scope:oe_theme_converted_country
+                }
+            }
+            scope:oe_theme_converted_country = {
+                oe_pillars_classify_member_effect = yes
+                remove_variable = oe_theme_conversion_in_progress
+# PAUSED 2026-11-01: theme supervisory offices, per user request.
+#                 oe_theme_ensure_supervisory_office_effect = yes
+            }
+        }
+    }
+}

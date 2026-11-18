@@ -1,0 +1,77 @@
+﻿# IO scope. The dynasty reference is the public hook for future crisis events.
+oe_nf_clear_political_ally = {
+    remove_variable = oe_nf_political_ally
+    remove_variable = oe_nf_ally_1
+    remove_variable = oe_nf_ally_2
+    remove_variable = oe_nf_ally_3
+    remove_variable = oe_nf_ally_4
+}
+oe_nf_form_political_alliance = {
+    if = {
+        limit = { oe_nf_ally_form_ready = yes scope:target_head = { oe_nf_alliance_head_target = yes } }
+        c:BYZ = { add_legitimacy = -5 }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:target_head }
+            set_variable = { name = oe_nf_political_ally value = var:oe_nf_dynasty_1 }
+            set_variable = oe_nf_ally_1
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:target_head }
+            set_variable = { name = oe_nf_political_ally value = var:oe_nf_dynasty_2 }
+            set_variable = oe_nf_ally_2
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:target_head }
+            set_variable = { name = oe_nf_political_ally value = var:oe_nf_dynasty_3 }
+            set_variable = oe_nf_ally_3
+        }
+        if = {
+            limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:target_head }
+            set_variable = { name = oe_nf_political_ally value = var:oe_nf_dynasty_4 }
+            set_variable = oe_nf_ally_4
+        }
+        c:BYZ = { oe_nf_refresh = yes }
+    }
+}
+oe_nf_pressure_house = {
+    if = {
+        limit = { oe_nf_pressure_ready = yes scope:target_head = { oe_nf_alliance_head_target = yes } }
+        # A court action, not a house interaction: do not credit the target influence for this expense.
+        change_variable = { name = oe_pillars_authority subtract = 2 }
+        set_variable = { name = oe_nf_pressure_cooldown value = 1 months = 3 }
+        if = { limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:target_head } oe_nf_change_influence = { slot = 1 amount = -25 } }
+        if = { limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:target_head } oe_nf_change_influence = { slot = 2 amount = -25 } }
+        if = { limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:target_head } oe_nf_change_influence = { slot = 3 amount = -25 } }
+        if = { limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:target_head } oe_nf_change_influence = { slot = 4 amount = -25 } }
+    }
+}
+oe_nf_grant_honors = {
+    if = {
+        limit = { oe_nf_honors_ready = { slot = $slot$ } }
+        add_gold = { value = oe_nf_honors_price multiply = -1 }
+        oe_nf_change_influence = { slot = $slot$ amount = -25 }
+        set_variable = { name = oe_nf_honors_cooldown value = 1 months = 3 }
+    }
+}
+oe_nf_political_ally_support = {
+    if = {
+        limit = { oe_nf_ally_support_ready = { slot = $slot$ } }
+        change_variable = { name = oe_pillars_authority add = 5 }
+        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        c:BYZ.ruler = { add_adm = 3 add_dip = 3 add_mil = 3 }
+        set_variable = { name = oe_nf_ally_support_cooldown value = 1 months = 60 }
+        c:BYZ = { oe_nf_refresh = yes }
+    }
+}
+oe_nf_political_ally_pressure = {
+    if = {
+        limit = { oe_nf_ally_pressure_ready = { slot = $slot$ } scope:target_head = { oe_nf_alliance_rival_target = yes } }
+        # Retain the common contract: one authority spent on the ally gives that ally two influence.
+        oe_nf_spend_interaction_authority = { slot = $slot$ amount = 1 }
+        set_variable = { name = oe_nf_ally_pressure_cooldown value = 1 months = 24 }
+        if = { limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:target_head } oe_nf_change_influence = { slot = 1 amount = -25 } }
+        if = { limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:target_head } oe_nf_change_influence = { slot = 2 amount = -25 } }
+        if = { limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:target_head } oe_nf_change_influence = { slot = 3 amount = -25 } }
+        if = { limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:target_head } oe_nf_change_influence = { slot = 4 amount = -25 } }
+    }
+}

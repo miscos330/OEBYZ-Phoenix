@@ -1,0 +1,42 @@
+﻿# Hardcoded hooks append to existing handlers rather than replacing them.
+on_game_start = { on_actions = { oe_heg_tracking_startup } }
+monthly_country_pulse = { on_actions = { oe_heg_tracking_monthly_failsafe } }
+on_location_occupied = { on_actions = { oe_heg_occupation_changed } }
+on_siege_won = { on_actions = { oe_heg_occupation_changed } }
+on_location_changed_owner = { on_actions = { oe_heg_owner_changed } }
+oe_heg_tracking_startup = {
+    effect = { c:BYZ ?= { oe_heg_start_tracking = yes } }
+}
+oe_heg_tracking_monthly_failsafe = {
+    trigger = { tag = BYZ }
+    effect = {
+        # Starts observation in existing saves; no invented historical occupation time.
+        oe_heg_start_tracking = yes
+    }
+}
+oe_heg_occupation_changed = {
+    trigger = { scope:target = { oe_heg_key_location = yes } }
+    effect = {
+        # A fresh siege/occupation resets continuity even if two flips occur in one day.
+        scope:target = {
+            remove_variable = oe_heg_hold_days
+            remove_variable = oe_heg_counted_today
+            if = {
+                limit = { oe_heg_military_occupation = yes }
+                set_variable = { name = oe_heg_hold_days value = 0 }
+                set_variable = { name = oe_heg_counted_today value = yes days = 1 }
+            }
+        }
+        c:BYZ ?= { oe_heg_start_tracking = yes }
+    }
+}
+oe_heg_owner_changed = {
+    trigger = { oe_heg_key_location = yes }
+    effect = {
+        if = {
+            limit = { NOT = { oe_heg_military_occupation = yes } }
+            remove_variable = oe_heg_hold_days
+            remove_variable = oe_heg_counted_today
+        }
+    }
+}

@@ -1,0 +1,77 @@
+﻿# Country scope. Roman legitimacy is the IO special status, not a religion.
+oe_danube_roman_claimant = {
+    has_special_status_in_international_organization = {
+        type = special_status:oe_byz_roman_world_byz
+        international_organization = international_organization:oe_byz_roman_world
+    }
+}
+oe_danube_balkan_alliance_visible = {
+    country_exists = c:BUL
+    country_exists = c:SER
+    c:BUL = { is_allied_with = { target = c:SER } }
+    international_organization:oe_byz_roman_world = { NOT = { has_variable = oe_danube_balkan_alliance_broken } }
+}
+oe_danube_balkan_alliance_allowed = {
+    oe_danube_roman_claimant = yes
+    oe_danube_balkan_alliance_visible = yes
+    gold >= 100
+    num_of_diplomats >= 1
+    legitimacy >= 5
+}
+oe_danube_wallachia_owned = {
+    country_exists = c:BYZ
+    area:wallachia_area = {
+        NOT = {
+            any_location_in_area = {
+                is_ownable = yes
+                OR = {
+                    has_owner = no
+                    owner ?= { NOT = { oe_heg_byz_bloc = yes } }
+                }
+            }
+        }
+    }
+}
+# Country scope. Count the entire realm, including territory outside Moldavia.
+oe_danube_small_moldavian_country = {
+    country_type = location
+    num_locations > 0
+    num_locations <= 20
+    NOT = { this = c:BYZ }
+    exists = capital
+    capital = { area = area:moldavia_area }
+}
+# Location scope; used only within the Moldavia area iterator.
+oe_danube_moldavian_source = {
+    is_ownable = yes
+    has_owner = yes
+    owner = { OR = { oe_heg_byz_bloc = yes oe_danube_small_moldavian_country = yes } }
+}
+oe_danube_moldavia_visible = {
+    oe_danube_wallachia_owned = yes
+    international_organization:oe_byz_roman_world = { NOT = { has_variable = oe_danube_moldavia_founded } }
+}
+oe_danube_moldavia_allowed = {
+    oe_danube_moldavia_visible = yes
+    oe_danube_roman_claimant = yes
+    gold >= 200
+    custom_tooltip = {
+        text = OE_DANUBE_MOLDAVIA_HAS_SOURCE
+        area:moldavia_area = { any_location_in_area = { oe_danube_moldavian_source = yes } }
+    }
+}
+# Only count Golden Horde land in Moldavia, not its total realm size.
+oe_danube_mongol_enclave = {
+    country_exists = c:GLH
+    oe_danube_mongol_location_count > 0
+    oe_danube_mongol_location_count < 10
+}
+
+# Country scope. Never accept an unmarked neighboring country as the destination.
+oe_danube_governorate_valid = {
+    has_variable = oe_danube_governorate_identity
+    num_locations > 0
+    is_subject_of = c:BYZ
+    is_subject_type = oe_rome_sub_II
+    capital = { area = area:moldavia_area }
+}

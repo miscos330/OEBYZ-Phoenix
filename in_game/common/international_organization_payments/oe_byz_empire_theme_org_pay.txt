@@ -1,0 +1,244 @@
+﻿oe_byz_empire_theme_org_leader_pay_for_army = {#军饷
+	get_payer_list = {
+		every_international_organization_member = {
+			limit = { 
+					has_special_status_in_international_organization = {
+						type = special_status:oe_pillars_empire
+						international_organization = root
+					}				
+			}
+
+			add_to_local_variable_list = {
+				name = payers
+				target = this
+			}
+		}
+	}
+	get_payee_list = {
+        every_country_with_special_status_of_type = {
+            type = oe_pillars_theme
+            add_to_local_variable_list = { name = payees target = this }
+        }
+        every_country_with_special_status_of_type = {
+            type = oe_pillars_naval_theme
+            add_to_local_variable_list = { name = payees target = this }
+        }
+        every_country_with_special_status_of_type = {
+            type = oe_pillars_frontier_theme
+            add_to_local_variable_list = { name = payees target = this }
+        }
+        every_country_with_special_status_of_type = {
+            type = oe_pillars_latin_theme
+            add_to_local_variable_list = { name = payees target = this }
+        }
+    }
+	price = oe_byz_bank_org_leader_pay_price
+	uses_maintenance = yes
+	maintenance_modifier = {
+		potential_trigger = { "payment_maintenance(scope:recipient|oe_byz_empire_theme_org_leader_pay_for_army)" < 0.5 }
+		scale = {
+			value = 1
+			subtract = {
+				value = "payment_maintenance(scope:recipient|oe_byz_empire_theme_org_leader_pay_for_army)"
+				multiply = 2
+			}
+		}
+
+		monthly_prestige = -0.05
+
+	}
+	maintenance_modifier = {
+		potential_trigger = { "payment_maintenance(scope:recipient|oe_byz_empire_theme_org_leader_pay_for_army)" > 0.5 }
+		scale = {
+			value = "payment_maintenance(scope:recipient|oe_byz_empire_theme_org_leader_pay_for_army)"
+			subtract = 0.5
+			multiply = 2
+		}
+
+		monthly_prestige = 0.05
+	}
+	price_multiplier = {
+		add = {
+			desc = "BASE"
+			every_international_organization_member = {
+				limit = {
+					oe_theme_army_payment_trigger = yes
+				}
+				if = { limit = { oe_pillars_naval_theme_trigger = yes } add = navy_size }
+                else = { add = army_size }
+			}
+			multiply = 1
+		}
+	}
+	proportion_for_payer = {
+		add = {
+			desc = "BASE"
+			value = 1
+		}
+	}
+	proportion_for_payee = {
+		add = {
+			desc = "BASE"
+			value = army_size
+		}
+	}
+}
+oe_byz_empire_theme_org_leader_pay_for_soldier = {#兵源
+	get_payer_list = {
+		every_international_organization_member = {
+			limit = { 
+					has_special_status_in_international_organization = {
+						type = special_status:oe_pillars_empire
+						international_organization = root
+					}				
+			}
+
+			add_to_local_variable_list = {
+				name = payers
+				target = this
+			}
+		}
+	}
+	get_payee_list = {
+        every_country_with_special_status_of_type = {
+            type = oe_pillars_theme
+            add_to_local_variable_list = { name = payees target = this }
+        }
+        every_country_with_special_status_of_type = {
+            type = oe_pillars_frontier_theme
+            add_to_local_variable_list = { name = payees target = this }
+        }
+        every_country_with_special_status_of_type = {
+            type = oe_pillars_latin_theme
+            add_to_local_variable_list = { name = payees target = this }
+        }
+    }
+	price = oe_byz_empire_theme_org_leader_pay_price
+	uses_maintenance = yes
+	maintenance_modifier = {
+		potential_trigger = { "payment_maintenance(scope:recipient|oe_byz_empire_theme_org_leader_pay_for_soldier)" < 0.5 }
+		scale = {
+			value = 1
+			subtract = {
+				value = "payment_maintenance(scope:recipient|oe_byz_empire_theme_org_leader_pay_for_soldier)"
+				multiply = 2
+			}
+		}
+
+		global_manpower_modifier = 0.1
+
+	}
+	maintenance_modifier = {
+		potential_trigger = { "payment_maintenance(scope:recipient|oe_byz_empire_theme_org_leader_pay_for_soldier)" > 0.5 }
+		scale = {
+			value = "payment_maintenance(scope:recipient|oe_byz_empire_theme_org_leader_pay_for_soldier)"
+			subtract = 0.5
+			multiply = 2
+		}
+		
+		global_manpower_modifier = -0.1
+		
+	}
+	price_multiplier = {
+		add = {
+			desc = "BASE"
+			every_international_organization_member = {
+				limit = {
+					oe_theme_manpower_payment_trigger = yes
+				}
+				add = army_size
+			}
+			multiply = 2
+			multiply = oe_pillars_manpower_age_multiplier
+		}
+	}
+	proportion_for_payer = {
+		add = {
+			desc = "BASE"
+			value = 1
+		}
+	}
+	proportion_for_payee = {
+		add = {
+			desc = "BASE"
+			value = army_size
+		}
+	}
+}
+
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# oe_byz_roman_world_estate_tax = {#四阶层向官僚纳税(受腐败度影响)
+# 	get_payer_list = {
+# 		every_country_with_special_status_of_type = {
+# 			type = oe_pillars_empire
+# 			every_estate = {
+# 				limit = {
+# 					OR = {
+# 						estate_type = estate_type:nobles_estate
+# 						estate_type = estate_type:clergy_estate
+# 						estate_type = estate_type:peasants_estate
+# 						estate_type = estate_type:burghers_estate
+# 					}
+# 				}
+# 				add_to_local_variable_list = {
+# 					name = payers
+# 					target = this
+# 				}
+# 			}
+# 		}
+# 	}
+# 	get_payee_list = {
+# 		every_country_with_special_status_of_type = {
+# 			type = oe_pillars_empire
+# 			every_estate = {
+# 				limit = {
+# 					estate_type = estate_type:bureaucracies_estate
+# 				}
+# 			add_to_local_variable_list = {
+# 				name = payees
+# 				target = this
+# 			}
+# 			}
+# 
+# 		}
+# 	}
+# 	price = oe_byz_bank_org_leader_pay_price
+# 	uses_maintenance = no
+# 	# proportion = estate_taxable_income * (0.1 - 0.001 * corruptionhigh_vs_corruptionlow)
+# 	# sv=-100(高腐败) → 0.1 - (-0.1) = 0.20 = 20%
+# 	# sv=100(低腐败)  → 0.1 - 0.1 = 0 = 0%
+#     price_multiplier = {
+#         value = 0
+#         every_country_with_special_status_of_type = {
+#             type = oe_pillars_empire
+#             every_estate = {
+#                 limit = {
+#                     OR = {
+#                         estate_type = estate_type:nobles_estate
+#                         estate_type = estate_type:clergy_estate
+#                         estate_type = estate_type:peasants_estate
+#                         estate_type = estate_type:burghers_estate
+#                     }
+#                 }
+#                 add = estate_taxable_income
+#             }
+#         }
+#         multiply = {
+#             value = 0.1
+#             subtract = { value = c:BYZ.societal_value:corruptionhigh_vs_corruptionlow multiply = 0.001 }
+#         }
+#     }
+# 	proportion_for_payer = {
+# 		add = {
+# 			desc = "BASE_TRANSFER"
+# 			value = estate_taxable_income
+# 		}
+# 	}
+# 	proportion_for_payee = {
+# 		add = {
+# 			desc = "BASE"
+# 			value = 1
+# 		}
+# 	}
+# }
+

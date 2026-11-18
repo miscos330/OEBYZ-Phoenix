@@ -1,0 +1,301 @@
+﻿oe_ra_expand_steppe = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_ra_actor = yes } }
+    allow = { scope:actor = { oe_ra_actor = yes political_influence >= 25 gold >= oe_ra_steppe_cost } }
+    cooldown = { type = oe_ra_expand_steppe_cooldown months = 6 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    ai_prerequisite = { oe_ra_actor = yes political_influence >= 25 gold > oe_ra_annual_income }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_russian_ambition = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_russian_ambition situation_is_active = yes }
+    }
+    select_trigger = {
+        looking_for_a = province
+        interaction_source_list = {
+            region:steppes_region = { every_area_in_region = { every_province_in_area = { add_to_list = source } } }
+            region:khorasan_region = { every_area_in_region = { every_province_in_area = { add_to_list = source } } }
+        }
+        target_flag = target
+        name = choose_province
+        none_available_msg_key = no_provinces_available
+        column = { data = owner_flag }
+        column = { data = name }
+        column = { data = population }
+        only_color_selectable = yes
+        map_color = { value = owner.country_color }
+        visible = { oe_ra_steppe_province = yes }
+    }
+    effect = {
+        if = {
+            limit = { exists = scope:target scope:target = { oe_ra_steppe_province = yes } }
+            scope:actor = {
+                add_political_influence = -25
+                add_gold = { value = oe_ra_steppe_cost multiply = -1 }
+                add_casus_belli = { target = scope:target.owner type = casus_belli:cb_conquer_province province = scope:target }
+            }
+        }
+    }
+    ai_will_do = { add = 80 }
+}
+
+oe_ra_expand_siberia = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_ra_actor = yes } }
+    allow = { scope:actor = { oe_ra_actor = yes political_influence >= 10  } }
+    cooldown = { type = oe_ra_expand_siberia_cooldown years = 1 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    ai_prerequisite = { oe_ra_actor = yes political_influence >= 10  }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_russian_ambition = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_russian_ambition situation_is_active = yes }
+    }
+    select_trigger = {
+        looking_for_a = province
+        interaction_source_list = {
+            region:ural_region = { every_area_in_region = { every_province_in_area = { add_to_list = source } } }
+            region:west_siberia_region = { every_area_in_region = { every_province_in_area = { add_to_list = source } } }
+            region:east_siberia_region = { every_area_in_region = { every_province_in_area = { add_to_list = source } } }
+        }
+        target_flag = target
+        name = choose_province
+        none_available_msg_key = no_provinces_available
+        column = { data = owner_flag }
+        column = { data = name }
+        column = { data = population }
+        only_color_selectable = yes
+        map_color = { value = owner.country_color }
+        visible = { oe_ra_siberian_province = yes }
+    }
+    effect = {
+        if = {
+            limit = { exists = scope:target scope:target = { oe_ra_siberian_province = yes } }
+            scope:actor = {
+                add_political_influence = -10
+                
+                add_casus_belli = { target = scope:target.owner type = casus_belli:cb_conquer_province province = scope:target }
+            }
+        }
+    }
+    ai_will_do = { add = 80 }
+}
+
+oe_ra_build_kremlin = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_ra_actor = yes } }
+    allow = { scope:actor = { oe_ra_actor = yes political_influence >= 25 gold >= oe_rus_kremlin_cost oe_rus_kremlin_capacity = yes } }
+    cooldown = { type = oe_rus_build_kremlin_cooldown years = 5 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = { oe_ra_actor = yes gold > oe_rus_annual_income }
+
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_russian_ambition = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_russian_ambition situation_is_active = yes }
+    }
+
+    select_trigger = {
+        looking_for_a = location source = actor target_flag = target
+        name = choose_location column = { data = name } column = { data = population }
+        visible = { oe_rus_kremlin_site = yes }
+        only_color_selectable = yes map_color = define:NMapColors|MAP_COLOR_HIGH
+    }
+    effect = { if = { limit = { exists = scope:target scope:target = { oe_rus_kremlin_site = yes } scope:actor = { oe_ra_actor = yes oe_rus_kremlin_capacity = yes political_influence >= 25 gold >= oe_rus_kremlin_cost } }
+        scope:actor = { add_gold = { value = oe_rus_kremlin_cost multiply = -1 } add_political_influence = -25 }
+        scope:target = {
+            set_variable = oe_rus_kremlin_unlocked
+            construct_building = { building_type = building_type:oe_rus_kremlin owner = scope:actor cost_multiplier = 0 cost_multiplier_reason = oe_ra_build_kremlin }
+        }
+    } }
+    ai_will_do = { add = 80 }
+}
+
+oe_ra_expand_west = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_ra_actor = yes } }
+    allow = { scope:actor = { oe_ra_actor = yes political_influence >= 25 gold >= oe_ra_western_cost } }
+    cooldown = { type = oe_ra_expand_west_cooldown months = 6 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    ai_prerequisite = { oe_ra_actor = yes political_influence >= 25 gold > oe_ra_annual_income }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_russian_ambition = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_russian_ambition situation_is_active = yes }
+    }
+    select_trigger = {
+        looking_for_a = province
+        interaction_source_list = {
+            region:baltic_region = { every_area_in_region = { every_province_in_area = { add_to_list = source } } }
+            region:ruthenia_region = { every_area_in_region = { every_province_in_area = { add_to_list = source } } }
+            region:russian_region = { every_area_in_region = { every_province_in_area = { add_to_list = source } } }
+            area:finland_area = { every_province_in_area = { add_to_list = source } }
+            area:karelia_area = { every_province_in_area = { add_to_list = source } }
+        }
+        target_flag = target
+        name = choose_province
+        none_available_msg_key = no_provinces_available
+        column = { data = owner_flag }
+        column = { data = name }
+        column = { data = population }
+        only_color_selectable = yes
+        map_color = { value = owner.country_color }
+        visible = { oe_ra_western_province = yes }
+    }
+    effect = {
+        if = {
+            limit = { exists = scope:target scope:target = { oe_ra_western_province = yes } }
+            scope:actor = {
+                add_political_influence = -25
+                add_gold = { value = oe_ra_western_cost multiply = -1 }
+                add_casus_belli = { target = scope:target.owner type = casus_belli:cb_conquer_province province = scope:target }
+            }
+        }
+    }
+    ai_will_do = {
+        if = { limit = { scope:actor = { gold > oe_ra_three_years_income } } add = 80 }
+        else_if = { limit = { scope:actor = { gold > oe_ra_annual_income } } add = 40 }
+    }
+}
+
+oe_ra_establish_ukraine = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_ra_actor = yes NOT = { has_variable = oe_ra_ukraine_governorate_established } } }
+    allow = { scope:actor = { oe_ra_ukraine_ready = yes political_influence >= 50 gold >= oe_ra_governorate_cost } }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = { oe_ra_actor = yes NOT = { has_variable = oe_ra_ukraine_governorate_established } political_influence >= 50 gold >= oe_ra_governorate_cost }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_russian_ambition = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_russian_ambition situation_is_active = yes }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_ra_ukraine_ready = yes political_influence >= 50 gold >= oe_ra_governorate_cost } }
+            scope:actor = {
+                add_political_influence = -50
+                add_gold = { value = oe_ra_governorate_cost multiply = -1 }
+                set_variable = oe_ra_ukraine_governorate_established
+            }
+            location:kyiv = {
+                set_variable = oe_ra_ukrainian_governorate_unlocked
+                construct_building = { building_type = building_type:oe_ra_ukrainian_governorate owner = scope:actor cost_multiplier = 0 cost_multiplier_reason = oe_ra_establish_ukraine }
+            }
+        }
+    }
+    ai_will_do = { add = 80 }
+}
+
+oe_ra_establish_south_russia = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_ra_actor = yes NOT = { has_variable = oe_ra_south_russia_governorate_established } } }
+    allow = { scope:actor = { oe_ra_south_russia_ready = yes political_influence >= 50 gold >= oe_ra_governorate_cost } }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = { oe_ra_actor = yes NOT = { has_variable = oe_ra_south_russia_governorate_established } political_influence >= 50 gold >= oe_ra_governorate_cost }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_russian_ambition = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_russian_ambition situation_is_active = yes }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_ra_south_russia_ready = yes political_influence >= 50 gold >= oe_ra_governorate_cost } }
+            scope:actor = {
+                add_political_influence = -50
+                add_gold = { value = oe_ra_governorate_cost multiply = -1 }
+                set_variable = oe_ra_south_russia_governorate_established
+            }
+            location:sarai_al_jadid = {
+                set_variable = oe_ra_southern_governorate_unlocked
+                construct_building = { building_type = building_type:oe_ra_southern_governorate owner = scope:actor cost_multiplier = 0 cost_multiplier_reason = oe_ra_establish_south_russia }
+            }
+        }
+    }
+    ai_will_do = { add = 80 }
+}
+
+oe_ra_found_saint_petersburg = {
+    type = situation
+    show_message = no
+    potential = {
+        scope:actor = { oe_ra_actor = yes NOT = { has_variable = oe_ra_saint_petersburg_founded } }
+    }
+    allow = { scope:actor = { oe_ra_saint_petersburg_ready = yes } }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = { oe_ra_saint_petersburg_ready = yes }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_russian_ambition = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_russian_ambition situation_is_active = yes }
+    }
+    effect = {
+        if = {
+            limit = { scope:actor = { oe_ra_saint_petersburg_ready = yes } }
+            scope:actor = {
+                add_gold = { value = oe_ra_annual_income multiply = -1 }
+                add_political_influence = -50
+                set_variable = oe_ra_saint_petersburg_founded
+            }
+            location:neva = {
+                # Native helper upgrades rural/town ranks and preserves existing metropolises.
+                change_location_rank_effect = { location_rank = location_rank:city }
+                rename_location = st_petersburg
+                add_location_modifier = { modifier = oe_ra_establish_saint_petersburg years = 50 mode = replace }
+                set_variable = oe_ra_saint_petersburg_unlocked
+                if = {
+                    limit = { NOT = { has_building = building_type:oe_ra_alexander_column } }
+                    construct_building = { building_type = building_type:oe_ra_alexander_column owner = scope:actor cost_multiplier = 0 cost_multiplier_reason = oe_ra_found_saint_petersburg }
+                }
+                if = {
+                    limit = { NOT = { has_building = building_type:oe_ra_nevsky_prospect } }
+                    construct_building = { building_type = building_type:oe_ra_nevsky_prospect owner = scope:actor cost_multiplier = 0 cost_multiplier_reason = oe_ra_found_saint_petersburg }
+                }
+            }
+            scope:actor = {
+                if = { limit = { NOT = { capital = location:neva } } set_capital = location:neva }
+            }
+        }
+    }
+    ai_will_do = { add = 80 }
+}

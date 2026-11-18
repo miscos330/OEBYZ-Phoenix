@@ -1,0 +1,57 @@
+﻿oe_city_manuel_academy_completed = {
+    value = 0
+    every_buildings_in_location = { limit = { building_type = building_type:oe_byz_constantinople_manuel_academy } add = building_level }
+}
+oe_city_manuel_academy_used = {
+    value = 0
+    every_buildings_in_location = { limit = { building_type = building_type:oe_byz_constantinople_manuel_academy } add = building_level add = building_levels_under_construction }
+    if = { limit = { has_variable = oe_city_manuel_academy_orders } value = var:oe_city_manuel_academy_orders }
+    min = 0 max = 5
+}
+oe_city_manuel_academy_cap = { value = oe_city_manuel_academy_used }
+oe_city_manuel_academy_remaining = {
+    value = 0
+    if = { limit = { has_variable = oe_city_manuel_academy_unlocked } value = 5 subtract = oe_city_manuel_academy_used min = 0 }
+}
+
+oe_city_osman_company_completed = {
+    value = 0
+    every_buildings_in_location = { limit = { building_type = building_type:oe_byz_constantinople_osman_company } add = building_level }
+}
+oe_city_osman_company_used = {
+    value = 0
+    every_buildings_in_location = { limit = { building_type = building_type:oe_byz_constantinople_osman_company } add = building_level add = building_levels_under_construction }
+    if = { limit = { has_variable = oe_city_osman_company_orders } value = var:oe_city_osman_company_orders }
+    min = 0 max = 10
+}
+oe_city_osman_company_cap = { value = oe_city_osman_company_used }
+oe_city_osman_company_remaining = {
+    value = 0
+    if = { limit = { has_variable = oe_city_osman_company_unlocked } value = 10 subtract = oe_city_osman_company_used min = 0 }
+}
+
+# IO/country callers; only completed company levels on Byzantine-owned land count.
+oe_osmaris_company_influence = {
+    value = 0
+    if = {
+        limit = { location:constantinople = { owner = c:BYZ } }
+        value = location:constantinople.oe_city_osman_company_completed
+        multiply = 0.2
+    }
+}
+
+oe_city_belisarius_column_completed = {
+    value = 0
+    every_buildings_in_location = { limit = { building_type = building_type:oe_byz_constantinople_belisarius_column } add = building_level }
+}
+oe_city_belisarius_column_used = {
+    value = 0
+    every_buildings_in_location = { limit = { building_type = building_type:oe_byz_constantinople_belisarius_column } add = building_level add = building_levels_under_construction }
+    if = { limit = { has_variable = oe_city_belisarius_column_orders } value = var:oe_city_belisarius_column_orders }
+    min = 0 max = 1
+}
+oe_city_belisarius_column_cap = { value = oe_city_belisarius_column_used }
+oe_city_belisarius_column_remaining = {
+    value = 0
+    if = { limit = { has_variable = oe_city_belisarius_column_unlocked } value = 1 subtract = oe_city_belisarius_column_used min = 0 }
+}

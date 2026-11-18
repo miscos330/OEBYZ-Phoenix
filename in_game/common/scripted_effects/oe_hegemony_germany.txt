@@ -1,0 +1,161 @@
+﻿# Explicit actions and event choices only: no new pulse/world/population scans.
+oe_heg_germany_plan_effect = {
+    add_gold = -1000
+    set_variable = oe_heg_germany_plan_done
+    international_organization:oe_byz_roman_world = { set_variable = oe_rw_germany_included }
+    region:north_german_region = { every_location_in_region = { oe_heg_add_roman_location = yes } }
+    region:south_german_region = { every_location_in_region = { oe_heg_add_roman_location = yes } }
+}
+oe_heg_germany_invasion_effect = {
+    international_organization:hre = {
+        leader_country = { save_scope_as = oe_germany_emperor }
+        every_international_organization_member = {
+            limit = { NOT = { this = c:BYZ } }
+            add_to_list = oe_germany_war_members
+        }
+    }
+    # HRE members cannot remain direct Byzantine subjects while joining the enemy side.
+    every_in_list = {
+        list = oe_germany_war_members
+        limit = { is_subject_of = c:BYZ }
+        save_scope_as = oe_germany_detached_member
+        c:BYZ = { cancel_subject = scope:oe_germany_detached_member }
+    }
+    add_casus_belli = { target = scope:oe_germany_emperor type = casus_belli:oe_heg_germany_imperial_war }
+    declare_war_with_cb = { target = scope:oe_germany_emperor type = casus_belli:oe_heg_germany_imperial_war }
+    random_current_war = {
+        limit = { attacker_leader = c:BYZ casus_belli ?= casus_belli:oe_heg_germany_imperial_war }
+        save_scope_as = oe_germany_imperial_war
+    }
+    if = {
+        limit = { exists = scope:oe_germany_imperial_war }
+        add_gold = -5000
+        add_political_influence = -50
+        every_in_list = {
+            list = oe_germany_war_members
+            save_scope_as = oe_germany_war_member
+            if = {
+                limit = { scope:oe_germany_imperial_war = { any_attacker = { this = scope:oe_germany_war_member } } }
+                leave_war = { war = scope:oe_germany_imperial_war actor = c:BYZ }
+            }
+            if = {
+                limit = { scope:oe_germany_imperial_war = { NOT = { is_in_war = scope:oe_germany_war_member } } }
+                join_war_as_defender = { war = scope:oe_germany_imperial_war call_in_subjects = yes ignore_rules = yes }
+            }
+        }
+    }
+}
+oe_heg_germany_end_effect = {
+    add_diplomats = -3
+    add_gold = -100
+    set_variable = oe_heg_germany_settled
+    # NEW 2026-11-17 Roman Reconquest: Germany counts as restored.
+    oe_rr_add_hope = { amount = 15 }
+    oe_rr_region_restored = yes
+    # Snapshot every member-owned location before ownership/IO mutation.
+    international_organization:hre = {
+        every_international_organization_member = {
+            limit = { NOT = { this = c:BYZ } }
+            every_owned_location = {
+                add_to_list = oe_germany_conquests
+                if = { limit = { NOT = { is_core_of = c:BYZ } } add_to_list = oe_germany_new_noncores }
+            }
+        }
+    }
+    # Explicit dissolution first prevents an emperor annexation invalidating the IO reference.
+    destroy_international_organization = { target = international_organization:hre reason = OE_HEG_GERMANY_HRE_DESTROYED }
+    every_in_list = { list = oe_germany_conquests oe_transfer_conquest_without_core = { recipient = c:BYZ } }
+    # Province transitions must not accidentally grant new cores to earlier transferred locations.
+    every_in_list = { list = oe_germany_new_noncores limit = { owner = c:BYZ } oe_reset_new_conquest_integration = { recipient = c:BYZ } }
+    set_variable = { name = oe_heg_germany_settlement_stage value = 1 }
+    if = { limit = { country_exists = c:HSA } trigger_event_non_silently = oe_hegemony_germany.1 }
+    else = {
+        set_variable = { name = oe_heg_germany_settlement_stage value = 2 }
+        trigger_event_non_silently = oe_hegemony_germany.2
+    }
+}
+oe_heg_germany_reserve_direct_land = {
+    every_owned_location = {
+        limit = { is_ownable = yes $land_trigger$ = yes }
+        set_variable = oe_heg_germany_reserved_for_rome
+        # Native integration progress uses 0..100, unlike percentage modifiers.
+        change_integration_progress = 20
+    }
+}
+# Reservation only: the northern-march choice does not grant the direct-rule option's integration bonus.
+oe_heg_germany_reserve_southern_netherlands = {
+    custom_tooltip = OE_GERMANY_SOUTHERN_NETHERLANDS_ROMAN
+    hidden_effect = {
+        every_owned_location = {
+            limit = { is_ownable = yes oe_heg_germany_southern_netherlands_land = yes }
+            set_variable = oe_heg_germany_reserved_for_rome
+        }
+    }
+}
+oe_heg_germany_create_subject = {
+    # Each settlement stage supplies a distinct list; event chains inherit local lists.
+    clear_saved_scope = oe_germany_seed
+    clear_saved_scope = oe_germany_new_subject
+    every_owned_location = {
+        limit = { oe_heg_germany_eligible_land = yes $land_trigger$ = yes }
+        add_to_list = $grant_list$
+    }
+    ordered_owned_location = {
+        limit = { oe_heg_germany_eligible_land = yes $land_trigger$ = yes }
+        order_by = population max = 1 check_range_bounds = no
+        save_scope_as = oe_germany_seed
+    }
+    if = {
+        limit = { exists = scope:oe_germany_seed }
+        scope:oe_germany_seed = {
+            create_country_from_location = {
+                overlord = c:BYZ
+                subject_type = subject_type:$subject_type$
+                save_scope_as = oe_germany_new_subject
+                change_government_type = government_type:monarchy
+                change_country_type = location
+                change_heir_selection = heir_selection:cognatic_primogeniture
+                change_culture = culture:oe_german_greek_culture
+                change_religion = religion:orthodox
+                set_country_rank = country_rank:$rank$
+                change_country_name = $country_name$
+                change_country_adjective = $country_adjective$
+                change_country_flag = $flag$
+                set_capital = scope:oe_germany_seed
+                set_variable = $identity$
+                if = { limit = { is_subject_type = oe_german_holy_empire } set_new_ruler = c:BYZ.ruler }
+                else_if = {
+                    limit = { has_ruler = no }
+                    create_character = {
+                        age = 35 culture = culture:oe_german_greek_culture religion = religion:orthodox
+                        estate = estate_type:nobles_estate save_scope_as = oe_germany_new_ruler
+                    }
+                    set_new_ruler = scope:oe_germany_new_ruler
+                }
+            }
+        }
+        every_in_list = {
+            list = $grant_list$
+            limit = { owner = c:BYZ }
+            change_location_owner = scope:oe_germany_new_subject
+        }
+        scope:oe_germany_new_subject = {
+            if = {
+                limit = { has_variable = oe_germany_unified_kingdom }
+                add_reform = government_reform:oe_german_unification
+                add_reform = government_reform:oe_german_army
+            }
+            if = {
+                limit = { has_variable = oe_germany_dutch_kingdom }
+                add_country_modifier = { modifier = oe_germany_netherlands_kingdom years = -1 mode = replace }
+            }
+            if = {
+                limit = { OR = { has_variable = oe_germany_unified_kingdom has_variable = oe_germany_holy_empire } }
+                every_owned_location = { add_core = owner change_integration_level = core }
+            }
+        }
+        international_organization:oe_byz_roman_world = { add_country_to_international_organization = scope:oe_germany_new_subject }
+    }
+    clear_saved_scope = oe_germany_seed
+    clear_saved_scope = oe_germany_new_subject
+}

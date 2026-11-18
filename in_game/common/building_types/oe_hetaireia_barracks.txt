@@ -1,0 +1,31 @@
+﻿oe_hetaireia_barracks = {
+    is_foreign = no
+    in_empty = owned
+    max_levels = oe_hetaireia_barracks_max_levels
+    pop_type = soldiers
+    employment_size = 1 # Native building employment: 1 = 1,000 people.
+    category = military_category
+    forbidden_for_estates = yes
+    rural_settlement = yes
+    town = yes
+    city = yes
+    megalopolis = yes
+    build_time = medium_soldier_building
+    country_potential = { tag = BYZ }
+    location_potential = { dominant_religion = religion:orthodox }
+    allow = {
+        owner = c:BYZ
+        dominant_religion = religion:orthodox
+    }
+    modifier = {
+        local_manpower = 0.01 # Manpower uses thousands: displayed +10 at full operation.
+        can_recruit_regiment_in_this_location = yes
+    }
+    possible_production_methods = { early_soldier_building_maintenance }
+    construction_demand = early_soldier_building_construction
+    # root = building. These callbacks do not run when a regiment is recruited.
+    on_built = { owner = { if = { limit = { tag = BYZ } oe_su_refresh_capacity = yes } } }
+    # Destruction hooks can run before removal is committed. Coalesce a single
+    # deferred refresh after deletion; this is not a recurring daily check.
+    on_destroyed = { owner = { if = { limit = { tag = BYZ } oe_su_queue_capacity_refresh = yes } } }
+}

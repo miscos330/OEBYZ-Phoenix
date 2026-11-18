@@ -1,0 +1,119 @@
+﻿pe_byz_hungarian_dominion = {
+    cost = { value = 100 }
+    base_antagonism = 50
+    antagonism_type = antagonism_subjugate_neighbor_native
+    blocks_full_annexation = yes
+    potential = {
+        scope:winner = { tag = BYZ }
+        scope:loser = { tag = HUN }
+        scope:war = {
+            is_no_cb_war = no
+            casus_belli ?= casus_belli:oe_cb_byz_vs_hun
+            is_an_attacker = scope:winner
+            is_a_defender = scope:loser
+        }
+    }
+    allow = {
+        scope:loser = {
+            country_type = location
+            is_subject = no
+            custom_tooltip = {
+                text = oe_hungarian_dominion_foundation_land_tt
+                any_owned_location = { oe_hungarian_dominion_location = yes }
+            }
+        }
+    }
+    effect = {
+        custom_tooltip = {
+            text = oe_hungarian_dominion_handover_tt
+            # Snapshot the original realm before changing its ownership or hierarchy.
+            scope:loser = {
+                culture = { save_scope_as = oe_hun_original_culture }
+                religion = { save_scope_as = oe_hun_original_religion }
+                every_owned_location = {
+                    limit = { oe_hungarian_dominion_location = yes }
+                    add_to_list = oe_hun_dominion_locations
+                }
+                ordered_owned_location = {
+                    limit = { oe_hungarian_dominion_location = yes }
+                    order_by = population
+                    max = 1
+                    save_scope_as = oe_hun_dominion_capital
+                }
+                # Explicit preferences cannot be outweighed by unusually large populations.
+                if = {
+                    limit = { location:pest = { owner = scope:loser oe_hungarian_dominion_location = yes } }
+                    location:pest = { save_scope_as = oe_hun_dominion_capital }
+                }
+                if = {
+                    limit = { location:buda = { owner = scope:loser oe_hungarian_dominion_location = yes } }
+                    location:buda = { save_scope_as = oe_hun_dominion_capital }
+                }
+                every_owned_location = {
+                    limit = { oe_hungarian_handover_location = yes }
+                    add_to_list = oe_hun_handover_locations
+                }
+                every_subject_or_below = {
+                    if = {
+                        limit = {
+                            exists = capital
+                            capital = { oe_hungarian_handover_location = yes }
+                        }
+                        add_to_list = oe_hun_handover_subjects
+                    }
+                    else = {
+                        every_owned_location = {
+                            limit = { oe_hungarian_handover_location = yes }
+                            add_to_list = oe_hun_handover_locations
+                        }
+                    }
+                }
+            }
+            every_in_list = {
+                list = oe_hun_handover_subjects
+                transfer_subject = scope:winner
+            }
+            every_in_list = {
+                list = oe_hun_handover_locations
+                change_location_owner = scope:winner
+            }
+        }
+        custom_tooltip = {
+            text = oe_hungarian_dominion_foundation_tt
+            scope:oe_hun_dominion_capital = {
+                create_country_from_location = {
+                    overlord = scope:winner
+                    subject_type = subject_type:oe_hungarian_dominion
+                    change_government_type = government_type:monarchy
+                    change_country_type = location
+                    change_heir_selection = heir_selection:cognatic_primogeniture
+                    change_culture = scope:oe_hun_original_culture
+                    change_religion = scope:oe_hun_original_religion
+                    change_country_name = OE_HUNGARIAN_DOMINION_COUNTRY
+                    change_country_adjective = OE_HUNGARIAN_DOMINION_ADJ
+                    change_country_flag = HUN
+                    set_capital = scope:oe_hun_dominion_capital
+                    save_scope_as = oe_hun_new_dominion
+                    # Generate a ruler only if the engine has not supplied one.
+                    if = {
+                        limit = { has_ruler = no }
+                        create_character = {
+                            age = 35
+                            culture = scope:oe_hun_original_culture
+                            religion = scope:oe_hun_original_religion
+                            estate = estate_type:nobles_estate
+                            save_scope_as = oe_hun_dominion_ruler
+                        }
+                        set_new_ruler = scope:oe_hun_dominion_ruler
+                    }
+                }
+            }
+            every_in_list = {
+                list = oe_hun_dominion_locations
+                change_location_owner = scope:oe_hun_new_dominion
+            }
+            # HUN's remaining territory, ruler and diplomatic status are left alone.
+        }
+    }
+    ai_desire = { value = 100 }
+}

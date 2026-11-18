@@ -1,0 +1,58 @@
+﻿oe_ir_coinage = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            tag = BYZ
+            custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_coinage_done } }
+        }
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 }
+        }
+    }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+        scope:actor = {
+            set_variable = oe_ir_coinage_done
+            # Upgrade the existing charter once, in place, when the reform completes.
+            location:thessaloniki = {
+                if = {
+                    limit = {
+                        has_owner = yes
+                        owner = { OR = { this = scope:actor is_subject_or_below_of = scope:actor } }
+                        has_town_rights = town_rights_type:oe_rights_thessaloniki_mint
+                    }
+                    revoke_town_rights_of_type = town_rights_type:oe_rights_thessaloniki_mint
+                    if = {
+                        limit = { NOT = { has_town_rights = town_rights_type:oe_rights_imperial_mint } }
+                        grant_town_rights = town_rights_type:oe_rights_imperial_mint
+                    }
+                }
+            }
+            if = {
+                limit = { has_estate_privilege = estate_privilege:oe_byz_empier_money_gII }
+                unlock_policy_effect = { type = oe_hyperpyron_coinage }
+                add_policy = policy:oe_hyperpyron_coinage
+            }
+            else = {
+                add_country_modifier = { modifier = oe_abolish_hyperpyron months = 24 mode = replace }
+                unlock_policy_effect = { type = stavraton_coin_policy }
+                add_policy = policy:stavraton_coin_policy
+            }
+            
+        }
+    }
+}

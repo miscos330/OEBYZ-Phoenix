@@ -1,0 +1,105 @@
+﻿# Visibility is evaluated in country scope.
+oe_ra_observer = {
+    OR = {
+        religion = religion:orthodox
+        capital ?= {
+            OR = {
+                sub_continent = sub_continent:eastern_europe
+                region = region:scandinavian_region
+                region = region:ural_region
+                region = region:west_siberia_region
+                region = region:east_siberia_region
+                region = region:khorasan_region
+                region = region:anatolia_region
+            }
+        }
+        AND = { country_exists = c:RUS is_neighbor_of = c:RUS }
+    }
+}
+oe_ra_actor = { tag = RUS is_situation_active = situation:oe_russian_ambition }
+# Province scope. Exclude allies, the whole subject tree and union partners.
+oe_ra_foreign_frontier = {
+    exists = owner
+    owner = {
+        this != scope:actor
+        NOT = { is_subject_or_below_of = scope:actor }
+        NOT = { scope:actor = { is_subject_or_below_of = prev } }
+        NOT = { is_allied_with = { target = scope:actor } }
+        trigger_if = {
+            limit = { exists = scope:actor.union }
+            NOT = { is_member_of_international_organization = scope:actor.union }
+        }
+    }
+    # Check the selected province's land border, not just country adjacency.
+    any_location_in_province = {
+        any_neighbor_location = {
+            has_owner = yes
+            is_owned_or_owned_by_subjects_or_below_of = scope:actor
+        }
+    }
+}
+oe_ra_steppe_province = {
+    OR = { region = region:steppes_region region = region:khorasan_region }
+    oe_ra_foreign_frontier = yes
+}
+oe_ra_siberian_province = {
+    OR = { region = region:ural_region region = region:west_siberia_region region = region:east_siberia_region }
+    oe_ra_foreign_frontier = yes
+    # A real country-owned province, never a wholly uncolonized province definition.
+    any_location_in_province = { is_ownable = yes has_owner = yes owner = prev.owner }
+}
+
+oe_ra_western_province = {
+    OR = {
+        region = region:baltic_region
+        region = region:ruthenia_region
+        region = region:russian_region
+        area = area:finland_area
+        area = area:karelia_area
+    }
+    oe_ra_foreign_frontier = yes
+}
+# Area scope; every ownable location must be directly owned by Russia.
+# Uncolonized ownable land is not silently counted as Russian territory.
+oe_ra_area_fully_owned = {
+    NOT = {
+        any_location_in_area = {
+            is_ownable = yes
+            NOT = { AND = { has_owner = yes owner = c:RUS } }
+        }
+    }
+}
+oe_ra_ukraine_ready = {
+    oe_ra_actor = yes
+    NOT = { has_variable = oe_ra_ukraine_governorate_established }
+    area:right_bank_ukraine_area = { oe_ra_area_fully_owned = yes }
+    area:left_bank_ukraine_area = { oe_ra_area_fully_owned = yes }
+    location:kyiv = { has_owner = yes owner = c:RUS }
+}
+oe_ra_south_russia_ready = {
+    oe_ra_actor = yes
+    NOT = { has_variable = oe_ra_south_russia_governorate_established }
+    area:lower_don_area = { oe_ra_area_fully_owned = yes }
+    area:astrakhan_area = { oe_ra_area_fully_owned = yes }
+    location:sarai_al_jadid = { has_owner = yes owner = c:RUS }
+}
+oe_ra_owns_capital_candidate = {
+    OR = {
+        location:smolensk = { owner = root }
+        location:tver = { owner = root }
+        location:moscow = { owner = root }
+        location:novgorod = { owner = root }
+    }
+}
+
+# Country scope. The action and its execution both use the same conditions.
+oe_ra_saint_petersburg_ready = {
+    oe_ra_actor = yes
+    current_year > 1550
+    NOT = { has_variable = oe_ra_saint_petersburg_founded }
+    location:neva = { has_owner = yes owner = c:RUS }
+    at_war = no
+    has_raised_levies = no
+    political_influence >= 50
+    gold >= oe_ra_annual_income
+}

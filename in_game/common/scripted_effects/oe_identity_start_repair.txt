@@ -1,0 +1,24 @@
+﻿# Call immediately AFTER spawn_movement, as native reformation events inspect the new movement.
+# Failed creation neither consumes the start nor writes a timer. No periodic retry or world scan.
+oe_identity_confirm_start = {
+    $holder$ = {
+        if = {
+            limit = {
+                NOT = { has_variable = oe_identity_start_verified }
+                any_movement_in_culture = { movement_type = movement_definition:$movement$ }
+            }
+            set_variable = oe_identity_start_verified
+            set_variable = oe_identity_timer_v2
+            set_variable = oe_identity_fixed_30y_scheduled
+            location:constantinople = { trigger_event_silently = { id = $event$ years = 30 } }
+        }
+    }
+}
+
+# Called only on game load for the four fixed cultures. Preserve running legacy timers.
+oe_identity_adopt_existing_start = {
+    if = {
+        limit = { any_movement_in_culture = { movement_type = movement_definition:$movement$ } }
+        set_variable = oe_identity_start_verified
+    }
+}

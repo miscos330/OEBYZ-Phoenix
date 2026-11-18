@@ -1,0 +1,34 @@
+﻿# Event-local value: never share a country variable between open events.
+oe_raid_roll_defense = {
+    save_scope_value_as = { name = oe_raid_defended value = 0 }
+    random_list = {
+        67 = {}
+        33 = { save_scope_value_as = { name = oe_raid_defended value = 1 } }
+    }
+}
+oe_raid_accept_effect = {
+    if = {
+        limit = { oe_raid_can_resolve = yes }
+        save_scope_value_as = { name = oe_raid_paid value = oe_raid_accept_cost }
+        add_gold = { value = scope:oe_raid_paid multiply = -1 }
+        scope:oe_raid_attacker ?= { add_gold = scope:oe_raid_paid }
+        scope:target_location = {
+            add_location_modifier = { modifier = oe_enemy_attack_mod years = 3 mode = replace }
+        }
+    }
+}
+oe_raid_patrol_effect = {
+    if = {
+        limit = { oe_raid_can_resolve = yes manpower >= oe_raid_patrol_manpower }
+        save_scope_value_as = { name = oe_raid_paid value = oe_raid_patrol_cost }
+        add_manpower = { value = oe_raid_patrol_manpower multiply = -1 }
+        add_gold = { value = scope:oe_raid_paid multiply = -1 }
+        scope:oe_raid_attacker ?= { add_gold = scope:oe_raid_paid }
+        scope:target_location = {
+            add_location_modifier = { modifier = oe_enemy_attack_mod years = 1 mode = replace }
+        }
+    }
+}
+oe_raid_defended_effect = {
+    if = { limit = { oe_raid_can_resolve = yes } add_stability = 1 }
+}

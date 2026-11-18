@@ -1,0 +1,66 @@
+﻿# Country scope; native payment maintenance is synchronized and persistent.
+oe_egypt_supply_fraction = {
+    value = 0
+    if = { limit = { has_variable = oe_works_egypt_supply_unlocked }
+        value = "c:BYZ.payment_maintenance(international_organization:oe_byz_empire_pillars|oe_pillars_egypt_food_budget)"
+        min = 0 max = 1
+    }
+}
+oe_egypt_supply_surplus = {
+    value = 0
+    if = { limit = { oe_egypt_supply_operational = yes }
+        value = location:alexandria.market.market_monthly_food_balance
+        min = 0
+    }
+}
+# Two bounded province lists (six province definitions per area in the current map).
+# No scans of all countries, world locations, populations or buildings.
+oe_egypt_supply_source_food = {
+    value = 0
+    area:lower_egypt_area = { every_province_in_area = {
+        limit = { oe_egypt_supply_source_province = yes }
+        add = province_food
+    } }
+    area:upper_egypt_area = { every_province_in_area = {
+        limit = { oe_egypt_supply_source_province = yes }
+        add = province_food
+    } }
+}
+oe_egypt_supply_destination_food = {
+    value = 0
+    if = { limit = { owns = location:constantinople exists = location:constantinople.province }
+        value = location:constantinople.province.province_food
+    }
+}
+oe_egypt_supply_destination_capacity = {
+    value = 0
+    if = { limit = { owns = location:constantinople exists = location:constantinople.province }
+        value = location:constantinople.province.province_max_food
+    }
+}
+oe_egypt_supply_destination_room = {
+    value = oe_egypt_supply_destination_capacity
+    subtract = oe_egypt_supply_destination_food
+    min = 0
+}
+oe_egypt_supply_capacity = {
+    value = 0
+    if = { limit = { oe_egypt_supply_operational = yes }
+        value = oe_egypt_supply_source_food
+        max = oe_egypt_supply_destination_room
+        max = { value = gold min = 0 multiply = 100 }
+        min = 0
+    }
+}
+# Apply the requested fraction BEFORE resource limits, preserving linear intent.
+oe_egypt_supply_amount = {
+    value = oe_egypt_supply_surplus
+    multiply = oe_egypt_supply_fraction
+    max = oe_egypt_supply_capacity
+    min = 0
+}
+oe_egypt_supply_cost = { value = oe_egypt_supply_amount divide = 100 }
+
+oe_works_egypt_canals_used = { value = 0 if = { limit = { has_variable = oe_works_egypt_canals } value = var:oe_works_egypt_canals } }
+oe_egypt_last_shipment_display = { value = 0 if = { limit = { has_variable = oe_egypt_last_food_shipped } value = var:oe_egypt_last_food_shipped } }
+oe_egypt_last_bill_display = { value = 0 if = { limit = { has_variable = oe_egypt_last_shipping_cost } value = var:oe_egypt_last_shipping_cost } }

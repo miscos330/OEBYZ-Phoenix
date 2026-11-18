@@ -1,0 +1,479 @@
+﻿REPLACE:autocracy = {
+	government = monarchy
+	potential = {
+		Not = {has_or_had_tag = BYZ}
+	}
+
+	country_modifier = {
+		global_crown_estate_power = 0.1
+		monthly_towards_aristocracy = societal_value_monthly_move
+		monthly_towards_absolutism = societal_value_monthly_move
+	}
+	years = 2
+}
+
+
+################################################
+
+oe_byz_badsystem = {#琼筵序次
+	age = age_1_traditions
+		potential = {
+		has_or_had_tag = BYZ
+
+		NOT = { has_variable = oe_byz_unlocked_reformed_system }
+	
+}
+
+
+	locked = {
+		is_locked_mechanic = {
+			mechanic = government_reform
+			type = oe_byz_badsystem
+			}
+		
+	}
+		country_modifier = {
+		government_reform_slots = 1
+		government_size = 1
+		burghers_estate_min_tax = 0.15
+		peasants_estate_min_tax = 0.15
+		nobles_estate_target_satisfaction = 0.15
+		global_pop_promotion_speed_modifier = -1
+		tax_income_efficiency = -0.05
+		no_lowborn_leaders = yes
+
+	}
+	years = 2
+}
+
+oe_byz_goodsystem = {
+	age = age_1_traditions
+		potential = {
+		has_or_had_tag = BYZ
+		has_variable = oe_byz_unlocked_reformed_system 
+		}
+		country_modifier = {
+		government_reform_slots = 1
+		government_size = 1
+		court_spending_efficiency = 0.1
+		stability_cost_efficiency = 0.1
+		diplomatic_spending_cost = -0.1
+		monthly_towards_absolutism = 0.10
+		
+	}
+	years = 2
+}
+
+oe_byz_crown_reform ={#生于紫室
+	age = age_1_traditions
+	government = monarchy
+	potential = {
+		has_or_had_tag = BYZ
+		}
+	country_modifier = {
+		global_crown_estate_power = 0.1
+		monthly_legitimacy = 0.10
+		monthly_rebel_growth = -0.001
+		court_spending_efficiency = 0.02
+		monthly_towards_centralization = 0.10
+		monthly_towards_absolutism = 0.10
+
+	}
+	years = 2
+}
+
+oe_byz_lose_army = {#中央军队的崩溃
+	age = age_1_traditions
+	potential = {
+		has_or_had_tag = BYZ
+		NOT = { has_variable = oe_byz_lose_army_unlock }
+	}
+	locked = {
+		is_locked_mechanic = {
+			mechanic = government_reform
+			type = oe_byz_lose_army
+			}
+		
+	}
+	country_modifier = {
+
+		government_reform_slots = 1
+		levy_combat_efficiency_modifier = -1
+		mercenary_maintenance_efficiency = 0.5
+		hire_mercenary_premium_cost_modifier = -0.5
+		monthly_towards_decentralization = 0.1
+	}
+}
+
+oe_byz_rebuild_army = {#中央军队重建
+	age = age_1_traditions
+	potential = {
+		has_or_had_tag = BYZ
+		has_variable = oe_byz_lose_army_unlock
+	
+NOT = { has_variable = oe_ir_army_2_done }
+}
+	
+	country_modifier = {
+
+		government_reform_slots = 1
+		discipline = 0.025
+		military_tactics = 0.05
+		monthly_towards_quality = 0.1
+	}
+}
+
+oe_byz_theme_system_subject ={#帝国军区属国
+	major = yes
+	potential = {
+		country_type = building
+		is_subject_type = oe_empire_theme
+		is_subject_of = c:BYZ
+	}
+	allow = {
+		is_subject_type = oe_empire_theme
+	}
+	locked = {
+		is_locked_mechanic = {
+			mechanic = government_reform
+			type = oe_byz_theme_system_subject
+		}
+	}
+	country_modifier = {
+		government_reform_slots = 1
+		global_crown_estate_power = 1
+		monthly_towards_quality = 0.5
+		expected_army_size = 10	
+		max_manpower = 10
+		
+	}
+	country_modifier = {
+		scale = {
+			value = army_size
+			multiply = 1
+		}
+		army_maintenance_efficiency = -0.2
+	}
+	
+    # Building-country themes receive their law benefits directly from this reform.
+    # Passive modifiers: no pulses or member/location scans are required.
+    country_modifier = {
+        potential_trigger = {
+            custom_tooltip = {
+                text = OE_THEME_MILITARY_LAW_ACTIVE
+                is_subject_type = oe_empire_theme
+                is_subject_of = c:BYZ
+                exists = international_organization:oe_byz_empire_pillars
+                international_organization:oe_byz_empire_pillars = {
+                    OR = {
+                        international_organization_has_policy = policy:oe_byz_theme_governor_administration
+                        international_organization_has_policy = policy:oe_byz_empire_theme_org_law_army_rule_II_I
+                    }
+                }
+            }
+        }
+        scale = { value = oe_theme_law_pay_ratio }
+        army_maintenance_efficiency = 8
+    }
+    country_modifier = {
+        potential_trigger = {
+            custom_tooltip = {
+                text = OE_THEME_MILITARY_LAW_ACTIVE
+                is_subject_type = oe_empire_theme
+                is_subject_of = c:BYZ
+                exists = international_organization:oe_byz_empire_pillars
+                international_organization:oe_byz_empire_pillars = {
+                    OR = {
+                        international_organization_has_policy = policy:oe_byz_theme_governor_administration
+                        international_organization_has_policy = policy:oe_byz_empire_theme_org_law_army_rule_II_I
+                    }
+                }
+            }
+        }
+        food_consumption_modifier = -0.2
+    }
+    country_modifier = {
+        potential_trigger = {
+            custom_tooltip = {
+                text = OE_THEME_CENTRAL_LAW_ACTIVE
+                is_subject_type = oe_empire_theme
+                is_subject_of = c:BYZ
+                exists = international_organization:oe_byz_empire_pillars
+                international_organization:oe_byz_empire_pillars = {
+                    international_organization_has_policy = policy:oe_byz_empire_theme_org_law_army_rule_II_I
+                }
+            }
+        }
+        loyalty_to_overlord = 50
+    }
+	days = 3
+}
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_sub_religion_system_subject ={#帝国牧首区
+# 	major = yes
+# 	potential = {
+# 		is_subject_type = oe_sub_religion
+# 		is_subject_of = c:BYZ
+# 	}
+# 	allow = {
+# 		is_subject_type = oe_sub_religion
+# 	}
+# 	locked = {
+# 		is_locked_mechanic = {
+# 			mechanic = government_reform
+# 			type = oe_sub_religion_system_subject
+# 		}
+# 	}
+# 	country_modifier = {
+# 		government_reform_slots = 1
+# 		global_crown_estate_power = 0.33
+# 		cultures_capacity = 5
+# 		tolerance_own = 2
+# 		stability_investment = 0.1
+# 		global_clergy_estate_power = 1
+# 		monthly_rebel_growth = -0.1
+# 	}
+# 	days = 3
+# }
+
+
+oe_sub_mam_system_subject ={#帝国埃及领地
+	major = yes
+	potential = {
+		is_subject_type = oe_sub_mam
+		is_subject_of = c:BYZ
+	}
+	allow = {
+		is_subject_type = oe_sub_mam
+	}
+	locked = {
+		is_locked_mechanic = {
+			mechanic = government_reform
+			type = oe_sub_mam_system_subject
+		}
+	}
+	country_modifier = {
+		government_reform_slots = 1
+		global_crown_estate_power = 0.33
+		cultures_capacity = 10
+		stability_investment = 0.1
+		global_nobles_estate_power = 1
+		global_monthly_food_modifier = 3
+		monthly_rebel_growth = -0.1
+	}
+	days = 3
+}
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_byz_rr_mil_subject ={#军事远征
+# 	major = yes
+# 	potential = {
+# 		is_subject_type = oe_sub_rr_indep
+# 		is_subject_of = c:BYZ
+# 	}
+# 	allow = {
+# 		is_subject_type = oe_sub_rr_indep
+# 	}
+# 	locked = {
+# 		is_locked_mechanic = {
+# 			mechanic = government_reform
+# 			type = oe_byz_rr_mil_subject
+# 		}
+# 	}
+# 	country_modifier = {
+# 		government_reform_slots = 1
+# 		army_maintenance_efficiency = 5
+# 		navy_maintenance_cost = -1
+# 		expected_army_size = 100
+# 		global_manpower_modifier = 1
+# 		auto_conquer_different_religion_at_war = yes
+# 		blocked_from_peace = yes
+# 		parliament_abolished = yes
+# 		monthly_rebel_growth = -0.1
+# 	}
+# 	days = 1
+# }
+
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_byz_rr_mil_subject_end_I ={#军事领主
+# 	major = yes
+# 	potential = {
+# 		is_subject_type = oe_sub_rr_indep
+# 		is_subject_of = c:BYZ
+# 	}
+# 	allow = {
+# 		is_subject_type = oe_sub_rr_indep
+# 	}
+# 	locked = {
+# 		is_locked_mechanic = {
+# 			mechanic = government_reform
+# 			type = oe_byz_rr_mil_subject_end_I
+# 		}
+# 	}
+# 	country_modifier = {
+# 		government_reform_slots = 1
+# 		army_maintenance_efficiency = 0.5
+# 		navy_maintenance_cost = -0.5
+# 		global_crown_estate_power = 0.33
+# 		expected_army_size = 100
+# 		global_manpower_modifier = 1
+# 		monthly_rebel_growth = -0.1
+# 	}
+# 	days = 1
+# }
+
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_byz_sub_gov_hun_country ={#匈牙利边候
+# 	major = yes
+# 	potential = {
+# 		is_subject_type = oe_sub_hun
+# 		is_subject_of = c:BYZ
+# 	}
+# 	allow = {
+# 		is_subject_type = oe_sub_hun
+# 	}
+# 	locked = {
+# 		is_locked_mechanic = {
+# 			mechanic = government_reform
+# 			type = oe_byz_sub_gov_hun_country
+# 		}
+# 	}
+# 	country_modifier = {
+# 		government_reform_slots = 1
+# 		land_morale_modifier = 0.1
+# 		army_cavalry_power = 0.33
+# 		army_movement_speed = 0.2
+# 		monthly_rebel_growth = -0.1
+# 	}
+# 	days = 1
+# }
+
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_byz_sub_gov_slovakia_country ={#斯洛伐克黄金区
+# 	major = yes
+# 	potential = {
+# 		is_subject_type = oe_sub_slova
+# 		is_subject_of = c:BYZ
+# 	}
+# 	allow = {
+# 		is_subject_type = oe_sub_slova
+# 	}
+# 	locked = {
+# 		is_locked_mechanic = {
+# 			mechanic = government_reform
+# 			type = oe_byz_sub_gov_slovakia_country
+# 		}
+# 	}
+# 	country_modifier = {
+# 		government_reform_slots = 1
+# 		global_goods_gold_output_modifier = 1
+# 		global_silver_output_modifier = 1
+# 		monthly_rebel_growth = -0.1
+# 	}
+# 	days = 1
+# }
+
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_real_gov_reform_building_com = {#工程院
+# 	major = yes
+# 	potential = {
+# 		is_subject_type = oe_real_gov
+# 		is_subject_of = c:BYZ
+# 	}
+# 	allow = {
+# 		is_subject_type = oe_real_gov
+# 		has_reform = government_reform:oe_real_gov_reform_building_com
+# 	}
+# 	locked = {
+# 		is_locked_mechanic = {
+# 			mechanic = government_reform
+# 			type = oe_real_gov_reform_building_com
+# 		}
+# 	}
+# 	country_modifier = {
+# 		government_reform_slots = 1
+# 		global_urban_build_buildings_cost = -0.2
+# 		global_port_build_buildings_cost = -0.2
+# 		global_fort_build_buildings_cost = -0.2
+# 		global_foreign_build_buildings_cost = -0.5
+# 		estate_enrichment = 0.1
+# 	}
+# 	days = 1	
+# }
+
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_real_gov_reform_romenization_org = {#罗马化
+# 	major = yes
+# 	potential = {
+# 		is_subject_type = oe_real_gov
+# 		is_subject_of = c:BYZ
+# 	}
+# 	allow = {
+# 		is_subject_type = oe_real_gov
+# 		has_reform = government_reform:oe_real_gov_reform_romenization_org
+# 	}
+# 	locked = {
+# 		is_locked_mechanic = {
+# 			mechanic = government_reform
+# 			type = oe_real_gov_reform_romenization_org
+# 		}
+# 	}
+# 	country_modifier = {
+# 		government_reform_slots = 1
+# 		cultures_capacity = 10
+# 		local_pop_assimilation_speed_modifier = 1
+# 		add_accepted_culture_cost_modifier = -1
+# 		estate_enrichment = 0.1
+# 	}
+# 	days = 1	
+# }
+
+
+
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# oe_real_gov_reform_decline_corropution = {#监察官
+# 	major = yes
+# 	potential = {
+# 		is_subject_type = oe_real_gov
+# 		is_subject_of = c:BYZ
+# 	}
+# 	allow = {
+# 		is_subject_type = oe_real_gov
+# 		has_reform = government_reform:oe_real_gov_reform_decline_corropution
+# 	}
+# 	locked = {
+# 		is_locked_mechanic = {
+# 			mechanic = government_reform
+# 			type = oe_real_gov_reform_decline_corropution
+# 		}
+# 	}
+# 	country_modifier = {
+# 		government_reform_slots = 1
+# 		court_spending_efficiency = -0.02
+# 		diplomatic_reputation = -2
+# 	}
+# 	days = 1	
+# }
+
+
+
+
+
+
+
+
+
+

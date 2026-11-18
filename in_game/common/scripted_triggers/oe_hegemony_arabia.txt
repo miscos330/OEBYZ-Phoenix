@@ -1,0 +1,40 @@
+﻿oe_heg_plan_arabia_allowed = {
+    oe_heg_campaign_access = yes
+    NOT = { has_variable = oe_heg_arabia_plan_done }
+    gold >= 2000
+}
+oe_heg_arabia_access = {
+    oe_heg_campaign_access = yes
+    custom_tooltip = { text = OE_HEG_ARABIA_PLAN_REQUIRED has_variable = oe_heg_arabia_plan_done }
+}
+oe_heg_invade_arabia_target = {
+    country_type = location
+    num_locations > 0
+    NOT = { oe_heg_byz_bloc = yes }
+    exists = capital
+    capital = { region = region:arabia_region }
+}
+oe_heg_invade_arabia_allowed = {
+    oe_heg_arabia_access = yes
+    gold >= 200
+}
+oe_heg_arabia_grant_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = c:BYZ
+    region = region:arabia_region
+}
+oe_heg_ghassanid_hail_owned = {
+    area:hail_area = { any_location_in_area = { oe_heg_arabia_grant_location = yes } }
+}
+oe_heg_restore_ghassanids_allowed = {
+    oe_heg_arabia_access = yes
+    NOT = { has_variable = oe_heg_ghassanids_restored }
+    NOT = { has_variable = oe_heg_ghassanids_pending }
+    gold >= 1000
+    political_influence >= 25
+    custom_tooltip = {
+        text = OE_HEG_ARABIA_DIRECT_LAND_REQUIRED
+        region:arabia_region = { any_location_in_region = { oe_heg_arabia_grant_location = yes } }
+    }
+}

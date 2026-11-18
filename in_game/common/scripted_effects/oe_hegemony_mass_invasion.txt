@@ -1,0 +1,21 @@
+﻿# BYZ country scope. All successful mass invasions share one non-stacking state.
+oe_heg_begin_mass_invasion = {
+    if = {
+        limit = { tag = BYZ }
+        add_country_modifier = { modifier = oe_heg_mass_invasion years = -1 mode = replace }
+    }
+}
+
+# Country scope. Snapshot wars before peace removes objects from the live war list.
+oe_heg_end_mass_invasion_effect = {
+    if = {
+        limit = { tag = BYZ has_country_modifier = oe_heg_mass_invasion }
+        save_scope_as = oe_heg_mass_invasion_peacemaker
+        remove_country_modifier = oe_heg_mass_invasion
+        every_current_war = { add_to_list = oe_heg_mass_invasion_wars_to_end }
+        every_in_list = {
+            list = oe_heg_mass_invasion_wars_to_end
+            scope:oe_heg_mass_invasion_peacemaker = { white_peace = prev }
+        }
+    }
+}

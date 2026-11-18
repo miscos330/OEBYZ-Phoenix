@@ -1,0 +1,84 @@
+﻿# Country scope, recipient candidate. Direct subjects only, matching native subject actions.
+oe_byz_direct_subject = { is_subject_of = scope:actor scope:actor = { tag = BYZ } }
+
+# Country scope. Mirror the current native local_governor shared cap including construction.
+oe_byz_subject_governor_capacity = {
+    can_build_building = building_type:local_governor
+    trigger_if = {
+        limit = { has_dlc = "d009_across_the_pillars" }
+        total_building_levels_including_construction:local_governor < {
+            value = effective_num_local_governors
+            subtract = total_building_levels_including_construction:itinerant_court_seat
+            subtract = total_building_levels_including_construction:kings_manor
+        }
+    }
+    trigger_else = {
+        total_building_levels_including_construction:local_governor < {
+            value = effective_num_local_governors
+            subtract = total_building_levels_including_construction:lieutenancy
+            subtract = total_building_levels_including_construction:itinerant_court_seat
+            subtract = total_building_levels_including_construction:kings_manor
+        }
+    }
+}
+
+# Location scope. Native location requirements, with the subject as the builder.
+# Avoid evaluating local_governor.allow against the overlord's scope:actor.
+oe_byz_subject_governor_new_site = {
+    has_owner = yes
+    owner = scope:recipient
+    OR = { location_rank = location_rank:city location_rank = location_rank:megalopolis }
+    has_road_to_capital = yes
+    is_capital = no
+    is_historical_capital = no
+    has_proximity_source_building = no
+    NOT = { has_building = building_type:local_governor }
+    scope:recipient = { oe_byz_subject_governor_capacity = yes }
+}
+oe_byz_subject_governor_site = {
+    has_owner = yes
+    owner = scope:recipient
+    OR = {
+        has_building_with_at_least_one_level = local_governor
+        oe_byz_subject_governor_new_site = yes
+    }
+}
+
+# Country scope: cooldown lives on each recipient, never on BYZ.
+oe_byz_subject_suppression_allowed = {
+    oe_byz_direct_subject = yes
+    NOT = { has_cooldown = oe_byz_subject_rebellion_suppression_cooldown }
+    any_rebel = { rebel_progress > 0 }
+    scope:actor = { gold >= prev.oe_byz_subject_annual_income }
+}
+
+# Country scope: native naval governor cap, using the subject's own modifiers and construction queue.
+oe_byz_subject_naval_governor_capacity = {
+    can_build_building = building_type:naval_governor
+    modifier:num_naval_governors > 0
+    total_building_levels_including_construction:naval_governor < modifier:num_naval_governors
+}
+
+# Location scope. Mirror naval_governor's native ranks and location_potential.
+# Do not evaluate native allow with the Byzantine interaction actor as the builder.
+oe_byz_subject_naval_governor_new_site = {
+    has_owner = yes
+    owner = scope:recipient
+    OR = { location_rank = location_rank:city location_rank = location_rank:megalopolis }
+    NOT = { is_connected_to_through_realm = owner.capital }
+    is_overseas_for_owner = no
+    is_port = yes
+    is_capital = no
+    is_historical_capital = no
+    has_proximity_source_building = no
+    NOT = { has_building = building_type:naval_governor }
+    scope:recipient = { oe_byz_subject_naval_governor_capacity = yes }
+}
+oe_byz_subject_naval_governor_site = {
+    has_owner = yes
+    owner = scope:recipient
+    OR = {
+        has_building_with_at_least_one_level = naval_governor
+        oe_byz_subject_naval_governor_new_site = yes
+    }
+}

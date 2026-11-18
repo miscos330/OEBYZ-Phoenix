@@ -1,0 +1,84 @@
+﻿oe_belisarius_try_war_art = {
+    if = { limit = { oe_belisarius_war_art_ready = yes } trigger_event_non_silently = oe_flavor_byz.1016 }
+}
+oe_belisarius_reward_first_siege = {
+    if = {
+        limit = { has_variable = oe_belisarius_fort_victory NOT = { has_variable = oe_belisarius_rising_rewarded } }
+        set_variable = oe_belisarius_rising_rewarded
+        add_prestige = 5
+        if = {
+            limit = { exists = international_organization:oe_byz_empire_pillars exists = character:oe_osmaris_belisarius }
+            oe_osmaris_add_house_influence = { amount = 10 }
+        }
+    }
+}
+# Shared Italy/Crescent handler. Country scope of a native siege/occupation hook. Snapshot the province BEFORE
+# any ownership change can split a province, move its capital or annex its owner.
+oe_belisarius_capture_authorized_land = {
+    if = {
+        limit = { oe_belisarius_capture_context = yes }
+        set_variable = oe_belisarius_capture_in_progress
+        scope:target = {
+            save_scope_as = oe_belisarius_taken_location
+            oe_belisarius_snapshot_noncore = yes
+            if = {
+                limit = { is_province_capital = yes }
+                province_definition = {
+                    every_location_in_province_definition = {
+                        limit = {
+                            this != scope:oe_belisarius_taken_location
+                            oe_belisarius_authorized_enemy_land = yes has_fort = no
+                        }
+                        add_to_list = oe_belisarius_province_grants
+                        oe_belisarius_snapshot_noncore = yes
+                    }
+                }
+            }
+        }
+        every_in_list = {
+            list = oe_belisarius_province_grants
+            # Recheck ownership/war status: callbacks can change diplomatic state.
+            if = {
+                limit = { oe_belisarius_authorized_enemy_land = yes has_fort = no }
+                oe_transfer_conquest_without_core = { recipient = c:BYZ }
+                oe_belisarius_record_italian_conquest = yes
+            }
+        }
+        # The actual captured location transfers even when it has a fort.
+        scope:oe_belisarius_taken_location = {
+            if = {
+                limit = { oe_belisarius_authorized_enemy_land = yes }
+                oe_transfer_conquest_without_core = { recipient = c:BYZ }
+                oe_belisarius_record_italian_conquest = yes
+            }
+        }
+        # Use the pre-transfer snapshot, not a core test after earlier province grants.
+        every_in_list = {
+            list = oe_belisarius_original_noncores
+            limit = { owner = c:BYZ }
+            oe_reset_new_conquest_integration = { recipient = c:BYZ }
+            save_scope_as = oe_belisarius_settlement_location
+            c:BYZ = {
+                add_to_variable_list = {
+                    name = oe_belisarius_pending_noncores
+                    target = scope:oe_belisarius_settlement_location
+                }
+                if = {
+                    limit = { NOT = { has_variable = oe_belisarius_settlement_queued } }
+                    set_variable = oe_belisarius_settlement_queued
+                    trigger_event_silently = { id = oe_belisarius_settlement.1 days = 1 }
+                }
+            }
+        }
+        remove_variable = oe_belisarius_capture_in_progress
+        oe_belisarius_try_ravenna = yes
+    }
+}
+
+# Location scope, always called before ANY location in the captured province changes owner.
+oe_belisarius_snapshot_noncore = {
+    if = {
+        limit = { NOT = { is_core_of = c:BYZ } }
+        add_to_list = oe_belisarius_original_noncores
+    }
+}

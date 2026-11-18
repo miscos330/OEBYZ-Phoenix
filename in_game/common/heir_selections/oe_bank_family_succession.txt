@@ -1,0 +1,34 @@
+﻿# A hereditary banking republic. Native absolute primogeniture traverses senior branches first.
+oe_bank_family_succession = {
+    use_election = no
+    term_duration = 0
+    include_ruler_siblings = yes
+    allow_extended_family = yes
+    through_female = yes
+    allow_female = yes
+    allow_male = yes
+    allow_children = yes
+    ignore_ruler = yes
+    traverse_family_tree = yes
+    depth_first = yes
+    potential = { tag = OBY }
+    locked = { tag = OBY }
+    custom_eligibility_rules = { OE_BANK_FAMILY_ONLY }
+    heir_is_allowed = {
+        has_dynasty = yes
+        exists = scope:target.last_valid_ruler
+        scope:target.last_valid_ruler = {
+            has_dynasty = yes
+            dynasty = root.dynasty
+        }
+        NOT = { modifier:blocked_from_being_ruler = yes }
+    }
+    sibling_score = {
+        if = {
+            limit = { exists = root }
+            add = { desc = "HEIR_SELECTION_OLDER_HEIR_DESC" value = character_age }
+        }
+        else = { add = { desc = "HEIR_SELECTION_OLDER_HEIR_DESC" value = 1 } }
+    }
+    modifier = { care_about_producing_heirs = yes }
+}

@@ -1,0 +1,45 @@
+﻿oe_rw_end_contest = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { oe_rw_end_contest_visible = yes } }
+    allow = { scope:actor = { oe_rw_end_contest_allowed = yes } }
+    automation_tick = never
+    automation_tick_frequency = 12
+    ai_tick = never
+    cooldown = { type = oe_rw_end_contest_cooldown months = 0 }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_roman_world
+            scope:actor = { oe_rw_end_contest_visible = yes }
+        }
+    }
+    effect = {
+        # Recheck at execution, including if another member has already ended the contest.
+        if = {
+            limit = {
+                scope:recipient = { this = international_organization:oe_byz_roman_world }
+                scope:actor = { oe_rw_end_contest_allowed = yes }
+            }
+            scope:recipient = {
+                set_variable = { name = oe_rw_contest_ended value = yes }
+                set_variable = { name = oe_rw_hegemony_founder value = scope:actor }
+            }
+            custom_tooltip = {
+                text = OE_RW_END_CONTEST_REWARDS
+                international_organization:oe_byz_empire_pillars = {
+                    change_variable = { name = oe_pillars_authority add = 50 }
+                }
+                scope:actor = { add_stability = 20 }
+            }
+            custom_tooltip = OE_RW_HEGEMONY_BEGINS
+            # NEW 2026-11-17 Roman Reconquest: the reconquest situation starts with the hegemony.
+            c:BYZ ?= { oe_rr_start = { hope = 40 } }
+        }
+    }
+}

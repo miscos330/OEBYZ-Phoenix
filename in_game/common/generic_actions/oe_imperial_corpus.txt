@@ -1,0 +1,34 @@
+﻿oe_ir_corpus = {
+    type = internationalorganization
+    show_message = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = { tag = BYZ custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_corpus_done } } }
+        international_organization:oe_byz_empire_pillars = { custom_tooltip = { text = OE_IR_AUTHORITY_50 var:oe_pillars_authority >= 50 } }
+    }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { tag = BYZ NOT = { has_variable = oe_ir_corpus_done } }
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars var:oe_pillars_authority >= 50 }
+            }
+            scope:recipient = { change_variable = { name = oe_pillars_authority add = -50 } }
+            scope:actor = {
+                set_variable = oe_ir_corpus_done
+                unlock_policy_effect = { type = new_corpus_juris_civilis }
+            }
+            custom_tooltip = OE_PILLARS_CORPUS_UNLOCK
+        }
+    }
+}

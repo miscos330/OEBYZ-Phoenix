@@ -1,0 +1,46 @@
+﻿# Dates are measured from the captured-emperor option, not from subsequent event choices.
+oe_gr_schedule_republic_foundation = {
+    if = {
+        limit = { NOT = { has_variable = oe_gr_foundation_scheduled } }
+        set_variable = oe_gr_foundation_scheduled
+        trigger_event_non_silently = { on_action = oe_gr_foundation_day_one days = 1 }
+        trigger_event_non_silently = { on_action = oe_gr_foundation_day_ten days = 10 }
+        trigger_event_non_silently = { on_action = oe_gr_foundation_day_thirty days = 30 }
+    }
+}
+oe_gr_lose_authority_fifty = {
+    custom_tooltip = oe_gr_authority_minus_50_tt
+    hidden_effect = {
+        international_organization:oe_byz_empire_pillars ?= {
+            change_variable = { name = oe_pillars_authority subtract = 50 }
+            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        }
+    }
+}
+# Native attribute ranges are inclusive; the minimum sum is 84 * 3 = 252 (> 250).
+oe_gr_create_founder = {
+    create_character = {
+        age = { 25 45 }
+        culture = root.culture
+        religion = root.religion
+        estate = estate_type:burghers_estate
+        adm = { 84 100 }
+        dip = { 84 100 }
+        mil = { 84 100 }
+    }
+}
+oe_gr_recruit_three_founders = {
+    custom_tooltip = oe_gr_three_founders_tt
+    hidden_effect = {
+        oe_gr_create_founder = yes
+        oe_gr_create_founder = yes
+        oe_gr_create_founder = yes
+    }
+}
+oe_gr_choose_republic_name = {
+    change_country_name = $name$
+    hidden_effect = {
+        set_variable = oe_gr_republic_name_chosen
+        trigger_event_non_silently = oe_great_revolution.23
+    }
+}

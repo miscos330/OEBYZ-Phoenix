@@ -1,0 +1,694 @@
+﻿types oe_roman_assimilation_widgets {
+    type oe_rw_assimilation_panel = card_common {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_RW_ASSIM_TITLE" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                margin = { 10 10 } spacing = 12
+                widget = {
+                    name = "oe_rw_assimilation_illustration"
+                    layoutpolicy_horizontal = expanding size = { -1 250 }
+                    background = {
+                        texture = "gfx/interface/illustrations/international_organization_types/oe_rw_assimilation.dds"
+                        spriteType = stretched
+                    }
+                }
+                text_single = { text = "OE_RW_ASSIM_FLAVOR" fontsize = 17 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                hbox = {
+                    name = "oe_rw_turkish_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_TURKISH_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_TURKISH_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_turkish_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_TURKISH_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_turkish_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_turkish_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_turkish_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_turkish_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_turkish_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_turkish_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_turkish_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_turkish_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_turkish_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_turkish_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_turkish_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_egypt_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_EGYPT_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_EGYPT_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_egypt_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_EGYPT_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_egypt_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_egypt_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_egypt_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_egypt_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_egypt_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_egypt_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_egypt_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_egypt_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_egypt_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_egypt_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_egypt_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_syria_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_SYRIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_SYRIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_syria_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_SYRIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_syria_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_syria_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_syria_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_syria_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_syria_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_syria_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_syria_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_syria_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_syria_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_syria_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_syria_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_africa_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_AFRICA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_AFRICA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_africa_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_AFRICA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_africa_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_africa_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_africa_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_africa_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_africa_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_africa_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_africa_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_africa_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_africa_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_africa_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_africa_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_gaul_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_GAUL_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_GAUL_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_gaul_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_GAUL_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_gaul_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_gaul_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_gaul_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_gaul_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_gaul_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_gaul_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_gaul_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_gaul_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_gaul_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_gaul_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_gaul_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_iberia_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_IBERIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_IBERIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_iberia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_IBERIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_iberia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_iberia_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_iberia_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_iberia_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_iberia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_iberia_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_iberia_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_iberia_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_iberia_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_iberia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_iberia_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_britain_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_BRITAIN_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_BRITAIN_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_britain_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_BRITAIN_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_britain_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_britain_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_britain_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_britain_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_britain_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_britain_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_britain_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_britain_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_britain_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_britain_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_britain_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_serbia_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_SERBIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_SERBIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_serbia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_SERBIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_serbia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_serbia_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_serbia_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_serbia_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_serbia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_serbia_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_serbia_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_serbia_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_serbia_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_serbia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_serbia_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_bulgaria_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_BULGARIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_BULGARIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_bulgaria_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_BULGARIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_bulgaria_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_bulgaria_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_bulgaria_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_bulgaria_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_bulgaria_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_bulgaria_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_bulgaria_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_bulgaria_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_bulgaria_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_bulgaria_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_bulgaria_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_albania_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_ALBANIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_ALBANIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_albania_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_ALBANIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_albania_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_albania_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_albania_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_albania_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_albania_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_albania_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_albania_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_albania_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_albania_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_albania_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_albania_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_illyria_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_ILLYRIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_ILLYRIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_illyria_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_ILLYRIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_illyria_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_illyria_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_illyria_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_illyria_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_illyria_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_illyria_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_illyria_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_illyria_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_illyria_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_illyria_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_illyria_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_dacia_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_DACIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_DACIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_dacia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_DACIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_dacia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_dacia_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_dacia_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_dacia_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_dacia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_dacia_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_dacia_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_dacia_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_dacia_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_dacia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_dacia_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_armenia_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_ARMENIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_ARMENIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_armenia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_ARMENIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_armenia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_armenia_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_armenia_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_armenia_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_armenia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_armenia_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_armenia_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_armenian_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_armenia_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_armenia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_armenia_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_griko_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_GRIKO_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_GRIKO_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_griko_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_GRIKO_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_griko_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_griko_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_griko_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_griko_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_griko_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_griko_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_griko_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_griko_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_griko_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_griko_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_griko_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_mesopotamia_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_MESOPOTAMIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_MESOPOTAMIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_mesopotamia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_MESOPOTAMIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_mesopotamia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_mesopotamia_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_mesopotamia_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_mesopotamia_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_mesopotamia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_mesopotamia_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_mesopotamia_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_mesopotamia_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_mesopotamia_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_mesopotamia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_mesopotamia_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_georgia_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_GEORGIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_GEORGIA_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_georgia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_GEORGIA_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_georgia_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_georgia_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_georgia_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_georgia_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_georgia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_georgia_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_georgia_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_georgia_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_georgia_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_georgia_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_georgia_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_kudoyr_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_KUDOYR_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_KUDOYR_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_kudoyr_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_KUDOYR_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_kudoyr_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_kudoyr_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_kudoyr_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_kudoyr_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_kudoyr_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_kudoyr_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_kudoyr_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_kudoyr_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_kudoyr_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_kudoyr_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_kudoyr_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_paeones_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_PAEONES_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_PAEONES_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_paeones_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_PAEONES_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_paeones_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_paeones_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_paeones_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_paeones_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_paeones_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_paeones_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_paeones_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_paeones_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_paeones_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_paeones_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_paeones_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_latin_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_LATIN_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_LATIN_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_latin_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_LATIN_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_latin_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_latin_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_latin_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_latin_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_latin_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_latin_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_latin_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_latin_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_latin_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_latin_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_latin_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_german_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_GERMAN_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_GERMAN_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_german_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_GERMAN_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_german_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_german_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_german_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_german_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_german_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_german_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_german_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_german_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_german_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_german_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_german_tooltip }
+                        }
+                    }
+                }
+                hbox = {
+                    name = "oe_rw_pentarchy_assimilation_row"
+                    layoutpolicy_horizontal = expanding spacing = 14
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        text_single = { text = "OE_RW_ASSIM_PENTARCHY_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
+                        text_single = { text = "OE_RW_ASSIM_PENTARCHY_WAITING" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[Not(GetScriptedGui('oe_rw_pentarchy_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]" }
+                        text_single = { text = "OE_RW_ASSIM_PENTARCHY_STARTED" fontsize = 16 layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('oe_rw_pentarchy_romanization_started').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]" }
+                    }
+                    widget = {
+                        name = "oe_rw_pentarchy_button_host"
+                        size = { 72 72 }
+                        tooltipwidget = { using = oe_rw_assim_pentarchy_tooltip }
+                        mission_task_card_button = {
+                            name = "oe_rw_start_pentarchy_romanization_button"
+                            size = { 72 72 } text = ""
+                            enabled = "[GetScriptedGui('oe_rw_start_pentarchy_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            tooltipwidget = { using = oe_rw_assim_pentarchy_tooltip }
+                            onclick = "[GetScriptedGui('oe_rw_start_pentarchy_romanization').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            icon = { size = { 52 52 } parentanchor = center texture = "gfx/interface/icons/movement/oe_orthodox_identity_movement.dds" alwaystransparent = yes }
+                        }
+                        # Enabled hover surface over a disabled button. It has no click handler.
+                        widget = {
+                            name = "oe_rw_pentarchy_disabled_hover"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top size = { 72 72 }
+                            alwaystransparent = no
+                            visible = "[Not(GetScriptedGui('oe_rw_start_pentarchy_romanization').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            tooltipwidget = { using = oe_rw_assim_pentarchy_tooltip }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

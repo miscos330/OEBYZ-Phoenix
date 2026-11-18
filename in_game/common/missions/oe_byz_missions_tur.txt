@@ -1,0 +1,212 @@
+﻿oe_byz_missions_tur = {
+	icon = generic_conquer_province
+	repeatable = no
+	chance = 3600
+	player_playstyle = military
+	visible = {
+		game_has_missions_enabled = yes
+		has_or_had_tag = BYZ
+	}
+
+	enabled = {
+		country_exists = c:TUR
+	}	
+	on_start = {
+		every_known_country = {
+			limit = {
+				culture = culture:turkish_culture
+				"border_distance_to(c:BYZ)" < 250
+			}
+		add_antagonism = {
+			target = root
+			modifier = antagonism_planned_invasion
+			scale = 2
+		}
+		}		
+	}
+	on_abort = {
+		add_government_power = -10
+	}
+	on_completion = {
+		add_prestige = prestige_mild_bonus
+	}
+	# 2026-11-17: tasks filled in by gen_tur_missions.py (conditions follow each task's name; replaces always = yes).
+	oe_byz_missions_tur_I = { # 隔海相望
+		icon = tre_terminus_of_the_silk_road
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_I_req_tt owns = location:constantinople stability >= 0 }
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_weak_bonus
+		}
+	}
+	oe_byz_missions_tur_II = { # 战争准备
+		icon = combined_arms_advance_reformation
+		requires = { oe_byz_missions_tur_I }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_II_req_tt gold >= 300 army_size_percentage >= 0.8 }
+		}
+		duration = 0
+		on_completion = {
+			add_country_modifier = { modifier = oe_tur_war_preparations years = 10 }
+			if = { limit = { exists = c:TUR NOT = { c:TUR = { is_subject_of = root } } } add_casus_belli = { target = c:TUR type = casus_belli:cb_restore_roman_borders years = 20 } }
+		}
+	}
+	oe_byz_missions_tur_III = { # 渗透突厥人
+		icon = tre_lessons_of_the_fourth_crusade
+		requires = { oe_byz_missions_tur_I }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_III_req_tt any_known_country = { culture = culture:turkish_culture opinion = { target = root value >= 50 } } }
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_weak_bonus
+			if = { limit = { exists = c:TUR NOT = { c:TUR = { is_subject_of = root } } } add_casus_belli = { target = c:TUR type = casus_belli:cb_restore_roman_borders years = 20 } }
+		}
+	}
+	oe_byz_missions_tur_IV = { # 圣米迦勒的赐福
+		icon = greek_group_hesychast_traditions_advance
+		requires = { oe_byz_missions_tur_I }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_IV_req_tt stability >= 1 legitimacy >= 50 }
+		}
+		duration = 0
+		on_completion = {
+			add_country_modifier = { modifier = oe_tur_archangels_blessing years = 10 }
+		}
+	}
+	oe_byz_missions_tur_V = { # 跨过海峡
+		icon = geo_legacy_of_saint_george
+		requires = { oe_byz_missions_tur_III oe_byz_missions_tur_IV oe_byz_missions_tur_II }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_V_req_tt owns = location:bursa }
+		}
+		duration = 0
+		on_completion = {
+			location:bursa = { add_core = root }
+			add_prestige = prestige_mild_bonus
+		}
+	}
+	oe_byz_missions_tur_VI = { # 收复尼西亚
+		icon = keepers_of_the_gate
+		requires = { oe_byz_missions_tur_V }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_VI_req_tt owns = location:iznik }
+		}
+		duration = 0
+		on_completion = {
+			location:iznik = { add_core = root }
+			add_legitimacy = legitimacy_mild_bonus
+		}
+	}
+	oe_byz_missions_tur_VII = { # 收复士麦那
+		icon = hai_bustling_towns
+		requires = { oe_byz_missions_tur_V }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_VII_req_tt owns = location:smyrna }
+		}
+		duration = 0
+		on_completion = {
+			location:smyrna = { add_core = root }
+			add_gold = 200
+		}
+	}
+	oe_byz_missions_tur_VIII = { # 推进战线
+		icon = frankokratia_frankokratia_advance
+		requires = { oe_byz_missions_tur_VI oe_byz_missions_tur_VII oe_byz_missions_tur_IX }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_VIII_req_tt owns = location:kutahya owns = location:bandirma }
+		}
+		duration = 0
+		on_completion = {
+			add_manpower = 5
+			add_prestige = prestige_weak_bonus
+		}
+	}
+	oe_byz_missions_tur_IX = { # 奥斯曼的末日
+		icon = muslim_lineage
+		requires = { oe_byz_missions_tur_V }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_IX_req_tt OR = { NOT = { country_exists = c:TUR } c:TUR = { is_subject_of = root } } }
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_severe_bonus
+			add_stability = stability_mild_bonus
+		}
+	}
+	oe_byz_missions_tur_X = { # 征服安卡拉
+		icon = dlh_turkic_conqueror_roots
+		requires = { oe_byz_missions_tur_VIII }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_X_req_tt owns = location:ankara }
+		}
+		duration = 0
+		on_completion = {
+			location:ankara = { add_core = root }
+			add_prestige = prestige_mild_bonus
+		}
+	}
+	oe_byz_missions_tur_XI = { # 征服卡拉曼
+		icon = turco_mongol_tradition
+		requires = { oe_byz_missions_tur_VIII }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_XI_req_tt owns = location:konya }
+		}
+		duration = 0
+		on_completion = {
+			location:konya = { add_core = root }
+			add_prestige = prestige_mild_bonus
+		}
+	}
+	oe_byz_missions_tur_XII = { # 卡帕多细亚文化
+		icon = byz_ancient_greek_studies
+		requires = { oe_byz_missions_tur_XI }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_XII_req_tt owns = location:kayseri location:kayseri = { culture_percentage = { culture = culture:greek_culture value >= 0.25 } } }
+		}
+		duration = 0
+		on_completion = {
+			add_country_modifier = { modifier = oe_tur_cappadocian_revival years = 20 }
+		}
+	}
+	oe_byz_missions_tur_XIII = { # 征服锡瓦斯
+		icon = tre_pontic_mountains
+		requires = { oe_byz_missions_tur_VIII }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_XIII_req_tt owns = location:sivas }
+		}
+		duration = 0
+		on_completion = {
+			location:sivas = { add_core = root }
+			add_prestige = prestige_mild_bonus
+		}
+	}
+	oe_byz_missions_tur_XIV = { # 奶与蜜的家园
+		icon = the_pentarchy
+		requires = { oe_byz_missions_tur_XIII oe_byz_missions_tur_XI oe_byz_missions_tur_X }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_XIV_req_tt owns = location:ankara owns = location:konya owns = location:sivas owns = location:kayseri owns = location:antalya }
+		}
+		duration = 0
+		final = yes # the game requires a final task to complete the mission
+		on_completion = {
+			add_country_modifier = { modifier = oe_tur_anatolian_granary years = 50 }
+			add_stability = stability_mild_bonus
+		}
+	}
+	oe_byz_missions_tur_XV = { # 特拉比松归来
+		icon = tre_komnenos_legacy
+		requires = { oe_byz_missions_tur_XIII }
+		enabled = {
+			custom_tooltip = { text = oe_byz_missions_tur_XV_req_tt owns = location:trebizond }
+		}
+		duration = 0
+		on_completion = {
+			location:trebizond = { add_core = root }
+			add_prestige = prestige_severe_bonus
+			add_legitimacy = legitimacy_mild_bonus
+		}
+	}
+}

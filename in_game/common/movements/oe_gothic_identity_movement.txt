@@ -1,0 +1,101 @@
+﻿oe_gothic_identity_movement = {
+    culture = gothic_culture
+    required_cultures = { crimean }
+    potential = {
+        always = yes
+    }
+    allow = { always = no }
+    monthly_spawn_chance = { value = 0 }
+    # PAUSED 2026-09-25: static tags exclude dynamically created subjects.
+# required_tags = {
+#         BYZ
+#     }
+    location_stagnation_chance = {
+        # Stop empty/foreign relay locations instead of allowing zero-support spread.
+        value = 0
+        if = {
+            limit = { NOT = { oe_rw_gothic_spread_location = yes } }
+            value = 1
+        }
+    }
+    calc_interval_days = 10
+    environmental_infection = {
+        value = 0.1
+        if = {
+            limit = { NOT = { oe_rw_gothic_spread_location = yes } }
+            value = 0
+        }
+    }
+    r0 = {
+        value = { 0.05 0.15 }
+        if = {
+            limit = { NOT = { oe_rw_gothic_spread_location = yes } }
+            value = 0
+        }
+    }
+    location_spread_threshold = {
+        value = 0.05
+        if = {
+            limit = { NOT = { oe_rw_gothic_spread_location = yes } }
+            value = 1
+        }
+    }
+    development = neutral
+    literacy = positive
+    local_control = positive
+    pop_satisfaction = neutral
+    specific_pop_type_effect = {
+        pop_type = nobles
+        multiplier = 2.0
+    }
+    specific_pop_type_effect = {
+        pop_type = burghers
+        multiplier = 1.5
+    }
+    specific_pop_type_effect = {
+        pop_type = clergy
+        multiplier = 1.5
+    }
+    specific_pop_type_effect = {
+        pop_type = peasants
+        multiplier = 1.2
+    }
+    specific_pop_type_effect = {
+        pop_type = tribesmen
+        multiplier = 0.5
+    }
+    specific_pop_type_effect = {
+        pop_type = laborers
+        multiplier = 1.2
+    }
+    specific_pop_type_effect = {
+        pop_type = slaves
+        multiplier = 0.1
+    }
+    map_color = {
+        if = {
+            limit = {
+                "culture_percentage(culture:gothic_culture)" = 0
+            }
+            value = define:NMapColors|MAP_COLOR_NULL
+        }
+        else_if = {
+            limit = {
+                dominant_culture = culture:gothic_culture
+            }
+            value = define:NMapColors|MAP_COLOR_HIGH
+        }
+        else_if = {
+            limit = {
+                "culture_percentage(culture:gothic_culture)" > 0.05
+            }
+            value = define:NMapColors|MAP_COLOR_MID
+        }
+        else = {
+            value = define:NMapColors|MAP_COLOR_LOW
+        }
+    }
+    
+    
+    specific_pop_type_effect = { culture = crimean multiplier = 2.0 }
+}

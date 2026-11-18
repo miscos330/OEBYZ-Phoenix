@@ -1,0 +1,35 @@
+﻿oe_rw_assim_armenia_total = {
+    value = 0
+    area:armenian_highlands_area = { every_location_in_area = { limit = { is_ownable = yes } add = 1 } }
+    area:armenia_area = { every_location_in_area = { limit = { is_ownable = yes } add = 1 } }
+}
+
+oe_rw_assim_armenia_owned = {
+    value = 0
+    area:armenian_highlands_area = { every_location_in_area = { limit = { is_ownable = yes owner = { oe_heg_byz_bloc = yes } } add = 1 } }
+    area:armenia_area = { every_location_in_area = { limit = { is_ownable = yes owner = { oe_heg_byz_bloc = yes } } add = 1 } }
+}
+
+oe_rw_assim_armenia_required = { value = oe_rw_assim_armenia_total multiply = 0.8 ceiling = yes }
+
+# Legacy one/two-use counters alone do not prove that a movement reached a location.
+# Preserve a living legacy movement, an expired start, and any verified new single start.
+# A legacy empty/failed record gets one successful repair; no periodic restart is added.
+oe_armenia_identity_start_count = {
+    value = 0
+    culture:oe_armenian_greek_culture = {
+        if = {
+            limit = {
+                OR = {
+                    has_variable = oe_armenia_single_start_v3
+                    has_variable = oe_identity_start_expired
+                    any_movement_in_culture = {
+                        movement_type = movement_definition:oe_armenian_identity_movement
+                        num_locations_affected > 0
+                    }
+                }
+            }
+            value = 1
+        }
+    }
+}

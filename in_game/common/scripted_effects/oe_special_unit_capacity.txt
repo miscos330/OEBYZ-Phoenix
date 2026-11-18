@@ -1,0 +1,47 @@
+﻿# Country scope. A single pass updates all three capacity pools together.
+# Only BYZ owns these recruitable types. Workforce and supplies do not reduce slots.
+oe_su_refresh_capacity = {
+    if = {
+        limit = { tag = BYZ }
+        save_scope_as = oe_su_capacity_country
+        set_variable = { name = oe_su_barracks_capacity value = 0 }
+        set_variable = { name = oe_su_rum_capacity value = 0 }
+        set_variable = { name = oe_su_orthodox_capacity value = 0 }
+        every_owned_building = {
+            limit = {
+                building_type = building_type:oe_hetaireia_barracks
+                building_level > 0
+                location = { owner = scope:oe_su_capacity_country }
+            }
+            save_scope_value_as = { name = oe_su_completed_levels value = building_level }
+            scope:oe_su_capacity_country = {
+                change_variable = { name = oe_su_barracks_capacity add = scope:oe_su_completed_levels }
+            }
+            if = {
+                limit = { location = { dominant_culture = culture:oe_tur_greek_culture } }
+                scope:oe_su_capacity_country = {
+                    change_variable = { name = oe_su_rum_capacity add = scope:oe_su_completed_levels }
+                }
+            }
+            else_if = {
+                limit = { location = { OR = {
+                    dominant_culture = culture:oe_bulgarian_greek_culture
+                    dominant_culture = culture:oe_serbian_greek_culture
+                } } }
+                scope:oe_su_capacity_country = {
+                    change_variable = { name = oe_su_orthodox_capacity add = scope:oe_su_completed_levels }
+                }
+            }
+        }
+        remove_variable = oe_su_capacity_refresh_pending
+    }
+}
+
+# Country scope; several barracks destroyed on the same day schedule one event.
+oe_su_queue_capacity_refresh = {
+    if = {
+        limit = { tag = BYZ NOT = { has_variable = oe_su_capacity_refresh_pending } }
+        set_variable = oe_su_capacity_refresh_pending
+        trigger_event_silently = { id = oe_special_unit_capacity.1 days = 1 }
+    }
+}

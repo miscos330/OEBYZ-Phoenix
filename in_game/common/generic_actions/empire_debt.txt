@@ -1,0 +1,648 @@
+﻿oe_byz_move_debt = {#贬值货币
+	type = internationalorganization
+	show_message = no
+	potential = {
+	}
+
+	allow = {
+	scope:actor = {
+			tag = BYZ
+			at_war = no
+			has_raised_levies = no
+			NOT = { has_variable = oe_byz_ed_money_break }
+
+		}
+	
+        
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# situation:empire_debt = { situation_is_active = yes }
+
+
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_2 var:oe_pillars_authority >= 2 }
+        }
+}
+
+	automation_tick = never
+	automation_tick_frequency = 12
+	price = price:oe_byz_create_theme_price
+
+	cooldown = {
+		type = oe_byz_move_debt_cooldown_key
+		months = 12
+	}
+
+	select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_empire_pillars
+            scope:actor = { tag = BYZ }
+        }
+    }
+	effect = {
+        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -2 } } 
+			custom_tooltip = {
+				text = oe_byz_move_debt_tt
+				scope:actor = {
+				trigger_event_silently = empire_debt.100
+				}
+			}
+	}
+}
+oe_byz_rebuild_money = {#增值货币
+	type = internationalorganization
+	show_message = no
+	potential = {
+	}
+
+	allow = {
+	scope:actor = {
+			tag = BYZ
+			at_war = no
+			has_raised_levies = no
+			NOT = { has_variable = oe_byz_ed_money_break }
+			NOT = { has_variable = oe_byz_empier_money_gII_allow }
+		}
+	
+        
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# situation:empire_debt = { situation_is_active = yes }
+
+
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_2 var:oe_pillars_authority >= 2 }
+        }
+}
+
+	automation_tick = never
+	automation_tick_frequency = 12
+	price = price:oe_byz_create_theme_price
+
+	cooldown = {
+		type = oe_byz_move_debt_cooldown_key
+		months = 12
+	}
+
+	select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        none_available_msg_key = "leave_international_organization_none"
+        column = { data = name }
+        visible = {
+            this = international_organization:oe_byz_empire_pillars
+            scope:actor = { tag = BYZ }
+        }
+    }
+	effect = {
+        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -2 } } 
+			custom_tooltip = {
+				text = oe_byz_rebuild_money_tt
+				scope:actor = {
+				trigger_event_silently = empire_debt.101
+				}
+			}
+	}
+}
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_byz_create_bank_org = {#创建帝国银行监会
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	scope:actor = {
+# 			tag = BYZ
+# 			at_war = no
+# 			has_raised_levies = no
+# 			NOT = { has_variable = oe_byz_create_bank_org_over }
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_latin_attack_price
+# 
+# 	cooldown = {
+# 		type = oe_byz_create_bank_org_cooldown_key
+# 		months = 100
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:empire_debt = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 			NOT = { has_variable = oe_byz_create_bank_org_over }
+# 			tag = BYZ
+# 		}
+# 			situation:empire_debt = this
+# 			situation_is_active = yes
+# 		}
+# 	}
+# 	effect = { 
+# 			custom_tooltip = {
+# 				text = oe_byz_create_bank_org_over_tt
+# 				scope:actor = {
+# 				set_variable = oe_byz_create_bank_org_over
+# 				}
+# 				create_international_organization = {
+#    				type = international_organization_type:oe_byz_bank_org
+# 						add_country_to_international_organization = c:BYZ
+# 						add_country_to_international_organization = c:OBY
+# 						set_leader_country = c:OBY						
+# 			international_organization_add_special_status = {
+# 				type = special_status:oe_bank_org_byz
+# 				country = c:BYZ
+# 			}
+# 			international_organization_add_special_status = {
+# 				type = special_status:oe_bank_org_big_bank
+# 				country = c:OBY
+# 			}
+# 				}
+# 			}
+# 	}
+# }
+
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_byz_ed_own_whole_east_trade = {#东方贸易霸权
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	scope:actor = {
+# 			at_war = no
+# 			has_raised_levies = no
+# 			NOT = { has_variable = oe_byz_ed_own_whole_east_trade_over }
+# 			OR = {
+# 				own_entire_area = area:northern_greece_area
+# 				own_entire_area = area:morea_area
+# 			}
+# 			own_entire_area = area:aegean_archipelago_area
+# 			owns = location:constantinople
+# 			own_entire_area = area:lower_egypt_area
+# 			own_entire_area = area:levant_area
+# 			own_entire_area = area:crimea_area
+# 			OR = {
+# 				owns = location:venice
+# 				owns = location:genoa
+# 			}
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_byz_ed_own_whole_east_trade_cooldown_key
+# 		months = 120
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:empire_debt = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			var:strongest_east_trade_country = scope:actor
+# 			scope:actor = {
+# 				NOT = { has_variable = oe_byz_ed_own_whole_east_trade_over }
+# 		}
+# 			situation:empire_debt = this
+# 			situation_is_active = yes
+# 		}
+# 	}
+# 	effect = { 
+# 			custom_tooltip = {
+# 				text = oe_byz_ed_own_whole_east_trade_tt
+# 				set_global_variable = oe_byz_ed_own_whole_east_trade_appear
+# 				scope:actor = {
+# 					set_variable = oe_byz_ed_own_whole_east_trade_over
+# 					add_gold = {
+# 						value = 10000
+# 					}
+# 					add_prestige = 100
+# 				}
+# 			}
+# 	}	
+# }
+
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_byz_ed_sell_salves = {#出售商品
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	scope:actor = {
+# 			at_war = no
+# 			has_raised_levies = no
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_byz_ed_sell_salves_cooldown_key
+# 		months = 1
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:empire_debt = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			OR = {
+# 				var:strongest_east_trade_country = scope:actor
+# 				var:second_strongest_east_trade_country = scope:actor
+# 				var:third_strongest_east_trade_country = scope:actor
+# 			}
+# 			situation:empire_debt = this
+# 			situation_is_active = yes
+# 		}
+# 	}
+# 	#from market in scope:from
+# 	select_trigger = {
+# 		looking_for_a = market
+# 		target_flag = from
+# 		name = "create_trade_select_from_market"
+# 		none_available_msg_key = "create_trade_first_no_markets"
+# 		column = {
+# 			data = name
+# 		}
+# 		
+# 		visible = {
+# 			in_trade_range_of = scope:actor
+# 			OR = {
+# 				owner ?= scope:actor
+# 				scope:actor = {
+# 					capital = {
+# 						market = root
+# 					}
+# 				}
+# 				scope:actor = {
+# 					not = { is_embargoed_by = root.owner }
+# 				}
+# 				root.owner = {
+# 					or = {
+# 						modifier:trade_isolation = no
+# 						gives_isolation_exemption_to = scope:actor
+# 					}
+# 				}
+# 			}
+# 			has_merchant = scope:actor
+# 			merchant_capacity = {
+# 				country = scope:actor
+# 				value > 10
+# 			}
+# 			trigger_if = {
+# 				limit = {
+# 					exists = scope:to
+# 					scope:actor = {
+# 						is_ai = no # AI handles these checks in code, here we save an expensive pathfinding check
+# 					}
+# 				}
+# 				not = { this = scope:to }
+# 				scope:actor = {
+# 					can_find_trade_route = {
+# 						from = root
+# 						to = scope:to
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# 
+# 	#to market in scope:to
+# 	select_trigger = {
+# 		looking_for_a = market
+# 		target_flag = to
+# 		name = "create_trade_select_to_market"
+# 		none_available_msg_key = "create_trade_second_no_markets"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			in_trade_range_of = scope:actor
+# 			OR = {
+# 				owner ?= scope:actor
+# 				scope:actor = {
+# 					capital = {
+# 						market = root
+# 					}
+# 				}
+# 				scope:actor = {
+# 					not = { is_embargoed_by = root.owner }
+# 				}
+# 			}
+# 			trigger_if = {
+# 				limit = {
+# 					exists = scope:from
+# 					scope:actor = {
+# 						is_ai = no # AI handles these checks in code, here we save an expensive pathfinding check
+# 					}
+# 				}
+# 				not = { this = scope:from }
+# 				scope:actor = {
+# 					can_find_trade_route = {
+# 						from = scope:from
+# 						to = root
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# 
+# 
+# 	#goods in scope:goods
+# 	select_trigger = {
+# 		looking_for_a = goods
+# 		target_flag = goods
+# 		name = "create_trade_select_goods"
+# 		none_available_msg_key = "create_trade_no_goods"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			trigger_if = {
+# 				limit = {
+# 					exists = scope:from
+# 				}
+# 				scope:from = {
+# 					not = {
+# 						is_export_banned = root
+# 					}
+# 				}
+# 			}
+# 			trigger_if = {
+# 				limit = {
+# 					exists = scope:to
+# 				}
+# 				scope:to = {
+# 					not = {
+# 						is_import_banned = root
+# 					}
+# 				}
+# 			}
+# 			OR = {
+# 				root = goods:cloves
+# 				root = goods:slaves_goods
+# 				root = goods:pepper
+# 				root = goods:lacquerware
+# 				root = goods:porcelain
+# 				root = goods:fur
+# 			}
+# 		}
+# 	}
+# 	#merchant capacity requested in scope:capacity
+# 	select_trigger = {
+# 		looking_for_a = value
+# 		target_flag = capacity
+# 		name = "oe_byz_create_trade_select_desired_capacity"
+# 		min = 0
+# 		max = {
+# 			if = {
+# 				limit = {
+# 					exists = scope:from
+# 				}
+# 				value = "scope:from.stockpile_in_market(scope:goods)"
+# 			}
+# 			else = {
+# 				value = 0
+# 			}
+# 		}
+# 		step = {
+# 			value = "define:NMarket|MARKET_TRADE_CHANGE_PER_CLICK"
+# 		}
+# 		default = {
+# 			if = {
+# 				limit = {
+# 					exists = scope:from
+# 				}
+# 				value = "scope:from.stockpile_in_market(scope:goods)"
+# 			}
+# 			else = {
+# 				value = 0
+# 			}
+# 		}
+# 	}
+# 
+# 
+# 	effect = { 
+# 			custom_tooltip = {
+# 				text = oe_byz_ed_sell_salves_tt
+# 
+# 				scope:to = {
+# 					add_goods_supply = {
+# 						amount = scope:capacity
+# 						goods = scope:goods
+# 					}
+# 				}
+# 				scope:from = {
+# 					add_goods_supply = {
+# 						amount = {
+# 							value = scope:capacity
+# 							multiply = -1
+# 						}
+# 						goods = scope:goods
+# 					}					
+# 				}
+# 				scope:actor = {
+# 					add_gold = {
+# 						value = "scope:goods.price_in_market(scope:to)"
+# 						multiply = scope:capacity
+# 					}
+# 					add_gold = {
+# 						value = { value = "scope:goods.price_in_market(scope:from)" 
+# 					multiply = -1 }
+# 						multiply = scope:capacity						
+# 					}
+# 				}
+# 			}
+# 	}	
+# 		ai_will_do = {
+# 		add = {
+# 			value = -1000 #handled in code
+# 		}
+# 	}	
+# }
+
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_byz_rebuild_empire_navy = {#重建海军优势
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	scope:actor = {
+# 			tag = BYZ
+# 			at_war = no
+# 			has_raised_levies = no
+# 			NOT = { has_variable = oe_byz_rebuild_empire_navy_over }
+# 			navy_size > {
+# 				value = c:VEN.navy_size
+# 				multiply = 2
+# 			}
+# 			navy_size > {
+# 				value = c:GEN.navy_size
+# 				multiply = 2
+# 			}
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_byz_rebuild_empire_navy_cooldown_key
+# 		months = 100
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:empire_debt = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 			NOT = { has_variable = oe_byz_rebuild_empire_navy_over }
+# 			tag = BYZ
+# 		}
+# 			situation:empire_debt = this
+# 			situation_is_active = yes
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_byz_rebuild_empire_navy_tt
+# 			scope:actor = {
+# 			set_variable = oe_byz_rebuild_empire_navy_over}
+# 		}
+# 	}
+# }
+
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_byz_reown_aegean = {#光复爱琴海
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	scope:actor = {
+# 			tag = BYZ
+# 			at_war = no
+# 			has_raised_levies = no
+# 			NOT = { has_variable = oe_byz_reown_aegean_over }
+# 		}
+# 		NOT = {area:aegean_archipelago_area = {
+# 			any_location_in_area = {
+# 				NOT = {owner = c:BYZ}
+# 			}
+# 		}}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_byz_reown_aegean_cooldown_key
+# 		months = 100
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:empire_debt = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 			NOT = { has_variable = oe_byz_reown_aegean_over }
+# 			tag = BYZ
+# 		}
+# 			situation:empire_debt = this
+# 			situation_is_active = yes
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_byz_reown_aegean_tt
+# 			scope:actor = {
+# 			set_variable = oe_byz_reown_aegean_over
+# 		}
+# 		}
+# 			scope:actor = {
+# 
+# 			remove_relation = { 
+# 				target = c:VEN
+# 				type = relation_type:sound_toll_exemption
+# 			}
+# 			remove_relation = { 
+# 				target = c:GEN
+# 				type = relation_type:sound_toll_exemption
+# 			}
+# 		}
+# 	}
+# }
+
+

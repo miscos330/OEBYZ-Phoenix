@@ -1,0 +1,1073 @@
+﻿
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_byz_policy_org_build_valuns_water = {#修缮瓦伦斯水道桥
+# 	type = internationalorganization
+# 	
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			tag = BYZ
+# 
+# 		}
+# 	}
+# 
+# 
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 
+# 	cooldown = {
+# 		type = oe_byz_policy_org_build_valuns_water_cooldown_key
+# 		months = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = international_organization
+# 		source = actor
+# 		target_flag = recipient
+# 		name = "choose_international_organization"
+# 		none_available_msg_key = "leave_international_organization_none"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			this = international_organization:oe_byz_policy_org
+# 		scope:actor = {
+# 			tag = BYZ
+# 			NOT = { has_variable = oe_byz_policy_org_build_valuns_water_IV }
+# 		}
+# 		}
+# 	}
+# 
+# 	effect = {
+# 		custom_tooltip = {
+# 			text = oe_byz_policy_org_build_valuns_water_text
+# 		
+# 		scope:actor = {
+# 			if = {
+# 				limit = { has_variable = oe_byz_policy_org_build_valuns_water_III }
+# 				set_variable = oe_byz_policy_org_build_valuns_water_IV
+# 			}	
+# 			else_if = {
+# 				limit = { has_variable = oe_byz_policy_org_build_valuns_water_II }
+# 				set_variable = oe_byz_policy_org_build_valuns_water_III
+# 			}		
+# 			else_if = {
+# 				limit = { has_variable = oe_byz_policy_org_build_valuns_water_I }
+# 				set_variable = oe_byz_policy_org_build_valuns_water_II
+# 			}
+# 			else = {
+# 				set_variable = oe_byz_policy_org_build_valuns_water_I
+# 			}
+# 				add_gold = {
+# 					value = -5000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 
+# 				}				
+# 			every_subject = {
+# 				limit = {
+# 					has_reform = government_reform:oe_real_gov_reform_building_com
+# 				}
+# 			give_loan = {
+# 				target = scope:actor
+# 				amount = {
+# 					value = 5000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 
+# 				}
+# 				interest = 0
+# 				months = 60
+# 				set_loc_key = "oe_byz_policy_org_loan_for_valuns"
+# 			}	
+# 				add_gold = {
+# 					value = 5000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 
+# 				}			
+# 			}
+# 		}
+# 		location:constantinople = {
+# 				construct_building = {
+# 					building_type = building_type:oe_valuns_water_building
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 		}
+# 		}
+# 	}
+# 
+# 	ai_will_do = {
+# 	}
+# }
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_byz_policy_org_romenization_culture = {#罗马化
+# 	type = internationalorganization
+# 	
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			tag = BYZ
+# 
+# 		}
+# 	}
+# 
+# 
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 
+# 	cooldown = {
+# 		type = oe_byz_policy_org_romenization_culture_cooldown_key
+# 		months = 0
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = international_organization
+# 		source = actor
+# 		target_flag = recipient
+# 		name = "choose_international_organization"
+# 		none_available_msg_key = "leave_international_organization_none"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			this = international_organization:oe_byz_policy_org
+# 		scope:actor = {
+# 			tag = BYZ
+# 		}
+# 		}
+# 	}
+# 		select_trigger = {
+# 		looking_for_a = area
+# 		target_flag = target_area
+# 		name = "choose_area"
+# 		none_available_msg_key = "no_provinces_available"
+# 
+# 		column = { data = name }
+# 
+# 		visible = {
+# 			any_location_in_area = {
+# 				owner = scope:actor
+# 			}
+# 		}
+# 	}
+# 		select_trigger = {
+# 		looking_for_a = culture
+# 		target_flag = target_culture
+# 		name = "choose_culture"
+# 		none_available_msg_key = "no_provinces_available"
+# 		column = { data = name }
+# 		visible = {
+# 			scope:target_area = {
+# 					culture_percentage = { 
+# 						culture = root
+# 						value >= 0.1
+# 					}			
+# 			}
+# 			OR = {
+# 				root = culture:bulgarian
+# 				root = culture:serbian
+# 				root = culture:bosnian
+# 				root = culture:croatian
+# 				root = {
+# 					has_culture_group = culture_group:romanian_group
+# 				}
+# 				root = culture:hungarian
+# 				root = {
+# 					has_culture_group = culture_group:french_group
+# 				}
+# 								root = {
+# 					has_culture_group = culture_group:iberian_group
+# 				}
+# 								root = {
+# 					has_culture_group = culture_group:netherlandish_group
+# 				}
+# 								root = {
+# 					has_culture_group = culture_group:german_group
+# 				}
+# 								root = {
+# 					has_culture_group = culture_group:amazigh_group
+# 				}
+# 								root = {
+# 					has_culture_group = culture_group:maghrebi_group
+# 				}
+# 								root = {
+# 					has_culture_group = culture_group:british_group
+# 				}
+# 				root = culture:armenian_culture
+# 				root = culture:lower_egyptian_culture
+# 				root = culture:upper_egyptian_culture
+# 				root = culture:levantine_culture
+# 				root = culture:neapolitan
+# 				root = culture:sicilian
+# 				root = culture:lombard
+# 				root = culture:piedmontese
+# 				root = {
+# 					has_culture_group = culture_group:italian_group
+# 				}
+# 				root = culture:crimean
+# 
+# 			}
+# 		}
+# 	}
+# 	effect = {
+# 		custom_tooltip = {
+# 			text = oe_byz_policy_org_romenization_culture_text
+# 		scope:target_area ={ 
+# 			every_location_in_area = {
+# 				limit = {
+# 					owner = scope:actor 
+# 				}
+# 				every_pop = {
+# 					limit = {
+# 						owner = scope:actor
+# 						culture = scope:target_culture
+# 					}
+# 					if = {#保加利亚
+# 						limit = {
+# 							scope:target_culture = culture:bulgarian
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_bulgarian_greek_culture}
+# 					}
+# 					if = {#塞尔维亚
+# 						limit = {
+# 							scope:target_culture = culture:serbian
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_serbian_greek_culture}
+# 					}
+# 					if = {#南意大利
+# 						limit = {
+# 							OR = {
+# 								scope:target_culture = culture:neapolitan
+# 								scope:target_culture = culture:sicilian
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:griko_culture}
+# 					}
+# 					if = {#埃及
+# 						limit = {
+# 							OR = {
+# 								scope:target_culture = culture:lower_egyptian_culture
+# 								scope:target_culture = culture:upper_egyptian_culture
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_egypt_greek_culture}
+# 					}
+# 					if = {#拉丁姆
+# 						limit = {
+# 
+# 								scope:target_culture = {
+# 									has_culture_group = culture_group:italian_group
+# 								}
+# 						NOT = {
+# 							OR = {
+# 								scope:target_culture = culture:neapolitan
+# 								scope:target_culture = culture:sicilian
+# 								scope:target_culture = culture:lombard
+# 								scope:target_culture = culture:piedmontese																
+# 							}
+# 						}
+# 							
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_latinm_greek_culture}
+# 					}
+# 					if = {#伦巴底
+# 						limit = {
+# 							OR = {
+# 								scope:target_culture = culture:lombard
+# 								scope:target_culture = culture:piedmontese																
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_lombard_greek_culture}
+# 					}					
+# 					if = {#亚美尼亚
+# 						limit = {
+# 							scope:target_culture = culture:armenian_culture
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_armenian_greek_culture}
+# 					}
+# 					if = {#黎凡特
+# 						limit = {
+# 							scope:target_culture = culture:levantine_culture
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_levantine_greek_culture}
+# 					}
+# 					if = {#伊利里亚
+# 						limit = {
+# 							OR = {
+# 								scope:target_culture = culture:croatian
+# 								scope:target_culture = culture:bosnian
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_croatian_greek_culture}
+# 					}
+# 					if = {#哥特
+# 						limit = {
+# 
+# 								scope:target_culture = culture:crimean
+# 	
+# 							
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:gothic_culture}
+# 					}
+# 					if = {#潘诺尼亚
+# 						limit = {
+# 
+# 								scope:target_culture = culture:hungarian
+# 
+# 							
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_hungarian_greek_culture}
+# 					}
+# 					if = {#达契亚
+# 						limit = {
+# 							scope:target_culture = {
+# 								has_culture_group = culture_group:romanian_group
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_moldova_greek_culture}
+# 					}
+# 					if = {#高卢
+# 						limit = {
+# 							scope:target_culture = {
+# 								has_culture_group = culture_group:french_group
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_french_greek_culture}
+# 					}
+# 					if = {#伊比利亚
+# 						limit = {
+# 							scope:target_culture = {
+# 								has_culture_group = culture_group:iberian_group
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_iberia_greek_culture}
+# 					}
+# 					if = {#不列颠
+# 						limit = {
+# 							scope:target_culture = {
+# 								has_culture_group = culture_group:british_group
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_english_greek_culture}
+# 					}
+# 					if = {#上日耳曼
+# 						limit = {
+# 							scope:target_culture = {
+# 								has_culture_group = culture_group:german_group
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_austrian_greek_culture}
+# 					}
+# 					if = {#下日耳曼
+# 						limit = {
+# 							scope:target_culture = {
+# 								has_culture_group = culture_group:netherlandish_group
+# 							}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_prussian_greek_culture}
+# 					}
+# 					if = {#布匿
+# 						limit = {
+# 						OR = {
+# 							scope:target_culture = {
+# 								has_culture_group = culture_group:maghrebi_group
+# 							}
+# 							scope:target_culture = {
+# 								has_culture_group = culture_group:amazigh_group
+# 							}
+# 						}
+# 						}				
+# 					split_pop = {
+# 						fraction = 0.4
+# 						culture = culture:oe_tunis_greek_culture}
+# 					}
+# 				}
+# 			}
+# 		}
+# 		scope:actor = {
+# 				add_gold = {
+# 					value = -1000
+# 				}				
+# 			every_subject = {
+# 				limit = {
+# 					has_reform = government_reform:oe_real_gov_reform_romenization_org
+# 				}
+# 			give_loan = {
+# 				target = scope:actor
+# 				amount = 1000
+# 				interest = 0
+# 				months = 60
+# 				set_loc_key = "oe_byz_policy_org_loan_for_romenization_culture"
+# 			}	
+# 				add_gold = {
+# 					value = 1000
+# 				}			
+# 			}
+# 		}
+# 
+# 		}
+# 	}
+# 
+# 	ai_will_do = {
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_byz_policy_org_build_underground_water = {#修缮地下水宫
+# 	type = internationalorganization
+# 	
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			tag = BYZ
+# 
+# 		}
+# 	}
+# 
+# 
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 
+# 	cooldown = {
+# 		type = oe_byz_policy_org_build_underground_water_cooldown_key
+# 		months = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = international_organization
+# 		source = actor
+# 		target_flag = recipient
+# 		name = "choose_international_organization"
+# 		none_available_msg_key = "leave_international_organization_none"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			this = international_organization:oe_byz_policy_org
+# 		scope:actor = {
+# 			tag = BYZ
+# 			NOT = { has_variable = oe_byz_policy_org_build_underground_water_IV }
+# 		}
+# 		}
+# 	}
+# 
+# 	effect = {
+# 		custom_tooltip = {
+# 			text = oe_byz_policy_org_build_underground_water_text
+# 		
+# 		scope:actor = {
+# 			if = {
+# 				limit = { has_variable = oe_byz_policy_org_build_underground_water_III }
+# 				set_variable = oe_byz_policy_org_build_underground_water_IV
+# 			}	
+# 			else_if = {
+# 				limit = { has_variable = oe_byz_policy_org_build_underground_water_II }
+# 				set_variable = oe_byz_policy_org_build_underground_water_III
+# 			}		
+# 			else_if = {
+# 				limit = { has_variable = oe_byz_policy_org_build_underground_water_I }
+# 				set_variable = oe_byz_policy_org_build_underground_water_II
+# 			}
+# 			else = {
+# 				set_variable = oe_byz_policy_org_build_underground_water_I
+# 			}
+# 				add_gold = {
+# 					value = -5000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 
+# 				}				
+# 			every_subject = {
+# 				limit = {
+# 					has_reform = government_reform:oe_real_gov_reform_building_com
+# 				}
+# 			give_loan = {
+# 				target = scope:actor
+# 				amount = {
+# 					value = 5000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 					
+# 				}
+# 				interest = 0
+# 				months = 60
+# 				set_loc_key = "oe_byz_policy_org_loan_for_undergorund_water"
+# 			}	
+# 				add_gold = {
+# 					value = 5000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 				
+# 				}			
+# 			}
+# 		}
+# 		location:constantinople = {
+# 				construct_building = {
+# 					building_type = building_type:oe_byz_constantinople_water_palace
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 		}
+# 		}
+# 	}
+# 
+# 	ai_will_do = {
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_byz_policy_org_build_oe_byz_constantinople_university = {#扩建君士坦丁大学
+# 	type = internationalorganization
+# 	
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			tag = BYZ
+# 
+# 		}
+# 	}
+# 
+# 
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 
+# 	cooldown = {
+# 		type = oe_byz_policy_org_build_oe_byz_constantinople_university_cooldown_key
+# 		months = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = international_organization
+# 		source = actor
+# 		target_flag = recipient
+# 		name = "choose_international_organization"
+# 		none_available_msg_key = "leave_international_organization_none"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			this = international_organization:oe_byz_policy_org
+# 		scope:actor = {
+# 			tag = BYZ
+# 			NOT = { has_variable = oe_byz_policy_org_build_oe_byz_constantinople_university_I }
+# 			has_variable = oe_byz_policy_org_build_valuns_water_IV
+# 		}
+# 		}
+# 	}
+# 
+# 	effect = {
+# 		custom_tooltip = {
+# 			text = oe_byz_policy_org_build_oe_byz_constantinople_university_text
+# 		
+# 		scope:actor = {
+# 				set_variable = oe_byz_policy_org_build_oe_byz_constantinople_university_I
+# 			
+# 				add_gold = {
+# 					value = -10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 
+# 				}				
+# 			every_subject = {
+# 				limit = {
+# 					has_reform = government_reform:oe_real_gov_reform_building_com
+# 				}
+# 			give_loan = {
+# 				target = scope:actor
+# 				amount = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 					
+# 				}
+# 				interest = 0
+# 				months = 60
+# 				set_loc_key = "oe_byz_policy_org_loan_for_oe_byz_constantinople_university"
+# 			}	
+# 				add_gold = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 				
+# 				}			
+# 			}
+# 		}
+# 		location:constantinople = {
+# 				construct_building = {
+# 					building_type = building_type:oe_byz_constantinople_university
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 		}
+# 		}
+# 	}
+# 
+# 	ai_will_do = {
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_byz_policy_org_build_oe_byz_constantinople_rome_university = {#扩建新罗马牧首大学
+# 	type = internationalorganization
+# 	
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			tag = BYZ
+# 
+# 		}
+# 	}
+# 
+# 
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 
+# 	cooldown = {
+# 		type = oe_byz_policy_org_build_oe_byz_constantinople_rome_university_cooldown_key
+# 		months = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = international_organization
+# 		source = actor
+# 		target_flag = recipient
+# 		name = "choose_international_organization"
+# 		none_available_msg_key = "leave_international_organization_none"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			this = international_organization:oe_byz_policy_org
+# 		scope:actor = {
+# 			tag = BYZ
+# 			NOT = { has_variable = oe_byz_policy_org_build_oe_byz_constantinople_rome_university_I }
+# 			has_variable = oe_byz_policy_org_build_oe_byz_constantinople_university_I
+# 		}
+# 		}
+# 	}
+# 
+# 	effect = {
+# 		custom_tooltip = {
+# 			text = oe_byz_policy_org_build_oe_byz_constantinople_rome_university_text
+# 		
+# 		scope:actor = {
+# 				set_variable = oe_byz_policy_org_build_oe_byz_constantinople_rome_university_I
+# 			
+# 				add_gold = {
+# 					value = -10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 
+# 				}				
+# 			every_subject = {
+# 				limit = {
+# 					has_reform = government_reform:oe_real_gov_reform_building_com
+# 				}
+# 			give_loan = {
+# 				target = scope:actor
+# 				amount = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 					
+# 				}
+# 				interest = 0
+# 				months = 60
+# 				set_loc_key = "oe_byz_policy_org_loan_for_oe_byz_constantinople_rome_university"
+# 			}	
+# 				add_gold = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 				
+# 				}			
+# 			}
+# 		}
+# 		location:constantinople = {
+# 				construct_building = {
+# 					building_type = building_type:oe_byz_constantinople_rome_university
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 		}
+# 		}
+# 	}
+# 
+# 	ai_will_do = {
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_byz_policy_org_build_oe_byz_constantinople_great_arena = {#扩建跑马场
+# 	type = internationalorganization
+# 	
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			tag = BYZ
+# 
+# 		}
+# 	}
+# 
+# 
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 
+# 	cooldown = {
+# 		type = oe_byz_policy_org_build_oe_byz_constantinople_great_arena_cooldown_key
+# 		months = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = international_organization
+# 		source = actor
+# 		target_flag = recipient
+# 		name = "choose_international_organization"
+# 		none_available_msg_key = "leave_international_organization_none"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			this = international_organization:oe_byz_policy_org
+# 		scope:actor = {
+# 			tag = BYZ
+# 			NOT = { has_variable = oe_byz_policy_org_build_oe_byz_constantinople_great_arena_I }
+# 			has_variable = oe_byz_policy_org_build_underground_water_IV
+# 		}
+# 		}
+# 	}
+# 
+# 	effect = {
+# 		custom_tooltip = {
+# 			text = oe_byz_policy_org_build_oe_byz_constantinople_great_arena_text
+# 		
+# 		scope:actor = {
+# 				set_variable = oe_byz_policy_org_build_oe_byz_constantinople_great_arena_I
+# 			
+# 				add_gold = {
+# 					value = -10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 
+# 				}				
+# 			every_subject = {
+# 				limit = {
+# 					has_reform = government_reform:oe_real_gov_reform_building_com
+# 				}
+# 			give_loan = {
+# 				target = scope:actor
+# 				amount = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 					
+# 				}
+# 				interest = 0
+# 				months = 60
+# 				set_loc_key = "oe_byz_policy_org_loan_for_oe_byz_constantinople_great_arena"
+# 			}	
+# 				add_gold = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 				
+# 				}			
+# 			}
+# 		}
+# 		location:constantinople = {
+# 				construct_building = {
+# 					building_type = building_type:oe_byz_constantinople_great_arena
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 		}
+# 		}
+# 	}
+# 
+# 	ai_will_do = {
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_byz_policy_org_build_oe_byz_constantinople_big_palace = {#修复大皇宫
+# 	type = internationalorganization
+# 	
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			tag = BYZ
+# 
+# 		}
+# 	}
+# 
+# 
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 
+# 	cooldown = {
+# 		type = oe_byz_policy_org_build_oe_byz_constantinople_big_palace_cooldown_key
+# 		months = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = international_organization
+# 		source = actor
+# 		target_flag = recipient
+# 		name = "choose_international_organization"
+# 		none_available_msg_key = "leave_international_organization_none"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			this = international_organization:oe_byz_policy_org
+# 		scope:actor = {
+# 			tag = BYZ
+# 			NOT = { has_variable = oe_byz_policy_org_build_oe_byz_constantinople_big_palace_I }
+# 			has_variable = oe_byz_policy_org_build_underground_water_IV
+# 		}
+# 		}
+# 	}
+# 
+# 	effect = {
+# 		custom_tooltip = {
+# 			text = oe_byz_policy_org_build_oe_byz_constantinople_big_palace_text
+# 		
+# 		scope:actor = {
+# 				set_variable = oe_byz_policy_org_build_oe_byz_constantinople_big_palace_I
+# 			
+# 				add_gold = {
+# 					value = -10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 
+# 				}				
+# 			every_subject = {
+# 				limit = {
+# 					has_reform = government_reform:oe_real_gov_reform_building_com
+# 				}
+# 			give_loan = {
+# 				target = scope:actor
+# 				amount = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 					
+# 				}
+# 				interest = 0
+# 				months = 60
+# 				set_loc_key = "oe_byz_policy_org_loan_for_oe_byz_constantinople_big_palace"
+# 			}	
+# 				add_gold = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 				
+# 				}			
+# 			}
+# 		}
+# 		location:constantinople = {
+# 				construct_building = {
+# 					building_type = building_type:oe_byz_constantinople_big_palace
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 		}
+# 		}
+# 	}
+# 
+# 	ai_will_do = {
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_byz_policy_org_build_oe_byz_constantinople_rebuild_port = {#清理淤积港口
+# 	type = internationalorganization
+# 	
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			tag = BYZ
+# 
+# 		}
+# 	}
+# 
+# 
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 
+# 	cooldown = {
+# 		type = oe_byz_policy_org_build_oe_byz_constantinople_rebuild_port_cooldown_key
+# 		months = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = international_organization
+# 		source = actor
+# 		target_flag = recipient
+# 		name = "choose_international_organization"
+# 		none_available_msg_key = "leave_international_organization_none"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			this = international_organization:oe_byz_policy_org
+# 		scope:actor = {
+# 			tag = BYZ
+# 			NOT = { has_variable = oe_byz_policy_org_build_oe_byz_constantinople_rebuild_port_I }
+# 			has_variable = oe_byz_policy_org_build_underground_water_IV
+# 		}
+# 		}
+# 	}
+# 
+# 	effect = {
+# 		custom_tooltip = {
+# 			text = oe_byz_policy_org_build_oe_byz_constantinople_rebuild_port_text
+# 		
+# 		scope:actor = {
+# 				set_variable = oe_byz_policy_org_build_oe_byz_constantinople_rebuild_port_I
+# 			
+# 				add_gold = {
+# 					value = -10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 
+# 				}				
+# 			every_subject = {
+# 				limit = {
+# 					has_reform = government_reform:oe_real_gov_reform_building_com
+# 				}
+# 			give_loan = {
+# 				target = scope:actor
+# 				amount = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 					
+# 				}
+# 				interest = 0
+# 				months = 60
+# 				set_loc_key = "oe_byz_policy_org_loan_for_oe_byz_constantinople_rebuild_port"
+# 			}	
+# 				add_gold = {
+# 					value = 10000
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # multiply = oe_corruption_value_calculate
+# 				
+# 				}			
+# 			}
+# 		}
+# 		location:constantinople = {
+# 				construct_building = {
+# 					building_type = building_type:oe_byz_constantinople_rebuild_port
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 		}
+# 		}
+# 	}
+# 
+# 	ai_will_do = {
+# 	}
+# }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,263 @@
+﻿# Location scope. The same predicate controls UI permission and scripted expansion.
+oe_heg_add_roman_location = {
+    if = {
+        limit = {
+            oe_roman_world_land_trigger = yes
+            NOT = { is_owned_by_international_organization = international_organization:oe_byz_roman_world }
+        }
+        international_organization:oe_byz_roman_world = { add_location_to_international_organization = prev }
+    }
+}
+# Organization scope; also repairs missing extension locations on the monthly sync.
+oe_heg_sync_campaign_territory = {
+    if = {
+        limit = { has_variable = oe_rw_crimea_included }
+        area:crimea_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+    }
+    oe_danube_sync_moldavian_territory = yes
+    if = {
+        limit = { has_variable = oe_rw_france_included }
+        region:france_region = { every_location_in_region = { oe_heg_add_roman_location = yes } }
+    }
+    if = {
+        limit = { has_variable = oe_rw_britain_included }
+        area:west_country_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+        area:home_counties_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+        area:east_anglia_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+        area:midlands_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+        area:wales_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+        area:northumbria_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+    }
+    if = {
+        limit = { has_variable = oe_rw_iberia_included }
+        region:iberia_region = { every_location_in_region = { oe_heg_add_roman_location = yes } }
+    }
+    if = {
+        limit = { has_variable = oe_rw_italy_included }
+        region:italy_region = { every_location_in_region = { oe_heg_add_roman_location = yes } }
+    }
+    if = {
+        limit = { has_variable = oe_rw_levant_egypt_included }
+        area:levant_area = { every_location_in_area = { oe_heg_add_roman_location = yes } }
+        region:egypt_region = { every_location_in_region = { oe_heg_add_roman_location = yes } }
+    }
+    if = {
+        limit = { has_variable = oe_rw_maghreb_included }
+        region:maghreb_region = { every_location_in_region = { oe_heg_add_roman_location = yes } }
+    }
+}
+oe_heg_plan_egypt_effect = {
+    add_gold = -1000
+    set_variable = oe_heg_egypt_plan_done
+    add_casus_belli = {
+        target = location:alexandria.owner
+        type = casus_belli:cb_conquer_province
+        province = location:alexandria.province
+    }
+    international_organization:oe_byz_roman_world = {
+        set_variable = oe_rw_levant_egypt_included
+        oe_heg_sync_campaign_territory = yes
+    }
+}
+oe_heg_plan_africa_effect = {
+    add_gold = -1000
+    set_variable = oe_heg_africa_plan_done
+    international_organization:oe_byz_roman_world = {
+        set_variable = oe_rw_maghreb_included
+        oe_heg_sync_campaign_territory = yes
+    }
+}
+# Location scope; owner is passed as a parameter. Old design: one era regiment + one cog per group.
+oe_heg_expedition_reinforcements = {
+    while = {
+        count = $groups$
+        if = {
+            limit = { current_age = age_1_traditions }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_2_renaissance }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_II owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_3_discovery }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_III owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_4_reformation }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_IV owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_5_absolutism }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_V owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_6_revolutions }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_VI owner = $owner$ }
+        }
+        create_sub_unit_with_owner = { type = n_cog owner = $owner$ }
+    }
+}
+# Location scope. Four groups, each with one regiment of every requested type.
+# The initial expedition keeps its separate infantry-and-cog helper.
+oe_heg_expedition_support_army = {
+    while = {
+        count = $groups$
+        if = {
+            limit = { current_age = age_1_traditions }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_byzantine_cataphracts owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_1_traditions_light_cavalry owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_2_renaissance }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_II owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_byzantine_cataphracts_2 owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_2_renaissance_light_cavalry owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_2_renaissance_light_infantry owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_3_discovery }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_III owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_byzantine_cataphracts_3 owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_3_discovery_light_cavalry owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_3_discovery_light_infantry owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_4_reformation }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_IV owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_byzantine_cataphracts_4 owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_4_reformation_light_cavalry owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_4_reformation_light_infantry owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_5_absolutism }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_V owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_byzantine_cataphracts_5 owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_5_absolutism_light_cavalry owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_5_absolutism_light_infantry owner = $owner$ }
+        }
+        else_if = {
+            limit = { current_age = age_6_revolutions }
+            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_VI owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_byzantine_cataphracts_6 owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_6_revolutions_light_cavalry owner = $owner$ }
+            create_sub_unit_with_owner = { type = a_age_6_revolutions_light_infantry owner = $owner$ }
+        }
+    }
+}
+# Actor = BYZ. Country and rural coastal foothold have already been selected and revalidated.
+oe_heg_launch_africa_expedition = {
+    set_variable = oe_heg_africa_expedition_done
+    scope:target_location = {
+        save_scope_as = oe_heg_landing
+        create_country_from_location = {
+            overlord = c:BYZ
+            subject_type = subject_type:oe_heg_expedition
+            reforms = { oe_heg_expedition_reform oe_heg_expedition_supply_reform }
+            change_government_type = government_type:monarchy
+            change_country_type = location
+            change_heir_selection = heir_selection:cognatic_primogeniture
+            change_culture = culture:greek_culture
+            change_religion = religion:orthodox
+            change_country_name = OE_HEG_AFRICA_EXPEDITION_COUNTRY
+            change_country_adjective = OE_HEG_AFRICA_EXPEDITION_ADJ
+            change_country_flag = BYZ
+            set_capital = scope:oe_heg_landing
+            set_variable = oe_heg_expedition_launching
+            save_scope_as = oe_heg_expedition_country
+            add_gold = 3000
+        }
+        change_location_owner = scope:oe_heg_expedition_country
+        change_location_controller = scope:oe_heg_expedition_country
+        construct_building = { building_type = building_type:oe_byz_defend_wall_I cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        oe_heg_expedition_reinforcements = { groups = 6 owner = scope:oe_heg_expedition_country }
+    }
+    force_recalc_country_active_status = scope:oe_heg_expedition_country
+    # Snapshot after the landing; only countries still holding land can declare war.
+    # Explicitly excludes BYZ, all levels of its subjects, and the expedition itself.
+    every_country = {
+        limit = {
+            country_type = location
+            NOT = { oe_heg_byz_bloc = yes }
+            any_owned_location = { region = region:maghreb_region }
+        }
+        add_to_list = oe_heg_africa_enemies
+    }
+    every_in_list = {
+        list = oe_heg_africa_enemies
+        if = {
+            limit = { NOT = { is_at_war_with = scope:oe_heg_expedition_country } }
+            add_casus_belli = {
+                target = scope:oe_heg_expedition_country
+                type = casus_belli:cb_conquer_province
+                province = scope:oe_heg_landing.province
+            }
+            declare_war_with_cb = {
+                target = scope:oe_heg_expedition_country
+                type = casus_belli:cb_conquer_province
+            }
+        }
+    }
+    scope:oe_heg_expedition_country = {
+        remove_variable = oe_heg_expedition_launching
+        if = { limit = { at_war = no } oe_heg_finish_expedition = yes }
+        else = { oe_heg_ensure_expedition_watch = yes }
+    }
+}
+# Country scope; may run inside the final peace hook before the completed war is removed.
+oe_heg_finish_expedition = {
+    if = {
+        limit = { has_reform = government_reform:oe_heg_expedition_supply_reform }
+        remove_reform = government_reform:oe_heg_expedition_supply_reform
+    }
+    remove_reform = government_reform:oe_heg_expedition_reform
+    if = { limit = { is_subject_type = oe_heg_expedition } change_subject_type = subject_type:oe_rome_sub }
+    remove_variable = oe_heg_expedition_watch_alive
+    remove_variable = oe_heg_expedition_launching
+}
+oe_heg_ensure_expedition_watch = {
+    if = {
+        limit = {
+            has_reform = government_reform:oe_heg_expedition_reform
+            NOT = { has_variable = oe_heg_expedition_watch_alive }
+        }
+        set_variable = { name = oe_heg_expedition_watch_alive value = yes days = 3 }
+        trigger_event_silently = { id = oe_hegemony_campaigns.1 days = 1 }
+    }
+}
+oe_heg_end_all_expedition_wars = {
+    save_scope_as = oe_heg_recalled_expedition
+    # Remove the peace prohibition before forcing settlements, including engine price/peace checks.
+    remove_reform = government_reform:oe_heg_expedition_reform
+    every_current_war = { add_to_list = oe_heg_recall_wars }
+    every_in_list = {
+        list = oe_heg_recall_wars
+        scope:oe_heg_recalled_expedition = { white_peace = prev }
+    }
+    if = { limit = { at_war = no } oe_heg_finish_expedition = yes }
+    else = {
+        # Defensive fallback if a simultaneous war was added while resolving the snapshot.
+        add_reform = government_reform:oe_heg_expedition_reform
+        oe_heg_ensure_expedition_watch = yes
+    }
+}
+# Location scope, shared by occupation and siege hooks. Never annex friendly land.
+oe_heg_expedition_capture = {
+    if = {
+        limit = {
+            has_owner = yes
+            controller = { is_at_war_with = prev.owner }
+            OR = {
+                AND = {
+                    region = region:maghreb_region
+                    controller = { has_reform = government_reform:oe_heg_expedition_reform }
+                }
+                owner = { has_reform = government_reform:oe_heg_expedition_reform }
+            }
+        }
+        controller = { save_scope_as = oe_heg_conqueror }
+        oe_transfer_conquest_without_core = { recipient = scope:oe_heg_conqueror }
+    }
+}

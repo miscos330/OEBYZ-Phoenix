@@ -1,0 +1,40 @@
+﻿oe_phoenix_enable_auto_bandit = {
+    type = disaster
+    show_message = no
+    potential = { scope:actor = { tag = BYZ NOT = { has_country_modifier = oe_phoenix_auto_bandit_modifier } } }
+    allow = { scope:actor = { oe_phoenix_auto_bandit_can_start = yes } }
+    automation_tick = never
+    select_trigger = {
+        looking_for_a = disaster
+        name = "choose_disaster"
+        target_flag = recipient
+        column = { data = name }
+        visible = {
+            disaster_type = disaster_type:oe_fate_of_the_phoenix
+            disaster_is_active = yes
+            scope:actor = { tag = BYZ NOT = { has_country_modifier = oe_phoenix_auto_bandit_modifier } }
+        }
+    }
+    effect = { scope:actor = { oe_phoenix_auto_bandit_start = yes } }
+}
+
+oe_phoenix_disable_auto_bandit = {
+    type = disaster
+    show_message = no
+    potential = { scope:actor = { tag = BYZ has_country_modifier = oe_phoenix_auto_bandit_modifier } }
+    allow = { scope:actor = { has_country_modifier = oe_phoenix_auto_bandit_modifier } }
+    automation_tick = never
+    select_trigger = {
+        looking_for_a = disaster
+        name = "choose_disaster"
+        target_flag = recipient
+        column = { data = name }
+        visible = {
+            disaster_type = disaster_type:oe_fate_of_the_phoenix
+            disaster_is_active = yes
+            scope:actor = { tag = BYZ has_country_modifier = oe_phoenix_auto_bandit_modifier }
+        }
+    }
+    effect = { scope:actor = { oe_phoenix_auto_bandit_stop = yes } }
+}
+

@@ -1,0 +1,36 @@
+﻿# Dynasty scope: only the sovereign's dynasty, never the regent's dynasty.
+oe_nf_is_ruling_dynasty = {
+    save_temporary_scope_as = oe_nf_checked_ruling_dynasty
+    c:BYZ = {
+        has_ruler = yes
+        ruler = { has_dynasty = yes dynasty = scope:oe_nf_checked_ruling_dynasty }
+    }
+}
+# Country scope. Crown Power is an estate share, not the bonus to Crown Power.
+oe_ir_succession_ready = {
+    oe_court_actor = yes
+    NOT = { has_variable = oe_ir_succession_done }
+    has_variable = oe_ir_central_done
+    "estate_power(estate_type:crown_estate)" > 0.4
+    international_organization:oe_byz_empire_pillars = {
+        custom_tooltip = {
+            text = OE_IR_SUCCESSION_NO_RIVAL
+            NOT = { OR = {
+                AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_influence_1 > 200 NOT = { oe_nf_is_political_ally = { slot = 1 } } }
+                AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_influence_2 > 200 NOT = { oe_nf_is_political_ally = { slot = 2 } } }
+                AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_influence_3 > 200 NOT = { oe_nf_is_political_ally = { slot = 3 } } }
+                AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_influence_4 > 200 NOT = { oe_nf_is_political_ally = { slot = 4 } } }
+            } }
+        }
+    }
+}
+oe_nf_kantakouzenos_ambition_ready = {
+    tag = BYZ
+    has_variable = oe_nf_andronikos_iii_died
+    NOT = { has_variable = oe_nf_kantakouzenos_ambition_seen }
+    has_regent = yes
+    character:byz_john_kantakouzenos = {
+        oe_nf_living = yes
+        dynasty = { oe_nf_registered_family = yes }
+    }
+}

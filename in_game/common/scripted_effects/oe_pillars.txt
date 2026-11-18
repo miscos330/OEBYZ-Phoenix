@@ -1,0 +1,138 @@
+﻿# International-organization scope. Idempotent reconciliation, no gold/variable resets.
+oe_pillars_sync_effect = {
+    save_scope_as = oe_pillars_org
+    if = {
+        limit = { country_exists = c:BYZ }
+        if = {
+            limit = {
+                OR = {
+                    international_organization_has_leader = no
+                    leader_country ?= { NOT = { tag = BYZ } }
+                }
+            }
+            set_leader_country = c:BYZ
+        }
+        every_country = {
+            limit = {
+                oe_pillars_eligible_trigger = yes
+                NOT = { is_member_of_international_organization = scope:oe_pillars_org }
+            }
+            save_scope_as = oe_pillars_joiner
+            scope:oe_pillars_org = { add_country_to_international_organization = scope:oe_pillars_joiner }
+        }
+        every_international_organization_member = {
+            if = {
+                limit = { NOT = { oe_pillars_eligible_trigger = yes } }
+                save_scope_as = oe_pillars_leaver
+                scope:oe_pillars_org = { remove_country_from_international_organization = scope:oe_pillars_leaver }
+            }
+            else = { oe_pillars_classify_member_effect = yes }
+        }
+    }
+}
+# Country scope; oe_pillars_org is explicitly saved by the dispatcher.
+oe_pillars_classify_member_effect = {
+    save_scope_as = oe_pillars_member
+    if = {
+        limit = { oe_pillars_empire_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_empire country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_empire country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_empire country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_empire country = scope:oe_pillars_member }
+            }
+        }
+    }
+    if = {
+        limit = { oe_pillars_noble_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_noble country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_noble country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_noble country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_noble country = scope:oe_pillars_member }
+            }
+        }
+    }
+    if = {
+        limit = { oe_pillars_theme_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_theme country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_theme country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_theme country = scope:oe_pillars_member }
+            }
+        }
+    }
+    if = {
+        limit = { oe_pillars_subject_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_subject country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_subject country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_subject country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_subject country = scope:oe_pillars_member }
+            }
+        }
+    }
+
+if = {
+        limit = { oe_pillars_bank_trigger = yes }
+        scope:oe_pillars_org = {
+            if = {
+                limit = { NOT = { country_has_special_status = { type = special_status:oe_pillars_bank country = scope:oe_pillars_member } } }
+                international_organization_add_special_status = { type = special_status:oe_pillars_bank country = scope:oe_pillars_member }
+            }
+        }
+    }
+    else = {
+        scope:oe_pillars_org = {
+            if = {
+                limit = { country_has_special_status = { type = special_status:oe_pillars_bank country = scope:oe_pillars_member } }
+                international_organization_remove_special_status = { type = special_status:oe_pillars_bank country = scope:oe_pillars_member }
+            }
+        }
+    }
+    oe_theme_classify_special_member_effect = yes
+}
+
+# IO scope. Setup creation and on_game_start may both call this: fund the purse once.
+# Restrict to the opening date so existing campaigns are never reset or subsidised.
+oe_pillars_initialize_resources_effect = {
+    if = {
+        limit = {
+            current_date = 1337.4.1
+            NOT = { has_variable = oe_pillars_opening_resources_initialized }
+        }
+        set_variable = { name = oe_pillars_authority value = 25 }
+        set_variable = { name = oe_pillars_public_opinion value = 27 }
+        add_gold = 200
+        set_variable = { name = oe_pillars_opening_resources_initialized value = yes }
+    }
+}

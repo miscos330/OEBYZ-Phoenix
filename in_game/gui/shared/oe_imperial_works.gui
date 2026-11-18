@@ -1,0 +1,425 @@
+﻿types oe_imperial_works_widgets {
+    type oe_rw_imperial_works_page = widget {
+        using = layoutpolicy_expanding
+        visible = "[InternationalOrganizationsView.Vars.HasValue('organizations','oe_imperial_works')]"
+        background = {
+            texture = "gfx/interface/illustrations/international_organization_types/oe_imperial_works_background.dds"
+            # A portrait frame with fixed corners; only its blank center and edge runs stretch.
+            texture_density = 1
+            spriteType = corneredstretched
+            spriteborder = { 128 128 }
+        }
+        scrollarea = {
+            size = { 100% 100% }
+            scrollbarpolicy_horizontal = always_off
+            scrollbar_vertical = { using = Scrollbar_Vertical }
+            scrollwidget = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 48 18 }
+                    spacing = 14
+                    # Leave the illuminated top corners visible above the regional panel.
+                    widget = { layoutpolicy_horizontal = expanding size = { -1 130 } }
+                    widget = {
+                        name = "oe_works_aegean_map"
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 410 }
+                        background = {
+                            texture = "gfx/interface/illustrations/international_organization_types/oe_imperial_works_aegean_scene.dds"
+                            fittype = centercrop
+                        }
+                        using = bg_cabinet_card_frame
+                        button = {
+                            name = "oe_works_aegean_hit"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top
+                            size = { 100% 100% }
+                            alwaystransparent = no
+                            tooltip = "OE_WORKS_OPEN"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_works_region','aegean')]"
+                        }
+                        widget = {
+                            name = "oe_works_aegean_actions"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top
+                            position = { 4% 5% } size = { 92% 90% }
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_works_region','aegean')]"
+                            alwaystransparent = no
+                            using = bg_paper_card
+                            using = bg_cabinet_card_frame
+                            vbox = {
+                                size = { 100% 100% }
+                                margin = { 14 12 }
+                                spacing = 10
+                                hbox = {
+                                    layoutpolicy_horizontal = expanding
+                                    expand = {}
+                                    button_regular = {
+                                        size = { 84 32 }
+                                        text = "OE_RW_REGION_CLOSE"
+                                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_works_region','none')]"
+                                    }
+                                }
+                                scrollarea = {
+                                    using = layoutpolicy_expanding
+                                    scrollbarpolicy_horizontal = always_off
+                                    scrollbar_vertical = { using = Scrollbar_Vertical }
+                                    scrollwidget = {
+                                        vbox = {
+                                            layoutpolicy_horizontal = expanding spacing = 10
+                                            text_single = { text = "OE_WORKS_GRAIN_FLAVOR" fontsize = 17 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                                            text_single = { text = "OE_WORKS_PROGRESS" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                                            widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 44 }
+                                        datacontext = "[GetGenericAction('oe_works_thrace_food')]"
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 380 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                action_name = "[GenericAction.GetKey]"
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+
+                                    widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 44 }
+                                        datacontext = "[GetGenericAction('oe_works_transplant_new_world_crops')]"
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 380 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                action_name = "[GenericAction.GetKey]"
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    
+                        icon = {
+                            name = "oe_works_aegean_map_frame"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top
+                            size = { 100% 100% }
+                            alwaystransparent = yes
+                            texture = "gfx/interface/component_tiles/lobby/country_lobby_flavor_frame.dds"
+                            texture_density = 1
+                            spriteType = corneredstretched
+                            spriteborder = { 28 28 }
+                        }
+                    }
+                    widget = {
+                        name = "oe_works_egypt_map"
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 410 }
+                        background = {
+                            texture = "gfx/interface/illustrations/international_organization_types/oe_imperial_works_egypt_scene.dds"
+                            fittype = centercrop
+                        }
+                        using = bg_cabinet_card_frame
+                        button = {
+                            name = "oe_works_egypt_hit"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top
+                            size = { 100% 100% }
+                            alwaystransparent = no
+                            tooltip = "OE_WORKS_EGYPT_OPEN"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_works_region','egypt')]"
+                        }
+                        widget = {
+                            name = "oe_works_egypt_actions"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top
+                            position = { 4% 5% } size = { 92% 90% }
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_works_region','egypt')]"
+                            alwaystransparent = no
+                            using = bg_paper_card
+                            using = bg_cabinet_card_frame
+                            vbox = {
+                                size = { 100% 100% }
+                                margin = { 14 12 }
+                                spacing = 10
+                                hbox = {
+                                    layoutpolicy_horizontal = expanding
+                                    expand = {}
+                                    button_regular = {
+                                        size = { 84 32 }
+                                        text = "OE_RW_REGION_CLOSE"
+                                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_works_region','none')]"
+                                    }
+                                }
+                                scrollarea = {
+                                    using = layoutpolicy_expanding
+                                    scrollbarpolicy_horizontal = always_off
+                                    scrollbar_vertical = { using = Scrollbar_Vertical }
+                                    scrollwidget = {
+                                        vbox = {
+                                            layoutpolicy_horizontal = expanding spacing = 10
+                                            text_single = { text = "OE_WORKS_EGYPT_FLAVOR" fontsize = 17 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                                            text_single = { text = "OE_WORKS_EGYPT_PROGRESS" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                                            widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 44 }
+                                        datacontext = "[GetGenericAction('oe_works_egypt_plan')]"
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 380 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                action_name = "[GenericAction.GetKey]"
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 44 }
+                                        datacontext = "[GetGenericAction('oe_works_aswan')]"
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 380 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                action_name = "[GenericAction.GetKey]"
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 44 }
+                                        datacontext = "[GetGenericAction('oe_works_egypt_supply')]"
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 380 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                action_name = "[GenericAction.GetKey]"
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 44 }
+                                        datacontext = "[GetGenericAction('oe_works_egypt_canal')]"
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 380 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                action_name = "[GenericAction.GetKey]"
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 44 }
+                                        datacontext = "[GetGenericAction('oe_works_egypt_smallholders')]"
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 380 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                action_name = "[GenericAction.GetKey]"
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 44 }
+                                        datacontext = "[GetGenericAction('oe_works_egypt_landowners')]"
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 380 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                action_name = "[GenericAction.GetKey]"
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    
+                        icon = {
+                            name = "oe_works_egypt_map_frame"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top
+                            size = { 100% 100% }
+                            alwaystransparent = yes
+                            texture = "gfx/interface/component_tiles/lobby/country_lobby_flavor_frame.dds"
+                            texture_density = 1
+                            spriteType = corneredstretched
+                            spriteborder = { 28 28 }
+                        }
+                    }
+                    widget = {
+                        name = "oe_works_mediterranean_map"
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 410 }
+                        background = {
+                            texture = "gfx/interface/illustrations/international_organization_types/oe_imperial_works_mediterranean_scene.dds"
+                            fittype = centercrop
+                        }
+                        using = bg_cabinet_card_frame
+                        button = {
+                            name = "oe_works_mediterranean_hit"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top
+                            size = { 100% 100% }
+                            alwaystransparent = no
+                            tooltip = "OE_WORKS_MEDITERRANEAN_OPEN"
+                            onclick = "[InternationalOrganizationsView.Vars.Set('oe_works_region','mediterranean')]"
+                        }
+                        widget = {
+                            name = "oe_works_mediterranean_actions"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top
+                            position = { 4% 5% } size = { 92% 90% }
+                            visible = "[InternationalOrganizationsView.Vars.HasValue('oe_works_region','mediterranean')]"
+                            alwaystransparent = no
+                            using = bg_paper_card
+                            using = bg_cabinet_card_frame
+                            vbox = {
+                                size = { 100% 100% }
+                                margin = { 14 12 }
+                                spacing = 10
+                                hbox = {
+                                    layoutpolicy_horizontal = expanding
+                                    expand = {}
+                                    button_regular = {
+                                        size = { 84 32 }
+                                        text = "OE_RW_REGION_CLOSE"
+                                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_works_region','none')]"
+                                    }
+                                }
+                                scrollarea = {
+                                    using = layoutpolicy_expanding
+                                    scrollbarpolicy_horizontal = always_off
+                                    scrollbar_vertical = { using = Scrollbar_Vertical }
+                                    scrollwidget = {
+                                        vbox = {
+                                            layoutpolicy_horizontal = expanding spacing = 10
+                                            text_single = { text = "OE_WORKS_MEDITERRANEAN_FLAVOR" fontsize = 17 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                                            text_single = { text = "OE_WORKS_NAVAL_PROGRESS" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                                            widget = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = { -1 44 }
+                                        datacontext = "[GetGenericAction('oe_works_imperial_naval_base')]"
+                                        button_regular_diamond = {
+                                            parentanchor = center
+                                            size = { 380 40 }
+                                            fontsize = 18
+                                            text = "[GenericAction.GetNameWithNoTooltip]"
+                                            tooltipwidget = { using = io_generic_action_button_tooltip }
+                                            visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                            enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                            scripted_action_tooltip = {
+                                                click_type = left
+                                                click_mode = single
+                                                action_name = "[GenericAction.GetKey]"
+                                                actor = "[InternationalOrganizationsView.GetPlayer]"
+                                                parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                            }
+                                        }
+                                    }
+
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    
+                        icon = {
+                            name = "oe_works_mediterranean_map_frame"
+                            ignore_layout = yes
+                            parentanchor = left|top widgetanchor = left|top
+                            size = { 100% 100% }
+                            alwaystransparent = yes
+                            texture = "gfx/interface/component_tiles/lobby/country_lobby_flavor_frame.dds"
+                            texture_density = 1
+                            spriteType = corneredstretched
+                            spriteborder = { 28 28 }
+                        }
+                    }
+                    widget = { layoutpolicy_horizontal = expanding size = { -1 90 } }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+﻿# Rulers (including subject rulers) have a separate native death hook.
+on_ruler_death = { on_actions = { oe_nf_ruler_death } }
+on_new_ruler = { on_actions = { oe_nf_after_ruler_change } }
+oe_nf_ruler_death = {
+    trigger = { country_exists = c:BYZ exists = scope:old_ruler scope:old_ruler = { oe_nf_death_tracked = yes } }
+    effect = { scope:old_ruler = { oe_nf_note_character_death = yes } }
+}
+# Also recheck after a subject's succession has completed, when the living lists have settled.
+oe_nf_after_ruler_change = {
+    trigger = { country_exists = c:BYZ oe_pillars_eligible_trigger = yes }
+    effect = { c:BYZ = { oe_nf_queue_death_refresh = yes } }
+}
+oe_nf_delayed_death_refresh = {
+    trigger = { tag = BYZ }
+    effect = {
+        remove_variable = oe_nf_death_refresh_queued
+        oe_nf_refresh = yes
+    }
+}
+
+# Disabled: use the existing monthly refresh; no recurring daily polling.
+# # A lightweight daily fallback independent of native death callback order.
+# oe_nf_head_watchdog = {
+#     trigger = { tag = BYZ }
+#     effect = {
+#         remove_variable = oe_nf_head_watchdog_queued
+#         if = {
+#             limit = {
+#                 international_organization:oe_byz_empire_pillars = {
+#                     OR = {
+#                         oe_nf_head_needs_repair = { slot = 1 }
+#                         oe_nf_head_needs_repair = { slot = 2 }
+#                         oe_nf_head_needs_repair = { slot = 3 }
+#                         oe_nf_head_needs_repair = { slot = 4 }
+#                     }
+#                 }
+#             }
+#             oe_nf_refresh = yes
+#         }
+#         oe_nf_queue_head_watchdog = yes
+#     }
+# }

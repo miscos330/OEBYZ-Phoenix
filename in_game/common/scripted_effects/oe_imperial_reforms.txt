@@ -1,0 +1,33 @@
+﻿# Country scope. Existing progress is cumulative and is never spent on upgrades.
+oe_ir_change_army_score = {
+    if = {
+        limit = { NOT = { has_variable = oe_ir_army_3_done } }
+        hidden_effect = {
+            if = { limit = { NOT = { has_variable = oe_byz_nobleII_reformmm_var } } set_variable = { name = oe_byz_nobleII_reformmm_var value = 0 } }
+        }
+        custom_description = {
+            text = oe_byz_nobleII_refor_$math$_text
+            value = $value$
+            change_variable = { name = oe_byz_nobleII_reformmm_var $math$ = $value$ }
+        }
+    }
+}
+
+# Country scope. Completion is the only new unlock path; repeated calls preserve reform progress.
+oe_ir_upgrade_court_reform = {
+    if = {
+        limit = { tag = BYZ has_variable = oe_ir_offices_done }
+        if = {
+            limit = { NOT = { has_variable = oe_byz_unlocked_reformed_system } }
+            set_variable = oe_byz_unlocked_reformed_system
+        }
+        if = {
+            limit = { has_reform = government_reform:oe_byz_badsystem }
+            remove_reform = government_reform:oe_byz_badsystem
+        }
+        if = {
+            limit = { NOT = { has_reform = government_reform:oe_byz_goodsystem } }
+            add_reform = government_reform:oe_byz_goodsystem
+        }
+    }
+}

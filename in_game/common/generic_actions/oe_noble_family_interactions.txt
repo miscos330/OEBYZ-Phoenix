@@ -1,0 +1,80 @@
+﻿oe_nf_request_support = {
+    type = internationalorganization
+    show_message = no
+    ai_tick = never
+    automation_tick = never
+    potential = { scope:actor = { oe_court_actor = yes } }
+    allow = {
+        scope:actor = {
+            oe_court_actor = yes
+            custom_tooltip = { text = OE_NF_SUPPORT_LEGITIMACY legitimacy >= 3 }
+            custom_tooltip = { text = OE_NF_SUPPORT_COOLDOWN international_organization:oe_byz_empire_pillars = { NOT = { has_variable = oe_nf_support_cooldown } } }
+        }
+    }
+    select_trigger = {
+        looking_for_a = international_organization
+        source = actor
+        target_flag = recipient
+        name = "choose_international_organization"
+        column = { data = name }
+        visible = { this = international_organization:oe_byz_empire_pillars }
+    }
+    select_trigger = {
+        looking_for_a = character
+        source = actor
+        interaction_source_list = {
+            scope:actor = {
+                international_organization:oe_byz_empire_pillars = {
+                    if = {
+                        limit = { exists = var:oe_nf_head_1 }
+                        var:oe_nf_head_1 = { if = { limit = { oe_nf_support_target = yes } add_to_list = source } }
+                    }
+                    if = {
+                        limit = { exists = var:oe_nf_head_2 }
+                        var:oe_nf_head_2 = { if = { limit = { oe_nf_support_target = yes } add_to_list = source } }
+                    }
+                    if = {
+                        limit = { exists = var:oe_nf_head_3 }
+                        var:oe_nf_head_3 = { if = { limit = { oe_nf_support_target = yes } add_to_list = source } }
+                    }
+                    if = {
+                        limit = { exists = var:oe_nf_head_4 }
+                        var:oe_nf_head_4 = { if = { limit = { oe_nf_support_target = yes } add_to_list = source } }
+                    }
+                }
+            }
+        }
+        target_flag = target_character
+        name = "OE_NF_SUPPORT_SELECT"
+        none_available_msg_key = "OE_NF_SUPPORT_NONE"
+        column = { data = character_info }
+        visible = { oe_nf_support_target = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { oe_nf_support_actor = yes }
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:target_character = { oe_nf_support_target = yes }
+            }
+            international_organization:oe_byz_empire_pillars = {
+                if = {
+                    limit = { has_variable = oe_nf_head_1 var:oe_nf_head_1 = scope:target_character }
+                    oe_nf_support_slot = { slot = 1 }
+                }
+                if = {
+                    limit = { has_variable = oe_nf_head_2 var:oe_nf_head_2 = scope:target_character }
+                    oe_nf_support_slot = { slot = 2 }
+                }
+                if = {
+                    limit = { has_variable = oe_nf_head_3 var:oe_nf_head_3 = scope:target_character }
+                    oe_nf_support_slot = { slot = 3 }
+                }
+                if = {
+                    limit = { has_variable = oe_nf_head_4 var:oe_nf_head_4 = scope:target_character }
+                    oe_nf_support_slot = { slot = 4 }
+                }
+            }
+        }
+    }
+}

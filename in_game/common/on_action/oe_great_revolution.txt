@@ -1,0 +1,68 @@
+﻿# Native death callbacks: ruler deaths supply old_ruler; other deaths supply target.
+# Append dedicated handlers without overriding native effects or event lists.
+on_character_death = { on_actions = { oe_gr_character_death } }
+on_ruler_death = { on_actions = { oe_gr_ruler_death } }
+oe_gr_character_death = {
+    trigger = {
+        country_exists = c:BYZ
+        exists = scope:target
+        c:BYZ = { oe_gr_active = yes has_variable = oe_gr_emperor var:oe_gr_emperor = scope:target }
+    }
+    effect = { c:BYZ = { oe_gr_queue_emperor_succession = yes } }
+}
+oe_gr_ruler_death = {
+    trigger = {
+        country_exists = c:BYZ
+        exists = scope:old_ruler
+        c:BYZ = { oe_gr_active = yes has_variable = oe_gr_emperor var:oe_gr_emperor = scope:old_ruler }
+    }
+    effect = { c:BYZ = { oe_gr_queue_emperor_succession = yes } }
+}
+oe_gr_resolve_emperor_succession = {
+    trigger = { tag = BYZ oe_gr_active = yes has_variable = oe_gr_succession_pending has_variable = oe_gr_late_emperor }
+    effect = { oe_gr_select_emperor_successor = yes }
+}
+oe_gr_begin_army_refusals = {
+    trigger = { oe_gr_full_revolution = yes has_variable = oe_gr_army_refusals_left }
+    effect = { oe_gr_dispatch_army_refusal = yes }
+}
+
+# No daily/monthly scans: each reaction wave is scheduled once from the republican choice.
+oe_gr_estates_week_one = {
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_week_one_dispatched } }
+    effect = {
+        set_variable = oe_gr_week_one_dispatched
+        if = {
+            limit = { has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV }
+            trigger_event_non_silently = oe_great_revolution.10
+        }
+        else_if = {
+            limit = { has_estate_privilege = estate_privilege:oe_peasants_own_theme_IV }
+            trigger_event_non_silently = oe_great_revolution.11
+        }
+        trigger_event_non_silently = oe_great_revolution.12
+        trigger_event_non_silently = oe_great_revolution.13
+        trigger_event_non_silently = oe_great_revolution.14
+    }
+}
+oe_gr_estates_day_twenty = {
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_day_twenty_dispatched } }
+    effect = {
+        set_variable = oe_gr_day_twenty_dispatched
+        trigger_event_non_silently = oe_great_revolution.15
+        trigger_event_non_silently = oe_great_revolution.16
+    }
+}
+
+oe_gr_foundation_day_one = {
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_preparation_seen } }
+    effect = { trigger_event_non_silently = oe_great_revolution.20 }
+}
+oe_gr_foundation_day_ten = {
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_assembly_seen } }
+    effect = { trigger_event_non_silently = oe_great_revolution.21 }
+}
+oe_gr_foundation_day_thirty = {
+    trigger = { oe_gr_full_revolution = yes NOT = { has_variable = oe_gr_naming_seen } }
+    effect = { trigger_event_non_silently = oe_great_revolution.22 }
+}

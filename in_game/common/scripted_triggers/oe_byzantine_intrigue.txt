@@ -1,0 +1,101 @@
+﻿oe_bi_active = { tag = BYZ any_active_disaster = { disaster_type = disaster_type:oe_byzantine_intrigue } }
+# IO scope. Strict thresholds: 300 cannot start a crisis, but still prevents its end.
+oe_bi_rival_above_300 = { OR = {
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_1 has_variable = oe_nf_influence_1 } var:oe_nf_influence_1 > 300 NOT = { oe_nf_is_political_ally = { slot = 1 } } } trigger_else = { always = no } }
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_2 has_variable = oe_nf_influence_2 } var:oe_nf_influence_2 > 300 NOT = { oe_nf_is_political_ally = { slot = 2 } } } trigger_else = { always = no } }
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_3 has_variable = oe_nf_influence_3 } var:oe_nf_influence_3 > 300 NOT = { oe_nf_is_political_ally = { slot = 3 } } } trigger_else = { always = no } }
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_4 has_variable = oe_nf_influence_4 } var:oe_nf_influence_4 > 300 NOT = { oe_nf_is_political_ally = { slot = 4 } } } trigger_else = { always = no } }
+} }
+oe_bi_rival_at_least_300 = { OR = {
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_1 has_variable = oe_nf_influence_1 } var:oe_nf_influence_1 >= 300 NOT = { oe_nf_is_political_ally = { slot = 1 } } } trigger_else = { always = no } }
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_2 has_variable = oe_nf_influence_2 } var:oe_nf_influence_2 >= 300 NOT = { oe_nf_is_political_ally = { slot = 2 } } } trigger_else = { always = no } }
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_3 has_variable = oe_nf_influence_3 } var:oe_nf_influence_3 >= 300 NOT = { oe_nf_is_political_ally = { slot = 3 } } } trigger_else = { always = no } }
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_4 has_variable = oe_nf_influence_4 } var:oe_nf_influence_4 >= 300 NOT = { oe_nf_is_political_ally = { slot = 4 } } } trigger_else = { always = no } }
+} }
+oe_bi_any_house_above_400 = { OR = {
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_1 has_variable = oe_nf_influence_1 } var:oe_nf_influence_1 > 400 } trigger_else = { always = no } }
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_2 has_variable = oe_nf_influence_2 } var:oe_nf_influence_2 > 400 } trigger_else = { always = no } }
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_3 has_variable = oe_nf_influence_3 } var:oe_nf_influence_3 > 400 } trigger_else = { always = no } }
+        AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_4 has_variable = oe_nf_influence_4 } var:oe_nf_influence_4 > 400 } trigger_else = { always = no } }
+} }
+oe_bi_start_ready = {
+    tag = BYZ
+    # NEW 2026-11-18 1341 civil war (gen_civil_war_1341.py): not while the 1341 civil war runs
+    NOT = { has_variable = oe_cw_active }
+    OR = {
+        has_regent = yes
+        AND = { has_ruler = yes current_ruler_term_years < 5 }
+    }
+    NOT = { has_variable = oe_ir_succession_done }
+    international_organization:oe_byz_empire_pillars = { oe_bi_rival_above_300 = yes }
+}
+oe_bi_end_ready = {
+    stability > 30 legitimacy > 30
+    international_organization:oe_byz_empire_pillars = { NOT = { oe_bi_rival_at_least_300 = yes } }
+}
+oe_bi_purge_ready = {
+    oe_bi_active = yes
+    NOT = { has_variable = oe_bi_capital_purged }
+    international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 2 }
+}
+oe_bi_bribe_ready = {
+    oe_bi_active = yes
+    NOT = { has_variable = oe_bi_bribe_cooldown }
+    international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 2 gold >= oe_bi_bribe_price oe_bi_has_rival_head = yes }
+}
+# Character scope. Skip the entire family if its head is among the coup victims.
+oe_bi_coup_candidate = {
+    oe_nf_successor_eligible = yes
+    NOT = { is_ruler_of = c:BYZ }
+    NOT = { is_heir_of = c:BYZ }
+    NOT = { is_regent_of = c:BYZ }
+    NOT = { modifier:blocked_from_being_ruler = yes }
+}
+oe_bi_coup_ready = {
+    oe_bi_active = yes
+    # NEW 2026-11-18 1341 civil war (gen_civil_war_1341.py): not while the 1341 civil war runs
+    NOT = { has_variable = oe_cw_active }
+    NOT = { has_variable = oe_bi_capital_purged }
+    international_organization:oe_byz_empire_pillars = { oe_bi_has_coup_candidate = yes }
+}
+oe_bi_civil_war_possible = {
+    oe_bi_active = yes
+    # NEW 2026-11-18 1341 civil war (gen_civil_war_1341.py): not while the 1341 civil war runs
+    NOT = { has_variable = oe_cw_active }
+    in_civil_war = no
+    num_locations >= 2
+    any_owned_location = { is_capital = no any_pop = { owner = c:BYZ } }
+}
+oe_bi_civil_war_ready = {
+    oe_bi_civil_war_possible = yes
+    international_organization:oe_byz_empire_pillars = { oe_bi_any_house_above_400 = yes }
+}
+oe_bi_civil_war_event_ready = {
+    oe_bi_civil_war_possible = yes
+    OR = {
+        has_variable = oe_bi_forced_civil_war
+        international_organization:oe_byz_empire_pillars = { oe_bi_any_house_above_400 = yes }
+    }
+}
+oe_bi_has_rival_head = { OR = {
+    AND = { has_variable = oe_nf_dynasty_1 NOT = { oe_nf_is_political_ally = { slot = 1 } } exists = var:oe_nf_head_1 var:oe_nf_head_1 = { oe_nf_living = yes } }
+    AND = { has_variable = oe_nf_dynasty_2 NOT = { oe_nf_is_political_ally = { slot = 2 } } exists = var:oe_nf_head_2 var:oe_nf_head_2 = { oe_nf_living = yes } }
+    AND = { has_variable = oe_nf_dynasty_3 NOT = { oe_nf_is_political_ally = { slot = 3 } } exists = var:oe_nf_head_3 var:oe_nf_head_3 = { oe_nf_living = yes } }
+    AND = { has_variable = oe_nf_dynasty_4 NOT = { oe_nf_is_political_ally = { slot = 4 } } exists = var:oe_nf_head_4 var:oe_nf_head_4 = { oe_nf_living = yes } }
+} }
+oe_bi_has_coup_candidate = { OR = {
+    AND = { has_variable = oe_nf_dynasty_1 NOT = { oe_nf_is_political_ally = { slot = 1 } } exists = var:oe_nf_head_1 var:oe_nf_head_1 = { oe_bi_coup_candidate = yes } }
+    AND = { has_variable = oe_nf_dynasty_2 NOT = { oe_nf_is_political_ally = { slot = 2 } } exists = var:oe_nf_head_2 var:oe_nf_head_2 = { oe_bi_coup_candidate = yes } }
+    AND = { has_variable = oe_nf_dynasty_3 NOT = { oe_nf_is_political_ally = { slot = 3 } } exists = var:oe_nf_head_3 var:oe_nf_head_3 = { oe_bi_coup_candidate = yes } }
+    AND = { has_variable = oe_nf_dynasty_4 NOT = { oe_nf_is_political_ally = { slot = 4 } } exists = var:oe_nf_head_4 var:oe_nf_head_4 = { oe_bi_coup_candidate = yes } }
+} }
+oe_bi_rival_head = {
+    oe_nf_living = yes
+    save_temporary_scope_as = oe_bi_checked_head
+    international_organization:oe_byz_empire_pillars = { OR = {
+        AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:oe_bi_checked_head NOT = { oe_nf_is_political_ally = { slot = 1 } } }
+        AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:oe_bi_checked_head NOT = { oe_nf_is_political_ally = { slot = 2 } } }
+        AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:oe_bi_checked_head NOT = { oe_nf_is_political_ally = { slot = 3 } } }
+        AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:oe_bi_checked_head NOT = { oe_nf_is_political_ally = { slot = 4 } } }
+    } }
+}

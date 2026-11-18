@@ -1,0 +1,169 @@
+﻿# PAUSED 2026-09-26: Noble politics paused by user; retained for possible restoration.
+# # House country scope. Idempotent, and does not change ruler/character ownership.
+# oe_np_initialize_house = {
+#     if = {
+#         limit = { NOT = { has_variable = oe_np_influence } }
+#         set_variable = { name = oe_np_influence value = 0 }
+#         # Bootstrap the three existing opening houses once; later generated houses start at zero.
+#         if = {
+#             limit = { OR = { current_date = 1337.4.1 c:BYZ = { NOT = { has_variable = oe_np_initialized } } } }
+#             if = { limit = { tag = BBY } set_variable = { name = oe_np_influence value = 122 } }
+#             else_if = { limit = { tag = BAP } set_variable = { name = oe_np_influence value = 92 } }
+#             else_if = { limit = { tag = BSY } set_variable = { name = oe_np_influence value = 84 } }
+#         }
+#     }
+#     clamp_variable = { name = oe_np_influence min = 0 max = 1000 }
+#     if = {
+#         limit = {
+#             NOT = { has_variable = oe_np_dynasty }
+#             has_ruler = yes
+#             ruler = { has_dynasty = yes }
+#         }
+#         set_variable = { name = oe_np_dynasty value = ruler.dynasty }
+#     }
+#     if = {
+#         limit = { NOT = { has_variable = oe_np_serial } }
+#         c:BYZ = {
+#             if = {
+#                 limit = { NOT = { has_variable = oe_np_next_serial } }
+#                 set_variable = { name = oe_np_next_serial value = 0 }
+#             }
+#             change_variable = { name = oe_np_next_serial add = 1 }
+#         }
+#         set_variable = { name = oe_np_serial value = c:BYZ.var:oe_np_next_serial }
+#     }
+# }
+# 
+# # Every component is cached in the same refresh, so the total and its tooltip agree.
+# oe_np_calculate_house = {
+#     save_scope_as = oe_np_house
+#     set_variable = { name = oe_np_score_living value = 0 }
+#     set_variable = { name = oe_np_score_cabinet value = 0 }
+#     set_variable = { name = oe_np_score_court value = 0 }
+#     set_variable = { name = oe_np_score_command value = 0 }
+#     set_variable = { name = oe_np_score_consort value = 0 }
+#     if = {
+#         limit = { has_variable = oe_np_dynasty }
+#         var:oe_np_dynasty = {
+#             every_character_in_dynasty = {
+#                 limit = { is_alive = yes }
+#                 scope:oe_np_house = { change_variable = { name = oe_np_score_living add = 1 } }
+#                 if = {
+#                     limit = { in_cabinet = yes owner = c:BYZ }
+#                     scope:oe_np_house = { change_variable = { name = oe_np_score_cabinet add = 20 } }
+#                 }
+#                 if = {
+#                     limit = { OR = { is_general_of = c:BYZ is_admiral_of = c:BYZ } }
+#                     scope:oe_np_house = { change_variable = { name = oe_np_score_command add = 5 } }
+#                 }
+#             }
+#         }
+#         c:BYZ = {
+#             if = {
+#                 limit = {
+#                     oe_court_chancellor_filled = yes
+#                     var:oe_court_chancellor = { dynasty = scope:oe_np_house.var:oe_np_dynasty }
+#                 }
+#                 scope:oe_np_house = { change_variable = { name = oe_np_score_court add = 25 } }
+#             }
+#             if = {
+#                 limit = {
+#                     oe_court_judge_filled = yes
+#                     var:oe_court_judge = { dynasty = scope:oe_np_house.var:oe_np_dynasty }
+#                 }
+#                 scope:oe_np_house = { change_variable = { name = oe_np_score_court add = 25 } }
+#             }
+#             if = {
+#                 limit = {
+#                     oe_court_secretary_filled = yes
+#                     var:oe_court_secretary = { dynasty = scope:oe_np_house.var:oe_np_dynasty }
+#                 }
+#                 scope:oe_np_house = { change_variable = { name = oe_np_score_court add = 25 } }
+#             }
+#             if = {
+#                 limit = {
+#                     oe_court_taxmaster_filled = yes
+#                     var:oe_court_taxmaster = { dynasty = scope:oe_np_house.var:oe_np_dynasty }
+#                 }
+#                 scope:oe_np_house = { change_variable = { name = oe_np_score_court add = 25 } }
+#             }
+#             if = {
+#                 limit = {
+#                     oe_court_ceremonies_filled = yes
+#                     var:oe_court_ceremonies = { dynasty = scope:oe_np_house.var:oe_np_dynasty }
+#                 }
+#                 scope:oe_np_house = { change_variable = { name = oe_np_score_court add = 25 } }
+#             }
+#             if = {
+#                 limit = {
+#                     oe_court_admiral_filled = yes
+#                     var:oe_court_admiral = { dynasty = scope:oe_np_house.var:oe_np_dynasty }
+#                 }
+#                 scope:oe_np_house = { change_variable = { name = oe_np_score_court add = 25 } }
+#             }
+#             if = {
+#                 limit = {
+#                     oe_court_domestikos_filled = yes
+#                     var:oe_court_domestikos = { dynasty = scope:oe_np_house.var:oe_np_dynasty }
+#                 }
+#                 scope:oe_np_house = { change_variable = { name = oe_np_score_court add = 25 } }
+#             }
+#             if = {
+#                 limit = {
+#                     has_consort = yes
+#                     consort = { is_alive = yes dynasty = scope:oe_np_house.var:oe_np_dynasty }
+#                 }
+#                 scope:oe_np_house = { set_variable = { name = oe_np_score_consort value = 50 } }
+#             }
+#         }
+#     }
+#     set_variable = { name = oe_np_years value = oe_np_subject_years }
+#     set_variable = { name = oe_np_score_tenure value = { value = var:oe_np_years multiply = 0.1 } }
+#     set_variable = { name = oe_np_score_treasury value = { value = gold multiply = 0.005 } }
+#     set_variable = { name = oe_np_score_soldiers value = oe_np_soldiers_score }
+#     set_variable = { name = oe_np_score_influence value = { value = var:oe_np_influence multiply = 0.2 } }
+#     set_variable = { name = oe_np_monthly_change value = oe_np_monthly_influence_change }
+#     set_variable = { name = oe_np_total value = oe_np_total_score }
+# }
+# 
+# # BYZ scope. No hardcoded count: future houses and all subordinate levels are included.
+# oe_np_refresh = {
+#     every_subject_or_below = {
+#         limit = { is_subject_type = oe_noble }
+#         oe_np_initialize_house = yes
+#         oe_np_calculate_house = yes
+#     }
+#     set_variable = oe_np_initialized
+#     # Equal totals retain stable registration order. Rank is always unique and one-based.
+#     every_subject_or_below = {
+#         limit = { is_subject_type = oe_noble }
+#         save_scope_as = oe_np_ranked_house
+#         set_variable = { name = oe_np_rank value = 1 }
+#         c:BYZ = {
+#             every_subject_or_below = {
+#                 limit = {
+#                     is_subject_type = oe_noble
+#                     OR = {
+#                         var:oe_np_total > scope:oe_np_ranked_house.var:oe_np_total
+#                         AND = {
+#                             var:oe_np_total = scope:oe_np_ranked_house.var:oe_np_total
+#                             var:oe_np_serial < scope:oe_np_ranked_house.var:oe_np_serial
+#                         }
+#                     }
+#                 }
+#                 scope:oe_np_ranked_house = { change_variable = { name = oe_np_rank add = 1 } }
+#             }
+#         }
+#     }
+#     clear_variable_list = oe_np_houses
+#     ordered_subject_or_below = {
+#         limit = { is_subject_type = oe_noble }
+#         order_by = { value = var:oe_np_rank multiply = -1 }
+#         c:BYZ = { add_to_variable_list = { name = oe_np_houses target = prev } }
+#     }
+# }
+
+# Compatibility no-ops: cannot award influence, charge resources or create characters.
+oe_np_initialize_house = {}
+oe_np_calculate_house = {}
+oe_np_refresh = {}

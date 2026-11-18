@@ -1,0 +1,247 @@
+﻿oe_fate_of_the_phoenix = {
+	content_priority = 700
+	image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+	
+	monthly_spawn_chance = 1
+
+	can_start = {
+		tag = BYZ
+		current_age = age_1_traditions
+		
+		current_year < 1338
+	}
+	
+	can_end = {
+        OR = {
+            has_estate_privilege = estate_privilege:oe_peasants_own_theme_IV
+            has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV
+        }
+		num_locations_owned_or_owned_by_subjects_or_below > 350
+		
+		has_variable = oe_ir_army_1_done
+		has_variable = oe_ir_central_done
+		any_owned_location = {
+			percent = 1
+			NOT = {
+				has_building = building_type:oe_byz_bad_thief_greek
+			}
+		}
+	}
+
+	modifier = {
+		mercenary_maintenance_efficiency = 0.5
+		
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# global_bureaucracy_maintenance_cost_modifier = 0.1
+
+		casus_belli_creation_speed_modifier = -0.2
+	}
+	
+	on_start = {
+        set_variable = {
+			name = strongest_belik_variable
+			value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+		}
+        c:BYZ = { trigger_event_non_silently = oe_fate_of_the_phoenix.21 }
+    }
+
+	on_end = {
+        oe_phoenix_auto_bandit_stop = yes
+		remove_variable = strongest_belik_variable
+		set_variable = won_fate_of_the_phoenix_disaster_variable
+		set_global_variable = phoenix_nirvana_is_end
+	}
+	
+	on_monthly = {
+        set_variable = {
+			name = strongest_belik_variable
+			value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+		}
+        hidden_effect = {
+            # Fixed denominator: unavailable categories become empty outcomes.
+            # One roll, at most one raid/month; each eligible category stays at 1%.
+            random_list = {
+                96 = {}
+                1 = { if = { limit = { oe_raid_ser_available = yes } trigger_event_non_silently = oe_fate_of_the_phoenix.201 } }
+                1 = { if = { limit = { oe_raid_turk_available = yes } trigger_event_non_silently = oe_fate_of_the_phoenix.200 } }
+                1 = { if = { limit = { oe_raid_pirate_available = yes } trigger_event_non_silently = oe_fate_of_the_phoenix.203 } }
+                1 = { if = { limit = { oe_raid_bandit_available = yes } trigger_event_non_silently = oe_fate_of_the_phoenix.204 } }
+            }
+        }
+        hidden_effect = { oe_phoenix_auto_bandit_monthly = yes }
+    }
+}
+# Historical forced dispatch and monthly pools; replaced by the active pool above.
+# PAUSED 2026-09-24: retained as comments at user request.
+# on_start = {
+# 
+# 		set_variable = {
+# 			name = strongest_belik_variable
+# 			value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+# 		}
+# 		
+# 
+# 		c:BYZ = { 
+# 			trigger_event_non_silently = oe_fate_of_the_phoenix.21
+# 			trigger_event_non_silently = {
+# 				id = oe_fate_of_the_phoenix.203
+# 				days = { 30 120 }
+# 			}
+# 	}
+# 	c:TUR = {
+# 			trigger_event_non_silently = {
+# 				id = oe_fate_of_the_phoenix.100
+# 				days = { 30 120 }
+# 			}
+# 	}
+# 	c:SER = {
+# 			trigger_event_non_silently = {
+# 				id = oe_fate_of_the_phoenix.101
+# 				days = { 30 120 }
+# 			}
+# 	}
+# 
+# 	}
+# PAUSED 2026-09-24: retained as comments at user request.
+# on_monthly = {
+# 
+# 		set_variable = {
+# 			name = strongest_belik_variable
+# 			value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+# 		}
+# 		
+# 		random_list = {
+# 			5 = { custom_tooltip = an_event_occurs_tt }
+# 			95 = { custom_tooltip = no_event_occurs_tt }
+# 		}
+# 		hidden_effect = {
+# 
+# 
+# 			random_list = {
+# 				93 = { }
+# 				2 = { 
+# 					if = {
+# 						limit = {
+# 							at_war = no
+# 							has_raised_levies = no
+# 						}
+# 					random_neighbor_country = {
+# 						limit = { 
+# 							can_declare_war_on = root 
+# 							NOT = {
+# 								opinion = { target = root value >= 100 }
+# 							}
+# 							OR = {
+# 								culture = culture:turkish_culture
+# 								tag = SER
+# 								tag = BUL
+# 								tag = HUN								
+# 							}
+# 						}
+# 						if = {
+# 							limit = {
+# 								culture = culture:turkish_culture
+# 							}
+# 							trigger_event_silently = oe_fate_of_the_phoenix.100
+# 						}
+# 						if = {
+# 							limit = {
+# 								tag = SER
+# 							}
+# 							trigger_event_silently = oe_fate_of_the_phoenix.101
+# 						}
+# 						if = {
+# 							limit = {
+# 								OR = {
+# 									tag = BUL
+# 									tag = HUN
+# 								}
+# 							}
+# 							trigger_event_silently = oe_fate_of_the_phoenix.102
+# 						}
+# 					}
+# 				}
+# 				}
+# 				5 = { 
+# 					if = {
+# 						limit = {
+# 							at_war = no
+# 							has_raised_levies = no
+# 						}
+# 					
+# 					random_neighbor_country = {
+# 						limit = { 
+# 							can_declare_war_on = root 
+# 							NOT = {
+# 								opinion = { target = root value >= 100 }
+# 							}							
+# 							OR = {
+# 								is_rival_of = root
+# 								is_enemy_of = root
+# 							}
+# 							OR = {
+# 								culture = culture:turkish_culture
+# 								tag = SER
+# 								tag = BUL
+# 								tag = HUN								
+# 							}
+# 						}
+# 						if = {
+# 							limit = {
+# 								culture = culture:turkish_culture
+# 							}
+# 							trigger_event_silently = oe_fate_of_the_phoenix.100
+# 						}
+# 						if = {
+# 							limit = {
+# 								tag = SER
+# 							}
+# 							trigger_event_silently = oe_fate_of_the_phoenix.101
+# 						}
+# 						if = {
+# 							limit = {
+# 								OR = {
+# 									tag = BUL
+# 									tag = HUN
+# 								}
+# 							}
+# 							trigger_event_silently = oe_fate_of_the_phoenix.102
+# 						}						
+# 					}
+# 				}
+# 			}
+# 			}
+# 
+# 			random_list = {
+# 				94 = {}
+# 				3 = {
+# 					if = {
+# 						limit = {
+# 							at_war = no
+# 							has_raised_levies = no
+# 						}
+# 					trigger_event_non_silently = oe_fate_of_the_phoenix.204
+# 				}}
+# 				3 = {
+# 					if = {
+# 						limit = {
+# 							at_war = no
+# 							has_raised_levies = no
+# 						}
+# 					if = {
+# 						limit = {
+# 						NOT = {
+# 							# The old trade action is paused; retain its geographical completion condition.
+#                             OR = {
+#                                 has_variable = oe_byz_reown_aegean_over
+#                                 own_entire_area = area:aegean_archipelago_area
+#                             }
+# 						}
+# 					}
+# 					trigger_event_non_silently = oe_fate_of_the_phoenix.203
+# 					}					
+# 				}
+# 			}}
+# 
+# 		}
+# 	}

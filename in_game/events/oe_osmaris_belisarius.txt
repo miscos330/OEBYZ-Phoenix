@@ -1,0 +1,38 @@
+﻿namespace = oe_flavor_byz
+namespace = oe_osmaris_varna_clock
+# One BYZ-only timer, active for at most 72 days; no world/dynasty scans.
+oe_osmaris_varna_clock.1 = {
+    type = country_event hidden = yes interface_lock = no
+    title = empty_text # FIX 2026-11-17 P2：隐藏事件按原版写法补 title
+    trigger = { oe_osmaris_varna_date_window = yes }
+    immediate = {
+        set_variable = { name = oe_osmaris_varna_clock_alive value = yes days = 3 }
+        if = {
+            limit = { current_date = 1444.11.11 }
+            if = { limit = { oe_osmaris_varna_story_ready = yes } trigger_event_non_silently = oe_flavor_byz.1014 }
+            remove_variable = oe_osmaris_varna_clock_alive
+        }
+        else = { trigger_event_silently = { id = oe_osmaris_varna_clock.1 days = 1 } }
+    }
+}
+oe_flavor_byz.1014 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_flavor_byz.1014.t desc = oe_flavor_byz.1014.d
+    historical_info = oe_flavor_byz.1014.historical_info
+    fire_only_once = yes
+    image = "gfx/interface/illustrations/events/oe_osmaris_belisarius_rome.dds"
+    hide_portraits = yes
+    trigger = { current_date = 1444.11.11 oe_osmaris_varna_story_ready = yes }
+    immediate = { set_variable = oe_osmaris_varna_presented oe_osmaris_introduce_belisarius = yes }
+    option = {
+        name = oe_flavor_byz.1014.a
+        trigger = { oe_osmaris_varna_can_choose = yes }
+        custom_tooltip = { text = oe_flavor_byz.1014.a.tt oe_osmaris_accept_varna_destiny = yes }
+    }
+    option = {
+        name = oe_flavor_byz.1014.lapsed
+        trigger = { NOT = { oe_osmaris_varna_can_choose = yes } }
+        custom_tooltip = oe_flavor_byz.1014.lapsed.tt
+    }
+}

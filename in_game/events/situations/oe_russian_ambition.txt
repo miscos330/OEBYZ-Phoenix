@@ -1,0 +1,66 @@
+﻿namespace = oe_russian_ambition
+oe_russian_ambition.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_russian_ambition.1.t
+    desc = oe_russian_ambition.1.d
+    image = "gfx/interface/illustrations/situation/oe_russian_ambition.dds"
+    option = { name = oe_russian_ambition.1.a }
+}
+
+oe_russian_ambition.2 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    category = situation_event
+    title = oe_russian_ambition.2.t
+    desc = oe_russian_ambition.2.d
+    image = "gfx/interface/illustrations/situation/oe_russian_ambition.dds"
+    trigger = { tag = RUS }
+    option = {
+        name = oe_russian_ambition.2.smolensk
+        trigger = { location:smolensk = { has_owner = yes owner = root } }
+        oe_ra_choose_capital = { destination = location:smolensk }
+        ai_chance = {
+            factor = 1
+            modifier = { factor = 0 government_type = government_type:monarchy location:moscow = { owner = root } }
+            modifier = { factor = 0 government_type = government_type:republic location:novgorod = { owner = root } }
+        }
+    }
+    option = {
+        name = oe_russian_ambition.2.tver
+        trigger = { location:tver = { has_owner = yes owner = root } }
+        oe_ra_choose_capital = { destination = location:tver }
+        ai_chance = {
+            factor = 1
+            modifier = { factor = 0 government_type = government_type:monarchy location:moscow = { owner = root } }
+            modifier = { factor = 0 government_type = government_type:republic location:novgorod = { owner = root } }
+        }
+    }
+    option = {
+        name = oe_russian_ambition.2.moscow
+        trigger = { location:moscow = { has_owner = yes owner = root } }
+        oe_ra_choose_capital = { destination = location:moscow }
+        ai_chance = {
+            factor = 1
+            modifier = { factor = 100 government_type = government_type:monarchy }
+            modifier = { factor = 0 government_type = government_type:republic location:novgorod = { owner = root } }
+        }
+    }
+    option = {
+        name = oe_russian_ambition.2.novgorod
+        trigger = { location:novgorod = { has_owner = yes owner = root } }
+        oe_ra_choose_capital = { destination = location:novgorod }
+        ai_chance = {
+            factor = 1
+            modifier = { factor = 100 government_type = government_type:republic }
+            modifier = { factor = 0 government_type = government_type:monarchy location:moscow = { owner = root } }
+        }
+    }
+    # The four cities may all belong to other countries when Russia forms.
+    option = {
+        name = oe_russian_ambition.2.none
+        trigger = { NOT = { oe_ra_owns_capital_candidate = yes } }
+        ai_chance = { factor = 1 }
+    }
+}

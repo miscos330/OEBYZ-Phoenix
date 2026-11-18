@@ -1,0 +1,43 @@
+﻿oe_hungarian_romanization = {
+    type = subject
+    category = CATEGORY_SUBJECT_ACTIONS
+    price = price:oe_hungarian_romanization_price
+    ai_tick = never
+    use_enroute = no
+    block_when_at_war = no
+    potential = { scope:actor = { tag = BYZ } }
+    allow = {
+        scope:actor = {
+            political_influence >= 50
+            custom_tooltip = {
+                text = oe_hungarian_romanization_movement_tt
+                OR = {
+                    has_variable = oe_rw_paeones_romanization_started
+                    oe_rw_paeones_romanization_started = yes
+                    culture:oe_paeones_culture = { has_variable = oe_identity_fixed_30y_scheduled }
+                }
+            }
+        }
+    }
+    select_trigger = {
+        looking_for_a = country
+        interaction_source_list = { scope:actor = { every_subject = { limit = { is_subject_type = oe_hungarian_dominion } add_to_list = source } } }
+        target_flag = recipient
+        name = choose_country
+        default_sort = will
+        column = { data = country_diplomacy_info_subject }
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        visible = { is_subject_type = oe_hungarian_dominion is_subject_of = scope:actor }
+        enabled = {
+            dependency_length_days = { target = scope:actor value > 3650 }
+            NOT = { AND = { religion = religion:orthodox culture = culture:oe_paeones_culture } }
+        }
+    }
+    effect = {
+        scope:recipient = {
+            change_religion = religion:orthodox
+            change_culture = culture:oe_paeones_culture
+        }
+    }
+}

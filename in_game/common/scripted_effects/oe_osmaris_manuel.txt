@@ -1,0 +1,51 @@
+﻿# Country scope: BYZ. One-time options revalidate before spending or rewarding.
+oe_osmaris_employ_manuel = {
+    if = {
+        limit = { oe_osmaris_instructor_ready = yes }
+        set_variable = oe_osmaris_instructor_done
+        character:tur_murad = { oe_osman_convert_person = yes }
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority add = 1 }
+            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        }
+        add_country_modifier = { modifier = oe_osmaris_manuel_drill years = 20 mode = add }
+        oe_osmaris_reward_house = { member = character:tur_murad }
+        # Conditions are evaluated at delivery, exactly five years after this choice.
+        trigger_event_non_silently = { id = oe_flavor_byz.1005 years = 5 }
+    }
+}
+oe_osmaris_send_manuel = {
+    if = {
+        limit = { oe_osmaris_serbia_ready = yes }
+        set_variable = oe_osmaris_serbia_decided
+        if = { limit = { character:tur_murad = { in_cabinet = yes } } remove_from_cabinet = character:tur_murad }
+        c:SER = { change_subject_type = subject_type:oe_rome_sub_II }
+        character:tur_murad = { move_country = c:SER }
+        c:SER = { set_new_ruler = character:tur_murad }
+        set_variable = oe_osmaris_sent_to_serbia
+        oe_court_clear_invalid = yes
+        oe_court_auto_fill = yes
+        oe_nf_refresh = yes
+        trigger_event_non_silently = { id = oe_flavor_byz.1006 years = 5 }
+    }
+}
+oe_osmaris_keep_manuel = {
+    if = {
+        limit = { oe_osmaris_serbia_ready = yes }
+        set_variable = oe_osmaris_serbia_decided
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority add = 1 }
+            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        }
+    }
+}
+oe_osmaris_assassinate_manuel = {
+    if = {
+        limit = { oe_osmaris_assassination_ready = yes }
+        set_variable = oe_osmaris_assassinated
+        kill_character = { target = character:tur_murad reason = assassination }
+        oe_court_clear_invalid = yes
+        oe_court_auto_fill = yes
+        oe_nf_refresh = yes
+    }
+}

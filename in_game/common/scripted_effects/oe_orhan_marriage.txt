@@ -1,0 +1,87 @@
+﻿oe_orhan_prepare = {
+    character:tur_orhan = { save_scope_as = oe_orhan_groom }
+    clear_saved_scope = oe_orhan_bride
+    # Strict priority: Kantakouzenos women, royal princesses, then domestic Roman Orthodox women.
+    if = {
+        limit = { any_character = { oe_orhan_kantakouzenos_bride = yes } }
+        random_character = { limit = { oe_orhan_kantakouzenos_bride = yes } save_scope_as = oe_orhan_bride }
+    }
+    else_if = {
+        limit = { any_character = { oe_orhan_royal_bride = yes } }
+        random_character = { limit = { oe_orhan_royal_bride = yes } save_scope_as = oe_orhan_bride }
+    }
+    else = { random_character = { limit = { oe_orhan_domestic_bride = yes } save_scope_as = oe_orhan_bride } }
+    international_organization:oe_byz_empire_pillars = {
+        save_scope_value_as = { name = oe_orhan_dowry value = { value = oe_pillars_purse_monthly_income multiply = 6 } }
+    }
+}
+# Special admission: the marriage decree does not require six living family members.
+# All family state and the once-only capacity grant remain on the pillars IO.
+oe_osman_admit_house = {
+    oe_osmaris_admit_house = { head = scope:oe_orhan_groom }
+}
+oe_osmaris_admit_house = {
+    if = {
+        limit = { dynasty:ottomans_dynasty = { NOT = { oe_nf_is_ruling_dynasty = yes } } }
+        $head$ = { save_scope_as = oe_nf_register_head }
+        dynasty:ottomans_dynasty = { save_scope_as = oe_nf_register_family }
+        international_organization:oe_byz_empire_pillars = {
+            if = {
+                limit = { NOT = { has_variable = oe_osman_house_capacity_granted } }
+                change_variable = { name = oe_nf_house_limit add = 1 }
+                set_variable = oe_osman_house_capacity_granted
+            }
+            if = {
+                limit = { dynasty:ottomans_dynasty = { NOT = { oe_nf_registered_family = yes } } }
+                if = { limit = { NOT = { has_variable = oe_nf_dynasty_1 } } oe_nf_register_slot = { slot = 1 initial = 0 } }
+                else_if = { limit = { NOT = { has_variable = oe_nf_dynasty_2 } } oe_nf_register_slot = { slot = 2 initial = 0 } }
+                else_if = { limit = { NOT = { has_variable = oe_nf_dynasty_3 } } oe_nf_register_slot = { slot = 3 initial = 0 } }
+                else_if = { limit = { NOT = { has_variable = oe_nf_dynasty_4 } } oe_nf_register_slot = { slot = 4 initial = 0 } }
+            }
+        }
+        oe_nf_refresh = yes
+    }
+}
+oe_orhan_accept = {
+    if = {
+        limit = { oe_orhan_can_accept = yes }
+        scope:oe_orhan_groom = {
+            # Snapshot first; mutating the spouse collection while enumerating can skip a wife.
+            every_spouse = { add_to_list = oe_orhan_previous_spouses }
+        }
+        every_in_list = {
+            list = oe_orhan_previous_spouses
+            save_scope_as = oe_orhan_former_spouse
+            scope:oe_orhan_groom = { divorce_character = scope:oe_orhan_former_spouse }
+        }
+        scope:oe_orhan_groom = {
+            if = { limit = { is_eligible_for_marriage = yes } marry_character = scope:oe_orhan_bride }
+        }
+        if = {
+            limit = { scope:oe_orhan_groom = { is_spouse_of = scope:oe_orhan_bride } }
+            set_variable = oe_orhan_resolved
+            oe_osman_admit_house = yes
+            international_organization:oe_byz_empire_pillars = {
+                change_variable = { name = oe_pillars_authority add = 5 }
+                clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+                add_gold = scope:oe_orhan_dowry
+            }
+        }
+        else = {
+            # Defensive rollback if native eligibility refuses the actual marriage.
+            every_in_list = {
+                list = oe_orhan_previous_spouses
+                limit = { is_alive = yes is_married = no }
+                save_scope_as = oe_orhan_former_spouse
+                scope:oe_orhan_groom = { marry_character = scope:oe_orhan_former_spouse }
+            }
+        }
+    }
+}
+oe_orhan_refuse = {
+    if = {
+        limit = { oe_orhan_can_accept = yes }
+        set_variable = oe_orhan_resolved
+        add_prestige = 5
+    }
+}

@@ -1,0 +1,617 @@
+﻿oe_create_theme = {#创建军区
+	type = internationalorganization
+	show_message = no
+	potential = {
+	}
+
+	allow = {
+		scope:actor = {
+			at_war = no
+			has_raised_levies = no
+		}
+	
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_5 var:oe_pillars_authority >= 5 }
+        }
+}
+
+	automation_tick = never
+	automation_tick_frequency = 12
+	price = price:oe_byz_create_theme_price
+
+	cooldown = {
+		type = oe_create_theme_cooldown_key
+		years = 0
+	}
+
+	select_trigger = {
+		looking_for_a = international_organization
+		source = actor
+		target_flag = recipient
+		name = "choose_international_organization"
+		none_available_msg_key = "leave_international_organization_none"
+		column = {
+			data = name
+		}
+		visible = {
+			this = international_organization:oe_byz_empire_pillars
+		scope:actor = {
+			tag = BYZ
+		}
+		}
+	}
+
+	select_trigger = {
+	    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+	    only_color_selectable = yes
+	    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = province
+		target_flag = target
+		name = "choose_province"
+		none_available_msg_key = "no_provinces_available"
+		column = { data = owner_flag }
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			# NEW 2026-11-17 theme-rework: inside the 39 historical regions a theme is founded from the
+			# province holding the region centre (see scripted_triggers/oe_theme_regions.txt).
+			# Outside them the original area rule still applies.
+			OR = {
+				any_location_in_province = { oe_theme_region_center_creatable = yes }
+				AND = {
+					NOT = { any_location_in_province = { has_variable = oe_theme_region } }
+				oe_theme_creation_region_trigger = yes
+				NOT = { area = area:thrace_area }
+				any_location_in_province = {
+					owner = c:BYZ
+				}
+				NOT = {
+					root.area = {
+					any_location_in_area = {
+						oe_theme_location_occupied_trigger = yes
+					}
+				}
+				}
+				}
+			}
+		}
+	}
+	effect = {
+        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
+		custom_tooltip = {
+			text = oe_create_theme_tt
+		# NEW 2026-11-17 theme-rework: the seat is the historical region centre when there is one,
+		# otherwise the province capital as before. Saved before founding, because founding marks the region occupied.
+		if = {
+			limit = { scope:target = { any_location_in_province = { oe_theme_region_center_creatable = yes } } }
+			scope:target = { random_location_in_province = { limit = { oe_theme_region_center_creatable = yes } save_scope_as = oe_theme_seat } }
+		}
+		else = {
+			scope:target = { random_location_in_province = { limit = { is_province_capital = yes } save_scope_as = oe_theme_seat } }
+		}
+		scope:oe_theme_seat = {
+				create_building_country_in_location = {
+							religion = religion:orthodox
+							culture = culture:oe_roman_noble_culture
+							subject_type = subject_type:oe_empire_theme
+							overlord = c:BYZ
+							ruler = random
+							reforms = {
+							oe_byz_theme_system_subject
+							}
+							hidden_effect = {
+						change_government_type = government_type:monarchy
+						change_heir_selection = heir_selection:oe_rome_province_elect
+
+							}
+							save_scope_as = target_building_country
+				}
+				construct_building = {
+					building_type = building_type:oe_byz_theme_system_noble
+					owner = scope:target_building_country
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+				}
+		}
+		scope:target_building_country.ruler = {
+			add_trait = trait:oe_character_war_score_trait_VI
+		}
+		# NEW 2026-11-17 theme names: historical name from the seat (gen_theme_names.py).
+		scope:oe_theme_seat = { save_scope_as = oe_theme_name_seat }
+		scope:target_building_country = { oe_theme_apply_name = yes }
+		international_organization:oe_byz_empire_pillars = {
+		add_country_to_international_organization = scope:target_building_country
+		international_organization_add_special_status = {
+				type = special_status:oe_pillars_theme
+				country = scope:target_building_country
+			}
+		}
+		# NEW 2026-11-17 theme-rework: jurisdiction = every BYZ location of the historical region; area outside the regions.
+		if = {
+			limit = { scope:oe_theme_seat = { has_variable = oe_theme_region } }
+			scope:target_building_country = { set_variable = { name = oe_theme_region_id value = scope:oe_theme_seat.var:oe_theme_region } }
+			# Stage 2: distance band of the region (centre carries oe_theme_region_tier) for loyalty.
+			if = {
+				limit = { scope:oe_theme_seat = { has_variable = oe_theme_region_tier } }
+				scope:target_building_country = { set_variable = { name = oe_theme_distance value = scope:oe_theme_seat.var:oe_theme_region_tier } }
+			}
+			c:BYZ = {
+				every_owned_location = {
+					limit = { var:oe_theme_region ?= scope:oe_theme_seat.var:oe_theme_region }
+					construct_building = {
+						building_type = building_type:oe_byz_theme_system
+						owner = scope:target_building_country
+						cost_multiplier = 0
+						cost_multiplier_reason = "game_concept_event"
+					}
+				}
+			}
+		}
+		else = {
+		scope:target.area = {
+			every_location_in_area = {
+				limit = {
+					owner = c:BYZ
+				}
+				construct_building = {
+					building_type = building_type:oe_byz_theme_system
+					owner = scope:target_building_country
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+				}
+			}
+		}
+		}
+		# FIX 2026-11-17: 'scope:target_building_country.capital' errors at runtime (got a location scope), so the
+		# 3 soldiers and 6 cogs were never created. The seat is the new theme's capital.
+		scope:oe_theme_seat = {
+			while =  {
+				count = 3
+				create_sub_unit_with_owner = {
+					type = oe_byz_theme_subject_soldier_I
+					owner = scope:target_building_country
+				}
+			}
+			if = {
+				limit = { is_coastal = yes }
+			while =  {
+				count = 6
+				create_sub_unit_with_owner = {
+					type = n_cog
+					owner = scope:target_building_country
+				}
+			}
+		}
+		}
+		scope:target_building_country = {
+# PAUSED 2026-11-01: theme supervisory offices, per user request.
+#             oe_theme_ensure_supervisory_office_effect = yes
+			set_gold = 300
+			add_manpower = 3
+			# FIX 2026-11-17 (author decision): no food-access relation on founding (popup spam; themes cancelled it the next month).
+		}
+	}}
+}
+oe_byz_empire_org_action_abolish_theme = {#裁撤军区
+	type = internationalorganization
+	
+	potential = {	
+	}
+
+	allow = {
+		scope:actor = {
+			tag = BYZ
+		}
+	
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_5 var:oe_pillars_authority >= 5 }
+        }
+    }
+
+
+
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	cooldown = {
+		type = oe_byz_empire_org_action_abolish_theme_cooldown_key
+		months = 12
+	}
+
+	select_trigger = {
+		looking_for_a = international_organization
+		source = actor
+		target_flag = recipient
+		name = "choose_international_organization"
+		none_available_msg_key = "leave_international_organization_none"
+		column = {
+			data = name
+		}
+		visible = {
+			this = international_organization:oe_byz_empire_pillars
+		scope:actor = {
+			tag = BYZ
+		}
+		}
+	}
+	select_trigger = {
+	    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+	    only_color_selectable = yes
+	    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = country
+		target_flag = target_country
+		name = "oe_byz_selcet_oe_byz_empire_org_action_abolish_theme"
+		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+		column = {
+			data = name
+		}
+		column = {
+			data = great_power_score
+		}
+		visible = {
+			root = {
+				oe_theme_member_trigger = yes
+			}
+		}
+	}
+	effect = {
+        if = {
+            limit = {
+                scope:actor = { tag = BYZ }
+                scope:recipient = { this = international_organization:oe_byz_empire_pillars }
+                scope:target_country = { oe_theme_member_trigger = yes }
+                international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 5 }
+            }
+            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
+
+		scope:actor = {
+			annex_country = {
+                country = scope:target_country
+                reason = Diplomatic
+                transfer = yes
+            }
+		}
+	
+        }
+    }
+
+	ai_will_do = {
+	}
+}
+oe_byz_empire_org_action_abolish_army = {#下令裁军
+	type = internationalorganization
+	
+	potential = {	
+	}
+
+	allow = {
+		scope:actor = {
+			tag = BYZ
+		}
+	}
+
+
+
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	cooldown = {
+		type = oe_byz_empire_org_action_abolish_army_cooldown_key
+		months = 0
+	}
+
+	select_trigger = {
+		looking_for_a = international_organization
+		source = actor
+		target_flag = recipient
+		name = "choose_international_organization"
+		none_available_msg_key = "leave_international_organization_none"
+		column = {
+			data = name
+		}
+		visible = {
+			this = international_organization:oe_byz_empire_pillars
+		scope:actor = {
+			tag = BYZ
+		}
+		}
+	}
+	select_trigger = {
+	    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+	    only_color_selectable = yes
+	    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = country
+		target_flag = target_country
+		name = "oe_byz_selcet_oe_byz_empire_org_action_abolish_theme"
+		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+		column = {
+			data = name
+		}
+		column = {
+			data = great_power_score
+		}
+		visible = {
+			root = {
+				is_subject_type = oe_empire_theme
+				is_subject_of = c:BYZ
+			}
+		}
+	}
+	select_trigger = {
+		looking_for_a = unit
+		target_flag = target_unit
+		name = "oe_byz_selcet_oe_byz_empire_org_action_abolish_army"
+		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+		column = {
+			data = name
+		}
+		visible = {
+			root = {
+				owner = scope:target_country
+				is_army = yes
+			}
+		}
+	}
+	effect = {
+		scope:target_unit = {
+			destroy_unit = yes
+		}
+	}
+
+	ai_will_do = {
+	}
+}
+oe_byz_empire_org_action_abolish_ruler = {#进京述职
+	type = internationalorganization
+	
+	potential = {	
+	}
+
+	allow = {
+        # Recheck a selected target if the country changes while the picker is open.
+        trigger_if = {
+            limit = { exists = scope:target_country }
+            scope:target_country = {
+                is_subject_type = oe_empire_theme
+                is_subject_of = scope:actor
+                has_ruler = yes
+            }
+            scope:actor = { spy_network = { target = scope:target_country value > 20 } }
+        }
+
+		scope:actor = {
+			tag = BYZ
+		}
+	
+        international_organization:oe_byz_empire_pillars = {
+            custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_1 var:oe_pillars_authority >= 1 }
+        }
+}
+
+
+
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	cooldown = {
+		type = oe_byz_empire_org_action_abolish_ruler_cooldown_key
+		months = 0
+	}
+
+	select_trigger = {
+		looking_for_a = international_organization
+		source = actor
+		target_flag = recipient
+		name = "choose_international_organization"
+		none_available_msg_key = "leave_international_organization_none"
+		column = {
+			data = name
+		}
+		visible = {
+			this = international_organization:oe_byz_empire_pillars
+		scope:actor = {
+			tag = BYZ
+		}
+		}
+	}
+	select_trigger = {
+	    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+	    only_color_selectable = yes
+	    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = country
+		target_flag = target_country
+		name = "oe_byz_selcet_oe_byz_empire_org_action_abolish_theme"
+		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+		column = {
+			data = name
+		}
+		column = {
+			data = great_power_score
+		}
+		visible = {
+			root = {
+				has_ruler = yes
+				is_subject_type = oe_empire_theme
+				is_subject_of = c:BYZ
+			}
+			scope:actor = {
+						spy_network = {
+							target = root
+							value > 20
+						}
+			}
+		}
+	}
+	effect = {
+        if = {
+            limit = {
+                exists = scope:actor
+                exists = scope:target_country
+                exists = international_organization:oe_byz_empire_pillars
+                scope:actor = {
+                    tag = BYZ
+                    spy_network = { target = scope:target_country value > 20 }
+                }
+                scope:target_country = {
+                    is_subject_type = oe_empire_theme
+                    is_subject_of = scope:actor
+                    has_ruler = yes
+                }
+                international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 1 }
+            }
+            # NEW 2026-11-18 theme stages 4-5: an estranged strategos may refuse, a treasonous one may rise (gen_theme_usurp.py).
+            custom_tooltip = OE_THEME_RECALL_RISK_TT
+            scope:target_country = { save_scope_as = oe_recall_theme }
+            hidden_effect = { oe_theme_recall_risk = yes }
+            if = {
+                limit = { NOT = { exists = scope:oe_recall_blocked } }
+                scope:target_country.ruler = { save_scope_as = oe_theme_recalled_governor }
+                scope:oe_theme_recalled_governor = {
+                    # Native 1.4: remove_ruler runs in CHARACTER scope and takes a COUNTRY.
+                    # The theme's existing succession mechanism supplies its replacement.
+                    remove_ruler = scope:target_country
+                }
+                if = {
+                    limit = {
+                        scope:oe_theme_recalled_governor = { NOT = { is_ruler_of = scope:target_country } }
+                    }
+                    scope:oe_theme_recalled_governor = { move_country = scope:actor }
+                    international_organization:oe_byz_empire_pillars = {
+                        change_variable = { name = oe_pillars_authority add = -1 }
+                    }
+                }
+            }
+        }
+    }
+
+	ai_will_do = {
+	}
+}
+oe_byz_empire_org_action_create_pronia_infastry = {#普罗尼亚征召
+	type = internationalorganization
+	
+	potential = {	
+		
+	}
+
+	allow = {
+		scope:actor = {
+			tag = BYZ
+		}
+	}
+
+
+
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	cooldown = {
+		type = oe_byz_empire_org_action_abolish_army_cooldown_key
+		months = 0
+	}
+
+	select_trigger = {
+		looking_for_a = international_organization
+		source = actor
+		target_flag = recipient
+		name = "choose_international_organization"
+		none_available_msg_key = "leave_international_organization_none"
+		column = {
+			data = name
+		}
+		visible = {
+			this = international_organization:oe_byz_empire_pillars
+		scope:actor = {
+			tag = BYZ
+			NOT = {
+				has_variable = won_fate_of_the_phoenix_disaster_variable
+			}
+		}
+		}
+	}
+	select_trigger = {
+	    # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+	    only_color_selectable = yes
+	    map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = province
+		target_flag = target
+		name = "choose_province"
+		none_available_msg_key = "no_provinces_available"
+		column = { data = owner_flag }
+		column = { data = name }
+		column = { data = population }
+		visible = {
+
+				OR = {
+					region = region:anatolia_region
+					region = region:balkan_region
+				}
+				NOT = { area = area:thrace_area }
+				any_location_in_province = {
+					count = all
+					owner = c:BYZ
+				}
+				NOT = {
+					root = {
+					any_location_in_province = {
+						
+						has_location_modifier = oe_pronia_levy_mod
+					}
+				}
+			}
+				NOT = {
+					root.area = {
+					any_location_in_area = {
+						has_building = building_type:oe_byz_theme_system
+					}
+				}
+				}
+				# NEW 2026-11-17 theme-rework: also exclude provinces whose historical region already hosts a theme.
+				NOT = { any_location_in_province = { oe_theme_region_has_theme = yes } }
+		}
+	}
+	
+
+	effect = {
+		scope:target = {
+			every_location_in_province = {
+				limit = {
+					owner = scope:actor
+				}
+			add_location_modifier = { 
+				modifier =  oe_pronia_levy_mod
+                years = 3
+				mode = add_and_extend
+				}
+			}
+			every_location_in_province = {
+				limit = {
+					is_province_capital = yes
+				}
+				create_sub_unit_with_owner = {
+					type = oe_byz_pronia_infantry
+					owner = scope:actor
+				}
+				create_sub_unit_with_owner = {
+					type = oe_byz_pronia_infantry
+					owner = scope:actor
+				}
+				create_sub_unit_with_owner = {
+					type = oe_byz_pronia_cavalry
+					owner = scope:actor
+				}
+			}
+		}
+
+	}
+
+	ai_will_do = {
+	}
+}
+
+
+
+
+
+
+

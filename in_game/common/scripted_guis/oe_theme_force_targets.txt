@@ -1,0 +1,122 @@
+﻿oe_tfr_row_visible = { scope = country is_shown = { oe_tfr_eligible_theme = yes } }
+oe_tfr_row_naval = { scope = country is_shown = { oe_tfr_naval_theme = yes } }
+oe_tfr_set_target = {
+    scope = country
+    saved_scopes = { target_country target_value }
+    is_shown = { tag = BYZ }
+    is_valid = {
+        tag = BYZ
+        is_member_of_international_organization = international_organization:oe_byz_empire_pillars
+        scope:target_country = { oe_tfr_eligible_theme = yes }
+        scope:target_value >= 0
+    }
+    effect = {
+        if = {
+            limit = { tag = BYZ scope:target_country = { oe_tfr_eligible_theme = yes } scope:target_value >= 0 }
+            scope:target_country = {
+                if = { limit = { oe_tfr_land_theme = yes } set_variable = { name = oe_tfr_land_target value = oe_tfr_normalized_input } }
+                else_if = { limit = { oe_tfr_naval_theme = yes } set_variable = { name = oe_tfr_naval_target value = oe_tfr_normalized_input } }
+            }
+        }
+    }
+}
+
+oe_tfr_increase = {
+    scope = country
+    saved_scopes = { target_country }
+    is_shown = { tag = BYZ }
+    is_valid = {
+        tag = BYZ
+        scope:target_country = { oe_tfr_eligible_theme = yes }
+    }
+    effect = {
+        if = {
+            limit = { tag = BYZ scope:target_country = { oe_tfr_eligible_theme = yes } }
+            scope:target_country = {
+                if = {
+                    limit = { oe_tfr_land_theme = yes }
+                    set_variable = { name = oe_tfr_land_target value = { value = oe_tfr_target_display add = 1000 min = 0 max = 100000 } }
+                }
+                else_if = {
+                    limit = { oe_tfr_naval_theme = yes }
+                    set_variable = { name = oe_tfr_naval_target value = { value = oe_tfr_target_display add = 1 min = 0 } }
+                }
+            }
+        }
+    }
+}
+
+oe_tfr_increase_fast = {
+    scope = country
+    saved_scopes = { target_country }
+    is_shown = { tag = BYZ }
+    is_valid = {
+        tag = BYZ
+        scope:target_country = { oe_tfr_eligible_theme = yes }
+    }
+    effect = {
+        if = {
+            limit = { tag = BYZ scope:target_country = { oe_tfr_eligible_theme = yes } }
+            scope:target_country = {
+                if = {
+                    limit = { oe_tfr_land_theme = yes }
+                    set_variable = { name = oe_tfr_land_target value = { value = oe_tfr_target_display add = 10000 min = 0 max = 100000 } }
+                }
+                else_if = {
+                    limit = { oe_tfr_naval_theme = yes }
+                    set_variable = { name = oe_tfr_naval_target value = { value = oe_tfr_target_display add = 10 min = 0 } }
+                }
+            }
+        }
+    }
+}
+
+oe_tfr_decrease = {
+    scope = country
+    saved_scopes = { target_country }
+    is_shown = { tag = BYZ }
+    is_valid = {
+        tag = BYZ
+        scope:target_country = { oe_tfr_eligible_theme = yes }
+    }
+    effect = {
+        if = {
+            limit = { tag = BYZ scope:target_country = { oe_tfr_eligible_theme = yes } }
+            scope:target_country = {
+                if = {
+                    limit = { oe_tfr_land_theme = yes }
+                    set_variable = { name = oe_tfr_land_target value = { value = oe_tfr_target_display subtract = 1000 min = 0 max = 100000 } }
+                }
+                else_if = {
+                    limit = { oe_tfr_naval_theme = yes }
+                    set_variable = { name = oe_tfr_naval_target value = { value = oe_tfr_target_display subtract = 1 min = 0 } }
+                }
+            }
+        }
+    }
+}
+
+oe_tfr_decrease_fast = {
+    scope = country
+    saved_scopes = { target_country }
+    is_shown = { tag = BYZ }
+    is_valid = {
+        tag = BYZ
+        scope:target_country = { oe_tfr_eligible_theme = yes }
+    }
+    effect = {
+        if = {
+            limit = { tag = BYZ scope:target_country = { oe_tfr_eligible_theme = yes } }
+            scope:target_country = {
+                if = {
+                    limit = { oe_tfr_land_theme = yes }
+                    set_variable = { name = oe_tfr_land_target value = { value = oe_tfr_target_display subtract = 10000 min = 0 max = 100000 } }
+                }
+                else_if = {
+                    limit = { oe_tfr_naval_theme = yes }
+                    set_variable = { name = oe_tfr_naval_target value = { value = oe_tfr_target_display subtract = 10 min = 0 } }
+                }
+            }
+        }
+    }
+}

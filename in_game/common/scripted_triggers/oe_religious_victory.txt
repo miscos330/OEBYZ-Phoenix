@@ -1,0 +1,37 @@
+﻿# Country scope; all three must be direct subjects at the same time.
+oe_silk_road_subjects_present = {
+    any_subject = { is_subject_type = oe_persian_empire }
+    any_subject = { is_subject_type = oe_black_sea_kingdom }
+    any_subject = { is_subject_type = oe_arabian_kingdom }
+}
+# Location scope: count ownership, not occupation, including all subject levels.
+oe_religious_victory_bloc_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = { oe_heg_byz_bloc = yes }
+}
+oe_islamic_conversion_spread_location = {
+    oe_religious_victory_bloc_location = yes
+    OR = { "religion_percentage(religion:sunni)" > 0 "religion_percentage(religion:shia)" > 0 }
+}
+oe_religious_victory_cities_owned = {
+    location:mecca = { oe_religious_victory_bloc_location = yes }
+    location:medina = { oe_religious_victory_bloc_location = yes }
+    location:tunis = { oe_religious_victory_bloc_location = yes }
+    location:cairo = { oe_religious_victory_bloc_location = yes }
+    location:jerusalem = { oe_religious_victory_bloc_location = yes }
+    location:alexandria = { oe_religious_victory_bloc_location = yes }
+    location:antioch = { oe_religious_victory_bloc_location = yes }
+    location:baghdad = { oe_religious_victory_bloc_location = yes }
+    location:ankara = { oe_religious_victory_bloc_location = yes }
+}
+oe_declare_victory_over_islam_allowed = {
+    tag = BYZ
+    NOT = { has_variable = oe_victory_over_islam_done }
+    custom_tooltip = { text = OE_RELIGIOUS_VICTORY_FAITH_REQUIRED has_variable = oe_ir_faith_done }
+    custom_tooltip = { text = OE_RELIGIOUS_VICTORY_CITIES_REQUIRED oe_religious_victory_cities_owned = yes }
+    custom_tooltip = {
+        text = OE_RELIGIOUS_VICTORY_TERRITORY_REQUIRED
+        oe_religious_victory_owned_locations >= oe_religious_victory_required_locations
+    }
+}

@@ -1,0 +1,648 @@
+﻿oe_byz_missions_athens = {#雅典公国
+	icon = generic_conquer_province
+	repeatable = no
+	chance = 3600
+	player_playstyle = military
+	visible = {
+		game_has_missions_enabled = yes
+		has_or_had_tag = BYZ
+	}
+
+	enabled = {
+		country_exists = c:ATH
+	}
+
+	on_start = {
+		every_known_country = {
+			limit = {
+				religion = religion:catholic
+				"border_distance_to(c:BYZ)" < 100
+			}
+		add_antagonism = {
+			target = root
+			modifier = antagonism_planned_invasion
+			scale = 2
+		}
+		}
+
+	}
+	on_abort = {
+		add_government_power = -10
+	}
+	on_completion = {
+
+		
+		
+		
+	}
+	oe_byz_missions_athens_I = {#南部诸国
+		icon = army_country_looting_advance
+		enabled = {
+			always = yes
+		}
+		duration = 0
+		on_persistent_completion = {
+			trigger_event_non_silently = oe_byz_mission.1
+		}
+	}
+	oe_byz_missions_athens_II = {#巩固色萨利盆地
+		icon = byz_crossroads_of_continents
+		requires = { oe_byz_missions_athens_I }
+		enabled = {
+			manpower > 0.15
+		}
+		duration = 90
+		bypass = {
+			NOT = {
+			province:thessaly_province = {
+				any_location_in_province = {
+					count = all # FIX 2026-11-17: every_ is an effect iterator
+					owner = c:BYZ
+				}
+			}
+			}
+
+		}
+		on_monthly = {
+			add_manpower = -0.05
+			add_gold = -5
+		}
+		on_persistent_completion = {
+			if = {
+				limit = {
+					province:thessaly_province = {
+						any_location_in_province = {
+							has_building = building_type:oe_byz_bad_thief_greek
+						}
+					}
+				}
+				province:thessaly_province = {
+				every_location_in_province = {
+					destroy_building = "building(building_type:oe_byz_bad_thief_greek|c:BYZ)"
+				}
+				}
+			}
+			else_if = {
+				add_army_tradition = 10
+				add_stability = 7
+			}
+		}
+	}
+	oe_byz_missions_athens_III = {#遣使教皇
+		icon = secretaries_of_state
+		requires = { oe_byz_missions_athens_I }
+		enabled = {
+			c:PAP = {
+		opinion = { target = c:BYZ value >= 100 }
+			}
+			gold > 50
+			country_exists = c:PAP
+		}
+		bypass = {
+			NOT = {
+				country_exists = c:PAP
+			}
+		}
+		modifier_while_progressing = {
+			monthly_diplomats = -0.1
+		}
+		duration = 30
+		on_persistent_start = {
+		add_estate_satisfaction = {
+			type = estate_type:clergy_estate
+			value = -0.05
+		}			
+		}
+		on_persistent_completion = {
+			trigger_event_non_silently = oe_byz_mission.2
+		}
+	}
+	oe_byz_missions_athens_IV = {#巩固伊庇鲁斯
+		icon = byz_shield_of_the_west
+		requires = { oe_byz_missions_athens_I }
+		enabled = {
+			manpower > 0.1
+			country_exists = c:EPI
+		}
+		duration = 90
+		bypass = {
+			NOT = {
+				country_exists = c:EPI
+			}
+		}
+		on_persistent_start = {
+			trigger_event_non_silently = {
+				id = oe_byz_mission.4
+				days = 30
+			}
+			trigger_event_non_silently = {
+				id = oe_byz_mission.5
+				days = 60
+			}
+		}
+		on_persistent_completion = {
+			trigger_event_non_silently = oe_byz_mission.3
+		}
+	}
+		oe_byz_missions_athens_V = {#进军雅典
+		icon = rmn_the_descendants_of_trajan
+		requires = { 
+			oe_byz_missions_athens_IV
+			oe_byz_missions_athens_II
+	 }
+		enabled = {
+			at_war = no
+			country_exists = c:ATH
+		}
+		bypass = {
+			NOT = {
+				country_exists = c:ATH
+			}
+		}
+		duration = 0
+		on_persistent_completion = {
+		c:SIC = {
+			cancel_subject = c:ATH
+			cancel_subject = c:NEO
+			cancel_subject = c:SAO
+		}
+
+
+			c:ATH = {
+				if = {
+			limit = {
+				NOT = {
+					has_variable = oe_byz_mission_2_NAP_success
+				}
+			}
+			create_mercenary = {
+				name = oe_unit_latin_knight
+				home = c:ATH.capital
+				categories = {
+					army_light_cavalry = 1
+					army_light_infantry = 2
+				}
+				cost_multiplier = 0
+				months = 120
+				save_scope_as = target_unit_I
+			}			
+			hire_mercenary = scope:target_unit_I	
+				}
+				if = {
+			limit = {
+				NOT = {
+					has_variable = oe_byz_mission_2_SIC_success
+				}
+			}
+			create_mercenary = {
+				name = oe_unit_latin_knight
+				home = c:ATH.capital
+				categories = {
+					army_heavy_cavalry = 1
+					army_light_cavalry = 1
+					army_light_infantry = 3
+				}
+				cost_multiplier = 0
+				months = 120
+				save_scope_as = target_unit_II
+			}			
+			hire_mercenary = scope:target_unit_II	
+				}	
+				if = {
+			limit = {
+				NOT = {
+					has_variable = oe_byz_mission_2_VEN_success
+				}
+			}
+			create_mercenary = {
+				name = oe_unit_latin_knight
+				home = c:ATH.capital
+				categories = {
+					army_heavy_cavalry = 1
+					army_light_infantry = 1
+				}
+				cost_multiplier = 0
+				months = 120
+				save_scope_as = target_unit_III
+			}			
+			hire_mercenary = scope:target_unit_III
+				}	
+				if = {
+			limit = {
+				NOT = {
+					has_variable = oe_byz_mission_2_GEN_success
+				}
+			}
+			create_mercenary = {
+				name = oe_unit_latin_knight
+				home = c:ATH.capital
+				categories = {
+					army_heavy_cavalry = 1
+					army_light_infantry = 1
+				}
+				cost_multiplier = 0
+				months = 120
+				save_scope_as = target_unit_IV
+			}			
+			hire_mercenary = scope:target_unit_IV
+				}		
+			}
+		
+	if = { limit = { country_exists = c:ATH 
+	c:ATH = {is_subject = no} }
+    c:BYZ = {declare_war_with_cb = {
+        target = c:ATH
+        type = casus_belli:cb_conquer_province # FIX 2026-11-17: 'province' is not a parameter and scope:capital was never set
+    }}}
+		if = { limit = { country_exists = c:NEG
+	c:NEG = {is_subject = no} }
+    c:BYZ = {declare_war_with_cb = {
+        target = c:NEG
+        type = casus_belli:cb_conquer_province # FIX 2026-11-17: 'province' is not a parameter and scope:capital was never set
+    }}}
+		if = { limit = { country_exists = c:SAO
+	c:SAO = {is_subject = no} }
+    c:BYZ = {declare_war_with_cb = {
+        target = c:SAO
+        type = casus_belli:cb_conquer_province # FIX 2026-11-17: 'province' is not a parameter and scope:capital was never set
+    }}}
+		if = { limit = { country_exists = c:NEO
+	c:NEO = {is_subject = no} }
+    c:BYZ = {declare_war_with_cb = {
+        target = c:NEO
+        type = casus_belli:cb_conquer_province # FIX 2026-11-17: 'province' is not a parameter and scope:capital was never set
+    }}}
+		if = { limit = { country_exists = c:BOD 
+	c:BOD = {is_subject = no} }
+    c:BYZ = {declare_war_with_cb = {
+        target = c:BOD
+        type = casus_belli:cb_conquer_province # FIX 2026-11-17: 'province' is not a parameter and scope:capital was never set
+    }}}
+		}
+	}
+		oe_byz_missions_athens_VI = {#平定伯罗奔尼撒
+		icon = flesh_is_weak
+		requires = { oe_byz_missions_athens_V }
+		enabled = {
+			NOT = {
+				country_exists = c:ATH
+			}
+			at_war = no
+			country_exists = c:ACH
+		}
+		bypass = {
+			NOT = {
+				country_exists = c:ACH
+			}
+		}
+		duration = 0
+		on_persistent_completion = {
+		c:NAP = {
+			cancel_subject = c:ACH
+			cancel_subject = c:ALB
+		}
+			c:ACH = {
+				if = {
+			limit = {
+				NOT = {
+					has_variable = oe_byz_mission_2_NAP_success
+				}
+			}
+			create_mercenary = {
+				name = oe_unit_latin_knight
+				home = c:ATH.capital
+				categories = {
+					army_heavy_cavalry = 1
+					army_light_cavalry = 1
+					army_light_infantry = 3
+				}
+				cost_multiplier = 0
+				months = 120
+				save_scope_as = target_unit_I
+			}			
+			hire_mercenary = scope:target_unit_I	
+				}
+				if = {
+			limit = {
+				NOT = {
+					has_variable = oe_byz_mission_2_SIC_success
+				}
+			}
+			create_mercenary = {
+				name = oe_unit_latin_knight
+				home = c:ATH.capital
+				categories = {
+					army_light_cavalry = 1
+					army_light_infantry = 2
+				}
+				cost_multiplier = 0
+				months = 120
+				save_scope_as = target_unit_II
+			}			
+			hire_mercenary = scope:target_unit_II	
+				}	
+				if = {
+			limit = {
+				NOT = {
+					has_variable = oe_byz_mission_2_VEN_success
+				}
+			}
+			create_mercenary = {
+				name = oe_unit_latin_knight
+				home = c:ATH.capital
+				categories = {
+					army_heavy_cavalry = 1
+					army_light_infantry = 1
+				}
+				cost_multiplier = 0
+				months = 120
+				save_scope_as = target_unit_III
+			}			
+			hire_mercenary = scope:target_unit_III
+				}	
+				if = {
+			limit = {
+				NOT = {
+					has_variable = oe_byz_mission_2_GEN_success
+				}
+			}
+			create_mercenary = {
+				name = oe_unit_latin_knight
+				home = c:ATH.capital
+				categories = {
+					army_heavy_cavalry = 1
+					army_light_infantry = 1
+				}
+				cost_multiplier = 0
+				months = 120
+				save_scope_as = target_unit_IV
+			}			
+			hire_mercenary = scope:target_unit_IV
+				}		
+			}
+		if = {
+			limit = {
+				country_exists = c:NAX
+				country_exists = c:VEN
+				NOT = {
+					has_variable = oe_byz_mission_2_VEN_success
+				}
+			}
+			c:ACH = {
+				cancel_subject = c:NAX
+			}
+			c:NAX = {
+				make_subject_of = {
+				target = c:VEN
+				type = subject_type:vassal	
+				}
+			}
+		}
+				if = { limit = { country_exists = c:ACH 
+	c:ACH = {is_subject = no} }
+    c:BYZ = {declare_war_with_cb = {
+        target = c:ACH
+        type = casus_belli:cb_conquer_province # FIX 2026-11-17: 'province' is not a parameter and scope:capital was never set
+    }}}
+				if = { limit = { country_exists = c:ARG
+	c:ARG = {is_subject = no} }
+    c:BYZ = {declare_war_with_cb = {
+        target = c:ARG
+        type = casus_belli:cb_conquer_province # FIX 2026-11-17: 'province' is not a parameter and scope:capital was never set
+    }}}
+
+		}
+	}
+	oe_byz_missions_athens_VII = {#重建卫城
+		icon = greek_group_hesychast_traditions_advance
+		requires = { oe_byz_missions_athens_V }
+		enabled = {
+			location:athens = {
+				owner = c:BYZ
+			}
+			at_war = no
+		}
+		modifier_while_progressing = {
+			monthly_gold_income = -10
+		}
+		duration = 180
+		on_persistent_start = {
+			trigger_event_non_silently = oe_byz_mission.6
+		}
+		on_persistent_completion = {
+			location:athens = {
+		
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# construct_building ={ building_type = building_type:oe_byz_greek_capital
+# 						cost_multiplier = 0
+# 				cost_multiplier_reason = "game_concept_event"}
+		
+			}
+		}
+	}
+		oe_byz_missions_athens_VIII = {#促进大理石开采
+		icon = court_cost_advance_renai
+		requires = { oe_byz_missions_athens_V }
+		enabled = {
+			location:athens = {
+				owner = c:BYZ
+			}
+			at_war = no
+		}
+		modifier_while_progressing = {
+			monthly_gold_income = -5
+		}
+		duration = 90
+		on_persistent_completion = {
+		location:athens = {
+			add_location_modifier = { 
+				modifier =  oe_byz_mission_VIII_mod
+                days = -1
+				mode = add
+				}
+		}
+		}
+	}
+		oe_byz_missions_athens_IX = {#鼓励橄榄种植
+		icon = global_supply_limit_modifier_advance_5
+		requires = { oe_byz_missions_athens_V }
+		enabled = {
+			province:attica_province = {
+				any_location_in_province = {
+					count = all # FIX 2026-11-17: every_ is an effect iterator
+					owner = c:BYZ
+				}
+			}
+			at_war = no
+		}
+		modifier_while_progressing = {
+			monthly_gold_income = -5
+		}
+		duration = 90
+		on_persistent_completion = {
+			province:attica_province = {
+				every_location_in_province = {
+					limit = {
+						NOT = {
+							OR = {
+								this = location:atalanti
+								this = location:athens
+							}
+							
+						}
+					}
+			add_location_modifier = { 
+				modifier =  oe_byz_mission_IX_mod
+                days = -1
+				mode = add
+				}
+				}
+			}
+
+
+		}
+	}
+			oe_byz_missions_athens_X = {#雅典重建
+		icon = port_cost_distance_from_capital_choice_mil
+		requires = { 
+			oe_byz_missions_athens_VII
+			oe_byz_missions_athens_VIII
+			oe_byz_missions_athens_IX
+		}
+		enabled = {
+
+		}
+		duration = 0
+		on_persistent_completion = {
+			area:northern_greece_area = {
+				every_location_in_area = {
+					limit = {
+						owner = c:BYZ
+					}
+			add_location_modifier = { 
+				modifier =  oe_byz_mission_X_mod
+                years = 20
+				mode = add
+				}					
+				}
+			}
+		}
+	}
+		oe_byz_missions_athens_XI = {#栖代梦人的故乡
+		icon = gra_nasrid_art
+		requires = { oe_byz_missions_athens_VI }
+		enabled = {
+			NOT = {
+				country_exists = c:ACH
+			}
+			area:morea_area = {
+				any_location_in_area = {
+					percent >= 0.8
+					OR = {
+						owner = c:BYZ
+						owner = {
+							is_subject_of = c:BYZ
+						}
+					}
+				}
+			}
+			at_war = no
+		}
+		duration = 30
+		on_persistent_completion = {
+			area:morea_area = {
+				every_location_in_area = {
+					limit = {
+						owner = c:BYZ
+					}
+			add_location_modifier = { 
+				modifier =  oe_byz_mission_X_mod
+                years = 20
+				mode = add
+				}					
+				}
+			}
+		}
+	}
+		oe_byz_missions_athens_XII = {#南部光复
+		final = yes
+		icon = byz_autokratoria_rhomaion
+		requires = { oe_byz_missions_athens_XI
+	 }
+		enabled = {
+			at_war = no
+			area:morea_area = {
+				any_location_in_area = {
+					percent >= 0.8
+					OR = {
+						owner = c:BYZ
+						owner = {
+							is_subject_of = c:BYZ
+						}
+					}
+				}
+			}
+						area:northern_greece_area = {
+				any_location_in_area = {
+					percent >= 0.8
+					OR = {
+						owner = c:BYZ
+						owner = {
+							is_subject_of = c:BYZ
+						}
+					}
+				}
+			}
+			
+		}
+		duration = 0
+		on_persistent_completion = {
+	add_country_modifier = { modifier = oe_byz_missions_victory_mod years = 10 mode = add_and_extend }
+			custom_tooltip = {
+				text = oe_byz_missions_athens_XII_tt
+				area:morea_area = {
+					every_location_in_area = {
+						limit = {
+							owner = c:BYZ
+						}
+						every_pop = {
+							limit = {
+								religion = religion:catholic
+							}
+					change_pop_culture = culture:greek_culture
+					change_pop_religion = religion:orthodox							
+						}
+					}
+				}
+				area:aegean_archipelago_area = {
+					every_location_in_area = {
+						limit = {
+							owner = c:BYZ
+						}
+						every_pop = {
+							limit = {
+								religion = religion:catholic
+							}
+					change_pop_culture = culture:greek_culture
+					change_pop_religion = religion:orthodox							
+						}
+					}
+				}
+				area:northern_greece_area = {
+					every_location_in_area = {
+						limit = {
+							owner = c:BYZ
+						}
+						every_pop = {
+							limit = {
+								religion = religion:catholic
+							}
+					change_pop_culture = culture:greek_culture
+					change_pop_religion = religion:orthodox							
+						}
+					}
+				}
+			}
+		}
+	}
+}

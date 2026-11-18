@@ -1,0 +1,136 @@
+﻿oe_pacify_epirus = {
+    unique = yes
+    repeatable = no
+    origin = capital
+    waypoints = { thessaloniki preveza arta parga }
+    travel_mode = both
+    travel_speed = 1
+    should_end_at_last_waypoint = no
+    fail_if_no_leader = yes
+    category = military
+    icon = category_military
+    show_start_message = yes
+    show_end_message = no
+    ai = no
+
+    potential = {
+        tag = BYZ
+        NOT = { has_variable = oe_epi_expedition_used }
+    }
+    can_start = {
+        tag = BYZ
+        at_war = no
+        current_date > 1338.1.1
+        political_influence >= 10
+        oe_epi_subject_available = yes
+        NOT = { has_variable = oe_epi_expedition_used }
+    }
+    leader = {
+        owner = c:BYZ
+        is_alive = yes
+        is_adult = yes
+        is_expedition_leader = no
+        has_exploration = no
+        OR = {
+            has_estate = estate_type:crown_estate
+            has_estate = estate_type:nobles_estate
+        }
+    }
+    on_start = {
+        # Latch on launch, including runs which later fail. The generic action pays the 10 PI.
+        set_variable = oe_epi_expedition_used
+        set_variable = oe_epi_expedition_active
+        scope:expedition = {
+            set_variable = { name = oe_epi_stage value = 0 }
+            if = {
+                limit = { exists = expedition_leader }
+                if = {
+                    limit = { expedition_leader = character:byz_andronikos_iii_palaiologos }
+                    set_variable = oe_epi_led_by_andronikos
+                }
+                remove_commander = expedition_leader
+            }
+        }
+        # Capital may already be Thessaloniki; do not depend on a zero-length arrival.
+        if = {
+            limit = { scope:expedition = { expedition_current_location = location:thessaloniki } }
+            scope:expedition = { set_variable = { name = oe_epi_stage value = 1 } }
+            stall_expedition = scope:expedition
+            trigger_event_non_silently = oe_exp_epirus.1
+        }
+    }
+    on_monthly = {
+        # A vanished or emancipated subject cannot be annexed by a stale siege event.
+        if = {
+            limit = { NOT = { oe_epi_subject_available = yes } }
+            fail_expedition = scope:expedition
+        }
+    }
+    on_arrive_to_waypoint = {
+        if = {
+            limit = { NOT = { oe_epi_subject_available = yes } }
+            fail_expedition = scope:expedition
+        }
+        else_if = {
+            limit = { scope:location = location:thessaloniki }
+            if = {
+                limit = { scope:expedition = { var:oe_epi_stage = 0 } }
+                scope:expedition = { set_variable = { name = oe_epi_stage value = 1 } }
+                stall_expedition = scope:expedition
+                trigger_event_non_silently = oe_exp_epirus.1
+            }
+        }
+        else_if = {
+            limit = { scope:location = location:preveza }
+            scope:expedition = { set_variable = { name = oe_epi_stage value = 2 } }
+            stall_expedition = scope:expedition
+            trigger_event_non_silently = oe_exp_epirus.2
+        }
+        else_if = {
+            limit = { scope:location = location:arta }
+            scope:expedition = { set_variable = { name = oe_epi_stage value = 3 } }
+            stall_expedition = scope:expedition
+            trigger_event_non_silently = oe_exp_epirus.3
+        }
+        else_if = {
+            limit = { scope:location = location:parga }
+            # The last waypoint must stall before returning, or the native engine fails it.
+            scope:expedition = { set_variable = { name = oe_epi_stage value = 6 } }
+            stall_expedition = scope:expedition
+            trigger_event_non_silently = oe_exp_epirus.5
+        }
+        else = { fail_expedition = scope:expedition }
+    }
+    on_end = {
+        if = {
+            limit = {
+                NOT = { has_variable = oe_epi_expedition_completed }
+                scope:expedition = { has_variable = oe_epi_success }
+                oe_epi_subject_available = yes
+            }
+            set_variable = oe_epi_expedition_completed
+            remove_variable = oe_epi_expedition_active
+            annex_country = { country = c:EPI reason = Diplomatic transfer = yes }
+            location:arta = {
+                add_location_modifier = { modifier = oe_epirus_administrative_center years = 30 mode = replace }
+            }
+            # Settle the country first: zero health may invoke the existing succession events.
+            if = {
+                limit = { scope:expedition = { has_variable = oe_epi_led_by_andronikos } }
+                oe_byz_lose_andronikos_health = { AMOUNT = 1 }
+            }
+        }
+        remove_variable = oe_epi_expedition_active
+    }
+    on_fail = {
+        remove_variable = oe_epi_expedition_active
+        if = {
+            limit = {
+                NOT = { has_variable = oe_epi_expedition_completed }
+                NOT = { has_variable = oe_epi_expedition_failed }
+            }
+            set_variable = oe_epi_expedition_failed
+            trigger_event_non_silently = oe_exp_epirus.9
+        }
+    }
+}

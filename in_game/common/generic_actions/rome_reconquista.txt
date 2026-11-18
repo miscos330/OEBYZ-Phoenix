@@ -1,0 +1,1943 @@
+﻿
+# NEW 2026-11-17 Roman Reconquest: removed superseded paused blocks (see change record 20261117-eu5-mod-sandbox; git history keeps them).
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil = {#研发军械
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 		always = no
+# 	}
+# 
+# 	allow = {
+# 	trigger_if = {
+# 		limit = {
+# 		OR = {
+# 			has_variable = oe_rr_start_sci_mil_V_is_appear
+# 			has_variable = oe_rr_start_sci_mil_VI_is_appear
+# 			has_variable = oe_rr_start_sci_mil_VII_is_appear
+# 			has_variable = oe_rr_start_sci_mil_VIII_is_appear
+# 		}
+# 		}
+# 		current_age_or_later = { age = age_3_discovery }
+# 	}
+# 	trigger_if = {
+# 		limit = {
+# 		OR = {
+# 			has_variable = oe_rr_start_sci_mil_IX_is_appear
+# 			has_variable = oe_rr_start_sci_mil_X_is_appear
+# 			has_variable = oe_rr_start_sci_mil_XI_is_appear
+# 			has_variable = oe_rr_start_sci_mil_XII_is_appear
+# 		}
+# 		}
+# 		current_age_or_later = { age = age_4_reformation }
+# 	}		
+# 		scope:actor = {
+# 			at_war = no
+# 			has_raised_levies = no
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				NOT = { has_variable = oe_rr_start_sci_mil_I_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_II_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_III_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_IV_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_V_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_VI_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_VII_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_VIII_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_IX_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_X_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_XI_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_XII_start }
+# 				NOT = { has_variable = oe_rr_start_sci_mil_XIII_start }
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	select_trigger = {
+# 		looking_for_a = goods
+# 		target_flag = target_goods
+# 		name = "oe_rr_start_sci_mil_choose_text"
+# 		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			OR = {
+# 				root = goods:tools
+# 				root = goods:weaponry
+# 				root = goods:firearms
+# 				root = goods:cannons
+# 			}
+# 		}
+# 	}	
+# 	effect = { 
+# 
+# 				if = {#研发I
+# 					limit = {
+# 						scope:target_goods = goods:tools
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_I_is_appear
+# 						} }
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_I_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_I_start
+# 						trigger_event_silently = rome_reconquista.112
+# 						trigger_event_silently = rome_reconquista.102
+# 					}
+# 				}
+# 				if = {#研发II
+# 					limit = {
+# 						scope:target_goods = goods:weaponry
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_II_is_appear
+# 						} }
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_II_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_II_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.116
+# 						trigger_event_silently = rome_reconquista.118
+# 						trigger_event_silently = rome_reconquista.114
+# 					}
+# 				}	
+# 				if = {#研发III
+# 					limit = {
+# 						scope:target_goods = goods:firearms
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_III_is_appear
+# 						} }
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_III_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_III_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.108
+# 
+# 					}
+# 				}			
+# 				if = {#研发IV
+# 					limit = {
+# 						scope:target_goods = goods:cannons
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_IV_is_appear
+# 						} }
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_IV_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_IV_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.112
+# 						trigger_event_silently = rome_reconquista.118
+# 
+# 					}
+# 				}	
+# 				if = {#研发V
+# 					limit = {
+# 						scope:target_goods = goods:tools
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_V_is_appear
+# 						} }
+# 						scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_I_is_appear
+# 						}
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_V_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_V_start
+# 						trigger_event_silently = rome_reconquista.100
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.104
+# 						trigger_event_silently = rome_reconquista.106
+# 						trigger_event_silently = rome_reconquista.108
+# 						trigger_event_silently = rome_reconquista.114
+# 	
+# 					}
+# 				}	
+# 				if = {#研发VI
+# 					limit = {
+# 						scope:target_goods = goods:weaponry
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_VI_is_appear
+# 						} }
+# 											scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_II_is_appear
+# 						}
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_VI_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_VI_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.112
+# 					}
+# 				}	
+# 				if = {#研发VII
+# 					limit = {
+# 						scope:target_goods = goods:firearms
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_VII_is_appear
+# 						} }
+# 																	scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_III_is_appear
+# 						}
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_VII_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_VII_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.114
+# 						trigger_event_silently = rome_reconquista.110
+# 						trigger_event_silently = rome_reconquista.116
+# 					}
+# 				}	
+# 				if = {#研发VIII
+# 					limit = {
+# 						scope:target_goods = goods:cannons
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_VIII_is_appear
+# 						} }
+# 													scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_IV_is_appear
+# 						}
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_VIII_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_VIII_start
+# 						trigger_event_silently = rome_reconquista.106
+# 
+# 					}
+# 				}		
+# 				if = {#研发IX
+# 					limit = {
+# 						scope:target_goods = goods:tools
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_IX_is_appear
+# 						} }
+# 						scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_I_is_appear
+# 						}
+# 						scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_V_is_appear
+# 						}
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_IX_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_IX_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.112
+# 	
+# 					}
+# 				}	
+# 				if = {#研发X
+# 					limit = {
+# 						scope:target_goods = goods:weaponry
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_X_is_appear
+# 						} }
+# 											scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_II_is_appear
+# 						}
+# 											scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_VI_is_appear
+# 						}
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_X_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_X_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.112
+# 					}
+# 				}	
+# 				if = {#研发XI
+# 					limit = {
+# 						scope:target_goods = goods:firearms
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_XI_is_appear
+# 						} }
+# 																	scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_III_is_appear
+# 						}
+# 																	scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_VII_is_appear
+# 						}
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_XI_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_XI_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.112
+# 					}
+# 				}
+# 				if = {#研发XII
+# 					limit = {
+# 						scope:target_goods = goods:cannons
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_XII_is_appear
+# 						} }
+# 													scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_IV_is_appear
+# 						}
+# 													scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_VIII_is_appear
+# 						}
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_XII_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_XII_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.112
+# 
+# 					}
+# 				}	
+# 				if = {#研发XIII
+# 					limit = {
+# 						scope:target_goods = goods:tools
+# 						NOT = { scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_XIII_is_appear
+# 						} }
+# 						scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_I_is_appear
+# 						}
+# 						scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_V_is_appear
+# 						}
+# 						scope:actor = {
+# 							has_variable = oe_rr_start_sci_mil_IX_is_appear
+# 						}
+# 					}
+# 					scope:actor = {
+# 						add_country_modifier = { modifier = oe_rr_start_sci_mil_XIII_mod years = 1 mode = add_and_extend }
+# 						set_variable = oe_rr_start_sci_mil_XIII_start
+# 						trigger_event_silently = rome_reconquista.102
+# 						trigger_event_silently = rome_reconquista.112
+# 	
+# 					}
+# 				}	
+# 	}
+# }
+
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_I = {#研发止血钳
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_I_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_I_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_I_start
+# 
+# 			remove_variable = oe_rr_sci_greatwar_start
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_greatwar_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_I_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_II = {#研发II
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			has_variable = oe_rr_sci_landclimate_over
+# 			has_variable = oe_rr_sci_sparse_over
+# 			has_variable = oe_rr_sci_farm_over
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_II_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_II_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_II_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_landclimate_start
+# 			remove_variable = oe_rr_sci_landclimate_over
+# 			remove_variable = oe_rr_sci_sparse_start
+# 			remove_variable = oe_rr_sci_sparse_over
+# 			remove_variable = oe_rr_sci_farm_start
+# 			remove_variable = oe_rr_sci_farm_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_II_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_III = {#研发III
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			has_variable = oe_rr_sci_romsea_over
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_III_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_III_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_III_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_romsea_start
+# 			remove_variable = oe_rr_sci_romsea_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_III_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_IV = {#研发IV
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			
+# 			has_variable = oe_rr_sci_farm_over
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_IV_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_IV_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_IV_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_greatwar_start
+# 			remove_variable = oe_rr_sci_greatwar_over
+# 			remove_variable = oe_rr_sci_farm_start
+# 			remove_variable = oe_rr_sci_farm_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_IV_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_V = {#研发V
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			has_variable = oe_rr_sci_landclimate_over
+# 			has_variable = oe_rr_sci_mont_over
+# 			has_variable = oe_rr_sci_wood_over  
+# 			has_variable = oe_rr_sci_wetpla_over
+# 			has_variable = oe_rr_sci_romsea_over
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_V_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_V_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_V_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_landclimate_start
+# 			remove_variable = oe_rr_sci_landclimate_over
+# 			remove_variable = oe_rr_sci_mont_start
+# 			remove_variable = oe_rr_sci_mont_over
+# 			remove_variable = oe_rr_sci_wood_start
+# 			remove_variable = oe_rr_sci_wood_over
+# 			remove_variable = oe_rr_sci_wetpla_start
+# 			remove_variable = oe_rr_sci_wetpla_over
+# 			remove_variable = oe_rr_sci_romsea_start
+# 			remove_variable = oe_rr_sci_romsea_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_V_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_VI = {#研发VI
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_VI_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_VI_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_VI_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_greatwar_start
+# 			remove_variable = oe_rr_sci_greatwar_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_VI_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_VII = {#研发VII
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			has_variable = oe_rr_sci_sparse_over
+# 			has_variable = oe_rr_sci_sandsea_over
+# 			has_variable = oe_rr_sci_landclimate_over
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_VII_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_VII_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_VII_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_sparse_start
+# 			remove_variable = oe_rr_sci_sparse_over
+# 			remove_variable = oe_rr_sci_sandsea_start
+# 			remove_variable = oe_rr_sci_sandsea_over
+# 			remove_variable = oe_rr_sci_landclimate_start
+# 			remove_variable = oe_rr_sci_landclimate_over
+# 		
+# 			set_variable = oe_rr_start_sci_mil_VII_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_VIII = {#研发VIII
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_wetpla_over
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_VIII_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_VIII_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_VIII_start
+# 
+# 			remove_variable = oe_rr_sci_wetpla_start
+# 			remove_variable = oe_rr_sci_wetpla_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_VIII_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_IX = {#研发IX
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_IX_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_IX_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_IX_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_greatwar_start
+# 			remove_variable = oe_rr_sci_greatwar_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_IX_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_X = {#研发X
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_X_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_X_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_X_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_greatwar_start
+# 			remove_variable = oe_rr_sci_greatwar_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_X_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_XI = {#研发XI
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_XI_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_XI_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_XI_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_greatwar_start
+# 			remove_variable = oe_rr_sci_greatwar_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_XI_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_XII = {#研发XII
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_XII_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_XII_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_XII_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_greatwar_start
+# 			remove_variable = oe_rr_sci_greatwar_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_XII_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_start_sci_mil_XIII = {#研发XIII
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			has_variable = oe_rr_sci_plat_over
+# 			
+# 			at_war = no
+# 			has_raised_levies = no
+# 
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_start_sci_mil_XIII_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				has_variable = oe_rr_start_sci_mil_XIII_start
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_start_sci_mil_I_tt
+# 		scope:actor = {
+# 			remove_variable = oe_rr_start_sci_mil_XIII_start
+# 
+# 			remove_variable = oe_rr_sci_plat_start
+# 			remove_variable = oe_rr_sci_plat_over
+# 			remove_variable = oe_rr_sci_greatwar_start
+# 			remove_variable = oe_rr_sci_greatwar_over
+# 
+# 			set_variable = oe_rr_start_sci_mil_XIII_is_appear
+# 			
+# 		}
+# 	}
+# 	}
+# }
+
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_build_policy_org = {#帝国行政体系复兴
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 		always = no
+# 	}
+# 
+# 	allow = {
+# 	
+# 		
+# 		scope:actor = {
+# 			at_war = no
+# 			has_raised_levies = no
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_build_policy_org_cooldown_key
+# 		months = 12
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			scope:actor = {
+# 				NOT = { has_variable = oe_rr_build_policy_org_over  }
+# 					tag = BYZ}
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 
+# 		}
+# 	}
+# 
+# 	effect = { 
+# 			custom_tooltip = {
+# 				text = oe_rr_build_policy_org_tt
+# 				scope:actor = {
+# 					set_variable = oe_rr_build_policy_org_over
+# 					
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # set_variable = {
+# # 						name = oe_corruption
+# # 						value = 10
+# # 						min = 0
+# # 						max = 100
+# # 					}
+# 
+# 				}
+# 				location:constantinople = {
+# 				create_building_country_in_location = {
+# 							religion = religion:orthodox
+# 							culture = culture:greek_culture
+# 							subject_type = subject_type:oe_real_gov
+# 							overlord = c:BYZ
+# 							ruler = random
+# 							reforms = {
+# 								
+# 							}
+# 							hidden_effect = {
+# 						
+# 						change_heir_selection = heir_selection:oe_real_gov_elect
+# 						change_government_type = government_type:republic
+# 							}
+# 							save_scope_as = target_building_country_I
+# 							name = "oe_byz_empire_tax_committee"
+# 				}
+# 				construct_building = {
+# 					building_type = building_type:oe_gov_burchen_building
+# 					owner = scope:target_building_country_I
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 				create_building_country_in_location = {
+# 							religion = religion:orthodox
+# 							culture = culture:greek_culture
+# 							subject_type = subject_type:oe_real_gov
+# 							overlord = c:BYZ
+# 							ruler = random
+# 							reforms = {
+# 								
+# 							}
+# 							hidden_effect = {
+# 						add_reform = government_reform:oe_real_gov_reform_building_com
+# 						change_heir_selection = heir_selection:oe_real_gov_elect
+# 						change_government_type = government_type:republic
+# 							}
+# 							save_scope_as = target_building_country_II
+# 							name = "oe_byz_empire_building_committee"
+# 				}
+# 				construct_building = {
+# 					building_type = building_type:oe_gov_burchen_building
+# 					owner = scope:target_building_country_II
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 				create_building_country_in_location = {
+# 							religion = religion:orthodox
+# 							culture = culture:greek_culture
+# 							subject_type = subject_type:oe_real_gov
+# 							overlord = c:BYZ
+# 							ruler = random
+# 							reforms = {
+# 								
+# 							}
+# 							hidden_effect = {
+# 						change_heir_selection = heir_selection:oe_real_gov_elect
+# 						change_government_type = government_type:republic
+# 
+# 							}
+# 							save_scope_as = target_building_country_III
+# 							name = "oe_byz_empire_culture_committee"
+# 				}
+# 				construct_building = {
+# 					building_type = building_type:oe_gov_burchen_building
+# 					owner = scope:target_building_country_III
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 				create_building_country_in_location = {
+# 							religion = religion:orthodox
+# 							culture = culture:greek_culture
+# 							subject_type = subject_type:oe_real_gov
+# 							overlord = c:BYZ
+# 							ruler = random
+# 							reforms = {
+# 								
+# 							}
+# 							hidden_effect = {
+# 
+# 						change_heir_selection = heir_selection:oe_real_gov_elect
+# 						change_government_type = government_type:republic
+# 							}
+# 							save_scope_as = target_building_country_IV
+# 							name = "oe_byz_empire_yuanlaoyuan_committee"
+# 				}
+# 				construct_building = {
+# 					building_type = building_type:oe_gov_burchen_building
+# 					owner = scope:target_building_country_IV
+# 					cost_multiplier = 0
+# 					cost_multiplier_reason = "game_concept_event"
+# 				}
+# 				
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # create_building_country_in_location = {
+# # 							religion = religion:orthodox
+# # 							culture = culture:greek_culture
+# # 							subject_type = subject_type:oe_real_gov
+# # 							overlord = c:BYZ
+# # 							ruler = random
+# # 							reforms = {
+# # 								oe_real_gov_reform_decline_corropution
+# # 							}
+# # 							hidden_effect = {
+# # 
+# # 						change_heir_selection = heir_selection:oe_real_gov_elect
+# # 						change_government_type = government_type:republic
+# # 							}
+# # 							save_scope_as = target_building_country_V
+# # 							name = "oe_byz_empire_corruption_org_committee"
+# # 				}
+# 
+# 				
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # construct_building = {
+# # 					building_type = building_type:oe_gov_burchen_building
+# # 					owner = scope:target_building_country_V
+# # 					cost_multiplier = 0
+# # 					cost_multiplier_reason = "game_concept_event"
+# # 				}
+# 
+# 				}
+# 				scope:target_building_country_III = {
+# 					add_reform = government_reform:oe_real_gov_reform_romenization_org
+# 				}
+# 				create_international_organization = {
+#    				type = international_organization_type:oe_byz_policy_org
+# 						add_country_to_international_organization = c:BYZ
+# 						add_country_to_international_organization = scope:target_building_country_I
+# 						add_country_to_international_organization = scope:target_building_country_II
+# 						add_country_to_international_organization = scope:target_building_country_III
+# 						add_country_to_international_organization = scope:target_building_country_IV
+# 						
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # add_country_to_international_organization = scope:target_building_country_V
+# 
+# 						set_leader_country = c:BYZ
+# 
+# 			international_organization_add_special_status = {
+# 				type = special_status:oe_byz_policy_org_real_empire_king
+# 				country = c:BYZ
+# 			}
+# 			international_organization_add_special_status = {
+# 				type = special_status:oe_byz_policy_org_real_power_country
+# 				country = scope:target_building_country_I
+# 			}
+# 			international_organization_add_special_status = {
+# 				type = special_status:oe_byz_policy_org_real_power_country
+# 				country = scope:target_building_country_II
+# 			}
+# 			international_organization_add_special_status = {
+# 				type = special_status:oe_byz_policy_org_real_power_country
+# 				country = scope:target_building_country_III
+# 			}
+# 			
+# # PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# # international_organization_add_special_status = {
+# # 				type = special_status:oe_byz_policy_org_real_power_country
+# # 				country = scope:target_building_country_V
+# # 			}
+# 
+# 			international_organization_add_special_status = {
+# 				type = special_status:oe_byz_policy_org_low_power_country
+# 				country = scope:target_building_country_IV
+# 			}
+# 				}
+# 			}
+# 
+# 	}
+# }
+
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_destiny_of_albania = {#阿尔巴尼亚人的命运
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 		always = no
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			at_war = no
+# 			has_raised_levies = no
+# 			own_entire_province = province_definition:albania_province
+# 		}
+# 
+# 			
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_destiny_of_albania_cooldown_key
+# 		years = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 			scope:actor = {tag = BYZ
+# 		NOT = {has_variable = oe_rr_destiny_of_albania_over }
+# 		own_entire_province = province_definition:albania_province
+# 		}
+# 
+# 		}
+# 	}
+# 
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_destiny_of_albania_tt
+# 			scope:actor = {
+# 				set_variable = oe_rr_destiny_of_albania_over
+# 			}
+# 			province_definition:albania_province = {
+# 				every_location_in_province_definition = {
+# 					limit = {
+# 						owner = scope:actor
+# 					}
+# 					every_pop = {
+# 						limit = {
+# 							owner = scope:actor
+# 							culture = culture:albanian
+# 						}
+# 					split_pop = {
+# 						fraction = 0.8
+# 						culture = culture:oe_albanian_greek_culture}	
+# 					}
+# 					add_location_modifier = {
+# 				modifier =  oe_byz_loc_thief_albania
+#                 days = -1
+# 				mode = add						
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# }
+
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_rr_destiny_of_tur = {#突厥人的命运
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 		always = no
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			at_war = no
+# 			has_raised_levies = no
+# 		}
+# 		region:anatolia_region = {
+# 			any_location_in_region = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_rr_destiny_of_tur_cooldown_key
+# 		years = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 			scope:actor = {tag = BYZ
+# 		NOT = {has_variable = oe_rr_destiny_of_tur_over }
+# 		}
+# 		}
+# 	}
+# 
+# 	effect = { 
+# 		custom_tooltip = {
+# 			text = oe_rr_destiny_of_tur_tt
+# 			scope:actor = {
+# 				set_variable = oe_rr_destiny_of_tur_over
+# 			}
+# 			region:anatolia_region = {
+# 				every_location_in_region = {
+# 					limit = {
+# 						owner = scope:actor
+# 					}
+# 					every_pop = {
+# 						limit = {
+# 							owner = scope:actor
+# 							culture = culture:turkish_culture
+# 						}
+# 					split_pop = {
+# 						fraction = 0.8
+# 						culture = culture:oe_tur_greek_culture}	
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# }
+
+
+
+# PAUSED 2026-09-23: capital page and content consolidation.
+# oe_end = {#罗马光复
+# 	type = situation
+# 	show_message = no
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			at_war = no
+# 			has_raised_levies = no
+# 		}
+# 		region:anatolia_region = {
+# 			any_location_in_region = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					region:balkan_region = {
+# 			any_location_in_region = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					region:italy_region = {
+# 			any_location_in_region = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					region:france_region = {
+# 			any_location_in_region = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					region:iberia_region = {
+# 			any_location_in_region = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					region:maghreb_region = {
+# 			any_location_in_region = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					region:egypt_region = {
+# 			any_location_in_region = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					area:levant_area = {
+# 			any_location_in_area = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					area:west_country_area = {
+# 			any_location_in_area = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					area:home_counties_area = {
+# 			any_location_in_area = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					area:midlands_area = {
+# 			any_location_in_area = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					area:east_anglia_area = {
+# 			any_location_in_area = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					area:northumbria_area = {
+# 			any_location_in_area = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					area:wales_area = {
+# 			any_location_in_area = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					area:transdanubia_area = {
+# 			any_location_in_area = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 					area:armenian_highlands_area = {
+# 			any_location_in_area = {
+# 				percent = 1
+# 				OR = {
+# 					owner ?= scope:actor
+# 					has_owner = no
+# 					is_ownable = no
+# 				}
+# 			}
+# 		}
+# 	}
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 	price = price:oe_byz_create_theme_price
+# 
+# 	cooldown = {
+# 		type = oe_end_cooldown_key
+# 		years = 60
+# 	}
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 			scope:actor = {tag = BYZ
+# 		}
+# 		}
+# 	}
+# 	effect = {
+# 		set_global_variable = rome_reconquista_is_end
+# 		scope:actor = {
+# 			trigger_event_silently = rome_reconquista.1000
+# 		}
+# 	}
+# }
+
+
+# PAUSED 2026-09-24: retained as comments at user request.
+# oe_byz_policy_org_orthdox_win = {#宣布东西方教会归一
+# 	type = internationalorganization
+# 	
+# 	potential = {
+# 	}
+# 
+# 	allow = {
+# 		scope:actor = {
+# 			tag = BYZ
+# 			owns = location:alexandria
+# 			owns = location:constantinople
+# 			owns = location:rome
+# 			owns = location:antioch
+# 			owns = location:jerusalem 
+# 			
+# 		}
+# 
+# 	}
+# 
+# 
+# 
+# 	automation_tick = never
+# 	automation_tick_frequency = 12
+# 
+# 	cooldown = {
+# 		type = oe_byz_policy_org_orthdox_win_cooldown_key
+# 		months = 60
+# 	}
+# 
+# 
+# 	select_trigger = {
+# 		looking_for_a = situation
+# 		interaction_source_list = {
+# 			situation:rome_reconquista = {
+# 				add_to_list = source
+# 			}
+# 		}
+# 		target_flag = recipient
+# 		name = "choose_situation"
+# 		column = {
+# 			data = name
+# 		}
+# 		visible = {
+# 			situation:rome_reconquista = this
+# 			situation_is_active = yes
+# 		scope:actor = {
+# 			tag = BYZ
+# 			NOT = { has_variable = oe_byz_policy_org_orthdox_win_over }
+# 		}
+# 		}
+# 	}
+# 
+# 	effect = {
+# 		custom_tooltip = {
+# 			text = oe_byz_policy_org_orthdox_win_text
+# 		
+# 		scope:actor = {
+# 				set_variable = oe_byz_policy_org_orthdox_win_over
+# 				add_religious_influence = 100
+# 		}
+# 		set_global_variable = oe_orthodox_identity_movement_I
+# 		}
+# 	}
+# 
+# 	ai_will_do = {
+# 	}
+# }
+
+
+
+
+
+

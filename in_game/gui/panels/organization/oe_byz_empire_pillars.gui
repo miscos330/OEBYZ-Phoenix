@@ -1,0 +1,1696 @@
+﻿# Local IO theme. Native court relocation uses a separate BYZ-only economy visibility guard.
+organization_panel = {
+    blockoverride "abilities_widget" {}
+    blockoverride "country_header_character_visible" { visible = no }
+    blockoverride "io_overview_actions" {}
+    blockoverride "organization_overview_payments" {}
+    blockoverride "organization_custom_tabs" {
+        button_secondary_tab_alt = {
+            using = layoutpolicy_expanding
+            blockoverride "tab_text" { text = "OE_PILLARS_EDICTS" }
+            tooltip = "OE_PILLARS_EDICTS_DESC"
+            onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_edicts')]"
+            onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+            onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+            down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_edicts')]"
+        }
+    
+button_secondary_tab_alt = {
+        using = layoutpolicy_expanding
+        blockoverride "tab_text" { text = "OE_PILLARS_REFORMS" }
+        tooltip = "OE_PILLARS_REFORMS_DESC"
+        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_reforms')]"
+            onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+            onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_reforms')]"
+    }
+    # NEW 2026-11-17 theme-rework UI-1: 军区 tab (page body in gui/shared/oe_theme_ui.gui).
+    button_secondary_tab_alt = {
+        using = layoutpolicy_expanding
+        blockoverride "tab_text" { text = "OE_PILLARS_THEMES" }
+        tooltip = "OE_PILLARS_THEMES_DESC"
+        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_themes')]"
+        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_themes')]"
+    }
+    # NEW 2026-11-18 territory rework UI: 附庸 tab (page body in gui/shared/oe_vassal_ui.gui, gen_territory_ui.py).
+    button_secondary_tab_alt = {
+        using = layoutpolicy_expanding
+        blockoverride "tab_text" { text = "OE_PILLARS_VASSALS" }
+        tooltip = "OE_PILLARS_VASSALS_DESC"
+        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_vassals')]"
+        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_vassals')]"
+    }
+
+        
+}
+    blockoverride "organization_custom_tabs_right" {
+        button_secondary_tab_alt = {
+            using = layoutpolicy_expanding
+            visible = "[GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+            blockoverride "tab_text" { text = "OE_COURT_TITLE" }
+            tooltip = "OE_COURT_DESC"
+            onclick = "[GetScriptedGui('oe_nf_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+            onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_court')]"
+            down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_court')]"
+        }
+    }
+    blockoverride "organization_custom_contents" {
+        scrollarea = {
+            using = layoutpolicy_expanding
+            visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_edicts')]"
+            scrollbarpolicy_horizontal = always_off
+            scrollbar_vertical = { using = Scrollbar_Vertical }
+            scrollwidget = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 16 12 }
+                    spacing = 14
+                    
+                    card_common = {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_PILLARS_MILITARY_EDICTS" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = {
+                layoutpolicy_horizontal = expanding margin = { 12 12 } spacing = 12
+                
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 10
+                    datamodel = "[InternationalOrganizationsView.GetActions]"
+                    item = {
+                        widget = {
+                            visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_found_all_action'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_move_seat_action'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_order_works'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_focus'),Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_settle_soldiers'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_fortify'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_levy'),EqualTo_string(GenericAction.GetKey, 'oe_tbd_hire'))))),Or(EqualTo_string(GenericAction.GetKey, 'oe_create_theme_in_italy'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_convert_theme_type'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_enact_rum_pronoia'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_reinforce_theme'),Or(EqualTo_string(GenericAction.GetKey, 'oe_create_theme'),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_abolish_theme'),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_abolish_army'),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_abolish_ruler'),EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_create_pronia_infastry'))))))))))))))]"
+                            using = oe_edict_card
+                        }
+                    }
+                }
+            }
+        }
+    }
+card_common = {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_bank_org.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_PILLARS_FISCAL_EDICTS" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = {
+                layoutpolicy_horizontal = expanding margin = { 12 12 } spacing = 12
+                
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 10
+                    datamodel = "[InternationalOrganizationsView.GetActions]"
+                    item = {
+                        widget = {
+                            visible = "[Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_deposit_purse'), EqualTo_string(GenericAction.GetKey, 'oe_pillars_withdraw_purse')), Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_ban_foreign_banks'),Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_borrow_chartered_bank'),EqualTo_string(GenericAction.GetKey, 'oe_pillars_found_chartered_bank')),Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_move_debt'),EqualTo_string(GenericAction.GetKey, 'oe_byz_rebuild_money')),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_phoe_invest_army'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tsn_levy_request'),EqualTo_string(GenericAction.GetKey, 'oe_tcd_send')))))))]"
+                            using = oe_edict_card
+                        }
+                    }
+                }
+            }
+        }
+    }
+card_common = {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_pillars_authority.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_PILLARS_CIVIL_EDICTS" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = {
+                layoutpolicy_horizontal = expanding margin = { 12 12 } spacing = 12
+
+                # Territory exchange disabled at user request (2026-11-01).
+                
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 10
+                    datamodel = "[InternationalOrganizationsView.GetActions]"
+                    item = {
+                        widget = {
+                            visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_upgrade_metropolis'),Or(Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_eastern_themes'),GetScriptedGui('oe_create_eastern_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_austrian_themes'),GetScriptedGui('oe_create_austrian_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),And(EqualTo_string(GenericAction.GetKey, 'oe_create_swiss_themes'),GetScriptedGui('oe_create_swiss_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)))),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_settings'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_bread_and_circuses'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_reward_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_adjust_imperial_style'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_integrate_roman_alliance'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tm_provincialise'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_grant_roman_law'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_grant_despotate'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_recall_despot'),Or(EqualTo_string(GenericAction.GetKey, 'oe_trg_appoint'),Or(EqualTo_string(GenericAction.GetKey, 'oe_trg_dismiss'),EqualTo_string(GenericAction.GetKey, 'oe_s37_crown_coemperor'))))))))))))))]"
+                            using = oe_edict_card
+                        }
+                    }
+                }
+            }
+        }
+    }
+                }
+            }
+        }
+    
+# NEW 2026-11-17 theme-rework UI-1: 军区 page.
+widget = {
+        using = layoutpolicy_expanding
+        visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_themes')]"
+        using = oe_theme_ui_page
+    }
+# NEW 2026-11-18 territory rework UI: 附庸 page.
+widget = {
+        using = layoutpolicy_expanding
+        visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_vassals')]"
+        using = oe_vassal_ui_page
+    }
+widget = {
+        using = layoutpolicy_expanding
+        visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_reforms')]"
+        background = { texture = "gfx/interface/component_decoration/ios/oe_pillars/imperial_reforms_background.dds" }
+        scrollarea = {
+            size = { 100% 100% }
+            scrollbarpolicy_horizontal = always_off
+            scrollbar_vertical = { using = Scrollbar_Vertical }
+            scrollwidget = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding margin = { 28 24 } spacing = 14
+                    card_common = {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_IR_GOVERNMENT_GROUP" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = {
+                layoutpolicy_horizontal = expanding margin = { 10 10 } spacing = 8
+                
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_offices')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_offices_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_offices_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_central')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_central_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_central_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_succession')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_succession_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_succession_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_reclaim_privileges')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_reclaim_privileges_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_reclaim_privileges_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_law')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_law_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_law_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_faith')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_faith_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_faith_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+            }
+        }
+    }
+card_common = {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_IR_ECONOMY_GROUP" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = {
+                layoutpolicy_horizontal = expanding margin = { 10 10 } spacing = 8
+                
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_expel')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_expel_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_expel_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_guilds')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_guilds_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_guilds_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_coinage')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_coinage_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_coinage_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_east')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_east_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_east_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_banking')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_banking_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_banking_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_corpus')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_corpus_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_corpus_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+            }
+        }
+    }
+card_common = {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_IR_ARMY_GROUP" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = {
+                layoutpolicy_horizontal = expanding margin = { 10 10 } spacing = 8
+                text_single = { text = "OE_IR_ARMY_PROGRESS" fontsize = 18 tooltip = "OE_IR_SCORE_RULES" }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_army_1')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_army_1_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_army_1_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_army_2')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_army_2_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_army_2_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_army_3')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_army_3_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_army_3_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_italian_theme')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_italian_theme_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_italian_theme_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_expand_hetaireia')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_expand_hetaireia_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_expand_hetaireia_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_artillery')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_artillery_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_artillery_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 62 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        datacontext = "[GetGenericAction('oe_ir_sea')]"
+        hbox = {
+            size = { 100% 100% } margin = { 10 9 } spacing = 12
+            widget = {
+                size = { 32 32 }
+                tooltip = "[SelectLocalization(GetCountry('BYZ').MakeScope.GetVariable('oe_ir_sea_done').IsSet, 'OE_IR_COMPLETE', 'OE_IR_PENDING')]"
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_bg_square.dds" }
+                icon = { size = { 100% 100% } texture = "gfx/interface/buttons/checkbox_frame_square.dds" }
+                icon = {
+                    size = { 28 28 } parentanchor = center widgetanchor = center
+                    texture = "gfx/interface/icons/diplomatic_status/tick_accept.dds"
+                    visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_ir_sea_done').IsSet]"
+                }
+            }
+            button_regular_diamond = {
+                size = { -1 42 }
+                layoutpolicy_horizontal = expanding
+                fontsize = 18
+                text = "[GenericAction.GetNameWithNoTooltip]"
+                tooltipwidget = { using = io_generic_action_button_tooltip }
+                visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                scripted_action_tooltip = {
+                    click_type = left
+                    click_mode = single
+                    actor = "[InternationalOrganizationsView.GetPlayer]"
+                    action_name = "[GenericAction.GetKey]"
+                    parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                }
+            }
+        }
+    }
+            }
+        }
+    }
+                }
+            }
+        }
+    }
+
+        scrollarea = {
+            using = layoutpolicy_expanding
+            visible = "[And(InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_court'), GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+            scrollbarpolicy_horizontal = always_off
+            scrollbar_vertical = { using = Scrollbar_Vertical }
+            scrollwidget = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 4 4 } spacing = 0
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        expand = {}
+                        oe_court_unified_panel = {}
+                        expand = {}
+                    }
+                    widget = { size = { 1 14 } }
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        expand = {}
+                        oe_nf_family_panel = {}
+                        expand = {}
+                    }
+
+                    widget = { size = { 1 14 } }
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        expand = {}
+                        oe_nf_actions_panel = {}
+                        expand = {}
+                    }
+
+                    
+# PAUSED 2026-09-26: Noble politics paused by user; retained for possible restoration.
+# widget = { size = { 1 14 } }
+
+                    
+# PAUSED 2026-09-26: Noble politics paused by user; retained for possible restoration.
+# hbox = {
+#                         layoutpolicy_horizontal = expanding
+#                         expand = {}
+#                         oe_np_house_panel = {}
+#                         expand = {}
+#                     }
+
+                    
+# PAUSED 2026-09-26: Noble politics paused by user; retained for possible restoration.
+# widget = { size = { 1 14 } }
+
+                    
+# PAUSED 2026-09-26: Noble politics paused by user; retained for possible restoration.
+# hbox = {
+#                         layoutpolicy_horizontal = expanding
+#                         expand = {}
+#                         oe_np_ranking_panel = {}
+#                         expand = {}
+#                     }
+
+                }
+            }
+        }
+}
+    blockoverride "organization_body_decoration" {}
+    blockoverride "organization_overview_tab_visible" { visible = yes }
+    blockoverride "organization_treasury_tab_visible" { visible = no }
+    blockoverride "organization_treasury_content_visible" { visible = no }
+    blockoverride "organization_laws_tab_visible" { visible = no }
+    blockoverride "organization_custom_tab_visible" { visible = yes }
+    blockoverride "organization_custom_tab_text" { text = "OE_PILLARS_TRANSFERS" }
+    blockoverride "organization_custom_tab_tooltip" { tooltip = "OE_PILLARS_TRANSFERS_DESC" }
+    blockoverride "organization_custom_content_visible" {
+        visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'custom')]"
+    }
+    blockoverride "organization_custom_content" {
+        scrollarea = {
+            layoutpolicy_horizontal = expanding
+            layoutpolicy_vertical = expanding
+            scrollbarpolicy_horizontal = always_off
+            scrollbar_vertical = { using = Scrollbar_Vertical }
+            scrollwidget = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 10 8 }
+                    spacing = 10
+                    text_single = { text = "OE_PILLARS_TRANSFERS_DESC" fontsize = 17 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                    card_common = {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_PILLARS_FINANCE_RECEIPTS" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = { layoutpolicy_horizontal = expanding margin = { 10 10 } spacing = 10
+            text_single = { text = "OE_PILLARS_PURSE_INCOME" fontsize = 17 }
+oe_pillars_payment_ledger = {}
+            }
+        }
+    }
+card_common = {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+        blockoverride "common_header_text_full" { text_single = { layoutpolicy_horizontal = expanding align = center autoresize = no text = "OE_PILLARS_FINANCE_COURT" fontsize = 18 } }
+        blockoverride "common_bottom_content" {
+            vbox = { layoutpolicy_horizontal = expanding margin = { 10 10 } spacing = 10
+            oe_pillars_authority_investment = {}
+            oe_pillars_egypt_supply_slider = {}
+oe_pillars_native_court = {}
+            }
+        }
+    }
+card_common = {
+        visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_settings_bureaucracy_restored').IsSet]"
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_PILLARS_FINANCE_OFFICES" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = { layoutpolicy_horizontal = expanding margin = { 10 10 } spacing = 10
+            oe_pillars_native_bureaucracy = {}
+            }
+        }
+    }
+
+card_common = {
+        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+        blockoverride "common_header_text_full" { text_single = { text = "OE_PILLARS_FINANCE_THEMES" fontsize = 20 } }
+        blockoverride "common_bottom_content" {
+            vbox = { layoutpolicy_horizontal = expanding margin = { 10 10 } spacing = 10
+            oe_pillars_transfer_sliders = {}
+            }
+        }
+    }
+                }
+            }
+        }
+    }
+    blockoverride "organization_panel_overview_visible" {
+        visible = "[Or(InternationalOrganizationsView.Vars.NotExistOrHasValue('organizations', 'overview'), And(InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_court'), Not(GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))))]"
+    }
+    blockoverride "organization_members_tab_visible" { visible = no }
+    blockoverride "organization_members_tab_down" {
+        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'members')]"
+    }
+    blockoverride "organization_panel_members_visible" { visible = no }
+    
+    
+    # Painting-only header. Resources, laws and history are in the overview below.
+    blockoverride "organization_art_header" {
+        widget = {
+            visible = "[Not(And(InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_court'), GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)))]"
+            layoutpolicy_horizontal = expanding
+            size = { -1 220 }
+            allow_outside = yes
+            icon = {
+                size = { 100% 100% }
+                texture = "gfx/interface/illustrations/international_organization_types/oe_byz_empire_pillars.dds"
+                spriteType = stretched
+                alwaystransparent = yes
+            }
+            icon = {
+                size = { 100% 48 }
+                parentanchor = hcenter|top
+                position = { 0 -12 }
+                texture = "gfx/interface/component_decoration/ios/oe_pillars/cornice.dds"
+                alwaystransparent = yes
+            }
+        }
+    }
+    blockoverride "ios_common_subheader" {}
+    blockoverride "organization_overview_list_custom_top_extra" {
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            spacing = 8
+            
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 108 }
+                spacing = 6
+                margin = { 7 5 }
+                widget = {
+                    layoutpolicy_horizontal = expanding
+                    layoutstretchfactor_horizontal = 1
+                    size = { -1 102 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
+                    tooltip = "OE_PILLARS_PURSE_DESC"
+                    vbox = {
+                        size = { 100% 100% }
+                        margin = { 10 6 }
+                        spacing = 3
+                        hbox = {
+                            spacing = 5
+                            widget = {
+                                size = { 28 28 }
+                                icon = { size = { 19 19 } parentanchor = center texture = "gfx/interface/icons/resources/gold.dds" }
+                                icon = { size = { 28 28 } texture = "gfx/interface/component_decoration/ios/oe_pillars/medallion.dds" alwaystransparent = yes }
+                            }
+                            text_single = { text = "OE_PILLARS_PRIVY_PURSE" fontsize = 16 }
+                        }
+                        text_single = {
+                            text = "[InternationalOrganizationsView.GetInternationalOrganization.GetCurrencyValue('gold')]"
+                            fontsize = 20
+                            tooltipwidget = { using = IOGoldResourceTooltip }
+                        }
+                        text_single = { text = "OE_PILLARS_PURSE_MONTHLY_CHANGE" fontsize = 16 }
+                    }
+                }
+                widget = {
+                    layoutpolicy_horizontal = expanding
+                    layoutstretchfactor_horizontal = 1
+                    size = { -1 102 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
+                    tooltip = "oe_pillars_authority_desc"
+                    vbox = {
+                        size = { 100% 100% }
+                        margin = { 10 6 }
+                        spacing = 3
+                        hbox = {
+                            spacing = 5
+                            widget = {
+                                size = { 28 28 }
+                                icon = { size = { 19 19 } parentanchor = center texture = "gfx/interface/icons/international_organizations/oe_pillars_authority.dds" }
+                                icon = { size = { 28 28 } texture = "gfx/interface/component_decoration/ios/oe_pillars/medallion.dds" alwaystransparent = yes }
+                            }
+                            text_single = { text = "oe_pillars_authority" fontsize = 16 }
+                        }
+                        hbox = {
+                            spacing = 8
+                            text_single = {
+                                raw_text = "[InternationalOrganizationsView.GetInternationalOrganization.GetVariable('oe_pillars_authority')|1] / 100"
+                                fontsize = 20
+                            }
+
+                        }
+                        text_single = { text = "OE_PILLARS_AUTHORITY_MONTHLY_CHANGE" fontsize = 16 tooltip = "OE_PILLARS_AUTHORITY_COURT_BREAKDOWN" }
+                    }
+                }
+                widget = {
+                    layoutpolicy_horizontal = expanding
+                    layoutstretchfactor_horizontal = 1
+                    size = { -1 102 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
+                    tooltip = "OE_PILLARS_OPINION_BANDS"
+                    vbox = {
+                        size = { 100% 100% }
+                        margin = { 10 6 }
+                        spacing = 3
+                        hbox = {
+                            spacing = 5
+                            widget = {
+                                size = { 28 28 }
+                                icon = { size = { 19 19 } parentanchor = center texture = "gfx/interface/icons/international_organizations/oe_pillars_public_opinion.dds" tooltip = "OE_PILLARS_OPINION_BANDS" }
+                                icon = { size = { 28 28 } texture = "gfx/interface/component_decoration/ios/oe_pillars/medallion.dds" alwaystransparent = yes }
+                            }
+                            text_single = { text = "oe_pillars_public_opinion" fontsize = 16 }
+                        }
+                        text_single = {
+                            raw_text = "[InternationalOrganizationsView.GetInternationalOrganization.GetVariable('oe_pillars_public_opinion')|1] / 100"
+                            fontsize = 20
+                        }
+                        text_single = {
+                            text = "OE_PILLARS_OPINION_MONTHLY_CHANGE"
+                            tooltip = "OE_PILLARS_OPINION_COURT_BREAKDOWN"
+                            fontsize = 16
+                        }
+                    }
+                }
+                
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# widget = {
+#                     layoutpolicy_horizontal = expanding
+#                     layoutstretchfactor_horizontal = 1
+#                     size = { -1 102 }
+#                     using = bg_paper_card
+#                     using = bg_cabinet_card_frame
+#                     tooltip = "oe_pillars_corruption_desc"
+#                     vbox = {
+#                         size = { 100% 100% }
+#                         margin = { 10 6 }
+#                         spacing = 3
+#                         hbox = {
+#                             spacing = 5
+#                             widget = {
+#                                 size = { 28 28 }
+#                                 icon = { size = { 19 19 } parentanchor = center texture = "gfx/interface/icons/international_organizations/oe_pillars_corruption.dds" tooltip = "oe_pillars_corruption_desc" }
+#                                 icon = { size = { 28 28 } texture = "gfx/interface/component_decoration/ios/oe_pillars/medallion.dds" alwaystransparent = yes }
+#                             }
+#                             text_single = { text = "oe_pillars_corruption" fontsize = 16 }
+#                         }
+#                         text_single = {
+#                             raw_text = "[GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.MakeScope).ScriptValue('oe_pillars_corruption_value')|1] / 100"
+#                             fontsize = 20
+#                         }
+#                         text_single = { text = "OE_PILLARS_CORRUPTION_HINT" fontsize = 16 }
+#                     }
+#                 }
+
+            }
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                spacing = 12
+                margin = { 10 8 }
+                button_regular_paper_card_hre = {
+                    size = { 210 44 }
+                    visible = "[ShouldShowRulingHistoryForInternationalOrganization(InternationalOrganizationsView.GetInternationalOrganization.Self)]"
+                    onclick = "[ShowRulingHistoryForInternationalOrganization(InternationalOrganizationsView.GetInternationalOrganization.Self)]"
+                    tooltip = "RULING_HISTORY_INTERNATIONAL_ORGANIZATION_SIDEMENU"
+                    text_single = { parentanchor = center position = { 12 0 } text = "OE_PILLARS_HISTORY" fontsize = 18 }
+                    icon = {
+                        size = { 30 30 }
+                        parentanchor = left|vcenter
+                        position = { 7 0 }
+                        texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds"
+                        alwaystransparent = yes
+                    }
+                }
+                button_regular_paper_card_hre = {
+                    name = "oe_pillars_laws_button"
+                    size = { 210 44 }
+                    onclick = "[InternationalOrganizationsView.ToggleIoSubheaderSelectMenu(PdxGuiWidget.Self)]"
+                    tooltip = "OE_PILLARS_OPEN_LAWS"
+                    text_single = { parentanchor = center position = { 12 0 } text = "OE_PILLARS_LAWS" fontsize = 18 }
+                    icon = {
+                        size = { 30 30 }
+                        parentanchor = left|vcenter
+                        position = { 7 0 }
+                        texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds"
+                        alwaystransparent = yes
+                    }
+                }
+            }
+card_common = {
+                blockoverride "header_decor_templates" {
+                    using = bg_card_header_01_hre
+                    using = bg_cabinet_card_frame
+                }
+                blockoverride "common_header_icon_texture" {
+                    texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds"
+                }
+                blockoverride "common_header_text_full" {
+                    text_single = { text = "OE_PILLARS_COUNCIL" fontsize = 18 }
+                }
+                blockoverride "common_bottom_content" {
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        multiline = yes
+                        autoresize = yes
+                        margin = { 12 8 }
+                        text = "OE_PILLARS_OVERVIEW_DESC"
+                        fontsize = 16
+                    }
+                }
+            }
+        
+        }
+    }
+    # Keep the native action list, laws and payment sliders fully operational.
+    blockoverride "io_main_actions_icon" {
+        texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds"
+    }
+    blockoverride "organization_overview_special_members" {
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            using = oe_pillars_force_targets_panel
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                datamodel = "[InternationalOrganizationsView.GetSpecialMemberItems]"
+                item = {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        visible = "[And(Not(IsDataModelEmpty(MemberTypeItem.GetCountries)), Not(Or(EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_naval_theme'), Or(EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_administrative_theme'), Or(EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_frontier_theme'), Or(EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_italian_theme'), EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_latin_theme')))))))]"
+                        using = oe_pillars_member_cards
+                    }
+                }
+            }
+            using = oe_pillars_special_theme_rosters
+        }
+    }
+    blockoverride "organization_members_list_item" {
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            visible = "[Not(IsDataModelEmpty(MemberTypeItem.GetCountries))]"
+            using = oe_pillars_member_cards
+        }
+    }
+    blockoverride "organization_members_special_members" {
+        text_single = {
+            layoutpolicy_horizontal = expanding
+            margin = { 14 9 }
+            multiline = yes
+            autoresize = yes
+            text = "OE_PILLARS_MEMBERS_DESC"
+        }
+    }
+}
+
+# Inspired by the HRE's status headers and grouped shields; uses ordinary
+# Country data, so no emperor/elector-only bindings are carried into this IO.
+template oe_pillars_member_cards {
+    card_common = {
+        margin = { 8 4 }
+        blockoverride "header_decor_templates" {
+            using = bg_card_header_01_hre
+            using = bg_cabinet_card_frame
+        }
+        blockoverride "common_header_icon_texture" {
+            texture = "[MemberTypeItem.GetIcon]"
+            texture_density = 2
+        }
+        blockoverride "common_header_text_full" {
+            text_single = {
+                raw_text = "[MemberTypeItem.GetName]  ·  [MemberTypeItem.GetMembersAmount]"
+                fontsize = 17
+            }
+        }
+        blockoverride "header_size" { size = { -1 38 } }
+        blockoverride "common_bottom_content" {
+            using = oe_pillars_member_shields
+        }
+    }
+}
+
+# Synchronized native slider, exclusively available to the imperial payer BYZ.
+# Authority expenditure is shown from the same script value used at settlement.
+types oe_pillars_finance_widgets {
+    type oe_pillars_authority_investment = vbox {
+        layoutpolicy_horizontal = expanding
+        # Keep the outer custom type content-sized, like the verified diagnostic.
+        # The list lives in a child container, and each row sizes from its content.
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            # Edit the player's payment maintenance, which the purse settlement reads.
+            datacontext = "[GetEconomyView]"
+            datamodel = "[EconomyView.GetMaintenanceSettings]"
+            item = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    minimumsize = { -1 182 }
+                    margin = { 12 8 }
+                    spacing = 8
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
+                    visible = "[EqualTo_string(MaintenanceSetting.GetNameWithNoTooltip, Localize('oe_pillars_authority_budget'))]"
+                    tooltip = "oe_pillars_authority_budget_desc"
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 6
+                        expand = {}
+                        icon = { size = { 19 19 } texture = "gfx/interface/icons/international_organizations/oe_pillars_authority.dds" }
+                        text_single = { text = "oe_pillars_authority_budget" fontsize = 18 }
+                        expand = {}
+                    }
+                    text_single = {
+                        text = "OE_PILLARS_AUTHORITY_PREVIEW"
+                        multiline = yes
+                        autoresize = yes
+                        layoutpolicy_horizontal = expanding
+                        align = center
+                        fontsize = 16
+                    }
+                    # Give the track and its +/- buttons a real layout footprint.
+                    widget = {
+                        layoutpolicy_horizontal = expanding
+                        layoutpolicy_vertical = fixed
+                        size = { -1 40 }
+                        minimumsize = { -1 40 }
+                        allow_outside = yes
+                        economy_slider = {
+                            parentanchor = center
+                            widgetanchor = center
+                            size = { 350 10 }
+                            min = 0
+                            max = 1
+                            value = "[MaintenanceSetting.GetDefault]"
+                            # This zero-price setting controls scripted IO spending.
+                            # Native expense eligibility/caps must not lock the custom budget.
+                            mincap = 0
+                            maxcap = 1
+                            onvaluechanged = "[MaintenanceSetting.OnChanged]"
+                            onchangefinish = "[MaintenanceSetting.Post]"
+                            enabled = "[EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'BYZ')]"
+                            blockoverride "economy_slider_inc_button_config" { enabled = "[EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'BYZ')]" }
+                            blockoverride "economy_slider_dec_button_config" { enabled = "[EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'BYZ')]" }
+                        }
+                    }
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        multiline = yes
+                        autoresize = yes
+                        text = "OE_PILLARS_AUTHORITY_BUDGET_HINT"
+                        fontsize = 16
+                    }
+                }
+            }
+        }
+    }
+}
+
+types oe_egypt_finance_widgets {
+    type oe_pillars_egypt_supply_slider = vbox {
+        layoutpolicy_horizontal = expanding
+        # Keep the outer custom type content-sized, like the verified diagnostic.
+        # The list lives in a child container, and each row sizes from its content.
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            # Edit the player's payment maintenance, which the purse settlement reads.
+            datacontext = "[GetEconomyView]"
+            datamodel = "[EconomyView.GetMaintenanceSettings]"
+            item = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    minimumsize = { -1 220 }
+                    margin = { 12 8 }
+                    spacing = 8
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
+                    visible = "[And(InternationalOrganizationsView.GetPlayer.MakeScope.GetVariable('oe_works_egypt_supply_unlocked').IsSet,EqualTo_string(MaintenanceSetting.GetNameWithNoTooltip, Localize('oe_pillars_egypt_food_budget')))]"
+                    tooltip = "oe_pillars_egypt_food_budget_desc"
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 6
+                        expand = {}
+                        icon = { size = { 19 19 } texture = "gfx/interface/icons/location_icons/food.dds" }
+                        text_single = { text = "oe_pillars_egypt_food_budget" fontsize = 18 }
+                        expand = {}
+                    }
+                    text_single = {
+                        text = "OE_EGYPT_SUPPLY_PREVIEW"
+                        multiline = yes
+                        autoresize = yes
+                        layoutpolicy_horizontal = expanding
+                        align = center
+                        fontsize = 16
+                    }
+                    # Give the track and its +/- buttons a real layout footprint.
+                    widget = {
+                        layoutpolicy_horizontal = expanding
+                        layoutpolicy_vertical = fixed
+                        size = { -1 40 }
+                        minimumsize = { -1 40 }
+                        allow_outside = yes
+                        economy_slider = {
+                            parentanchor = center
+                            widgetanchor = center
+                            size = { 350 10 }
+                            min = 0
+                            max = 1
+                            value = "[MaintenanceSetting.GetDefault]"
+                            # This zero-price setting controls scripted IO spending.
+                            # Native expense eligibility/caps must not lock the custom budget.
+                            mincap = 0
+                            maxcap = 1
+                            onvaluechanged = "[MaintenanceSetting.OnChanged]"
+                            onchangefinish = "[MaintenanceSetting.Post]"
+                            enabled = "[EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'BYZ')]"
+                            blockoverride "economy_slider_inc_button_config" { enabled = "[EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'BYZ')]" }
+                            blockoverride "economy_slider_dec_button_config" { enabled = "[EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'BYZ')]" }
+                        }
+                    }
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        multiline = yes
+                        autoresize = yes
+                        text = "OE_EGYPT_SUPPLY_HINT"
+                        fontsize = 16
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+# The original native court maintenance setting; no scripted price or benefit.
+types oe_pillars_finance_pages {
+    type oe_pillars_native_court = vbox {
+        layoutpolicy_horizontal = expanding
+        visible = "[GetScriptedGui('oe_pillars_uses_moved_court').IsShown(GuiScope.SetRoot(Player.MakeScope).End)]"
+        datacontext = "[GetEconomyView]"
+        datamodel = "[EconomyView.GetMaintenanceSettings]"
+        item = {
+            widget = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 182 }
+                visible = "[EqualTo_string(MaintenanceSetting.GetNameWithNoTooltip,Localize('CourtMaintenance_eco_view_no_tt'))]"
+                using = bg_paper_card
+                using = bg_cabinet_card_frame
+                vbox = {
+                    size = { 100% 100% }
+                    layoutpolicy_horizontal = expanding
+                    margin = { 12 8 }
+                    spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 8
+                        icon = { size = { 24 24 } texture = "[MaintenanceSetting.GetIcon]" }
+                        text_single = { text = "[MaintenanceSetting.GetName]" fontsize = 17 }
+                        expand = {}
+                        text_single = { raw_text = "[MaintenanceSetting.GetExpenseWithCurrency]" }
+                        tooltipwidget = { using = ExpenseSettingTooltip }
+                    }
+                    economy_slider = {
+                        size = { 350 10 }
+                        min = 0
+                        max = 1
+                        value = "[MaintenanceSetting.GetDefault]"
+                        mincap = "[MaintenanceSetting.GetMin]"
+                        maxcap = "[MaintenanceSetting.GetMax]"
+                        onvaluechanged = "[MaintenanceSetting.OnChanged]"
+                        onchangefinish = "[MaintenanceSetting.Post]"
+                        enabled = "[And(MaintenanceSetting.IsEnabled,Not(IsPlayerAIEnabled('finances')))]"
+                        blockoverride "economy_slider_inc_button_config" { enabled = "[MaintenanceSetting.IsIncEnabled]" }
+                        blockoverride "economy_slider_dec_button_config" { enabled = "[MaintenanceSetting.IsDecEnabled]" }
+                    }
+                    text_single = { text = "[MaintenanceSetting.GetExpenseBenefit]" fontsize = 16 }
+                    text_single = { text = "OE_PILLARS_NATIVE_COURT_HINT" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                }
+            }
+        }
+    }
+    type oe_pillars_native_bureaucracy = vbox {
+        layoutpolicy_horizontal = expanding
+        visible = "[GetScriptedGui('oe_pillars_uses_moved_court').IsShown(GuiScope.SetRoot(Player.MakeScope).End)]"
+        datacontext = "[GetEconomyView]"
+        datamodel = "[EconomyView.GetMaintenanceSettings]"
+        item = {
+            widget = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 92 }
+                visible = "[MaintenanceSetting.IsBureaucracy]"
+                using = bg_paper_card
+                using = bg_cabinet_card_frame
+                vbox = {
+                    size = { 100% 100% }
+                    layoutpolicy_horizontal = expanding
+                    margin = { 12 8 }
+                    spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 8
+                        icon = { size = { 24 24 } texture = "[MaintenanceSetting.GetIcon]" }
+                        text_single = { text = "[MaintenanceSetting.GetName]" fontsize = 17 }
+                        expand = {}
+                        text_single = { raw_text = "[MaintenanceSetting.GetExpenseWithCurrency]" }
+                        tooltipwidget = { using = ExpenseSettingTooltip }
+                    }
+                    economy_slider = {
+                        size = { 350 10 }
+                        min = 0
+                        max = 1
+                        value = "[MaintenanceSetting.GetDefault]"
+                        mincap = "[MaintenanceSetting.GetMin]"
+                        maxcap = "[MaintenanceSetting.GetMax]"
+                        onvaluechanged = "[MaintenanceSetting.OnChanged]"
+                        onchangefinish = "[MaintenanceSetting.Post]"
+                        enabled = "[And(MaintenanceSetting.IsEnabled,Not(IsPlayerAIEnabled('finances')))]"
+                        blockoverride "economy_slider_inc_button_config" { enabled = "[MaintenanceSetting.IsIncEnabled]" }
+                        blockoverride "economy_slider_dec_button_config" { enabled = "[MaintenanceSetting.IsDecEnabled]" }
+                    }
+                }
+            }
+        }
+    }
+
+    type oe_pillars_transfer_sliders = vbox {
+        layoutpolicy_horizontal = expanding
+        spacing = 8
+        datamodel = "[InternationalOrganizationsView.GetIOMaintenanceSettings]"
+        item = {
+            widget = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 82 }
+                using = bg_paper_card
+                using = bg_cabinet_card_frame
+                visible = "[And(MaintenanceSetting.ShowSlider,Not(Or(EqualTo_string(MaintenanceSetting.GetNameWithNoTooltip,Localize('oe_pillars_authority_budget')),EqualTo_string(MaintenanceSetting.GetNameWithNoTooltip,Localize('oe_pillars_egypt_food_budget')))))]"
+                vbox = {
+                    size = { 100% 100% }
+                    layoutpolicy_horizontal = expanding
+                    margin = { 12 8 }
+                    spacing = 10
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        text_single = { text = "[MaintenanceSetting.GetName]" fontsize = 17 }
+                        expand = {}
+                        text_single = { raw_text = "[MaintenanceSetting.GetExpenseWithCurrency]" }
+                        tooltipwidget = { using = ExpenseSettingTooltip }
+                    }
+                    economy_slider = {
+                        size = { 350 10 }
+                        min = 0
+                        max = 1
+                        value = "[MaintenanceSetting.GetDefault]"
+                        mincap = "[MaintenanceSetting.GetMin]"
+                        maxcap = "[MaintenanceSetting.GetMax]"
+                        onvaluechanged = "[MaintenanceSetting.OnChanged]"
+                        onchangefinish = "[MaintenanceSetting.Post]"
+                        enabled = "[And(MaintenanceSetting.IsEnabled,Not(IsPlayerAIEnabled('finances')))]"
+                        blockoverride "economy_slider_inc_button_config" { enabled = "[MaintenanceSetting.IsIncEnabled]" }
+                        blockoverride "economy_slider_dec_button_config" { enabled = "[MaintenanceSetting.IsDecEnabled]" }
+                    }
+                }
+            }
+        }
+    }
+    type oe_pillars_payment_ledger = vbox {
+        layoutpolicy_horizontal = expanding
+        spacing = 8
+        datacontext = "[InternationalOrganizationsView.GetInternationalOrganization]"
+        datamodel = "[InternationalOrganization.GetPayments]"
+        item = {
+            widget = {
+                layoutpolicy_horizontal = expanding
+                size = { -1 146 }
+                using = bg_paper_card
+                using = bg_cabinet_card_frame
+                visible = "[Or(EqualTo_string(Payment.GetNameWithContext(InternationalOrganization.Self),Localize('oe_pillars_nobles_contribution')),EqualTo_string(Payment.GetNameWithContext(InternationalOrganization.Self),Localize('oe_pillars_clergy_contribution')))]"
+                vbox = {
+                    size = { 100% 100% }
+                    layoutpolicy_horizontal = expanding
+                    margin = { 12 8 }
+                    spacing = 5
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        text_single = { text = "[Payment.GetNameWithContext(InternationalOrganization.Self)]" fontsize = 16 }
+                        expand = {}
+                        text_single = { text = "[Payment.GetPayeePrice(InternationalOrganization.Self)]" }
+                    }
+                    
+                    text_single = { visible = "[EqualTo_string(Payment.GetNameWithContext(InternationalOrganization.Self),Localize('oe_pillars_nobles_contribution'))]" text = "oe_pillars_nobles_contribution_desc" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+text_single = { visible = "[EqualTo_string(Payment.GetNameWithContext(InternationalOrganization.Self),Localize('oe_pillars_clergy_contribution'))]" text = "oe_pillars_clergy_contribution_desc" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+# PAUSED house income: text_single = { visible = "[EqualTo_string(Payment.GetNameWithContext(InternationalOrganization.Self),Localize('oe_pillars_houses_contribution'))]" text = "oe_pillars_houses_contribution_desc" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                }
+            }
+        }
+    }
+}
+
+
+# Shared native Country cards for ordinary and special military commands.
+template oe_pillars_member_shields {
+    fixedgridbox = {
+                addcolumn = 158
+                addrow = 140
+                flipdirection = yes
+                datamodel_wrap = 3
+                datamodel_reuse_widgets = yes
+                datamodel = "[MemberTypeItem.GetCountries]"
+                item = {
+                    widget = { using = oe_pillars_country_card }
+                }
+            }
+}
+
+# Shared country card: native groups and special-theme groups have identical contents.
+template oe_pillars_country_card {
+size = { 152 132 }
+                        using = bg_paper_card
+                        using = bg_cabinet_card_frame
+                        vbox = {
+                            size = { 100% 100% }
+                            margin = { 6 6 }
+                            spacing = 3
+                            hbox = {
+                                layoutpolicy_horizontal = expanding
+                                expand = {}
+                                country_flag_small_plus = { size = { 32 24 } }
+                                expand = {}
+                            }
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                multiline = yes
+                                autoresize = yes
+                                maximumsize = { 140 42 }
+                                fontsize = 17
+                                text = "[Country.GetNameWithNoTooltip]"
+                                tooltip = "[Country.GetName]"
+                            }
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                maximumsize = { 140 23 }
+                                fontsize = 16
+                                text = "[Country.GetGovernment.GetRuler.GetShortNameWithNoTooltip]"
+                                tooltip = "[Country.GetGovernment.GetRuler.GetName]"
+                            }
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                maximumsize = { 140 23 }
+                                fontsize = 16
+                                text = "[Country.GetCapital.GetName]"
+                            }
+                        }
+}

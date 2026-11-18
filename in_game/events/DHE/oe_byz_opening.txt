@@ -1,0 +1,52 @@
+﻿namespace = oe_byz_opening
+oe_byz_opening.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    image = "gfx/interface/illustrations/disaster/byzantine_succession_crisis.dds"
+    title = oe_byz_opening.1.t
+    desc = oe_byz_opening.1.d
+    fire_only_once = yes
+    trigger = { tag = BYZ NOT = { has_variable = oe_byz_opening_seen } }
+    immediate = { set_variable = oe_byz_opening_seen }
+    option = {
+        name = oe_byz_opening.1.a
+        custom_tooltip = { text = OE_NF_OPENING_ALLY_TT oe_nf_opening_kantakouzenos_ally = yes }
+        add_stability = 10
+        c:GEN ?= {
+            create_relation = { first = c:BYZ second = c:GEN type = relation_type:sound_toll_exemption }
+        }
+        c:VEN ?= {
+            create_relation = { first = c:BYZ second = c:VEN type = relation_type:sound_toll_exemption }
+        }
+    }
+}
+
+oe_byz_opening.2 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_byz_opening.2.t
+    desc = oe_byz_opening.2.d
+    image = "gfx/interface/illustrations/disaster/byzantine_succession_crisis.dds"
+    fire_only_once = yes
+    trigger = {
+        tag = BYZ
+        NOT = { has_variable = oe_andronikos_illness_resolved }
+        exists = character:byz_andronikos_iii_palaiologos
+        character:byz_andronikos_iii_palaiologos ?= {
+            is_alive = yes
+            owner = c:BYZ
+            has_trait = oe_byz_andronikos_iii_I
+            modifier:oe_andronikos_health <= 0
+        }
+    }
+    immediate = {
+        # Mark before death invokes the existing succession hooks.
+        set_variable = oe_andronikos_illness_resolved
+        add_legitimacy = -10
+        kill_character = character:byz_andronikos_iii_palaiologos
+    }
+    option = {
+        name = oe_byz_opening.2.a
+        custom_tooltip = OE_ANDRONIKOS_ILLNESS_EFFECT_TT
+    }
+}

@@ -1,0 +1,80 @@
+﻿# PAUSED 2026-09-26: noble countries replaced by domestic dynasties.
+# # Country scope; called only for BBY/BAP/BSY on first game start.
+# # Replace generated starting armies before raising eight independent 100-man retinues.
+# oe_byz_noble_initialize_effect = {
+#     if = {
+#         limit = {
+#             is_subject_type = oe_noble
+#             NOT = { has_variable = oe_byz_noble_initialized }
+#         }
+#         set_variable = oe_byz_noble_initialized
+#         if = {
+#             limit = { NOT = { has_reform = government_reform:oe_byz_noble_house } }
+#             add_reform = government_reform:oe_byz_noble_house
+#         }
+#         every_army = { destroy_unit = yes }
+#         add_manpower = 3
+#         save_scope_as = oe_noble_army_owner
+#         capital = {
+#             while = {
+#                 count = 8
+#                 create_sub_unit_with_owner = {
+#                     type = oe_byz_noble_retinue
+#                     owner = scope:oe_noble_army_owner
+#                 }
+#             }
+#         }
+#     }
+# }
+# 
+# # Country scope = destination court (BYZ). Appoint a house successor BEFORE
+# # transferring John for a regency, accession or pretender revolt.
+# oe_byz_release_kantakouzenos_effect = {
+#     if = {
+#         limit = {
+#             exists = character:byz_john_kantakouzenos
+#             character:byz_john_kantakouzenos = { is_alive = yes }
+#         }
+#         if = {
+#             limit = {
+#                 country_exists = c:BBY
+#                 c:BBY = { has_ruler = yes ruler = character:byz_john_kantakouzenos }
+#             }
+#             c:BBY = {
+#                 if = {
+#                     limit = {
+#                         exists = character:byz_matthaios_kantakouzenos
+#                         character:byz_matthaios_kantakouzenos = { is_alive = yes owner = c:BBY }
+#                     }
+#                     set_new_ruler = character:byz_matthaios_kantakouzenos
+#                 }
+#                 else_if = {
+#                     limit = {
+#                         exists = character:byz_manouel_kantakouzenos
+#                         character:byz_manouel_kantakouzenos = { is_alive = yes owner = c:BBY }
+#                     }
+#                     set_new_ruler = character:byz_manouel_kantakouzenos
+#                 }
+#                 else = {
+#                     create_character = {
+#                         dynasty = dynasty:kantakouzenos_dynasty
+#                         culture = culture:oe_roman_noble_culture
+#                         religion = religion:orthodox
+#                         estate = estate_type:nobles_estate
+#                         age = { 25 45 }
+#                         save_scope_as = oe_noble_house_successor
+#                     }
+#                     set_new_ruler = scope:oe_noble_house_successor
+#                 }
+#             }
+#         }
+#         character:byz_john_kantakouzenos = { move_country = root }
+#     }
+# }
+# Compatibility with succession/civil-war callers: the historical person already resides in BYZ.
+oe_byz_noble_initialize_effect = {}
+oe_byz_release_kantakouzenos_effect = {
+    character:byz_john_kantakouzenos ?= {
+        if = { limit = { is_alive = yes NOT = { owner = root } } move_country = root }
+    }
+}

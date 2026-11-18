@@ -1,0 +1,158 @@
+﻿oe_rights_imperial_mint = {
+    kept_at_conquest = no
+    potential = {
+        OR = {
+            has_or_had_tag = BYZ
+            has_or_had_tag = ROM
+            is_subject_or_below_of = c:BYZ
+        }
+    }
+    allow = {
+        custom_tooltip = { text = oe_mint_coinage_reformed_tt oe_mint_coinage_reformed = yes }
+        scope:target = {
+            custom_tooltip = {
+                text = oe_imperial_mint_location_tt
+                OR = {
+                    this = location:thessaloniki
+                    AND = {
+                        this = location:genoa
+                        has_variable = oe_genoa_imperial_mint_unlocked
+                    }
+                }
+            }
+            NOR = {
+                has_town_rights = town_rights_type:oe_rights_thessaloniki_mint
+                has_town_rights = town_rights_type:oe_rights_imperial_mint
+            }
+        }
+    }
+    location_modifier = {
+        local_jewelry_guild_building_levels = 10
+        local_jewelry_output_modifier = 0.5
+    }
+    country_modifier = { minting_inflation_threshold = 0.02 }
+    color = goods_jewelry
+}
+
+oe_rights_book_of_eparch = {
+    kept_at_conquest = no
+    potential = { OR = { has_or_had_tag = BYZ has_or_had_tag = ROM } }
+    allow = {
+        scope:target = {
+            this = location:constantinople
+            NOT = { has_town_rights = town_rights_type:oe_rights_book_of_eparch }
+        }
+    }
+    location_modifier = {
+        local_production_efficiency = 0.05
+        local_burghers_estate_power = 0.33
+        local_monthly_development = 0.005
+        free_building_levels = 20
+    }
+    color = goods_paper
+}
+
+oe_rights_imperial_charities = {
+    kept_at_conquest = no
+    potential = { OR = { has_or_had_tag = BYZ has_or_had_tag = ROM } }
+    allow = {
+        scope:target = {
+            this = location:constantinople
+            NOT = { has_town_rights = town_rights_type:oe_rights_imperial_charities }
+        }
+    }
+    location_modifier = {
+        local_clergy_food_consumption = -0.2
+        local_peasants_food_consumption = -0.05
+        local_laborers_food_consumption = -0.05
+        local_clergy_estate_power = 1
+    }
+    color = goods_wheat
+}
+
+oe_rights_imperial_academy = {
+    kept_at_conquest = no
+    potential = { OR = { has_or_had_tag = BYZ has_or_had_tag = ROM } }
+    allow = {
+        scope:target = {
+            this = location:constantinople
+            NOT = { has_town_rights = town_rights_type:oe_rights_imperial_academy }
+        }
+    }
+    location_modifier = {
+        # Population values are in thousands: 0.003 is three people per month.
+        local_pop_promotion_speed = 0.1
+        local_institution_growth_modifier = 1
+        local_books_output_modifier = 0.2
+        local_migration_attraction = 0.33
+    }
+    color = goods_books
+}
+
+oe_rights_city_of_worlds_desire = {
+    kept_at_conquest = no
+    potential = { OR = { has_or_had_tag = BYZ has_or_had_tag = ROM } }
+    allow = {
+        custom_tooltip = { text = OE_CITY_PHOENIX_ENDED_TT has_variable = won_fate_of_the_phoenix_disaster_variable }
+        scope:target = { this = location:constantinople NOT = { has_town_rights = town_rights_type:oe_rights_city_of_worlds_desire } }
+    }
+    location_modifier = {
+        local_monthly_development = 0.01
+        local_cultural_tradition = 1
+        local_cultural_influence = 1
+        local_migration_attraction = 0.5
+        local_possible_town_rights = 3
+    }
+    country_modifier = { monthly_prestige = 0.1 }
+    color = goods_gems
+}
+
+oe_rights_metropolis = {
+    kept_at_conquest = no
+    potential = { OR = { has_or_had_tag = BYZ has_or_had_tag = ROM } }
+    allow = {
+        custom_tooltip = { text = OE_CITY_PHOENIX_ENDED_TT has_variable = won_fate_of_the_phoenix_disaster_variable }
+        scope:target = { this = location:constantinople NOT = { has_town_rights = town_rights_type:oe_rights_metropolis } }
+    }
+    location_modifier = {
+        local_nobles_food_consumption = -0.5
+        local_burghers_food_consumption = 0.2
+        free_building_levels = 20
+        local_burghers_desired_pop = 10
+        local_burghers_estate_power = 0.33
+    }
+    color = goods_marble
+}
+
+oe_rights_metropolitan_planning = {
+    kept_at_conquest = no
+    potential = { tag = BYZ }
+    allow = {
+        custom_tooltip = { text = OE_CITY_PHOENIX_ENDED_TT has_variable = won_fate_of_the_phoenix_disaster_variable }
+        scope:target = {
+            owner = c:BYZ
+            location_rank = location_rank:megalopolis
+            NOT = { this = location:constantinople }
+            NOT = { has_town_rights = town_rights_type:oe_rights_metropolitan_planning }
+        }
+    }
+    location_modifier = { free_building_levels = 50 local_production_efficiency = 0.025 }
+    color = goods_marble
+}
+
+oe_rights_beyond_the_walls = {
+    kept_at_conquest = no
+    potential = { always = yes }
+    allow = {
+        scope:target = {
+            this = location:constantinople
+            NOT = { has_town_rights = town_rights_type:oe_rights_beyond_the_walls }
+        }
+    }
+    location_modifier = {
+        local_defensive = -1
+        free_building_levels = 100
+        local_migration_attraction = 0.1
+    }
+    color = goods_stone
+}

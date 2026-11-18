@@ -1,0 +1,113 @@
+﻿# IO scope. Strong houses are unregistered explicitly; extinct weak houses use ordinary cleanup.
+oe_nf_unregister_house = {
+    if = { limit = { oe_nf_is_political_ally = { slot = $slot$ } } oe_nf_clear_political_ally = yes }
+    remove_variable = oe_nf_succession_pending_$slot$
+    remove_variable = oe_nf_succession_building_$slot$
+    remove_variable = oe_nf_succession_suppressed_$slot$
+    oe_nf_release_territories = { slot = $slot$ }
+    remove_variable = oe_nf_dynasty_$slot$
+    remove_variable = oe_nf_head_$slot$
+    remove_variable = oe_nf_influence_$slot$
+    remove_variable = oe_nf_monthly_$slot$
+    clear_variable_list = oe_nf_members_$slot$
+}
+oe_nf_assist_integration = {
+    if = {
+        limit = {
+            oe_nf_integration_ready = { slot = $slot$ }
+            scope:target_province = { oe_nf_integration_target = { slot = $slot$ } }
+        }
+        scope:target_province = {
+            every_location_in_province = {
+                limit = { owner = c:BYZ }
+                oe_nf_claim_location = { slot = $slot$ }
+                if = {
+                    limit = { integration_progress < 100 }
+                    change_integration_progress = 25
+                }
+            }
+        }
+        c:BYZ = { oe_nf_refresh = yes }
+    }
+}
+oe_nf_confiscate = {
+    if = {
+        limit = { oe_nf_confiscation_ready = { slot = $slot$ } }
+        save_scope_value_as = { name = oe_nf_seized_influence value = var:oe_nf_influence_$slot$ }
+        var:oe_nf_dynasty_$slot$ = { save_scope_as = oe_nf_seized_family }
+        # Snapshot residency before succession callbacks or civil-war ownership changes.
+        scope:oe_nf_seized_family = {
+            every_character_in_dynasty = {
+                limit = { oe_nf_living = yes owner = c:BYZ }
+                add_to_list = oe_nf_seized_people
+            }
+        }
+        if = {
+            limit = { scope:oe_nf_seized_influence < 300 }
+            # Costs use the saved pre-execution influence even when a death callback changes the current value.
+            add_gold = { value = scope:oe_nf_seized_influence multiply = 5 }
+            c:BYZ = {
+                add_stability = { value = scope:oe_nf_seized_influence multiply = -0.5 }
+                add_legitimacy = { value = scope:oe_nf_seized_influence multiply = -0.5 }
+            }
+            set_variable = oe_nf_succession_suppressed_$slot$
+            every_in_list = {
+                list = oe_nf_seized_people
+                kill_character_silently = this
+            }
+            remove_variable = oe_nf_succession_suppressed_$slot$
+            if = {
+                limit = { oe_nf_succession_needed = { slot = $slot$ } }
+                oe_nf_unregister_house = { slot = $slot$ }
+            }
+        }
+        else = {
+            clear_saved_scope = oe_nf_seizure_rebel_country
+            clear_saved_scope = oe_nf_seizure_foothold
+            c:BYZ = {
+                create_rebel = {
+                    category = estate
+                    estate = nobles_estate
+                    name = OE_NF_ARISTOCRATIC_REBELLION
+                    save_scope_as = oe_nf_seizure_rebels
+                }
+                # Prefer a holding of this house; a populated non-capital fallback guarantees a base.
+                random_owned_location = {
+                    limit = { is_capital = no oe_nf_controls_slot = { slot = $slot$ } any_pop = { owner = c:BYZ } }
+                    save_scope_as = oe_nf_seizure_foothold
+                }
+                if = {
+                    limit = { NOT = { exists = scope:oe_nf_seizure_foothold } }
+                    random_owned_location = {
+                        limit = { is_capital = no any_pop = { owner = c:BYZ } }
+                        save_scope_as = oe_nf_seizure_foothold
+                    }
+                }
+                every_owned_location = {
+                    every_pop = {
+                        limit = { owner = c:BYZ pop_type = pop_type:nobles }
+                        change_pop_allegiance = scope:oe_nf_seizure_rebels
+                    }
+                }
+            }
+            scope:oe_nf_seizure_foothold = {
+                every_pop = {
+                    limit = { owner = c:BYZ }
+                    change_pop_allegiance = scope:oe_nf_seizure_rebels
+                }
+            }
+            scope:oe_nf_seizure_rebels = {
+                start_civil_war = { save_scope_as = oe_nf_seizure_rebel_country }
+            }
+            if = {
+                limit = { exists = scope:oe_nf_seizure_rebel_country }
+                oe_nf_unregister_house = { slot = $slot$ }
+                every_in_list = {
+                    list = oe_nf_seized_people
+                    if = { limit = { is_alive = yes } move_country = scope:oe_nf_seizure_rebel_country }
+                }
+            }
+        }
+        c:BYZ = { oe_court_clear_invalid = yes oe_court_auto_fill = yes oe_nf_refresh = yes }
+    }
+}

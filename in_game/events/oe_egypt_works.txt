@@ -1,0 +1,29 @@
+﻿namespace = oe_egypt_works
+oe_egypt_works.1 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_egypt_works.1.t
+    desc = oe_egypt_works.1.d
+    trigger = { has_variable = oe_works_aswan_started }
+    option = { name = oe_egypt_works.1.a }
+}
+oe_egypt_works.2 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_egypt_works.2.t
+    desc = oe_egypt_works.2.d
+    trigger = { has_variable = oe_works_aswan_pending }
+    immediate = {
+        remove_variable = oe_works_aswan_pending
+        set_variable = oe_works_aswan_completed
+        if = {
+            limit = { owns = location:aswan }
+            location:aswan = {
+                set_variable = oe_works_aswan_site
+                construct_building = { building_type = building_type:oe_aswan_dam owner = root instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+            }
+        }
+        oe_egypt_add_food_layer = yes
+    }
+    option = { name = oe_egypt_works.2.a }
+}

@@ -1,0 +1,52 @@
+﻿oe_heg_plan_italy_effect = {
+    add_gold = -1000
+    set_variable = oe_heg_italy_plan_done
+    international_organization:oe_byz_roman_world = {
+        set_variable = oe_rw_italy_included
+        oe_heg_sync_campaign_territory = yes
+    }
+}
+# Save the military-occupation list before any ownership-change hooks can run.
+oe_heg_drive_out_normans_effect = {
+    area:apulia_area = {
+        every_location_in_area = { limit = { oe_heg_military_occupation = yes } add_to_list = oe_heg_south_italy_grants }
+    }
+    area:basilicata_area = {
+        every_location_in_area = { limit = { oe_heg_military_occupation = yes } add_to_list = oe_heg_south_italy_grants }
+    }
+    every_in_list = {
+        list = oe_heg_south_italy_grants
+        oe_transfer_conquest_without_core = { recipient = c:BYZ }
+    }
+}
+oe_heg_march_on_rome_effect = {
+    set_variable = oe_heg_rome_done
+    location:rome = {
+        oe_transfer_conquest_without_core = { recipient = c:BYZ }
+    }
+}
+oe_heg_revenge_on_venice_effect = {
+    set_variable = oe_heg_venice_done
+    # Native geographically propagated AE. 50 is the base, not 50 fixed toward every country.
+    drop_antagonism_bomb = { target = location:venice modifier = antagonism_peace_treaty_demands value = 50 }
+    location:venice = {
+        oe_transfer_conquest_without_core = { recipient = c:BYZ }
+        if = {
+            limit = { location_rank = location_rank:city }
+            change_location_rank = location_rank:town
+        }
+        else_if = {
+            limit = { location_rank = location_rank:town }
+            change_location_rank = location_rank:rural_settlement
+        }
+        # EU5 represents devastation as negative prosperity; -0.5 is fifty percentage points.
+        change_prosperity = -0.5
+    }
+    add_estate_satisfaction = { type = estate_type:nobles_estate value = 0.05 }
+    add_estate_satisfaction = { type = estate_type:peasants_estate value = 0.05 }
+}
+# Country scope. Uses the selector's saved target; never redirects to its overlord or another owner.
+oe_heg_buy_capital_invasion = {
+    add_gold = -100
+    add_casus_belli = { target = scope:target_country type = casus_belli:oe_heg_capital_invasion }
+}

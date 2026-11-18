@@ -1,0 +1,1457 @@
+﻿namespace = oe_flavor_byz
+	scripted_effect empire_debt_write_year = {#财政年记数
+	custom_description = {
+		text = empire_debt_write_year_$math$_text
+		value = $value$
+		change_variable = {
+			name = empire_debt_write_year_var
+			$math$ = $value$
+		}
+	}
+}	
+oe_flavor_byz.1 = {#奥斯曼之梦破碎
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.1.t
+	desc = oe_flavor_byz.1.d
+	image = "gfx/interface/illustrations/situation/oe_flavor_byz_1_1.dds"
+	fire_only_once = yes
+	dynamic_historical_event = {
+		tag = BYZ
+		from = 1337.1.1
+		to = 1836.1.1
+		monthly_chance = 100
+	}
+		trigger = { 
+			NOT = {
+				country_exists = c:TUR
+			}
+    }
+	immediate = {
+		
+	}
+	option = {
+		name = oe_flavor_byz.1.a
+		add_government_power = 10
+		add_stability = 7
+		add_gold = {
+			value = monthly_income_total
+			multiply = 3
+		}
+		hidden_effect = {
+			# PAUSED 2026-09-26: superseded by the Ottoman exile/conversion prologue.
+# trigger_event_non_silently = { id = oe_flavor_byz.1000 days = 30 }
+
+		}
+	}
+}
+oe_flavor_byz.2 = {#鸢尾花凋谢
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.2.t
+	desc = oe_flavor_byz.2.d
+	image = "gfx/interface/illustrations/situation/oe_flavor_byz_2.dds"
+	fire_only_once = yes
+	dynamic_historical_event = {
+		tag = BYZ
+		from = 1337.1.1
+		to = 1836.1.1
+		monthly_chance = 100
+	}
+		trigger = { 
+			NOT = {
+				country_exists = c:FRA
+			}
+    }
+	immediate = {
+
+	}
+	option = {
+		name = oe_flavor_byz.2.a
+		add_government_power = 10
+		add_stability = 7
+		add_gold = {
+			value = monthly_income_total
+			multiply = 3
+		}
+	}
+}
+oe_flavor_byz.3 = {#保加利亚
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.3.t
+	desc = oe_flavor_byz.3.d
+	image = "gfx/interface/illustrations/situation/oe_flavor_byz_3.dds"
+	fire_only_once = yes
+	dynamic_historical_event = {
+		tag = BYZ
+		from = 1337.1.1
+		to = 1836.1.1
+		monthly_chance = 100
+	}
+		trigger = { 
+			OR = {
+			NOT = {
+				country_exists = c:BUL
+			}
+			c:BUL = {
+				is_subject_of = c:BYZ
+			}
+		}
+    }
+	immediate = {
+		c:BYZ.ruler = {
+			save_scope_as = target_character_1
+		}
+		if = {
+			limit = {
+				country_exists = c:BUL
+			}
+					c:BUL.ruler = {
+			save_scope_as = target_character_2
+		}
+		}
+	}
+	option = {
+		name = oe_flavor_byz.3.a
+		add_government_power = 5
+		add_stability = 3
+		add_gold = {
+			value = monthly_income_total
+			multiply = 1
+		}
+	}
+}
+oe_flavor_byz.4 = {#塞尔维亚
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.4.t
+	desc = oe_flavor_byz.4.d
+	image = "gfx/interface/illustrations/institutions/banking.dds"
+	fire_only_once = yes
+	dynamic_historical_event = {
+		tag = BYZ
+		from = 1337.1.1
+		to = 1836.1.1
+		monthly_chance = 100
+	}
+		trigger = { 
+			OR = {
+			NOT = {
+				country_exists = c:SER
+			}
+			c:SER = {
+				is_subject_of = c:BYZ
+			}
+		}
+    }
+	immediate = {
+
+	}
+	option = {
+		name = oe_flavor_byz.4.a
+		add_government_power = 5
+		add_stability = 3
+		location:constantinople.market = {
+			sell_goods_from_location = {
+					goods = goods:silver
+   					amount = {
+						value = c:BYZ.monthly_income_total
+						multiply = 0.1
+					}
+					location = location:constantinople
+				}	
+			}	
+	}
+}
+oe_flavor_byz.5 = {#雅典
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.5.t
+	desc = oe_flavor_byz.5.d
+	image = "gfx/interface/illustrations/institutions/banking.dds"
+	fire_only_once = yes
+	dynamic_historical_event = {
+		tag = BYZ
+		from = 1337.1.1
+		to = 1836.1.1
+		monthly_chance = 100
+	}
+		trigger = { 
+			OR = {
+			NOT = {
+				country_exists = c:ATH
+			}
+			c:ATH = {
+				is_subject_of = c:BYZ
+			}
+		}
+    }
+	immediate = {
+
+	}
+	option = {
+		name = oe_flavor_byz.5.a
+		add_government_power = 5
+		add_stability = 3
+		add_gold = {
+			value = monthly_income_total
+			multiply = 1
+		}	
+		every_owned_location = {
+			every_pop = {
+				limit = {
+					culture = culture:catalan
+				}
+				change_pop_owner = c:ARA
+			}
+		}
+	}
+}
+oe_flavor_byz.6 = {#菲拉德尔斐亚胜利
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.6.t
+	desc = oe_flavor_byz.6.d
+	image = "gfx/interface/illustrations/situation/oe_flavor_byz_1_1.dds"
+	fire_only_once = yes
+	dynamic_historical_event = {
+		tag = BYZ
+		from = 1337.1.1
+		to = 1836.1.1
+		monthly_chance = 100
+	}
+	trigger = { 
+		area:west_anatolia_area = {
+			any_location_in_area = {
+				percent = 1
+				OR = {
+					owner ?= root
+					has_owner = no
+					is_ownable = no
+				}
+			}
+		}			
+    }
+	immediate = {
+
+	}
+	option = {
+		name = oe_flavor_byz.6.a
+		add_gold = {
+			value = location:alasehir.population
+			multiply = 2
+		}
+		add_stability = 7
+		add_government_power = 5
+		location:alasehir = {
+				construct_building = {
+					building_type = building_type:oe_byz_memory_victory_building
+					owner = c:BYZ
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+				}
+				destroy_building = "building(building_type:oe_byz_alasehir_city|c:BYZ)"
+		}
+	}
+}
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_flavor_byz.200 = {#东方贸易结束
+# 	type = country_event
+# 	title = oe_flavor_byz.200.t
+# 	desc = oe_flavor_byz.200.d
+# 
+# 	fire_only_once = yes
+# 	dynamic_historical_event = {
+# 		tag = BYZ
+# 		from = 1600.1.1
+# 		to = 1800.1.1
+# 		monthly_chance = 100
+# 	}
+# 		trigger = { 
+#     }
+# 	illustration_tags = {
+# 		10 = happy
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:burghers background = pop_type:burghers }
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.200.a
+# 		add_gold = {
+# 			value = 1
+# 		}
+# 		set_global_variable = oe_byz_empire_debt_situation_over
+# 	}
+# }
+
+oe_flavor_byz.201 = {#君堡丝绸生产
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.201.t
+	desc = oe_flavor_byz.201.d
+
+	fire_only_once = yes
+	dynamic_historical_event = {
+		tag = BYZ
+		from = 1380.1.1
+		to = 1800.1.1
+		monthly_chance = 5
+	}
+		trigger = { 
+			has_variable = flavor_byz_3_on
+    }
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:burghers background = pop_type:burghers }
+	}
+	option = {
+		name = oe_flavor_byz.201.a
+		add_gold = {
+			value = root.monthly_income_trade_and_tax
+			multiply = 25
+			divide = {
+				value = root.ruler_or_regent.adm
+				divide = 5
+			}
+			multiply = -1
+		}
+		
+		location:constantinople = {
+			add_location_modifier = { 
+				modifier =  unlocked_byz_Constantinople_silk
+                days = -1
+				mode = add
+				}
+			 }
+	}
+}
+
+# PAUSED 2026-09-23: replaced by capital district expansion orders.
+# oe_flavor_byz.202 = {#修缮圣索菲亚大教堂（合格）
+# 	type = country_event
+# 	title = oe_flavor_byz.202.t
+# 	desc = oe_flavor_byz.202.d
+# 
+# 	fire_only_once = yes
+# 	dynamic_historical_event = {
+# 		tag = BYZ
+# 		from = 1400.1.1
+# 		to = 1836.1.1
+# 		monthly_chance = 5
+# 	}
+# 		trigger = { 			
+#     }
+# 	illustration_tags = {
+# 		10 = happy
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:clergy background = pop_type:clergy }
+# 	}
+# 		option = {
+# 		name = oe_flavor_byz.202.a
+# 		change_societal_value = {
+# 			type = spiritualist_vs_humanist
+# 			value = societal_value_move_to_left
+# 		}
+# 
+# 		location:constantinople = {
+# 			change_building_level_in_location = {
+# 				building = building_type:oe_byz_Hagia_Sophia
+# 				value = 1
+# 			}
+# 		}
+# 
+# 	change_gold_effect = { scale = -4
+# 		}
+# 	}
+# 	option = { 
+# 		name = oe_flavor_byz.202.b
+# 		add_stability = 5
+# 		location:constantinople = {
+# 			add_location_modifier = { 
+# 				modifier =  oe_byz_constantinople_clergy_sat
+#                 years = -1
+# 				mode = add
+# 				}
+# 			 }
+# 		change_societal_value = {
+# 			type = spiritualist_vs_humanist
+# 			value = societal_value_move_to_right
+# 		}
+# 	}
+# }
+
+oe_flavor_byz.300 = {#新年时间记数启动
+	type = country_event
+	title = oe_flavor_byz.300.t
+	desc = oe_flavor_byz.300.d
+	trigger = { 
+			has_variable = unlocked_oe_flavor_byz_300
+    }
+	illustration_tags = {
+		10 = regular
+		10 = exterior
+	}
+	hidden = yes
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:nobles background = pop_type:clergy }
+		set_variable = { name = empire_debt_write_year_var value = 0 }
+	}
+		option = {
+		name = oe_flavor_byz.300.a
+		trigger_event_silently = { id = oe_flavor_byz.301 days = 153 }
+	}
+}
+oe_flavor_byz.301 = {#新年
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.301.t
+	desc = oe_flavor_byz.301.d
+	trigger = { 
+    }
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:clergy background = pop_type:clergy }
+			if = {
+				limit = {
+					NOT = { has_variable = oe_ir_army_3_done }
+				}
+				trigger_event_silently = phoenix_nirvana.500
+			}
+		if = {
+			limit = { has_variable = empire_debt_write_year_is_open }
+			empire_debt_write_year = { math = add value = 1 }
+		}
+			
+			
+	}
+	option = {
+		name = oe_flavor_byz.301.a
+		add_stability = 1
+					change_variable = {
+				name = oe_byz_rr_rome_hope_var
+				subtract = 34.8
+			}
+		hidden_effect = {
+			trigger_event_silently = { id = oe_flavor_byz.301 days = 365 }
+		}
+
+	}
+	option = {
+		name = oe_flavor_byz.301.b
+		add_stability = 1
+		custom_tooltip = {
+			text = oe_flavor_byz.301_b_tt
+			set_variable = hide_oe_flavor_byz_301
+			trigger_event_silently = { id = oe_flavor_byz.302 days = 365 }
+		}
+
+	}
+}
+oe_flavor_byz.302 = {#隐藏新年
+	type = country_event
+	title = oe_flavor_byz.301.t
+	desc = oe_flavor_byz.301.d
+	trigger = { 
+    }
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:clergy background = pop_type:clergy }
+			if = {
+				limit = {
+					NOT = { has_variable = oe_ir_army_3_done }
+				}
+				trigger_event_silently = phoenix_nirvana.500
+			}
+		if = {
+			limit = { has_variable = empire_debt_write_year_is_open }
+			empire_debt_write_year = { math = add value = 1 }
+		}
+	}
+	hidden = yes
+	option = {
+		name = oe_flavor_byz.301.a
+		add_stability = 1
+		hidden_effect = {
+			trigger_event_silently = { id = oe_flavor_byz.302 days = 365 }
+		}
+	}
+}
+oe_flavor_byz.400 = {#西西里陷入混乱
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	fire_only_once = yes
+	title = oe_flavor_byz.400.t
+	desc = oe_flavor_byz.400.d
+	trigger = { 
+    }
+	illustration_tags = {
+		10 = angry
+		10 = exterior
+	}
+	immediate = {
+		set_variable = oe_byz_sic_succession_fired
+		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+
+	}
+	option = {
+		name = oe_flavor_byz.400.a
+		c:SIC ?= {
+            if = { limit = { country_exists = c:ATH c:ATH = { is_subject_of = c:SIC } } cancel_subject = c:ATH }
+            if = { limit = { country_exists = c:NEO c:NEO = { is_subject_of = c:SIC } } cancel_subject = c:NEO }
+            if = { limit = { country_exists = c:SAO c:SAO = { is_subject_of = c:SIC } } cancel_subject = c:SAO }
+        }
+		trigger_event_non_silently = oe_flavor_byz.402
+	}
+}
+oe_flavor_byz.401 = {#那不勒斯陷入混乱
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	fire_only_once = yes
+	title = oe_flavor_byz.401.t
+	desc = oe_flavor_byz.401.d
+	trigger = { 
+    }
+	illustration_tags = {
+		10 = angry
+		10 = exterior
+	}
+	immediate = {
+		set_variable = oe_byz_nap_succession_fired
+		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+
+	}
+	option = {
+		name = oe_flavor_byz.401.a
+		c:NAP ?= {
+            if = { limit = { country_exists = c:ACH c:ACH = { is_subject_of = c:NAP } } cancel_subject = c:ACH }
+            if = { limit = { country_exists = c:ALB c:ALB = { is_subject_of = c:NAP } } cancel_subject = c:ALB }
+        }
+		if = {
+            limit = { country_exists = c:ACH c:ACH = { is_subject = no } }
+            trigger_event_non_silently = flavor_byz.19
+        }
+	}
+}
+oe_flavor_byz.402 = {#威胁雅典
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.402.t
+	desc = oe_flavor_byz.402.d
+	trigger = { 
+    }
+	illustration_tags = {
+		10 = angry
+		10 = exterior
+	}
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+
+	}
+	option = {
+        name = oe_flavor_byz.402.a
+        if = {
+            limit = {
+                country_exists = c:ATH
+                c:ATH = { is_subject = no exists = capital }
+                NOT = { is_at_war_with = c:ATH }
+            }
+            declare_war_with_cb = {
+                target = c:ATH
+                type = casus_belli:cb_conquer_province
+                target_province = c:ATH.capital.province
+            }
+        }
+        if = {
+            limit = {
+                country_exists = c:NEG
+                c:NEG = { is_subject = no exists = capital }
+                NOT = { is_at_war_with = c:NEG }
+            }
+            declare_war_with_cb = {
+                target = c:NEG
+                type = casus_belli:cb_conquer_province
+                target_province = c:NEG.capital.province
+            }
+        }
+        if = {
+            limit = {
+                country_exists = c:SAO
+                c:SAO = { is_subject = no exists = capital }
+                NOT = { is_at_war_with = c:SAO }
+            }
+            declare_war_with_cb = {
+                target = c:SAO
+                type = casus_belli:cb_conquer_province
+                target_province = c:SAO.capital.province
+            }
+        }
+        if = {
+            limit = {
+                country_exists = c:NEO
+                c:NEO = { is_subject = no exists = capital }
+                NOT = { is_at_war_with = c:NEO }
+            }
+            declare_war_with_cb = {
+                target = c:NEO
+                type = casus_belli:cb_conquer_province
+                target_province = c:NEO.capital.province
+            }
+        }
+        if = {
+            limit = {
+                country_exists = c:BOD
+                c:BOD = { is_subject = no exists = capital }
+                NOT = { is_at_war_with = c:BOD }
+            }
+            declare_war_with_cb = {
+                target = c:BOD
+                type = casus_belli:cb_conquer_province
+                target_province = c:BOD.capital.province
+            }
+        }
+    }
+		option = {
+		name = oe_flavor_byz.402.b
+		add_prestige = -5
+	}
+}
+oe_flavor_byz.403 = {#普世牧首选择
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.403.t
+	desc = oe_flavor_byz.403.d
+	trigger = { 
+    }
+	illustration_tags = {
+		10 = angry
+		10 = exterior
+	}
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:clergy background = pop_type:clergy }
+		every_character = {
+			limit = {
+				in_cabinet = yes
+				has_estate = estate_type:clergy_estate
+				NOT = {
+					has_character_modifier = oe_byz_religion_leader
+				}
+			}
+			save_scope_as = target_character
+		}
+			create_character = {
+				age = 30 # FIX 2026-11-17: 'random' is not a valid age
+				female = no
+				culture = culture:greek_culture
+				religion = religion:orthodox
+				birth_location = location:mount_athos
+				save_scope_as = target_clergy_I
+				estate = estate_type:clergy_estate
+				create_in_limbo = yes
+			}
+			create_character = {
+				age = 30 # FIX 2026-11-17: 'random' is not a valid age
+				female = no
+				culture = culture:greek_culture
+				religion = religion:orthodox
+				birth_location = location:constantinople
+				save_scope_as = target_clergy_II
+				estate = estate_type:clergy_estate
+				create_in_limbo = yes
+			}
+	}
+	option = {
+		name = oe_flavor_byz.403.a
+		scope:target_clergy_II = {
+			add_character_modifier = {
+				 modifier = oe_byz_religion_leader
+				 mode = add_and_extend 
+				 days = -1
+			}
+			move_country = c:BYZ
+		}
+		add_country_modifier = { modifier = oe_byz_religion_leader_mod_I years = -1 mode = add }		
+		hidden_effect = {
+			kill_character_silently = scope:target_clergy_I
+		}
+	}
+	option = {
+		trigger = {
+			exists = scope:target_character
+		}
+		name = oe_flavor_byz.403.b
+		scope:target_character = {
+			add_character_modifier = {
+				 modifier = oe_byz_religion_leader
+				 mode = add_and_extend 
+				 days = -1
+			}
+		}
+		add_country_modifier = { modifier = oe_byz_religion_leader_mod_II years = -1 mode = add }
+		hidden_effect = {
+			kill_character_silently = scope:target_clergy_I
+			kill_character_silently = scope:target_clergy_II
+		}
+	}
+	option = {
+		name = oe_flavor_byz.403.c
+		scope:target_clergy_I = {
+			add_character_modifier = {
+				 modifier = oe_byz_religion_leader
+				 mode = add_and_extend 
+				 days = -1
+			}
+			move_country = c:BYZ
+		}
+		add_country_modifier = { modifier = oe_byz_religion_leader_mod_III years = -1 mode = add }
+		hidden_effect = {
+			kill_character_silently = scope:target_clergy_II
+		}
+	}
+}
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_flavor_byz.500 = {#安三病倒
+# 	type = country_event
+# 	image = "gfx/interface/illustrations/situation/an_III_death.dds"
+# 	title = oe_flavor_byz.500.t
+# 	desc = oe_flavor_byz.500.d
+# 		fire_only_once = yes
+# 	dynamic_historical_event = {
+# 		tag = BYZ
+# 		from = 1341.6.1
+# 		to = 1800.1.1
+# 		monthly_chance = 100
+# 	}
+# 	trigger = { 
+#     }
+# 	illustration_tags = {
+# 		10 = angry
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.500.a
+# 		add_stability = -5
+# 		trigger_event_silently = { id = john_war.8 days = 3 }
+# 		trigger_event_silently = { id = john_war.501 days = 13 }
+# 		trigger_event_silently = { id = john_war.502 days = 14 }
+# 	}
+# }
+
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_flavor_byz.503 = {#摄政集团退缩
+# 	type = country_event
+# 	image = "gfx/interface/illustrations/situation/john_war_result.dds"
+# 	title = oe_flavor_byz.503.t
+# 	desc = oe_flavor_byz.503.d
+# 		fire_only_once = yes
+# 	trigger = { 
+#     }
+# 	immediate = {
+# 		
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.503.a
+# 		add_government_power = -5
+# 		add_stability = 5
+# 		character:byz_john_v_palaiologos = {
+# 		remove_trait = trait:child_byz_john_V
+# 		add_trait = trait:child_byz_john_V_after_1341
+# 		}
+# 		character:byz_john_kantakouzenos = {
+# 			add_trait = trait:oe_byz_john_VI_bad
+# 		}
+# 				hidden_effect = {
+# 			oe_byz_release_kantakouzenos_effect = yes
+# 				set_regent = character:byz_john_kantakouzenos
+# 
+# 
+# 			set_global_variable = john_war_is_over
+# 			trigger_event_silently = { id = oe_flavor_byz.506 days = 60 }
+# 		}
+# 	}
+# }
+
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_flavor_byz.504 = {#坎帝退缩
+# 	type = country_event
+# 	image = "gfx/interface/illustrations/situation/john_war_result.dds"
+# 	title = oe_flavor_byz.504.t
+# 	desc = oe_flavor_byz.504.d
+# 		fire_only_once = yes
+# 	trigger = { 
+#     }
+# 	illustration_tags = {
+# 		10 = angry
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.504.a
+# 		add_stability = -5
+# 		add_government_power = 5
+# 				character:byz_john_v_palaiologos = {
+# 		remove_trait = trait:child_byz_john_V
+# 		add_trait = trait:child_byz_john_V_after_1341
+# 		}
+# 		character:byz_john_kantakouzenos = {
+# 			add_trait = trait:oe_byz_john_VI_bad
+# 		}
+# 				hidden_effect = {
+# 
+# 
+# 			set_global_variable = john_war_is_over
+# 		}
+# 	}
+# }
+
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_flavor_byz.505 = {#两约翰内战
+# 	type = country_event
+# 	image = "gfx/interface/illustrations/situation/john_war_result.dds"
+# 	title = oe_flavor_byz.505.t
+# 	desc = oe_flavor_byz.505.d
+# 		fire_only_once = yes
+# 	trigger = { 
+#     }
+# 	illustration_tags = {
+# 		10 = angry
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+# 		character:byz_john_kantakouzenos = {
+# 			save_scope_as = target_character
+# 		}
+# 
+# 		oe_byz_release_kantakouzenos_effect = yes
+# 		create_rebel = {
+# 			category = pretender
+# 			name = byz_oe_pretender_rebel
+# 			save_scope_as = target_rebels
+# 		}
+# 		scope:target_character = {
+# 			change_character_allegiance = scope:target_rebels
+# 		}
+# 		scope:target_rebels = {
+# 			start_civil_war = {
+# 				save_scope_as = target_country
+# 				set_variable = {
+# 					name = will_not_surrender
+# 					years = 5
+# 				}
+# 			}
+# 		}
+# 	area:macedonia_area = {
+# 		every_location_in_area = {
+# 			limit = { exists = owner owner = c:BYZ }
+# 		change_location_owner = scope:target_country}
+# 	}
+# 		area:northern_greece_area = {
+# 		every_location_in_area = {
+# 			limit = { exists = owner owner = c:BYZ }
+# 		change_location_owner = scope:target_country}
+# 	}
+# 		
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.505.a
+# 		add_stability = -30
+# 		add_government_power = -30
+# 				character:byz_john_v_palaiologos = {
+# 		remove_trait = trait:child_byz_john_V
+# 		add_trait = trait:child_byz_john_V_after_1341
+# 		}
+# 		character:byz_john_kantakouzenos = {
+# 			add_trait = trait:oe_byz_john_VI_bad
+# 		}
+# 		hidden_effect = {
+# 
+# 
+# 			set_global_variable = john_war_is_over
+# 		}
+# 	}
+# }
+
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_flavor_byz.506 = {#一个终结巴列奥略王朝的机会？
+# 	type = country_event
+# 	image = "gfx/interface/illustrations/situation/john_war_result.dds"
+# 	title = oe_flavor_byz.506.t
+# 	desc = oe_flavor_byz.506.d
+# 	fire_only_once = yes
+# 	trigger = { 
+#     }
+# 
+# 	immediate = {
+# 		
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.506.a
+# 		add_government_power = 10
+# 		add_stability = 5
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.506.b
+# 		add_government_power = -100
+# 		add_stability = -30	
+# 		oe_byz_release_kantakouzenos_effect = yes
+# 		set_new_ruler = character:byz_john_kantakouzenos
+# 	}
+# }
+
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_flavor_byz.600 = {#坎帝去世
+# 	type = country_event
+# 	title = oe_flavor_byz.600.t
+# 	desc = oe_flavor_byz.600.d
+# 		fire_only_once = yes
+# 	trigger = { 
+#     }
+# 	illustration_tags = {
+# 		10 = angry
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.600.a
+# 		add_government_power = 7
+# 		# The manor and household survive the death of their founder.
+# 		}
+# }
+
+oe_flavor_byz.700 = {#征服埃及
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.700.t
+	desc = oe_flavor_byz.700.d
+	fire_only_once = yes
+	trigger = { 
+    }
+	illustration_tags = {
+		10 = angry
+		10 = exterior
+	}
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers }
+
+	}
+	option = {
+		name = oe_flavor_byz.700.a
+				location:cairo.owner = {
+						change_government_type = government_type:monarchy
+						change_heir_selection = heir_selection:oe_sub_mam_elect
+
+						change_country_name = OEMAM
+				}
+		}	
+		option = {
+		name = oe_flavor_byz.700.b
+			custom_tooltip = {
+				text = oe_flavor_byz.700_b_tt
+				location:cairo.owner = {
+						change_heir_selection = heir_selection:cognatic_primogeniture
+						change_government_type = government_type:monarchy
+						change_country_name = OETOLE
+				}
+			}
+		}	
+}
+oe_flavor_byz.701 = {#属国转化为行省化附庸
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.701.t
+	desc = oe_flavor_byz.701.d
+
+
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:burghers background = pop_type:burghers }
+	}
+	option = {
+		name = oe_flavor_byz.701.a
+	}
+}
+
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# oe_flavor_byz.800 = {#安纳托利亚难度调节
+# 	type = country_event
+# 	title = oe_flavor_byz.800.t
+# 	desc = oe_flavor_byz.800.d
+# 
+# 
+# 	illustration_tags = {
+# 		10 = happy
+# 		10 = exterior
+# 	}
+# 	immediate = {
+# 		event_illustration_poptype_effect = { foreground = pop_type:burghers background = pop_type:burghers }
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.800.a
+# 		add_prestige = 1
+# 	}
+# 		option = {
+# 		name = oe_flavor_byz.800.b
+# 		add_prestige = 5
+# 		c:TUR = {
+# 			add_country_modifier = { modifier = oe_flavor_byz.800_b_mod years = 50 mode = add_and_extend }
+# 		}
+# 		c:TUR.capital = {
+# 			while =  {
+# 				count = 5
+# 				create_sub_unit_with_owner = {
+# 					type = a_steppe_horse_archers
+# 					owner = c:TUR
+# 				}
+# 			}		
+# 			while =  {
+# 				count = 3
+# 				create_sub_unit_with_owner = {
+# 					type = a_renaissance_janissaries
+# 					owner = c:TUR
+# 				}
+# 			}		
+# 		}
+# 		culture:turkish_culture = {
+# 			every_country_in_culture = {
+# 				limit = {
+# 					NOT = {
+# 						tag = TUR
+# 					}
+# 					capital.region = region:anatolia_region
+# 				}
+# 				add_country_modifier = { modifier = oe_flavor_byz.800_b_mod_I years = 50 mode = add_and_extend }
+# 				save_scope_as = target_country_b
+# 				capital = {
+# 			while =  {
+# 				count = 2
+# 				create_sub_unit_with_owner = {
+# 					type = a_steppe_horse_archers
+# 					owner = scope:target_country_b
+# 				}
+# 			}						
+# 				}
+# 			}
+# 		}
+# 	}
+# 		option = {
+# 		name = oe_flavor_byz.800.c
+# 		add_prestige = 10
+# 		c:TUR = {
+# 			add_country_modifier = { modifier = oe_flavor_byz.800_c_mod years = 50 mode = add_and_extend }
+# 		}
+# 		c:TUR.capital = {
+# 			while =  {
+# 				count = 10
+# 				create_sub_unit_with_owner = {
+# 					type = a_steppe_horse_archers
+# 					owner = c:TUR
+# 				}
+# 			}	
+# 			while =  {
+# 				count = 5
+# 				create_sub_unit_with_owner = {
+# 					type = a_renaissance_janissaries
+# 					owner = c:TUR
+# 				}
+# 			}			
+# 		}
+# 		culture:turkish_culture = {
+# 			every_country_in_culture = {
+# 				limit = {
+# 					NOT = {
+# 						tag = TUR
+# 					}
+# 					capital.region = region:anatolia_region
+# 				}
+# 				add_country_modifier = { modifier = oe_flavor_byz.800_c_mod_I years = 50 mode = add_and_extend }
+# 				save_scope_as = target_country_c
+# 				capital = {
+# 			while =  {
+# 				count = 2
+# 				create_sub_unit_with_owner = {
+# 					type = a_steppe_horse_archers
+# 					owner = scope:target_country_c
+# 				}
+# 			}						
+# 				}
+# 			}
+# 		}
+# 	}
+# }
+
+oe_flavor_byz.801 = {#罗马名字
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.801.t
+	desc = oe_pillars_country_name_desc
+
+
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:burghers background = pop_type:burghers }
+	}
+	option = {
+		name = oe_flavor_byz.801.a
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# add_government_power = 1
+
+		change_country_name = BYZ_n01
+	}
+	option = {
+		name = oe_flavor_byz.801.b
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# add_government_power = 1
+
+		change_country_name = BYZ_n02
+	}
+	option = {
+		name = oe_flavor_byz.801.c
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# add_government_power = 1
+
+		change_country_name = BYZ_n03
+	}
+	option = {
+		name = oe_flavor_byz.801.d
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# add_government_power = 1
+
+		change_country_name = BYZ_n04
+	}
+	option = {
+		name = oe_flavor_byz.801.e
+		change_country_name = BYZ_n05
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# add_government_power = -5
+
+	}
+
+    trigger = { tag = BYZ has_variable = oe_pillars_appearance_pending }
+
+    after = { trigger_event_non_silently = oe_flavor_byz.802 }
+}
+oe_flavor_byz.802 = {#罗马颜色
+	type = country_event
+	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+	title = oe_flavor_byz.802.t
+	desc = oe_pillars_country_color_desc
+
+
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:burghers background = pop_type:burghers }
+	}
+	option = {
+		name = oe_flavor_byz.802.a
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# add_stability = 1
+
+		
+	
+        change_country_color = map_BYZ
+}
+	option = {
+		name = oe_flavor_byz.802.b
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# add_stability = 1
+
+		change_country_color = map_ROM
+	}
+	option = {
+		name = oe_flavor_byz.802.c
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# add_stability = 1
+
+		change_country_color = map_FEO
+	}
+	option = {
+		name = oe_flavor_byz.802.d
+		change_country_color = map_ottomans
+		
+# PAUSED 2026-09-22: opening/situation rework; retained for restoration.
+# add_stability = -5
+
+	}
+
+    trigger = { tag = BYZ has_variable = oe_pillars_appearance_pending }
+
+    after = { remove_variable = oe_pillars_appearance_pending }
+}
+
+# PAUSED 2026-09-23: Rus church story and supporting logic.
+# oe_flavor_byz.900 = {#莫斯科大公来信
+# 	type = country_event
+# 	title = oe_flavor_byz.900.t
+# 	desc = oe_flavor_byz.900.d
+# 	image = "gfx/interface/illustrations/situation/rus_mil.dds"
+# 	fire_only_once = yes
+# 	dynamic_historical_event = {
+# 		tag = BYZ
+# 		from = 1347.6.1
+# 		to = 1836.1.1
+# 		monthly_chance = 20
+# 	}
+# 
+# 	trigger = {
+# 		at_war = no
+# 		has_raised_levies = no	
+# 		has_variable = allow_oe_flavor_byz_900	
+# 	}
+# 
+# 	immediate = {
+# 		
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.900.a
+# 		add_government_power = 5
+# 		custom_tooltip = {
+# 			text = oe_flavor_byz_900_tt
+# 				trigger_event_silently = { id = oe_flavor_byz.901 days = 30 }
+# 			
+# 		}
+# 		hidden_effect = {
+# 		set_variable = rus_religion_action_mongu_scare_over
+# 		}
+# 
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.900.b
+# 		add_prestige = 10
+# 
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: Rus church story and supporting logic.
+# oe_flavor_byz.901 = {#打碎鞑靼枷锁
+# 	type = country_event
+# 	title = oe_flavor_byz.901.t
+# 	desc = oe_flavor_byz.901.d
+# 	image = "gfx/interface/illustrations/situation/rus_mil.dds"
+# 
+# 
+# 	immediate = {
+# 		
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.901.a
+# 				c:BYZ = {
+# 					declare_war_with_cb = {
+# 						target = international_organization:tatar_yoke.leader_country
+# 						type = casus_belli:cb_break_free_tatar_yoke
+# 						
+# 					}
+# 					every_current_war = {
+# 						limit = {
+# 							casus_belli ?= casus_belli:cb_break_free_tatar_yoke
+# 						}
+# 						save_scope_as = target_war
+# 					}
+# 				}
+# 				c:MOS = {
+# 					join_war_with = {
+# 						war = scope:target_war
+# 						target = c:BYZ
+# 						call_in_subjects = yes
+# 					}
+# 				}
+# 				if = {
+# 					limit = { country_exists = c:KIE }
+# 				c:KIE = {
+# 					join_war_with = {
+# 						war = scope:target_war
+# 						target = c:BYZ
+# 						call_in_subjects = yes
+# 					}
+# 				}
+# 				}
+# 	}
+# }
+
+
+# PAUSED 2026-09-23: Rus church story and supporting logic.
+# oe_flavor_byz.902 = {#联络莫斯科
+# 	type = country_event
+# 	title = oe_flavor_byz.902.t
+# 	desc = oe_flavor_byz.902.d
+# 	image = "gfx/interface/illustrations/international_organization_types/rus_religion.dds"
+# 	immediate = {
+# 		
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.902.a
+# 		add_diplomats = -2
+# 		hidden_effect = {
+# 			set_variable = allow_oe_flavor_byz_900	
+# 		}
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.902.b
+# 		add_prestige = 5
+# 		hidden_effect = {
+# 		set_variable = rus_religion_action_mongu_scare_over_II
+# 		}
+# 	}
+# }
+
+
+#奥斯曼公司事件组
+oe_flavor_byz.1000 = {
+    type = country_event
+    outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
+    title = oe_flavor_byz.1000.t
+    desc = oe_flavor_byz.1000.d
+    image = "gfx/interface/illustrations/situation/oe_flavor_byz_1_1.dds"
+    fire_only_once = yes
+    trigger = { tag = BYZ NOT = { has_variable = oe_osman_fate_shown } }
+    immediate = { set_variable = oe_osman_fate_shown remove_variable = oe_osman_fate_pending }
+    option = {
+        name = oe_flavor_byz.1000.a
+        trigger = { dynasty:ottomans_dynasty = { any_character_in_dynasty = { is_alive = yes } } }
+        add_government_power = 5
+        custom_tooltip = {
+            text = oe_flavor_byz.1000.a.tt
+            oe_osman_settle = yes
+        }
+    }
+    option = {
+        name = oe_flavor_byz.1000.b
+        add_prestige = 5
+        custom_tooltip = { text = oe_osman_expel.tt oe_osman_expel = yes }
+    }
+}
+# PAUSED 2026-09-26: superseded by the Ottoman exile/conversion prologue.
+# oe_flavor_byz.1000 = {#奥斯曼家族的命运
+# 	type = country_event
+# 	title = oe_flavor_byz.1000.t
+# 	desc = oe_flavor_byz.1000.d
+# 	image = "gfx/interface/illustrations/situation/oe_flavor_byz_1_1.dds"
+# 	fire_only_once = yes
+# 	immediate = {
+# 		
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.1000.a
+# 		add_government_power = 5
+# 		custom_tooltip = {
+# 			text = oe_flavor_byz.1000.a.tt
+# 			set_variable = oe_flavor_byz.1000.a.var
+# 		}
+# 		
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.1000.b
+# 		add_prestige = 5
+# 	}
+# }
+
+
+# PAUSED 2026-09-26: superseded by the Ottoman exile/conversion prologue.
+# oe_flavor_byz.1001 = {#穆拉德一世
+# 	title = oe_flavor_byz.1001.t
+# 	desc = oe_flavor_byz.1001.d
+# 	image = "gfx/interface/illustrations/situation/oe_flavor_byz_1_1.dds"
+# 	fire_only_once = yes
+# 	dynamic_historical_event = {
+# 		tag = BYZ
+# 		from = 1360.1.1
+# 		to = 1389.1.1
+# 		monthly_chance = 10
+# 	}
+# 	trigger = { 
+# 			NOT = {
+# 				country_exists = c:TUR
+# 			}
+# 			has_variable = oe_flavor_byz.1000.a.var
+#     }
+# 	immediate = {
+# 		create_character = {
+# 			name = Murad_I
+# 		
+# 			culture = culture:oe_tur_greek_culture
+# 			birth_location = location:constantinople
+# 			birth_date = 1326.6.29
+# 			save_scope_as = target_character
+# 			religion = religion:orthodox
+# 			dynasty = dynasty:osman_dynasty
+# 			adm = 69
+# 			dip = 62
+# 			mil = 77
+# 			estate = estate_type:burghers_estate
+# 			create_in_limbo = yes
+# 		}		
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.1001.a
+# 
+# 		
+# 	}
+# 	option = {
+# 		name = oe_flavor_byz.1001.b
+# 		
+# 	}
+# }
+
+#历史回响
+
+
+oe_flavor_byz.10000 = {#计数器事件
+	type = country_event
+	title = oe_flavor_byz.10000.t
+	desc = oe_flavor_byz.10000.d
+	trigger = { 
+    }
+	option = {
+		name = oe_flavor_byz.10000.a
+		
+	}
+}

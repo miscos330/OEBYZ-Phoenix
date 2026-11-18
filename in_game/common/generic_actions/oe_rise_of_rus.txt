@@ -1,0 +1,465 @@
+﻿oe_rus_tribute = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_rus_top_power = yes } }
+    allow = { scope:actor = { oe_rus_top_power = yes country_exists = c:BYZ location:constantinople = { owner = c:BYZ } gold >= oe_rus_tribute_cost } }
+    cooldown = { type = oe_rus_tribute_cooldown years = 5 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = { oe_rus_top_power = yes gold > oe_rus_annual_income country_exists = c:BYZ opinion = { target = c:BYZ value > 0 } }
+
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+
+
+    effect = { scope:actor = {
+        add_gold = { value = oe_rus_tribute_cost multiply = -1 }
+        save_scope_as = oe_rus_sender
+    }
+    c:BYZ = { trigger_event_non_silently = oe_rise_of_rus.3 } }
+    ai_will_do = { if = { limit = { scope:actor = { opinion = { target = c:BYZ value > 100 } } } add = 80 }
+    else_if = { limit = { scope:actor = { opinion = { target = c:BYZ value > 50 } } } add = 40 }
+    else_if = { limit = { scope:actor = { opinion = { target = c:BYZ value > 0 } } } add = 10 } }
+}
+oe_rus_purchase = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_rus_top_power = yes } }
+    allow = { scope:actor = { oe_rus_top_power = yes political_influence >= 25 } }
+    cooldown = { type = oe_rus_purchase_cooldown years = 1 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = { oe_rus_top_power = yes gold > oe_rus_annual_income }
+
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+
+
+    select_trigger = {
+        looking_for_a = country
+        source_global_list = oe_rus_candidates
+        target_flag = target
+        name = choose_country
+        column = { data = name } column = { data = country_tax_base }
+        only_color_selectable = yes
+        map_color = { value = owner.country_color }
+        visible = { oe_rus_buy_target = yes }
+        enabled = { scope:actor = { gold >= root.oe_rus_purchase_cost } }
+    }
+
+    effect = { if = { limit = { exists = scope:target }
+        save_scope_value_as = { name = oe_rus_price value = scope:target.oe_rus_purchase_cost }
+        scope:actor = { add_gold = { value = scope:oe_rus_price multiply = -1 } add_political_influence = -25 }
+        scope:target = { add_gold = scope:oe_rus_price make_subject_of = { target = scope:actor type = subject_type:vassal } }
+        situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
+    } }
+    ai_will_do = { add = 80 }
+}
+oe_rus_contest = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_rus_top_power = yes } }
+    allow = { scope:actor = { oe_rus_top_power = yes political_influence >= 10 } }
+    cooldown = { type = oe_rus_contest_cooldown years = 2 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = { oe_rus_top_power = yes  }
+
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+
+
+    select_trigger = {
+        looking_for_a = country
+        source_global_list = oe_rus_candidates
+        target_flag = target
+        name = choose_country
+        column = { data = name } column = { data = country_tax_base }
+        only_color_selectable = yes
+        map_color = { value = owner.country_color }
+        visible = { oe_rus_rival_target = yes }
+        enabled = { always = yes }
+    }
+
+    effect = { if = { limit = { exists = scope:target scope:target = { oe_rus_rival_target = yes } scope:actor = { oe_rus_top_power = yes political_influence >= 10 } }
+        scope:target = {
+            random_province = {
+                limit = { any_location_in_province = { is_neighbor_of = scope:actor } }
+                save_scope_as = oe_rus_claim_province
+            }
+        }
+        if = { limit = { exists = scope:oe_rus_claim_province }
+            scope:actor = {
+                add_political_influence = -10
+                add_casus_belli = { target = scope:target type = casus_belli:cb_conquer_province province = scope:oe_rus_claim_province }
+            }
+        }
+    } }
+    ai_will_do = { if = { limit = { exists = scope:target scope:target = { military_strength < scope:actor.military_strength } scope:actor = { opinion = { target = scope:target value < 50 } } } add = 80 }
+    else_if = { limit = { scope:target ?= { has_variable = oe_rus_rank } } add = 40 }
+    else = { add = 10 } }
+}
+oe_rus_integrate_union = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_rus_top_power = yes } }
+    allow = { scope:actor = { oe_rus_top_power = yes political_influence >= 50 exists = union.leader_country union.leader_country = this } }
+    cooldown = { type = oe_rus_integrate_union_cooldown years = 5 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = { oe_rus_top_power = yes exists = union.leader_country union.leader_country = this }
+
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+
+
+    select_trigger = {
+        looking_for_a = country
+        interaction_source_list = { scope:actor.union ?= { every_international_organization_member = { add_to_list = source } } }
+        target_flag = target name = choose_country
+        column = { data = name } column = { data = country_tax_base }
+        only_color_selectable = yes map_color = { value = owner.country_color }
+        visible = { oe_rus_union_target = yes }
+        enabled = { scope:actor = { gold >= root.oe_rus_annual_income } }
+    }
+
+    effect = { if = { limit = { exists = scope:target }
+        save_scope_value_as = { name = oe_rus_price value = scope:target.oe_rus_annual_income }
+        scope:actor = { add_gold = { value = scope:oe_rus_price multiply = -1 } add_political_influence = -50 }
+        scope:target = { add_gold = scope:oe_rus_price }
+        scope:actor.union = { remove_country_from_international_organization = { country = scope:target } }
+        scope:target = { make_subject_of = { target = scope:actor type = subject_type:fiefdom } }
+        situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
+    } }
+    ai_will_do = { add = 80 }
+}
+oe_rus_build_kremlin = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_rus_top_power = yes } }
+    allow = { scope:actor = { oe_rus_top_power = yes political_influence >= 25 gold >= oe_rus_kremlin_cost oe_rus_kremlin_capacity = yes } }
+    cooldown = { type = oe_rus_build_kremlin_cooldown years = 5 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = { oe_rus_top_power = yes gold > oe_rus_annual_income }
+
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+
+    select_trigger = {
+        looking_for_a = location source = actor target_flag = target
+        name = choose_location column = { data = name } column = { data = population }
+        visible = { oe_rus_kremlin_site = yes }
+        only_color_selectable = yes map_color = define:NMapColors|MAP_COLOR_HIGH
+    }
+    effect = { if = { limit = { exists = scope:target }
+        scope:actor = { add_gold = { value = oe_rus_kremlin_cost multiply = -1 } add_political_influence = -25 }
+        scope:target = {
+            set_variable = oe_rus_kremlin_unlocked
+            construct_building = { building_type = building_type:oe_rus_kremlin owner = scope:actor cost_multiplier = 0 cost_multiplier_reason = oe_rus_build_kremlin }
+        }
+    } }
+    ai_will_do = { add = 80 }
+}
+
+oe_rus_integrate_kyiv = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { tag = LIT is_situation_active = situation:oe_rise_of_rus country_exists = c:KIE } }
+    allow = { scope:actor = { oe_rus_can_integrate_kyiv = yes political_influence >= 50 } }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    ai_prerequisite = { oe_rus_can_integrate_kyiv = yes political_influence >= 50 }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+    effect = {
+        scope:actor = {
+            add_political_influence = -50
+            annex_country = { country = c:KIE reason = Diplomatic }
+        }
+        situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
+    }
+    ai_will_do = { add = 100 }
+}
+
+oe_rus_grant_metropolitan = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { tag = BYZ is_situation_active = situation:oe_rise_of_rus } }
+    allow = { scope:actor = { tag = BYZ is_situation_active = situation:oe_rise_of_rus religious_influence >= 50 } }
+    cooldown = { type = oe_rus_grant_metropolitan_cooldown years = 1 }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+    select_trigger = {
+        looking_for_a = country
+        source_global_list = oe_rus_candidates
+        target_flag = target
+        name = choose_country
+        column = { data = name }
+        column = { data = country_tax_base }
+        only_color_selectable = yes
+        map_color = { value = owner.country_color }
+        visible = { oe_rus_autonomous_metropolitan_target = yes }
+        enabled = { always = yes }
+    }
+    effect = {
+        if = {
+            limit = { exists = scope:target scope:target = { oe_rus_autonomous_metropolitan_target = yes } }
+            scope:actor = { add_religious_influence = -50 }
+            scope:target = {
+                set_variable = oe_rus_metropolitan_granted
+                add_country_modifier = { modifier = oe_rus_autonomous_metropolitan days = -1 mode = add_and_extend }
+                add_opinion = { target = scope:actor modifier = oe_rus_metropolitan_recognition }
+            }
+        }
+    }
+}
+
+oe_rus_support_through_church = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { tag = BYZ is_situation_active = situation:oe_rise_of_rus } }
+    allow = { scope:actor = { tag = BYZ is_situation_active = situation:oe_rise_of_rus religious_influence >= 50 } }
+    cooldown = { type = oe_rus_support_through_church_cooldown months = 3 }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+    select_trigger = {
+        looking_for_a = country
+        source_global_list = oe_rus_candidates
+        target_flag = target
+        name = choose_country
+        column = { data = name }
+        column = { data = country_tax_base }
+        only_color_selectable = yes
+        map_color = { value = owner.country_color }
+        visible = { oe_rus_church_support_target = yes }
+        enabled = { always = yes }
+    }
+    effect = {
+        if = {
+            limit = { exists = scope:target scope:target = { oe_rus_church_support_target = yes } }
+            scope:actor = { add_religious_influence = -50 }
+            scope:target = {
+                add_country_modifier = { modifier = oe_rus_catholic_orthodox_support years = 3 mode = add_and_extend }
+            }
+        }
+    }
+}
+
+oe_rus_provide_mercenaries = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { tag = BYZ is_situation_active = situation:oe_rise_of_rus } }
+    allow = { scope:actor = { tag = BYZ is_situation_active = situation:oe_rise_of_rus manpower >= 1.6 gold >= oe_rus_mercenary_cost } }
+    cooldown = { type = oe_rus_provide_mercenaries_cooldown years = 3 }
+    automation_tick = never
+    ai_tick = never
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+    select_trigger = {
+        looking_for_a = country
+        source_global_list = oe_rus_candidates
+        target_flag = target
+        name = choose_country
+        column = { data = name }
+        column = { data = country_tax_base }
+        only_color_selectable = yes
+        map_color = { value = owner.country_color }
+        visible = { oe_rus_mercenary_target = yes }
+        enabled = { always = yes }
+    }
+    effect = {
+        if = {
+            limit = { exists = scope:target scope:target = { oe_rus_mercenary_target = yes } }
+            scope:actor = {
+                # Keep the paid amount until the existing one-off delivery check.
+                set_variable = { name = oe_rus_mercenary_gold_paid value = oe_rus_mercenary_cost }
+                add_gold = { value = var:oe_rus_mercenary_gold_paid multiply = -1 }
+                add_manpower = -1.6
+                save_scope_as = oe_rus_mercenary_donor
+            }
+            scope:target = {
+                save_scope_as = oe_rus_mercenary_recipient
+                trigger_event_silently = oe_rise_of_rus.4
+            }
+        }
+    }
+}
+
+oe_rus_authorize_boyars = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_rus_top_power = yes } }
+    allow = { scope:actor = { oe_rus_top_power = yes political_influence >= 10 } }
+    cooldown = { type = oe_rus_authorize_boyars_cooldown years = 1 }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    ai_prerequisite = { oe_rus_top_power = yes political_influence >= 10 }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+    select_trigger = {
+        looking_for_a = province
+        source = actor
+        target_flag = target
+        name = choose_province
+        none_available_msg_key = no_provinces_available
+        column = { data = name }
+        column = { data = population }
+        only_color_selectable = yes
+        map_color = { value = owner.country_color }
+        visible = { oe_rus_boyar_province = yes }
+    }
+    effect = {
+        if = {
+            limit = { exists = scope:target scope:target = { oe_rus_boyar_province = yes } }
+            scope:actor = { add_political_influence = -10 }
+            scope:target = {
+                every_location_in_province = {
+                    change_integration_progress = 50
+                    add_location_modifier = { modifier = oe_rus_boyar_privileges years = 50 mode = replace }
+                }
+            }
+        }
+    }
+    ai_will_do = { add = 80 }
+}
+
+oe_rus_unify_russia = {
+    type = situation
+    show_message = no
+    potential = {
+        scope:actor = {
+            oe_rus_first_power = yes
+            NOT = { has_global_variable = oe_rus_unification_completed }
+        }
+    }
+    allow = { scope:actor = { oe_rus_unification_allowed = yes } }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 3
+    ai_prerequisite = {
+        oe_rus_first_power = yes
+        NOT = { has_global_variable = oe_rus_unification_completed }
+    }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+    effect = { scope:actor = { oe_rus_unify_russia_effect = yes } }
+    ai_will_do = { add = 80 }
+}
+
+ oe_rus_accelerate_unification = {
+    type = situation
+    show_message = no
+    potential = { scope:actor = { oe_rus_first_power = yes } }
+    allow = { scope:actor = { oe_rus_first_power = yes legitimacy >= 25 } }
+    automation_tick = never
+    ai_tick = monthly
+    ai_tick_frequency = 1
+    ai_prerequisite = { oe_rus_first_power = yes legitimacy >= 25 }
+    select_trigger = {
+        looking_for_a = situation
+        interaction_source_list = { situation:oe_rise_of_rus = { add_to_list = source } }
+        target_flag = recipient
+        name = choose_situation
+        column = { data = name }
+        visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
+    }
+    select_trigger = {
+        looking_for_a = country
+        source_global_list = oe_rus_candidates
+        target_flag = target
+        name = choose_country
+        column = { data = name }
+        visible = { oe_rus_accelerate_target = yes }
+        enabled = { always = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                exists = scope:target
+                scope:actor = { oe_rus_first_power = yes legitimacy >= 25 }
+                scope:target = { oe_rus_accelerate_target = yes }
+            }
+            scope:actor = { add_legitimacy = -25 remove_truce_with = scope:target }
+            scope:target = { remove_truce_with = scope:actor }
+        }
+    }
+    ai_will_do = { add = 80 }
+}

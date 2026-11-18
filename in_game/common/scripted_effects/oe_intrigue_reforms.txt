@@ -1,0 +1,74 @@
+﻿# Country scope. Remove every current domestic house modifier, including any missing from the cached lists.
+oe_ir_reclaim_privileges_effect = {
+    if = {
+        limit = { oe_ir_reclaim_privileges_ready = yes }
+        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority subtract = 50 } }
+        set_variable = oe_ir_reclaim_privileges_done
+        every_owned_location = {
+            oe_nf_remove_control = { slot = 1 }
+            oe_nf_remove_control = { slot = 2 }
+            oe_nf_remove_control = { slot = 3 }
+            oe_nf_remove_control = { slot = 4 }
+        }
+        oe_nf_refresh = yes
+    }
+}
+# IO scope, selected house head remains in scope:target_head.
+oe_bi_reduce_selected_house = {
+    if = { limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:target_head } oe_nf_change_influence = { slot = 1 amount = $amount$ } }
+    if = { limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:target_head } oe_nf_change_influence = { slot = 2 amount = $amount$ } }
+    if = { limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:target_head } oe_nf_change_influence = { slot = 3 amount = $amount$ } }
+    if = { limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:target_head } oe_nf_change_influence = { slot = 4 amount = $amount$ } }
+}
+oe_bi_force_house = {
+    if = {
+        limit = { oe_bi_force_ready = yes scope:target_head = { oe_bi_rival_head = yes } }
+        add_manpower = -0.1
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority subtract = 2 }
+            oe_bi_reduce_selected_house = { amount = -50 }
+        }
+        random = {
+            chance = 20
+            if = {
+                limit = { oe_bi_civil_war_possible = yes }
+                set_variable = oe_bi_forced_civil_war
+                trigger_event_non_silently = oe_byzantine_intrigue.5
+            }
+        }
+    }
+}
+oe_bi_negotiate_house = {
+    if = {
+        limit = { oe_bi_negotiate_ready = yes scope:target_head = { oe_bi_negotiable_head = yes } }
+        set_variable = { name = oe_bi_negotiate_cooldown value = 1 months = 12 }
+        scope:target_head.dynasty = { save_scope_as = oe_bi_negotiated_family }
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority subtract = 2 }
+            add_to_variable_list = { name = oe_bi_negotiated_families target = scope:oe_bi_negotiated_family }
+            oe_bi_reduce_selected_house = { amount = -25 }
+        }
+    }
+}
+oe_bi_assert_authority = {
+    if = {
+        limit = { oe_bi_assert_authority_ready = yes }
+        add_stability = -5
+        add_legitimacy = -5
+        set_variable = { name = oe_bi_assert_authority_cooldown value = 1 months = 12 }
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority add = 5 }
+            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        }
+    }
+}
+oe_bi_curb_house = {
+    if = {
+        limit = { oe_bi_curb_ready = yes scope:target_head = { oe_bi_rival_head = yes } }
+        set_variable = { name = oe_bi_curb_cooldown value = 1 months = 3 }
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority subtract = 5 }
+            oe_bi_reduce_selected_house = { amount = -25 }
+        }
+    }
+}

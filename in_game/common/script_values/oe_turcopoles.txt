@@ -1,0 +1,55 @@
+﻿# Country scope: recruitment reads capacity caches updated by the monthly/building hooks.
+# Completed Rum-culture barracks levels, maintained outside recruitment evaluation.
+oe_hetaireia_cavalry_unit_limit = {
+    value = 0
+    add = {
+        desc = "OE_HETAIREIA_CAVALRY_BARRACKS_LIMIT"
+        value = 0
+        if = { limit = { has_variable = oe_su_rum_capacity } value = var:oe_su_rum_capacity }
+    }
+}
+
+# Both cavalry families and every generation consume the same pool.
+# Indexed engine counters; no army/subunit iteration.
+oe_hetaireia_cavalry_total_count = {
+    value = oe_hetaireia_cavalry_normal_count
+    add = oe_hetaireia_cavalry_pronoia_count
+}
+
+# Compatibility names used by existing localization/UI; these now represent the shared pool.
+oe_turcopoles_unit_limit = { value = oe_hetaireia_cavalry_unit_limit }
+oe_turcopoles_total_count = { value = oe_hetaireia_cavalry_total_count }
+
+# Indexed type totals also gate the monthly reconciliation before any iteration.
+oe_hetaireia_cavalry_normal_count = {
+    value = 0
+    add = total_sub_unit_type_count:oe_turcopoles_1
+    add = total_sub_unit_type_count:oe_turcopoles_2
+    add = total_sub_unit_type_count:oe_turcopoles_3
+    add = total_sub_unit_type_count:oe_turcopoles_4
+    add = total_sub_unit_type_count:oe_turcopoles_5
+    add = total_sub_unit_type_count:oe_turcopoles_6
+    add = total_sub_unit_type_count:oe_rum_cataphracts_1
+    add = total_sub_unit_type_count:oe_rum_cataphracts_2
+    add = total_sub_unit_type_count:oe_rum_cataphracts_3
+    add = total_sub_unit_type_count:oe_rum_cataphracts_4
+    add = total_sub_unit_type_count:oe_rum_cataphracts_5
+    add = total_sub_unit_type_count:oe_rum_cataphracts_6
+}
+
+# Indexed type totals also gate the monthly reconciliation before any iteration.
+oe_hetaireia_cavalry_pronoia_count = {
+    value = 0
+    add = total_sub_unit_type_count:oe_turcopoles_pronoia_1
+    add = total_sub_unit_type_count:oe_turcopoles_pronoia_2
+    add = total_sub_unit_type_count:oe_turcopoles_pronoia_3
+    add = total_sub_unit_type_count:oe_turcopoles_pronoia_4
+    add = total_sub_unit_type_count:oe_turcopoles_pronoia_5
+    add = total_sub_unit_type_count:oe_turcopoles_pronoia_6
+    add = total_sub_unit_type_count:oe_rum_cataphracts_pronoia_1
+    add = total_sub_unit_type_count:oe_rum_cataphracts_pronoia_2
+    add = total_sub_unit_type_count:oe_rum_cataphracts_pronoia_3
+    add = total_sub_unit_type_count:oe_rum_cataphracts_pronoia_4
+    add = total_sub_unit_type_count:oe_rum_cataphracts_pronoia_5
+    add = total_sub_unit_type_count:oe_rum_cataphracts_pronoia_6
+}

@@ -1,0 +1,120 @@
+﻿# Click-only predicates. All geography IDs checked against effective mod definitions.
+oe_heg_germany_location = {
+    OR = { region = region:north_german_region region = region:south_german_region }
+}
+oe_heg_germany_eligible_land = {
+    is_ownable = yes
+    has_owner = yes
+    owner = c:BYZ
+    NOT = { has_variable = oe_heg_germany_reserved_for_rome }
+}
+oe_heg_germany_bohemia_land = {
+    OR = { area = area:bohemia_area area = area:moravia_area }
+}
+oe_heg_germany_netherlands_land = {
+    OR = { area = area:flanders_area area = area:wallonia_area area = area:brabant_area area = area:holland_area area = area:friesland_area }
+}
+oe_heg_germany_dutch_march_land = {
+    OR = { area = area:holland_area area = area:friesland_area }
+}
+# Southern Low Countries remain under direct Roman rule when only the northern march is released.
+oe_heg_germany_southern_netherlands_land = {
+    OR = { area = area:brabant_area area = area:flanders_area area = area:wallonia_area }
+}
+oe_heg_germany_switzerland_land = {
+    OR = { area = area:western_switzerland_area area = area:central_switzerland_area area = area:eastern_switzerland_area }
+}
+oe_heg_germany_austria_land = {
+    OR = { area = area:upper_austria_area area = area:austria_area area = area:styria_area area = area:carinthia_area area = area:salzburg_area area = area:tirol_area }
+}
+oe_heg_germany_bavaria_land = {
+    OR = { area = area:bavaria_area area = area:swabia_area area = area:franconia_area }
+}
+oe_heg_germany_hanover_land = {
+    OR = { area = area:westphalia_area area = area:hesse_area area = area:lower_saxony_area }
+}
+oe_heg_germany_brandenburg_land = {
+    OR = { area = area:upper_saxony_area area = area:brandenburg_area area = area:pomerania_area area = area:mecklenburg_area area = area:holstein_area }
+}
+oe_heg_germany_greater_bohemia_land = {
+    OR = {
+        oe_heg_germany_bohemia_land = yes
+        area = area:silesia_area
+        province_definition = province_definition:niederlausitz_province
+        province_definition = province_definition:oberlausitz_province
+    }
+}
+oe_heg_germany_rhine_land = {
+    # Use the Rhine holdings retained by the old march decisions, not their interior grants.
+    OR = {
+        AND = {
+            area = area:rhineland_area
+            NOT = { OR = {
+                province_definition = province_definition:bergisches_land_province
+                this = location:wied
+                this = location:dusseldorf
+                this = location:altenkirchen
+            } }
+        }
+        this = location:mainz
+        this = location:oppenheim
+        this = location:worms
+        AND = {
+            province_definition = province_definition:palatinate_province
+            NOT = { this = location:heidelberg }
+        }
+    }
+}
+oe_heg_germany_unified_land = {
+    oe_heg_germany_location = yes
+    oe_heg_germany_eligible_land = yes
+}
+oe_heg_germany_access = {
+    oe_heg_campaign_access = yes
+    custom_tooltip = { text = OE_HEG_GERMANY_PLAN_REQUIRED has_variable = oe_heg_germany_plan_done }
+}
+oe_heg_germany_plan_allowed = {
+    oe_heg_campaign_access = yes
+    NOT = { has_variable = oe_heg_germany_plan_done }
+    gold >= 1000
+}
+oe_heg_germany_invasion_allowed = {
+    oe_heg_germany_access = yes
+    exists = international_organization:hre
+    international_organization:hre = { exists = leader_country leader_country = { NOT = { this = c:BYZ } exists = capital } }
+    NOT = { is_at_war_with = international_organization:hre.leader_country }
+    NOT = { in_war_of_casus_belli = casus_belli:oe_heg_germany_imperial_war }
+    political_influence >= 50
+    gold >= 5000
+}
+oe_heg_germany_occupied_capital = {
+    exists = capital
+    capital = { controller = c:BYZ NOT = { owner = c:BYZ } }
+}
+oe_heg_germany_end_allowed = {
+    oe_heg_germany_access = yes
+    NOT = { has_variable = oe_heg_germany_settled }
+    exists = international_organization:hre
+    custom_tooltip = {
+        text = OE_HEG_GERMANY_CAPITALS_REQUIRED
+        international_organization:hre = {
+            exists = leader_country
+            leader_country = { oe_heg_germany_occupied_capital = yes }
+            NOT = { any_international_organization_member = {
+                is_elector = yes
+                NOT = { oe_heg_germany_occupied_capital = yes }
+            } }
+        }
+    }
+    custom_tooltip = {
+        text = OE_HEG_GERMANY_HALF_REQUIRED
+        international_organization:hre = {
+            any_international_organization_owned_location = {
+                percent >= 0.5
+                OR = { owner ?= c:BYZ controller ?= c:BYZ }
+            }
+        }
+    }
+    num_of_diplomats >= 3
+    gold >= 100
+}

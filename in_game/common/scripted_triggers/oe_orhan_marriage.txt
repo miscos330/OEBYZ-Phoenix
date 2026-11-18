@@ -1,0 +1,61 @@
+﻿oe_orhan_groom_eligible = {
+    oe_nf_living = yes owner = c:BYZ is_adult = yes is_female = no
+    dynasty = dynasty:ottomans_dynasty
+    religion = religion:orthodox culture = culture:oe_tur_greek_culture
+    NOT = { is_ruler_of = c:BYZ }
+    modifier:blocked_from_marriage = no
+    NOT = { has_estate = estate_type:clergy_estate }
+    # The user explicitly permits ending an existing marriage upon accepting the decree.
+    OR = { is_married = yes is_eligible_for_marriage = yes }
+}
+oe_orhan_bride_base = {
+    oe_nf_living = yes owner = c:BYZ
+    is_female = yes is_adult = yes is_married = no
+    is_eligible_for_marriage = yes is_ruler = no
+    religion = religion:orthodox
+    NOT = { is_close_relative = character:tur_orhan }
+    NOT = { dynasty = dynasty:ottomans_dynasty }
+}
+oe_orhan_kantakouzenos_bride = {
+    oe_orhan_bride_base = yes
+    dynasty = dynasty:kantakouzenos_dynasty
+}
+oe_orhan_royal_bride = {
+    oe_orhan_bride_base = yes has_dynasty = yes
+    exists = c:BYZ.ruler
+    c:BYZ.ruler = { has_dynasty = yes }
+    dynasty = c:BYZ.ruler.dynasty
+}
+oe_orhan_domestic_bride = {
+    oe_orhan_bride_base = yes
+    culture = culture:greek_culture
+}
+oe_orhan_house_room = {
+    OR = {
+        dynasty:ottomans_dynasty = { oe_nf_registered_family = yes }
+        international_organization:oe_byz_empire_pillars = { OR = {
+            NOT = { has_variable = oe_nf_dynasty_1 }
+            NOT = { has_variable = oe_nf_dynasty_2 }
+            NOT = { has_variable = oe_nf_dynasty_3 }
+            NOT = { has_variable = oe_nf_dynasty_4 }
+        } }
+    }
+}
+oe_orhan_event_ready = {
+    oe_court_actor = yes has_variable = oe_osman_chain_active
+    NOT = { has_variable = oe_osman_expelled }
+    NOT = { has_variable = oe_orhan_resolved }
+    exists = character:tur_orhan
+    character:tur_orhan = { oe_orhan_groom_eligible = yes }
+    oe_orhan_house_room = yes
+    any_character = { OR = { oe_orhan_kantakouzenos_bride = yes oe_orhan_royal_bride = yes oe_orhan_domestic_bride = yes } }
+}
+oe_orhan_can_accept = {
+    oe_court_actor = yes has_variable = oe_osman_chain_active
+    NOT = { has_variable = oe_osman_expelled }
+    NOT = { has_variable = oe_orhan_resolved }
+    exists = scope:oe_orhan_groom exists = scope:oe_orhan_bride
+    scope:oe_orhan_groom = { this = character:tur_orhan oe_orhan_groom_eligible = yes }
+    scope:oe_orhan_bride = { OR = { oe_orhan_kantakouzenos_bride = yes oe_orhan_royal_bride = yes oe_orhan_domestic_bride = yes } }
+    oe_orhan_house_room = yes
+}

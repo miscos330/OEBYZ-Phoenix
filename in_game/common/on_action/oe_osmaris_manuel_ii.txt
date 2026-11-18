@@ -1,0 +1,29 @@
+﻿on_character_death = { on_actions = { oe_osmaris_manuel_ii_death } }
+oe_osmaris_manuel_ii_death = {
+    trigger = {
+        # FIX 2026-11-17: BYZ checks first so the character comparison only runs once Manuel II exists.
+        country_exists = c:BYZ
+        c:BYZ = {
+            has_variable = oe_osmaris_manuel_ii_retired
+            NOT = { has_variable = oe_osman_expelled }
+            NOT = { has_variable = oe_osmaris_manuel_ii_death_seen }
+        }
+        scope:target = character:oe_osmaris_manuel_ii
+    }
+    effect = { c:BYZ = {
+        set_variable = oe_osmaris_manuel_ii_death_seen
+        # Wait for native death processing before canonizing a dead character.
+        trigger_event_non_silently = { id = oe_flavor_byz.1013 days = 1 }
+    } }
+}
+monthly_country_pulse = { on_actions = { oe_osmaris_manuel_ii_monthly } }
+oe_osmaris_manuel_ii_monthly = {
+    trigger = { tag = BYZ has_variable = oe_osmaris_manuel_ii_retired NOT = { has_variable = oe_osman_expelled } }
+    effect = {
+        if = {
+            limit = { exists = character:oe_osmaris_manuel_ii character:oe_osmaris_manuel_ii = { is_alive = no } }
+            set_variable = oe_osmaris_manuel_ii_death_seen
+        }
+        if = { limit = { oe_osmaris_manuel_ii_canonization_ready = yes } trigger_event_non_silently = oe_flavor_byz.1013 }
+    }
+}

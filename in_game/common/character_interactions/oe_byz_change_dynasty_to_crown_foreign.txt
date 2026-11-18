@@ -1,0 +1,42 @@
+﻿oe_byz_change_dynasty_to_crown_foreign = {
+    message = yes
+    on_own_nation = no
+    on_other_nation = yes
+    ai_tick = never
+    potential = {
+        scope:actor = { tag = BYZ oe_byz_imperial_honors_allowed = yes has_ruler = yes NOT = { oe_byz_has_co_emperor = yes } }
+    }
+    allow = { scope:actor = { oe_byz_imperial_honors_allowed = yes } }
+    select_trigger = {
+        looking_for_a = character
+        target_flag = recipient
+        interaction_source_list = {
+            scope:actor = {
+                every_subject = {
+                    limit = { oe_theme_member_trigger = yes }
+                    ruler ?= { add_to_list = source }
+                }
+            }
+        }
+        name = "choose_character"
+        none_available_msg_key = OE_BYZ_NO_CO_EMPEROR_CANDIDATE
+        column = { data = name }
+        visible = { owner != scope:actor is_ruler = yes owner = { oe_theme_member_trigger = yes } oe_byz_co_emperor_candidate = yes }
+    }
+    effect = {
+        if = {
+            limit = {
+                scope:actor = { tag = BYZ oe_byz_imperial_honors_allowed = yes has_ruler = yes NOT = { oe_byz_has_co_emperor = yes } }
+                scope:recipient = { owner != scope:actor is_ruler = yes owner = { oe_theme_member_trigger = yes } oe_byz_co_emperor_candidate = yes }
+            }
+            scope:recipient = {
+                add_character_modifier = { modifier = oe_byz_select_as_second_empire_mod mode = replace years = -1 }
+                if = {
+                    limit = { NOT = { has_estate = estate_type:crown_estate } }
+                    change_character_estate = estate_type:crown_estate
+                }
+            }
+            scope:actor = { set_variable = { name = oe_byz_co_emperor_display value = scope:recipient } }
+        }
+    }
+}

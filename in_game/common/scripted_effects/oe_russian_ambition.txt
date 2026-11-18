@@ -1,0 +1,29 @@
+﻿# Country-event root; the option and effect both require direct ownership.
+oe_ra_choose_capital = {
+    if = {
+        limit = { $destination$ = { has_owner = yes owner = root } }
+        set_capital = $destination$
+        $destination$ = {
+            set_variable = oe_ra_red_square_unlocked
+            if = {
+                limit = { NOT = { has_building = building_type:oe_ra_red_square } }
+                construct_building = { building_type = building_type:oe_ra_red_square owner = root cost_multiplier = 0 cost_multiplier_reason = oe_russian_ambition.2.t }
+            }
+        }
+    }
+}
+
+# RUS country scope. Run only when the situation starts, never on a recurring pulse.
+# This is the requested opinion, not the native helper that also breaks alliances.
+oe_ra_establish_historical_rivalries = {
+    if = {
+        limit = { country_exists = c:POL }
+        add_opinion = { target = c:POL modifier = oe_ra_historical_rival }
+        c:POL = { add_opinion = { target = c:RUS modifier = oe_ra_historical_rival } }
+    }
+    if = {
+        limit = { country_exists = c:SWE }
+        add_opinion = { target = c:SWE modifier = oe_ra_historical_rival }
+        c:SWE = { add_opinion = { target = c:RUS modifier = oe_ra_historical_rival } }
+    }
+}

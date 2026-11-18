@@ -1,0 +1,52 @@
+﻿# One-time repair for new games and existing saves. Never select whoever happens to be ruler.
+oe_byz_repair_andronikos_identity = {
+    if = {
+        limit = { NOT = { has_global_variable = oe_byz_andronikos_identity_repaired } }
+        every_country = {
+            every_character = {
+                limit = {
+                    NOT = { this = character:byz_andronikos_iii_palaiologos }
+                    OR = {
+                        has_trait = oe_byz_andronikos_iii_I
+                        has_trait = oe_byz_andronikos_iii_II
+                        has_character_modifier = oe_byz_andronikos_iii_III
+                    }
+                }
+                if = {
+                    limit = { has_trait = oe_byz_andronikos_iii_I }
+                    remove_trait = trait:oe_byz_andronikos_iii_I
+                }
+                if = {
+                    limit = { has_trait = oe_byz_andronikos_iii_II }
+                    remove_trait = trait:oe_byz_andronikos_iii_II
+                }
+                if = {
+                    limit = { has_character_modifier = oe_byz_andronikos_iii_III }
+                    remove_character_modifier = oe_byz_andronikos_iii_III
+                }
+            }
+        }
+        character:byz_andronikos_iii_palaiologos ?= {
+            if = {
+                limit = { is_alive = yes }
+                if = {
+                    limit = { NOT = { has_trait = oe_byz_andronikos_iii_I } }
+                    add_trait = trait:oe_byz_andronikos_iii_I
+                }
+                if = {
+                    limit = { NOT = { has_trait = oe_byz_andronikos_iii_II } }
+                    add_trait = trait:oe_byz_andronikos_iii_II
+                }
+                if = {
+                    limit = { NOT = { has_character_modifier = oe_byz_andronikos_iii_III } }
+                    add_character_modifier = {
+                        modifier = oe_byz_andronikos_iii_III
+                        mode = add_and_extend
+                        days = -1
+                    }
+                }
+            }
+        }
+        set_global_variable = oe_byz_andronikos_identity_repaired
+    }
+}

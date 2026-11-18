@@ -1,0 +1,166 @@
+﻿oe_byz_plicy_org_leader_pay = {#皇帝向行政体系付费
+	get_payer_list = {
+		every_international_organization_member = {
+			limit = { 
+					has_special_status_in_international_organization = {
+						type = special_status:oe_byz_policy_org_real_empire_king
+						international_organization = root
+					}				
+			}
+
+			add_to_local_variable_list = {
+				name = payers
+				target = this
+			}
+		}
+	}
+	get_payee_list = {
+		every_country_with_special_status_of_type = {
+			type = oe_byz_policy_org_real_power_country
+			add_to_local_variable_list = {
+				name = payees
+				target = this
+			}
+		}
+	}
+	price = oe_byz_bank_org_leader_pay_price
+	uses_maintenance = yes
+	maintenance_modifier = {
+		potential_trigger = { "payment_maintenance(scope:recipient|oe_byz_plicy_org_leader_pay)" < 0.5 }
+		scale = {
+			value = 1
+			subtract = {
+				value = "payment_maintenance(scope:recipient|oe_byz_plicy_org_leader_pay)"
+				multiply = 2
+			}
+		}
+		country_cabinet_efficiency = -0.33
+		tax_income_efficiency = -0.33
+		monthly_prestige = -0.1
+
+	}
+	maintenance_modifier = {
+		potential_trigger = { "payment_maintenance(scope:recipient|oe_byz_plicy_org_leader_pay)" > 0.5 }
+		scale = {
+			value = "payment_maintenance(scope:recipient|oe_byz_plicy_org_leader_pay)"
+			subtract = 0.5
+			multiply = 2
+		}
+		country_cabinet_efficiency = 0.1
+		tax_income_efficiency = 0.1
+		monthly_prestige = 0.1
+	}
+	price_multiplier = {
+		add = {
+			desc = "BASE"
+			every_international_organization_member = {
+				limit = {
+					NOT = {
+						tag = BYZ
+					}
+				}
+				add = monthly_income_trade_and_tax
+			}
+			multiply = 0.5
+		}
+		add = {
+			desc = "BASE"
+			every_international_organization_member = {
+				limit = {
+						tag = BYZ					
+				}
+				add = monthly_income_total
+			}
+			multiply = 0.04
+		}
+	}
+	proportion_for_payer = {
+		add = {
+			desc = "BASE"
+			value = 1
+		}
+	}
+	proportion_for_payee = {
+		add = {
+			desc = "BASE"
+			value = monthly_income_total
+		}
+	}
+}
+
+# PAUSED 2026-09-22: custom bureaucracy/corruption subsystem.
+# oe_byz_plicy_org_ldec_corrupt_pay = {#打击腐败
+# 	get_payer_list = {
+# 		every_international_organization_member = {
+# 			limit = { 
+# 					has_special_status_in_international_organization = {
+# 						type = special_status:oe_byz_policy_org_real_empire_king
+# 						international_organization = root
+# 					}				
+# 			}
+# 
+# 			add_to_local_variable_list = {
+# 				name = payers
+# 				target = this
+# 			}
+# 		}
+# 	}
+# 	get_payee_list = {
+# 		every_international_organization_member = {
+# 			limit = {
+# 				has_reform = government_reform:oe_real_gov_reform_decline_corropution
+# 			}
+# 			add_to_local_variable_list = {
+# 				name = payees
+# 				target = this
+# 			}
+# 		}
+# 	}
+# 	price = oe_byz_bank_org_leader_pay_price
+# 	uses_maintenance = yes
+# 	maintenance_modifier = {
+# 		potential_trigger = { "payment_maintenance(scope:recipient|oe_byz_plicy_org_ldec_corrupt_pay)" < 0.5 }
+# 		scale = {
+# 			value = 1
+# 			subtract = {
+# 				value = "payment_maintenance(scope:recipient|oe_byz_plicy_org_ldec_corrupt_pay)"
+# 				multiply = 2
+# 			}
+# 		}
+# 		monthly_prestige = -0.1
+# 
+# 	}
+# 	maintenance_modifier = {
+# 		potential_trigger = { "payment_maintenance(scope:recipient|oe_byz_plicy_org_ldec_corrupt_pay)" > 0.5 }
+# 		scale = {
+# 			value = "payment_maintenance(scope:recipient|oe_byz_plicy_org_ldec_corrupt_pay)"
+# 			subtract = 0.5
+# 			multiply = 2
+# 		}
+# 		monthly_prestige = 0.1
+# 	}
+# 	price_multiplier = {
+# 		add = {
+# 			desc = "BASE"
+# 			every_international_organization_member = {
+# 				limit = {
+# 						tag = BYZ					
+# 				}
+# 				add = monthly_income_total
+# 			}
+# 			multiply = 0.01
+# 		}
+# 	}
+# 	proportion_for_payer = {
+# 		add = {
+# 			desc = "BASE"
+# 			value = 1
+# 		}
+# 	}
+# 	proportion_for_payee = {
+# 		add = {
+# 			desc = "BASE"
+# 			value = 1
+# 		}
+# 	}
+# }

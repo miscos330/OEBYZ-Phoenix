@@ -1,0 +1,95 @@
+﻿# Country scope. Permanent from the start of the Great Revolution, on either branch.
+oe_court_offices_active = { NOT = { has_variable = oe_gr_started } }
+# Living adult clergy, noble or crown characters outside the cabinet.
+oe_court_person_eligible = {
+    c:BYZ = { oe_court_offices_active = yes }
+    NOT = { has_trait = oe_osmaris_retired }
+    NOT = { has_trait = oe_belisarius_retired }
+    is_alive = yes
+    NOT = { has_variable = oe_court_deceased }
+    is_adult = yes
+    owner = c:BYZ
+    NOT = { is_ruler_of = c:BYZ }
+    in_cabinet = no
+    OR = {
+        has_estate = estate_type:clergy_estate
+        has_estate = estate_type:nobles_estate
+        has_estate = estate_type:crown_estate
+    }
+}
+# Noble-house appointees keep their country and dynasty; the same check governs continued service.
+# Character scope: a member of the ruling dynasty resident in a Byzantine noble house.
+# PAUSED 2026-09-26: noble countries replaced by domestic dynasties.
+# oe_court_noble_house_family = {
+#     has_dynasty = yes
+#     owner = {
+#         is_subject_type = oe_noble
+#         is_subject_or_below_of = c:BYZ
+#         has_ruler = yes
+#         ruler = { has_dynasty = yes }
+#     }
+#     dynasty = owner.ruler.dynasty
+# }
+oe_court_noble_house_family = { always = no }
+
+oe_court_incumbent_eligible = {
+    oe_court_person_eligible = yes
+    owner = c:BYZ
+}
+oe_court_candidate = {
+    oe_court_incumbent_eligible = yes
+    NOT = { has_variable = oe_court_office_held }
+}
+oe_court_actor = {
+    tag = BYZ
+    is_member_of_international_organization = international_organization:oe_byz_empire_pillars
+}
+oe_court_chancellor_filled = {
+    has_variable = oe_court_chancellor
+    exists = var:oe_court_chancellor
+    var:oe_court_chancellor = { oe_court_incumbent_eligible = yes }
+}
+oe_court_judge_filled = {
+    has_variable = oe_court_judge
+    exists = var:oe_court_judge
+    var:oe_court_judge = { oe_court_incumbent_eligible = yes }
+}
+oe_court_secretary_filled = {
+    has_variable = oe_court_secretary
+    exists = var:oe_court_secretary
+    var:oe_court_secretary = { oe_court_incumbent_eligible = yes }
+}
+oe_court_taxmaster_filled = {
+    has_variable = oe_court_taxmaster
+    exists = var:oe_court_taxmaster
+    var:oe_court_taxmaster = { oe_court_incumbent_eligible = yes }
+}
+# RETIRED 2026-09-25: court reduced to seven offices.
+# oe_court_logothete_filled = {
+#     has_variable = oe_court_logothete
+#     exists = var:oe_court_logothete
+#     var:oe_court_logothete = { oe_court_incumbent_eligible = yes }
+# }
+
+oe_court_ceremonies_filled = {
+    has_variable = oe_court_ceremonies
+    exists = var:oe_court_ceremonies
+    var:oe_court_ceremonies = { oe_court_incumbent_eligible = yes }
+}
+# RETIRED 2026-09-25: court reduced to seven offices.
+# oe_court_scholai_filled = {
+#     has_variable = oe_court_scholai
+#     exists = var:oe_court_scholai
+#     var:oe_court_scholai = { oe_court_incumbent_eligible = yes }
+# }
+
+oe_court_admiral_filled = {
+    has_variable = oe_court_admiral
+    exists = var:oe_court_admiral
+    var:oe_court_admiral = { oe_court_incumbent_eligible = yes }
+}
+oe_court_domestikos_filled = {
+    has_variable = oe_court_domestikos
+    exists = var:oe_court_domestikos
+    var:oe_court_domestikos = { oe_court_incumbent_eligible = yes }
+}

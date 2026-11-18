@@ -1,0 +1,49 @@
+﻿oe_incite_roman_uprising = {
+    type = diplomacy
+    category = CATEGORY_COVERT_ACTIONS
+    ai_tick = never
+    use_enroute = no
+    block_when_at_war = no
+    diplomatic_cost = oe_roman_island_uprising_cost
+    price = price:oe_roman_island_uprising_price
+    potential = { scope:actor = { tag = BYZ } }
+    allow = { scope:actor = { tag = BYZ } }
+    select_trigger = {
+        # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+        looking_for_a = country
+        target_flag = recipient
+        name = oe_incite_roman_uprising_select
+        none_available_msg_key = oe_incite_roman_uprising_none
+        column = { data = name }
+        visible = { OR = { tag = CYP tag = KNI } }
+        enabled = { oe_roman_island_uprising_target = yes }
+    }
+    effect = {
+        # Snapshot the locations before transfers can eliminate the recipient.
+        if = {
+            limit = { scope:recipient = { tag = CYP } }
+            province_definition:cyprus_province = {
+                every_location_in_province_definition = {
+                    limit = { owner = scope:recipient }
+                    add_to_list = oe_uprising_locations
+                }
+            }
+        }
+        else_if = {
+            limit = { scope:recipient = { tag = KNI } }
+            province_definition:rodos_province = {
+                every_location_in_province_definition = {
+                    limit = { owner = scope:recipient }
+                    add_to_list = oe_uprising_locations
+                }
+            }
+        }
+        every_in_list = {
+            list = oe_uprising_locations
+            change_location_owner = c:BYZ
+            add_core = c:BYZ
+        }
+    }
+}

@@ -1,0 +1,108 @@
+﻿# Country and IO helpers. The dynasty snapshot prevents a recycled slot receiving another family's event.
+oe_daily_slot_matches = {
+    has_variable = oe_nf_dynasty_$slot$
+    exists = scope:oe_daily_family
+    var:oe_nf_dynasty_$slot$ = scope:oe_daily_family
+    scope:oe_daily_house_slot = $slot$
+}
+oe_daily_rural_target = {
+    location_rank = location_rank:rural_settlement
+    oe_nf_expansion_target = { slot = $slot$ }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+oe_daily_has_house = {
+    international_organization:oe_byz_empire_pillars = { OR = {
+        oe_daily_house_candidate = { slot = 1 event = $event$ }
+        oe_daily_house_candidate = { slot = 2 event = $event$ }
+        oe_daily_house_candidate = { slot = 3 event = $event$ }
+        oe_daily_house_candidate = { slot = 4 event = $event$ }
+    } }
+}
+oe_daily_selected_house_valid = {
+    international_organization:oe_byz_empire_pillars = { OR = {
+        oe_daily_slot_matches = { slot = 1 }
+        oe_daily_slot_matches = { slot = 2 }
+        oe_daily_slot_matches = { slot = 3 }
+        oe_daily_slot_matches = { slot = 4 }
+    } }
+}
+oe_daily_selected_can_expand = {
+    international_organization:oe_byz_empire_pillars = { OR = {
+        AND = { oe_daily_slot_matches = { slot = 1 } scope:oe_daily_location = { oe_daily_rural_target = { slot = 1 } } }
+        AND = { oe_daily_slot_matches = { slot = 2 } scope:oe_daily_location = { oe_daily_rural_target = { slot = 2 } } }
+        AND = { oe_daily_slot_matches = { slot = 3 } scope:oe_daily_location = { oe_daily_rural_target = { slot = 3 } } }
+        AND = { oe_daily_slot_matches = { slot = 4 } scope:oe_daily_location = { oe_daily_rural_target = { slot = 4 } } }
+    } }
+}
+oe_daily_selected_has_rural = {
+    international_organization:oe_byz_empire_pillars = { OR = {
+        AND = { oe_daily_slot_matches = { slot = 1 } any_in_list = { variable = oe_nf_locations_1 owner = c:BYZ location_rank = location_rank:rural_settlement oe_nf_controls_slot = { slot = 1 } } }
+        AND = { oe_daily_slot_matches = { slot = 2 } any_in_list = { variable = oe_nf_locations_2 owner = c:BYZ location_rank = location_rank:rural_settlement oe_nf_controls_slot = { slot = 2 } } }
+        AND = { oe_daily_slot_matches = { slot = 3 } any_in_list = { variable = oe_nf_locations_3 owner = c:BYZ location_rank = location_rank:rural_settlement oe_nf_controls_slot = { slot = 3 } } }
+        AND = { oe_daily_slot_matches = { slot = 4 } any_in_list = { variable = oe_nf_locations_4 owner = c:BYZ location_rank = location_rank:rural_settlement oe_nf_controls_slot = { slot = 4 } } }
+    } }
+}
+oe_daily_selected_influence_30 = {
+    international_organization:oe_byz_empire_pillars = { OR = {
+        AND = { oe_daily_slot_matches = { slot = 1 } var:oe_nf_influence_1 >= 30 }
+        AND = { oe_daily_slot_matches = { slot = 2 } var:oe_nf_influence_2 >= 30 }
+        AND = { oe_daily_slot_matches = { slot = 3 } var:oe_nf_influence_3 >= 30 }
+        AND = { oe_daily_slot_matches = { slot = 4 } var:oe_nf_influence_4 >= 30 }
+    } }
+}
+oe_daily_selected_controls_capital = {
+    international_organization:oe_byz_empire_pillars = { OR = {
+        AND = { oe_daily_slot_matches = { slot = 1 } scope:oe_daily_location ?= { this = c:BYZ.capital owner = c:BYZ oe_nf_controls_slot = { slot = 1 } } }
+        AND = { oe_daily_slot_matches = { slot = 2 } scope:oe_daily_location ?= { this = c:BYZ.capital owner = c:BYZ oe_nf_controls_slot = { slot = 2 } } }
+        AND = { oe_daily_slot_matches = { slot = 3 } scope:oe_daily_location ?= { this = c:BYZ.capital owner = c:BYZ oe_nf_controls_slot = { slot = 3 } } }
+        AND = { oe_daily_slot_matches = { slot = 4 } scope:oe_daily_location ?= { this = c:BYZ.capital owner = c:BYZ oe_nf_controls_slot = { slot = 4 } } }
+    } }
+}
+
+oe_daily_house_candidate = {
+    has_variable = oe_nf_dynasty_$slot$
+    exists = var:oe_nf_head_$slot$
+    var:oe_nf_head_$slot$ = { oe_nf_living = yes }
+    NOT = { has_variable = oe_daily_house_$event$_cooldown_$slot$ }
+    oe_daily_house_requirements_$event$ = { slot = $slot$ }
+}
+oe_daily_house_requirements_1 = {
+    c:BYZ = { any_owned_location = { oe_daily_rural_target = { slot = $slot$ } } }
+}
+oe_daily_house_requirements_2 = {
+    c:BYZ.capital = { owner = c:BYZ NOT = { location_rank = location_rank:rural_settlement } oe_nf_controls_slot = { slot = $slot$ } }
+}
+oe_daily_house_requirements_3 = {
+    oe_daily_house_requirements_4 = { slot = $slot$ }
+    var:oe_nf_influence_$slot$ >= 30
+    oe_daily_house_requirements_1 = { slot = $slot$ }
+}
+oe_daily_house_requirements_4 = {
+    any_in_list = { variable = oe_nf_locations_$slot$ owner = c:BYZ location_rank = location_rank:rural_settlement oe_nf_controls_slot = { slot = $slot$ } }
+}
+oe_daily_house_requirements_9 = { has_variable = oe_nf_dynasty_$slot$ }
+oe_daily_house_requirements_11 = { has_variable = oe_nf_dynasty_$slot$ }

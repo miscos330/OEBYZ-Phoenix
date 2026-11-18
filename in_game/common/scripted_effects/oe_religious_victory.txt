@@ -1,0 +1,35 @@
+﻿# Select at most one origin per country, then one origin for the single movement.
+# The one-off decision traverses only BYZ and its subjects, never all world locations.
+oe_islamic_conversion_collect_origin = {
+    ordered_owned_location = {
+        limit = { oe_islamic_conversion_spread_location = yes }
+        order_by = oe_islamic_conversion_source_population
+        max = 1
+        check_range_bounds = no
+        add_to_list = oe_islamic_conversion_origins
+    }
+}
+oe_declare_victory_over_islam_effect = {
+    oe_islamic_conversion_collect_origin = yes
+    every_subject_or_below = { oe_islamic_conversion_collect_origin = yes }
+    ordered_in_list = {
+        list = oe_islamic_conversion_origins
+        order_by = oe_islamic_conversion_source_population
+        max = 1
+        check_range_bounds = no
+        spawn_movement = {
+            movement_definition = movement_definition:oe_islamic_conversion_movement
+            supporters = { value = oe_islamic_conversion_source_population multiply = 0.1 }
+        }
+    }
+    # A dedicated event avoids sharing the Orthodox church-union timer marker.
+    # Its root is a permanent location; no movement reference enters the event queue.
+    religion:orthodox = {
+        if = {
+            limit = { any_movement_in_religion = { movement_type = movement_definition:oe_islamic_conversion_movement } }
+            location:constantinople = { trigger_event_silently = { id = oe_identity_expiry.23 years = 30 } }
+        }
+    }
+    # The rewards remain available even when all relevant population has already converted.
+    set_variable = oe_victory_over_islam_done
+}

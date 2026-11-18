@@ -1,0 +1,187 @@
+﻿oe_turkish_identity_movement = {
+	culture = oe_tur_greek_culture
+	potential = {
+		always = yes
+	}
+	# PAUSED 2026-09-24: retained as comments at user request.
+# allow = {
+# 		has_global_variable = oe_turkish_identity_movement_var_I
+# 	}
+    # Manual start from the Roman World overview; native scripted spawns bypass this gate.
+    allow = { always = no }
+
+
+	#传播地点
+	# PAUSED 2026-09-24: retained as comments at user request.
+# monthly_spawn_chance = {
+# 		value = 0
+# 		every_ownable_location = {
+# 			limit = {
+# 				region = region:anatolia_region
+# 			}
+# 			add = {
+# 				value = 1
+# 			}
+# 		}
+# 	}
+    monthly_spawn_chance = { value = 0 }
+
+
+	# PAUSED 2026-09-24: retained as comments at user request.
+# spawn = {
+# 		ordered_ownable_location = {
+# 			limit = { 
+# 				region = region:anatolia_region
+# 			}
+# 			max = 1
+# 			order_by = {
+# 				value = population
+# 				if = {
+# 					limit = {
+# 						this = location:sivas
+# 					}
+# 					add = 100000
+# 				}
+# 			}
+# 			spawn_movement = {
+# 				movement_definition = scope:movement_definition
+# 				supporters = {
+# 					value = population
+# 					multiply = 0.1
+# 				}
+# 			}
+# 		}
+# 	}
+
+
+	#传播限制
+	required_cultures = {
+		turkish_culture
+		turkoman_culture
+	}
+
+	# PAUSED 2026-09-25: static tags exclude dynamically created subjects.
+# required_tags = {
+# 		BYZ
+# 	}
+
+	#传播停滞
+	location_stagnation_chance = {
+		if = {
+			limit = {
+				"culture_percentage(culture:oe_tur_greek_culture)" > 0.90
+			}
+			value = 1
+		}
+	}
+
+	#传播频率
+	calc_interval_days = 10	
+
+	environmental_infection = {
+		value = 0.1
+	
+        # Re-evaluate current ownership; never permanently stagnate a future subject.
+        if = {
+            limit = { NOT = { oe_rw_identity_spread_location = yes } }
+            value = 0
+        }
+    }
+
+	r0 = { 
+		value = { 0.05 0.15 }
+	
+        # Re-evaluate current ownership; never permanently stagnate a future subject.
+        if = {
+            limit = { NOT = { oe_rw_identity_spread_location = yes } }
+            value = 0
+        }
+    }
+
+	location_spread_threshold = {
+		value = 0
+	
+        # Re-evaluate current ownership; never permanently stagnate a future subject.
+        if = {
+            limit = { NOT = { oe_rw_identity_spread_location = yes } }
+            value = 1
+        }
+    }
+
+	development = neutral
+	literacy = positive
+	local_control = positive 
+	pop_satisfaction = neutral
+
+	#pop传播速度
+	specific_pop_type_effect = {
+		culture = turkish_culture
+		multiplier = 2.0
+	}
+
+	specific_pop_type_effect = {
+		culture = turkoman_culture
+		multiplier = 0.5
+	}
+
+	specific_pop_type_effect = {
+		pop_type = nobles
+		multiplier = 2.0
+	}
+	
+	specific_pop_type_effect = {
+		pop_type = burghers
+		multiplier = 1.5
+	}
+
+	specific_pop_type_effect = {
+		pop_type = clergy
+		multiplier = 1.5
+	}
+
+	specific_pop_type_effect = {
+		pop_type = peasants
+		multiplier = 1.2
+	}
+
+	specific_pop_type_effect = {
+		pop_type = tribesmen
+		multiplier = 0.5
+	}
+	
+	specific_pop_type_effect = {
+		pop_type = laborers
+		multiplier = 1.2
+	}
+
+	specific_pop_type_effect = {
+		pop_type = slaves
+		multiplier = 0.1
+	}
+
+
+
+		map_color = {
+		if = {
+			limit = {
+				"culture_percentage(culture:oe_tur_greek_culture)" = 0
+			}
+			value = define:NMapColors|MAP_COLOR_NULL
+		}
+		else_if = {
+			limit = {
+				dominant_culture = culture:oe_tur_greek_culture
+			}
+			value = define:NMapColors|MAP_COLOR_HIGH
+		}
+		else_if = {
+			limit = {
+				"culture_percentage(culture:oe_tur_greek_culture)" > 0.05
+			}
+			value = define:NMapColors|MAP_COLOR_MID
+		}
+		else = {
+			value = define:NMapColors|MAP_COLOR_LOW
+		}
+	}
+}

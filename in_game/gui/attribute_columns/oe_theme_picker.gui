@@ -1,0 +1,29 @@
+﻿types oe_theme_picker_columns {
+    type oe_theme_picker_country_name = hbox {
+        size = { -1 46 }
+        margin = { 10 0 }
+        spacing = 8
+        country_flag_small = {
+            size = { 48 32 }
+            datacontext = "[InteractionTarget.GetLocation.MakeScope.GetVariable('oe_theme_picker_country').GetCountry]"
+            blockoverride "hover_leave" { onmousehierarchyleave = "[SelectInteractionTargetGlue.OnMouseLeave(PdxGuiWidget.AccessSelf)]" }
+        }
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            text_single = { layoutpolicy_horizontal = expanding fontsize = 17 text = "[InteractionTarget.GetLocation.MakeScope.GetVariable('oe_theme_picker_country').GetCountry.GetNameWithNoTooltip]" tooltip = "[InteractionTarget.GetLocation.MakeScope.GetVariable('oe_theme_picker_country').GetCountry.GetName]" }
+            text_single = { layoutpolicy_horizontal = expanding fontsize = 14 text = "[InteractionTarget.GetLocation.GetNameWithNoTooltip]" }
+        }
+    }
+    type oe_theme_picker_country_army = hbox {
+        size = { 100 46 }
+        spacing = 5
+        icon = { size = { 28 28 } texture = "gfx/interface/icons/unit_category/army_size.dds" }
+        text_single = { layoutpolicy_horizontal = expanding autoresize = no text = "[InteractionTarget.GetLocation.MakeScope.GetVariable('oe_theme_picker_country').GetCountry.GetArmySize]" }
+    }
+    type oe_theme_picker_country_tax_base = hbox {
+        size = { 100 46 }
+        spacing = 5
+        text_single = { layoutpolicy_horizontal = expanding autoresize = no align = right|nobaseline text = "[InteractionTarget.GetLocation.MakeScope.GetVariable('oe_theme_picker_country').GetCountry.GetTotalTaxBase]" }
+        icon = { size = { 28 28 } texture = "gfx/interface/icons/location_icons/tax_base.dds" tagtooltip_enabled = yes tooltip = "[tax_base|e]" }
+    }
+}

@@ -1,0 +1,48 @@
+﻿oe_gr_add_instability_one = {
+    custom_tooltip = oe_gr_instability_one_tt
+    hidden_effect = { add_country_modifier = { modifier = oe_gr_political_instability years = -1 mode = add } }
+}
+oe_gr_add_instability_two = {
+    custom_tooltip = oe_gr_instability_two_tt
+    hidden_effect = {
+        add_country_modifier = { modifier = oe_gr_political_instability years = -1 mode = add }
+        add_country_modifier = { modifier = oe_gr_political_instability years = -1 mode = add }
+    }
+}
+oe_gr_remove_instability_one = {
+    custom_tooltip = oe_gr_instability_remove_one_tt
+    hidden_effect = {
+        if = {
+            limit = { has_country_modifier = oe_gr_political_instability }
+            change_country_modifier_size = { modifier = oe_gr_political_instability value = -1 }
+            if = {
+                limit = { country_modifier_strength = { modifier = oe_gr_political_instability value <= 0 } }
+                remove_country_modifier = oe_gr_political_instability
+            }
+        }
+    }
+}
+oe_gr_add_radicalism_five = {
+    custom_tooltip = oe_gr_radicalism_plus_5_tt
+    hidden_effect = {
+        change_variable = { name = oe_gr_radicalism add = 5 }
+        clamp_variable = { name = oe_gr_radicalism min = 0 max = 100 }
+    }
+}
+oe_gr_lose_authority_twenty = {
+    custom_tooltip = oe_gr_authority_minus_20_tt
+    hidden_effect = {
+        international_organization:oe_byz_empire_pillars ?= {
+            change_variable = { name = oe_pillars_authority subtract = 20 }
+            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        }
+    }
+}
+oe_gr_schedule_estate_reactions = {
+    if = {
+        limit = { NOT = { has_variable = oe_gr_estate_reactions_scheduled } }
+        set_variable = oe_gr_estate_reactions_scheduled
+        trigger_event_non_silently = { on_action = oe_gr_estates_week_one days = 7 }
+        trigger_event_non_silently = { on_action = oe_gr_estates_day_twenty days = 20 }
+    }
+}

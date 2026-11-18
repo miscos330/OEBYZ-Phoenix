@@ -1,0 +1,119 @@
+﻿# Country scope, called only from BYZ's on_new_ruler handler.
+# Native scopes: old_ruler and new_ruler. No periodic checks or world scans.
+oe_byz_start_old_dynasty_restoration = {
+    if = {
+        limit = {
+            tag = BYZ
+            government_type = government_type:monarchy
+            exists = scope:old_ruler
+            exists = scope:new_ruler
+            scope:old_ruler = { has_dynasty = yes }
+            scope:new_ruler = {
+                has_dynasty = yes
+                NOT = { dynasty = scope:old_ruler.dynasty }
+            }
+            scope:old_ruler.dynasty = {
+                any_character_in_dynasty = {
+                    is_alive = yes
+                    owner = c:BYZ
+                    NOT = { modifier:blocked_from_being_ruler = yes }
+                }
+            }
+        }
+        clear_saved_scope = oe_restoration_province
+        clear_saved_scope = oe_restoration_claimant
+        clear_saved_scope = oe_restoration_country
+        # Select one province uniformly; exclude the entire capital province.
+        random_province = {
+            limit = {
+                this != c:BYZ.capital.province
+                any_location_in_province = {
+                    owner = c:BYZ
+                    any_pop = { owner = c:BYZ }
+                }
+            }
+            save_scope_as = oe_restoration_province
+        }
+        # With no eligible province, do not create an empty rebel country.
+        if = {
+            limit = { exists = scope:oe_restoration_province }
+            scope:old_ruler.dynasty = {
+                random_character_in_dynasty = {
+                    limit = {
+                        is_alive = yes
+                        is_adult = yes
+                        owner = c:BYZ
+                        NOT = { modifier:blocked_from_being_ruler = yes }
+                    }
+                    save_scope_as = oe_restoration_claimant
+                }
+                if = {
+                    limit = { NOT = { exists = scope:oe_restoration_claimant } }
+                    random_character_in_dynasty = {
+                        limit = {
+                            is_alive = yes
+                            owner = c:BYZ
+                            NOT = { modifier:blocked_from_being_ruler = yes }
+                        }
+                        save_scope_as = oe_restoration_claimant
+                    }
+                }
+                # Capture this list before civil-war land transfers move residences.
+                every_character_in_dynasty = {
+                    limit = { is_alive = yes owner = c:BYZ }
+                    add_to_list = oe_restoration_people
+                }
+            }
+            scope:oe_restoration_province = {
+                every_location_in_province = {
+                    limit = { owner = c:BYZ is_capital = no }
+                    add_to_list = oe_restoration_locations
+                }
+            }
+            create_rebel = {
+                category = pretender
+                name = byz_oe_pretender_rebel_I
+                save_scope_as = oe_restoration_rebels
+            }
+            every_in_list = {
+                list = oe_restoration_people
+                change_character_allegiance = scope:oe_restoration_rebels
+            }
+            # Native civil-war secession needs supporting pops, not just characters.
+            every_in_list = {
+                list = oe_restoration_locations
+                every_pop = {
+                    limit = { owner = c:BYZ }
+                    change_pop_allegiance = scope:oe_restoration_rebels
+                }
+            }
+            scope:oe_restoration_rebels = {
+                start_civil_war = {
+                    save_scope_as = oe_restoration_country
+                    set_variable = { name = will_not_surrender years = 3 }
+                }
+            }
+            if = {
+                limit = { exists = scope:oe_restoration_country }
+                # Keep the selected territory exact even if native secession omits a location.
+                every_in_list = {
+                    list = oe_restoration_locations
+                    if = {
+                        limit = { owner = c:BYZ }
+                        change_location_owner = scope:oe_restoration_country
+                    }
+                }
+                every_in_list = {
+                    list = oe_restoration_people
+                    if = {
+                        limit = { is_alive = yes owner = c:BYZ }
+                        move_country = scope:oe_restoration_country
+                    }
+                }
+                scope:oe_restoration_country = {
+                    set_new_ruler = scope:oe_restoration_claimant
+                }
+            }
+        }
+    }
+}

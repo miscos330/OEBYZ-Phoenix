@@ -1,0 +1,30 @@
+﻿# UI-only calculations. No persistent cache, pulse hook, world scan or population scan.
+# The denominator is the HRE organization's actual territorial list, regardless of member ownership.
+oe_heg_germany_hre_total_locations = {
+    value = 0
+    if = {
+        limit = { exists = international_organization:hre }
+        international_organization:hre = { value = international_organization_num_locations }
+    }
+}
+oe_heg_germany_bloc_control_locations = {
+    value = 0
+    if = {
+        limit = { exists = international_organization:hre country_exists = c:BYZ }
+        international_organization:hre = {
+            every_international_organization_owned_location = {
+                limit = { oe_heg_germany_bloc_controls_location = yes }
+                add = 1
+            }
+        }
+    }
+}
+oe_heg_germany_bloc_control_percent = {
+    value = 0
+    if = {
+        limit = { oe_heg_germany_hre_total_locations > 0 }
+        value = oe_heg_germany_bloc_control_locations
+        divide = oe_heg_germany_hre_total_locations
+        multiply = 100
+    }
+}

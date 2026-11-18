@@ -1,0 +1,29 @@
+﻿# Country scope; check the small Cilician border, not every Byzantine location.
+oe_cilicia_direct_border = {
+    country_exists = c:CIL
+    c:CIL = { any_owned_location = { any_neighbor_location = { owner = c:BYZ } } }
+}
+oe_cilicia_independent = {
+    country_exists = c:CIL
+    c:CIL = { is_subject = no }
+}
+oe_cilicia_guarantee_allowed = {
+    tag = BYZ
+    current_age = age_1_traditions
+    NOT = { has_variable = oe_cilicia_guaranteed }
+    oe_cilicia_independent = yes
+    OR = {
+        oe_cilicia_direct_border = yes
+        province_definition:cyprus_province = {
+            any_ownable_location_in_province_definition = { count = all owner = c:BYZ }
+        }
+        navy_size > 30
+    }
+}
+oe_cilicia_protectorate_allowed = {
+    tag = BYZ
+    has_variable = oe_cilicia_guaranteed
+    oe_cilicia_independent = yes
+    oe_cilicia_direct_border = yes
+    country_tax_base >= 200
+}

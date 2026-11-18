@@ -1,0 +1,86 @@
+﻿oe_rus_siberian_migration = {
+    ability = adm
+    allow_multiple = no
+    helps_with = "charter"
+    potential = { tag = RUS }
+    allow = { NOT = { has_variable = oe_sm_active } }
+    select_trigger = {
+        looking_for_a = province
+        source = actor
+        target_flag = target
+        name = oe_sm_choose_origin
+        none_available_msg_key = oe_sm_no_origin
+        column = { data = name }
+        column = { data = population }
+        visible = { oe_sm_origin = yes }
+        enabled = { always = yes }
+    }
+    select_trigger = {
+        looking_for_a = province_definition
+        target_flag = target_1
+        name = oe_sm_choose_destination
+        none_available_msg_key = oe_sm_no_destination
+        interaction_source_list = {
+            region:west_siberia_region = {
+                every_area_in_region = { every_province_definition_in_area = { add_to_list = source } }
+            }
+            region:east_siberia_region = {
+                every_area_in_region = { every_province_definition_in_area = { add_to_list = source } }
+            }
+        }
+        column = { data = name }
+        column = { data = population }
+        visible = { oe_sm_destination = yes }
+        enabled = { always = yes }
+        only_color_selectable = yes
+        map_color = define:NMapColors|MAP_COLOR_HIGH
+    }
+    # Deliberately no implementation-time months/years: skill must never shorten
+    # the sixty monthly, date-delayed ticks below.
+    on_activate = {
+        if = {
+            limit = {
+                exists = scope:target exists = scope:target_1
+                scope:actor = { tag = RUS NOT = { has_variable = oe_sm_active } }
+                scope:target = { oe_sm_origin = yes }
+                scope:target_1 = { oe_sm_destination = yes }
+            }
+            save_scope_as = oe_sm_cabinet_scope
+            scope:actor = {
+                if = { limit = { NOT = { has_variable = oe_sm_generation } } set_variable = { name = oe_sm_generation value = 0 } }
+                change_variable = { name = oe_sm_generation add = 1 }
+                set_variable = { name = oe_sm_active value = 1 }
+                set_variable = { name = oe_sm_elapsed value = 0 }
+                set_variable = { name = oe_sm_cabinet value = scope:oe_sm_cabinet_scope }
+                set_variable = { name = oe_sm_origin_definition value = scope:target.province_definition }
+                set_variable = { name = oe_sm_destination_definition value = scope:target_1 }
+                save_scope_value_as = { name = oe_sm_job_generation value = var:oe_sm_generation }
+            }
+            scope:target = {
+                # Native Settle the Frontier rate: 0.1% of source population per
+                # month, capped at 1,000 people. Amount is in thousands.
+                save_scope_value_as = { name = oe_sm_monthly_amount value = { value = population multiply = 0.001 max = 1 } }
+                every_location_in_province = {
+                    add_location_modifier = { modifier = oe_siberian_migration_wave months = 60 mode = replace }
+                }
+            }
+            add_migration = {
+                owner = scope:actor
+                from = scope:target.province_definition
+                to = scope:target_1
+                amount = scope:oe_sm_monthly_amount
+                only_from_owned_locations = yes
+                months = 60
+            }
+            scope:actor = { trigger_event_silently = { id = oe_siberian_migration.1 months = 1 } }
+        }
+    }
+    on_deactivate = {
+        scope:actor = {
+            if = { limit = { var:oe_sm_cabinet ?= root } oe_sm_clear_job = yes }
+        }
+    }
+    is_finished = { NOT = { has_variable = oe_sm_active } }
+    progress = { value = scope:actor.var:oe_sm_elapsed divide = 60 min = 0 max = 1 }
+    ai_will_do = { add = 40 }
+}

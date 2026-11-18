@@ -1,0 +1,209 @@
+﻿# PAUSED 2026-09-26: Noble politics paused by user; retained for possible restoration.
+# # The page scrolls as a whole. Both new cards grow with the data model, without row limits.
+# types oe_noble_politics_widgets {
+#     type oe_np_house_panel = vbox {
+#         size = { 512 -1 }
+#         layoutpolicy_horizontal = fixed
+#         using = bg_dark_paper_card
+#         margin = { 12 12 }
+#         spacing = 8
+#         
+# # PAUSED 2026-09-26: Panel headings are opt-in, including when this system is restored.
+# # text_single = {
+# #             text = "OE_NP_HOUSES" fontsize = 21
+# #             default_format = "#bold #Y" layoutpolicy_horizontal = expanding align = center
+# #             tooltip = "OE_NP_HOUSES_DESC"
+# #         }
+# 
+#         hbox = {
+#             spacing = 8
+#             widget = { size = { 42 22 } }
+#             text_single = { text = "OE_NP_FAMILY" size = { 236 22 } fontsize = 15 }
+#             text_single = { text = "OE_NP_INFLUENCE" size = { 86 22 } fontsize = 15 align = center tooltip = "OE_NP_INFLUENCE_DESC" }
+#             text_single = { text = "OE_NP_INTERACT" size = { 86 22 } fontsize = 15 align = center }
+#         }
+#         text_single = {
+#             visible = "[IsDataModelEmpty(GetCountry('BYZ').MakeScope.GetList('oe_np_houses'))]"
+#             text = "OE_NP_NO_HOUSES" fontsize = 16 multiline = yes autoresize = yes
+#             layoutpolicy_horizontal = expanding
+#         }
+#         dynamicgridbox = {
+#             layoutpolicy_horizontal = expanding
+#             datamodel = "[GetCountry('BYZ').MakeScope.GetList('oe_np_houses')]"
+#             datamodel_wrap = 1
+#             item = {
+#                 vbox = {
+#                     datacontext = "[Scope.GetCountry]"
+#                     visible = "[GetScriptedGui('oe_np_house_visible').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+#                     size = { 488 -1 } spacing = 5
+#                     hbox = {
+#                         size = { 488 48 } spacing = 8
+#                         country_flag_small = { blockoverride "country_flag_small_size" { size = { 42 28 } } }
+#                         widget = {
+#                             size = { 236 40 }
+#                             text_single = {
+#                                 parentanchor = left|vcenter widgetanchor = left|vcenter
+#                                 size = { 236 36 } fontsize = 17 minfontsize = 13 elide = right
+#                                 visible = "[Country.MakeScope.GetVariable('oe_np_dynasty').IsSet]"
+#                                 text = "[Country.MakeScope.GetVariable('oe_np_dynasty').GetDynasty.GetNameWithNoTooltip]"
+#                                 tooltip = "[Country.MakeScope.GetVariable('oe_np_dynasty').GetDynasty.GetName]"
+#                             }
+#                             text_single = {
+#                                 parentanchor = left|vcenter widgetanchor = left|vcenter
+#                                 size = { 236 36 } fontsize = 17 elide = right
+#                                 visible = "[Not(Country.MakeScope.GetVariable('oe_np_dynasty').IsSet)]"
+#                                 text = "[Country.GetNameWithNoTooltip]"
+#                             }
+#                         }
+#                         text_single = {
+#                             size = { 86 36 } fontsize = 18 align = center
+#                             text = "#bold #Y [Country.MakeScope.GetVariable('oe_np_influence').GetValue|2]#!#!"
+#                             tooltip = "OE_NP_INFLUENCE_DESC"
+#                         }
+#                         button_regular = {
+#                             size = { 86 32 } fontsize = 16 text = "OE_NP_INTERACT"
+#                             onclick = "[InternationalOrganizationsView.Vars.Set('oe_np_open_house', Country.GetTag)]"
+#                             tooltip = "OE_NP_INTERACT_DESC"
+#                         }
+#                     }
+#                     oe_np_interaction_panel = {}
+#                 }
+#             }
+#         }
+#     }
+#     type oe_np_interaction_panel = vbox {
+#         name = "oe_np_house_interactions"
+#         visible = "[InternationalOrganizationsView.Vars.HasValue('oe_np_open_house', Country.GetTag)]"
+#         size = { 488 -1 }
+#         using = bg_dark_paper_card
+#         margin = { 10 10 } spacing = 8
+#         hbox = {
+#             layoutpolicy_horizontal = expanding
+#             
+# # PAUSED 2026-09-26: Panel headings are opt-in, including when this system is restored.
+# # text_single = { text = "OE_NP_INTERACTIONS_TITLE" fontsize = 18 default_format = "#bold #Y" layoutpolicy_horizontal = expanding }
+# 
+#             button_regular = {
+#                 text = "OE_NP_CLOSE" fontsize = 15 size = { 72 28 }
+#                 onclick = "[InternationalOrganizationsView.Vars.Set('oe_np_open_house', 'none')]"
+#             }
+#         }
+#         block "oe_np_political_actions" {
+#             vbox = {
+#                 layoutpolicy_horizontal = expanding spacing = 5
+#                 widget = {
+#                     layoutpolicy_horizontal = expanding size = { -1 36 }
+#                     datacontext = "[GetGenericAction('oe_npi_support')]"
+#                     action_button_diamond = {
+#                         size = { 100% 34 } fontsize = 16
+#                         text = "[GenericAction.GetNameWithNoTooltip]"
+#                         title = "[GenericAction.GetNameWithNoTooltip]"
+#                         actor = "[InternationalOrganizationsView.GetPlayer]"
+#                         parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+#                         parameter = { parameter_name = "target_country" parameter_value = "[Country.MakeScope]" }
+#                         left_action = { action_name = "[GenericAction.GetKey]" }
+#                         tooltipwidget = { using = io_generic_action_button_tooltip }
+#                     }
+#                 }
+#                 widget = {
+#                     layoutpolicy_horizontal = expanding size = { -1 36 }
+#                     datacontext = "[GetGenericAction('oe_npi_honor')]"
+#                     action_button_diamond = {
+#                         size = { 100% 34 } fontsize = 16
+#                         text = "[GenericAction.GetNameWithNoTooltip]"
+#                         title = "[GenericAction.GetNameWithNoTooltip]"
+#                         actor = "[InternationalOrganizationsView.GetPlayer]"
+#                         parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+#                         parameter = { parameter_name = "target_country" parameter_value = "[Country.MakeScope]" }
+#                         left_action = { action_name = "[GenericAction.GetKey]" }
+#                         tooltipwidget = { using = io_generic_action_button_tooltip }
+#                     }
+#                 }
+#                 widget = {
+#                     layoutpolicy_horizontal = expanding size = { -1 36 }
+#                     datacontext = "[GetGenericAction('oe_npi_recommend')]"
+#                     action_button_diamond = {
+#                         size = { 100% 34 } fontsize = 16
+#                         text = "[GenericAction.GetNameWithNoTooltip]"
+#                         title = "[GenericAction.GetNameWithNoTooltip]"
+#                         actor = "[InternationalOrganizationsView.GetPlayer]"
+#                         parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+#                         parameter = { parameter_name = "target_country" parameter_value = "[Country.MakeScope]" }
+#                         left_action = { action_name = "[GenericAction.GetKey]" }
+#                         tooltipwidget = { using = io_generic_action_button_tooltip }
+#                     }
+#                 }
+#             }
+#         }
+#         vbox = {
+#             datacontext = "[Country.GetQuickDiplomaticActions]"
+#             layoutpolicy_horizontal = expanding spacing = 4
+#             datamodel = "[QuickDiplomaticActions.GetList]"
+#             item = { oe_np_diplomatic_action = {} }
+#         }
+#         vbox = {
+#             datacontext = "[Country.GetDynamicQuickDiplomaticActions]"
+#             layoutpolicy_horizontal = expanding spacing = 4
+#             datamodel = "[QuickDiplomaticActions.GetDynamicList]"
+#             item = { oe_np_diplomatic_action = {} }
+#         }
+#         
+#     }
+#     type oe_np_diplomatic_action = button_regular {
+#         layoutpolicy_horizontal = expanding size = { -1 32 }
+#         text = "[DiplomaticActionItem.GetTitle]" fontsize = 16
+#         enabled = "[DiplomaticActionItem.IsEnabled]"
+#         action_tooltip = {
+#             click_type = left click_mode = single
+#             title = "[DiplomaticActionItem.GetTitle]"
+#             enabled = "[DiplomaticActionItem.IsEnabled]"
+#             conditions = "[DiplomaticActionItem.GetTooltip]"
+#             on_action = "[DiplomaticActionItem.OnClick]"
+#         }
+#         tooltipwidget = { using = diplomatic_action_tooltip }
+#     }
+#     type oe_np_ranking_panel = vbox {
+#         size = { 512 -1 }
+#         layoutpolicy_horizontal = fixed
+#         using = bg_dark_paper_card
+#         margin = { 12 12 } spacing = 8
+#         hbox = {
+#             layoutpolicy_horizontal = expanding
+#             
+# # PAUSED 2026-09-26: Panel headings are opt-in, including when this system is restored.
+# # text_single = { text = "OE_NP_RANKING" fontsize = 21 default_format = "#bold #Y" layoutpolicy_horizontal = expanding tooltip = "OE_NP_RANKING_DESC" }
+# 
+#             button_regular = {
+#                 size = { 80 30 } text = "OE_NP_REFRESH" fontsize = 16
+#                 enabled = "[GetScriptedGui('oe_np_refresh_gui').IsValid(GuiScope.SetRoot(Player.MakeScope).End)]"
+#                 onclick = "[GetScriptedGui('oe_np_refresh_gui').Execute(GuiScope.SetRoot(Player.MakeScope).End)]"
+#                 tooltip = "OE_NP_REFRESH_DESC"
+#             }
+#         }
+#         text_single = { text = "OE_NP_RANKING_HINT" fontsize = 15 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+#         text_single = {
+#             visible = "[IsDataModelEmpty(GetCountry('BYZ').MakeScope.GetList('oe_np_houses'))]"
+#             text = "OE_NP_NO_HOUSES" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding
+#         }
+#         dynamicgridbox = {
+#             layoutpolicy_horizontal = expanding
+#             datamodel = "[GetCountry('BYZ').MakeScope.GetList('oe_np_houses')]"
+#             datamodel_wrap = 1
+#             item = {
+#                 hbox = {
+#                     datacontext = "[Scope.GetCountry]"
+#                     visible = "[GetScriptedGui('oe_np_house_visible').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+#                     size = { 488 44 } spacing = 20
+#                     expand = {}
+#                     country_flag_small = { blockoverride "country_flag_small_size" { size = { 48 32 } } }
+#                     text_single = {
+#                         size = { 200 36 } align = center fontsize = 21
+#                         text = "#bold #Y [Country.MakeScope.GetVariable('oe_np_total').GetValue|2]#!#!"
+#                         tooltip = "OE_NP_SCORE_BREAKDOWN"
+#                     }
+#                     expand = {}
+#                 }
+#             }
+#         }
+#     }
+# }

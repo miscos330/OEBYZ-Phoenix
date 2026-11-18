@@ -1,0 +1,40 @@
+﻿# Ownership only; exclude the two Romanian areas from the Carpathian basin.
+oe_rw_assim_paeones_location = {
+    region = region:carpathia_region
+    NOT = { area = area:wallachia_area }
+    NOT = { area = area:moldavia_area }
+}
+oe_rw_assim_paeones_territory_ready = {
+    oe_rw_assim_paeones_total > 0
+    oe_rw_assim_paeones_owned >= oe_rw_assim_paeones_required
+}
+# Native cultural conversion still targets only required_cultures = { hungarian }.
+# No worldwide polling: these predicates run for the start selector / native movement.
+oe_rw_paeones_spread_location = {
+    is_ownable = yes
+    has_owner = yes
+    owner = { oe_heg_byz_bloc = yes }
+    "culture_percentage(culture:hungarian)" > 0
+}
+oe_rw_paeones_origin = {
+    oe_rw_assim_paeones_location = yes
+    oe_rw_paeones_spread_location = yes
+}
+oe_rw_paeones_romanization_started = {
+    c:BYZ = { has_variable = oe_rw_paeones_movement_corrected }
+}
+oe_rw_start_paeones_romanization_allowed = {
+    tag = BYZ
+    custom_tooltip = { text = OE_RW_ASSIM_PAEONES_NOT_STARTED NOT = { oe_rw_paeones_romanization_started = yes } }
+    custom_tooltip = {
+        text = OE_RW_ASSIM_PAEONES_CONDITION
+        OR = {
+            has_variable = oe_rw_paeones_romanization_started
+            oe_rw_assim_paeones_territory_ready = yes
+        }
+    }
+    custom_tooltip = {
+        text = OE_RW_ASSIM_PAEONES_VALID_ORIGIN
+        region:carpathia_region = { any_location_in_region = { oe_rw_paeones_origin = yes } }
+    }
+}

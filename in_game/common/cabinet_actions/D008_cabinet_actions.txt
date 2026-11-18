@@ -1,0 +1,55 @@
+﻿spread_philhellenism = {
+	ability = dip
+	allow_multiple = no
+	
+	potential = {
+		tag = BYZ
+
+		has_dlc = "d008_fate_of_the_phoenix"
+	}
+
+	allow = {
+		OR = {
+			court_language = language:greek_language
+			culture = { has_culture_group = culture_group:greek_group }
+		}
+	}
+
+	country_modifier = {
+		cultural_influence_modifier = 0.1
+		research_speed_modifier = 0.05
+	}
+
+	ai_will_do = {
+		scope:actor = {
+			if = { 
+				limit = { at_war = yes }
+				subtract = {
+					value = 100
+					desc = AT_WAR
+				}
+			}
+			
+			if = {
+				limit = { num_loans > 0 }
+				add = {
+					value = num_loans
+					multiply = -5
+					desc = "loans"
+				}
+			}
+			add = {
+				value = stability
+				desc = "current stability"
+			}
+			add = {
+				value = government_power
+				subtract = 50
+				desc = "current gov power"
+			}
+		}
+	}
+}
+
+
+

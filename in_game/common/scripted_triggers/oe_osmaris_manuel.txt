@@ -1,0 +1,33 @@
+﻿oe_osmaris_manuel_available = {
+    exists = character:tur_murad
+    character:tur_murad = {
+        oe_nf_living = yes owner = c:BYZ is_adult = yes
+        dynasty = dynasty:ottomans_dynasty
+        NOT = { is_ruler = yes }
+    }
+}
+oe_osmaris_instructor_ready = {
+    oe_court_actor = yes has_variable = oe_osman_chain_active
+    NOT = { has_variable = oe_osman_expelled }
+    NOT = { has_variable = oe_osmaris_instructor_done }
+    oe_osmaris_manuel_available = yes
+    oe_orhan_house_room = yes
+}
+oe_osmaris_serbia_ready = {
+    oe_court_actor = yes has_variable = oe_osman_chain_active
+    has_variable = oe_osmaris_instructor_done
+    NOT = { has_variable = oe_osman_expelled }
+    NOT = { has_variable = oe_osmaris_serbia_decided }
+    oe_osmaris_manuel_available = yes
+    country_exists = c:SER
+    c:SER = { is_subject_of = c:BYZ num_locations > 0 }
+}
+oe_osmaris_assassination_ready = {
+    tag = BYZ has_variable = oe_osmaris_sent_to_serbia
+    NOT = { has_variable = oe_osmaris_assassinated }
+    NOT = { has_variable = oe_osman_expelled }
+    country_exists = c:SER
+    c:SER = { is_subject_of = c:BYZ num_locations > 0 }
+    exists = character:tur_murad
+    character:tur_murad = { oe_nf_living = yes is_ruler_of = c:SER }
+}

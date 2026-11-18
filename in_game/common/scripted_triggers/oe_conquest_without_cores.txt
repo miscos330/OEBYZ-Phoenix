@@ -1,0 +1,18 @@
+﻿# Location scope; recipient is the acquiring country. This is an eligibility
+# predicate for the existing conquest effects, not an on_action or repair process.
+oe_conquest_is_native_civil_war = {
+    has_owner = yes
+    owner = { save_temporary_scope_as = oe_conquest_previous_owner }
+    $recipient$ = {
+        any_current_war = {
+            OR = {
+                is_civil_war_for = $recipient$
+                is_civil_war_for = scope:oe_conquest_previous_owner
+            }
+            OR = {
+                AND = { is_an_attacker = $recipient$ is_a_defender = scope:oe_conquest_previous_owner }
+                AND = { is_a_defender = $recipient$ is_an_attacker = scope:oe_conquest_previous_owner }
+            }
+        }
+    }
+}

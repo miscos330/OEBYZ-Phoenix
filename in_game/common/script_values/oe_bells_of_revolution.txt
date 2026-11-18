@@ -1,0 +1,181 @@
+﻿# Country values. No population or world-location loops.
+oe_bells_month_income = { value = monthly_income_total min = 0 }
+oe_bells_external_impact = {
+    value = 0.1
+    if = { limit = { great_power_ranking >= 1 great_power_ranking <= 10 } value = 2 }
+    else_if = { limit = { great_power_ranking >= 1 great_power_ranking <= 25 } value = 0.5 }
+    else_if = { limit = { great_power_ranking >= 1 great_power_ranking <= 50 } value = 0.25 }
+}
+oe_bells_subject_agitation = {
+    value = 1
+    if = { limit = { num_locations = 0 } value = 0.1 }
+}
+oe_bells_subject_suppression = {
+    value = -0.5
+    if = { limit = { num_locations = 0 } value = -0.1 }
+}
+oe_bells_negative_external_impact = { value = oe_bells_external_impact multiply = -1 }
+oe_bells_tax_ratio = {
+    value = 0
+    if = {
+        limit = { country_exists = c:BYZ c:BYZ = { country_tax_base > 0 } }
+        value = country_tax_base
+        divide = c:BYZ.country_tax_base
+    }
+}
+oe_bells_rebel_weight = {
+    value = 20
+    if = { limit = { opinion = { target = c:BYZ value < -50 } } add = 50 }
+    if = { limit = { opinion = { target = c:BYZ value <= -150 } } add = 60 }
+    if = { limit = { is_at_war_with = c:BYZ } add = 220 }
+    if = { limit = { is_rival_of = c:BYZ } add = 100 }
+    if = { limit = { government_type = government_type:republic } add = 20 }
+    if = { limit = { oe_bells_bordering_bloc = yes } add = 20 }
+    if = {
+        limit = { oe_bells_byz_subject = yes }
+        if = { limit = { num_locations = 0 } add = -15 }
+        else = {
+            if = { limit = { oe_bells_tax_ratio >= 0.05 } add = 25 }
+            if = { limit = { oe_bells_tax_ratio >= 0.10 } add = 45 }
+            if = { limit = { oe_bells_tax_ratio >= 0.25 } add = 80 }
+            if = { limit = { subject_loyalty < 50 } add = 70 }
+            if = { limit = { subject_loyalty < 25 } add = 70 }
+        }
+    }
+    # A subject follows its immediate patron, even when that patron is itself a subject.
+    if = { limit = { is_allied_with = { target = c:BYZ } } multiply = 0.35 }
+    if = { limit = { opinion = { target = c:BYZ value >= 100 } } multiply = 0.5 }
+    if = { limit = { exists = overlord overlord = { oe_bells_rebel = yes } } add = 800 }
+    min = 1
+}
+oe_bells_royalist_weight = {
+    value = 20
+    if = { limit = { opinion = { target = c:BYZ value >= 50 } } add = 50 }
+    if = { limit = { opinion = { target = c:BYZ value >= 150 } } add = 60 }
+    if = { limit = { is_allied_with = { target = c:BYZ } } add = 130 }
+    if = { limit = { religion = religion:orthodox } add = 15 }
+    if = { limit = { government_type = government_type:monarchy } add = 10 }
+    if = { limit = { oe_bells_bordering_bloc = yes } add = 20 }
+    if = {
+        limit = { oe_bells_byz_subject = yes }
+        add = 50
+        if = { limit = { num_locations = 0 } add = 110 }
+        else_if = { limit = { oe_bells_tax_ratio < 0.02 } add = 30 }
+        if = { limit = { subject_loyalty >= 70 } add = 80 }
+        if = { limit = { subject_loyalty < 25 } multiply = 0.4 }
+    }
+    if = { limit = { exists = overlord overlord = { oe_bells_royalist = yes } } add = 800 }
+    if = { limit = { is_at_war_with = c:BYZ } multiply = 0.05 }
+    if = { limit = { is_rival_of = c:BYZ } multiply = 0.15 }
+    min = 1
+}
+oe_bells_neutral_weight = {
+    value = 45
+    if = {
+        limit = { NOT = { oe_bells_byz_subject = yes } NOT = { oe_bells_bordering_bloc = yes } }
+        add = 65
+    }
+    if = { limit = { at_war = yes NOT = { is_at_war_with = c:BYZ } } add = 40 }
+    if = { limit = { is_during_bankruptcy = yes } add = 60 }
+    if = {
+        limit = {
+            exists = overlord
+            overlord = { NOT = { tag = BYZ } has_variable = oe_bells_camp oe_bells_neutral = yes }
+        }
+        add = 600
+    }
+    if = { limit = { oe_bells_byz_subject = yes } multiply = 0.5 }
+    if = { limit = { is_at_war_with = c:BYZ } multiply = 0.4 }
+    min = 1
+}
+oe_bells_current_camp = {
+    value = 0
+    if = { limit = { has_variable = oe_bells_camp } value = var:oe_bells_camp }
+}
+oe_bells_current_weight = {
+    value = oe_bells_neutral_weight
+    if = { limit = { oe_bells_rebel = yes } value = oe_bells_rebel_weight }
+    else_if = { limit = { oe_bells_royalist = yes } value = oe_bells_royalist_weight }
+}
+oe_bells_best_camp = {
+    # Ties keep the current camp.
+    value = oe_bells_current_camp
+    if = {
+        limit = { oe_bells_rebel_weight > oe_bells_royalist_weight oe_bells_rebel_weight > oe_bells_neutral_weight }
+        value = 1
+    }
+    else_if = {
+        limit = { oe_bells_royalist_weight > oe_bells_rebel_weight oe_bells_royalist_weight > oe_bells_neutral_weight }
+        value = 2
+    }
+    else_if = {
+        limit = { oe_bells_neutral_weight > oe_bells_rebel_weight oe_bells_neutral_weight > oe_bells_royalist_weight }
+        value = 0
+    }
+}
+oe_bells_best_weight = {
+    value = oe_bells_current_weight
+    if = { limit = { oe_bells_best_camp = 1 } value = oe_bells_rebel_weight }
+    else_if = { limit = { oe_bells_best_camp = 2 } value = oe_bells_royalist_weight }
+    else_if = { limit = { oe_bells_best_camp = 0 } value = oe_bells_neutral_weight }
+}
+oe_bells_switch_threshold = {
+    value = oe_bells_current_weight
+    multiply = 1.35
+    min = { value = oe_bells_current_weight add = 40 }
+}
+# Situation scope. Called once a month, deliberately outside the action/history effect.
+oe_bells_monthly_decay = { value = var:oe_bells_clamor multiply = -0.005 }
+
+oe_bells_history_next_offset = {
+    value = 100
+    if = { limit = { has_variable = oe_bells_history_offset } add = var:oe_bells_history_offset }
+}
+
+
+# Country scope. Both endpoints clamp the input, not the computed delta.
+oe_bells_stability_delta = {
+    value = stability
+    min = -100
+    max = 100
+    multiply = -0.002
+    add = 0.1
+}
+oe_bells_legitimacy_delta = {
+    value = legitimacy
+    min = -100
+    max = 100
+    multiply = -0.002
+    add = 0.1
+}
+# Only the situation's tracked characters; dead and detained thinkers do not contribute.
+oe_bells_living_thinkers = {
+    value = 0
+    every_in_list = {
+        variable = oe_bells_thinkers
+        limit = { oe_bells_active_thinker = yes }
+        add = 1
+    }
+}
+oe_bells_thinker_clamor = { value = oe_bells_living_thinkers multiply = 0.1 }
+oe_bells_thinker_legitimacy = { value = oe_bells_living_thinkers multiply = -0.1 }
+# Situation scope. The engine already scales modifier values by remaining duration.
+oe_bells_monthly_total = {
+    value = oe_bells_monthly_decay
+    if = {
+        limit = { country_exists = c:BYZ }
+        add = c:BYZ.oe_bells_stability_delta
+        add = c:BYZ.oe_bells_legitimacy_delta
+        add = c:BYZ.oe_bells_thinker_clamor
+        add = c:BYZ.modifier:oe_bells_monthly_clamor
+    }
+}
+# IO scope, integrated into the existing Empire Pillars monthly-change formula.
+oe_bells_pillars_opinion_delta = {
+    value = 0
+    if = { limit = { country_exists = c:BYZ } add = c:BYZ.modifier:oe_bells_monthly_public_opinion }
+}
+
+oe_bells_country_modifier_delta = { value = modifier:oe_bells_monthly_clamor }
+
+oe_bells_royalist_society_cost = { value = oe_bells_month_income multiply = 3 }

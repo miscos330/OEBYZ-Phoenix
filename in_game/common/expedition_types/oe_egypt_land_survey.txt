@@ -1,0 +1,255 @@
+﻿oe_egypt_land_survey = {
+    unique = yes
+    repeatable = no
+    dynamic_first_waypoint = yes
+    origin = none
+    travel_mode = land
+    travel_speed = 0.75
+    # Return is explicitly part of the finite route, including a final home waypoint.
+    should_end_at_last_waypoint = yes
+    fail_if_no_leader = yes
+    category = commercial
+    icon = category_commercial
+    show_start_message = no
+    show_end_message = no
+    variables = {
+        oe_exp_survey_progress = {
+            start = 0
+            min = 0
+            max = 5
+            display = fraction
+            icon = "gfx/interface/icons/expedition_types/knowledge.dds"
+        }
+        oe_exp_ledger = {
+            start = 70
+            min = 0
+            max = 100
+            display = piechart
+            icon = "gfx/interface/icons/expedition_types/gt_diligence.dds"
+        }
+        oe_exp_elapsed = {
+            start = 0
+            min = 0
+            max = 60
+            display = fraction
+            icon = "gfx/interface/icons/expedition_types/experience.dds"
+            hidden = yes
+        }
+    }
+    potential = {
+        has_or_had_tag = BYZ
+        NOT = {
+            has_variable = oe_exp_survey_completed
+        }
+    }
+    can_start = {
+        at_war = no
+        gold >= 1500
+        oe_works_egypt_owned = yes
+        oe_works_egypt_planned = yes
+        NOT = {
+            has_cooldown = oe_exp_survey_retry
+        }
+    }
+    leader = {
+        is_adult = yes
+        is_ruler = no
+        is_expedition_leader = no
+        has_exploration = no
+    }
+    on_start = {
+        add_gold = -1500
+        scope:expedition = {
+            if = {
+                limit = {
+                    exists = expedition_leader
+                }
+                remove_commander = expedition_leader
+            }
+            add_new_waypoint = location:cairo
+            add_new_waypoint = location:bilbeis
+            add_new_waypoint = location:minya
+            add_new_waypoint = location:asyut
+            add_new_waypoint = location:qus
+            add_new_waypoint = location:aswan
+            add_new_waypoint = location:cairo
+        }
+        trigger_event_non_silently = oe_exp_survey.1
+    }
+    on_monthly = {
+        # Only expedition-local scalars. No location or population loops.
+        if = {
+            limit = {
+                scope:expedition = {
+                    NOT = {
+                        expedition_is_stalled = yes
+                    }
+                }
+            }
+            scope:expedition = {
+                change_variable = {
+                    name = oe_exp_elapsed
+                    add = 1
+                }
+            }
+            if = {
+                limit = {
+                    scope:expedition = {
+                        var:oe_exp_elapsed >= 60
+                    }
+                }
+                fail_expedition = scope:expedition
+            }
+        }
+    }
+    on_arrive_to_new_location = {
+        scope:location = {
+            discover_location = root
+        }
+    }
+    on_arrive_to_waypoint = {
+        if = {
+            limit = {
+                scope:location = location:bilbeis
+                NOT = {
+                    scope:expedition = {
+                        has_variable = oe_survey_visited_bilbeis
+                    }
+                }
+            }
+            scope:expedition = {
+                set_variable = {
+                    name = oe_survey_visited_bilbeis
+                    value = 1
+                }
+            }
+            scope:expedition = {
+                change_variable = {
+                    name = oe_exp_survey_progress
+                    add = 1
+                }
+                pause_expedition = 60
+            }
+            stall_expedition = scope:expedition
+            trigger_event_non_silently = oe_exp_survey.2
+        }
+        if = {
+            limit = {
+                scope:location = location:minya
+                NOT = {
+                    scope:expedition = {
+                        has_variable = oe_survey_visited_minya
+                    }
+                }
+            }
+            scope:expedition = {
+                set_variable = {
+                    name = oe_survey_visited_minya
+                    value = 1
+                }
+            }
+            scope:expedition = {
+                change_variable = {
+                    name = oe_exp_survey_progress
+                    add = 1
+                }
+                pause_expedition = 60
+            }
+        }
+        if = {
+            limit = {
+                scope:location = location:asyut
+                NOT = {
+                    scope:expedition = {
+                        has_variable = oe_survey_visited_asyut
+                    }
+                }
+            }
+            scope:expedition = {
+                set_variable = {
+                    name = oe_survey_visited_asyut
+                    value = 1
+                }
+            }
+            scope:expedition = {
+                change_variable = {
+                    name = oe_exp_survey_progress
+                    add = 1
+                }
+                pause_expedition = 60
+            }
+            stall_expedition = scope:expedition
+            trigger_event_non_silently = oe_exp_survey.3
+        }
+        if = {
+            limit = {
+                scope:location = location:qus
+                NOT = {
+                    scope:expedition = {
+                        has_variable = oe_survey_visited_qus
+                    }
+                }
+            }
+            scope:expedition = {
+                set_variable = {
+                    name = oe_survey_visited_qus
+                    value = 1
+                }
+            }
+            scope:expedition = {
+                change_variable = {
+                    name = oe_exp_survey_progress
+                    add = 1
+                }
+                pause_expedition = 60
+            }
+            stall_expedition = scope:expedition
+            trigger_event_non_silently = oe_exp_survey.4
+        }
+        if = {
+            limit = {
+                scope:location = location:aswan
+                NOT = {
+                    scope:expedition = {
+                        has_variable = oe_survey_visited_aswan
+                    }
+                }
+            }
+            scope:expedition = {
+                set_variable = {
+                    name = oe_survey_visited_aswan
+                    value = 1
+                }
+            }
+            scope:expedition = {
+                change_variable = {
+                    name = oe_exp_survey_progress
+                    add = 1
+                }
+                pause_expedition = 60
+            }
+            stall_expedition = scope:expedition
+            trigger_event_non_silently = oe_exp_survey.5
+        }
+    }
+    on_end = {
+        set_variable = {
+            name = oe_exp_survey_completed
+            value = 1
+        }
+        custom_tooltip = {
+            text = oe_exp_survey_reward_tt
+            oe_egypt_add_food_layer = yes
+        }
+        trigger_event_non_silently = oe_exp_survey.6
+    }
+    on_fail = {
+        add_cooldown = {
+            type = oe_exp_survey_retry
+            years = 2
+        }
+        trigger_event_non_silently = oe_exp_survey.7
+    }
+    # Player-authored adventures; avoid unattended AI spending and event choices.
+    ai = no
+}

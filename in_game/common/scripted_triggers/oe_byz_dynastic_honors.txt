@@ -1,0 +1,70 @@
+﻿# Country scope: imperial titles and the co-emperor card are unavailable to republics.
+oe_byz_imperial_honors_allowed = {
+    NOT = { government_type = government_type:republic }
+}
+
+# Character scope; the owner of a foreign recipient must be an actual BYZ theme.
+oe_byz_honor_recipient = {
+    is_alive = yes
+    OR = {
+        owner = c:BYZ
+        AND = { is_ruler = yes owner = { oe_theme_member_trigger = yes } }
+    }
+}
+
+# Country scope. Also counts co-emperors ruling one of the six theme types.
+oe_byz_has_co_emperor = {
+    OR = {
+        AND = {
+            has_variable = oe_byz_co_emperor_display
+            var:oe_byz_co_emperor_display = { is_alive = yes has_character_modifier = oe_byz_select_as_second_empire_mod }
+        }
+        any_character = { is_alive = yes has_character_modifier = oe_byz_select_as_second_empire_mod }
+        any_subject = {
+            oe_theme_member_trigger = yes
+            ruler ?= { is_alive = yes has_character_modifier = oe_byz_select_as_second_empire_mod }
+        }
+    }
+}
+
+# Character scope. Caesar is an alternative to dynastic descent, not a replacement.
+oe_byz_co_emperor_candidate = {
+    oe_byz_honor_recipient = yes
+    NOT = { is_ruler_of = c:BYZ }
+    NOT = { has_character_modifier = oe_byz_select_as_second_empire_mod }
+    OR = {
+        is_dynastic_descendant_of = c:BYZ.ruler.dynasty
+        has_character_modifier = oe_byz_caesar_modifier
+    }
+}
+
+# Country scope. Character leadership can be stale even with the right leader country.
+oe_byz_needs_imperial_leadership = {
+    tag = BYZ
+    has_ruler = yes
+    exists = international_organization:oe_byz_empire_pillars
+    exists = international_organization:oe_byz_roman_world
+    OR = {
+        international_organization:oe_byz_empire_pillars = {
+            OR = {
+                NOT = { leader_country = c:BYZ }
+                NOT = { "leader_at_index(0)" = { this = c:BYZ.ruler } }
+            }
+        }
+        international_organization:oe_byz_roman_world = {
+            OR = {
+                NOT = { leader_country = c:BYZ }
+                NOT = { "leader_at_index(0)" = { this = c:BYZ.ruler } }
+            }
+        }
+    }
+}
+
+# Any estate, sex or age; existing family relationships are deliberately untouched.
+oe_byz_adoption_candidate = {
+    is_alive = yes
+    owner = c:BYZ
+    NOT = { is_ruler_of = c:BYZ }
+    is_dynasty_head = no
+    NOT = { has_character_modifier = oe_byz_royal_adopted_child }
+}

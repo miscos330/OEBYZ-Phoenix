@@ -1,0 +1,60 @@
+﻿# GUI values are cheap per-row property/variable lookups.
+oe_tfr_target_display = {
+    value = 0
+    if = { limit = { oe_tfr_land_theme = yes has_variable = oe_tfr_land_target } add = var:oe_tfr_land_target }
+    else_if = { limit = { oe_tfr_naval_theme = yes has_variable = oe_tfr_naval_target } add = var:oe_tfr_naval_target }
+}
+oe_tfr_current_display = {
+    value = regular_army_size
+    multiply = 1000
+    if = { limit = { oe_tfr_naval_theme = yes } value = regular_navy_size }
+}
+# Input is people for land themes and ships for naval themes.
+oe_tfr_normalized_input = {
+    value = scope:target_value
+    min = 0
+    floor = yes
+    if = { limit = { oe_tfr_land_theme = yes } max = 100000 }
+}
+oe_tfr_li_gold_cost = {
+    value = var:oe_tfr_li_resource
+    multiply = 20
+    multiply = { value = 1 add = modifier:army_light_infantry_build_cost_modifier min = 0.1 }
+    min = 1
+}
+oe_tfr_hi_gold_cost = {
+    value = var:oe_tfr_hi_resource
+    multiply = 30
+    multiply = { value = 1 add = modifier:army_heavy_infantry_build_cost_modifier min = 0.1 }
+    min = 1
+}
+oe_tfr_lc_gold_cost = {
+    value = var:oe_tfr_lc_resource
+    multiply = 60
+    multiply = { value = 1 add = modifier:army_light_cavalry_build_cost_modifier min = 0.1 }
+    min = 1
+}
+oe_tfr_hc_gold_cost = {
+    value = var:oe_tfr_hc_resource
+    multiply = 100
+    multiply = { value = 1 add = modifier:army_heavy_cavalry_build_cost_modifier min = 0.1 }
+    min = 1
+}
+oe_tfr_ar_gold_cost = {
+    value = var:oe_tfr_ar_resource
+    multiply = 100
+    multiply = { value = 1 add = modifier:army_artillery_build_cost_modifier min = 0.1 }
+    min = 1
+}
+oe_tfr_hs_gold_cost = {
+    value = var:oe_tfr_hs_resource
+    multiply = 500
+    multiply = { value = 1 add = modifier:navy_heavy_ship_build_cost_modifier min = 0.1 }
+    min = 1
+}
+oe_tfr_ga_gold_cost = {
+    value = var:oe_tfr_ga_resource
+    multiply = 500
+    multiply = { value = 1 add = modifier:navy_galley_build_cost_modifier min = 0.1 }
+    min = 1
+}

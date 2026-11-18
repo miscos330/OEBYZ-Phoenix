@@ -1,0 +1,80 @@
+﻿# Explicitly bounded to sovereign, direct subject, and subject of a direct subject.
+oe_tx_in_bloc = {
+    OR = {
+        this = $leader$
+        is_subject_of = $leader$
+        AND = { exists = overlord overlord = { is_subject_of = $leader$ } }
+    }
+}
+# Disabled at user request on 2026-11-01. Do not reopen without explicit authorization.
+# Former unlock condition: tag = BYZ has_variable = oe_ir_army_3_done
+oe_tx_actor_unlocked = { always = no }
+oe_tx_partner_allowed = {
+    NOT = { this = c:BYZ }
+    is_subject = no
+    num_locations > 0
+}
+oe_tx_session = {
+    oe_tx_actor_unlocked = yes
+    has_variable = oe_tx_partner
+    exists = var:oe_tx_partner
+    var:oe_tx_partner ?= { oe_tx_partner_allowed = yes }
+    NOT = { has_cooldown = oe_territory_exchange_cooldown }
+}
+# Scope: location. Eligibility is based on ownership, never military control.
+oe_tx_give_owned = {
+    is_ownable = yes
+    has_owner = yes
+    owner = { oe_tx_in_bloc = { leader = c:BYZ } }
+}
+oe_tx_take_owned = {
+    is_ownable = yes
+    has_owner = yes
+    owner = { oe_tx_in_bloc = { leader = c:BYZ.var:oe_tx_partner } }
+}
+oe_tx_give_selected = { c:BYZ = { is_target_in_variable_list = { name = oe_tx_give target = prev } } }
+oe_tx_take_selected = { c:BYZ = { is_target_in_variable_list = { name = oe_tx_take target = prev } } }
+oe_tx_reached = { c:BYZ = { is_target_in_variable_list = { name = oe_tx_connected target = prev } } }
+oe_tx_retained_anchor = {
+    oe_tx_give_owned = yes
+    owner = { OR = { this = c:BYZ is_subject_of = c:BYZ } }
+    NOT = { oe_tx_give_selected = yes }
+}
+oe_tx_touches_reached_land = {
+    any_neighbor_location = {
+        OR = {
+            oe_tx_retained_anchor = yes
+            AND = { oe_tx_take_owned = yes oe_tx_reached = yes }
+        }
+    }
+}
+oe_tx_give_candidate = {
+    oe_tx_give_owned = yes
+    NOT = { oe_tx_give_selected = yes }
+    c:BYZ = { oe_tx_session = yes var:oe_tx_give_count < 50 }
+}
+oe_tx_take_candidate = {
+    oe_tx_take_owned = yes
+    NOT = { oe_tx_take_selected = yes }
+    oe_tx_touches_reached_land = yes
+    c:BYZ = {
+        oe_tx_session = yes
+        var:oe_tx_take_count < var:oe_tx_give_count
+        var:oe_tx_take_count < 50
+    }
+}
+# Country scope; lightweight prerequisites. Connectivity is recomputed in the commit effect.
+oe_tx_counts_allowed = {
+    oe_tx_session = yes
+    num_of_diplomats >= 1
+    var:oe_tx_give_count >= 1
+    var:oe_tx_give_count <= 50
+    var:oe_tx_take_count >= 1
+    var:oe_tx_take_count <= var:oe_tx_give_count
+    NOT = { any_in_list = { variable = oe_tx_give NOT = { oe_tx_give_owned = yes } } }
+    NOT = { any_in_list = { variable = oe_tx_take NOT = { oe_tx_take_owned = yes } } }
+}
+oe_tx_commit_valid = {
+    oe_tx_counts_allowed = yes
+    var:oe_tx_connected_count = var:oe_tx_take_count
+}

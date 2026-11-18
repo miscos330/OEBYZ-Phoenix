@@ -1,0 +1,31 @@
+﻿# Country scope, entered by the overview button. Check again at click time.
+oe_rw_start_turkish_romanization = {
+    if = {
+        limit = { oe_rw_start_turkish_romanization_allowed = yes }
+        # Set before spawning to make the command idempotent. Retain the original Sivas-first origin.
+        set_variable = oe_rw_turkish_romanization_started
+        ordered_ownable_location = {
+            limit = {
+                region = region:anatolia_region
+                has_owner = yes
+                owner = { oe_heg_byz_bloc = yes }
+            }
+            max = 1
+            order_by = {
+                value = population
+                # Strongly prefer the historical centre, if it passes the ownership/region limit.
+                if = { limit = { this = location:sivas } add = 1000000 }
+                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
+                if = { limit = { owner = c:BYZ } add = 100000000 }
+            }
+            spawn_movement = {
+                movement_definition = movement_definition:oe_turkish_identity_movement
+                supporters = {
+                    value = population
+                    multiply = 0.1
+                }
+            }
+            oe_identity_schedule_30_years = { holder = culture:oe_tur_greek_culture event = oe_identity_expiry.16 }
+        }
+    }
+}
