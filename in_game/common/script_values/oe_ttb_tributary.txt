@@ -3,7 +3,7 @@
 # Any scope. Byzantium's army size (0 when it does not exist).
 oe_ttb_byz_army = {
     value = 0
-    if = { limit = { exists = c:BYZ } value = c:BYZ.army_size }
+    if = { limit = { country_exists = c:BYZ } value = c:BYZ.army_size }
 }
 # Any scope. 2 times Byzantium's army size (AI threshold).
 oe_ttb_byz_army_ai = { value = oe_ttb_byz_army multiply = 2 }
@@ -23,3 +23,16 @@ oe_ttb_accept_chance = {
         add = -30
     }
 }
+# BYZ scope. AI insurance: the yearly dues of every running agreement (0 when there is none).
+oe_ttb_ai_dues = {
+    value = 0
+    every_country = {
+        limit = { has_variable = oe_ttb_peace }
+        add = var:oe_ttb_peace
+    }
+}
+# BYZ scope. AI insurance readouts (0 while unset): months in the red, months recovered, held (1/0), payments held.
+oe_ttb_ai_rd_red = { value = 0 if = { limit = { has_variable = oe_ttb_ai_red } value = var:oe_ttb_ai_red } }
+oe_ttb_ai_rd_ok = { value = 0 if = { limit = { has_variable = oe_ttb_ai_ok } value = var:oe_ttb_ai_ok } }
+oe_ttb_ai_rd_hold = { value = 0 if = { limit = { var:oe_ttb_ai_hold ?= 1 } value = 1 } }
+oe_ttb_ai_rd_held = { value = 0 if = { limit = { has_variable = oe_ttb_ai_held_n } value = var:oe_ttb_ai_held_n } }

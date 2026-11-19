@@ -129,7 +129,7 @@ oe_hcr_jihad_full = {
             NOT = { any_international_organization = { international_organization_type = international_organization_type:jihad } }
         }
         if = {
-            limit = { c:MAM ?= { religion.group = religion_group:muslim is_subject = no } }
+            limit = { country_exists = c:MAM c:MAM = { religion.group = religion_group:muslim is_subject = no } }
             c:MAM = { save_scope_as = oe_hcr_jihad_leader }
         }
         else = {
@@ -153,15 +153,15 @@ oe_hcr_jihad_full = {
 # BYZ scope, a maritime campaign starts: the spurned republic may join the enemy; the first time, both ask for a deal.
 oe_hcr_maritime_start = {
     if = {
-        limit = { has_variable = oe_hcr_partner var:oe_hcr_partner = 1 exists = c:VEN }
+        limit = { has_variable = oe_hcr_partner var:oe_hcr_partner = 1 country_exists = c:VEN }
         random = { chance = 30 c:VEN = { save_scope_as = oe_hcr_joiner } oe_hcr_join_enemy = { who = oe_hcr_joiner } }
     }
     else_if = {
-        limit = { has_variable = oe_hcr_partner var:oe_hcr_partner = 2 exists = c:GEN }
+        limit = { has_variable = oe_hcr_partner var:oe_hcr_partner = 2 country_exists = c:GEN }
         random = { chance = 30 c:GEN = { save_scope_as = oe_hcr_joiner } oe_hcr_join_enemy = { who = oe_hcr_joiner } }
     }
     if = {
-        limit = { NOT = { has_variable = oe_hcr_partner_cd } exists = c:VEN exists = c:GEN }
+        limit = { NOT = { has_variable = oe_hcr_partner_cd } country_exists = c:VEN country_exists = c:GEN }
         trigger_event_non_silently = { id = oe_hcr.12 days = 5 }
     }
 }

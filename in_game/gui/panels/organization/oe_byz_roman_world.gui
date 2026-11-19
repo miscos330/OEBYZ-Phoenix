@@ -48,7 +48,7 @@ organization_panel = {
                         datamodel = "[InternationalOrganizationsView.GetActions]"
                         item = {
                             widget = {
-                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_end'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tw_grant_title'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ttb_buy_peace'),EqualTo_string(GenericAction.GetKey, 'oe_ttb_stop_peace'))))]"
+                                visible = "[EqualTo_string(GenericAction.GetKey, 'oe_end')]"
                                 layoutpolicy_horizontal = expanding
                                 size = { -1 56 }
                                 using = bg_paper_card
@@ -78,7 +78,13 @@ organization_panel = {
         }
     }
     blockoverride "organization_panel_members_area" {
-        vbox = { using = oe_roman_world_roster }
+        # NEW r6 a-ui: 授予尊号 sits above the roster, next to each ruler's rank and dignity.
+        vbox = {
+            using = layoutpolicy_expanding
+            spacing = 6
+            oe_r6_grant_title_bar = {}
+            vbox = { using = oe_roman_world_roster }
+        }
     }
 
     blockoverride "io_overview_actions" {}
@@ -250,6 +256,8 @@ organization_panel = {
                         }
                     }
                 
+                    # NEW r6 a-ui: tribute actions while the contest lasts (the hegemony page has the same card).
+                    oe_r6_tribute_card = {}
                     card_common = {
                         blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
                         blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }

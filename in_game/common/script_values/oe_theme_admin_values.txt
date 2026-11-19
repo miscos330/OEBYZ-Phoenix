@@ -57,7 +57,7 @@ oe_theme_loyalty_target_value = {
     # 将军能力：-(最高能力 - 50) x 0.2
     add = { value = oe_theme_best_skill subtract = 50 multiply = -0.2 }
     # 将军身份
-    if = { limit = { exists = ruler exists = c:BYZ.ruler ruler = { dynasty ?= c:BYZ.ruler.dynasty } } add = 10 }
+    if = { limit = { exists = ruler country_exists = c:BYZ exists = c:BYZ.ruler ruler = { dynasty ?= c:BYZ.ruler.dynasty } } add = 10 }
     if = { limit = { exists = ruler ruler = { has_character_modifier = oe_byz_caesar_modifier } } add = 15 }
     # 任职时间：前 3 年 +5；之后每年 -2，最多 -20
     if = { limit = { oe_theme_tenure_years < 3 } add = 5 }
@@ -81,12 +81,12 @@ oe_theme_loyalty_target_value = {
     if = { limit = { oe_theme_law_pay_ratio >= 1 } add = 5 }
     else_if = { limit = { oe_theme_law_pay_ratio < 0.5 } add = -15 }
     # 皇帝合法性：(合法性 - 50) x 0.2
-    if = { limit = { exists = c:BYZ } add = { value = c:BYZ.legitimacy subtract = 50 multiply = 0.2 } }
+    if = { limit = { country_exists = c:BYZ } add = { value = c:BYZ.legitimacy subtract = 50 multiply = 0.2 } }
     # 皇帝与将军的军事能力
-    if = { limit = { exists = ruler exists = c:BYZ.ruler c:BYZ.ruler.mil >= ruler.mil } add = 5 }
+    if = { limit = { exists = ruler country_exists = c:BYZ exists = c:BYZ.ruler c:BYZ.ruler.mil >= ruler.mil } add = 5 }
     else = { add = -5 }
     # 宫廷阴谋
-    if = { limit = { exists = c:BYZ c:BYZ = { any_active_disaster = { disaster_type = disaster_type:oe_byzantine_intrigue } } } add = -10 }
+    if = { limit = { country_exists = c:BYZ c:BYZ = { any_active_disaster = { disaster_type = disaster_type:oe_byzantine_intrigue } } } add = -10 }
     # 平叛威慑（反叛阶段设置）
     if = { limit = { has_global_variable = oe_theme_deterrence } add = 10 }
     # 将门（gen_theme_houses.py）：豪族出身 +5，政治盟友再 +5，家族影响力 500 以上改为 -5；世守军区 +5

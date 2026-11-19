@@ -5,7 +5,8 @@
 # value sees yua_dictator_powers). Both are guarded by global variables and run once per campaign.
 on_game_start = { on_actions = { oe_yp_game_start } }
 on_game_started_after_lobby = { on_actions = { oe_yp_after_lobby } }
-monthly_country_pulse = { on_actions = { oe_yp_monthly_pulse } }
+monthly_country_pulse = { on_actions = { oe_yp_monthly_pulse oe_yp_collapse_pulse } }
+on_new_country_formed = { on_actions = { oe_yp_formed } }
 
 oe_yp_game_start = {
     effect = { oe_yp_assign_units = yes }
@@ -22,6 +23,43 @@ oe_yp_after_lobby = {
     }
 }
 oe_yp_monthly_pulse = {
-    trigger = { country_type = building is_subject_type = oe_yp_xingsheng }
+    # round 6: the frontier branch secretariats (land subjects, oe_yp_frontier) too
+    # round 7 F6 (Y2): not after the secretariat or the whole Yuan has ended, and only under the Yuan itself (after vanilla
+    # .101 the old Yuan is YUA and c:CHI another dynasty, whose land must not get tier modifiers before the anchor's check runs)
+    trigger = {
+        NOT = { has_global_variable = oe_yp_dissolved }
+        NOT = { has_variable = oe_yp_ended }
+        OR = { AND = { country_type = building is_subject_type = oe_yp_xingsheng } is_subject_type = oe_yp_frontier }
+        oe_yp_yuan_fallen = no
+        is_subject_of = c:CHI
+    }
     effect = { oe_yp_monthly = yes }
+}
+# Round 7 F6 (Y2). root = the newly formed country. The CHI tag formed (CHI_f: the Yuan re-founding the Mandate in vanilla
+# red_turban_rebellions.105, or a new dynasty after .101 or flavor_chi.33), or the Yuan's own country formed YUA_f (.101,
+# flavor_chi.33): the Yuan as the branch secretariats knew it has ended (reason 6).
+oe_yp_formed = {
+    trigger = {
+        has_global_variable = oe_yp_started
+        NOT = { has_global_variable = oe_yp_dissolved }
+        OR = {
+            tag = CHI
+            AND = { tag = YUA has_global_variable = oe_yp_yuan global_var:oe_yp_yuan ?= this }
+        }
+    }
+    effect = { oe_yp_dissolve_all = { reason = 6 } }
+}
+# Round 7 F6 (Y2). The monthly collapse check, run by one anchor: CHI while it exists (the Yuan, or the dynasty that took the
+# tag, which then finds the Yuan fallen); else YUA (the Northern Yuan); else any branch secretariat still standing.
+oe_yp_collapse_pulse = {
+    trigger = {
+        has_global_variable = oe_yp_started
+        NOT = { has_global_variable = oe_yp_dissolved }
+        OR = {
+            tag = CHI
+            AND = { tag = YUA NOT = { country_exists = c:CHI } }
+            AND = { has_variable = oe_yp_unit NOT = { country_exists = c:CHI } NOT = { country_exists = c:YUA } }
+        }
+    }
+    effect = { oe_yp_collapse_check = yes }
 }

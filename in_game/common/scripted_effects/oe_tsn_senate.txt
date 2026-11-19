@@ -12,6 +12,7 @@ oe_tsn_request = {
     else = {
         if = { limit = { var:oe_tsn_req ?= 1 } remove_variable = oe_tsn_queue_1 } else_if = { limit = { var:oe_tsn_req ?= 2 } remove_variable = oe_tsn_queue_2 } else_if = { limit = { var:oe_tsn_req ?= 3 } remove_variable = oe_tsn_queue_3 } else_if = { limit = { var:oe_tsn_req ?= 4 } remove_variable = oe_tsn_queue_4 }
         oe_tsn_count = yes
+        oe_tsn_pv_check = yes  # round 7 F4: compare the preview with this tally (record and debug log only)
         set_variable = { name = oe_tsn_pending value = 1 months = 6 }
         if = { limit = { NOT = { has_variable = oe_dbg_n_tsn } } set_variable = { name = oe_dbg_n_tsn value = 0 } } change_variable = { name = oe_dbg_n_tsn add = 1 }  # third round T3: event count
         trigger_event_non_silently = oe_tsn.1
@@ -156,9 +157,8 @@ oe_tsn_levy_start = {
 oe_tsn_apply_2 = { add_country_modifier = { modifier = oe_tsn_war_levy years = 5 mode = replace } }
 oe_tsn_reject_2 = { set_variable = { name = oe_tsn_rejected_2 value = 1 years = 5 } }
 
-# Monthly: seats for the action text, the war levy ends with the campaign, queued votes.
+# Monthly: the war levy ends with the campaign, queued votes. (The levy action reads the seats live, round 6 A1.)
 oe_tsn_monthly = {
-    set_variable = { name = oe_tsn_seats_now value = oe_tsn_seats_value }
     if = { limit = { has_country_modifier = oe_tsn_war_levy NOT = { has_global_variable = oe_hc_any_active } } remove_country_modifier = oe_tsn_war_levy }
     if = { limit = { has_variable = oe_tsn_queue_2 NOT = { has_global_variable = oe_hc_any_active } } remove_variable = oe_tsn_queue_2 }
     if = {

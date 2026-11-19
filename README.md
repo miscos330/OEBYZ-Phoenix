@@ -1,8 +1,8 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v6.0
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v6.4
 
-欧陆风云 5 的东罗马（拜占庭）重制 MOD 测试版，适配游戏版本 1.4.7，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
+欧陆风云 5 的东罗马（拜占庭）重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
-> **v6.0 起旧存档不兼容，请开新档。** 想继续旧档的玩家请玩正式版。
+> **v6.4 与旧存档不兼容，请开新档。** 想继续旧档的玩家请玩正式版。
 
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
@@ -38,26 +38,34 @@
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
 
-## v6.0 主要内容
+## v6.4 主要内容
 
-- **军区制度重做：**
-  - 39 个史实辖区，忠诚由 13 个因素决定；
-  - 方针、属官、工程与兵权；
-  - 预警、叛乱、将军称帝和军人政变；
-  - 新军区页和“军区辖区”地图模式；
-  - 90 多个军区、地方、将门和出兵故事。
-- **帝国征伐与罗马再征服：** 九个方向的征伐，各有目标、进度和压力；敌方 17 个反应事件；罗马再征服总局势重新启用；光复之后的“罗马之重负”。
-- **疆域与附庸：**
-  - 五种行省地位；
-  - 元老院与大区；
-  - 同盟阶梯与设省；
-  - 君王大家庭与帝国尊号；
-  - 地籍清丈、边镇防务；
-  - 朝贡与纳币求和（纳币太多，元老院会非议）。
-- **历史剧情：** 1341 年内战（两约翰之战）31 个事件，可以花钱避免内战；巴尔干对手、宫廷官职、帝国财政三组事件；1348–1352 年加拉塔之争。
-- **1337 年 4 月 1 日开局还原：** 以 1.4.7 原版开局为底；安娜摄政伊庇鲁斯、约翰五世尚未加冕、与艾登结盟、加拉塔截走关税；全图 15 个地区做了 100 多条史实校正。
-- **大元专线：** 土司按元代建制合并（附属 222 → 129 个），内地六行省，1337–1351 年朝局 12 个事件，鲁王与赵王。
-- **稳定性与文本：** MOD 相关的运行期报错从 3128 条降到 0；补了 362 条英文文本；六类故事共用两个月间隔，不会扎堆。
+v6.4 把拜占庭的故事从 1337 年一直铺到 15 世纪中叶。事件从 818 个增加到 1082 个，中文文本从约 10500 条增加到约 13600 条。
+
+- **拜占庭主线：**
+  - 1352 年起的第二次内战（21 个事件）；
+  - 1371–1381 年臣属苏丹（实验性）；
+  - 1394–1402 年巴耶济德封锁、尼科波利斯与皇帝西行；
+  - 1402–1413 年空位期与“押宝”框架（实验性）；
+  - 塞萨洛尼基的命运与穆斯塔法之乱；
+  - 特拉比松的皇女；专制公头衔外交；摩里亚专制公国（实验性）。
+  - 各主线共用一把“主线锁”，每月最多一条主线大事件。
+- **教会：**三派份额、牧首与“主持圣主教会议”；与塞尔维亚教会和解、特尔诺沃并入；都主教与向罗斯募捐；教会合一一期（佛罗伦萨会议，实验性）。
+- **拉丁世界、黑海与东地中海：**
+  - 东方十字军一、二期（士麦那、亚历山大、尼科波利斯、瓦尔纳、罗得岛）；
+  - 意大利商业特权（威尼斯、热那亚、比萨、拉古萨各三级，实验性）；
+  - 东地中海与多瑙河；突厥诸侯；金帐汗国；保加利亚、摩尔达维亚与奇里乞亚。
+- **疆域与经济：**招民垦荒；开局财政调整与“节用”；换王朝后军区不再集体离心。
+- **大元：**
+  - 内地与边地九行省（长官任免、忠诚分档，实验性）；征东行省与宣政院；
+  - 九位藩王显示王号（齐王、济南王、辽王、广宁王、阳翟王、云南王、沈王、鲁王、赵王），有岁赐、忠诚和上都朝会；
+  - 元末平乱一期（红巾、脱脱、高邮之役）。
+- **界面与文本：**编年史页（28 条主线一页看全）、元老院投票预览、柱石三栏、文本格式统一、英文全面审读。
+- **稳定性：**
+  - 适配 1.4.9；
+  - 军区、行省、边疆领等国名不再重复等级名；
+  - 修正一批让条件失效或刷报错的写法；英文文本的 23 个重复键已清理；
+  - 用观察者模式从 1337 年跑到 1411 年，没有崩溃或卡死。
 
 完整改动见 [CHANGELOG.md](CHANGELOG.md)。
 
@@ -74,54 +82,32 @@
 
 计划会根据测试和玩家反馈调整，以实际更新为准。
 
-### 近期：修问题与平衡
-
-- 调整开局财政，避免拜占庭一年内用完国库。
-- 按史实收紧个别故事的触发时间。
-- 在游戏里验证英文界面、1341 年以后的主线冲突修复和 AI 拜占庭的长期表现。
-- 查明原版“蒙古帝国”可成形国家反复出现的日志提示。
-
-### 中期：1341 年以后的拜占庭主线
-
-1. 1352–1357 年第二次内战与 1354 年加里波利失陷
-2. 1371–1381 年臣属奥斯曼与安德罗尼卡四世之乱
-3. 1394–1402 年巴耶济德围城
-4. 1402–1413 年安卡拉之战后支持哪位奥斯曼王子
-5. 摩里亚专制公国线
-6. 塞萨洛尼基的命运
-7. 1422 年围城
-8. 教会合一的代价
-
-### 中期：大元专线
-
-- 岭北、辽阳等边地行省，以及宣政院。
-- 更多有文献依据的投下诸王与世侯。
-- 行省忠诚度在平衡以后接上税收和征兵。
-- 1368 年以后的北元暂不纳入。
-
-### 长期：跟进游戏版本
-
-- MOD 改写了部分原版开局文件，游戏大版本更新后要重新生成。这类适配会优先处理。
+- **v6.5：补测试欠账。**用长局数据调整权威、正统与民意的平衡；把这一版标“实验性”的内容在长局里验证、修好；大元行省面板和行省地图模式。
+- **v6.6：已有框架的后续各期。**意大利特权（船与战、黑海粮道、小共和国）、教会（修院地产、1368 年会议，接上合一）、招民垦荒（外族移民、黑海商站）、东地中海与突厥诸侯、元末平乱二期、合一二至四期。
+- **v6.7：天主教世界。**两个教皇与求援、希腊人出身的枢机、1377 年教廷回到罗马；北方十字军（条顿与立窝尼亚骑士团、立陶宛、格伦瓦尔德）；大分裂的拜占庭一面。
+- **v6.8：拜占庭后段。**1390 年约翰七世篡位、1366 年匈牙利之行、1453 年守城、伊庇鲁斯与色萨利、阿德里安堡陷落、1453 年以后的存续线。
+- **长期：**跟进游戏版本。MOD 改写了部分原版开局文件，游戏大版本更新后要重新生成，这类适配会优先处理。
 
 ## 已知问题
 
-- 英文界面、1341 年以后的主线冲突修复还没在游戏里测过。
-- 开局财政偏紧，不处理的话一年内会把国库用完。
-- 个别故事会早于史实时间出现，例如宫廷故事“拉丁人的书”。
-- 错误日志里会反复出现一条原版“蒙古帝国”可成形国家的提示，不影响游戏。
+- 标“实验性”的内容只做过冒烟测试，或者还没在长局里自然触发过：臣属苏丹、空位期、专制公头衔外交、摩里亚、地区事件、教会一期、都主教、教会合一、意大利特权、大元行省。
+- 开局国库比预期多约 417 金，来源还在查。
+- 军区（建筑型国家）不能自己招正规军：这是原版规则，原版的汉萨同盟也一样。
+- 中文的右括号偶尔会落到行首，这是游戏换行规则造成的。
+- 少数原有文件在加载或运行时有提示，不影响游戏。
 
 ## 安装
 
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v6.0` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v6.4` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
 ## 兼容性
 
-- 只适配游戏版本 1.4.7。游戏更新后，部分覆盖原版的开局文件可能需要重新生成。
+- 只适配游戏版本 1.4.9。游戏更新后，部分覆盖原版的开局文件可能需要重新生成。
 - MOD 改写了 1337 年开局的部分原版文件（国家、建筑、外交、国际组织、地区偏好）。会改这些文件的其他 MOD 大多不兼容。
 - 界面有中文和英文。
 
@@ -136,11 +122,11 @@
 
 ---
 
-# Phoenix Beta (OEBYZ) v6.0 — English
+# Phoenix Beta (OEBYZ) v6.4 — English
 
-The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made for game version 1.4.7. The beta updates often and may contain bugs, but it has the newest content.
+The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
-> **From v6.0, older saves are not compatible. Start a new game.**
+> **v6.4 is not compatible with older saves. Start a new game.**
 
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
@@ -162,14 +148,16 @@ The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made
 - **Imperial campaigns and the Roman Reconquest:** win the Balkans and Anatolia, then campaign towards Egypt, Italy, Iberia and beyond; restore 10 regions to complete the Reconquest.
 - **Court, great houses and finance:** seven court offices, great houses to court or curb, and separate treasury and privy purse.
 
-## Highlights of v6.0
+## Highlights of v6.4
 
-- **Themes rebuilt:** 39 historical regions, loyalty from 13 factors, revolts and works, usurpers and coups, more than 90 stories.
-- **Campaigns:** nine fronts with enemy counter-moves; the Burden of Rome after the restoration.
-- **Territory and subjects:** five province statuses, the senate and great regions, the alliance ladder, dignities, tributaries and buying peace.
-- **History:** the 1341 civil war, the Balkan rivals, court offices, imperial finance and the Galata dispute.
-- **The 1 April 1337 start restored:** more than 100 historical corrections across 15 regions.
-- **The Yuan:** tusi merged by Yuan administrative units, six inner branch secretariats, court events of 1337–1351, and the princes of Lu and Zhao.
+v6.4 carries the Byzantine story from 1337 into the mid-fifteenth century: events grow from 818 to 1082.
+
+- **Byzantium:** the second civil war from 1352; vassalage to the sultan (1371–1381, experimental); Bayezid's blockade, Nicopolis and the emperor's journey west (1394–1402); the interregnum after Ankara with a new "backing a prince" framework (experimental); Thessalonica and the revolt of Mustafa; the princess of Trebizond; despot titles for foreign rulers; the Despotate of the Morea (experimental). A shared main-line lock keeps it to one major story event a month.
+- **The Church:** three parties, the patriarch and the new action "Convene the Holy Synod"; reconciliation with the Serbian Church and Tarnovo; metropolitans and alms from Rus; Church union, phase 1 (the Council of Florence, experimental).
+- **The Latins, the Black Sea and the Eastern Mediterranean:** eastern crusades (Smyrna, Alexandria, Nicopolis, Varna, Rhodes); Italian commercial privileges (experimental); Wallachia and Cyprus; the Turkish emirates; the Golden Horde; Bulgaria, Moldavia and Cilicia.
+- **The Yuan:** nine branch secretariats with governors and loyalty tiers (experimental); the Zhengdong secretariat and the Xuanzheng yuan; nine princes shown by their titles (Prince of Qi, of Jinan, of Liao, of Guangning, of Yangdi, of Yunnan, of Shen, of Lu, of Zhao) with grants, loyalty and the Shangdu assembly; the suppression of the Red Turbans, phase 1.
+- **Interface and text:** a chronicle page for 28 main lines, a senate vote preview, a three-column pillars panel, unified text formatting and a full English review.
+- **Stability:** made for 1.4.9; country names of themes, branch secretariats, marches and the like no longer repeat their rank ("Theme of Theme of …"); 23 duplicate English loc keys cleaned up; an observer run from 1337 to 1411 without a crash.
 
 The full changelog is in [CHANGELOG.md](CHANGELOG.md) (Chinese).
 
@@ -177,9 +165,10 @@ The full changelog is in [CHANGELOG.md](CHANGELOG.md) (Chinese).
 
 Plans will change with testing and player feedback.
 
-- **Next:** rebalance the starting finances, fix early-firing stories, and test the English interface and long-term AI Byzantium in game.
-- **Later, Byzantium after 1341:** the second civil war and Gallipoli (1352–1357), vassalage to the Ottomans and Andronikos IV (1371–1381), Bayezid's siege (1394–1402), the Ottoman interregnum, the Morea, Thessalonica, the siege of 1422 and the price of Church union.
-- **Later, the Yuan:** frontier branch secretariats such as Lingbei and Liaoyang, more princes and hereditary lords, and secretariat loyalty tied to taxes and levies. The Northern Yuan after 1368 is out of scope for now.
+- **v6.5:** test debt first: balance authority, legitimacy and public opinion with long-run data, verify the experimental content in long games, and add a Yuan secretariat panel and map mode.
+- **v6.6:** the next phases of the existing frameworks (Italian privileges, the Church, resettlement, the Eastern Mediterranean and the emirates, the Red Turbans, Church union).
+- **v6.7:** the Catholic world: the two popes, Greek cardinals, the return to Rome in 1377, and the northern crusades (the Teutonic and Livonian Orders, Lithuania, Grunwald).
+- **v6.8:** late Byzantium: John VII's usurpation of 1390, the 1366 journey to Hungary, the defence of 1453, Epirus and Thessaly, the fall of Adrianople, and life after 1453.
 - **Ongoing:** keep up with game updates; the rewritten vanilla start files must be regenerated after major patches.
 
 ## Install

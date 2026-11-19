@@ -17,7 +17,7 @@ organization_panel = {
     
 button_secondary_tab_alt = {
         using = layoutpolicy_expanding
-        blockoverride "tab_text" { text = "OE_PILLARS_REFORMS" }
+        blockoverride "tab_text" { text = "OE_CHR_TAB_REFORMS" }
         tooltip = "OE_PILLARS_REFORMS_DESC"
         onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_reforms')]"
             onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
@@ -43,6 +43,16 @@ button_secondary_tab_alt = {
         onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
         onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
         down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_vassals')]"
+    }
+    # NEW 2026-11-19 r7 F3: 编年史 tab (page body in gui/shared/oe_chronicle_ui.gui, gen_chronicle.py).
+    button_secondary_tab_alt = {
+        using = layoutpolicy_expanding
+        blockoverride "tab_text" { text = "OE_CHR_TAB" }
+        tooltip = "OE_CHR_TAB_DESC"
+        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_chronicle')]"
+        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_chronicle')]"
     }
 
         
@@ -78,13 +88,183 @@ button_secondary_tab_alt = {
             vbox = {
                 layoutpolicy_horizontal = expanding margin = { 12 12 } spacing = 12
                 
+                # NEW r6 a-ui: fold group mil_found (open by default).
                 vbox = {
-                    layoutpolicy_horizontal = expanding spacing = 10
-                    datamodel = "[InternationalOrganizationsView.GetActions]"
-                    item = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
                         widget = {
-                            visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_found_all_action'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_move_seat_action'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_order_works'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_focus'),Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_settle_soldiers'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_fortify'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_levy'),EqualTo_string(GenericAction.GetKey, 'oe_tbd_hire'))))),Or(EqualTo_string(GenericAction.GetKey, 'oe_create_theme_in_italy'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_convert_theme_type'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_enact_rum_pronoia'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_reinforce_theme'),Or(EqualTo_string(GenericAction.GetKey, 'oe_create_theme'),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_abolish_theme'),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_abolish_army'),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_abolish_ruler'),EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_create_pronia_infastry'))))))))))))))]"
-                            using = oe_edict_card
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_found')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_mil_found')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_found'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_mil_found')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_MIL_FOUND" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_mil_found')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_found'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_found'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_found_all_action'),Or(EqualTo_string(GenericAction.GetKey, 'oe_create_theme'),Or(EqualTo_string(GenericAction.GetKey, 'oe_create_theme_in_italy'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_move_seat_action'),EqualTo_string(GenericAction.GetKey, 'oe_pillars_convert_theme_type')))))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group mil_manage (open by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_manage')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_mil_manage')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_manage'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_mil_manage')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_MIL_MANAGE" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_mil_manage')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_manage'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_manage'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_focus'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_order_works'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_reinforce_theme'),EqualTo_string(GenericAction.GetKey, 'oe_pillars_enact_rum_pronoia')))))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group mil_border (open by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_border')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_mil_border')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_border'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_mil_border')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_MIL_BORDER" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_mil_border')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_border'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_mil_border'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_settle_soldiers'),Or(EqualTo_string(GenericAction.GetKey, 'oe_col_resettle'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_fortify'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_levy'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_hire'),EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_create_pronia_infastry'))))))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group mil_curb (closed by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_mil_curb'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_mil_curb')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_mil_curb')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_mil_curb')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_MIL_CURB" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_mil_curb')]"
+                            down = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_mil_curb')]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_mil_curb')]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_abolish_ruler'),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_abolish_army'),EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_abolish_theme')))]"
+                                using = oe_edict_card
+                            }
                         }
                     }
                 }
@@ -99,13 +279,183 @@ card_common = {
             vbox = {
                 layoutpolicy_horizontal = expanding margin = { 12 12 } spacing = 12
                 
+                # NEW r6 a-ui: fold group fis_purse (open by default).
                 vbox = {
-                    layoutpolicy_horizontal = expanding spacing = 10
-                    datamodel = "[InternationalOrganizationsView.GetActions]"
-                    item = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
                         widget = {
-                            visible = "[Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_deposit_purse'), EqualTo_string(GenericAction.GetKey, 'oe_pillars_withdraw_purse')), Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_ban_foreign_banks'),Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_borrow_chartered_bank'),EqualTo_string(GenericAction.GetKey, 'oe_pillars_found_chartered_bank')),Or(Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_move_debt'),EqualTo_string(GenericAction.GetKey, 'oe_byz_rebuild_money')),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_phoe_invest_army'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tsn_levy_request'),EqualTo_string(GenericAction.GetKey, 'oe_tcd_send')))))))]"
-                            using = oe_edict_card
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_purse')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_purse')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_purse'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_purse')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_FIS_PURSE" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_purse')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_purse'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_purse'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_deposit_purse'),EqualTo_string(GenericAction.GetKey, 'oe_pillars_withdraw_purse'))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group fis_bank (open by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_bank')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_bank')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_bank'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_bank')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_FIS_BANK" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_bank')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_bank'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_bank'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_ban_foreign_banks'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_borrow_chartered_bank'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_found_chartered_bank'),Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_move_debt'),EqualTo_string(GenericAction.GetKey, 'oe_byz_rebuild_money')))))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group fis_itp (open by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_itp')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_itp')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_itp'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_itp')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_FIS_ITP" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_itp')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_itp'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_itp'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_itp_borrow'),Or(EqualTo_string(GenericAction.GetKey, 'oe_itp_grant'),EqualTo_string(GenericAction.GetKey, 'oe_itp_revoke')))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group fis_revenue (open by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_revenue')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_revenue')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_revenue'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_revenue')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_FIS_REVENUE" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_revenue')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_revenue'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_revenue'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_byz_phoe_invest_army'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tsn_levy_request'),EqualTo_string(GenericAction.GetKey, 'oe_tcd_send')))]"
+                                using = oe_edict_card
+                            }
                         }
                     }
                 }
@@ -122,13 +472,229 @@ card_common = {
 
                 # Territory exchange disabled at user request (2026-11-01).
                 
+                # NEW r6 a-ui: fold group civ_crown (open by default).
                 vbox = {
-                    layoutpolicy_horizontal = expanding spacing = 10
-                    datamodel = "[InternationalOrganizationsView.GetActions]"
-                    item = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
                         widget = {
-                            visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_upgrade_metropolis'),Or(Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_eastern_themes'),GetScriptedGui('oe_create_eastern_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_austrian_themes'),GetScriptedGui('oe_create_austrian_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),And(EqualTo_string(GenericAction.GetKey, 'oe_create_swiss_themes'),GetScriptedGui('oe_create_swiss_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)))),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_settings'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_bread_and_circuses'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_reward_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_adjust_imperial_style'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_integrate_roman_alliance'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tm_provincialise'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_grant_roman_law'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_grant_despotate'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_recall_despot'),Or(EqualTo_string(GenericAction.GetKey, 'oe_trg_appoint'),Or(EqualTo_string(GenericAction.GetKey, 'oe_trg_dismiss'),EqualTo_string(GenericAction.GetKey, 'oe_s37_crown_coemperor'))))))))))))))]"
-                            using = oe_edict_card
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_crown')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_crown')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_crown'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_crown')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_CIV_CROWN" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_crown')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_crown'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_crown'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_bread_and_circuses'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_reward_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_s37_crown_coemperor'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_adjust_imperial_style'),EqualTo_string(GenericAction.GetKey, 'oe_ecc_synod')))))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group civ_prov (open by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_prov')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_prov')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_prov'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_prov')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_CIV_PROV" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_prov')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_prov'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_prov'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_grant_roman_law'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_grant_despotate'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_recall_despot'),Or(EqualTo_string(GenericAction.GetKey, 'oe_trg_appoint'),Or(EqualTo_string(GenericAction.GetKey, 'oe_trg_dismiss'),EqualTo_string(GenericAction.GetKey, 'oe_pillars_upgrade_metropolis'))))))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group civ_subj (open by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_subj')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_subj')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_subj'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_subj')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_CIV_SUBJ" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_subj')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_subj'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_subj'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_integrate_roman_alliance'),EqualTo_string(GenericAction.GetKey, 'oe_tm_provincialise'))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group civ_new (open by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    visible = "[Or(GetScriptedGui('oe_create_eastern_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),Or(GetScriptedGui('oe_create_austrian_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),GetScriptedGui('oe_create_swiss_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)))]"
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_new')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_new')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_new'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_new')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_CIV_NEW" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_new')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_new'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_new'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_eastern_themes'),GetScriptedGui('oe_create_eastern_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_austrian_themes'),GetScriptedGui('oe_create_austrian_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),And(EqualTo_string(GenericAction.GetKey, 'oe_create_swiss_themes'),GetScriptedGui('oe_create_swiss_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group civ_settings (closed by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_settings'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_civ_settings')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_settings')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_civ_settings')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_CIV_SETTINGS" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_civ_settings')]"
+                            down = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_settings')]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_settings')]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[EqualTo_string(GenericAction.GetKey, 'oe_pillars_settings')]"
+                                using = oe_edict_card
+                            }
                         }
                     }
                 }
@@ -150,6 +716,12 @@ widget = {
         using = layoutpolicy_expanding
         visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_vassals')]"
         using = oe_vassal_ui_page
+    }
+# NEW 2026-11-19 r7 F3: 编年史 page.
+widget = {
+        using = layoutpolicy_expanding
+        visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_chronicle')]"
+        using = oe_chr_page
     }
 widget = {
         using = layoutpolicy_expanding

@@ -29,6 +29,12 @@ oe_s37_fire_1 = {
     oe_s37_count = yes
     trigger_event_non_silently = oe_s37.1
 }
+oe_s37_fire_11 = {
+    set_variable = { name = oe_s37_ev_st_11 value = 1 }
+    oe_s37_count = yes
+    oe_s7_cil_world = yes
+    trigger_event_non_silently = oe_s7.1
+}
 oe_s37_fire_2 = {
     set_variable = { name = oe_s37_ev_st_2 value = 1 }
     oe_s37_count = yes
@@ -40,6 +46,12 @@ oe_s37_fire_6 = {
     oe_s37_count = yes
     trigger_event_non_silently = oe_s37.6
 }
+oe_s37_fire_12 = {
+    set_variable = { name = oe_s37_ev_st_12 value = 1 }
+    oe_s37_count = yes
+    oe_s7_pat_world = yes
+    trigger_event_non_silently = oe_s7.2
+}
 oe_s37_fire_5 = {
     set_variable = { name = oe_s37_ev_st_5 value = 1 }
     oe_s37_count = yes
@@ -50,15 +62,29 @@ oe_s37_fire_3 = {
     oe_s37_count = yes
     trigger_event_non_silently = oe_s37.3
 }
+oe_s37_fire_13 = {
+    set_variable = { name = oe_s37_ev_st_13 value = 1 }
+    oe_s37_count = yes
+    trigger_event_non_silently = oe_s7.3
+}
+oe_s37_fire_14 = {
+    set_variable = { name = oe_s37_ev_st_14 value = 1 }
+    oe_s37_count = yes
+    trigger_event_non_silently = oe_s7.4
+}
 
 # BYZ scope. Drops events that can no longer fire. Event 2 dropped: event 3 counts from now (oe_s37_alb_skipped).
 # Event 2 fired but unanswered for 12 months: event 3 counts from now as well.
 oe_s37_ev_lapse = {
     if = { limit = { oe_s37_lapse_1 = yes } set_variable = { name = oe_s37_ev_st_1 value = 2 } }
+    if = { limit = { oe_s37_lapse_11 = yes } set_variable = { name = oe_s37_ev_st_11 value = 2 } }
     if = { limit = { oe_s37_lapse_2 = yes } set_variable = { name = oe_s37_ev_st_2 value = 2 } set_variable = oe_s37_alb_skipped set_variable = { name = oe_s37_alb_ans value = var:oe_s37_ev_m } }
     if = { limit = { oe_s37_lapse_6 = yes } set_variable = { name = oe_s37_ev_st_6 value = 2 } }
+    if = { limit = { oe_s37_lapse_12 = yes } set_variable = { name = oe_s37_ev_st_12 value = 2 } }
     if = { limit = { oe_s37_lapse_5 = yes } set_variable = { name = oe_s37_ev_st_5 value = 2 } }
     if = { limit = { oe_s37_lapse_3 = yes } set_variable = { name = oe_s37_ev_st_3 value = 2 } }
+    if = { limit = { oe_s37_lapse_13 = yes } set_variable = { name = oe_s37_ev_st_13 value = 2 } }
+    if = { limit = { oe_s37_lapse_14 = yes } set_variable = { name = oe_s37_ev_st_14 value = 2 } }
     if = {
         limit = {
             var:oe_s37_ev_st_2 ?= 1
@@ -73,22 +99,34 @@ oe_s37_ev_lapse = {
 oe_s37_ev_pick = {
     set_variable = { name = oe_s37_ev_pick value = 0 }
     if = { limit = { oe_s37_due_1 = yes } set_variable = { name = oe_s37_ev_pick value = 1 } }
+    else_if = { limit = { oe_s37_due_11 = yes } set_variable = { name = oe_s37_ev_pick value = 11 } }
     else_if = { limit = { oe_s37_due_2 = yes } set_variable = { name = oe_s37_ev_pick value = 2 } }
     else_if = { limit = { oe_s37_due_6 = yes } set_variable = { name = oe_s37_ev_pick value = 6 } }
+    else_if = { limit = { oe_s37_due_12 = yes } set_variable = { name = oe_s37_ev_pick value = 12 } }
     else_if = { limit = { oe_s37_due_5 = yes } set_variable = { name = oe_s37_ev_pick value = 5 } }
     else_if = { limit = { oe_s37_due_3 = yes } set_variable = { name = oe_s37_ev_pick value = 3 } }
+    else_if = { limit = { oe_s37_due_13 = yes } set_variable = { name = oe_s37_ev_pick value = 13 } }
+    else_if = { limit = { oe_s37_due_14 = yes } set_variable = { name = oe_s37_ev_pick value = 14 } }
     else = {
         if = { limit = { var:oe_s37_ev_pick = 0 oe_s37_open_1 = yes } random = { chance = oe_s37_ch_1 set_variable = { name = oe_s37_ev_pick value = 1 } } }
+        if = { limit = { var:oe_s37_ev_pick = 0 oe_s37_open_11 = yes } random = { chance = oe_s37_ch_11 set_variable = { name = oe_s37_ev_pick value = 11 } } }
         if = { limit = { var:oe_s37_ev_pick = 0 oe_s37_open_2 = yes } random = { chance = oe_s37_ch_2 set_variable = { name = oe_s37_ev_pick value = 2 } } }
         if = { limit = { var:oe_s37_ev_pick = 0 oe_s37_open_6 = yes } random = { chance = oe_s37_ch_6 set_variable = { name = oe_s37_ev_pick value = 6 } } }
+        if = { limit = { var:oe_s37_ev_pick = 0 oe_s37_open_12 = yes } random = { chance = oe_s37_ch_12 set_variable = { name = oe_s37_ev_pick value = 12 } } }
         if = { limit = { var:oe_s37_ev_pick = 0 oe_s37_open_5 = yes } random = { chance = oe_s37_ch_5 set_variable = { name = oe_s37_ev_pick value = 5 } } }
         if = { limit = { var:oe_s37_ev_pick = 0 oe_s37_open_3 = yes } random = { chance = oe_s37_ch_3 set_variable = { name = oe_s37_ev_pick value = 3 } } }
+        if = { limit = { var:oe_s37_ev_pick = 0 oe_s37_open_13 = yes } random = { chance = oe_s37_ch_13 set_variable = { name = oe_s37_ev_pick value = 13 } } }
+        if = { limit = { var:oe_s37_ev_pick = 0 oe_s37_open_14 = yes } random = { chance = oe_s37_ch_14 set_variable = { name = oe_s37_ev_pick value = 14 } } }
     }
     if = { limit = { var:oe_s37_ev_pick = 1 } oe_s37_fire_1 = yes }
+    else_if = { limit = { var:oe_s37_ev_pick = 11 } oe_s37_fire_11 = yes }
     else_if = { limit = { var:oe_s37_ev_pick = 2 } oe_s37_fire_2 = yes }
     else_if = { limit = { var:oe_s37_ev_pick = 6 } oe_s37_fire_6 = yes }
+    else_if = { limit = { var:oe_s37_ev_pick = 12 } oe_s37_fire_12 = yes }
     else_if = { limit = { var:oe_s37_ev_pick = 5 } oe_s37_fire_5 = yes }
     else_if = { limit = { var:oe_s37_ev_pick = 3 } oe_s37_fire_3 = yes }
+    else_if = { limit = { var:oe_s37_ev_pick = 13 } oe_s37_fire_13 = yes }
+    else_if = { limit = { var:oe_s37_ev_pick = 14 } oe_s37_fire_14 = yes }
 }
 # BYZ scope, monthly while var oe_s37_ev_on is set. Month 1 stays empty.
 oe_s37_ev_monthly = {
@@ -127,7 +165,7 @@ oe_s37_crown_do = {
 # ---------------------------------------------------------------- test helpers (dev mod buttons and console; BYZ scope)
 # The schedule starts now in any game (month counter 1, every event pending again).
 oe_s37_test_start = {
-    if = { limit = { has_variable = oe_s37_ev_on } remove_variable = oe_s37_ev_on } if = { limit = { has_variable = oe_s37_ev_m } remove_variable = oe_s37_ev_m } if = { limit = { has_variable = oe_s37_ev_pick } remove_variable = oe_s37_ev_pick } if = { limit = { has_variable = oe_s37_ev_job } remove_variable = oe_s37_ev_job } if = { limit = { has_variable = oe_s37_alb_fired } remove_variable = oe_s37_alb_fired } if = { limit = { has_variable = oe_s37_alb_ans } remove_variable = oe_s37_alb_ans } if = { limit = { has_variable = oe_s37_alb_skipped } remove_variable = oe_s37_alb_skipped } if = { limit = { has_variable = oe_s37_ev_st_1 } remove_variable = oe_s37_ev_st_1 } if = { limit = { has_variable = oe_s37_ev_st_2 } remove_variable = oe_s37_ev_st_2 } if = { limit = { has_variable = oe_s37_ev_st_3 } remove_variable = oe_s37_ev_st_3 } if = { limit = { has_variable = oe_s37_ev_st_5 } remove_variable = oe_s37_ev_st_5 } if = { limit = { has_variable = oe_s37_ev_st_6 } remove_variable = oe_s37_ev_st_6 }
+    if = { limit = { has_variable = oe_s37_ev_on } remove_variable = oe_s37_ev_on } if = { limit = { has_variable = oe_s37_ev_m } remove_variable = oe_s37_ev_m } if = { limit = { has_variable = oe_s37_ev_pick } remove_variable = oe_s37_ev_pick } if = { limit = { has_variable = oe_s37_ev_job } remove_variable = oe_s37_ev_job } if = { limit = { has_variable = oe_s37_alb_fired } remove_variable = oe_s37_alb_fired } if = { limit = { has_variable = oe_s37_alb_ans } remove_variable = oe_s37_alb_ans } if = { limit = { has_variable = oe_s37_alb_skipped } remove_variable = oe_s37_alb_skipped } if = { limit = { has_variable = oe_s37_ev_st_1 } remove_variable = oe_s37_ev_st_1 } if = { limit = { has_variable = oe_s37_ev_st_2 } remove_variable = oe_s37_ev_st_2 } if = { limit = { has_variable = oe_s37_ev_st_3 } remove_variable = oe_s37_ev_st_3 } if = { limit = { has_variable = oe_s37_ev_st_5 } remove_variable = oe_s37_ev_st_5 } if = { limit = { has_variable = oe_s37_ev_st_6 } remove_variable = oe_s37_ev_st_6 } if = { limit = { has_variable = oe_s37_ev_st_11 } remove_variable = oe_s37_ev_st_11 } if = { limit = { has_variable = oe_s37_ev_st_12 } remove_variable = oe_s37_ev_st_12 } if = { limit = { has_variable = oe_s37_ev_st_13 } remove_variable = oe_s37_ev_st_13 } if = { limit = { has_variable = oe_s37_ev_st_14 } remove_variable = oe_s37_ev_st_14 }
     set_variable = oe_s37_ev_init
     set_variable = oe_s37_ev_on
     set_variable = { name = oe_s37_ev_m value = 1 }
@@ -143,12 +181,16 @@ oe_s37_test_fire_2 = { set_variable = { name = oe_s37_ev_st_2 value = 1 } oe_s37
 oe_s37_test_fire_3 = { set_variable = { name = oe_s37_ev_st_3 value = 1 } oe_s37_count = yes trigger_event_non_silently = oe_s37.3 }
 oe_s37_test_fire_5 = { set_variable = { name = oe_s37_ev_st_5 value = 1 } oe_s37_count = yes trigger_event_non_silently = oe_s37.5 }
 oe_s37_test_fire_6 = { set_variable = { name = oe_s37_ev_st_6 value = 1 } oe_s37_count = yes trigger_event_non_silently = oe_s37.6 }
+oe_s37_test_fire_11 = { set_variable = { name = oe_s37_ev_st_11 value = 1 } oe_s37_count = yes oe_s7_cil_world = yes trigger_event_non_silently = oe_s7.1 }
+oe_s37_test_fire_12 = { set_variable = { name = oe_s37_ev_st_12 value = 1 } oe_s37_count = yes oe_s7_pat_world = yes trigger_event_non_silently = oe_s7.2 }
+oe_s37_test_fire_13 = { set_variable = { name = oe_s37_ev_st_13 value = 1 } oe_s37_count = yes trigger_event_non_silently = oe_s7.3 }
+oe_s37_test_fire_14 = { set_variable = { name = oe_s37_ev_st_14 value = 1 } oe_s37_count = yes trigger_event_non_silently = oe_s7.4 }
 
 # The co-emperor now: the effect of the action, without its conditions (needs John V alive).
 oe_s37_test_crown = { oe_s37_crown_do = yes }
 # Clears this track's BYZ variables, the revolt and captives modifiers on Berat and Avlonya, and the themes' pressure add.
 oe_s37_test_reset = {
-    if = { limit = { has_variable = oe_s37_ev_on } remove_variable = oe_s37_ev_on } if = { limit = { has_variable = oe_s37_ev_m } remove_variable = oe_s37_ev_m } if = { limit = { has_variable = oe_s37_ev_pick } remove_variable = oe_s37_ev_pick } if = { limit = { has_variable = oe_s37_ev_job } remove_variable = oe_s37_ev_job } if = { limit = { has_variable = oe_s37_alb_fired } remove_variable = oe_s37_alb_fired } if = { limit = { has_variable = oe_s37_alb_ans } remove_variable = oe_s37_alb_ans } if = { limit = { has_variable = oe_s37_alb_skipped } remove_variable = oe_s37_alb_skipped } if = { limit = { has_variable = oe_s37_ev_st_1 } remove_variable = oe_s37_ev_st_1 } if = { limit = { has_variable = oe_s37_ev_st_2 } remove_variable = oe_s37_ev_st_2 } if = { limit = { has_variable = oe_s37_ev_st_3 } remove_variable = oe_s37_ev_st_3 } if = { limit = { has_variable = oe_s37_ev_st_5 } remove_variable = oe_s37_ev_st_5 } if = { limit = { has_variable = oe_s37_ev_st_6 } remove_variable = oe_s37_ev_st_6 }
+    if = { limit = { has_variable = oe_s37_ev_on } remove_variable = oe_s37_ev_on } if = { limit = { has_variable = oe_s37_ev_m } remove_variable = oe_s37_ev_m } if = { limit = { has_variable = oe_s37_ev_pick } remove_variable = oe_s37_ev_pick } if = { limit = { has_variable = oe_s37_ev_job } remove_variable = oe_s37_ev_job } if = { limit = { has_variable = oe_s37_alb_fired } remove_variable = oe_s37_alb_fired } if = { limit = { has_variable = oe_s37_alb_ans } remove_variable = oe_s37_alb_ans } if = { limit = { has_variable = oe_s37_alb_skipped } remove_variable = oe_s37_alb_skipped } if = { limit = { has_variable = oe_s37_ev_st_1 } remove_variable = oe_s37_ev_st_1 } if = { limit = { has_variable = oe_s37_ev_st_2 } remove_variable = oe_s37_ev_st_2 } if = { limit = { has_variable = oe_s37_ev_st_3 } remove_variable = oe_s37_ev_st_3 } if = { limit = { has_variable = oe_s37_ev_st_5 } remove_variable = oe_s37_ev_st_5 } if = { limit = { has_variable = oe_s37_ev_st_6 } remove_variable = oe_s37_ev_st_6 } if = { limit = { has_variable = oe_s37_ev_st_11 } remove_variable = oe_s37_ev_st_11 } if = { limit = { has_variable = oe_s37_ev_st_12 } remove_variable = oe_s37_ev_st_12 } if = { limit = { has_variable = oe_s37_ev_st_13 } remove_variable = oe_s37_ev_st_13 } if = { limit = { has_variable = oe_s37_ev_st_14 } remove_variable = oe_s37_ev_st_14 }
     if = { limit = { has_variable = oe_s37_ev_init } remove_variable = oe_s37_ev_init }
     if = { limit = { has_variable = oe_s37_crowned } remove_variable = oe_s37_crowned }
     location:berat = { if = { limit = { has_location_modifier = oe_s37_alb_revolt } remove_location_modifier = oe_s37_alb_revolt } } location:berat = { if = { limit = { has_location_modifier = oe_s37_alb_captives } remove_location_modifier = oe_s37_alb_captives } } location:avlonya = { if = { limit = { has_location_modifier = oe_s37_alb_revolt } remove_location_modifier = oe_s37_alb_revolt } } location:avlonya = { if = { limit = { has_location_modifier = oe_s37_alb_captives } remove_location_modifier = oe_s37_alb_captives } }

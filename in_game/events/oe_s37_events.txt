@@ -17,16 +17,16 @@ oe_s37.1 = { # 尼科米底亚陷落
     }
     option = {
         name = oe_s37.1.b
-        trigger = { exists = c:TUR c:TUR = { oe_ttb_peace_target_ok = yes NOT = { has_variable = oe_ttb_refused } } oe_ttb_can_offer = yes }
+        trigger = { country_exists = c:TUR c:TUR = { oe_ttb_peace_target_ok = yes NOT = { has_variable = oe_ttb_refused } } oe_ttb_can_offer = yes }
         custom_tooltip = oe_s37.1.b.tt
-        hidden_effect = { if = { limit = { exists = c:TUR } set_variable = { name = oe_ttb_offer value = c:TUR } oe_ttb_send_envoy = yes } }
+        hidden_effect = { if = { limit = { country_exists = c:TUR } set_variable = { name = oe_ttb_offer value = c:TUR } oe_ttb_send_envoy = yes } }
         ai_chance = { base = 0 }
     }
     option = {
         name = oe_s37.1.c
         custom_tooltip = oe_s37.1.c.tt
         hidden_effect = { add_gold = -50 set_variable = { name = oe_s37_ev_job value = 13 } trigger_event_non_silently = oe_s37.9 }
-        ai_chance = { base = 0 modifier = { add = 40 exists = c:TUR is_at_war_with = c:TUR } modifier = { factor = 0 gold < 100 } }
+        ai_chance = { base = 0 modifier = { add = 40 country_exists = c:TUR is_at_war_with = c:TUR } modifier = { factor = 0 gold < 100 } }
     }
 }
 
@@ -56,6 +56,13 @@ oe_s37.2 = { # 阿尔巴尼亚部落起事
         custom_tooltip = oe_s37.2.c.tt
         hidden_effect = { add_gold = -40 set_variable = { name = oe_s37_ev_job value = 23 } trigger_event_non_silently = oe_s37.9 }
         ai_chance = { base = 30 modifier = { factor = 0 gold < 40 } }
+    }
+    option = {
+        name = oe_s37.2.muz
+        trigger = { country_exists = c:MZK c:MZK = { NOT = { is_subject_of = c:BYZ } } }
+        custom_tooltip = oe_s37.2.muz.tt
+        hidden_effect = { add_prestige = -10 set_variable = { name = oe_s37_ev_job value = 24 } trigger_event_non_silently = oe_s37.9 }
+        ai_chance = { base = 15 }
     }
 }
 
@@ -161,6 +168,12 @@ oe_s37.9 = {
         else_if = {
             limit = { var:oe_s37_ev_job ?= 23 }
             location:berat = { if = { limit = { owner ?= c:BYZ has_location_modifier = oe_s37_alb_revolt } add_location_modifier = { modifier = oe_s37_alb_revolt months = 12 mode = replace } } } location:avlonya = { if = { limit = { owner ?= c:BYZ has_location_modifier = oe_s37_alb_revolt } add_location_modifier = { modifier = oe_s37_alb_revolt months = 12 mode = replace } } } every_subject = { limit = { has_variable = oe_s37_tbd_add } set_variable = { name = oe_s37_tbd_add value = 25 months = 12 } }
+            if = { limit = { has_variable = oe_s37_ev_m } set_variable = { name = oe_s37_alb_ans value = var:oe_s37_ev_m } }
+        }
+        else_if = {
+            limit = { var:oe_s37_ev_job ?= 24 }
+            location:berat = { if = { limit = { owner ?= c:BYZ has_location_modifier = oe_s37_alb_revolt } add_location_modifier = { modifier = oe_s37_alb_revolt months = 9 mode = replace } } } location:avlonya = { if = { limit = { owner ?= c:BYZ has_location_modifier = oe_s37_alb_revolt } add_location_modifier = { modifier = oe_s37_alb_revolt months = 9 mode = replace } } } every_subject = { limit = { has_variable = oe_s37_tbd_add } set_variable = { name = oe_s37_tbd_add value = 25 months = 9 } }
+            c:MZK ?= { add_opinion = { modifier = oe_s37_alb_muzaka target = c:BYZ } } c:ALB ?= { add_opinion = { modifier = oe_s37_alb_angevin target = c:BYZ } }
             if = { limit = { has_variable = oe_s37_ev_m } set_variable = { name = oe_s37_alb_ans value = var:oe_s37_ev_m } }
         }
         if = { limit = { has_variable = oe_s37_ev_job } remove_variable = oe_s37_ev_job }

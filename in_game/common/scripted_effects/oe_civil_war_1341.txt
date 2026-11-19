@@ -38,6 +38,8 @@ oe_cw_monthly = {
         remove_variable = oe_cw_betrothed
         character:byz_john_v_palaiologos = { marry_character_ignore_blocks = character:byz_helena_kantakouzene }
     }
+    # FX13 (2026-11-19): a pending war whose leader has died lapses; nothing else cleared oe_cw_pending / oe_cw_active.
+    if = { limit = { has_variable = oe_cw_pending NOT = { character:byz_john_kantakouzenos ?= { is_alive = yes } } } set_global_variable = oe_cw_lapsed oe_cw_close = yes }
     # A war that had to wait for another civil war to end.
     if = { limit = { has_variable = oe_cw_pending oe_cw_war_possible = yes } trigger_event_non_silently = oe_cw.6 }
     if = { limit = { var:oe_cw_stage ?= 2 } oe_cw_war_monthly = yes }
@@ -153,7 +155,7 @@ oe_cw_war_monthly = {
     }
     else = {
         # Kantakouzenos flees to Serbia when his cause collapses.
-        if = { limit = { var:oe_cw_tide < 30 exists = c:SER NOT = { has_variable = oe_cw_done_13 } } oe_cw_fire = { n = 13 } }
+        if = { limit = { var:oe_cw_tide < 30 country_exists = c:SER NOT = { has_variable = oe_cw_done_13 } } oe_cw_fire = { n = 13 } }
         if = { limit = { has_variable = oe_cw_momchil has_variable = oe_cw_umur NOT = { has_variable = oe_cw_done_20 } } oe_cw_fire = { n = 20 } }
         if = { limit = { has_variable = oe_cw_theodora has_variable = oe_cw_wm var:oe_cw_wm >= 3 NOT = { has_variable = oe_cw_done_10 } } oe_cw_fire = { n = 10 } }
         if = { limit = { has_variable = oe_cw_wm var:oe_cw_wm >= 6 location:thessaloniki = { owner = c:BYZ } var:oe_ts_thessalonica_side ?= 2 NOT = { has_variable = oe_cw_done_12 } NOT = { has_variable = oe_cw_done_11 } } oe_cw_fire = { n = 11 } }
@@ -165,15 +167,15 @@ oe_cw_war_monthly = {
                 chance = 25
                 set_variable = { name = oe_cw_evcd months = 3 }
                 random_list = {
-            10 = { trigger = { exists = c:AYD has_variable = oe_cw_wm var:oe_cw_wm >= 6 NOT = { has_variable = oe_cw_done_15 } } oe_cw_fire = { n = 15 } }
-            10 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 12 gold < 300 exists = c:VEN oe_mf_jewels_at_home = yes NOT = { has_variable = oe_cw_done_17 } } oe_cw_fire = { n = 17 } }
-            10 = { trigger = { exists = c:BUL has_variable = oe_cw_wm var:oe_cw_wm >= 24 location:plovdiv = { owner = c:BYZ } NOT = { has_variable = oe_cw_done_18 } } oe_cw_fire = { n = 18 } }
+            10 = { trigger = { country_exists = c:AYD has_variable = oe_cw_wm var:oe_cw_wm >= 6 NOT = { has_variable = oe_cw_done_15 } } oe_cw_fire = { n = 15 } }
+            10 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 12 gold < 300 country_exists = c:VEN oe_mf_jewels_at_home = yes NOT = { has_variable = oe_cw_done_17 } } oe_cw_fire = { n = 17 } }
+            10 = { trigger = { country_exists = c:BUL has_variable = oe_cw_wm var:oe_cw_wm >= 24 location:plovdiv = { owner = c:BYZ } NOT = { has_variable = oe_cw_done_18 } } oe_cw_fire = { n = 18 } }
             10 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 12 NOT = { has_variable = oe_cw_done_19 } } oe_cw_fire = { n = 19 } }
             10 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 36 location:edirne = { owner = c:BYZ } NOT = { has_variable = oe_cw_done_21 } } oe_cw_fire = { n = 21 } }
-            8 = { trigger = { exists = c:SRU has_variable = oe_cw_wm var:oe_cw_wm >= 48 NOT = { has_variable = oe_cw_done_23 } } oe_cw_fire = { n = 23 } }
-            10 = { trigger = { exists = c:TUR has_variable = oe_cw_wm var:oe_cw_wm >= 48 NOT = { has_global_variable = oe_mf_byz_tur_marriage } NOT = { has_variable = oe_cw_done_24 } } oe_cw_fire = { n = 24 } }
+            8 = { trigger = { country_exists = c:SRU has_variable = oe_cw_wm var:oe_cw_wm >= 48 NOT = { has_variable = oe_cw_done_23 } } oe_cw_fire = { n = 23 } }
+            10 = { trigger = { country_exists = c:TUR has_variable = oe_cw_wm var:oe_cw_wm >= 48 NOT = { has_global_variable = oe_mf_byz_tur_marriage } NOT = { has_variable = oe_cw_done_24 } } oe_cw_fire = { n = 24 } }
             8 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 52 NOT = { has_variable = oe_cw_done_25 } } oe_cw_fire = { n = 25 } }
-            8 = { trigger = { exists = c:GEN has_variable = oe_cw_wm var:oe_cw_wm >= 54 OR = { location:chios = { owner = c:BYZ } location:foca = { owner = c:BYZ } } NOT = { has_variable = oe_cw_done_26 } } oe_cw_fire = { n = 26 } }
+            8 = { trigger = { country_exists = c:GEN has_variable = oe_cw_wm var:oe_cw_wm >= 54 OR = { location:chios = { owner = c:BYZ } location:foca = { owner = c:BYZ } } NOT = { has_variable = oe_cw_done_26 } } oe_cw_fire = { n = 26 } }
             12 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 24 has_variable = oe_cw_tide var:oe_cw_tide >= 40 has_variable = oe_cw_tide var:oe_cw_tide <= 60 NOT = { has_variable = oe_cw_no_parley } NOT = { has_variable = oe_cw_parley_cd } } oe_cw_fire = { n = 27 } }
                 }
             }
@@ -191,7 +193,7 @@ oe_cw_serbia_take_one = {
     if = {
         limit = {
             var:oe_cw_ser_ceded < 6
-            exists = c:SER
+            country_exists = c:SER
             any_owned_location = { OR = { var:oe_theme_region ?= 7 var:oe_theme_region ?= 8 var:oe_theme_region ?= 9 } oe_cw_key_city = no is_capital = no any_neighbor_location = { owner ?= c:SER } }
         }
         random_owned_location = {
@@ -224,7 +226,7 @@ oe_cw_end_rebels = {
 
 oe_cw_finish_kantakouzenos = {
     oe_cw_end_rebels = yes
-    if = { limit = { exists = scope:oe_cw_k } set_new_ruler = scope:oe_cw_k scope:oe_cw_k = { oe_nf_member_influence = { amount = 200 } } }
+    if = { limit = { exists = scope:oe_cw_k } set_variable = { name = oe_succession_settled days = 10 } set_new_ruler = scope:oe_cw_k scope:oe_cw_k = { oe_nf_member_influence = { amount = 200 } } }
     character:byz_john_v_palaiologos ?= { if = { limit = { is_alive = yes owner = c:BYZ } save_scope_as = oe_cw_j5 } }
     if = { limit = { exists = scope:oe_cw_j5 } set_as_designated_heir = scope:oe_cw_j5 }
     set_variable = oe_cw_betrothed

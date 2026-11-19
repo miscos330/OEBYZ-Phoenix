@@ -10,7 +10,7 @@ oe_theme_revolt_monthly = {
     }
     else = {
         if = {
-            limit = { has_variable = oe_theme_loyalty var:oe_theme_loyalty < 30 NOT = { has_variable = oe_theme_warned } exists = c:BYZ c:BYZ = { NOT = { has_variable = oe_theme_revolt_target } } }
+            limit = { has_variable = oe_theme_loyalty var:oe_theme_loyalty < 30 NOT = { has_variable = oe_theme_warned } country_exists = c:BYZ c:BYZ = { NOT = { has_variable = oe_theme_revolt_target } } }
             set_variable = { name = oe_theme_warned years = 5 }
             save_scope_as = oe_theme_warn_scope
             c:BYZ = { set_variable = { name = oe_theme_revolt_target value = scope:oe_theme_warn_scope } trigger_event_non_silently = oe_theme_revolt.1 }
@@ -42,7 +42,7 @@ oe_theme_revolt_start = {
             create_rebel = { category = estate estate = nobles_estate name = OE_THEME_REBEL_NAME save_scope_as = oe_revolt_rebels }
             every_in_list = {
                 list = oe_revolt_locations
-                every_pop = { limit = { owner = c:BYZ } change_pop_allegiance = scope:oe_revolt_rebels }
+                every_pop = { limit = { owner ?= c:BYZ } change_pop_allegiance = scope:oe_revolt_rebels }
             }
             scope:oe_revolt_rebels = { start_civil_war = { save_scope_as = oe_revolt_country } }
         }

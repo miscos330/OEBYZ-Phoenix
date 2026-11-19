@@ -62,7 +62,7 @@ oe_ttb_peace_clear = {
     remove_variable = oe_ttb_peace
     remove_variable = oe_ttb_peace_recent
     if = {
-        limit = { exists = c:BYZ has_opinion = { modifier = oe_ttb_peace_op target = c:BYZ } }
+        limit = { country_exists = c:BYZ has_opinion = { modifier = oe_ttb_peace_op target = c:BYZ } }
         remove_opinion = { modifier = oe_ttb_peace_op target = c:BYZ }
     }
 }
@@ -193,13 +193,18 @@ oe_ttb_peace_break = {
     }
 }
 # BYZ scope, every January. Pays every agreement not signed in the last 6 months; one it cannot pay is broken.
-# Each payment also reaches the senate (oe_ttb_sen_on_pay).
+# Each payment also reaches the senate (oe_ttb_sen_on_pay). While the AI insurance holds payments back
+# (var:oe_ttb_ai_hold = 1, AI rules only), each payment is held back instead: oe_ttb_ai_held.
 oe_ttb_peace_january = {
     every_country = {
         limit = { has_variable = oe_ttb_peace NOT = { has_variable = oe_ttb_peace_recent } }
         save_scope_as = oe_ttb_t
         save_temporary_scope_value_as = { name = oe_ttb_due value = var:oe_ttb_peace }
         if = {
+            limit = { c:BYZ = { oe_ttb_ai_rules = yes var:oe_ttb_ai_hold ?= 1 } oe_ttb_ai_holdable = yes }
+            c:BYZ = { oe_ttb_ai_held = yes }
+        }
+        else_if = {
             limit = { c:BYZ = { gold >= scope:oe_ttb_due } }
             c:BYZ = { add_gold = { value = scope:oe_ttb_due multiply = -1 } oe_ttb_sen_on_pay = { amount = scope:oe_ttb_due } }
             add_gold = scope:oe_ttb_due
@@ -222,6 +227,8 @@ oe_ttb_byz_monthly = {
         oe_ttb_sweep = yes
     }
     every_subject = { limit = { is_subject_type = tributary } oe_ttb_trib_monthly = yes }
+    if = { limit = { oe_ttb_ai_rules = yes } oe_ttb_ai_fisc = yes }
+    else_if = { limit = { OR = { has_variable = oe_ttb_ai_red has_variable = oe_ttb_ai_hold } } oe_ttb_ai_fisc_clear = yes }
     if = { limit = { current_month = 1 } oe_ttb_january = yes }
     if = { limit = { is_ai = yes } oe_ttb_ai_monthly = yes }
     oe_ttb_dispatch = yes
@@ -245,11 +252,13 @@ oe_ttb_dispatch = {
     else = { oe_ttb_sen_dispatch = yes }
 }
 # BYZ scope, monthly when Byzantium is AI. Buys peace from a neighbour more than 2 times as strong while the
-# authority is below 40; one offer every 6 months at most; none while the senate condemns the tribute.
+# authority is below 40; one offer every 6 months at most; none while the senate condemns the tribute, and
+# none while the AI insurance holds payments back.
 oe_ttb_ai_monthly = {
     if = {
         limit = {
             NOT = { has_variable = oe_ttb_ai_cd }
+            NOT = { var:oe_ttb_ai_hold ?= 1 }
             oe_ttb_auth_low = yes
             oe_ttb_sen_ai_ok = yes
             oe_ttb_can_offer = yes
@@ -257,6 +266,63 @@ oe_ttb_ai_monthly = {
         }
         oe_ttb_ai_offer = yes
     }
+}
+
+# ---------------------------------------------------------------- AI insurance (docstring item 9)
+# BYZ scope, monthly under the AI rules, before the January payments. var:oe_ttb_ai_red: months in a row with the
+# treasury below 0; var:oe_ttb_ai_ok: months in a row with at least the year's dues (oe_ttb_ai_dues) in it. Payments
+# are held back from 3 months in the red and paid again after 3 months recovered (var:oe_ttb_ai_hold 1 / 0).
+oe_ttb_ai_fisc = {
+    if = { limit = { NOT = { has_variable = oe_ttb_ai_red } } set_variable = { name = oe_ttb_ai_red value = 0 } }
+    if = { limit = { NOT = { has_variable = oe_ttb_ai_ok } } set_variable = { name = oe_ttb_ai_ok value = 0 } }
+    if = { limit = { NOT = { has_variable = oe_ttb_ai_hold } } set_variable = { name = oe_ttb_ai_hold value = 0 } }
+    if = { limit = { NOT = { has_variable = oe_ttb_ai_held_n } } set_variable = { name = oe_ttb_ai_held_n value = 0 } }
+    if = {
+        limit = { gold < 0 }
+        change_variable = { name = oe_ttb_ai_red add = 1 }
+        clamp_variable = { name = oe_ttb_ai_red min = 0 max = 120 }
+    }
+    else = { set_variable = { name = oe_ttb_ai_red value = 0 } }
+    # the dues are summed only when an agreement runs (var:oe_ttb_peace_n was just recounted by the sweep)
+    if = {
+        limit = { has_variable = oe_ttb_peace_n var:oe_ttb_peace_n >= 1 }
+        save_temporary_scope_value_as = { name = oe_ttb_ai_need value = oe_ttb_ai_dues }
+    }
+    else = { save_temporary_scope_value_as = { name = oe_ttb_ai_need value = 0 } }
+    if = {
+        limit = { gold >= scope:oe_ttb_ai_need }
+        change_variable = { name = oe_ttb_ai_ok add = 1 }
+        clamp_variable = { name = oe_ttb_ai_ok min = 0 max = 120 }
+    }
+    else = { set_variable = { name = oe_ttb_ai_ok value = 0 } }
+    if = {
+        limit = { NOT = { var:oe_ttb_ai_hold ?= 1 } var:oe_ttb_ai_red >= 3 }
+        set_variable = { name = oe_ttb_ai_hold value = 1 }
+        debug_log = "OEBYZ ai: tribute payments held back (treasury below 0 for 3 months in a row)"
+    }
+    else_if = {
+        limit = { var:oe_ttb_ai_hold ?= 1 var:oe_ttb_ai_ok >= 3 }
+        set_variable = { name = oe_ttb_ai_hold value = 0 }
+        debug_log = "OEBYZ ai: tribute payments resumed (treasury held the year's dues for 3 months in a row)"
+    }
+}
+# BYZ scope. Byzantium is player-run again (and no test runs): the insurance's state goes; the player's rules apply.
+oe_ttb_ai_fisc_clear = {
+    if = { limit = { has_variable = oe_ttb_ai_red } remove_variable = oe_ttb_ai_red }
+    if = { limit = { has_variable = oe_ttb_ai_ok } remove_variable = oe_ttb_ai_ok }
+    if = { limit = { has_variable = oe_ttb_ai_hold } remove_variable = oe_ttb_ai_hold }
+}
+# BYZ scope; scope:oe_ttb_t = the payee. One January payment held back: no gold moves, the agreement and its truce
+# stay; prestige -5; the payee's opinion of Byzantium -20 for 24 months (refreshed).
+oe_ttb_ai_held = {
+    add_prestige = -5
+    if = { limit = { NOT = { has_variable = oe_ttb_ai_held_n } } set_variable = { name = oe_ttb_ai_held_n value = 0 } }
+    change_variable = { name = oe_ttb_ai_held_n add = 1 }
+    scope:oe_ttb_t = {
+        if = { limit = { has_opinion = { modifier = oe_ttb_arrears target = c:BYZ } } remove_opinion = { modifier = oe_ttb_arrears target = c:BYZ } }
+        add_opinion = { modifier = oe_ttb_arrears target = c:BYZ }
+    }
+    debug_log = "OEBYZ ai: a January tribute payment held back"
 }
 # BYZ scope. The AI picks a target and sends the envoy.
 oe_ttb_ai_offer = {
@@ -369,4 +435,31 @@ oe_ttb_test_january = {
 oe_ttb_test_ai = {
     remove_variable = oe_ttb_ai_cd
     if = { limit = { oe_ttb_can_offer = yes any_country = { oe_ttb_ai_target = yes } } oe_ttb_ai_offer = yes }
+}
+# AI insurance (item 9). The AI rules run for 12 months (also in a player's game), then payments are held back now.
+oe_ttb_ai_test_hold = {
+    set_variable = { name = oe_ttb_ai_test months = 12 }
+    oe_ttb_ai_fisc = yes
+    set_variable = { name = oe_ttb_ai_red value = 3 }
+    set_variable = { name = oe_ttb_ai_ok value = 0 }
+    set_variable = { name = oe_ttb_ai_hold value = 1 }
+}
+# The AI rules run for 12 months, and payments are made again now.
+oe_ttb_ai_test_resume = {
+    set_variable = { name = oe_ttb_ai_test months = 12 }
+    oe_ttb_ai_fisc = yes
+    set_variable = { name = oe_ttb_ai_red value = 0 }
+    set_variable = { name = oe_ttb_ai_ok value = 3 }
+    set_variable = { name = oe_ttb_ai_hold value = 0 }
+}
+# The AI rules run for 12 months, and the monthly treasury check runs once now (it also runs every month).
+oe_ttb_ai_test_month = {
+    set_variable = { name = oe_ttb_ai_test months = 12 }
+    oe_ttb_ai_fisc = yes
+}
+# Test over: back to the player's rules; counters, hold and the held-payment count are cleared.
+oe_ttb_ai_test_off = {
+    if = { limit = { has_variable = oe_ttb_ai_test } remove_variable = oe_ttb_ai_test }
+    oe_ttb_ai_fisc_clear = yes
+    if = { limit = { has_variable = oe_ttb_ai_held_n } remove_variable = oe_ttb_ai_held_n }
 }

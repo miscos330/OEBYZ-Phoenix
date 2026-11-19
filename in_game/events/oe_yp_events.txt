@@ -12,3 +12,30 @@ oe_yp.1 = {
     option = { name = oe_yp.1.a }
     option = { name = oe_yp.1.b trigger_event_non_silently = oe_yp.1 }
 }
+
+# ---- TEST ONLY (round 7 F6, Y2): hidden events behind the dev buttons ycl*, so the heavy effects run from immediate and
+# never sit in a dev-page option (EU5 previews every visible option's effect).
+# yclcheck: one collapse check now, as the monthly anchor runs it.
+oe_yp.20 = {
+    type = country_event
+    title = empty_text
+    hidden = yes
+    interface_lock = no
+    immediate = { oe_yp_collapse_check = yes }
+}
+# yclliaoyang: the Liaoyang frontier secretariat ends now (as after vanilla .42, without the event).
+oe_yp.21 = {
+    type = country_event
+    title = empty_text
+    hidden = yes
+    interface_lock = no
+    immediate = { if = { limit = { NOT = { has_global_variable = oe_yp_end_u9 } } oe_yp_end_unit_9 = { reason = 9 } } }
+}
+# yclfall: the Yuan falls now (test reason 9).
+oe_yp.22 = {
+    type = country_event
+    title = empty_text
+    hidden = yes
+    interface_lock = no
+    immediate = { if = { limit = { NOT = { has_global_variable = oe_yp_dissolved } } oe_yp_dissolve_all = { reason = 9 } } }
+}

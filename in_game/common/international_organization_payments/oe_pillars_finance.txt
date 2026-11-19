@@ -66,15 +66,10 @@ oe_pillars_authority_budget = {
     price_multiplier = { value = 0 }
     uses_maintenance = yes
     min_slider_value = 0
-    ai_maintenance_value = {
-        value = 0
-        if = {
-            limit = {
-                scope:recipient = { gold > 0 var:oe_pillars_authority < 90 oe_pillars_purse_monthly_income > 0 }
-            }
-            value = 0.5
-        }
-    }
+    # AI: oe_byz_ai_auth_budget (gen_byz_ai.py): 1 below 40 authority while the purse holds 3 months of income,
+    # else 0.5 below 90 while the purse has gold and income, else 0. The slider spends the purse, never the treasury.
+    ai_maintenance_value = { value = oe_byz_ai_auth_budget }
+    ai_maintenance_ignore_saving = yes
     proportion_for_payer = { value = 1 }
     proportion_for_payee = { value = 1 }
 }

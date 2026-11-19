@@ -21,6 +21,17 @@ oe_yp_loyalty_target_value = {
     max = 100
 }
 
+# Round 6 C1 step 2. Branch-secretariat country scope: loyalty tier, 3 at 70 and above, 2 (normal) at 40-69, 1 at 20-39, 0 below 20; 2 with no loyalty yet.
+oe_yp_tier_value = {
+    value = 2
+    if = {
+        limit = { has_variable = oe_yp_loyalty }
+        if = { limit = { var:oe_yp_loyalty >= 70 } value = 3 }
+        else_if = { limit = { var:oe_yp_loyalty < 20 } value = 0 }
+        else_if = { limit = { var:oe_yp_loyalty < 40 } value = 1 }
+    }
+}
+
 # ---- TEST ONLY: readings for oe_yp.1 (any scope) ----
 # Missing variable reads 1 (vanilla's implicit starting intensity).
 oe_yp_dev_intensity = {
@@ -66,6 +77,7 @@ oe_yp_dev_ex_YHN = {
 }
 oe_yp_dev_loy_YHN = { value = -1 if = { limit = { country_exists = c:YHN c:YHN = { has_variable = oe_yp_loyalty } } value = c:YHN.var:oe_yp_loyalty } }
 oe_yp_dev_seat_YHN = { value = 0 if = { limit = { location:tongxu = { has_building = building_type:oe_yp_xingsheng_seat } } value = 1 } }
+oe_yp_dev_tier_YHN = { value = -1 if = { limit = { country_exists = c:YHN c:YHN = { has_variable = oe_yp_tier } } value = c:YHN.var:oe_yp_tier } }
 # 江浙: 1 exists as CHI's branch secretariat, -1 exists otherwise, 0 does not exist
 oe_yp_dev_ex_YJZ = {
     value = 0
@@ -74,6 +86,7 @@ oe_yp_dev_ex_YJZ = {
 }
 oe_yp_dev_loy_YJZ = { value = -1 if = { limit = { country_exists = c:YJZ c:YJZ = { has_variable = oe_yp_loyalty } } value = c:YJZ.var:oe_yp_loyalty } }
 oe_yp_dev_seat_YJZ = { value = 0 if = { limit = { location:hangzhou = { has_building = building_type:oe_yp_xingsheng_seat } } value = 1 } }
+oe_yp_dev_tier_YJZ = { value = -1 if = { limit = { country_exists = c:YJZ c:YJZ = { has_variable = oe_yp_tier } } value = c:YJZ.var:oe_yp_tier } }
 # 江西: 1 exists as CHI's branch secretariat, -1 exists otherwise, 0 does not exist
 oe_yp_dev_ex_YJX = {
     value = 0
@@ -82,6 +95,7 @@ oe_yp_dev_ex_YJX = {
 }
 oe_yp_dev_loy_YJX = { value = -1 if = { limit = { country_exists = c:YJX c:YJX = { has_variable = oe_yp_loyalty } } value = c:YJX.var:oe_yp_loyalty } }
 oe_yp_dev_seat_YJX = { value = 0 if = { limit = { location:nanchang = { has_building = building_type:oe_yp_xingsheng_seat } } value = 1 } }
+oe_yp_dev_tier_YJX = { value = -1 if = { limit = { country_exists = c:YJX c:YJX = { has_variable = oe_yp_tier } } value = c:YJX.var:oe_yp_tier } }
 # 湖广: 1 exists as CHI's branch secretariat, -1 exists otherwise, 0 does not exist
 oe_yp_dev_ex_YHG = {
     value = 0
@@ -90,6 +104,7 @@ oe_yp_dev_ex_YHG = {
 }
 oe_yp_dev_loy_YHG = { value = -1 if = { limit = { country_exists = c:YHG c:YHG = { has_variable = oe_yp_loyalty } } value = c:YHG.var:oe_yp_loyalty } }
 oe_yp_dev_seat_YHG = { value = 0 if = { limit = { location:jiangxia = { has_building = building_type:oe_yp_xingsheng_seat } } value = 1 } }
+oe_yp_dev_tier_YHG = { value = -1 if = { limit = { country_exists = c:YHG c:YHG = { has_variable = oe_yp_tier } } value = c:YHG.var:oe_yp_tier } }
 # 陕西: 1 exists as CHI's branch secretariat, -1 exists otherwise, 0 does not exist
 oe_yp_dev_ex_YSX = {
     value = 0
@@ -98,6 +113,7 @@ oe_yp_dev_ex_YSX = {
 }
 oe_yp_dev_loy_YSX = { value = -1 if = { limit = { country_exists = c:YSX c:YSX = { has_variable = oe_yp_loyalty } } value = c:YSX.var:oe_yp_loyalty } }
 oe_yp_dev_seat_YSX = { value = 0 if = { limit = { location:xianning_xian = { has_building = building_type:oe_yp_xingsheng_seat } } value = 1 } }
+oe_yp_dev_tier_YSX = { value = -1 if = { limit = { country_exists = c:YSX c:YSX = { has_variable = oe_yp_tier } } value = c:YSX.var:oe_yp_tier } }
 # 四川: 1 exists as CHI's branch secretariat, -1 exists otherwise, 0 does not exist
 oe_yp_dev_ex_YSC = {
     value = 0
@@ -106,3 +122,493 @@ oe_yp_dev_ex_YSC = {
 }
 oe_yp_dev_loy_YSC = { value = -1 if = { limit = { country_exists = c:YSC c:YSC = { has_variable = oe_yp_loyalty } } value = c:YSC.var:oe_yp_loyalty } }
 oe_yp_dev_seat_YSC = { value = 0 if = { limit = { location:chengdu = { has_building = building_type:oe_yp_xingsheng_seat } } value = 1 } }
+oe_yp_dev_tier_YSC = { value = -1 if = { limit = { country_exists = c:YSC c:YSC = { has_variable = oe_yp_tier } } value = c:YSC.var:oe_yp_tier } }
+# 岭北: 1 exists as CHI's frontier branch secretariat, -1 exists otherwise, 0 does not exist
+oe_yp_dev_ex_YLB = {
+    value = 0
+    if = { limit = { country_exists = c:YLB } value = -1 }
+    if = { limit = { country_exists = c:YLB country_exists = c:CHI c:YLB = { is_subject_of = c:CHI is_subject_type = oe_yp_frontier } } value = 1 }
+}
+oe_yp_dev_loy_YLB = { value = -1 if = { limit = { country_exists = c:YLB c:YLB = { has_variable = oe_yp_loyalty } } value = c:YLB.var:oe_yp_loyalty } }
+oe_yp_dev_tier_YLB = { value = -1 if = { limit = { country_exists = c:YLB c:YLB = { has_variable = oe_yp_tier } } value = c:YLB.var:oe_yp_tier } }
+oe_yp_dev_land_YLB = { value = 0 if = { limit = { country_exists = c:YLB } c:YLB = { every_owned_location = { add = 1 } } } }
+# 辽阳: 1 exists as CHI's frontier branch secretariat, -1 exists otherwise, 0 does not exist
+oe_yp_dev_ex_YLY = {
+    value = 0
+    if = { limit = { country_exists = c:YLY } value = -1 }
+    if = { limit = { country_exists = c:YLY country_exists = c:CHI c:YLY = { is_subject_of = c:CHI is_subject_type = oe_yp_frontier } } value = 1 }
+}
+oe_yp_dev_loy_YLY = { value = -1 if = { limit = { country_exists = c:YLY c:YLY = { has_variable = oe_yp_loyalty } } value = c:YLY.var:oe_yp_loyalty } }
+oe_yp_dev_tier_YLY = { value = -1 if = { limit = { country_exists = c:YLY c:YLY = { has_variable = oe_yp_tier } } value = c:YLY.var:oe_yp_tier } }
+oe_yp_dev_land_YLY = { value = 0 if = { limit = { country_exists = c:YLY } c:YLY = { every_owned_location = { add = 1 } } } }
+# 甘肃: 1 exists as CHI's frontier branch secretariat, -1 exists otherwise, 0 does not exist
+oe_yp_dev_ex_YGU = {
+    value = 0
+    if = { limit = { country_exists = c:YGU } value = -1 }
+    if = { limit = { country_exists = c:YGU country_exists = c:CHI c:YGU = { is_subject_of = c:CHI is_subject_type = oe_yp_frontier } } value = 1 }
+}
+oe_yp_dev_loy_YGU = { value = -1 if = { limit = { country_exists = c:YGU c:YGU = { has_variable = oe_yp_loyalty } } value = c:YGU.var:oe_yp_loyalty } }
+oe_yp_dev_tier_YGU = { value = -1 if = { limit = { country_exists = c:YGU c:YGU = { has_variable = oe_yp_tier } } value = c:YGU.var:oe_yp_tier } }
+oe_yp_dev_land_YGU = { value = 0 if = { limit = { country_exists = c:YGU } c:YGU = { every_owned_location = { add = 1 } } } }
+oe_yp_dev_fr_subjects = {
+    value = 0
+    if = { limit = { country_exists = c:CHI } c:CHI = { every_subject = { limit = { is_subject_type = oe_yp_frontier } add = 1 } } }
+}
+oe_yp_dev_fr_in_mk = {
+    value = 0
+    if = {
+        limit = { country_exists = c:CHI exists = international_organization:middle_kingdom }
+        c:CHI = {
+            every_subject = {
+                limit = { is_subject_type = oe_yp_frontier is_member_of_international_organization = international_organization:middle_kingdom }
+                add = 1
+            }
+        }
+    }
+}
+
+# Round 7 F6 (Y2). Any scope. Why the Yuan has fallen: the first matching branch of oe_yp_yuan_fallen, 0 while it stands.
+#   1 the Yuan (CHI) no longer exists
+#   2 a Red Turban leader holds the CHI tag
+#   3 the CHI tag passed to another country
+#   4 the Middle Kingdom no longer exists
+#   5 another country holds the Mandate
+oe_yp_fall_reason = {
+    value = 0
+    if = { limit = { NOT = { country_exists = c:CHI } } value = 1 }
+    else_if = { limit = { c:CHI = { has_variable = rtr_is_new_china } } value = 2 }
+    else_if = { limit = { AND = { has_global_variable = oe_yp_yuan NOT = { global_var:oe_yp_yuan ?= c:CHI } } } value = 3 }
+    else_if = { limit = { NOT = { exists = international_organization:middle_kingdom } } value = 4 }
+    else_if = { limit = { NOT = { international_organization:middle_kingdom ?= { leader_country = c:CHI } } } value = 5 }
+}
+# ---- TEST ONLY: Y2 readings for oe_yp.1 (any scope) ----
+oe_yp_dev_dissolved = { value = 0 if = { limit = { has_global_variable = oe_yp_dissolved } value = global_var:oe_yp_dissolved } }
+oe_yp_dev_dissolved_year = { value = 0 if = { limit = { has_global_variable = oe_yp_dissolved_year } value = global_var:oe_yp_dissolved_year } }
+oe_yp_dev_fallen_now = { value = 0 if = { limit = { oe_yp_yuan_fallen = yes } value = 1 } }
+oe_yp_dev_mk_chi = { value = 0 if = { limit = { country_exists = c:CHI international_organization:middle_kingdom ?= { leader_country = c:CHI } } value = 1 } }
+oe_yp_dev_chi_new = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = rtr_is_new_china } } value = 1 } }
+# 1 the Yuan's stored country object still holds the CHI tag, 0 it does not, -1 not stored yet
+oe_yp_dev_yuan_chi = { value = -1 if = { limit = { has_global_variable = oe_yp_yuan } value = 0 if = { limit = { global_var:oe_yp_yuan ?= c:CHI } value = 1 } } }
+oe_yp_dev_yua = { value = 0 if = { limit = { country_exists = c:YUA } value = 1 } }
+oe_yp_dev_rtr42 = { value = 0 if = { limit = { has_fired_unique_event = red_turban_rebellions.42 } value = 1 } }
+oe_yp_dev_end_u2 = { value = 0 if = { limit = { has_global_variable = oe_yp_end_u2 } value = global_var:oe_yp_end_u2 } }
+oe_yp_dev_end_u3 = { value = 0 if = { limit = { has_global_variable = oe_yp_end_u3 } value = global_var:oe_yp_end_u3 } }
+oe_yp_dev_end_u4 = { value = 0 if = { limit = { has_global_variable = oe_yp_end_u4 } value = global_var:oe_yp_end_u4 } }
+oe_yp_dev_end_u5 = { value = 0 if = { limit = { has_global_variable = oe_yp_end_u5 } value = global_var:oe_yp_end_u5 } }
+oe_yp_dev_end_u6 = { value = 0 if = { limit = { has_global_variable = oe_yp_end_u6 } value = global_var:oe_yp_end_u6 } }
+oe_yp_dev_end_u7 = { value = 0 if = { limit = { has_global_variable = oe_yp_end_u7 } value = global_var:oe_yp_end_u7 } }
+oe_yp_dev_end_u8 = { value = 0 if = { limit = { has_global_variable = oe_yp_end_u8 } value = global_var:oe_yp_end_u8 } }
+oe_yp_dev_end_u9 = { value = 0 if = { limit = { has_global_variable = oe_yp_end_u9 } value = global_var:oe_yp_end_u9 } }
+oe_yp_dev_end_u10 = { value = 0 if = { limit = { has_global_variable = oe_yp_end_u10 } value = global_var:oe_yp_end_u10 } }
+# locations of the ten units (all owners) that still carry a Y3 marker or a tier modifier; 0 after the collapse
+oe_yp_dev_marked = {
+    value = 0
+    province_definition:xiliao_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dorbod_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shilingol_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:anzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:baoding_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qingchi = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dingzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hejian_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jingzhou_beizhili_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jizhou_zhending_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qingzhou_beizhili_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shenzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shunde_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zhaozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zhending_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:quanning_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shangdu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xingzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xinghe_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:baoan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:bazhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:changping_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:luanzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shuntian_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tongzhou_beizhili_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:wanquan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yongping_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:cizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:daming_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guangping_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huaiqing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:kaizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:weihui_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zhangde_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dengzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jiaozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:juzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:laizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:mizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ninghai_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qingzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:binzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:caozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dezhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dongchang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dongping_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gaotang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jinan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jining_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:linqing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:puzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shanzhou_shandong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:taian_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tengzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:wuding_shandong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yanzhou_shandong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yizhou_shandong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:datong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hetao_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jining_shanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ordos_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qingcheng_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yingzhou_shanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yuzhou_shanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:baode_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:daizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:fenzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jiangzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:kelan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:liaozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:luan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:pingding_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:pingyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:puzhou_shanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qinzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shizhou_shanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:taiyuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xiezhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xinzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zezhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:anlu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dean_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:fangzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huangzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jingmen_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jingzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:junzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:mianyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:suizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xiangyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yiling_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gaoyou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:haizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huaian_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:pizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:taizhou_nanzhili_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tongzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xuzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yangzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:anqing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:bozhou_nanzhili_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chuzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:fengyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:he_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:luan_nanzhili_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:luzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shouzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:sizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:suzhou_north_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yingzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chenzhou_henan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dengzhou_henan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guangzhou_henan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guide_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:henan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:kaifeng_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nanyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:runing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ruzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shanzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:songzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:suizhou_henan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xinyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xuzhou_henan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yuzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zhengzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:funing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:fuzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jianning_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:quanzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shaowu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tingzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xinghua_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yanping_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zhangzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guangxin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:raozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:changzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guangde_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ningguo_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:songjiang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:suzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:taiping_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yingtian_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zhenjiang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chuzhou_zhejiang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hangzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jiaxing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jinhua_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ningbo_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:quzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shaoxing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:taizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:wenzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yanzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dingnan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:fuzhou_jiangxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ganzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jian_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jianchang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jiujiang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:linjiang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nanan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nanchang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nankang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ningdu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ningzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:taihe_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ruizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yuanzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chaozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:deqing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dongguan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guangzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:heyuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huizhou_guangdong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lianzhou_guangdong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nanen_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nanxiong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:panyu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shaozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xinhui_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xunzhou_guangdong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yingde_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zhaoqing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:baoqing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:changsha_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chenzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:daozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guiyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hengzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:wugang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xiangxiang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yongzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:youzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yuezhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:changde_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chen_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yongshun_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yuanzhou_huguang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guizhou_huguang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hanyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:wuchang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xingguo_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gaozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huazhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:leizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lianzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nanningjun_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qiongzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:wananjun_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:baishan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:binzhou_guangxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guishun_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hengzhou_guangxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nandan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nanning_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qingyuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:sicheng_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:siming_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:taiping_guangxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tianzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xilong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guilin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hezhou_guangxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:liuzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:luorong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:pingle_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:quanzhou_guangxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:rongzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:rongzhou_wuzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tengzhou_guangxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:wuzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xunzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yulin_guangxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:bozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:duyun_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:liping_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:pingyue_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:sinan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:sizhou_guizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shunyuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tongren_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xinzhou_sichuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zhenan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:fuzhou_shaanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guyuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jiazhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jingning_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jingzhou_shaanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:pingliang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qingyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:suide_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yanan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yulin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gongchang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huizhou_shaanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jiezhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lintao_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qinzhou_shaanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:binzhou_shaanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:fengxiang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:fengzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hanzhong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:huazhou_shaanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qianzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shangzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tongzhou_shaanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xian_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xingan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yangzhou_shaanxi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yaozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:changzhou_sichuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chongqing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dazhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:fuzhou_sichuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hezhou_sichuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:kuizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:luzhou_sichuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:youyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zhongzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:changning_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jiading_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:mahu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:meizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:qiongzhou_sichuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xuzhou_sichuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yongning_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:baoning_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:bazhou_sichuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chengdu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guangan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guangyuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hanzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jianzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jianzhou_west_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:longan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:maozhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:pengzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:suining_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shunqing_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tongchuan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:buir_nuur_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dalai_nuur_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hailar_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:kerulen_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lower_argun_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:upper_argun_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:choyr_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dariganga_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:erenkhot_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:sharangad_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chkoy_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dzhida_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:kharaa_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:khilok_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:uda_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:khovd_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:khyargas_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tes_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:zavkhan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ingoda_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lower_onon_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shilka_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:torey_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:upper_onon_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:eastern_gobi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:greater_yenisei_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:smaller_yenisei_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:upper_yenisei_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:egiin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:orkhon_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:selenga_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tuul_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:upper_selenga_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gobi_altai_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ongiin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ulaan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:valley_of_the_lakes_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:western_gobi_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gapsan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gyongseong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hamheung_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hwaju_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:dingliao_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gaizhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:guangning_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:jinzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:liaoyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yizhou_liaodong_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:amgun_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:amur_estuary_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:bolon_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gorin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:northern_sakhalin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:southern_sakhalin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tumnin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tunguska_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:amur_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:gilyuy_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:humar_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lower_bureya_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lower_zeya_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:selemdzha_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:upper_bureya_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:upper_zeya_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hulan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lalin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:middle_songhua_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:mudan_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tangwang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:upper_songhua_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chol_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lower_non_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:nuomin_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:taoer_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:upper_non_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:greater_ussuri_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:muling_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:smaller_ussuri_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:sanjiang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:suifun_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:tumen_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:daning_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:chaoyang_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:alasha_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:khara_khoto_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:barkul_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ganzhou_gansu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:shazhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:suzhou_gansu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:xining_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:yongchang_gansu_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:lingzhou_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:ningxia_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+    province_definition:hami_province = { every_location_in_province_definition = { limit = { oe_yp_location_marked = yes } add = 1 } }
+}

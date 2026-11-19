@@ -15,7 +15,7 @@ oe_ttb_auth_low = {
 }
 # Country scope. A tributary (vanilla type) of Byzantium.
 oe_ttb_is_trib = {
-    exists = c:BYZ
+    country_exists = c:BYZ
     is_subject_type = tributary
     is_subject_of = c:BYZ
 }
@@ -32,7 +32,7 @@ oe_ttb_promote_ready = {
 # larger army, that borders Byzantium (or lies one sea zone away) or is at war with it, and has no agreement yet.
 # Themes own no land (their jurisdiction is Byzantine land), so bordering a theme is bordering Byzantium.
 oe_ttb_peace_target_ok = {
-    exists = c:BYZ
+    country_exists = c:BYZ
     NOT = { tag = BYZ }
     country_type = location
     army_size > oe_ttb_byz_army
@@ -47,7 +47,7 @@ oe_ttb_peace_target_ok = {
 }
 # Country scope. At war with Byzantium and winning at least one of those wars (its side's war score >= 5).
 oe_ttb_winning_vs_byz = {
-    exists = c:BYZ
+    country_exists = c:BYZ
     is_at_war_with = c:BYZ
     save_temporary_scope_as = oe_ttb_wt
     any_current_war = {
@@ -58,7 +58,9 @@ oe_ttb_winning_vs_byz = {
 # BYZ scope. May send an envoy with tribute now (the action's allow, the AI and the worker event).
 oe_ttb_can_offer = {
     tag = BYZ
-    custom_tooltip = { text = oe_ttb_allow_count NOT = { has_variable = oe_ttb_peace_n var:oe_ttb_peace_n >= 3 } }
+    # r13 (2026-11-19): was NOT = { has_variable var >= MAX }, which read the unset counter and, as NOR, refused a
+    # second agreement once the counter existed.
+    custom_tooltip = { text = oe_ttb_allow_count OR = { NOT = { has_variable = oe_ttb_peace_n } var:oe_ttb_peace_n < 3 } }
     custom_tooltip = { text = oe_ttb_allow_gold gold >= oe_ttb_peace_amount }
 }
 # BYZ scope. Has at least one agreement (the stop action's allow).
@@ -76,9 +78,27 @@ oe_ttb_ai_target = {
     NOT = { has_truce_with = c:BYZ }
     NOT = { oe_ttb_winning_vs_byz = yes }
 }
+# BYZ scope. The AI insurance applies (docstring item 9): Byzantium is AI-run, or a test button set oe_ttb_ai_test.
+oe_ttb_ai_rules = {
+    OR = {
+        is_ai = yes
+        has_variable = oe_ttb_ai_test
+    }
+}
+# Country scope (a payee). The AI insurance may hold back its payment: any agreement except the vassal tribute to the
+# Ottomans while the vassal-sultan line runs (BYZ var oe_vas_stage, gen_vassal_andronikos.py), which keeps that line's
+# own rules (paid, or broken and answered with the sultan's patience).
+oe_ttb_ai_holdable = {
+    NOT = {
+        AND = {
+            tag = TUR
+            country_exists = c:BYZ c:BYZ = { has_variable = oe_vas_stage }
+        }
+    }
+}
 # Country scope. Test only: a neighbour that can be made a tributary by the dev button.
 oe_ttb_test_make_ok = {
-    exists = c:BYZ
+    country_exists = c:BYZ
     NOT = { tag = BYZ }
     country_type = location
     is_subject = no
