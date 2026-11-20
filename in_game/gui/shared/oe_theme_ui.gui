@@ -90,6 +90,28 @@ template oe_theme_ui_page {
                             }
                         }
                     }
+                    button_regular = {
+                        size = { 120 40 } text = "OE_TB2_BTN_ADVISE" fontsize = 15
+                        visible = "[GetScriptedGui('oe_tb2_ui_advise').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        enabled = "[GetScriptedGui('oe_tb2_ui_advise').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        action_tooltip = {
+                            title = "OE_TB2_BTN_ADVISE"
+                            description = "OE_TB2_BTN_ADVISE_DESC"
+                            enabled = "[GetScriptedGui('oe_tb2_ui_advise').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            on_action = "[GetScriptedGui('oe_tb2_ui_advise').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        }
+                    }
+                    button_regular = {
+                        size = { 120 40 } text = "OE_TB2_BTN_MARCHES" fontsize = 15
+                        visible = "[GetScriptedGui('oe_tb2_ui_marches').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        enabled = "[GetScriptedGui('oe_tb2_ui_marches').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        action_tooltip = {
+                            title = "OE_TB2_BTN_MARCHES"
+                            description = "OE_TB2_BTN_MARCHES_DESC"
+                            enabled = "[GetScriptedGui('oe_tb2_ui_marches').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            on_action = "[GetScriptedGui('oe_tb2_ui_marches').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        }
+                    }
                     expand = {}
                 }
                 }
@@ -98,6 +120,13 @@ template oe_theme_ui_page {
                 layoutpolicy_horizontal = expanding
                 visible = "[GetScriptedGui('oe_theme_ui_deterrence').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.MakeScope).End)]"
                 text = "OE_THEME_UI_SUM_DETER"
+                fontsize = 14
+            }
+            # v6.7 A (gen_theme_quota.py): this year's replenishment of the themes, one sentence (custom loc OeTqSum on BYZ).
+            text_single = {
+                layoutpolicy_horizontal = expanding
+                text = "OE_TQ_SUM_LINE"
+                tooltip = "OE_TQ_SUM_TT"
                 fontsize = 14
             }
             # Theme revolt under way: rebels' hold on Constantinople (gen_theme_usurp.py).
@@ -214,6 +243,18 @@ template oe_theme_ui_page {
                                     visible = "[GetScriptedGui('oe_tbd_ui_march').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
                                     tooltip = "OE_TBD_CARD_TT"
                                     text_single = { position = { 0 11 } size = { 56 20 } autoresize = no elide = right fontsize = 13 raw_text = "[Country.Custom('OeTbdBand')] [Country.MakeScope.GetVariable('oe_tbd_pressure').GetValue|0]" }
+                                }
+                                # v6.7 A (gen_theme_quota.py): replenishment cell, have/quota (land: thousands of regulars, navy: ships);
+                                # red = stopped (loyalty under 40), weak = at quota, plain = short. One text per state.
+                                widget = { size = { 64 42 }
+                                    visible = "[GetScriptedGui('oe_tq_ui_cell').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_none').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_NONE" tooltip = "OE_TQ_CELL_TT_LAND" }
+                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_land_red').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_LAND_RED" tooltip = "OE_TQ_CELL_TT_LAND" }
+                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_land_full').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_LAND_FULL" tooltip = "OE_TQ_CELL_TT_LAND" }
+                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_land_open').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_LAND_OPEN" tooltip = "OE_TQ_CELL_TT_LAND" }
+                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_sea_red').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_SEA_RED" tooltip = "OE_TQ_CELL_TT_SEA" }
+                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_sea_full').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_SEA_FULL" tooltip = "OE_TQ_CELL_TT_SEA" }
+                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_sea_open').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_SEA_OPEN" tooltip = "OE_TQ_CELL_TT_SEA" }
                                 }
                                 expand = {}
                                 hbox = {

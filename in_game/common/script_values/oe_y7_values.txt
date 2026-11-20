@@ -54,6 +54,16 @@ oe_y7_hi_11 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } va
 oe_y7_left_11 = { value = oe_y7_hi_11 add = 1 subtract = global_var:oe_y7_m min = 1 }
 oe_y7_ch_11 = { value = 100 divide = oe_y7_left_11 }
 oe_y7_cut_11 = { value = oe_y7_hi_11 add = 3 }
+oe_y7_lo_16 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 60 } }
+oe_y7_hi_16 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 120 } }
+oe_y7_left_16 = { value = oe_y7_hi_16 add = 1 subtract = global_var:oe_y7_m min = 1 }
+oe_y7_ch_16 = { value = 100 divide = oe_y7_left_16 }
+oe_y7_cut_16 = { value = oe_y7_hi_16 add = 3 }
+oe_y7_lo_18 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 120 } }
+oe_y7_hi_18 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 144 } }
+oe_y7_left_18 = { value = oe_y7_hi_18 add = 1 subtract = global_var:oe_y7_m min = 1 }
+oe_y7_ch_18 = { value = 100 divide = oe_y7_left_18 }
+oe_y7_cut_18 = { value = oe_y7_hi_18 add = 3 }
 # Any scope. The intensity of the Mongol-Han strife (vanilla CHI var chi_rtr_modifier_intensity, 1 when unset), 0.5-2.
 oe_y7_i_value = { value = 1 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = chi_rtr_modifier_intensity } } value = c:CHI.var:chi_rtr_modifier_intensity } min = 0.5 max = 2 }
 # Any scope. Size of the counter-modifier oe_y7_court_command: shares (global var oe_y7_cmd) x intensity x Y7_SCALE (1).
@@ -134,6 +144,41 @@ oe_y7_rtr_code = {
     else_if = { limit = { oe_y7_yuan_ok = yes exists = international_organization:red_turban_rebels } value = 1 }
 }
 
+# ---- phase 3, first batch "孛罗之乱" (v6.6 y7-sup3a)
+# Any scope. W-1: the first month it may come (12 months after the first month seen in phase 2), the month it is sure
+# (18 months after its window opened, at most 344), the months left and the chance this month.
+oe_y7_w1_from = { value = 9999 if = { limit = { has_global_variable = oe_y7_c3_m0 } value = global_var:oe_y7_c3_m0 add = 12 } }
+oe_y7_w1_hi = { value = 344 if = { limit = { has_global_variable = oe_y7_w1_open } value = global_var:oe_y7_w1_open add = 18 } max = 344 }
+oe_y7_w1_left = { value = oe_y7_w1_hi add = 1 subtract = global_var:oe_y7_m min = 1 }
+oe_y7_w1_ch = { value = 100 divide = oe_y7_w1_left }
+# Any scope. .25: its window after W-1 (global var oe_y7_w1_m), as the windows of phase 1 (lo, hi, left, chance, grace).
+oe_y7_lo_25 = { value = 9999 if = { limit = { has_global_variable = oe_y7_w1_m } value = global_var:oe_y7_w1_m add = 6 } }
+oe_y7_hi_25 = { value = 9999 if = { limit = { has_global_variable = oe_y7_w1_m } value = global_var:oe_y7_w1_m add = 20 } }
+oe_y7_left_25 = { value = oe_y7_hi_25 add = 1 subtract = global_var:oe_y7_m min = 1 }
+oe_y7_ch_25 = { value = 100 divide = oe_y7_left_25 }
+oe_y7_cut_25 = { value = oe_y7_hi_25 add = 3 }
+# Any scope. .25 b: the month Bolod Temür is left at Datong for good (24 months after .25 b).
+oe_y7_d25b_end = { value = 9999 if = { limit = { has_global_variable = oe_y7_d25b } value = global_var:oe_y7_d25b add = 24 } }
+# Any scope. .26 b: the chance in percent that the gates hold and Bolod Temür is turned back: 35 + (momentum - 50) / 2,
+# +15 while Köke Temür is alive and not at war with the Yuan (Bai Suozhu's ten thousand riders guarded the capital, 卷141),
+# 15-70. Stored in CHI var oe_y7_win26 when .26 is sent; the roll uses the stored value (oe_y7_win26_now).
+oe_y7_win26_value = {
+    value = 35
+    if = { limit = { has_global_variable = oe_y7_shi } add = { value = global_var:oe_y7_shi subtract = 50 divide = 2 } }
+    if = { limit = { character:cko_temur_koke ?= { is_alive = yes OR = { owner ?= c:CHI owner ?= { NOT = { is_at_war_with = c:CHI } } } } } add = 15 }
+    min = 15
+    max = 70
+}
+oe_y7_win26_now = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_y7_win26 } } value = c:CHI.var:oe_y7_win26 } }
+
+# ---- phase 3, second batch "河南王与关中" (v6.6 y7-sup3b)
+# Any scope. .19: its fixed window, months 318-329 (1363.10-1364.9), as the windows of phase 1 (lo, hi, left, chance, grace).
+oe_y7_lo_19 = { value = 318 }
+oe_y7_hi_19 = { value = 329 }
+oe_y7_left_19 = { value = oe_y7_hi_19 add = 1 subtract = global_var:oe_y7_m min = 1 }
+oe_y7_ch_19 = { value = 100 divide = oe_y7_left_19 }
+oe_y7_cut_19 = { value = oe_y7_hi_19 add = 3 }
+
 # ---- TEST ONLY: readings for the report event oe_y7.90 and the observer log (any scope) ----
 oe_y7_dev_i100 = { value = oe_y7_i_value multiply = 100 }
 oe_y7_dev_phase = { value = -1 if = { limit = { has_global_variable = oe_y7_phase } value = global_var:oe_y7_phase } }
@@ -176,6 +221,9 @@ oe_y7_dev_keep = { value = 0 if = { limit = { has_global_variable = oe_y7_keep }
 oe_y7_dev_rtr = { value = 0 if = { limit = { oe_y7_rtr_active = yes } value = 1 } }
 oe_y7_dev_rtrend = { value = 0 if = { limit = { oe_y7_rtr_ended = yes } value = 1 } }
 oe_y7_dev_fallen = { value = 0 if = { limit = { oe_y7_yuan_fallen = yes } value = 1 } }
+oe_y7_dev_bl = { value = 0 if = { limit = { has_global_variable = oe_y7_bl } value = global_var:oe_y7_bl } }
+oe_y7_dev_chaghan = { value = 0 if = { limit = { character:oe_y7_chaghan ?= { is_alive = yes owner ?= c:CHI } } value = 1 } }
+oe_y7_dev_koke = { value = 0 if = { limit = { character:cko_temur_koke ?= { is_alive = yes OR = { owner ?= c:CHI owner ?= { NOT = { is_at_war_with = c:CHI } } } } } value = 1 } }
 oe_y7_dev_st1 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_1 } value = global_var:oe_y7_st_1 } }
 oe_y7_dev_st2 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_2 } value = global_var:oe_y7_st_2 } }
 oe_y7_dev_st3 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_3 } value = global_var:oe_y7_st_3 } }
@@ -188,6 +236,12 @@ oe_y7_dev_st12 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_12 
 oe_y7_dev_st13 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_13 } value = global_var:oe_y7_st_13 } }
 oe_y7_dev_st14 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_14 } value = global_var:oe_y7_st_14 } }
 oe_y7_dev_st15 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_15 } value = global_var:oe_y7_st_15 } }
+oe_y7_dev_st16 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_16 } value = global_var:oe_y7_st_16 } }
+oe_y7_dev_st17 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_17 } value = global_var:oe_y7_st_17 } }
+oe_y7_dev_st18 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_18 } value = global_var:oe_y7_st_18 } }
+oe_y7_dev_st25 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_25 } value = global_var:oe_y7_st_25 } }
+oe_y7_dev_st26 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_26 } value = global_var:oe_y7_st_26 } }
+oe_y7_dev_st27 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_27 } value = global_var:oe_y7_st_27 } }
 oe_y7_dev_ps1 = { value = 0 if = { limit = { has_global_variable = oe_y7_ps_1 } value = global_var:oe_y7_ps_1 } }
 oe_y7_dev_pl1 = { value = 0 if = { limit = { has_global_variable = oe_y7_pl_1 } value = global_var:oe_y7_pl_1 } }
 oe_y7_dev_ph1 = { value = 0 if = { limit = { has_global_variable = oe_y7_ph_1 } value = global_var:oe_y7_ph_1 } }
@@ -197,3 +251,60 @@ oe_y7_dev_ph2 = { value = 0 if = { limit = { has_global_variable = oe_y7_ph_2 } 
 oe_y7_dev_ps3 = { value = 0 if = { limit = { has_global_variable = oe_y7_ps_3 } value = global_var:oe_y7_ps_3 } }
 oe_y7_dev_pl3 = { value = 0 if = { limit = { has_global_variable = oe_y7_pl_3 } value = global_var:oe_y7_pl_3 } }
 oe_y7_dev_ph3 = { value = 0 if = { limit = { has_global_variable = oe_y7_ph_3 } value = global_var:oe_y7_ph_3 } }
+oe_y7_dev_bolod = { value = 0 if = { limit = { has_global_variable = oe_y7_bolod } value = global_var:oe_y7_bolod } }
+oe_y7_dev_bolodx = { value = 0 if = { limit = { exists = character:oe_y7_bolod } value = 1 } }
+oe_y7_dev_bolodok = { value = 0 if = { limit = { oe_y7_bolod_ok = yes } value = 1 } }
+oe_y7_dev_bolodhead = { value = 0 if = { limit = { oe_y7_bolod_head = yes } value = 1 } }
+oe_y7_dev_nohead = { value = 0 if = { limit = { has_global_variable = oe_y7_bolod_nohead } value = 1 } }
+oe_y7_dev_sway = { value = 0 if = { limit = { has_global_variable = oe_y7_sway } value = global_var:oe_y7_sway } }
+oe_y7_dev_swaymod = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = oe_y7_general_sway } } value = 1 } }
+oe_y7_dev_c3m0 = { value = -1 if = { limit = { has_global_variable = oe_y7_c3_m0 } value = global_var:oe_y7_c3_m0 } }
+oe_y7_dev_w1o = { value = -1 if = { limit = { has_global_variable = oe_y7_w1_open } value = global_var:oe_y7_w1_open } }
+oe_y7_dev_w1m = { value = -1 if = { limit = { has_global_variable = oe_y7_w1_m } value = global_var:oe_y7_w1_m } }
+oe_y7_dev_w1hi = { value = -1 if = { limit = { has_global_variable = oe_y7_c3_m0 } value = oe_y7_w1_hi } }
+oe_y7_dev_d25b = { value = -1 if = { limit = { has_global_variable = oe_y7_d25b } value = global_var:oe_y7_d25b } }
+oe_y7_dev_d26 = { value = -1 if = { limit = { has_global_variable = oe_y7_d_26 } value = global_var:oe_y7_d_26 } }
+oe_y7_dev_d27 = { value = -1 if = { limit = { has_global_variable = oe_y7_d_27 } value = global_var:oe_y7_d_27 } }
+oe_y7_dev_d28 = { value = -1 if = { limit = { has_global_variable = oe_y7_d_28 } value = global_var:oe_y7_d_28 } }
+oe_y7_dev_win26 = { value = 0 if = { limit = { always = yes } value = oe_y7_win26_now } }
+oe_y7_dev_koke3 = { value = 0 if = { limit = { has_global_variable = oe_y7_koke } value = global_var:oe_y7_koke } }
+oe_y7_dev_kokel = { value = 0 if = { limit = { oe_y7_koke_lord = yes } value = 1 } }
+oe_y7_dev_kokec = { value = 0 if = { limit = { oe_y7_koke_court = yes } value = 1 } }
+oe_y7_dev_kokeal = { value = -999 if = { limit = { country_exists = c:CKO c:CKO = { has_variable = rtr_yuan_allegiance } } value = c:CKO.var:rtr_yuan_allegiance } }
+oe_y7_dev_inpower = { value = 0 if = { limit = { oe_y7_bolod_in_power = yes } value = 1 } }
+oe_y7_dev_st19 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_19 } value = global_var:oe_y7_st_19 } }
+oe_y7_dev_st28 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_28 } value = global_var:oe_y7_st_28 } }
+oe_y7_dev_st29 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_29 } value = global_var:oe_y7_st_29 } }
+oe_y7_dev_st30 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_30 } value = global_var:oe_y7_st_30 } }
+oe_y7_dev_gz = { value = 0 if = { limit = { has_global_variable = oe_y7_guanzhong } value = global_var:oe_y7_guanzhong } }
+oe_y7_dev_d29 = { value = -1 if = { limit = { has_global_variable = oe_y7_d_29 } value = global_var:oe_y7_d_29 } }
+oe_y7_dev_d30 = { value = -1 if = { limit = { has_global_variable = oe_y7_d_30 } value = global_var:oe_y7_d_30 } }
+oe_y7_dev_r28 = { value = 0 if = { limit = { oe_y7_28_ready = yes } value = 1 } }
+oe_y7_dev_w2 = { value = 0 if = { limit = { has_global_variable = oe_y7_w2 } value = global_var:oe_y7_w2 } }
+oe_y7_dev_w2can = { value = 0 if = { limit = { oe_y7_w2_can = yes } value = 1 } }
+oe_y7_dev_siqil = { value = 0 if = { limit = { oe_y7_siqi_lord = yes } value = 1 } }
+oe_y7_dev_siqic = { value = 0 if = { limit = { oe_y7_siqi_court = yes } value = 1 } }
+oe_y7_dev_siqial = { value = -999 if = { limit = { country_exists = c:CSI c:CSI = { has_variable = rtr_yuan_allegiance } } value = c:CSI.var:rtr_yuan_allegiance } }
+oe_y7_dev_henan = { value = 0 if = { limit = { character:cko_temur_koke ?= { has_character_modifier = oe_y7_title_henan } } value = 1 } }
+oe_y7_dev_heir = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = oe_y7_heir_command } } value = 1 } }
+oe_y7_dev_st31 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_31 } value = global_var:oe_y7_st_31 } }
+oe_y7_dev_st32 = { value = 0 if = { limit = { has_global_variable = oe_y7_st_32 } value = global_var:oe_y7_st_32 } }
+oe_y7_dev_huai = { value = 0 if = { limit = { has_global_variable = oe_y7_huai } value = global_var:oe_y7_huai } }
+oe_y7_dev_dadu = { value = 0 if = { limit = { has_global_variable = oe_y7_dadu } value = global_var:oe_y7_dadu } }
+oe_y7_dev_press = { value = 0 if = { limit = { has_global_variable = oe_y7_press } value = global_var:oe_y7_press } }
+oe_y7_dev_lost = { value = 0 if = { limit = { has_global_variable = oe_y7_lost } value = global_var:oe_y7_lost } }
+oe_y7_dev_calm = { value = 0 if = { limit = { has_global_variable = oe_y7_calm } value = global_var:oe_y7_calm } }
+oe_y7_dev_fall = { value = 0 if = { limit = { has_global_variable = oe_y7_fall } value = global_var:oe_y7_fall } }
+oe_y7_dev_epi = { value = 0 if = { limit = { has_global_variable = oe_y7_epi } value = 1 } }
+oe_y7_dev_epiend = { value = 0 if = { limit = { has_global_variable = oe_y7_epi_end } value = global_var:oe_y7_epi_end } }
+oe_y7_dev_cap = { value = 0 if = { limit = { oe_y7_dadu_capital = yes } value = 1 } }
+oe_y7_dev_pressed = { value = 0 if = { limit = { oe_y7_dadu_pressed = yes } value = 1 } }
+oe_y7_dev_dfallen = { value = 0 if = { limit = { oe_y7_dadu_fallen = yes } value = 1 } }
+oe_y7_dev_w3can = { value = 0 if = { limit = { has_global_variable = oe_y7_m oe_y7_w3_can = yes } value = 1 } }
+oe_y7_dev_xuan = { value = 0 if = { limit = { character:oe_y7_xuanrang ?= { is_alive = yes owner ?= c:CHI } } value = 1 } }
+oe_y7_dev_huait = { value = 0 if = { limit = { character:oe_y7_xuanrang ?= { has_character_modifier = oe_y7_title_huai } } value = 1 } }
+oe_y7_dev_regent = { value = 0 if = { limit = { character:oe_y7_xuanrang ?= { has_character_modifier = oe_y7_title_regent } } value = 1 } }
+oe_y7_dev_dstand = { value = 0 if = { limit = { location:dadu = { has_location_modifier = oe_y7_dadu_stand } } value = 1 } }
+oe_y7_dev_dleft = { value = 0 if = { limit = { location:dadu = { has_location_modifier = oe_y7_dadu_left } } value = 1 } }
+oe_y7_dev_tpress = { value = 0 if = { limit = { has_global_variable = oe_y7_t_press } value = 1 } }
+oe_y7_dev_tfall = { value = 0 if = { limit = { has_global_variable = oe_y7_t_fall } value = 1 } }

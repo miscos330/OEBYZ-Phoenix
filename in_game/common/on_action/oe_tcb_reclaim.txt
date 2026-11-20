@@ -15,7 +15,7 @@ oe_tcb_took_location = {
             limit = {
                 exists = scope:winner
                 exists = scope:location
-                scope:winner = { tag = BYZ }
+                scope:winner = { tag = BYZ is_rebel_country = no }
                 scope:location = { has_variable = oe_tw_former_province }
             }
             scope:winner = {
@@ -33,7 +33,7 @@ oe_tcb_won_war = {
             limit = {
                 exists = scope:winner
                 exists = scope:war
-                scope:winner = { tag = BYZ has_variable = oe_tcb_taken_n }
+                scope:winner = { tag = BYZ is_rebel_country = no has_variable = oe_tcb_taken_n }
                 scope:war = { casus_belli ?= casus_belli:oe_tcb_reclaim is_an_attacker = scope:winner }
             }
             scope:war = { every_war_participant = { set_variable = oe_tcb_in_war } }
@@ -46,7 +46,7 @@ oe_tcb_won_war = {
 }
 # root = each side's country after the war. Drops a count left by a peace that was not a won reclaim war.
 oe_tcb_ended_war = {
-    trigger = { tag = BYZ has_variable = oe_tcb_taken_n }
+    trigger = { tag = BYZ is_rebel_country = no has_variable = oe_tcb_taken_n }
     effect = { remove_variable = oe_tcb_taken_n }
 }
 # root = location. A former province passing to anyone but BYZ opens the gate at once (the yearly recount closes it).
@@ -61,14 +61,14 @@ oe_tcb_owner_changed = {
 }
 # Once per game or loaded save: set the gate from the marks already on the map.
 oe_tcb_monthly = {
-    trigger = { tag = BYZ NOT = { has_variable = oe_tcb_init } }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { has_variable = oe_tcb_init } }
     effect = {
         set_variable = oe_tcb_init
         oe_tcb_recount = yes
     }
 }
 oe_tcb_yearly = {
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no }
     effect = {
         oe_tcb_recount = yes
         # Safety net: a count left over from a separate peace.

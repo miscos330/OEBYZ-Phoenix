@@ -194,7 +194,34 @@ oe_yw.6 = { # 赵王夜遁
     }
 }
 
-# Hidden worker, fired from options of oe_yw.2 and .4 (CHI) with the country var oe_yw_job.
+# CHI scope. Months 178-190 (1352.2-1353.2); history: ordered 1352.2, back at Shazhou 1353.12 (Yuan shi 42, 43). Needs the Prince of Bin as a member and the Red Turban situation running. Option a: worker job 71. No war, no army unit moved.
+oe_yw.7 = { # 沙州兵入蜀
+    type = country_event
+    outcome = neutral
+    title = oe_yw.7.t
+    desc = oe_yw.7.d
+    illustration_tags = { 10 = exterior 10 = armed }
+    trigger = { tag = CHI oe_yw_can_7 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_yw.7.a
+        historical_option = yes
+        add_gold = { value = oe_yw_cost_1m multiply = -1 }
+        custom_tooltip = oe_yw.7.a.tt
+        hidden_effect = { c:YBN ?= { oe_yw_set_ev = { amount = 5 months = 36 } } set_global_variable = { name = oe_yw_shazhou value = 1 } set_variable = { name = oe_yw_job value = 71 } trigger_event_non_silently = oe_yw.20 }
+        ai_chance = { base = 70 modifier = { factor = 0 gold < oe_yw_cost_1m } }
+    }
+    option = {
+        name = oe_yw.7.b
+        custom_tooltip = oe_yw.7.b.tt
+        hidden_effect = { set_global_variable = { name = oe_yw_shazhou value = 2 } }
+        ai_chance = { base = 30 }
+    }
+}
+
+# Hidden worker, fired from options of oe_yw.2, .4 and .7 (CHI) with the country var oe_yw_job.
 oe_yw.20 = {
     type = country_event
     hidden = yes
@@ -203,6 +230,7 @@ oe_yw.20 = {
     immediate = {
         if = { limit = { var:oe_yw_job = 21 } oe_yw_job_console = yes }
         else_if = { limit = { var:oe_yw_job = 41 } oe_yw_job_liang = yes }
+        else_if = { limit = { var:oe_yw_job = 71 } oe_yw_job_shazhou = yes }
         remove_variable = oe_yw_job
     }
 }
@@ -221,6 +249,14 @@ oe_yw.22 = {
     hidden = yes
     title = oe_yw.22.t
     immediate = { if = { limit = { has_global_variable = oe_yw_on } oe_yw_assembly = yes debug_log = "oe_yw TEST: assembly now" } }
+}
+
+# TEST ONLY (phase 2). World step W7 now (the Prince of Bin must be a member).
+oe_yw.23 = {
+    type = country_event
+    hidden = yes
+    title = oe_yw.23.t
+    immediate = { oe_yw_test_w7 = yes }
 }
 
 # TEST ONLY. Readings of this line, any country. Console: event oe_yw.90

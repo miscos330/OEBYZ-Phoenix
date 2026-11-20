@@ -1,8 +1,8 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v6.4
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v6.7
 
 欧陆风云 5 的东罗马（拜占庭）重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
-> **v6.4 与旧存档不兼容，请开新档。** 想继续旧档的玩家请玩正式版。
+> **v6.7 建议新开一局：读旧存档没有测过。** 想继续旧档的玩家请玩正式版。v6.5 以来的新内容大半没有经过完整的游戏内测试，按“实验性”发布。
 
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
@@ -37,6 +37,18 @@
 - **宫廷与豪族：** “琼筵序次”里有 7 个宫廷官职。豪族名册上的家族会扩张势力，可以拉拢、打压、抄家；放任不管会引发“拜占庭式的阴谋”。
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
+
+## v6.7 主要内容（含 v6.5、v6.6）
+
+这一版合并了三版的内容，事件从 1082 个增加到 1229 个，中文文本从约 13600 条增加到约 17200 条。**新内容大半只做过离线检查和冒烟测试，全部按“实验性”发布。**
+
+- **拜占庭主线：**黑死病、布达之行与色雷斯（1347–1371，阿德里安堡守城）；长房之争（约翰七世，1390–1399）；最后的围城（只在帝国真的衰弱时才来）和城破之后；中兴与霸业（给强盛的帝国的一条线）；教会合一二至四期、修院地产与 1368 年会议。
+- **制度：**军区每年自行补员；罗马商社（章程、年账、置地、保护约）；战后安排与经营边区；殖民城；治绩、以正统固权、民心所向；军区忠诚分项。
+- **周边世界：**克里米亚、拉丁希腊、格鲁吉亚、伊尔汗国的继承者各四期左右，做到 15 世纪；突厥诸侯、塞浦路斯与瓦拉几亚；黑海粮道与商站；意大利特权二至四期；两位教皇与求援。
+- **大元：**元末平乱全线做完；“行省与诸王”面板和地图模式；第十位藩王豳王；行省长官、藩王、土司显示各自的称谓。
+- **文本：**国家、文化、王朝的浮窗加历史介绍；恢复约 590 个希腊语地名；统一一批译名。
+
+完整改动见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## v6.4 主要内容
 
@@ -82,16 +94,20 @@ v6.4 把拜占庭的故事从 1337 年一直铺到 15 世纪中叶。事件从 8
 
 计划会根据测试和玩家反馈调整，以实际更新为准。
 
-- **v6.5：补测试欠账。**用长局数据调整权威、正统与民意的平衡；把这一版标“实验性”的内容在长局里验证、修好；大元行省面板和行省地图模式。
-- **v6.6：已有框架的后续各期。**意大利特权（船与战、黑海粮道、小共和国）、教会（修院地产、1368 年会议，接上合一）、招民垦荒（外族移民、黑海商站）、东地中海与突厥诸侯、元末平乱二期、合一二至四期。
-- **v6.7：天主教世界。**两个教皇与求援、希腊人出身的枢机、1377 年教廷回到罗马；北方十字军（条顿与立窝尼亚骑士团、立陶宛、格伦瓦尔德）；大分裂的拜占庭一面。
-- **v6.8：拜占庭后段。**1390 年约翰七世篡位、1366 年匈牙利之行、1453 年守城、伊庇鲁斯与色萨利、阿德里安堡陷落、1453 年以后的存续线。
+- **下一步：验证。**把 v6.5–v6.7 的内容逐条进游戏验证、修好，跑长局，再摘“实验性”。
+- **v6.8：把已有各线做完。**中兴与霸业的后续（九个征伐方向各异、兵团契约）、商社的坐大与结局、经营边区的后两步、城破之后的后半、塞萨洛尼基的约翰七世、失城之后的教会。
+- **之后：**北方十字军与条顿骑士团、1377 年教廷回到罗马；红海与印度；1481 年以后的内容。
 - **长期：**跟进游戏版本。MOD 改写了部分原版开局文件，游戏大版本更新后要重新生成，这类适配会优先处理。
 
 ## 已知问题
 
-- 标“实验性”的内容只做过冒烟测试，或者还没在长局里自然触发过：臣属苏丹、空位期、专制公头衔外交、摩里亚、地区事件、教会一期、都主教、教会合一、意大利特权、大元行省。
-- 开局国库比预期多约 417 金，来源还在查。
+- v6.5 以来的新内容大半只做过离线检查和冒烟测试，没有经过完整的游戏内测试，全部按“实验性”发布。
+- 读旧存档没有测过，建议新开一局。
+- 开局头 20 天，东正教农民会减少约 6.1 万人，原因还在查。
+- 最后的围城：京城交出去几天后，游戏会自己解散君士坦丁堡普世牧首区；教会相关的故事线此后可能不正常，下一版处理。
+- 军区自行补员：扣费已在游戏里看到，补出来的团是否真的加进了军区的军队还没有确认。
+- 长房之争和宫廷阴谋之间没有衔接：新朝的头几个月里宫廷阴谋仍可能开始。
+- “希罗基蒂亚之败”事件没有配图。
 - 军区（建筑型国家）不能自己招正规军：这是原版规则，原版的汉萨同盟也一样。
 - 中文的右括号偶尔会落到行首，这是游戏换行规则造成的。
 - 少数原有文件在加载或运行时有提示，不影响游戏。
@@ -101,7 +117,7 @@ v6.4 把拜占庭的故事从 1337 年一直铺到 15 世纪中叶。事件从 8
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v6.4` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v6.7` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
@@ -110,11 +126,14 @@ v6.4 把拜占庭的故事从 1337 年一直铺到 15 世纪中叶。事件从 8
 - 只适配游戏版本 1.4.9。游戏更新后，部分覆盖原版的开局文件可能需要重新生成。
 - MOD 改写了 1337 年开局的部分原版文件（国家、建筑、外交、国际组织、地区偏好）。会改这些文件的其他 MOD 大多不兼容。
 - 界面有中文和英文。
+- 其他拜占庭整体改版、改动 1337 开局或同一批地区的模组，未做兼容，不建议同时启用。
 
 ## 制作人员
 
 - **制作：** 寐夜空灵、miscos330
 - **军区辖区数据：** 来自“拜占庭重置:涅槃”（Byzantium Overhaul: Nirvana，[创意工坊 3602306286](https://steamcommunity.com/sharedfiles/filedetails/?id=3602306286)），已获授权。
+- **国家、文化、王朝等的历史介绍：** 来自“描述扩展：国家、文化、王朝及更多”（Descriptions Expanded，[创意工坊 3838927963](https://steamcommunity.com/sharedfiles/filedetails/?id=3838927963)），© Descriptions Expanded contributors，按 CC BY-SA 4.0 使用。凤凰计划在其基础上为自有的国家和家族补写了条目，并让两处文本与本 MOD 的原文合并；这些增补同样按 CC BY-SA 4.0 提供。详见包内 `third_party/descriptions_expanded/`。
+- **致谢：** 感谢创意工坊模组《The Reich / 帝国》和《Rise of the British Empire》：前者的边疆移民定居和战后分封启发了“经营边区”与“战后安排”，后者的特许公司启发了“罗马商社”。这一版只借鉴了机制上的想法，没有使用这两个模组的脚本或文字。
 
 ## 许可
 
@@ -122,11 +141,11 @@ v6.4 把拜占庭的故事从 1337 年一直铺到 15 世纪中叶。事件从 8
 
 ---
 
-# Phoenix Beta (OEBYZ) v6.4 — English
+# Phoenix Beta (OEBYZ) v6.7 — English
 
 The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
-> **v6.4 is not compatible with older saves. Start a new game.**
+> **Start a new game for v6.7: loading older saves has not been tested.** Most of the content added since v6.5 has not been fully tested in the game and is released as experimental.
 
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
@@ -148,6 +167,16 @@ The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made
 - **Imperial campaigns and the Roman Reconquest:** win the Balkans and Anatolia, then campaign towards Egypt, Italy, Iberia and beyond; restore 10 regions to complete the Reconquest.
 - **Court, great houses and finance:** seven court offices, great houses to court or curb, and separate treasury and privy purse.
 
+## Highlights of v6.7 (with v6.5 and v6.6)
+
+Three versions in one release: events grow from 1082 to 1229. **Most of the new content has only passed offline checks and smoke tests; all of it is experimental.**
+
+- **Byzantium:** the Black Death, the journey to Buda and the loss of Thrace (1347–1371, with the defence of Adrianople); the elder line (John VII, 1390–1399); the last siege, which comes only when the empire is truly weak, and what follows the fall; Restoration and Hegemony, a line for a strong empire; Church union phases 2–4, monastic lands and the council of 1368.
+- **Institutions:** themes replenish their own troops every January; the Roman Company (charter, yearly accounts, land purchases, protection treaties); post-war settlement and frontier programmes; coloniae; deeds of government, legitimacy for authority, and the people's favour.
+- **The wider world:** the Crimea, Latin Greece, Georgia and the heirs of the Ilkhanate, each carried into the fifteenth century; the Turkish emirates, Cyprus and Wallachia; the Black Sea grain route and trading posts; Italian privileges phases 2–4; the two popes and the appeal to Rome.
+- **The Yuan:** the suppression of the Red Turbans completed; a "Secretariats and Princes" panel and map mode; a tenth prince; governors, princes and tusi shown by their own titles.
+- **Text:** history notes in the tooltips of countries, cultures and dynasties; about 590 Greek place names restored.
+
 ## Highlights of v6.4
 
 v6.4 carries the Byzantine story from 1337 into the mid-fifteenth century: events grow from 818 to 1082.
@@ -165,10 +194,9 @@ The full changelog is in [CHANGELOG.md](CHANGELOG.md) (Chinese).
 
 Plans will change with testing and player feedback.
 
-- **v6.5:** test debt first: balance authority, legitimacy and public opinion with long-run data, verify the experimental content in long games, and add a Yuan secretariat panel and map mode.
-- **v6.6:** the next phases of the existing frameworks (Italian privileges, the Church, resettlement, the Eastern Mediterranean and the emirates, the Red Turbans, Church union).
-- **v6.7:** the Catholic world: the two popes, Greek cardinals, the return to Rome in 1377, and the northern crusades (the Teutonic and Livonian Orders, Lithuania, Grunwald).
-- **v6.8:** late Byzantium: John VII's usurpation of 1390, the 1366 journey to Hungary, the defence of 1453, Epirus and Thessaly, the fall of Adrianople, and life after 1453.
+- **Next:** verify the content of v6.5–v6.7 in the game line by line, fix what fails, run long games, then drop the experimental labels.
+- **v6.8:** finish the lines already begun: the later stages of Restoration and Hegemony, the end of the Roman Company, the last steps of the frontier programmes, the second half of life after the fall, John VII in Thessalonica, and the Church after the City is lost.
+- **Later:** the northern crusades and the Teutonic Order, the return to Rome in 1377; the Red Sea and India; content after 1481.
 - **Ongoing:** keep up with game updates; the rewritten vanilla start files must be regenerated after major patches.
 
 ## Install
@@ -180,6 +208,8 @@ Plans will change with testing and player feedback.
 
 - **Made by:** 寐夜空灵, miscos330
 - **Theme-region data:** from Byzantium Overhaul: Nirvana ([Workshop 3602306286](https://steamcommunity.com/sharedfiles/filedetails/?id=3602306286)), used with permission.
+- **History texts for countries, cultures, dynasties and more:** from Descriptions Expanded: Countries, Cultures, Dynasties & More ([Workshop 3838927963](https://steamcommunity.com/sharedfiles/filedetails/?id=3838927963)), © the Descriptions Expanded contributors, used under CC BY-SA 4.0. Phoenix adds entries for its own countries and families and merges two texts with its own; these additions are offered under CC BY-SA 4.0 as well. See `third_party/descriptions_expanded/` in the package.
+- **Thanks:** Thanks to the Workshop mods The Reich and Rise of the British Empire: the first one's frontier settlement and post-war enfeoffment inspired our frontier programmes and post-war settlement, the second one's chartered company inspired the Roman Company. This version borrows ideas for mechanics only; none of their script or text is used.
 
 ## Licence
 

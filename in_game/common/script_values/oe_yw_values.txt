@@ -39,6 +39,7 @@ oe_yw_wsum = {
     if = { limit = { country_exists = c:LNG c:LNG = { oe_yw_prince_active = yes } } add = 1 }
     if = { limit = { country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes } } add = 1 }
     if = { limit = { country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes } } add = 1 }
+    if = { limit = { country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes } } add = 1 }
 }
 # Any scope. This year's grant total: unit x weights x (2 in a year of a generous grant).
 oe_yw_grant_total_value = {
@@ -123,6 +124,7 @@ oe_yw_n_active = {
     if = { limit = { country_exists = c:SYG c:SYG = { oe_yw_prince_active = yes } } add = 1 }
     if = { limit = { country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes } } add = 1 }
     if = { limit = { country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes } } add = 1 }
+    if = { limit = { country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes } } add = 1 }
 }
 oe_yw_n_loyal = {
     value = 0
@@ -135,6 +137,7 @@ oe_yw_n_loyal = {
     if = { limit = { country_exists = c:SYG c:SYG = { oe_yw_prince_active = yes var:oe_yw_tier >= 2 } } add = 1 }
     if = { limit = { country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes var:oe_yw_tier >= 2 } } add = 1 }
     if = { limit = { country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes var:oe_yw_tier >= 2 } } add = 1 }
+    if = { limit = { country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes var:oe_yw_tier >= 2 } } add = 1 }
 }
 oe_yw_loy_sum = {
     value = 0
@@ -147,6 +150,7 @@ oe_yw_loy_sum = {
     if = { limit = { country_exists = c:SYG c:SYG = { oe_yw_prince_active = yes } } add = c:SYG.var:oe_yw_loy }
     if = { limit = { country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes } } add = c:YLU.var:oe_yw_loy }
     if = { limit = { country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes } } add = c:YZW.var:oe_yw_loy }
+    if = { limit = { country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes } } add = c:YBN.var:oe_yw_loy }
 }
 oe_yw_loy_avg = {
     value = 0
@@ -222,6 +226,11 @@ oe_yw_left_6 = { value = 262 add = 1 subtract = global_var:oe_yw_m min = 1 }
 oe_yw_ch_6 = { value = 100 divide = oe_yw_left_6 }
 oe_yw_cut_6 = { value = 262 add = 6 }
 
+# Any scope. Event 7: months left in its window (this one included), roll in percent, drop month.
+oe_yw_left_7 = { value = 190 add = 1 subtract = global_var:oe_yw_m min = 1 }
+oe_yw_ch_7 = { value = 100 divide = oe_yw_left_7 }
+oe_yw_cut_7 = { value = 190 add = 6 }
+
 # Any scope. W1 (the Shen faction's rising): from the month Y1 sent Goryeo's .3 (oe_y1_d_st3) for 3 months; without
 # Y1 in this game, from the month Goryeo's king was no longer Chungsuk (oe_yw_d_kor). 9999 while waiting.
 oe_yw_lo_w1 = {
@@ -246,6 +255,11 @@ oe_yw_wleft_5 = { value = 332 add = 1 subtract = global_var:oe_yw_m min = 1 }
 oe_yw_wch_5 = { value = 100 divide = oe_yw_wleft_5 }
 oe_yw_wleft_6 = { value = oe_yw_hi_w6 add = 1 subtract = global_var:oe_yw_m min = 1 }
 oe_yw_wch_6 = { value = 100 divide = oe_yw_wleft_6 }
+oe_yw_wleft_7 = { value = 189 add = 1 subtract = global_var:oe_yw_m min = 1 }
+oe_yw_wch_7 = { value = 100 divide = oe_yw_wleft_7 }
+# Prince scope (event .7 option a, worker job 71). A tenth of the prince's manpower (the share oe_yw_ask_aid takes
+# from a prince of tier 2-3).
+oe_yw_shazhou_mp_value = { value = manpower multiply = 0.1 min = 0 }
 # ---- TEST ONLY: readings for the report event oe_yw.90 (any scope) ----
 oe_yw_dev_exv_QAS = { value = 0 if = { limit = { country_exists = c:QAS c:QAS = { oe_yw_prince_active = yes } } value = 1 } }
 oe_yw_dev_exv_HCN = { value = 0 if = { limit = { country_exists = c:HCN c:HCN = { oe_yw_prince_active = yes } } value = 1 } }
@@ -256,6 +270,7 @@ oe_yw_dev_exv_LNG = { value = 0 if = { limit = { country_exists = c:LNG c:LNG = 
 oe_yw_dev_exv_SYG = { value = 0 if = { limit = { country_exists = c:SYG c:SYG = { oe_yw_prince_active = yes } } value = 1 } }
 oe_yw_dev_exv_YLU = { value = 0 if = { limit = { country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes } } value = 1 } }
 oe_yw_dev_exv_YZW = { value = 0 if = { limit = { country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes } } value = 1 } }
+oe_yw_dev_exv_YBN = { value = 0 if = { limit = { country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes } } value = 1 } }
 oe_yw_dev_m = { value = -1 if = { limit = { has_global_variable = oe_yw_m } value = global_var:oe_yw_m } }
 oe_yw_dev_on = { value = 0 if = { limit = { has_global_variable = oe_yw_on } value = 1 } }
 oe_yw_dev_n = { value = 0 if = { limit = { has_global_variable = oe_dbg_n_yw } value = global_var:oe_dbg_n_yw } }
@@ -265,12 +280,14 @@ oe_yw_dev_st3 = { value = 0 if = { limit = { has_global_variable = oe_yw_st_3 } 
 oe_yw_dev_st4 = { value = 0 if = { limit = { has_global_variable = oe_yw_st_4 } value = global_var:oe_yw_st_4 } }
 oe_yw_dev_st5 = { value = 0 if = { limit = { has_global_variable = oe_yw_st_5 } value = global_var:oe_yw_st_5 } }
 oe_yw_dev_st6 = { value = 0 if = { limit = { has_global_variable = oe_yw_st_6 } value = global_var:oe_yw_st_6 } }
+oe_yw_dev_st7 = { value = 0 if = { limit = { has_global_variable = oe_yw_st_7 } value = global_var:oe_yw_st_7 } }
 oe_yw_dev_w1 = { value = 0 if = { limit = { has_global_variable = oe_yw_w1 } value = global_var:oe_yw_w1 } }
 oe_yw_dev_w2 = { value = 0 if = { limit = { has_global_variable = oe_yw_w2 } value = global_var:oe_yw_w2 } }
 oe_yw_dev_w3 = { value = 0 if = { limit = { has_global_variable = oe_yw_w3 } value = global_var:oe_yw_w3 } }
 oe_yw_dev_w4 = { value = 0 if = { limit = { has_global_variable = oe_yw_w4 } value = global_var:oe_yw_w4 } }
 oe_yw_dev_w5 = { value = 0 if = { limit = { has_global_variable = oe_yw_w5 } value = global_var:oe_yw_w5 } }
 oe_yw_dev_w6 = { value = 0 if = { limit = { has_global_variable = oe_yw_w6 } value = global_var:oe_yw_w6 } }
+oe_yw_dev_w7 = { value = 0 if = { limit = { has_global_variable = oe_yw_w7 } value = global_var:oe_yw_w7 } }
 oe_yw_dev_lvl = { value = -1 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yw_grant_level } } value = c:CHI.var:oe_yw_grant_level } }
 oe_yw_dev_unit = { value = 0 if = { limit = { has_global_variable = oe_yw_grant_unit } value = global_var:oe_yw_grant_unit } }
 oe_yw_dev_total = { value = 0 if = { limit = { has_global_variable = oe_yw_grant_total } value = global_var:oe_yw_grant_total } }
@@ -297,6 +314,11 @@ oe_yw_dev_ended = { value = 0 if = { limit = { has_global_variable = oe_yw_ended
 oe_yw_dev_nact = { value = 0 if = { limit = { always = yes } value = oe_yw_n_active } }
 oe_yw_dev_nloyal = { value = 0 if = { limit = { always = yes } value = oe_yw_n_loyal } }
 oe_yw_dev_wsum = { value = 0 if = { limit = { always = yes } value = oe_yw_wsum } }
+oe_yw_dev_shazhou = { value = 0 if = { limit = { has_global_variable = oe_yw_shazhou } value = global_var:oe_yw_shazhou } }
+oe_yw_dev_bnloc = { value = -1 if = { limit = { country_exists = c:YBN } value = c:YBN.num_locations } }
+oe_yw_dev_bncap = { value = 0 if = { limit = { country_exists = c:YBN location:shazhou = { owner ?= c:YBN is_capital = yes } } value = 1 } }
+oe_yw_dev_bnvas = { value = 0 if = { limit = { country_exists = c:YBN c:YBN = { is_subject_of = c:CHI is_subject_type = vassal } } value = 1 } }
+oe_yw_dev_bnruler = { value = 0 if = { limit = { country_exists = c:YBN c:YBN = { ruler ?= character:oe_yb_buyan_temur } } value = 1 } }
 oe_yw_dev_ex1 = { value = -1 if = { limit = { country_exists = c:QAS } value = oe_yw_dev_exv_QAS } }
 oe_yw_dev_loy1 = { value = -1 if = { limit = { country_exists = c:QAS c:QAS = { has_variable = oe_yw_loy } } value = c:QAS.var:oe_yw_loy } }
 oe_yw_dev_tier1 = { value = -1 if = { limit = { country_exists = c:QAS c:QAS = { has_variable = oe_yw_tier } } value = c:QAS.var:oe_yw_tier } }
@@ -360,3 +382,10 @@ oe_yw_dev_att9 = { value = 0 if = { limit = { country_exists = c:YZW c:YZW = { h
 oe_yw_dev_paid9 = { value = 0 if = { limit = { country_exists = c:YZW c:YZW = { has_variable = oe_yw_paid_y } } value = c:YZW.var:oe_yw_paid_y } }
 oe_yw_dev_out9 = { value = 0 if = { limit = { country_exists = c:YZW c:YZW = { has_variable = oe_yw_out } } value = c:YZW.var:oe_yw_out } }
 oe_yw_dev_fate9 = { value = 0 if = { limit = { country_exists = c:YZW c:YZW = { has_variable = oe_yw_fate } } value = c:YZW.var:oe_yw_fate } }
+oe_yw_dev_ex10 = { value = -1 if = { limit = { country_exists = c:YBN } value = oe_yw_dev_exv_YBN } }
+oe_yw_dev_loy10 = { value = -1 if = { limit = { country_exists = c:YBN c:YBN = { has_variable = oe_yw_loy } } value = c:YBN.var:oe_yw_loy } }
+oe_yw_dev_tier10 = { value = -1 if = { limit = { country_exists = c:YBN c:YBN = { has_variable = oe_yw_tier } } value = c:YBN.var:oe_yw_tier } }
+oe_yw_dev_att10 = { value = 0 if = { limit = { country_exists = c:YBN c:YBN = { has_variable = oe_yw_att_y } } value = c:YBN.var:oe_yw_att_y } }
+oe_yw_dev_paid10 = { value = 0 if = { limit = { country_exists = c:YBN c:YBN = { has_variable = oe_yw_paid_y } } value = c:YBN.var:oe_yw_paid_y } }
+oe_yw_dev_out10 = { value = 0 if = { limit = { country_exists = c:YBN c:YBN = { has_variable = oe_yw_out } } value = c:YBN.var:oe_yw_out } }
+oe_yw_dev_fate10 = { value = 0 if = { limit = { country_exists = c:YBN c:YBN = { has_variable = oe_yw_fate } } value = c:YBN.var:oe_yw_fate } }

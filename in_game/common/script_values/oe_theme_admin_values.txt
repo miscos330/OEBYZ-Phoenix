@@ -24,22 +24,22 @@ oe_theme_type_bonus_1 = { # 军务
 }
 oe_theme_type_bonus_2 = { # 民政
     value = 0
-    if = { limit = { is_subject_type = oe_empire_theme_administrative } add = 10 } # 方针 civil
-    if = { limit = { is_subject_type = oe_empire_theme_italian } add = 10 } # 方针 charter
+    if = { limit = { oe_sx_civil_type = yes } add = 10 } # 方针 civil
+    if = { limit = { oe_sx_charter_type = yes } add = 10 } # 方针 charter
     if = { limit = { oe_ts_frontier = yes } add = -5 } # 地位 2
     if = { limit = { oe_ts_exarch = yes } add = -5 } # 地位 3
     if = { limit = { oe_ts_despot = yes } add = 5 } # 地位 5
 }
 oe_theme_type_bonus_3 = { # 司法
     value = 0
-    if = { limit = { is_subject_type = oe_empire_theme_administrative } add = 5 } # 方针 civil
+    if = { limit = { oe_sx_civil_type = yes } add = 5 } # 方针 civil
     if = { limit = { oe_ts_exarch = yes } add = -5 } # 地位 3
 }
 oe_theme_type_bonus_4 = { # 财政
     value = 0
     if = { limit = { oe_ts_course_navy = yes } add = 5 } # 方针 navy
-    if = { limit = { is_subject_type = oe_empire_theme_administrative } add = 5 } # 方针 civil
-    if = { limit = { is_subject_type = oe_empire_theme_italian } add = 5 } # 方针 charter
+    if = { limit = { oe_sx_civil_type = yes } add = 5 } # 方针 civil
+    if = { limit = { oe_sx_charter_type = yes } add = 5 } # 方针 charter
     if = { limit = { oe_ts_frontier = yes } add = -5 } # 地位 2
     if = { limit = { oe_ts_charter = yes } add = 10 } # 地位 4
 }
@@ -48,53 +48,99 @@ oe_theme_type_bonus_5 = { # 营建
     if = { limit = { oe_ts_frontier = yes } add = 5 } # 地位 2
 }
 
-# 忠诚目标值（《军区详细设计》第七节）
-oe_theme_loyalty_target_value = {
-    value = 50
-    # 军区兵力：正规军 <= 5000 人 +5；超出部分每 1000 人 -1，最多 -25
+# 忠诚目标值的分项（《军区详细设计》第七节；v6.5 M10 拆成分项，总和不变）
+oe_tl_c_army = { # 军区兵力：正规军 <= 5000 人 +5；超出部分每 1000 人 -1，最多 -25
+    value = 0
     if = { limit = { regular_army_size <= 5 } add = 5 }
     else = { add = { value = regular_army_size subtract = 5 multiply = -1 min = -25 } }
-    # 将军能力：-(最高能力 - 50) x 0.2
+}
+oe_tl_c_skill = { # 将军能力：-(最高能力 - 50) x 0.2
+    value = 0
     add = { value = oe_theme_best_skill subtract = 50 multiply = -0.2 }
-    # 将军身份
+}
+oe_tl_c_kin = { # 将军身份
+    value = 0
     if = { limit = { exists = ruler country_exists = c:BYZ exists = c:BYZ.ruler ruler = { dynasty ?= c:BYZ.ruler.dynasty } } add = 10 }
     if = { limit = { exists = ruler ruler = { has_character_modifier = oe_byz_caesar_modifier } } add = 15 }
-    # 任职时间：前 3 年 +5；之后每年 -2，最多 -20
+}
+oe_tl_c_tenure = { # 任职时间：前 3 年 +5；之后每年 -2，最多 -20
+    value = 0
     if = { limit = { oe_theme_tenure_years < 3 } add = 5 }
     else = { add = { value = oe_theme_tenure_years subtract = 3 multiply = -2 min = -20 } }
-    # 离首都远近（辖区表）
+}
+oe_tl_c_dist = { # 离首都远近（辖区表）
+    value = 0
     if = { limit = { var:oe_theme_distance ?= 1 } add = 5 }
     else_if = { limit = { var:oe_theme_distance ?= 3 } add = -5 }
     else_if = { limit = { var:oe_theme_distance ?= 4 } add = -10 }
-    # 方针与地位
-    if = { limit = { is_subject_type = oe_empire_theme_administrative } add = 5 } # 方针 civil
+}
+oe_tl_c_course = { # 方针与地位
+    value = 0
+    if = { limit = { oe_sx_civil_type = yes } add = 5 } # 方针 civil
     if = { limit = { oe_ts_frontier = yes } add = -10 } # 地位 2
     if = { limit = { oe_ts_exarch = yes } add = -10 } # 地位 3
     if = { limit = { oe_ts_charter = yes } add = -5 } # 地位 4
     if = { limit = { oe_ts_despot = yes } add = 5 } # 地位 5
-    # 属官（财务官 3 = 普罗尼亚授地）
+}
+oe_tl_c_staff = { # 属官（财务官 3 = 普罗尼亚授地）
+    value = 0
     if = { limit = { var:oe_theme_judge ?= 1 } add = 5 }
     if = { limit = { var:oe_theme_fiscal ?= 1 } add = 5 }
     else_if = { limit = { var:oe_theme_fiscal ?= 2 } add = -5 }
     else_if = { limit = { var:oe_theme_fiscal ?= 3 } add = 5 }
-    # 军饷拨付
+}
+oe_tl_c_pay = { # 军饷拨付
+    value = 0
     if = { limit = { oe_theme_law_pay_ratio >= 1 } add = 5 }
     else_if = { limit = { oe_theme_law_pay_ratio < 0.5 } add = -15 }
-    # 皇帝合法性：(合法性 - 50) x 0.2
+}
+oe_tl_c_legit = { # 皇帝合法性：(合法性 - 50) x 0.2
+    value = 0
     if = { limit = { country_exists = c:BYZ } add = { value = c:BYZ.legitimacy subtract = 50 multiply = 0.2 } }
-    # 皇帝与将军的军事能力
+}
+oe_tl_c_mil = { # 皇帝与将军的军事能力
+    value = 0
     if = { limit = { exists = ruler country_exists = c:BYZ exists = c:BYZ.ruler c:BYZ.ruler.mil >= ruler.mil } add = 5 }
     else = { add = -5 }
-    # 宫廷阴谋
+}
+oe_tl_c_intrigue = { # 宫廷阴谋
+    value = 0
     if = { limit = { country_exists = c:BYZ c:BYZ = { any_active_disaster = { disaster_type = disaster_type:oe_byzantine_intrigue } } } add = -10 }
-    # 平叛威慑（反叛阶段设置）
+}
+oe_tl_c_deter = { # 平叛威慑（反叛阶段设置）
+    value = 0
     if = { limit = { has_global_variable = oe_theme_deterrence } add = 10 }
-    # 将门（gen_theme_houses.py）：豪族出身 +5，政治盟友再 +5，家族影响力 500 以上改为 -5；世守军区 +5
+}
+oe_tl_c_house = { # 将门（gen_theme_houses.py）：豪族出身 +5，政治盟友再 +5，家族影响力 500 以上改为 -5；世守军区 +5
+    value = 0
     add = oe_tg_loyalty_term
-    # 总凯法勒（gen_territory_regions.py）：大区有总凯法勒 +5；他抗命期间改为 -5
+}
+oe_tl_c_region = { # 总凯法勒（gen_territory_regions.py）：大区有总凯法勒 +5；他抗命期间改为 -5
+    value = 0
     add = oe_trg_loyalty_term
-    # 近事（军区故事包，gen_theme_stories.py）：-20..+20，5 年后过期
+}
+oe_tl_c_recent = { # 近事（军区故事包，gen_theme_stories.py）：-20..+20，5 年后过期
+    value = 0
     if = { limit = { has_variable = oe_theme_recent_loy } add = var:oe_theme_recent_loy }
+}
+# 忠诚目标值 = 50 + 各分项，限制在 0..100
+oe_theme_loyalty_target_value = {
+    value = 50
+    add = oe_tl_c_army
+    add = oe_tl_c_skill
+    add = oe_tl_c_kin
+    add = oe_tl_c_tenure
+    add = oe_tl_c_dist
+    add = oe_tl_c_course
+    add = oe_tl_c_staff
+    add = oe_tl_c_pay
+    add = oe_tl_c_legit
+    add = oe_tl_c_mil
+    add = oe_tl_c_intrigue
+    add = oe_tl_c_deter
+    add = oe_tl_c_house
+    add = oe_tl_c_region
+    add = oe_tl_c_recent
     min = 0
     max = 100
 }

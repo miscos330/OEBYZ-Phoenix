@@ -23,7 +23,7 @@ oe_yw_prince_active = {
 }
 # Country scope. One of the far princes (Yangdi, Yunnan): the Shangdu assembly is harder to reach.
 oe_yw_far = {
-    OR = { tag = OGE tag = LNG }
+    OR = { tag = OGE tag = LNG tag = YBN }
 }
 # Any scope. At least one prince is a member.
 oe_yw_any_active = {
@@ -37,6 +37,7 @@ oe_yw_any_active = {
         AND = { country_exists = c:SYG c:SYG = { oe_yw_prince_active = yes } }
         AND = { country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes } }
         AND = { country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes } }
+        AND = { country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes } }
     }
 }
 # Any scope. Bolod (vanilla bolot_borjigin) is alive and at the court of Yunnan / Liang (event .4).
@@ -130,6 +131,16 @@ oe_yw_can_6 = {
 
 # Any scope. Event 6 can no longer come: drop it now.
 oe_yw_never_6 = {
+    oe_yw_yuan_fallen = yes
+}
+
+# Any scope. Event 7 (CHI) can fire now (its event trigger).
+oe_yw_can_7 = {
+    oe_yw_yuan_fallen = no country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes NOT = { is_at_war_with = c:CHI } } situation:red_turban_rebellions = { situation_is_active = yes }
+}
+
+# Any scope. Event 7 can no longer come: drop it now.
+oe_yw_never_7 = {
     oe_yw_yuan_fallen = yes
 }
 
@@ -307,6 +318,35 @@ oe_yw_lapse_6 = {
     }
 }
 
+# Any scope. Event 7: open (inside its window, not at its end), due (end reached), lapse (dropped).
+oe_yw_open_7 = {
+    NOT = { has_global_variable = oe_yw_st_7 }
+    has_global_variable = oe_yw_m
+    global_var:oe_yw_m >= 178
+    global_var:oe_yw_m < 190
+    oe_yw_can_7 = yes
+}
+oe_yw_due_7 = {
+    NOT = { has_global_variable = oe_yw_st_7 }
+    has_global_variable = oe_yw_m
+    global_var:oe_yw_m >= 190
+    oe_yw_can_7 = yes
+}
+oe_yw_lapse_7 = {
+    NOT = { has_global_variable = oe_yw_st_7 }
+    has_global_variable = oe_yw_m
+    OR = {
+        oe_yw_never_7 = yes
+        AND = {
+            global_var:oe_yw_m >= 190
+            OR = {
+                NOT = { oe_yw_can_7 = yes }
+                global_var:oe_yw_m > oe_yw_cut_7
+            }
+        }
+    }
+}
+
 # Any scope. Every scheduled event has fired or been dropped.
 oe_yw_all_done = {
     has_global_variable = oe_yw_st_1
@@ -315,6 +355,7 @@ oe_yw_all_done = {
     has_global_variable = oe_yw_st_4
     has_global_variable = oe_yw_st_5
     has_global_variable = oe_yw_st_6
+    has_global_variable = oe_yw_st_7
 }
 
 # Any scope. The event schedule is open: not every event is settled and month 380 (1368.12) is not passed.
@@ -342,4 +383,9 @@ oe_yw_ok_w5 = {
 # Any scope. World step W6 can run this month (besides its window).
 oe_yw_ok_w6 = {
     country_exists = c:LNG c:LNG = { is_ai = yes } country_exists = c:CDL c:CDL = { is_ai = yes is_subject_of = c:LNG }
+}
+
+# Any scope. World step W7 can run this month (besides its window).
+oe_yw_ok_w7 = {
+    country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes is_ai = yes }
 }

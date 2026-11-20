@@ -112,7 +112,7 @@ oe_y7_seats_refresh = {
 # Any scope. Takes every modifier of this line off the Yuan, its locations, its rival and its characters (not the opinions,
 # not the characters themselves).
 oe_y7_strip = {
-    c:CHI ?= { if = { limit = { has_country_modifier = oe_y7_court_command } remove_country_modifier = oe_y7_court_command } if = { limit = { has_country_modifier = oe_y7_militia } remove_country_modifier = oe_y7_militia } if = { limit = { has_country_modifier = oe_y7_warlord_army } remove_country_modifier = oe_y7_warlord_army } if = { limit = { has_country_modifier = oe_y7_tammachi_hold } remove_country_modifier = oe_y7_tammachi_hold } if = { limit = { has_country_modifier = oe_y7_garrison_thin } remove_country_modifier = oe_y7_garrison_thin } if = { limit = { has_country_modifier = oe_y7_touxia_levy } remove_country_modifier = oe_y7_touxia_levy } if = { limit = { has_country_modifier = oe_y7_scattered } remove_country_modifier = oe_y7_scattered } if = { limit = { has_country_modifier = oe_y7_court_rift } remove_country_modifier = oe_y7_court_rift } if = { limit = { has_country_modifier = oe_y7_restoration } remove_country_modifier = oe_y7_restoration } if = { limit = { has_country_modifier = oe_y7_despair } remove_country_modifier = oe_y7_despair } }
+    c:CHI ?= { if = { limit = { has_country_modifier = oe_y7_court_command } remove_country_modifier = oe_y7_court_command } if = { limit = { has_country_modifier = oe_y7_militia } remove_country_modifier = oe_y7_militia } if = { limit = { has_country_modifier = oe_y7_warlord_army } remove_country_modifier = oe_y7_warlord_army } if = { limit = { has_country_modifier = oe_y7_general_sway } remove_country_modifier = oe_y7_general_sway } if = { limit = { has_country_modifier = oe_y7_tammachi_hold } remove_country_modifier = oe_y7_tammachi_hold } if = { limit = { has_country_modifier = oe_y7_garrison_thin } remove_country_modifier = oe_y7_garrison_thin } if = { limit = { has_country_modifier = oe_y7_touxia_levy } remove_country_modifier = oe_y7_touxia_levy } if = { limit = { has_country_modifier = oe_y7_scattered } remove_country_modifier = oe_y7_scattered } if = { limit = { has_country_modifier = oe_y7_court_rift } remove_country_modifier = oe_y7_court_rift } if = { limit = { has_country_modifier = oe_y7_restoration } remove_country_modifier = oe_y7_restoration } if = { limit = { has_country_modifier = oe_y7_despair } remove_country_modifier = oe_y7_despair } if = { limit = { has_country_modifier = oe_y7_bolod_regime } remove_country_modifier = oe_y7_bolod_regime } if = { limit = { has_country_modifier = oe_y7_bolod_command } remove_country_modifier = oe_y7_bolod_command } if = { limit = { has_country_modifier = oe_y7_two_courts } remove_country_modifier = oe_y7_two_courts } if = { limit = { has_country_modifier = oe_y7_heir_command } remove_country_modifier = oe_y7_heir_command } }
     province_definition:yangzhou_province = { every_location_in_province_definition = { limit = { has_location_modifier = oe_y7_seat_guard } remove_location_modifier = oe_y7_seat_guard } }
     province_definition:wuchang_province = { every_location_in_province_definition = { limit = { has_location_modifier = oe_y7_seat_guard } remove_location_modifier = oe_y7_seat_guard } }
     province_definition:luzhou_province = { every_location_in_province_definition = { limit = { has_location_modifier = oe_y7_seat_guard } remove_location_modifier = oe_y7_seat_guard } }
@@ -129,6 +129,10 @@ oe_y7_strip = {
     character:oe_y7_weishun ?= { if = { limit = { has_character_modifier = oe_y7_title_weishun } remove_character_modifier = oe_y7_title_weishun } }
     character:oe_y7_xuanrang ?= { if = { limit = { has_character_modifier = oe_y7_title_xuanrang } remove_character_modifier = oe_y7_title_xuanrang } }
     character:oe_y7_chaghan ?= { if = { limit = { has_character_modifier = oe_y7_title_chaghan } remove_character_modifier = oe_y7_title_chaghan } }
+    character:oe_y7_bolod ?= { if = { limit = { has_character_modifier = oe_y7_title_bolod } remove_character_modifier = oe_y7_title_bolod } }
+    character:cko_temur_koke ?= { if = { limit = { has_character_modifier = oe_y7_title_henan } remove_character_modifier = oe_y7_title_henan } }
+    # third batch: Dadu's two modifiers, the titles of Huai and the regent (kept while the epilogue runs: it ends them)
+    if = { limit = { NOT = { has_global_variable = oe_y7_epi } } oe_y7_strip_dadu = yes }
     if = { limit = { has_global_variable = oe_y7_relief_c country_exists = global_var:oe_y7_relief_c } global_var:oe_y7_relief_c = { if = { limit = { has_country_modifier = oe_y7_relief } remove_country_modifier = oe_y7_relief } } }
 }
 
@@ -158,7 +162,8 @@ oe_y7_to_phase2 = {
     oe_y7_apply_cmd = yes
     c:CHI ?= { if = { limit = { has_country_modifier = oe_y7_restoration } remove_country_modifier = oe_y7_restoration } if = { limit = { has_country_modifier = oe_y7_tammachi_hold } remove_country_modifier = oe_y7_tammachi_hold } }
     oe_y7_to_warlords = yes
-    set_global_variable = { name = oe_y7_camp value = 0 }
+    # A Bianliang campaign (3) begun in phase 3 goes on: phase 3 can end while it runs.
+    if = { limit = { NOT = { global_var:oe_y7_camp ?= 3 } } set_global_variable = { name = oe_y7_camp value = 0 } }
     set_global_variable = { name = oe_y7_amn_ph value = 0 }
     if = { limit = { has_global_variable = oe_y7_noq } remove_global_variable = oe_y7_noq }
     debug_log = "oe_y7: phase 2 (the generals hold the armies)"
@@ -328,7 +333,7 @@ oe_y7_garrisons = {
     location:huaining = { if = { limit = { has_location_modifier = oe_y7_garrison OR = { NOT = { owner ?= c:CHI } current_date >= 1360.1.1 } } remove_location_modifier = oe_y7_garrison } }
 }
 # Any scope, monthly. A campaign succeeds when the Yuan controls its target (Gaoyou also when the enemy is gone or has come
-# over); it fails at its deadline (global var oe_y7_campend).
+# over; Bianliang also when a loyal warlord controls it); it fails at its deadline (global var oe_y7_campend).
 oe_y7_campaign = {
     if = {
         limit = { global_var:oe_y7_camp ?= 1 NOT = { has_global_variable = oe_y7_camp_done } }
@@ -350,15 +355,31 @@ oe_y7_campaign = {
         }
         else_if = { limit = { global_var:oe_y7_m >= global_var:oe_y7_campend } set_global_variable = { name = oe_y7_camp_ok value = 0 } set_global_variable = oe_y7_camp_done debug_log = "oe_y7: Gaoyou campaign failed" }
     }
+    else_if = {
+        limit = { global_var:oe_y7_camp ?= 3 NOT = { has_global_variable = oe_y7_camp_done } }
+        if = { limit = { location:kaifeng = { OR = { controller ?= c:CHI controller ?= { oe_y7_warlord = yes oe_y7_aligned = yes NOT = { is_at_war_with = c:CHI } } } } } set_global_variable = { name = oe_y7_camp_ok value = 1 } set_global_variable = oe_y7_camp_done debug_log = "oe_y7: Bianliang campaign won" }
+        else_if = { limit = { global_var:oe_y7_m >= global_var:oe_y7_campend } set_global_variable = { name = oe_y7_camp_ok value = 0 } set_global_variable = oe_y7_camp_done debug_log = "oe_y7: Bianliang campaign failed" }
+    }
+    # third batch: campaign 4 "守大都" (after .31 b): lost when the city fell; at its deadline won if the Yuan holds Dadu and
+    # the capital is no longer pressed, else 3 months more (design 3.8).
+    else_if = {
+        limit = { global_var:oe_y7_camp ?= 4 NOT = { has_global_variable = oe_y7_camp_done } }
+        if = { limit = { oe_y7_dadu_fallen = yes } set_global_variable = { name = oe_y7_camp_ok value = 0 } set_global_variable = oe_y7_camp_done debug_log = "oe_y7: the defence of Dadu failed (the city fell)" }
+        else_if = {
+            limit = { global_var:oe_y7_m >= global_var:oe_y7_campend }
+            if = { limit = { oe_y7_dadu_capital = yes oe_y7_dadu_pressed = no } set_global_variable = { name = oe_y7_camp_ok value = 1 } set_global_variable = oe_y7_camp_done debug_log = "oe_y7: Dadu held (campaign 4 won)" }
+            else = { change_global_variable = { name = oe_y7_campend add = 3 } debug_log = "oe_y7: Dadu still pressed; campaign 4 goes on" }
+        }
+    }
 }
-# Any scope. Usage: oe_y7_start_camp = { n = 1|2 }: a campaign with a 6-month deadline.
+# Any scope. Usage: oe_y7_start_camp = { n = 1|2|3 }: a campaign with a 6-month deadline (3, Bianliang: its job adds 2).
 oe_y7_start_camp = {
     set_global_variable = { name = oe_y7_camp value = $n$ }
     set_global_variable = { name = oe_y7_camp_ok value = 0 }
     if = { limit = { has_global_variable = oe_y7_camp_done } remove_global_variable = oe_y7_camp_done }
     set_global_variable = { name = oe_y7_campend value = global_var:oe_y7_m }
     change_global_variable = { name = oe_y7_campend add = 6 }
-    debug_log = "oe_y7: a campaign begins (oe_y7_camp 1 Xuzhou, 2 Gaoyou)"
+    debug_log = "oe_y7: a campaign begins (oe_y7_camp 1 Xuzhou, 2 Gaoyou, 3 Bianliang)"
 }
 
 # ---------------------------------------------------------------- the end (design 3.8)
@@ -377,6 +398,7 @@ oe_y7_finish = {
 # Any scope (F6's COLLAPSE_HOOKS; also this line's own monthly check). The Yuan has fallen: the line ends with code 4.
 oe_y7_on_yuan_fall = {
     if = { limit = { has_global_variable = oe_y7_on } oe_y7_finish = { code = 4 } }
+    if = { limit = { has_global_variable = oe_y7_epi } oe_y7_epi_close = { code = 2 } }
 }
 # Any scope, monthly. The end checks: collapse (4), the situation over (1-3), 1368.1.1 (5).
 oe_y7_end_check = {
@@ -387,7 +409,7 @@ oe_y7_end_check = {
         oe_y7_finish = { code = global_var:oe_y7_tmp }
         if = { limit = { has_global_variable = oe_y7_tmp } remove_global_variable = oe_y7_tmp }
     }
-    else_if = { limit = { current_date >= 1368.1.1 } oe_y7_finish = { code = 5 } }
+    else_if = { limit = { current_date >= 1368.1.1 } oe_y7_epi_open = yes oe_y7_finish = { code = 5 } }
 }
 
 # ---------------------------------------------------------------- setup
@@ -441,7 +463,8 @@ oe_y7_setup_p1 = {
         }
         if = {
             limit = { NOT = { exists = character:oe_y7_zhennan } }
-            create_character = { first_name = oe_y7_name_1 dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1318.1.1 adm = 45 dip = 50 mil = 60 script = oe_y7_zhennan }
+            if = { limit = { current_date >= 1334.1.1 } create_character = { first_name = oe_y7_name_1 dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1318.1.1 adm = 45 dip = 50 mil = 60 script = oe_y7_zhennan } }
+            else = { create_character = { first_name = oe_y7_name_1 dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no age = 30 adm = 45 dip = 50 mil = 60 script = oe_y7_zhennan } }
             character:oe_y7_zhennan ?= { add_character_modifier = { modifier = oe_y7_title_zhennan years = -1 mode = replace } set_variable = { name = oe_y7_who value = 1 } }
         }
         if = { limit = { exists = character:oe_y7_zhennan } set_global_variable = { name = oe_y7_c_1 value = character:oe_y7_zhennan } }
@@ -456,7 +479,8 @@ oe_y7_setup_p1 = {
         set_global_variable = { name = oe_y7_ph_1 value = 0 }
         if = {
             limit = { NOT = { exists = character:oe_y7_weishun } }
-            create_character = { first_name = oe_y7_name_2 dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1300.1.1 adm = 40 dip = 45 mil = 45 script = oe_y7_weishun }
+            if = { limit = { current_date >= 1316.1.1 } create_character = { first_name = oe_y7_name_2 dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1300.1.1 adm = 40 dip = 45 mil = 45 script = oe_y7_weishun } }
+            else = { create_character = { first_name = oe_y7_name_2 dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no age = 30 adm = 40 dip = 45 mil = 45 script = oe_y7_weishun } }
             character:oe_y7_weishun ?= { add_character_modifier = { modifier = oe_y7_title_weishun years = -1 mode = replace } set_variable = { name = oe_y7_who value = 2 } }
         }
         if = { limit = { exists = character:oe_y7_weishun } set_global_variable = { name = oe_y7_c_2 value = character:oe_y7_weishun } }
@@ -471,7 +495,8 @@ oe_y7_setup_p1 = {
         set_global_variable = { name = oe_y7_ph_2 value = 0 }
         if = {
             limit = { NOT = { exists = character:oe_y7_xuanrang } }
-            create_character = { first_name = oe_y7_name_3 dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1285.1.1 adm = 50 dip = 55 mil = 50 script = oe_y7_xuanrang }
+            if = { limit = { current_date >= 1301.1.1 } create_character = { first_name = oe_y7_name_3 dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1285.1.1 adm = 50 dip = 55 mil = 50 script = oe_y7_xuanrang } }
+            else = { create_character = { first_name = oe_y7_name_3 dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no age = 30 adm = 50 dip = 55 mil = 50 script = oe_y7_xuanrang } }
             character:oe_y7_xuanrang ?= { add_character_modifier = { modifier = oe_y7_title_xuanrang years = -1 mode = replace } set_variable = { name = oe_y7_who value = 3 } }
         }
         if = { limit = { exists = character:oe_y7_xuanrang } set_global_variable = { name = oe_y7_c_3 value = character:oe_y7_xuanrang } }
@@ -648,6 +673,121 @@ oe_y7_fire_15 = {
     debug_log = "oe_y7: event oe_y7.15 sent to CHI"
     c:CHI ?= { trigger_event_non_silently = oe_y7.15 }
 }
+oe_y7_fire_16 = {
+    set_global_variable = { name = oe_y7_st_16 value = 1 }
+    if = { limit = { exists = scope:oe_y7_o } clear_saved_scope = oe_y7_o }
+    if = { limit = { has_global_variable = oe_y7_opp3 } remove_global_variable = oe_y7_opp3 }
+    location:kaifeng = { controller ?= { save_scope_as = oe_y7_o } }
+    if = { limit = { exists = scope:oe_y7_o } set_global_variable = { name = oe_y7_opp3 value = scope:oe_y7_o } }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.16 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.16 }
+}
+oe_y7_fire_17 = {
+    set_global_variable = { name = oe_y7_st_17 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.17 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.17 }
+}
+oe_y7_fire_18 = {
+    set_global_variable = { name = oe_y7_st_18 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.18 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.18 }
+}
+oe_y7_fire_25 = {
+    set_global_variable = { name = oe_y7_st_25 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.25 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.25 }
+}
+oe_y7_fire_26 = {
+    set_global_variable = { name = oe_y7_st_26 value = 1 }
+    c:CHI ?= { set_variable = { name = oe_y7_win26 value = oe_y7_win26_value } }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.26 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.26 }
+}
+oe_y7_fire_27 = {
+    set_global_variable = { name = oe_y7_st_27 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.27 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.27 }
+}
+oe_y7_fire_19 = {
+    set_global_variable = { name = oe_y7_st_19 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.19 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.19 }
+}
+oe_y7_fire_28 = {
+    set_global_variable = { name = oe_y7_st_28 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.28 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.28 }
+}
+oe_y7_fire_29 = {
+    set_global_variable = { name = oe_y7_st_29 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.29 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.29 }
+}
+oe_y7_fire_30 = {
+    set_global_variable = { name = oe_y7_st_30 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.30 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.30 }
+}
+oe_y7_fire_31 = {
+    set_global_variable = { name = oe_y7_st_31 value = 1 }
+    if = { limit = { global_var:oe_y7_koke ?= 3 oe_y7_koke_any = yes } set_global_variable = { name = oe_y7_koke value = 4 } if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = 30 } } } debug_log = "oe_y7: Köke Temür restored to office (oe_y7_koke 4)" }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.31 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.31 }
+}
+oe_y7_fire_32 = {
+    set_global_variable = { name = oe_y7_st_32 value = 1 }
+    if = { limit = { oe_y7_dadu_fallen = yes } set_global_variable = { name = oe_y7_fall value = 1 } } else = { set_global_variable = { name = oe_y7_fall value = 2 } }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.32 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.32 }
+}
 
 # Any scope. Drops events that can no longer fire.
 oe_y7_ev_lapse = {
@@ -660,6 +800,13 @@ oe_y7_ev_lapse = {
     # .12 never comes once Toqto'a is out of office: the Gaoyou campaign then ends without an edict (phase 2 after it).
     if = { limit = { NOT = { has_global_variable = oe_y7_st_12 } has_global_variable = oe_y7_d_12 oe_y7_toqto_in_charge = no } set_global_variable = { name = oe_y7_st_12 value = 2 } set_global_variable = { name = oe_y7_noq value = 1 } debug_log = "oe_y7: event oe_y7.12 dropped (Toqto'a no longer in charge)" }
     if = { limit = { NOT = { has_global_variable = oe_y7_st_15 } global_var:oe_y7_toqto ?= 2 character:yua_toqto ?= { is_alive = no } } set_global_variable = { name = oe_y7_st_15 value = 2 } set_global_variable = { name = oe_y7_toqto value = 4 } }
+    # phase 2 (.16, .18): no Chaghan Temür at the Yuan court, or the window is over.
+    if = { limit = { oe_y7_lapse_16 = yes } set_global_variable = { name = oe_y7_st_16 value = 2 } debug_log = "oe_y7: event oe_y7.16 dropped" }
+    if = { limit = { oe_y7_lapse_18 = yes } set_global_variable = { name = oe_y7_st_18 value = 2 } debug_log = "oe_y7: event oe_y7.18 dropped" }
+    # phase 3, first batch (.25): Bolod Temür no longer at Datong, or the window is over.
+    if = { limit = { oe_y7_lapse_25 = yes } set_global_variable = { name = oe_y7_st_25 value = 2 } debug_log = "oe_y7: event oe_y7.25 dropped" }
+    # phase 3, second batch (.19): it cannot fire at the end of its window, or the window and its grace are over.
+    if = { limit = { oe_y7_lapse_19 = yes } set_global_variable = { name = oe_y7_st_19 value = 2 } debug_log = "oe_y7: event oe_y7.19 dropped" }
 }
 # Any scope. At most one event a month: a due event first (in the design's order), else one roll per open event. Nothing in a
 # month in which another Yuan line already sent the Yuan an event, but a due event waits at most two such months.
@@ -668,20 +815,32 @@ oe_y7_ev_pick = {
     if = { limit = { NOT = { has_global_variable = oe_y7_wait } } set_global_variable = { name = oe_y7_wait value = 0 } }
     if = {
         limit = { OR = { oe_y7_yuan_busy = no global_var:oe_y7_wait >= 2 } }
-        if = { limit = { oe_y7_due_12 = yes } set_global_variable = { name = oe_y7_pick value = 12 } }
+        if = { limit = { oe_y7_due_31 = yes } set_global_variable = { name = oe_y7_pick value = 31 } }
+        else_if = { limit = { oe_y7_due_32 = yes } set_global_variable = { name = oe_y7_pick value = 32 } }
+        else_if = { limit = { oe_y7_due_12 = yes } set_global_variable = { name = oe_y7_pick value = 12 } }
         else_if = { limit = { oe_y7_due_13 = yes } set_global_variable = { name = oe_y7_pick value = 13 } }
         else_if = { limit = { oe_y7_due_14 = yes } set_global_variable = { name = oe_y7_pick value = 14 } }
         else_if = { limit = { oe_y7_due_6 = yes } set_global_variable = { name = oe_y7_pick value = 6 } }
+        else_if = { limit = { oe_y7_due_17 = yes } set_global_variable = { name = oe_y7_pick value = 17 } }
         else_if = { limit = { oe_y7_due_7 = yes } set_global_variable = { name = oe_y7_pick value = 7 } }
         else_if = { limit = { oe_y7_due_8 = yes } set_global_variable = { name = oe_y7_pick value = 8 } }
         else_if = { limit = { oe_y7_due_15 = yes } set_global_variable = { name = oe_y7_pick value = 15 } }
         else_if = { limit = { oe_y7_due_1 = yes } set_global_variable = { name = oe_y7_pick value = 1 } }
+        else_if = { limit = { oe_y7_due_26 = yes } set_global_variable = { name = oe_y7_pick value = 26 } }
+        else_if = { limit = { oe_y7_due_27 = yes } set_global_variable = { name = oe_y7_pick value = 27 } }
+        else_if = { limit = { oe_y7_due_30 = yes } set_global_variable = { name = oe_y7_pick value = 30 } }
+        else_if = { limit = { oe_y7_due_28 = yes } set_global_variable = { name = oe_y7_pick value = 28 } }
+        else_if = { limit = { oe_y7_due_29 = yes } set_global_variable = { name = oe_y7_pick value = 29 } }
         else_if = { limit = { oe_y7_due_2 = yes } set_global_variable = { name = oe_y7_pick value = 2 } }
         else_if = { limit = { oe_y7_due_3 = yes } set_global_variable = { name = oe_y7_pick value = 3 } }
         else_if = { limit = { oe_y7_due_4 = yes } set_global_variable = { name = oe_y7_pick value = 4 } }
         else_if = { limit = { oe_y7_due_5 = yes } set_global_variable = { name = oe_y7_pick value = 5 } }
         else_if = { limit = { oe_y7_due_10 = yes } set_global_variable = { name = oe_y7_pick value = 10 } }
         else_if = { limit = { oe_y7_due_11 = yes } set_global_variable = { name = oe_y7_pick value = 11 } }
+        else_if = { limit = { oe_y7_due_16 = yes } set_global_variable = { name = oe_y7_pick value = 16 } }
+        else_if = { limit = { oe_y7_due_18 = yes } set_global_variable = { name = oe_y7_pick value = 18 } }
+        else_if = { limit = { oe_y7_due_25 = yes } set_global_variable = { name = oe_y7_pick value = 25 } }
+        else_if = { limit = { oe_y7_due_19 = yes } set_global_variable = { name = oe_y7_pick value = 19 } }
     }
     if = {
         limit = { global_var:oe_y7_pick = 0 oe_y7_yuan_busy = no }
@@ -691,6 +850,10 @@ oe_y7_ev_pick = {
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_5 = yes } random = { chance = oe_y7_ch_5 set_global_variable = { name = oe_y7_pick value = 5 } } }
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_10 = yes } random = { chance = oe_y7_ch_10 set_global_variable = { name = oe_y7_pick value = 10 } } }
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_11 = yes } random = { chance = oe_y7_ch_11 set_global_variable = { name = oe_y7_pick value = 11 } } }
+        if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_16 = yes } random = { chance = oe_y7_ch_16 set_global_variable = { name = oe_y7_pick value = 16 } } }
+        if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_18 = yes } random = { chance = oe_y7_ch_18 set_global_variable = { name = oe_y7_pick value = 18 } } }
+        if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_25 = yes } random = { chance = oe_y7_ch_25 set_global_variable = { name = oe_y7_pick value = 25 } } }
+        if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_19 = yes } random = { chance = oe_y7_ch_19 set_global_variable = { name = oe_y7_pick value = 19 } } }
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_9 = yes } random = { chance = 15 set_global_variable = { name = oe_y7_pick value = 9 } } }
     }
     if = { limit = { global_var:oe_y7_pick = 0 oe_y7_yuan_busy = yes oe_y7_any_due = yes } change_global_variable = { name = oe_y7_wait add = 1 } }
@@ -709,6 +872,18 @@ oe_y7_ev_pick = {
     else_if = { limit = { global_var:oe_y7_pick = 13 } oe_y7_fire_13 = yes }
     else_if = { limit = { global_var:oe_y7_pick = 14 } oe_y7_fire_14 = yes }
     else_if = { limit = { global_var:oe_y7_pick = 15 } oe_y7_fire_15 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 16 } oe_y7_fire_16 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 17 } oe_y7_fire_17 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 18 } oe_y7_fire_18 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 25 } oe_y7_fire_25 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 26 } oe_y7_fire_26 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 27 } oe_y7_fire_27 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 19 } oe_y7_fire_19 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 28 } oe_y7_fire_28 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 29 } oe_y7_fire_29 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 30 } oe_y7_fire_30 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 31 } oe_y7_fire_31 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 32 } oe_y7_fire_32 = yes }
 }
 
 # BYZ scope (any scope works), monthly: called by the main-line scheduler (gen_mainline_lock.py, LINES id 21 "y7") while
@@ -727,12 +902,16 @@ oe_y7_monthly = {
                 limit = { has_global_variable = oe_y7_on global_var:oe_y7_phase >= 1 global_var:oe_y7_phase <= 3 }
                 if = { limit = { global_var:oe_y7_st_1 ?= 1 } oe_y7_meters = yes oe_y7_seats = yes oe_y7_garrisons = yes }
                 oe_y7_campaign = yes
+                oe_y7_c3_step = yes
                 oe_y7_ev_lapse = yes
                 oe_y7_ev_pick = yes
             }
         }
         if = { limit = { has_global_variable = oe_dbg_n_y1 } set_global_variable = { name = oe_y7_y1n value = global_var:oe_dbg_n_y1 } }
     }
+    # phase 3, third batch: the epilogue (from the month after the line closed at 1368.1.1; design 3.8). The scheduler calls this
+    # effect in the epilogue only once its LINES row 21 also accepts oe_y7_epi (hook A of y7-sup3c).
+    else_if = { limit = { has_global_variable = oe_y7_epi } oe_y7_epi_step = yes }
 }
 
 # ---------------------------------------------------------------- worker jobs (hidden event oe_y7.20, CHI scope)
@@ -758,7 +937,8 @@ oe_y7_job_touxia = {
 oe_y7_job_militia = {
     if = {
         limit = { NOT = { exists = character:oe_y7_chaghan } }
-        create_character = { first_name = oe_y7_name_4 culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1325.1.1 adm = 60 dip = 55 mil = 80 script = oe_y7_chaghan }
+        if = { limit = { current_date >= 1341.1.1 } create_character = { first_name = oe_y7_name_4 culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1325.1.1 adm = 60 dip = 55 mil = 80 script = oe_y7_chaghan } }
+        else = { create_character = { first_name = oe_y7_name_4 culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no age = 30 adm = 60 dip = 55 mil = 80 script = oe_y7_chaghan } }
         character:oe_y7_chaghan ?= { add_character_modifier = { modifier = oe_y7_title_chaghan years = -1 mode = replace } set_variable = { name = oe_y7_who value = 4 } }
     }
     if = { limit = { exists = character:oe_y7_chaghan } set_global_variable = { name = oe_y7_c_4 value = character:oe_y7_chaghan } }
@@ -936,11 +1116,20 @@ oe_y7_job_return = {
     }
     if = { limit = { has_global_variable = oe_y7_seat_n } remove_global_variable = oe_y7_seat_n }
 }
+# .16 a: the Bianliang campaign (8 months), mustered near Bianliang under Chaghan Temür (without a commander if the
+# general died or left the Yuan court between the event and the answer).
+oe_y7_job_bianliang = {
+    oe_y7_start_camp = { n = 3 }
+    change_global_variable = { name = oe_y7_campend add = 2 }
+    if = { limit = { character:oe_y7_chaghan ?= { is_alive = yes owner ?= c:CHI } } location:kaifeng = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_lc = yes oe_y7_u_lc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_chaghan } } debug_log = "oe_y7: 8 regiments (bl) raised for the Yuan" } }
+    else = { location:kaifeng = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_lc = yes oe_y7_u_lc = yes } debug_log = "oe_y7: 8 regiments (bl) raised for the Yuan" } }
+}
 
 # ---------------------------------------------------------------- test helpers (dev page buttons; any scope)
 # Clears every global of this line and every modifier it set (not opinions, not characters).
 oe_y7_test_clear = {
     oe_y7_strip = yes
+    oe_y7_strip_dadu = yes
     if = { limit = { has_global_variable = oe_y7_init } remove_global_variable = oe_y7_init }
     if = { limit = { has_global_variable = oe_y7_on } remove_global_variable = oe_y7_on }
     if = { limit = { has_global_variable = oe_y7_phase } remove_global_variable = oe_y7_phase }
@@ -996,6 +1185,8 @@ oe_y7_test_clear = {
     if = { limit = { has_global_variable = oe_y7_y1n } remove_global_variable = oe_y7_y1n }
     if = { limit = { has_global_variable = oe_y7_tmp } remove_global_variable = oe_y7_tmp }
     if = { limit = { has_global_variable = oe_dbg_n_y7 } remove_global_variable = oe_dbg_n_y7 }
+    if = { limit = { has_global_variable = oe_y7_opp3 } remove_global_variable = oe_y7_opp3 }
+    if = { limit = { has_global_variable = oe_y7_bl } remove_global_variable = oe_y7_bl }
     if = { limit = { has_global_variable = oe_y7_st_1 } remove_global_variable = oe_y7_st_1 }
     if = { limit = { has_global_variable = oe_y7_st_2 } remove_global_variable = oe_y7_st_2 }
     if = { limit = { has_global_variable = oe_y7_st_3 } remove_global_variable = oe_y7_st_3 }
@@ -1008,6 +1199,12 @@ oe_y7_test_clear = {
     if = { limit = { has_global_variable = oe_y7_st_13 } remove_global_variable = oe_y7_st_13 }
     if = { limit = { has_global_variable = oe_y7_st_14 } remove_global_variable = oe_y7_st_14 }
     if = { limit = { has_global_variable = oe_y7_st_15 } remove_global_variable = oe_y7_st_15 }
+    if = { limit = { has_global_variable = oe_y7_st_16 } remove_global_variable = oe_y7_st_16 }
+    if = { limit = { has_global_variable = oe_y7_st_17 } remove_global_variable = oe_y7_st_17 }
+    if = { limit = { has_global_variable = oe_y7_st_18 } remove_global_variable = oe_y7_st_18 }
+    if = { limit = { has_global_variable = oe_y7_st_25 } remove_global_variable = oe_y7_st_25 }
+    if = { limit = { has_global_variable = oe_y7_st_26 } remove_global_variable = oe_y7_st_26 }
+    if = { limit = { has_global_variable = oe_y7_st_27 } remove_global_variable = oe_y7_st_27 }
     if = { limit = { has_global_variable = oe_y7_ps_1 } remove_global_variable = oe_y7_ps_1 }
     if = { limit = { has_global_variable = oe_y7_pl_1 } remove_global_variable = oe_y7_pl_1 }
     if = { limit = { has_global_variable = oe_y7_ph_1 } remove_global_variable = oe_y7_ph_1 }
@@ -1022,7 +1219,40 @@ oe_y7_test_clear = {
     if = { limit = { has_global_variable = oe_y7_c_3 } remove_global_variable = oe_y7_c_3 }
     if = { limit = { has_global_variable = oe_y7_c_4 } remove_global_variable = oe_y7_c_4 }
     if = { limit = { has_global_variable = oe_y7_c_5 } remove_global_variable = oe_y7_c_5 }
+    if = { limit = { has_global_variable = oe_y7_c3_m0 } remove_global_variable = oe_y7_c3_m0 }
+    if = { limit = { has_global_variable = oe_y7_sway } remove_global_variable = oe_y7_sway }
+    if = { limit = { has_global_variable = oe_y7_bolod } remove_global_variable = oe_y7_bolod }
+    if = { limit = { has_global_variable = oe_y7_bolod_nohead } remove_global_variable = oe_y7_bolod_nohead }
+    if = { limit = { has_global_variable = oe_y7_w1_open } remove_global_variable = oe_y7_w1_open }
+    if = { limit = { has_global_variable = oe_y7_w1_m } remove_global_variable = oe_y7_w1_m }
+    if = { limit = { has_global_variable = oe_y7_d25b } remove_global_variable = oe_y7_d25b }
+    if = { limit = { has_global_variable = oe_y7_d_26 } remove_global_variable = oe_y7_d_26 }
+    if = { limit = { has_global_variable = oe_y7_d_27 } remove_global_variable = oe_y7_d_27 }
+    if = { limit = { has_global_variable = oe_y7_d_28 } remove_global_variable = oe_y7_d_28 }
+    if = { limit = { has_global_variable = oe_y7_c_6 } remove_global_variable = oe_y7_c_6 }
+    if = { limit = { has_global_variable = oe_y7_koke } remove_global_variable = oe_y7_koke }
+    if = { limit = { has_global_variable = oe_y7_st_28 } remove_global_variable = oe_y7_st_28 }
+    if = { limit = { has_global_variable = oe_y7_st_29 } remove_global_variable = oe_y7_st_29 }
+    if = { limit = { has_global_variable = oe_y7_st_30 } remove_global_variable = oe_y7_st_30 }
+    if = { limit = { has_global_variable = oe_y7_st_19 } remove_global_variable = oe_y7_st_19 }
+    if = { limit = { has_global_variable = oe_y7_guanzhong } remove_global_variable = oe_y7_guanzhong }
+    if = { limit = { has_global_variable = oe_y7_d_29 } remove_global_variable = oe_y7_d_29 }
+    if = { limit = { has_global_variable = oe_y7_d_30 } remove_global_variable = oe_y7_d_30 }
+    if = { limit = { has_global_variable = oe_y7_w2 } remove_global_variable = oe_y7_w2 }
+    if = { limit = { has_global_variable = oe_y7_st_31 } remove_global_variable = oe_y7_st_31 }
+    if = { limit = { has_global_variable = oe_y7_st_32 } remove_global_variable = oe_y7_st_32 }
+    if = { limit = { has_global_variable = oe_y7_huai } remove_global_variable = oe_y7_huai }
+    if = { limit = { has_global_variable = oe_y7_dadu } remove_global_variable = oe_y7_dadu }
+    if = { limit = { has_global_variable = oe_y7_press } remove_global_variable = oe_y7_press }
+    if = { limit = { has_global_variable = oe_y7_lost } remove_global_variable = oe_y7_lost }
+    if = { limit = { has_global_variable = oe_y7_calm } remove_global_variable = oe_y7_calm }
+    if = { limit = { has_global_variable = oe_y7_fall } remove_global_variable = oe_y7_fall }
+    if = { limit = { has_global_variable = oe_y7_epi } remove_global_variable = oe_y7_epi }
+    if = { limit = { has_global_variable = oe_y7_epi_end } remove_global_variable = oe_y7_epi_end }
+    if = { limit = { has_global_variable = oe_y7_t_press } remove_global_variable = oe_y7_t_press }
+    if = { limit = { has_global_variable = oe_y7_t_fall } remove_global_variable = oe_y7_t_fall }
     c:CHI ?= { if = { limit = { has_variable = oe_y7_job } remove_variable = oe_y7_job } if = { limit = { has_variable = oe_y7_dw } remove_variable = oe_y7_dw } }
+    c:CHI ?= { if = { limit = { has_variable = oe_y7_win26 } remove_variable = oe_y7_win26 } }
 }
 # The line from now on in any game: phase 1 at once if the situation runs (.1 next month), else waiting (phase 0).
 oe_y7_test_start = {
@@ -1062,12 +1292,694 @@ oe_y7_test_fire_12 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } 
 oe_y7_test_fire_13 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_13 = yes }
 oe_y7_test_fire_14 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_14 = yes }
 oe_y7_test_fire_15 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_15 = yes }
+oe_y7_test_fire_16 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_16 = yes }
+oe_y7_test_fire_17 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_17 = yes }
+oe_y7_test_fire_18 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_18 = yes }
+oe_y7_test_fire_25 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_25 = yes }
+oe_y7_test_fire_26 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_26 = yes }
+oe_y7_test_fire_27 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_27 = yes }
+oe_y7_test_fire_19 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_19 = yes }
+oe_y7_test_fire_28 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_28 = yes }
+oe_y7_test_fire_29 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_29 = yes }
+oe_y7_test_fire_30 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_30 = yes }
+oe_y7_test_fire_31 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_31 = yes }
+oe_y7_test_fire_32 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_32 = yes }
 
+# Usage: oe_y7_test_bl = { ok = 1|0 }: the Bianliang campaign counts as decided now (1 won, 0 lost) and its outcome event
+# (.17) goes to the Yuan.
+oe_y7_test_bl = {
+    if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } }
+    set_global_variable = { name = oe_y7_camp value = 3 }
+    set_global_variable = { name = oe_y7_camp_ok value = $ok$ }
+    set_global_variable = oe_y7_camp_done
+    if = { limit = { has_global_variable = oe_y7_st_17 } remove_global_variable = oe_y7_st_17 }
+    oe_y7_fire_17 = yes
+}
 # Switches the line off and clears it (the next scheduler round finds it initialised and leaves it off).
 oe_y7_test_reset = {
     oe_y7_test_clear = yes
     set_global_variable = oe_y7_init
     debug_log = "oe_y7 TEST: line reset and off"
+}
+
+# ---------------------------------------------------------------- phase 3, first batch "孛罗之乱" (v6.6 y7-sup3a)
+# CHI scope. The ONLY place Bolod Temür is made (brief B7: one effect, so a later change of the form touches one place).
+# Every read of the character elsewhere is behind ?= or exists = character:oe_y7_bolod.
+oe_y7_make_bolod = {
+    if = {
+        limit = { NOT = { exists = character:oe_y7_bolod } }
+        if = { limit = { current_date >= 1344.1.1 } create_character = { first_name = oe_y7_name_6 culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1328.1.1 adm = 45 dip = 35 mil = 75 script = oe_y7_bolod } }
+        else = { create_character = { first_name = oe_y7_name_6 culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no age = 30 adm = 45 dip = 35 mil = 75 script = oe_y7_bolod } }
+        character:oe_y7_bolod ?= { add_character_modifier = { modifier = oe_y7_title_bolod years = -1 mode = replace } set_variable = { name = oe_y7_who value = 6 } }
+    }
+    if = { limit = { exists = character:oe_y7_bolod } set_global_variable = { name = oe_y7_c_6 value = character:oe_y7_bolod } }
+}
+# Any scope. The first batch is void from here on: every one of .25-.27 still pending is dropped.
+oe_y7_void_b1 = {
+    if = { limit = { NOT = { has_global_variable = oe_y7_st_25 } } set_global_variable = { name = oe_y7_st_25 value = 2 } }
+    if = { limit = { NOT = { has_global_variable = oe_y7_st_26 } } set_global_variable = { name = oe_y7_st_26 value = 2 } }
+    if = { limit = { NOT = { has_global_variable = oe_y7_st_27 } } set_global_variable = { name = oe_y7_st_27 value = 2 } }
+}
+# CHI scope. World step W-1 (design 3.6): Bolod Temür at Datong with 4 regiments under Bolod Temür; no popup, no
+# oe_yuan_ev_m. oe_y7_bolod 9 when the character cannot be made or read back (the first batch is then void).
+oe_y7_w1_fx = {
+    oe_y7_make_bolod = yes
+    set_global_variable = { name = oe_y7_w1_m value = global_var:oe_y7_m }
+    if = {
+        limit = { oe_y7_bolod_ok = yes }
+        set_global_variable = { name = oe_y7_bolod value = 1 }
+        location:datong_datong = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc = yes oe_y7_u_lc = yes oe_y7_u_hc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_bolod } } debug_log = "oe_y7: 4 regiments (bolod) raised for the Yuan" }
+        debug_log = "oe_y7: W-1 Bolod Temür at Datong (oe_y7_bolod 1)"
+    }
+    else = {
+        set_global_variable = { name = oe_y7_bolod value = 9 }
+        oe_y7_void_b1 = yes
+        debug_log = "oe_y7: W-1 could not make or read back Bolod Temür (oe_y7_bolod 9); the first batch is void"
+    }
+}
+# Any scope, monthly until W-1 has happened. Its window opens the first month its conditions hold; it is rolled
+# 100 / months left and sure at oe_y7_w1_hi; from month 345 (1366.1) without it the first batch is void.
+oe_y7_w1_step = {
+    if = {
+        limit = { oe_y7_w1_can = yes }
+        if = {
+            limit = { NOT = { has_global_variable = oe_y7_w1_open } }
+            set_global_variable = { name = oe_y7_w1_open value = global_var:oe_y7_m }
+            debug_log = "oe_y7: W-1 window open"
+        }
+        if = { limit = { global_var:oe_y7_m >= oe_y7_w1_hi } set_global_variable = { name = oe_y7_tmp value = 1 } }
+        else = { random = { chance = oe_y7_w1_ch set_global_variable = { name = oe_y7_tmp value = 1 } } }
+        if = { limit = { global_var:oe_y7_tmp ?= 1 } c:CHI ?= { oe_y7_w1_fx = yes } }
+        if = { limit = { has_global_variable = oe_y7_tmp } remove_global_variable = oe_y7_tmp }
+    }
+    else_if = {
+        limit = { global_var:oe_y7_m >= 345 }
+        oe_y7_void_b1 = yes
+        debug_log = "oe_y7: W-1 never came; the first batch is void"
+    }
+}
+# Any scope. Bolod Temür has died or is no longer at the Yuan court, or no longer heads the cabinet while in power (3, 7):
+# the line's modifiers on Bolod Temür's rule go, vanilla's dictator modifier too when Bolod Temür held it and Toqto'a is
+# not in charge; state 4 (dead) or 5 (gone); from state 3 the second batch's .28 is still scheduled.
+oe_y7_bolod_gone = {
+    if = {
+        limit = { OR = { global_var:oe_y7_bolod ?= 3 global_var:oe_y7_bolod ?= 7 } }
+        c:CHI ?= { if = { limit = { has_country_modifier = oe_y7_bolod_regime } remove_country_modifier = oe_y7_bolod_regime } if = { limit = { has_country_modifier = oe_y7_bolod_command } remove_country_modifier = oe_y7_bolod_command } if = { limit = { NOT = { has_global_variable = oe_y7_bolod_nohead } has_country_modifier = yua_dictator_powers oe_y7_toqto_in_charge = no } remove_country_modifier = yua_dictator_powers } }
+        if = { limit = { global_var:oe_y7_bolod ?= 3 } set_global_variable = { name = oe_y7_d_28 value = global_var:oe_y7_m } change_global_variable = { name = oe_y7_d_28 add = 3 } }
+    }
+    oe_y7_void_b1 = yes
+    if = {
+        limit = { character:oe_y7_bolod ?= { is_alive = yes } }
+        set_global_variable = { name = oe_y7_bolod value = 5 }
+        debug_log = "oe_y7: Bolod Temür has left the court or the cabinet (oe_y7_bolod 5)"
+    }
+    else = {
+        set_global_variable = { name = oe_y7_bolod value = 4 }
+        debug_log = "oe_y7: Bolod Temür is dead (oe_y7_bolod 4)"
+    }
+    if = { limit = { has_global_variable = oe_y7_bolod_nohead } remove_global_variable = oe_y7_bolod_nohead }
+}
+# Any scope. Bolod Temür stays at Datong for good (24 months after .25 b, or .25 dropped): state 5; .28 scheduled.
+oe_y7_bolod_stays = {
+    set_global_variable = { name = oe_y7_bolod value = 5 }
+    oe_y7_void_b1 = yes
+    set_global_variable = { name = oe_y7_d_28 value = global_var:oe_y7_m }
+    debug_log = "oe_y7: Bolod Temür stays at Datong (oe_y7_bolod 5)"
+}
+# Any scope, monthly in phases 1-3 after the campaigns (design 3.9): the first month seen in phase 2; the one share of
+# oe_y7_general_sway that .17 a gave before this check existed; W-1; Bolod Temür dead or gone; .25 b's 24 months.
+oe_y7_c3_step = {
+    if = {
+        limit = { global_var:oe_y7_phase = 2 NOT = { has_global_variable = oe_y7_c3_m0 } }
+        set_global_variable = { name = oe_y7_c3_m0 value = global_var:oe_y7_m }
+        debug_log = "oe_y7: phase 3 checks begin (oe_y7_c3_m0)"
+    }
+    if = {
+        limit = { NOT = { has_global_variable = oe_y7_sway } country_exists = c:CHI c:CHI = { has_country_modifier = oe_y7_general_sway } }
+        set_global_variable = { name = oe_y7_sway value = 1 }
+    }
+    if = { limit = { NOT = { has_global_variable = oe_y7_bolod } NOT = { has_global_variable = oe_y7_st_25 } } oe_y7_w1_step = yes }
+    if = {
+        limit = {
+            OR = { global_var:oe_y7_bolod ?= 1 global_var:oe_y7_bolod ?= 2 global_var:oe_y7_bolod ?= 3 global_var:oe_y7_bolod ?= 6 global_var:oe_y7_bolod ?= 7 }
+            OR = {
+                NOT = { oe_y7_bolod_ok = yes }
+                AND = { OR = { global_var:oe_y7_bolod ?= 3 global_var:oe_y7_bolod ?= 7 } NOT = { has_global_variable = oe_y7_bolod_nohead } NOT = { oe_y7_bolod_head = yes } }
+            }
+        }
+        oe_y7_bolod_gone = yes
+    }
+    if = {
+        limit = { global_var:oe_y7_bolod ?= 1 OR = { global_var:oe_y7_st_25 ?= 2 AND = { has_global_variable = oe_y7_d25b global_var:oe_y7_m >= oe_y7_d25b_end } } }
+        oe_y7_bolod_stays = yes
+    }
+    oe_y7_c3b_step = yes
+    oe_y7_c3c_step = yes
+}
+# Any scope. Usage: oe_y7_sway_add = { n = N }: the shares of oe_y7_general_sway (global var oe_y7_sway) change by N, kept
+# in 0-3, and the modifier is applied again (design 3.4; one share counted when .17 a gave it before).
+oe_y7_sway_add = {
+    if = {
+        limit = { NOT = { has_global_variable = oe_y7_sway } }
+        set_global_variable = { name = oe_y7_sway value = 0 }
+        if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = oe_y7_general_sway } } set_global_variable = { name = oe_y7_sway value = 1 } }
+    }
+    change_global_variable = { name = oe_y7_sway add = $n$ }
+    clamp_global_variable = { name = oe_y7_sway min = 0 max = 3 }
+    oe_y7_apply_sway = yes
+}
+# Any scope. oe_y7_general_sway at its number of shares: none at 0; one share is word for word what .17 a adds.
+oe_y7_apply_sway = {
+    c:CHI ?= {
+        if = { limit = { has_country_modifier = oe_y7_general_sway } remove_country_modifier = oe_y7_general_sway }
+        if = { limit = { global_var:oe_y7_sway ?= 1 } add_country_modifier = { modifier = oe_y7_general_sway years = -1 mode = replace } }
+        else_if = { limit = { global_var:oe_y7_sway ?= 2 } add_country_modifier = { modifier = oe_y7_general_sway years = -1 mode = replace size = 2 } }
+        else_if = { limit = { global_var:oe_y7_sway ?= 3 } add_country_modifier = { modifier = oe_y7_general_sway years = -1 mode = replace size = 3 } }
+    }
+}
+# CHI scope (.26 a; .26 b when the gates fail). Bolod Temür enters the capital (design 3.6, job 22): vanilla's dictator
+# effect (into the cabinet as its head; the old head steps down) unless Toqto'a is back in charge (then only this line's
+# modifier); Bolod Temür gives up the field command first.
+oe_y7_bolod_enter = {
+    if = { limit = { exists = scope:oe_y7_b6 } clear_saved_scope = oe_y7_b6 }
+    character:oe_y7_bolod ?= { if = { limit = { is_alive = yes } save_scope_as = oe_y7_b6 } }
+    if = {
+        limit = { exists = scope:oe_y7_b6 oe_y7_toqto_in_charge = no }
+        scope:oe_y7_b6 = { remove_commander = this }
+        # r21 (2026-11-20, seen in game): vanilla's effect only fills an OPEN cabinet seat, and the Yuan's cabinet was
+        # full (5 of 5): Bolod Temür was not appointed. So where no seat is open, one member who is not the head
+        # leaves the cabinet first (vanilla: remove_from_cabinet, country scope).
+        if = {
+            limit = { NOT = { any_cabinet = { NOT = { exists = cabinet_member } } } }
+            if = { limit = { exists = scope:oe_y7_seat } clear_saved_scope = oe_y7_seat }
+            random_cabinet_character = { limit = { NOT = { has_character_modifier = head_of_the_cabinet_modifier } NOT = { this = scope:oe_y7_b6 } } save_scope_as = oe_y7_seat }
+            if = { limit = { exists = scope:oe_y7_seat } remove_from_cabinet = scope:oe_y7_seat }
+        }
+        yua_appoint_as_dictator = { target = scope:oe_y7_b6 }
+        if = { limit = { has_global_variable = oe_y7_bolod_nohead } remove_global_variable = oe_y7_bolod_nohead }
+        # The self-check: if he still did not get the seat, he rules through this line's modifier only, and the
+        # monthly check must not read "not the head" as his leaving.
+        if = { limit = { NOT = { oe_y7_bolod_head = yes } } set_global_variable = oe_y7_bolod_nohead }
+    }
+    else = {
+        set_global_variable = oe_y7_bolod_nohead
+        debug_log = "oe_y7: Bolod Temür in the capital without the cabinet (Toqto'a in charge)"
+    }
+    add_country_modifier = { modifier = oe_y7_bolod_regime years = -1 mode = replace }
+    add_stability = stability_mild_penalty
+    add_legitimacy = legitimacy_mild_penalty
+    oe_y7_add_bonus = { amount = -6 }
+    oe_y7_sway_add = { n = 1 }
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = -25 } add_opinion = { modifier = oe_y7_bias_estranged target = c:CHI } } }
+    oe_yw_change_loyalty_all = { amount = -2 }
+    set_global_variable = { name = oe_y7_bolod value = 3 }
+    set_global_variable = { name = oe_y7_d_27 value = global_var:oe_y7_m } change_global_variable = { name = oe_y7_d_27 add = 12 }
+    debug_log = "oe_y7: Bolod Temür enters the capital (oe_y7_bolod 3)"
+}
+# ---- worker jobs 20-27 (hidden event oe_y7.20, CHI scope)
+# .25 a / b: Köke Temür's allegiance.
+oe_y7_job_b25a = {
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = 10 } } }
+}
+oe_y7_job_b25b = {
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = -10 } } }
+}
+# .26 a: the entry.
+oe_y7_job_b26a = {
+    if = { limit = { oe_y7_bolod_ok = yes } oe_y7_bolod_enter = yes }
+}
+# .26 b: one roll with the chance fixed when .26 was sent: turned back (state 6), or the entry with more losses.
+oe_y7_job_b26b = {
+    if = {
+        limit = { oe_y7_bolod_ok = yes }
+        random = { chance = oe_y7_win26_now set_global_variable = { name = oe_y7_tmp value = 1 } }
+        if = {
+            limit = { global_var:oe_y7_tmp ?= 1 }
+            set_global_variable = { name = oe_y7_bolod value = 6 }
+            set_global_variable = { name = oe_y7_d_27 value = global_var:oe_y7_m } change_global_variable = { name = oe_y7_d_27 add = 9 }
+            oe_y7_add_bonus = { amount = 4 }
+            if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = 15 } } }
+            debug_log = "oe_y7: the gates held; Bolod Temür beaten back to Datong (oe_y7_bolod 6)"
+        }
+        else = {
+            oe_y7_bolod_enter = yes
+            add_stability = stability_mild_penalty
+            every_unit = { limit = { is_navy = no } damage_unit_morale_percent = 0.3 }
+            debug_log = "oe_y7: the gates did not hold"
+        }
+        if = { limit = { has_global_variable = oe_y7_tmp } remove_global_variable = oe_y7_tmp }
+    }
+}
+# .27 a: Bolod Temür killed by the emperor's secret order.
+oe_y7_job_b27a = {
+    if = { limit = { character:oe_y7_bolod ?= { is_alive = yes } } kill_character_silently = { target = character:oe_y7_bolod } }
+    if = { limit = { NOT = { has_global_variable = oe_y7_bolod_nohead } has_country_modifier = yua_dictator_powers oe_y7_toqto_in_charge = no } remove_country_modifier = yua_dictator_powers }
+    if = { limit = { has_country_modifier = oe_y7_bolod_regime } remove_country_modifier = oe_y7_bolod_regime }
+    set_global_variable = { name = oe_y7_bolod value = 4 }
+    if = { limit = { has_global_variable = oe_y7_bolod_nohead } remove_global_variable = oe_y7_bolod_nohead }
+    oe_y7_sway_add = { n = -1 }
+    oe_y7_add_bonus = { amount = 4 }
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = 30 } add_opinion = { modifier = oe_y7_bias_trusted target = c:CHI } } }
+    oe_yw_change_loyalty_all = { amount = 2 }
+    set_global_variable = { name = oe_y7_d_28 value = global_var:oe_y7_m } change_global_variable = { name = oe_y7_d_28 add = 3 }
+    debug_log = "oe_y7: Bolod Temür killed (oe_y7_bolod 4)"
+}
+# .27 b: Bolod Temür kept in power, commanding all the armies; Köke Temür estranged, the second batch void.
+oe_y7_job_b27b = {
+    set_global_variable = { name = oe_y7_bolod value = 7 }
+    add_country_modifier = { modifier = oe_y7_bolod_command years = -1 mode = replace }
+    oe_y7_sway_add = { n = 1 }
+    oe_y7_add_bonus = { amount = -4 }
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = -40 } add_opinion = { modifier = oe_y7_bias_estranged target = c:CHI } } }
+    if = { limit = { NOT = { has_global_variable = oe_y7_st_28 } } set_global_variable = { name = oe_y7_st_28 value = 2 } }
+    if = { limit = { NOT = { has_global_variable = oe_y7_st_29 } } set_global_variable = { name = oe_y7_st_29 value = 2 } }
+    if = { limit = { NOT = { has_global_variable = oe_y7_st_30 } } set_global_variable = { name = oe_y7_st_30 value = 2 } }
+    set_global_variable = { name = oe_y7_koke value = 5 }
+    debug_log = "oe_y7: Bolod Temür kept in power (oe_y7_bolod 7)"
+}
+# .27 c: spared, the command and the cabinet taken away for good.
+oe_y7_job_b27c = {
+    character:oe_y7_bolod ?= {
+        if = {
+            limit = { is_alive = yes }
+            remove_commander = this
+            add_character_modifier = { modifier = permanently_banned_from_cabinet days = -1 mode = add_and_extend }
+        }
+    }
+    set_global_variable = { name = oe_y7_bolod value = 5 }
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = 10 } } }
+    set_global_variable = { name = oe_y7_d_28 value = global_var:oe_y7_m } change_global_variable = { name = oe_y7_d_28 add = 3 }
+    debug_log = "oe_y7: Bolod Temür spared and stripped (oe_y7_bolod 5)"
+}
+# .27 d: Bolod Temür put to death.
+oe_y7_job_b27d = {
+    if = { limit = { character:oe_y7_bolod ?= { is_alive = yes } } kill_character_silently = { target = character:oe_y7_bolod } }
+    set_global_variable = { name = oe_y7_bolod value = 4 }
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = 20 } } }
+    set_global_variable = { name = oe_y7_d_28 value = global_var:oe_y7_m } change_global_variable = { name = oe_y7_d_28 add = 3 }
+    debug_log = "oe_y7: Bolod Temür put to death (oe_y7_bolod 4)"
+}
+# ---- TEST ONLY (test page 24, buttons y73*; any scope)
+# W-1 now, whatever the date and phase (needs the Yuan holding Datong); .25-.27 pending again.
+oe_y7_test_w1 = {
+    if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } }
+    if = {
+        limit = { country_exists = c:CHI location:datong_datong = { owner ?= c:CHI controller ?= c:CHI } }
+        if = { limit = { has_global_variable = oe_y7_st_25 } remove_global_variable = oe_y7_st_25 }
+        if = { limit = { has_global_variable = oe_y7_st_26 } remove_global_variable = oe_y7_st_26 }
+        if = { limit = { has_global_variable = oe_y7_st_27 } remove_global_variable = oe_y7_st_27 }
+        c:CHI = { oe_y7_w1_fx = yes }
+    }
+    else = { debug_log = "oe_y7 TEST: the Yuan does not hold Datong; no W-1" }
+}
+# Bolod Temür enters the capital now (job 22; .25 and .26 count as sent; .27 can be fired at once with y73fire27).
+oe_y7_test_in = {
+    if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } }
+    if = {
+        limit = { oe_y7_bolod_ok = yes }
+        set_global_variable = { name = oe_y7_st_25 value = 1 }
+        set_global_variable = { name = oe_y7_st_26 value = 1 }
+        if = { limit = { has_global_variable = oe_y7_st_27 } remove_global_variable = oe_y7_st_27 }
+        c:CHI = { oe_y7_bolod_enter = yes }
+    }
+    else = { debug_log = "oe_y7 TEST: Bolod Temür is not at the Yuan court (y73w1 first)" }
+}
+# Bolod Temür beaten back to Datong now (state 6; .27 due at once).
+oe_y7_test_back = {
+    if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } }
+    if = {
+        limit = { oe_y7_bolod_ok = yes }
+        set_global_variable = { name = oe_y7_st_25 value = 1 }
+        set_global_variable = { name = oe_y7_st_26 value = 1 }
+        if = { limit = { has_global_variable = oe_y7_st_27 } remove_global_variable = oe_y7_st_27 }
+        set_global_variable = { name = oe_y7_bolod value = 6 }
+        set_global_variable = { name = oe_y7_d_27 value = global_var:oe_y7_m }
+        debug_log = "oe_y7 TEST: Bolod Temür beaten back to Datong (oe_y7_bolod 6)"
+    }
+    else = { debug_log = "oe_y7 TEST: Bolod Temür is not at the Yuan court (y73w1 first)" }
+}
+
+# ---------------------------------------------------------------- phase 3, second batch "河南王与关中" (v6.6 y7-sup3b)
+# Any scope, monthly at the end of oe_y7_c3_step (design 3.7): Köke Temür out of case 甲 and 乙 after .28 (dead, gone from
+# the court, CKO gone or at war with the Yuan): state 5, .29 and .30 dropped. .28 come due without Köke Temür in case 甲 or
+# 乙: dropped with .29 and .30 (state 5).
+oe_y7_c3b_step = {
+    if = {
+        limit = { OR = { global_var:oe_y7_koke ?= 1 global_var:oe_y7_koke ?= 2 global_var:oe_y7_koke ?= 3 } oe_y7_koke_any = no }
+        set_global_variable = { name = oe_y7_koke value = 5 }
+        if = { limit = { NOT = { has_global_variable = oe_y7_st_29 } } set_global_variable = { name = oe_y7_st_29 value = 2 } }
+        if = { limit = { NOT = { has_global_variable = oe_y7_st_30 } } set_global_variable = { name = oe_y7_st_30 value = 2 } }
+        debug_log = "oe_y7: Köke Temür is dead, gone or at war with the Yuan (oe_y7_koke 5)"
+    }
+    if = {
+        limit = { NOT = { has_global_variable = oe_y7_st_28 } oe_y7_28_ready = yes oe_y7_koke_any = no }
+        if = { limit = { NOT = { has_global_variable = oe_y7_st_28 } } set_global_variable = { name = oe_y7_st_28 value = 2 } }
+        if = { limit = { NOT = { has_global_variable = oe_y7_st_29 } } set_global_variable = { name = oe_y7_st_29 value = 2 } }
+        if = { limit = { NOT = { has_global_variable = oe_y7_st_30 } } set_global_variable = { name = oe_y7_st_30 value = 2 } }
+        if = { limit = { NOT = { has_global_variable = oe_y7_koke } } set_global_variable = { name = oe_y7_koke value = 5 } }
+        debug_log = "oe_y7: event oe_y7.28 dropped (no Köke Temür ruling CKO or at the Yuan court; .29 and .30 with it)"
+    }
+}
+# Any scope. World step W-2 (design 3.7, after .29 a): Köke Temür's CKO and Li Siqi's CSI, both AI, nobody's subjects and
+# not at war with each other, get oe_y7_bias_feud towards each other (-100 for 60 months). No war, no casus belli.
+# Global var oe_y7_w2: 1 done, 2 not possible.
+oe_y7_w2_fx = {
+    if = {
+        limit = { oe_y7_w2_can = yes }
+        c:CKO = { add_opinion = { modifier = oe_y7_bias_feud target = c:CSI } }
+        c:CSI = { add_opinion = { modifier = oe_y7_bias_feud target = c:CKO } }
+        set_global_variable = { name = oe_y7_w2 value = 1 }
+        debug_log = "oe_y7: W-2 CKO and CSI at feud (oe_y7_w2 1)"
+    }
+    else = {
+        set_global_variable = { name = oe_y7_w2 value = 2 }
+        debug_log = "oe_y7: W-2 not possible (CKO or CSI gone, a player's, a subject, or at war with each other; oe_y7_w2 2)"
+    }
+}
+# ---- worker jobs 28-35 (hidden event oe_y7.20, CHI scope)
+# .28 a: Köke Temür made Prince of Henan: one share more; case 甲 allegiance and trust; case 乙 the title, and a Yuan army
+# without a commander at the Yuan's controlled location nearest Bianliang (Kaifeng), if Köke Temür leads none.
+oe_y7_job_c28a = {
+    oe_y7_sway_add = { n = 1 }
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = 40 } add_opinion = { modifier = oe_y7_bias_trusted target = c:CHI } } }
+    if = {
+        limit = { oe_y7_koke_court = yes }
+        character:cko_temur_koke ?= { add_character_modifier = { modifier = oe_y7_title_henan years = -1 mode = replace } }
+        location:kaifeng = { save_scope_as = oe_y7_aim }
+        oe_y7_find_spot = yes
+        if = {
+            limit = { exists = scope:oe_y7_at character:cko_temur_koke ?= { has_unit = no } }
+            scope:oe_y7_at = { random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:cko_temur_koke } }
+        }
+    }
+    debug_log = "oe_y7: Köke Temür made Prince of Henan (oe_y7_koke 2)"
+}
+# .28 b: the crown prince takes the field; Köke Temür keeps the old office (case 甲 allegiance).
+oe_y7_job_c28b = {
+    add_country_modifier = { modifier = oe_y7_heir_command years = -1 mode = replace }
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = -15 } } }
+    debug_log = "oe_y7: the crown prince takes the field; Köke Temür keeps the old office (oe_y7_koke 1)"
+}
+# .28 c: Köke Temür keeps the old office (case 甲 allegiance).
+oe_y7_job_c28c = {
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = -10 } } }
+    debug_log = "oe_y7: Köke Temür keeps the old office (oe_y7_koke 1)"
+}
+# .29 a: Köke Temür sent west against Guanzhong; Li Siqi's allegiance; Shaanxi's loyalty; world step W-2.
+oe_y7_job_c29a = {
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = 5 } } }
+    if = { limit = { oe_y7_siqi_lord = yes } c:CSI = { rtr_change_allegiance_points = { value = -25 } } }
+    oe_y7_unit_loyalty = { unit = 6 amount = -5 }
+    oe_y7_w2_fx = yes
+}
+# .29 b: the edict of peace, Tongguan the border.
+oe_y7_job_c29b = {
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = -10 } } }
+    if = { limit = { oe_y7_siqi_lord = yes } c:CSI = { rtr_change_allegiance_points = { value = 10 } } }
+    oe_y7_unit_loyalty = { unit = 6 amount = 3 }
+}
+# .29 c: Li Siqi given the armies of Guanzhong and Shaanxi.
+oe_y7_job_c29c = {
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = -30 } } }
+    if = { limit = { oe_y7_siqi_lord = yes } c:CSI = { rtr_change_allegiance_points = { value = 30 } add_opinion = { modifier = oe_y7_bias_trusted target = c:CHI } } }
+}
+# .30 a: the Grand Regency Office: the crown prince commands, one share less; case 甲 the allegiance left at most 10 and
+# estrangement; case 乙 the field command taken (the title stays: "仍前河南王").
+oe_y7_job_c30a = {
+    add_country_modifier = { modifier = oe_y7_heir_command years = -1 mode = replace }
+    oe_y7_sway_add = { n = -1 }
+    if = {
+        limit = { oe_y7_koke_lord = yes }
+        c:CKO = {
+            if = { limit = { has_variable = rtr_yuan_allegiance var:rtr_yuan_allegiance > 10 } set_variable = { name = rtr_yuan_allegiance value = 10 } }
+            add_opinion = { modifier = oe_y7_bias_estranged target = c:CHI }
+        }
+    }
+    if = { limit = { oe_y7_koke_court = yes } character:cko_temur_koke ?= { remove_commander = this } }
+    debug_log = "oe_y7: Köke Temür dismissed, the Grand Regency Office set up (oe_y7_koke 3)"
+}
+# .30 b: Köke Temür kept in command.
+oe_y7_job_c30b = {
+    oe_y7_sway_add = { n = 1 }
+    if = { limit = { oe_y7_koke_lord = yes } c:CKO = { rtr_change_allegiance_points = { value = 15 } } }
+    debug_log = "oe_y7: Köke Temür kept in command"
+}
+# ---- TEST ONLY (test page 24, buttons y73*)
+# A test Köke Temür at the Yuan court (case 乙) when vanilla has made none: the parameters of vanilla red_turban_rebellions.16
+# without its dynasty. Only for a test game: vanilla's .16 later makes Köke Temür with the same script id.
+oe_y7_test_koke = {
+    if = {
+        limit = { NOT = { exists = character:cko_temur_koke } country_exists = c:CHI }
+        c:CHI = { create_character = { first_name = name_koke.name_timur culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no birth_date = 1330.1.1 adm = 60 dip = 60 mil = 60 script = cko_temur_koke } }
+        debug_log = "oe_y7 TEST: a test Köke Temür made at the Yuan court"
+    }
+    else = { debug_log = "oe_y7 TEST: Köke Temür exists already, or no Yuan: nothing made" }
+}
+
+# ---------------------------------------------------------------- phase 3, third batch "大都与尾声" (v6.7 y7-sup3c)
+# Any scope. World step W-3 (design 3.8): the Prince of Xuanrang is made Prince of Huai (卷47, 二十七年八月辛亥): the title
+# changes, global oe_y7_huai 1. No popup, no oe_yuan_ev_m; the prince's status oe_y7_ps_3 keeps its meaning.
+oe_y7_w3_fx = {
+    character:oe_y7_xuanrang ?= {
+        if = { limit = { has_character_modifier = oe_y7_title_xuanrang } remove_character_modifier = oe_y7_title_xuanrang }
+        add_character_modifier = { modifier = oe_y7_title_huai years = -1 mode = replace }
+    }
+    set_global_variable = { name = oe_y7_huai value = 1 }
+    debug_log = "oe_y7: W-3 the Prince of Xuanrang made Prince of Huai (oe_y7_huai 1)"
+}
+oe_y7_w3_step = {
+    if = { limit = { oe_y7_w3_can = yes } oe_y7_w3_fx = yes }
+}
+# Any scope. Dadu's two modifiers of this line, the regent's title and campaign 4 "守大都" off.
+oe_y7_dadu_clear = {
+    location:dadu = {
+        if = { limit = { has_location_modifier = oe_y7_dadu_stand } remove_location_modifier = oe_y7_dadu_stand }
+        if = { limit = { has_location_modifier = oe_y7_dadu_left } remove_location_modifier = oe_y7_dadu_left }
+    }
+    character:oe_y7_xuanrang ?= { if = { limit = { has_character_modifier = oe_y7_title_regent } remove_character_modifier = oe_y7_title_regent } }
+    if = {
+        limit = { global_var:oe_y7_camp ?= 4 }
+        set_global_variable = { name = oe_y7_camp value = 0 }
+        if = { limit = { has_global_variable = oe_y7_camp_done } remove_global_variable = oe_y7_camp_done }
+    }
+}
+# Any scope (from oe_y7_strip when no epilogue runs, and from the epilogue's end): all of the above and the title of Huai.
+oe_y7_strip_dadu = {
+    oe_y7_dadu_clear = yes
+    character:oe_y7_xuanrang ?= { if = { limit = { has_character_modifier = oe_y7_title_huai } remove_character_modifier = oe_y7_title_huai } }
+}
+# Any scope, monthly in phases 2 and 3 and in the epilogue. Before .31: the months in a row the capital is pressed
+# (global oe_y7_press; .31 is due at 2). After .31 was answered and before .32: the months in a row Dadu is out of the
+# Yuan's control (oe_y7_lost); after .31 a the calm months in a row (oe_y7_calm): at 6 the city counts as relieved, no
+# popup (oe_y7_dadu 5, .32 dropped), the regent's title and Dadu's modifier go, and the epilogue ends (code 1).
+oe_y7_dadu_step = {
+    if = {
+        limit = { NOT = { has_global_variable = oe_y7_st_31 } }
+        if = {
+            limit = { oe_y7_dadu_pressed = yes }
+            if = { limit = { NOT = { has_global_variable = oe_y7_press } } set_global_variable = { name = oe_y7_press value = 0 } }
+            change_global_variable = { name = oe_y7_press add = 1 }
+        }
+        else_if = { limit = { has_global_variable = oe_y7_press } set_global_variable = { name = oe_y7_press value = 0 } }
+    }
+    else_if = {
+        limit = { NOT = { has_global_variable = oe_y7_st_32 } OR = { global_var:oe_y7_dadu ?= 1 global_var:oe_y7_dadu ?= 2 } }
+        if = { limit = { location:dadu = { controller ?= c:CHI } } set_global_variable = { name = oe_y7_lost value = 0 } }
+        else = {
+            if = { limit = { NOT = { has_global_variable = oe_y7_lost } } set_global_variable = { name = oe_y7_lost value = 0 } }
+            change_global_variable = { name = oe_y7_lost add = 1 }
+        }
+        if = {
+            limit = { global_var:oe_y7_dadu ?= 1 }
+            if = {
+                limit = { oe_y7_dadu_capital = yes oe_y7_dadu_pressed = no }
+                if = { limit = { NOT = { has_global_variable = oe_y7_calm } } set_global_variable = { name = oe_y7_calm value = 0 } }
+                change_global_variable = { name = oe_y7_calm add = 1 }
+            }
+            else = { set_global_variable = { name = oe_y7_calm value = 0 } }
+            if = {
+                limit = { global_var:oe_y7_calm >= 6 oe_y7_dadu_fallen = no }
+                set_global_variable = { name = oe_y7_dadu value = 5 }
+                set_global_variable = { name = oe_y7_st_32 value = 2 }
+                oe_y7_dadu_clear = yes
+                debug_log = "oe_y7: Dadu relieved after the emperor went north (oe_y7_dadu 5, no popup)"
+                oe_y7_epi_close = { code = 1 }
+            }
+        }
+    }
+}
+# Any scope, monthly in phases 1-3 at the end of oe_y7_c3_step (design 3.9): W-3 in phase 2; the capital in phases 2 and 3.
+oe_y7_c3c_step = {
+    if = { limit = { global_var:oe_y7_phase ?= 2 } oe_y7_w3_step = yes }
+    if = { limit = { OR = { global_var:oe_y7_phase ?= 2 global_var:oe_y7_phase ?= 3 } } oe_y7_dadu_step = yes }
+}
+
+# ---- the epilogue (design 3.8; global oe_y7_epi, end code oe_y7_epi_end)
+# Any scope. Called by the 1368.1.1 close just BEFORE oe_y7_finish = { code = 5 } (so that oe_y7_strip keeps Dadu's modifiers
+# and the titles of this batch): the epilogue opens while the Yuan stands, is Mongol, owns Dadu and has Dadu as its capital
+# (or .31 has come and .32 still waits) and .32 has not come.
+oe_y7_epi_open = {
+    if = {
+        limit = {
+            NOT = { has_global_variable = oe_y7_epi }
+            NOT = { has_global_variable = oe_y7_epi_end }
+            NOT = { has_global_variable = oe_y7_st_32 }
+            oe_y7_yuan_ok = yes
+            OR = {
+                has_global_variable = oe_y7_st_31
+                AND = { location:dadu = { owner ?= c:CHI } c:CHI = { capital ?= location:dadu } }
+            }
+        }
+        set_global_variable = { name = oe_y7_epi value = 1 }
+        debug_log = "oe_y7: the epilogue begins (Dadu is still the Yuan's capital)"
+    }
+}
+# Any scope. Usage: oe_y7_epi_close = { code = N }: the epilogue ends (1 .32 answered or the city relieved, 2 the Yuan fell,
+# 3 the situation ended, 4 Dadu lost before .31, 5 1400.1.1, 9 test): everything of this line comes off once more (what a
+# .28-.30 of the epilogue added, Dadu's modifiers, the titles of Huai and the regent, campaign 4).
+oe_y7_epi_close = {
+    if = {
+        limit = { has_global_variable = oe_y7_epi }
+        remove_global_variable = oe_y7_epi
+        set_global_variable = { name = oe_y7_epi_end value = $code$ }
+        oe_y7_strip = yes
+        debug_log = "oe_y7: the epilogue ends (code in oe_y7_epi_end)"
+    }
+}
+# Any scope, the epilogue's monthly end checks.
+oe_y7_epi_end_check = {
+    if = { limit = { oe_y7_yuan_fallen = yes } oe_y7_on_yuan_fall = yes }
+    else_if = { limit = { oe_y7_rtr_ended = yes } oe_y7_epi_close = { code = 3 } }
+    else_if = {
+        limit = {
+            NOT = { has_global_variable = oe_y7_st_31 }
+            NOT = { AND = { country_exists = c:CHI location:dadu = { owner ?= c:CHI } c:CHI = { capital ?= location:dadu } } }
+        }
+        set_global_variable = { name = oe_y7_dadu value = 6 }
+        debug_log = "oe_y7: Dadu lost before the debate on going north (oe_y7_dadu 6)"
+        oe_y7_epi_close = { code = 4 }
+    }
+    else_if = { limit = { current_date >= 1400.1.1 } oe_y7_epi_close = { code = 5 } }
+}
+# Any scope. At most one event a month in the epilogue: .31, .32, or a .28-.30 already scheduled (design 3.8); the same-month
+# guard as oe_y7_ev_pick.
+oe_y7_epi_pick = {
+    set_global_variable = { name = oe_y7_pick value = 0 }
+    if = { limit = { NOT = { has_global_variable = oe_y7_wait } } set_global_variable = { name = oe_y7_wait value = 0 } }
+    if = {
+        limit = { OR = { oe_y7_yuan_busy = no global_var:oe_y7_wait >= 2 } }
+        if = { limit = { oe_y7_due_31 = yes } set_global_variable = { name = oe_y7_pick value = 31 } }
+        else_if = { limit = { oe_y7_due_32 = yes } set_global_variable = { name = oe_y7_pick value = 32 } }
+        else_if = { limit = { oe_y7_due_30 = yes } set_global_variable = { name = oe_y7_pick value = 30 } }
+        else_if = { limit = { oe_y7_due_28 = yes } set_global_variable = { name = oe_y7_pick value = 28 } }
+        else_if = { limit = { oe_y7_due_29 = yes } set_global_variable = { name = oe_y7_pick value = 29 } }
+    }
+    if = { limit = { global_var:oe_y7_pick = 0 oe_y7_yuan_busy = yes oe_y7_epi_any_due = yes } change_global_variable = { name = oe_y7_wait add = 1 } }
+    if = { limit = { global_var:oe_y7_pick = 31 } oe_y7_fire_31 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 32 } oe_y7_fire_32 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 30 } oe_y7_fire_30 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 28 } oe_y7_fire_28 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 29 } oe_y7_fire_29 = yes }
+}
+# Any scope, monthly while the epilogue runs (oe_y7_monthly, once the scheduler calls it then): the end checks, W-3, the
+# capital, campaign 4, the events. No meters, no country modifier of the epilogue's own.
+oe_y7_epi_step = {
+    set_global_variable = { name = oe_y7_m value = oe_y7_m_now }
+    oe_y7_epi_end_check = yes
+    if = {
+        limit = { has_global_variable = oe_y7_epi }
+        oe_y7_w3_step = yes
+        oe_y7_dadu_step = yes
+        oe_y7_campaign = yes
+        if = { limit = { has_global_variable = oe_y7_epi } oe_y7_epi_pick = yes }
+    }
+    if = { limit = { has_global_variable = oe_dbg_n_y1 } set_global_variable = { name = oe_y7_y1n value = global_var:oe_dbg_n_y1 } }
+}
+# ---- worker jobs 36-39 (hidden event oe_y7.20, CHI scope)
+# .31 a: the emperor goes north. Dadu gets oe_y7_dadu_left (12 months, or until the city falls); the Prince of Huai (or of
+# Xuanrang) at the Yuan court is regent and leads a Yuan army at Dadu that has no commander (if he leads none).
+oe_y7_job_d31a = {
+    location:dadu = { add_location_modifier = { modifier = oe_y7_dadu_left months = 12 mode = replace } }
+    if = {
+        limit = { character:oe_y7_xuanrang ?= { is_alive = yes owner ?= c:CHI } }
+        character:oe_y7_xuanrang ?= { add_character_modifier = { modifier = oe_y7_title_regent years = -1 mode = replace } }
+        if = {
+            limit = { character:oe_y7_xuanrang ?= { has_unit = no } }
+            location:dadu = { random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_xuanrang } }
+        }
+    }
+    debug_log = "oe_y7: the emperor goes north; Dadu left to a regent (oe_y7_dadu 1)"
+}
+# .31 b: the capital held: oe_y7_dadu_stand (12 months), 6 regiments at Dadu, campaign 4 "守大都" (8 months).
+oe_y7_job_d31b = {
+    location:dadu = { add_location_modifier = { modifier = oe_y7_dadu_stand months = 12 mode = replace } }
+    location:dadu = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_hi = yes oe_y7_u_hi = yes oe_y7_u_hc = yes oe_y7_u_hc = yes } debug_log = "oe_y7: 6 regiments (dd) raised for the Yuan" }
+    oe_y7_start_camp = { n = 4 }
+    change_global_variable = { name = oe_y7_campend add = 2 }
+    debug_log = "oe_y7: the emperor holds Dadu (oe_y7_dadu 2); campaign 4 begins"
+}
+# .32 (every option): Dadu's modifiers, the regent's title and campaign 4 off; the epilogue (if it runs) ends with code 1.
+oe_y7_job_d32 = {
+    oe_y7_dadu_clear = yes
+    debug_log = "oe_y7: the fate of Dadu decided (oe_y7_dadu 3, 4 or 5)"
+    oe_y7_epi_close = { code = 1 }
+}
+# .32 b: the city fell with the emperor in it: every Yuan army loses half of its morale.
+oe_y7_job_d32b = {
+    every_unit = { limit = { is_navy = no } damage_unit_morale_percent = 0.5 }
+    oe_y7_job_d32 = yes
+}
+# ---- TEST ONLY (test page 24, buttons y73*)
+# For the CURRENT player's country when it is the Yuan (r21: an event sent to the AI Yuan cannot be read there): runs
+# the event's sender (so a number it stores, such as .26's chance, is computed) and sends the event to that country; the
+# event's own trigger still applies. The event counts as not yet sent before (it can be tried again).
+oe_y7_test_me_25 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_25 } remove_global_variable = oe_y7_st_25 } oe_y7_fire_25 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.25 not sent" } }
+oe_y7_test_me_26 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_26 } remove_global_variable = oe_y7_st_26 } oe_y7_fire_26 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.26 not sent" } }
+oe_y7_test_me_27 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_27 } remove_global_variable = oe_y7_st_27 } oe_y7_fire_27 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.27 not sent" } }
+oe_y7_test_me_19 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_19 } remove_global_variable = oe_y7_st_19 } oe_y7_fire_19 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.19 not sent" } }
+oe_y7_test_me_28 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_28 } remove_global_variable = oe_y7_st_28 } oe_y7_fire_28 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.28 not sent" } }
+oe_y7_test_me_29 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_29 } remove_global_variable = oe_y7_st_29 } oe_y7_fire_29 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.29 not sent" } }
+oe_y7_test_me_30 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_30 } remove_global_variable = oe_y7_st_30 } oe_y7_fire_30 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.30 not sent" } }
+oe_y7_test_me_31 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_31 } remove_global_variable = oe_y7_st_31 } oe_y7_fire_31 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.31 not sent" } }
+oe_y7_test_me_32 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_32 } remove_global_variable = oe_y7_st_32 } oe_y7_fire_32 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.32 not sent" } }
+
+# The line closes now as at 1368.1.1 (code 5) and the epilogue opens when the Yuan owns Dadu as its capital and .32 has not
+# come (button y73epi). The epilogue goes on monthly only with the scheduler hook A; y7month runs one month of it.
+oe_y7_test_epi = {
+    if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } }
+    if = { limit = { NOT = { has_global_variable = oe_y7_s } } set_global_variable = { name = oe_y7_s value = global_var:oe_y7_m } }
+    if = { limit = { NOT = { has_global_variable = oe_y7_init } } set_global_variable = oe_y7_init }
+    if = { limit = { has_global_variable = oe_y7_epi_end } remove_global_variable = oe_y7_epi_end }
+    oe_y7_epi_open = yes
+    oe_y7_finish = { code = 5 }
+    if = { limit = { has_global_variable = oe_y7_epi } debug_log = "oe_y7 TEST: the line closed (code 5); the epilogue runs" }
+    else = { debug_log = "oe_y7 TEST: no epilogue (the Yuan does not own Dadu as its capital, or .32 has come)" }
+}
+# W-3 now, whatever the date and phase (button y73huai; needs the Prince of Xuanrang at the Yuan court: .1 makes the princes).
+oe_y7_test_huai = {
+    if = { limit = { character:oe_y7_xuanrang ?= { is_alive = yes owner ?= c:CHI } } oe_y7_w3_fx = yes }
+    else = { debug_log = "oe_y7 TEST: the Prince of Xuanrang is not at the Yuan court (y7rtr, y7start, y7month first: .1 makes the princes)" }
+}
+# The capital counts as pressed (button y73press): the war part of oe_y7_dadu_pressed is taken as true, .31 is due.
+oe_y7_test_press = {
+    if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } }
+    set_global_variable = { name = oe_y7_t_press value = 1 }
+    set_global_variable = { name = oe_y7_press value = 2 }
+    debug_log = "oe_y7 TEST: the capital counts as pressed (oe_y7_t_press)"
+}
+# The city counts as fallen (button y73fall; after .31 a or b).
+oe_y7_test_fall = {
+    set_global_variable = { name = oe_y7_t_fall value = 1 }
+    debug_log = "oe_y7 TEST: Dadu counts as fallen (oe_y7_t_fall)"
+}
+# The city counts as held (button y73held; after .31 b): no longer pressed, campaign 4 won.
+oe_y7_test_held = {
+    if = { limit = { has_global_variable = oe_y7_t_press } remove_global_variable = oe_y7_t_press }
+    if = { limit = { has_global_variable = oe_y7_t_fall } remove_global_variable = oe_y7_t_fall }
+    set_global_variable = { name = oe_y7_camp value = 4 }
+    set_global_variable = { name = oe_y7_camp_ok value = 1 }
+    set_global_variable = oe_y7_camp_done
+    debug_log = "oe_y7 TEST: Dadu counts as held (campaign 4 won)"
 }
 
 # ---- TEST ONLY: copies every reading of the report event oe_y7.90 onto the current scope ----
@@ -1112,6 +2024,9 @@ oe_y7_dev_snapshot = {
     set_variable = { name = oe_y7_r_rtr value = oe_y7_dev_rtr }
     set_variable = { name = oe_y7_r_rtrend value = oe_y7_dev_rtrend }
     set_variable = { name = oe_y7_r_fallen value = oe_y7_dev_fallen }
+    set_variable = { name = oe_y7_r_bl value = oe_y7_dev_bl }
+    set_variable = { name = oe_y7_r_chaghan value = oe_y7_dev_chaghan }
+    set_variable = { name = oe_y7_r_koke value = oe_y7_dev_koke }
     set_variable = { name = oe_y7_r_st1 value = oe_y7_dev_st1 }
     set_variable = { name = oe_y7_r_st2 value = oe_y7_dev_st2 }
     set_variable = { name = oe_y7_r_st3 value = oe_y7_dev_st3 }
@@ -1124,6 +2039,12 @@ oe_y7_dev_snapshot = {
     set_variable = { name = oe_y7_r_st13 value = oe_y7_dev_st13 }
     set_variable = { name = oe_y7_r_st14 value = oe_y7_dev_st14 }
     set_variable = { name = oe_y7_r_st15 value = oe_y7_dev_st15 }
+    set_variable = { name = oe_y7_r_st16 value = oe_y7_dev_st16 }
+    set_variable = { name = oe_y7_r_st17 value = oe_y7_dev_st17 }
+    set_variable = { name = oe_y7_r_st18 value = oe_y7_dev_st18 }
+    set_variable = { name = oe_y7_r_st25 value = oe_y7_dev_st25 }
+    set_variable = { name = oe_y7_r_st26 value = oe_y7_dev_st26 }
+    set_variable = { name = oe_y7_r_st27 value = oe_y7_dev_st27 }
     set_variable = { name = oe_y7_r_ps1 value = oe_y7_dev_ps1 }
     set_variable = { name = oe_y7_r_pl1 value = oe_y7_dev_pl1 }
     set_variable = { name = oe_y7_r_ph1 value = oe_y7_dev_ph1 }
@@ -1133,4 +2054,61 @@ oe_y7_dev_snapshot = {
     set_variable = { name = oe_y7_r_ps3 value = oe_y7_dev_ps3 }
     set_variable = { name = oe_y7_r_pl3 value = oe_y7_dev_pl3 }
     set_variable = { name = oe_y7_r_ph3 value = oe_y7_dev_ph3 }
+    set_variable = { name = oe_y7_r_bolod value = oe_y7_dev_bolod }
+    set_variable = { name = oe_y7_r_bolodx value = oe_y7_dev_bolodx }
+    set_variable = { name = oe_y7_r_bolodok value = oe_y7_dev_bolodok }
+    set_variable = { name = oe_y7_r_bolodhead value = oe_y7_dev_bolodhead }
+    set_variable = { name = oe_y7_r_nohead value = oe_y7_dev_nohead }
+    set_variable = { name = oe_y7_r_sway value = oe_y7_dev_sway }
+    set_variable = { name = oe_y7_r_swaymod value = oe_y7_dev_swaymod }
+    set_variable = { name = oe_y7_r_c3m0 value = oe_y7_dev_c3m0 }
+    set_variable = { name = oe_y7_r_w1o value = oe_y7_dev_w1o }
+    set_variable = { name = oe_y7_r_w1m value = oe_y7_dev_w1m }
+    set_variable = { name = oe_y7_r_w1hi value = oe_y7_dev_w1hi }
+    set_variable = { name = oe_y7_r_d25b value = oe_y7_dev_d25b }
+    set_variable = { name = oe_y7_r_d26 value = oe_y7_dev_d26 }
+    set_variable = { name = oe_y7_r_d27 value = oe_y7_dev_d27 }
+    set_variable = { name = oe_y7_r_d28 value = oe_y7_dev_d28 }
+    set_variable = { name = oe_y7_r_win26 value = oe_y7_dev_win26 }
+    set_variable = { name = oe_y7_r_koke3 value = oe_y7_dev_koke3 }
+    set_variable = { name = oe_y7_r_kokel value = oe_y7_dev_kokel }
+    set_variable = { name = oe_y7_r_kokec value = oe_y7_dev_kokec }
+    set_variable = { name = oe_y7_r_kokeal value = oe_y7_dev_kokeal }
+    set_variable = { name = oe_y7_r_inpower value = oe_y7_dev_inpower }
+    set_variable = { name = oe_y7_r_st19 value = oe_y7_dev_st19 }
+    set_variable = { name = oe_y7_r_st28 value = oe_y7_dev_st28 }
+    set_variable = { name = oe_y7_r_st29 value = oe_y7_dev_st29 }
+    set_variable = { name = oe_y7_r_st30 value = oe_y7_dev_st30 }
+    set_variable = { name = oe_y7_r_gz value = oe_y7_dev_gz }
+    set_variable = { name = oe_y7_r_d29 value = oe_y7_dev_d29 }
+    set_variable = { name = oe_y7_r_d30 value = oe_y7_dev_d30 }
+    set_variable = { name = oe_y7_r_r28 value = oe_y7_dev_r28 }
+    set_variable = { name = oe_y7_r_w2 value = oe_y7_dev_w2 }
+    set_variable = { name = oe_y7_r_w2can value = oe_y7_dev_w2can }
+    set_variable = { name = oe_y7_r_siqil value = oe_y7_dev_siqil }
+    set_variable = { name = oe_y7_r_siqic value = oe_y7_dev_siqic }
+    set_variable = { name = oe_y7_r_siqial value = oe_y7_dev_siqial }
+    set_variable = { name = oe_y7_r_henan value = oe_y7_dev_henan }
+    set_variable = { name = oe_y7_r_heir value = oe_y7_dev_heir }
+    set_variable = { name = oe_y7_r_st31 value = oe_y7_dev_st31 }
+    set_variable = { name = oe_y7_r_st32 value = oe_y7_dev_st32 }
+    set_variable = { name = oe_y7_r_huai value = oe_y7_dev_huai }
+    set_variable = { name = oe_y7_r_dadu value = oe_y7_dev_dadu }
+    set_variable = { name = oe_y7_r_press value = oe_y7_dev_press }
+    set_variable = { name = oe_y7_r_lost value = oe_y7_dev_lost }
+    set_variable = { name = oe_y7_r_calm value = oe_y7_dev_calm }
+    set_variable = { name = oe_y7_r_fall value = oe_y7_dev_fall }
+    set_variable = { name = oe_y7_r_epi value = oe_y7_dev_epi }
+    set_variable = { name = oe_y7_r_epiend value = oe_y7_dev_epiend }
+    set_variable = { name = oe_y7_r_cap value = oe_y7_dev_cap }
+    set_variable = { name = oe_y7_r_pressed value = oe_y7_dev_pressed }
+    set_variable = { name = oe_y7_r_dfallen value = oe_y7_dev_dfallen }
+    set_variable = { name = oe_y7_r_w3can value = oe_y7_dev_w3can }
+    set_variable = { name = oe_y7_r_xuan value = oe_y7_dev_xuan }
+    set_variable = { name = oe_y7_r_huait value = oe_y7_dev_huait }
+    set_variable = { name = oe_y7_r_regent value = oe_y7_dev_regent }
+    set_variable = { name = oe_y7_r_dstand value = oe_y7_dev_dstand }
+    set_variable = { name = oe_y7_r_dleft value = oe_y7_dev_dleft }
+    set_variable = { name = oe_y7_r_tpress value = oe_y7_dev_tpress }
+    set_variable = { name = oe_y7_r_tfall value = oe_y7_dev_tfall }
 }

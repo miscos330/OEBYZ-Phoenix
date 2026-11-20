@@ -16,6 +16,18 @@ oe_ml_take_as = {
     set_global_variable = { name = oe_ml_month value = oe_ml_month_now }
 }
 
+# Any scope. Marks once whether this game began at the 1337 start (global oe_start_1337: 1 yes, 0 no). Called at game
+# start and, as a net, at the top of every monthly pulse. A game that already has the scheduler's record (oe_ml_ran)
+# but no mark is a save from before the mark existed: every such game was a 1337 game. Otherwise the date decides
+# (the first pulse of a 1337 game is still in 1337).
+oe_ml_mark_start = {
+    if = {
+        limit = { NOT = { has_global_variable = oe_start_1337 } }
+        if = { limit = { OR = { has_global_variable = oe_ml_ran current_year < 1338 } } set_global_variable = { name = oe_start_1337 value = 1 } }
+        else = { set_global_variable = { name = oe_start_1337 value = 0 } }
+    }
+}
+
 # BYZ scope, monthly (on_action oe_ml_pulse). The main-line scheduler: every line's monthly effect, in this order.
 oe_ml_monthly = {
     set_global_variable = { name = oe_ml_ran value = oe_ml_month_now }
@@ -90,6 +102,12 @@ oe_ml_monthly = {
     # 16 col: Colonies and resettlement (gen_colonization.py)
     set_global_variable = { name = oe_ml_cur value = 16 }
     oe_col_monthly = yes
+    # 29 fs: The Frontier and the Settlement (gen_frontier.py)
+    if = {
+        limit = { oe_fs_sched = yes }
+        set_global_variable = { name = oe_ml_cur value = 29 }
+        oe_fs_monthly_all = yes
+    }
     # 18 bey: The Turkish emirates (gen_beyliks.py)
     if = {
         limit = { NOT = { has_variable = oe_bey_off } }
@@ -108,6 +126,12 @@ oe_ml_monthly = {
         set_global_variable = { name = oe_ml_cur value = 19 }
         oe_emd_monthly = yes
     }
+    # 27 crm: Crimea and the Northern Shore (gen_crimea.py)
+    if = {
+        limit = { NOT = { has_variable = oe_crm_off } }
+        set_global_variable = { name = oe_ml_cur value = 27 }
+        oe_crm_monthly = yes
+    }
     # 20 yw: The Yuan princes (gen_yuan_y5b.py)
     if = {
         limit = { OR = { has_global_variable = oe_yw_on NOT = { has_global_variable = oe_yw_init } } }
@@ -116,7 +140,7 @@ oe_ml_monthly = {
     }
     # 21 y7: The Yuan against the Red Turbans (gen_yuan_y7.py)
     if = {
-        limit = { OR = { has_global_variable = oe_y7_on NOT = { has_global_variable = oe_y7_init } } }
+        limit = { OR = { has_global_variable = oe_y7_on has_global_variable = oe_y7_epi NOT = { has_global_variable = oe_y7_init } } }
         set_global_variable = { name = oe_ml_cur value = 21 }
         oe_y7_monthly = yes
     }
@@ -126,5 +150,53 @@ oe_ml_monthly = {
         set_global_variable = { name = oe_ml_cur value = 22 }
         oe_un_monthly = yes
     }
+    # 23 s8: Anatolian regional steps (gen_s8_anatolia.py)
+    if = {
+        limit = { NOT = { has_variable = oe_s8_off } }
+        set_global_variable = { name = oe_ml_cur value = 23 }
+        oe_s8_monthly = yes
+    }
+    # 26 ilk: The Heirs of the Ilkhanate (gen_ilkhanate.py)
+    if = {
+        limit = { NOT = { has_variable = oe_ilk_off } }
+        set_global_variable = { name = oe_ml_cur value = 26 }
+        oe_ilk_monthly = yes
+    }
+    # 24 lgr: Latin Greece and the Western Lands (gen_latin_greece.py)
+    if = {
+        limit = { NOT = { has_variable = oe_lgr_off } }
+        set_global_variable = { name = oe_ml_cur value = 24 }
+        oe_lgr_monthly = yes
+    }
+    # 25 geo: Georgia (gen_georgia.py)
+    if = {
+        limit = { NOT = { has_variable = oe_geo_off } }
+        set_global_variable = { name = oe_ml_cur value = 25 }
+        oe_geo_monthly = yes
+    }
+    # 30 cmp: The Roman Company (gen_company.py)
+    set_global_variable = { name = oe_ml_cur value = 30 }
+    oe_cmp_monthly = yes
+    # 28 l5: The Plague and Thrace (gen_l5_plague.py)
+    if = {
+        limit = { NOT = { has_variable = oe_l5_off } }
+        set_global_variable = { name = oe_ml_cur value = 28 }
+        oe_l5_monthly = yes
+    }
+    # 31 j7: The Elder Line (1390) (gen_john7.py)
+    if = {
+        limit = { NOT = { has_variable = oe_j7_off } }
+        set_global_variable = { name = oe_ml_cur value = 31 }
+        oe_j7_monthly = yes
+    }
+    # 32 l7: The Last Siege (gen_l7_after1453.py)
+    if = {
+        limit = { NOT = { has_variable = oe_l7_off } }
+        set_global_variable = { name = oe_ml_cur value = 32 }
+        oe_l7_monthly = yes
+    }
+    # 33 sr: Restoration and Hegemony (gen_strong_route.py)
+    set_global_variable = { name = oe_ml_cur value = 33 }
+    oe_sr_monthly = yes
     remove_global_variable = oe_ml_cur
 }

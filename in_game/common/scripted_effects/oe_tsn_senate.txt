@@ -138,7 +138,17 @@ oe_tsn_force = {
 }
 
 # End of a vote (every option of oe_tsn.1).
-oe_tsn_done = { remove_variable = oe_tsn_pending remove_variable = oe_tsn_forced }
+# v6.5 M5 (gen_m5_merit.py, decision 200): oe_tsn_last_pass is held for 5 years after a vote that passed and was not
+# forced; a vote that failed (accepted or forced through) clears it. The option with no bill changes nothing.
+oe_tsn_done = {
+    if = {
+        limit = { has_variable = oe_tsn_pending oe_tsn_passed = yes NOT = { has_variable = oe_tsn_forced } }
+        set_variable = { name = oe_tsn_last_pass value = 1 years = 5 }
+    }
+    else_if = { limit = { has_variable = oe_tsn_pending has_variable = oe_tsn_last_pass } remove_variable = oe_tsn_last_pass }
+    remove_variable = oe_tsn_pending
+    remove_variable = oe_tsn_forced
+}
 
 # Issue 1, the extra levy.
 oe_tsn_apply_1 = {

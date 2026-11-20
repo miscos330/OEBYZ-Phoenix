@@ -100,12 +100,12 @@ oe_br.5 = { # 马里查河之后
     outcome = positive
     image = "gfx/interface/illustrations/government/siege_battle_illustration.dds"
     title = oe_br.5.t
-    desc = oe_br.5.d
+    desc = { first_valid = { triggered_desc = { trigger = { var:oe_l5_ugl ?= 1 } desc = oe_br.5.d_l5 } desc = oe_br.5.d } }
     trigger = { tag = BYZ }
     option = {
         name = oe_br.5.a
         custom_tooltip = oe_br.5.a.tt
-        hidden_effect = { if = { limit = { has_variable = oe_br_uglesa } add_gold = -150 add_manpower = { value = monthly_manpower multiply = -1.5 } } else = { add_gold = -300 add_manpower = { value = monthly_manpower multiply = -3 } } location:serres = { if = { limit = { owner ?= c:SER } change_location_owner = root } } oe_br_take_serres_area = yes oe_br_take_serres_area = yes }
+        hidden_effect = { if = { limit = { has_variable = oe_br_uglesa var:oe_l5_ugl ?= 1 } add_gold = -100 if = { limit = { monthly_manpower > 0 } add_manpower = { value = monthly_manpower multiply = -1 } } } else_if = { limit = { has_variable = oe_br_uglesa } add_gold = -150 add_manpower = { value = monthly_manpower multiply = -1.5 } } else_if = { limit = { var:oe_l5_ugl ?= 1 } add_gold = -200 if = { limit = { monthly_manpower > 0 } add_manpower = { value = monthly_manpower multiply = -2 } } } else = { add_gold = -300 add_manpower = { value = monthly_manpower multiply = -3 } } location:serres = { if = { limit = { owner ?= c:SER } change_location_owner = root } } oe_br_take_serres_area = yes oe_br_take_serres_area = yes }
         ai_chance = { base = 70 }
     }
     option = {

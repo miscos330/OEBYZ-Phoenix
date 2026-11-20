@@ -172,7 +172,7 @@ button_secondary_tab_alt = {
                         datamodel = "[InternationalOrganizationsView.GetActions]"
                         item = {
                             widget = {
-                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_focus'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_order_works'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_reinforce_theme'),EqualTo_string(GenericAction.GetKey, 'oe_pillars_enact_rum_pronoia')))))]"
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_focus'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_set_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_theme_order_works'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tq_toggle'),EqualTo_string(GenericAction.GetKey, 'oe_pillars_enact_rum_pronoia')))))]"
                                 using = oe_edict_card
                             }
                         }
@@ -217,7 +217,52 @@ button_secondary_tab_alt = {
                         datamodel = "[InternationalOrganizationsView.GetActions]"
                         item = {
                             widget = {
-                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_settle_soldiers'),Or(EqualTo_string(GenericAction.GetKey, 'oe_col_resettle'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_fortify'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_levy'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_hire'),EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_create_pronia_infastry'))))))]"
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_ti_settle_soldiers'),Or(EqualTo_string(GenericAction.GetKey, 'oe_col_resettle'),Or(EqualTo_string(GenericAction.GetKey, 'oe_fs_open_prog'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_fortify'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_levy'),Or(EqualTo_string(GenericAction.GetKey, 'oe_tbd_hire'),EqualTo_string(GenericAction.GetKey, 'oe_byz_empire_org_action_create_pronia_infastry')))))))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group mil_rush (closed by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_mil_rush'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_mil_rush')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_mil_rush')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_mil_rush')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_MIL_RUSH" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_mil_rush')]"
+                            down = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_mil_rush')]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_mil_rush')]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[EqualTo_string(GenericAction.GetKey, 'oe_pillars_reinforce_theme')]"
                                 using = oe_edict_card
                             }
                         }
@@ -408,7 +453,52 @@ card_common = {
                         datamodel = "[InternationalOrganizationsView.GetActions]"
                         item = {
                             widget = {
-                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_itp_borrow'),Or(EqualTo_string(GenericAction.GetKey, 'oe_itp_grant'),EqualTo_string(GenericAction.GetKey, 'oe_itp_revoke')))]"
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_itp_borrow'),Or(EqualTo_string(GenericAction.GetKey, 'oe_itp_grant'),Or(EqualTo_string(GenericAction.GetKey, 'oe_itp_revoke'),Or(EqualTo_string(GenericAction.GetKey, 'oe_itp_hire_fleet'),Or(EqualTo_string(GenericAction.GetKey, 'oe_itp_grain_ships'),Or(EqualTo_string(GenericAction.GetKey, 'oe_col_open_post'),EqualTo_string(GenericAction.GetKey, 'oe_col_close_post')))))))]"
+                                using = oe_edict_card
+                            }
+                        }
+                    }
+                }
+                # NEW r6 a-ui: fold group fis_cmp (open by default).
+                vbox = {
+                    layoutpolicy_horizontal = expanding spacing = 8
+                    hbox = {
+                        layoutpolicy_horizontal = expanding spacing = 6
+                        widget = {
+                            size = { 28 34 }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_cmp')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_cmp')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                            button = {
+                                size = { 24 24 } parentanchor = center
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_cmp'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_cmp')]"
+                                texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                                using = button_regular_icon_color
+                                tooltip = "OE_R6_FOLD_TT"
+                            }
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 34 }
+                            blockoverride "tab_text" { text = "OE_R6_GRP_FIS_CMP" fontsize = 16 }
+                            tooltip = "OE_R6_FOLD_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_cmp')]"
+                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_cmp'))]"
+                        }
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding spacing = 10
+                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_cmp'))]"
+                        datamodel = "[InternationalOrganizationsView.GetActions]"
+                        item = {
+                            widget = {
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_cmp_invest'),Or(EqualTo_string(GenericAction.GetKey, 'oe_cmp_audit'),Or(EqualTo_string(GenericAction.GetKey, 'oe_cmp_buy'),EqualTo_string(GenericAction.GetKey, 'oe_cmp_protect'))))]"
                                 using = oe_edict_card
                             }
                         }
@@ -511,7 +601,7 @@ card_common = {
                         datamodel = "[InternationalOrganizationsView.GetActions]"
                         item = {
                             widget = {
-                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_bread_and_circuses'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_reward_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_s37_crown_coemperor'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_adjust_imperial_style'),EqualTo_string(GenericAction.GetKey, 'oe_ecc_synod')))))]"
+                                visible = "[Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_bread_and_circuses'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_reward_officials'),Or(EqualTo_string(GenericAction.GetKey, 'oe_s37_crown_coemperor'),Or(EqualTo_string(GenericAction.GetKey, 'oe_pillars_adjust_imperial_style'),Or(EqualTo_string(GenericAction.GetKey, 'oe_ecc_synod'),Or(EqualTo_string(GenericAction.GetKey, 'oe_m9_legit_to_auth'),EqualTo_string(GenericAction.GetKey, 'oe_lat_act_appeal')))))))]"
                                 using = oe_edict_card
                             }
                         }
@@ -1685,7 +1775,7 @@ card_common = {
                     size = { -1 102 }
                     using = bg_paper_card
                     using = bg_cabinet_card_frame
-                    tooltip = "oe_pillars_authority_desc"
+                    tooltip = "oe_m5_authority_tt"
                     vbox = {
                         size = { 100% 100% }
                         margin = { 10 6 }
@@ -1716,7 +1806,7 @@ card_common = {
                     size = { -1 102 }
                     using = bg_paper_card
                     using = bg_cabinet_card_frame
-                    tooltip = "OE_PILLARS_OPINION_BANDS"
+                    tooltip = "oe_m9_opinion_tt"
                     vbox = {
                         size = { 100% 100% }
                         margin = { 10 6 }
@@ -1725,7 +1815,7 @@ card_common = {
                             spacing = 5
                             widget = {
                                 size = { 28 28 }
-                                icon = { size = { 19 19 } parentanchor = center texture = "gfx/interface/icons/international_organizations/oe_pillars_public_opinion.dds" tooltip = "OE_PILLARS_OPINION_BANDS" }
+                                icon = { size = { 19 19 } parentanchor = center texture = "gfx/interface/icons/international_organizations/oe_pillars_public_opinion.dds" tooltip = "oe_m9_opinion_tt" }
                                 icon = { size = { 28 28 } texture = "gfx/interface/component_decoration/ios/oe_pillars/medallion.dds" alwaystransparent = yes }
                             }
                             text_single = { text = "oe_pillars_public_opinion" fontsize = 16 }

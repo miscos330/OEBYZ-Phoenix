@@ -9,7 +9,7 @@ on_ruler_death = { on_actions = { oe_tw_ruler_death } }
 # Ranks: first month of a game or save, again 2 months later (the Roman World assigns its statuses in its own
 # monthly tick), then every 6 months.
 oe_tw_monthly_pulse = {
-    trigger = { tag = BYZ NOT = { has_variable = oe_tw_rank_timer } }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { has_variable = oe_tw_rank_timer } }
     effect = {
         if = {
             limit = { NOT = { has_variable = oe_tw_rank_init } }
@@ -21,7 +21,7 @@ oe_tw_monthly_pulse = {
     }
 }
 oe_tw_yearly_pulse = {
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no }
     effect = {
         oe_tw_former_yearly = yes
         if = { limit = { is_ai = yes } oe_tw_ai_yearly = yes }
@@ -51,6 +51,6 @@ oe_tw_ruler_death = {
 }
 # BYZ, monthly (r10). r10 found a title kept after its holder died; every titled country follows its current ruler again.
 oe_tw_title_sweep = {
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no }
     effect = { every_country = { limit = { has_variable = oe_tw_titled } oe_tw_on_new_ruler = yes } }
 }

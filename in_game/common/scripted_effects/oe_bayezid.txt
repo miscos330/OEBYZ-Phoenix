@@ -151,9 +151,14 @@ oe_byd_west_aid_gain = {
 }
 # BYZ scope. .6: who would hold the capital. The heir (adult, free, ours), else the eldest adult of the dynasty at court.
 oe_byd_pick_regent = {
+    # v6.7 L6 phase 2 (gen_john7.py, design 4.2 item 4): the nephew reconciled in oe_j7.6 holds the City first.
+    if = {
+        limit = { has_variable = oe_j7_reconciled var:oe_j7_claimant ?= { is_alive = yes is_adult = yes owner ?= c:BYZ is_ruler = no NOT = { has_character_modifier = imprisoned } } }
+        var:oe_j7_claimant = { save_scope_as = oe_byd_rg }
+    }
     heir ?= {
         if = {
-            limit = { is_alive = yes is_adult = yes owner ?= c:BYZ is_ruler = no NOT = { has_character_modifier = imprisoned } }
+            limit = { NOT = { exists = scope:oe_byd_rg } is_alive = yes is_adult = yes owner ?= c:BYZ is_ruler = no NOT = { has_character_modifier = imprisoned } }
             save_scope_as = oe_byd_rg
         }
     }

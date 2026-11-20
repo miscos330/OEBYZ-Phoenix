@@ -108,6 +108,13 @@ oe_theme_admin.2 = { # 属官
         remove_variable = oe_theme_admin_target
     }
     option = {
+        name = oe_theme_admin.2.fiscal_pronoia_off
+        trigger = { var:oe_theme_admin_target ?= { NOT = { var:oe_theme_fiscal ?= 3 } NOT = { has_variable = oe_theme_officials_cd } } NOT = { oe_ti_pronoia_allowed = yes } }
+        custom_tooltip = oe_theme_admin.2.fiscal_pronoia_off.tt
+        hidden_effect = { trigger_event_non_silently = oe_theme_admin.2 }
+        ai_chance = { factor = 0 }
+    }
+    option = {
         name = oe_theme_admin.2.house
         trigger = { var:oe_theme_admin_target ?= { oe_theme_member_trigger = yes } oe_tg_any_house = { min = 0 } }
         if = { limit = { has_variable = oe_theme_admin_target } set_variable = { name = oe_tg_theme value = var:oe_theme_admin_target } trigger_event_non_silently = oe_tg.1 }

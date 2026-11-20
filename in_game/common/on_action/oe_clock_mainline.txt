@@ -2,6 +2,18 @@
 # The file name keeps this hook after oe_civil_war_1352.txt and before oe_cof_court_stories.txt (gen_mainline_lock.py).
 monthly_country_pulse = { on_actions = { oe_ml_pulse } }
 oe_ml_pulse = {
-    trigger = { tag = BYZ }
-    effect = { oe_ml_monthly = yes }
+    # v6.5 P2: a civil-war rebel state keeps the tag BYZ (vanilla guards its own tag checks the same way). Without
+    # the guard every line also ran on the rebels each month: r17 logged the union line setting itself up again at
+    # the start of all 7 civil wars.
+    trigger = { tag = BYZ is_rebel_country = no }
+    # Decision 232 item 2: the lines are written for the 1337 start. At another start date the scheduler stays off.
+    effect = {
+        oe_ml_mark_start = yes
+        if = { limit = { oe_start_is_1337 = yes } oe_ml_monthly = yes }
+    }
+}
+# The mark is also set at game start, before any pulse (a save from before the mark gets it from the pulse above).
+on_game_start = { on_actions = { oe_ml_start_mark } }
+oe_ml_start_mark = {
+    effect = { oe_ml_mark_start = yes }
 }
