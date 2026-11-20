@@ -14,13 +14,19 @@ oe_sr_monthly = {
         limit = { current_month = 1 }
         oe_sr_year = yes
     }
+    # batch 3: the campaign routes (S2) come after .1, .3 and .2 and never in the same month as one of them
+    oe_sr_hc_scan = yes
+    if = { limit = { oe_sr_has_due = yes OR = { NOT = { has_variable = oe_sr_pick } AND = { has_variable = oe_sr_pick_until var:oe_sr_pick_until < oe_ml_month_now } } } set_variable = oe_sr_busy }
     oe_sr_dispatch = yes
+    if = { limit = { NOT = { has_variable = oe_sr_busy } } oe_sr_dispatch_hc = yes }
+    remove_variable = oe_sr_busy
 }
 # BYZ scope. The yearly round: count, stage, rungs.
 oe_sr_year = {
     oe_sr_count_regions = yes
     oe_sr_set_tier = yes
     oe_sr_check_rungs = yes
+    set_global_variable = oe_sr_hooks_in
 }
 
 # ======================================================================== the count (G1, G2)
@@ -1325,6 +1331,96 @@ oe_sr_send_2 = {
             if = { limit = { NOT = { is_core_of = c:BYZ } } c:BYZ = { change_variable = { name = oe_sr_rw_core_n add = 1 } } }
         }
     }
+    remove_variable = oe_sr_fs_reg
+    remove_variable = oe_sr_fs_at
+    set_variable = { name = oe_sr_fs_n value = -1 }
+    if = {
+        limit = { var:oe_sr_pick ?= 1 }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_3 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:plovdiv = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 3 } set_variable = { name = oe_sr_fs_at value = location:plovdiv } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_4 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:anhialo = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 4 } set_variable = { name = oe_sr_fs_at value = location:anhialo } }
+    }
+    if = {
+        limit = { var:oe_sr_pick ?= 2 }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_11 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:arta = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 11 } set_variable = { name = oe_sr_fs_at value = location:arta } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_13 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:thebes = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 13 } set_variable = { name = oe_sr_fs_at value = location:thebes } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_14 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:corinth = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 14 } set_variable = { name = oe_sr_fs_at value = location:corinth } }
+    }
+    if = {
+        limit = { var:oe_sr_pick ?= 3 }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_5 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:drastar = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 5 } set_variable = { name = oe_sr_fs_at value = location:drastar } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_6 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:sredets = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 6 } set_variable = { name = oe_sr_fs_at value = location:sredets } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_7 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:skopje = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 7 } set_variable = { name = oe_sr_fs_at value = location:skopje } }
+    }
+    if = {
+        limit = { var:oe_sr_pick ?= 4 }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_10 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:durres = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 10 } set_variable = { name = oe_sr_fs_at value = location:durres } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_16 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:split = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 16 } set_variable = { name = oe_sr_fs_at value = location:split } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_17 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:sremska_mitrovica = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 17 } set_variable = { name = oe_sr_fs_at value = location:sremska_mitrovica } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_18 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:branicevo = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 18 } set_variable = { name = oe_sr_fs_at value = location:branicevo } }
+    }
+    if = {
+        limit = { var:oe_sr_pick ?= 5 }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_21 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:bursa = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 21 } set_variable = { name = oe_sr_fs_at value = location:bursa } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_22 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:izmit = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 22 } set_variable = { name = oe_sr_fs_at value = location:izmit } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_23 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:bergama = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 23 } set_variable = { name = oe_sr_fs_at value = location:bergama } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_24 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:alasehir = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 24 } set_variable = { name = oe_sr_fs_at value = location:alasehir } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_25 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:milas = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 25 } set_variable = { name = oe_sr_fs_at value = location:milas } }
+    }
+    if = {
+        limit = { var:oe_sr_pick ?= 6 }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_27 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:sinop = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 27 } set_variable = { name = oe_sr_fs_at value = location:sinop } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_29 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:stefani = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 29 } set_variable = { name = oe_sr_fs_at value = location:stefani } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_30 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:kibrus = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 30 } set_variable = { name = oe_sr_fs_at value = location:kibrus } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_31 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:konya = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 31 } set_variable = { name = oe_sr_fs_at value = location:konya } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_32 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:kayseri = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 32 } set_variable = { name = oe_sr_fs_at value = location:kayseri } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_33 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:amasya = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 33 } set_variable = { name = oe_sr_fs_at value = location:amasya } }
+    }
+    if = {
+        limit = { var:oe_sr_pick ?= 7 }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_34 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:sivas = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 34 } set_variable = { name = oe_sr_fs_at value = location:sivas } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_37 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:malatya = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 37 } set_variable = { name = oe_sr_fs_at value = location:malatya } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_28 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:trebizond = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 28 } set_variable = { name = oe_sr_fs_at value = location:trebizond } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_36 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:corycus = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 36 } set_variable = { name = oe_sr_fs_at value = location:corycus } }
+    }
+    if = {
+        limit = { var:oe_sr_pick ?= 8 }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_15 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:cephalonia = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 15 } set_variable = { name = oe_sr_fs_at value = location:cephalonia } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_19 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:naxos = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 19 } set_variable = { name = oe_sr_fs_at value = location:naxos } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_20 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:candia = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 20 } set_variable = { name = oe_sr_fs_at value = location:candia } }
+        set_variable = { name = oe_sr_fs_tmp value = oe_sr_sparse_38 }
+        if = { limit = { var:oe_sr_fs_tmp > var:oe_sr_fs_n location:nicosia_cyp = { oe_fs_center_ok = yes } } set_variable = { name = oe_sr_fs_n value = var:oe_sr_fs_tmp } set_variable = { name = oe_sr_fs_reg value = 38 } set_variable = { name = oe_sr_fs_at value = location:nicosia_cyp } }
+    }
+    remove_variable = oe_sr_fs_tmp
     if = {
         limit = { oe_sr_pick_in_emph = yes }
         set_variable = { name = oe_sr_rw_pres value = 10 }
@@ -1418,6 +1514,117 @@ oe_sr_work = {
     else_if = {
         limit = { var:oe_sr_job = 33 }
         oe_sr_auth_add = { amount = 4 }
+    }
+    # ---- batch 2: 15 the Pillars card opens oe_sr.4; 16-19 oe_sr.4 a-d set the emphasis (paid here), 20 keeps it;
+    # 24 oe_sr.2 d opens a frontier programme; 51-52 oe_sr.5 a-b (Thessaloniki: roll, yield).
+    else_if = {
+        limit = { var:oe_sr_job = 15 }
+        if = { limit = { oe_sr_emph_can_change = yes } set_variable = oe_sr_emph_open trigger_event_non_silently = oe_sr.4 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job >= 16 var:oe_sr_job <= 20 }
+        if = {
+            limit = { var:oe_sr_job <= 19 has_variable = oe_sr_emph_open NOT = { has_variable = oe_sr_emph_changed } oe_sr_auth >= 5 }
+            oe_sr_auth_add = { amount = -5 }
+            set_variable = oe_sr_emph_changed
+            if = { limit = { var:oe_sr_job = 16 } set_variable = { name = oe_sr_emph value = 1 } }
+            else_if = { limit = { var:oe_sr_job = 17 } set_variable = { name = oe_sr_emph value = 2 } }
+            else_if = { limit = { var:oe_sr_job = 18 } set_variable = { name = oe_sr_emph value = 3 } }
+            else_if = { limit = { var:oe_sr_job = 19 } set_variable = { name = oe_sr_emph value = 0 } }
+        }
+        remove_variable = oe_sr_emph_open
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 24 }
+        oe_sr_do_fs = yes
+        remove_variable = oe_sr_pick
+        remove_variable = oe_sr_pick_until
+    }
+    else_if = {
+        limit = { var:oe_sr_job >= 51 var:oe_sr_job <= 52 has_variable = oe_sr_ths_part }
+        oe_sr_ths_do = yes
+    }
+    # ---- batch 3: S2, the first four routes (jobs 1<idx><option>); the route's mirror goes to 3.
+    else_if = {
+        limit = { var:oe_sr_job = 111 }
+        add_prestige = 10
+        add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+        add_country_modifier = { modifier = oe_sr_eg_see years = 20 mode = replace }
+        every_owned_location = { limit = { oe_hc_egypt_location = yes } add_location_modifier = { modifier = oe_sr_eg_unrest years = 10 mode = replace } }
+        set_variable = { name = oe_sr_hc_egypt value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 112 }
+        add_stability = stability_mild_bonus
+        add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty }
+        every_owned_location = {
+            limit = { oe_hc_egypt_location = yes }
+            if = { limit = { has_location_modifier = oe_hc_coptic_conversion } remove_location_modifier = oe_hc_coptic_conversion }
+            add_location_modifier = { modifier = oe_sr_eg_peace years = 10 mode = replace }
+        }
+        set_variable = { name = oe_sr_hc_egypt value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 113 }
+        if = { limit = { var:oe_sr_hg_egypt ?= 1 } add_country_modifier = { modifier = oe_hc_grain_ships years = 20 mode = replace } }
+        else = { add_country_modifier = { modifier = oe_hc_grain_ships years = 10 mode = replace } }
+        set_variable = { name = oe_sr_hc_egypt value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 131 }
+        if = { limit = { country_exists = c:PAP } c:PAP = { add_opinion = { modifier = oe_sr_b_primacy target = c:BYZ } } }
+        every_country = { limit = { religion = religion:catholic NOT = { tag = PAP } NOT = { tag = BYZ } } add_opinion = { modifier = oe_sr_b_primacy_cath target = c:BYZ } }
+        add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty }
+        set_variable = { name = oe_sr_it_rome value = 1 }
+        set_variable = { name = oe_sr_hc_italy value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 132 }
+        add_prestige = 25
+        add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+        if = { limit = { country_exists = c:PAP } c:PAP = { add_opinion = { modifier = oe_sr_b_rival_see target = c:BYZ } } }
+        every_country = { limit = { religion = religion:catholic NOT = { tag = PAP } NOT = { tag = BYZ } } add_opinion = { modifier = oe_sr_b_rival_see_cath target = c:BYZ } }
+        set_variable = { name = oe_sr_it_rome value = 2 }
+        set_variable = { name = oe_sr_hc_italy value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 133 }
+        set_variable = { name = oe_sr_it_rome value = 3 }
+        set_variable = { name = oe_sr_hc_italy value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 171 }
+        if = { limit = { var:oe_sr_hg_persia ?= 1 } add_country_modifier = { modifier = oe_sr_silk_road_2 years = 20 mode = replace } }
+        else = { add_country_modifier = { modifier = oe_sr_silk_road years = 20 mode = replace } }
+        set_variable = { name = oe_sr_hc_persia value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 172 }
+        every_country = { limit = { oe_sr_persian_ruler = yes } add_opinion = { modifier = oe_sr_b_persia_peace target = c:BYZ } }
+        add_country_modifier = { modifier = oe_sr_persia_peace years = 10 mode = replace }
+        set_variable = { name = oe_sr_hc_persia value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 181 }
+        if = {
+            limit = { has_variable = oe_cmp_holder var:oe_cmp_holder >= 2 }
+            oe_cmp_fs_repay = { amt = var:oe_sr_bs_amt }
+            oe_cmp_auto_add = { n = 3 }
+        }
+        else = { add_gold = var:oe_sr_bs_amt }
+        set_variable = { name = oe_sr_hc_blacksea value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 182 }
+        oe_itp_shift = { r = gen n = 1 }
+        if = { limit = { country_exists = c:GEN } c:GEN = { add_opinion = { modifier = oe_sr_b_genoa target = c:BYZ } } }
+        set_variable = { name = oe_sr_hc_blacksea value = 3 }
+    }
+    else_if = {
+        limit = { var:oe_sr_job = 183 }
+        if = { limit = { var:oe_sr_hg_blacksea ?= 1 } add_country_modifier = { modifier = oe_sr_bs_customs_2 years = 20 mode = replace } }
+        else = { add_country_modifier = { modifier = oe_sr_bs_customs years = 20 mode = replace } }
+        set_variable = { name = oe_sr_hc_blacksea value = 3 }
     }
     else_if = {
         limit = { var:oe_sr_job = 99 }
@@ -1651,6 +1858,32 @@ oe_sr_clear = {
     remove_variable = oe_sr_s_37
     remove_variable = oe_sr_s_38
     remove_variable = oe_sr_s_39
+    remove_variable = oe_sr_emph_changed
+    remove_variable = oe_sr_emph_open
+    remove_variable = oe_sr_fs_reg
+    remove_variable = oe_sr_fs_at
+    remove_variable = oe_sr_fs_n
+    remove_variable = oe_sr_fs_tmp
+    remove_variable = oe_sr_fs_was
+    remove_variable = oe_sr_ths_part
+    remove_variable = oe_sr_ths_res
+    remove_variable = oe_sr_roll
+    remove_variable = oe_sr_roll_force
+    remove_variable = oe_sr_hc_egypt
+    remove_variable = oe_sr_hc_italy
+    remove_variable = oe_sr_hc_persia
+    remove_variable = oe_sr_hc_blacksea
+    remove_variable = oe_sr_hg_egypt
+    remove_variable = oe_sr_hg_italy
+    remove_variable = oe_sr_hg_persia
+    remove_variable = oe_sr_hg_blacksea
+    remove_variable = oe_sr_it_rome
+    remove_variable = oe_sr_test_goal
+    remove_variable = oe_sr_eg_n
+    remove_variable = oe_sr_pe_n
+    remove_variable = oe_sr_bs_amt
+    remove_variable = oe_sr_wait_hc
+    remove_variable = oe_sr_busy
     location:edirne = { remove_variable = oe_sr_back }
     location:plovdiv = { remove_variable = oe_sr_back }
     location:anhialo = { remove_variable = oe_sr_back }
@@ -1694,6 +1927,149 @@ oe_sr_clear = {
     remove_global_variable = oe_sr_strong_y
 }
 
+# ======================================================================== batch 2 (sr-route2)
+# BYZ scope. .2 d: open a frontier programme in the region the sender picked (gen_frontier.py's oe_fs_prog_open, free of
+# charge; it checks itself and counts oe_fs_a_n when it opens). Within the emphasis the rung's land also gains
+# oe_sr_old_land (one step higher). Not opened after all (the programme's slots filled meanwhile): option c's reward.
+oe_sr_do_fs = {
+    set_variable = { name = oe_sr_fs_was value = 0 }
+    if = { limit = { has_variable = oe_fs_a_n } set_variable = { name = oe_sr_fs_was value = var:oe_fs_a_n } }
+    if = { limit = { oe_sr_fs_ok = yes } var:oe_sr_fs_at ?= { save_scope_as = oe_fs_open_c } oe_fs_prog_open = yes }
+    if = {
+        limit = { has_variable = oe_fs_a_n var:oe_fs_a_n > var:oe_sr_fs_was }
+        if = { limit = { oe_sr_pick_in_emph = yes } oe_sr_do_land = yes }
+    }
+    else = { oe_sr_do_land = yes }
+    remove_variable = oe_sr_fs_was
+}
+
+# BYZ scope; $part$: 1 part A of the Thessalonica line (the second court's blockade), 2 part D (the later blockade).
+# THE entry of the Thessalonica hook (gen_thessalonica.py): called instead of that line's surrender when the city is
+# encircled, its resolve is spent and oe_sr_ths_roll_ok holds; that line keeps its own pending mark meanwhile. Sends
+# oe_sr.5 once; nothing while one is open.
+oe_sr_ths_offer = {
+    if = {
+        limit = { NOT = { has_variable = oe_sr_ths_part } }
+        set_variable = { name = oe_sr_ths_part value = $part$ }
+        remove_variable = oe_sr_ths_res
+        trigger_event_non_silently = oe_sr.5
+    }
+}
+# BYZ scope. oe_sr.5 a (job 51, the roll: oe_sr_ths_chance; srroll0 / srroll1 fix it once through oe_sr_roll_force:
+# 1 fails, 2 holds) and b (job 52, yield). Held: the Thessalonica line's part ends as "held" (its own effects and
+# marks), prestige +10. Lost or yielded: that line's own surrender runs (the city goes to the Ottomans while they
+# encircle it, else it pays a harac); lost after the roll: stability -7; yielded in part A: prestige -10 (as its
+# own .5 a). oe_sr_ths_res: 1 held, 2 lost and handed over, 3 lost but a harac, 4 yielded and handed over, 5 yielded
+# but a harac. Then the notice oe_sr.6.
+oe_sr_ths_do = {
+    set_variable = { name = oe_sr_roll value = 0 }
+    if = {
+        limit = { var:oe_sr_job = 51 }
+        if = { limit = { var:oe_sr_roll_force ?= 2 } set_variable = { name = oe_sr_roll value = 1 } }
+        else_if = {
+            limit = { NOT = { has_variable = oe_sr_roll_force } }
+            random = { chance = oe_sr_ths_chance set_variable = { name = oe_sr_roll value = 1 } }
+        }
+        remove_variable = oe_sr_roll_force
+    }
+    if = {
+        limit = { var:oe_sr_roll = 1 }
+        if = {
+            limit = { var:oe_sr_ths_part = 1 }
+            set_global_variable = oe_ths_held_1387
+            oe_ths_theme_loy = { amount = 5 }
+            oe_ths_a_end = { why = 1 }
+        }
+        else = {
+            set_global_variable = oe_ths_d_held
+            oe_ths_d_end = { why = 4 }
+        }
+        add_prestige = 10
+        set_global_variable = oe_sr_ths_held
+        set_variable = { name = oe_sr_ths_res value = 1 }
+    }
+    else = {
+        if = { limit = { var:oe_sr_ths_part = 1 } oe_ths_1387 = yes }
+        else = { oe_ths_d_outcome = yes }
+        set_variable = { name = oe_sr_ths_res value = 2 }
+        if = { limit = { location:thessaloniki = { owner ?= c:BYZ } } set_variable = { name = oe_sr_ths_res value = 3 } }
+        if = {
+            limit = { var:oe_sr_job = 51 }
+            add_stability = stability_mild_penalty
+        }
+        else = {
+            change_variable = { name = oe_sr_ths_res add = 2 }
+            if = { limit = { var:oe_sr_ths_part = 1 } add_prestige = -10 }
+        }
+    }
+    remove_variable = oe_sr_roll
+    remove_variable = oe_sr_ths_part
+    trigger_event_non_silently = oe_sr.6
+}
+
+# ======================================================================== batch 3 (sr-route3): S2, the first four routes
+# BYZ scope, monthly. A newly won campaign (victory or negotiated peace: the campaign line's oe_hc_<r>_won) becomes due.
+oe_sr_hc_scan = {
+    if = { limit = { has_variable = oe_hc_egypt_won NOT = { has_variable = oe_sr_hc_egypt } } set_variable = { name = oe_sr_hc_egypt value = 1 } }
+    if = { limit = { has_variable = oe_hc_italy_won NOT = { has_variable = oe_sr_hc_italy } } set_variable = { name = oe_sr_hc_italy value = 1 } }
+    if = { limit = { has_variable = oe_hc_persia_won NOT = { has_variable = oe_sr_hc_persia } } set_variable = { name = oe_sr_hc_persia value = 1 } }
+    if = { limit = { has_variable = oe_hc_blacksea_won NOT = { has_variable = oe_sr_hc_blacksea } } set_variable = { name = oe_sr_hc_blacksea value = 1 } }
+}
+# BYZ scope, monthly, only in a month in which .1, .3 and .2 send nothing: one route's event at most, in the order
+# Egypt, Italy, Persia, the Black Sea; waits for the lock at most 6 months.
+oe_sr_dispatch_hc = {
+    if = {
+        limit = { oe_sr_hc_due = yes }
+        if = { limit = { NOT = { has_variable = oe_sr_wait_hc } } set_variable = { name = oe_sr_wait_hc value = 0 } }
+        change_variable = { name = oe_sr_wait_hc add = 1 }
+        if = {
+            limit = { OR = { oe_ml_free = yes var:oe_sr_wait_hc >= 6 } }
+            remove_variable = oe_sr_wait_hc
+            if = { limit = { var:oe_sr_hc_egypt ?= 1 } oe_sr_send_21 = yes }
+            else_if = { limit = { var:oe_sr_hc_italy ?= 1 } oe_sr_send_23 = yes }
+            else_if = { limit = { var:oe_sr_hc_persia ?= 1 } oe_sr_send_27 = yes }
+            else_if = { limit = { var:oe_sr_hc_blacksea ?= 1 } oe_sr_send_28 = yes }
+        }
+    }
+}
+# BYZ scope. The sender of oe_sr.21 (Egypt; the test button srw21 runs it too): the goal place and the numbers the
+# options show are stored, then the event.
+oe_sr_send_21 = {
+    set_variable = { name = oe_sr_hc_egypt value = 2 }
+    set_variable = { name = oe_sr_hg_egypt value = 0 }
+    if = { limit = { oe_sr_goal_egypt = yes } set_variable = { name = oe_sr_hg_egypt value = 1 } }
+    set_variable = { name = oe_sr_eg_n value = 0 }
+    every_owned_location = { limit = { oe_hc_egypt_location = yes } c:BYZ = { change_variable = { name = oe_sr_eg_n add = 1 } } }
+    trigger_event_non_silently = oe_sr.21
+}
+# BYZ scope. The sender of oe_sr.23 (Italy; the test button srw23 runs it too): the goal place and the numbers the
+# options show are stored, then the event.
+oe_sr_send_23 = {
+    set_variable = { name = oe_sr_hc_italy value = 2 }
+    set_variable = { name = oe_sr_hg_italy value = 0 }
+    if = { limit = { oe_sr_goal_italy = yes } set_variable = { name = oe_sr_hg_italy value = 1 } }
+    trigger_event_non_silently = oe_sr.23
+}
+# BYZ scope. The sender of oe_sr.27 (Persia; the test button srw27 runs it too): the goal place and the numbers the
+# options show are stored, then the event.
+oe_sr_send_27 = {
+    set_variable = { name = oe_sr_hc_persia value = 2 }
+    set_variable = { name = oe_sr_hg_persia value = 0 }
+    if = { limit = { oe_sr_goal_persia = yes } set_variable = { name = oe_sr_hg_persia value = 1 } }
+    set_variable = { name = oe_sr_pe_n value = 0 }
+    every_country = { limit = { oe_sr_persian_ruler = yes } c:BYZ = { change_variable = { name = oe_sr_pe_n add = 1 } } }
+    trigger_event_non_silently = oe_sr.27
+}
+# BYZ scope. The sender of oe_sr.28 (the Black Sea; the test button srw28 runs it too): the goal place and the numbers the
+# options show are stored, then the event.
+oe_sr_send_28 = {
+    set_variable = { name = oe_sr_hc_blacksea value = 2 }
+    set_variable = { name = oe_sr_hg_blacksea value = 0 }
+    if = { limit = { oe_sr_goal_blacksea = yes } set_variable = { name = oe_sr_hg_blacksea value = 1 } }
+    set_variable = { name = oe_sr_bs_amt value = oe_sr_bs_amount }
+    trigger_event_non_silently = oe_sr.28
+}
+
 # ======================================================================== test page (prefix sr; buttons in the test mod)
 # BYZ scope. The readouts into the debug log (srlog): the stage, the count, each region, each rung.
 oe_sr_log = {
@@ -1703,6 +2079,9 @@ oe_sr_log = {
     debug_log = "oe_sr regions (n/half state: 0 centre not ours, 1 centre only, 2 restored): 11:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n11')|0]/6 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s11')|0]  12:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n12')|0]/6 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s12')|0]  13:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n13')|0]/6 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s13')|0]  14:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n14')|0]/13 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s14')|0]  15:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n15')|0]/2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s15')|0]  16:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n16')|0]/6 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s16')|0]  17:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n17')|0]/5 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s17')|0]  18:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n18')|0]/8 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s18')|0]  19:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n19')|0]/9 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s19')|0]  20:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n20')|0]/4 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s20')|0]"
     debug_log = "oe_sr regions (n/half state: 0 centre not ours, 1 centre only, 2 restored): 21:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n21')|0]/10 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s21')|0]  22:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n22')|0]/9 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s22')|0]  23:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n23')|0]/5 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s23')|0]  24:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n24')|0]/11 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s24')|0]  25:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n25')|0]/6 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s25')|0]  26:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n26')|0]/5 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s26')|0]  27:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n27')|0]/9 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s27')|0]  28:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n28')|0]/6 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s28')|0]  29:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n29')|0]/10 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s29')|0]  30:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n30')|0]/10 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s30')|0]"
     debug_log = "oe_sr regions (n/half state: 0 centre not ours, 1 centre only, 2 restored): 31:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n31')|0]/9 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s31')|0]  32:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n32')|0]/9 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s32')|0]  33:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n33')|0]/9 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s33')|0]  34:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n34')|0]/7 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s34')|0]  35:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n35')|0]/2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s35')|0]  36:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n36')|0]/7 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s36')|0]  37:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n37')|0]/7 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s37')|0]  38:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n38')|0]/4 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s38')|0]  39:[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_n39')|0]/3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_s39')|0]"
+    debug_log = "oe_sr batch 2: emphasis [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_emph')|0] changed [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_emph_changed')|0] authority [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_auth')|0] fs region [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_fs_reg')|0] empty [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_fs_n')|0] ths part [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_ths_part')|0] result [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_ths_res')|0] chance [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_ths_chance')|0] tur army [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_tur_army')|0] hooks in yes"
+    debug_log = "oe_sr batch 3 (route: mirror 0 not won 1 due 2 sent 3 answered / goal held): egypt [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_hc_egypt')|0]/[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_hg_egypt')|0]  italy [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_hc_italy')|0]/[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_hg_italy')|0]  persia [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_hc_persia')|0]/[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_hg_persia')|0]  blacksea [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_hc_blacksea')|0]/[GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_hg_blacksea')|0]"
+    debug_log = "oe_sr batch 3 numbers: rome choice [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_it_rome')|0] egypt places [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_eg_n')|0] persian rulers [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_pe_n')|0] company sum [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_bs_amt')|0] test goal [GetCountry('BYZ').MakeScope.ScriptValue('oe_sr_v_test_goal')|0]"
 }
 # BYZ scope. Count now (srnow), whatever the month.
 oe_sr_test_now = {
@@ -1736,4 +2115,37 @@ oe_sr_test_e2 = {
 oe_sr_test_e3 = {
     if = { limit = { NOT = { has_variable = oe_sr_back_n } } oe_sr_test_now = yes }
     oe_sr_send_3 = yes
+}
+# ---- batch 2 test helpers
+# BYZ scope. Send oe_sr.4 now (srem): as the Pillars card does, without its conditions (no emphasis yet counts as none).
+oe_sr_test_e4 = {
+    if = { limit = { NOT = { has_variable = oe_sr_emph } } set_variable = { name = oe_sr_emph value = 0 } }
+    remove_variable = oe_sr_emph_changed
+    set_variable = oe_sr_emph_open
+    trigger_event_non_silently = oe_sr.4
+}
+# BYZ scope. Offer the defence roll of Thessaloniki now (srth1, srth2), whatever the Thessalonica line is doing.
+oe_sr_test_ths = {
+    remove_variable = oe_sr_ths_part
+    oe_sr_ths_offer = { part = $part$ }
+}
+# BYZ scope. The next roll of oe_sr.5 a holds ($r$ = 2, srroll1) or fails ($r$ = 1, srroll0), once.
+oe_sr_test_roll = {
+    set_variable = { name = oe_sr_roll_force value = $r$ }
+}
+# ---- batch 3 test helpers
+# BYZ scope. Mark the four routes as won and due (srwall): the monthly round then sends one event a month.
+oe_sr_test_hc_all = {
+    set_variable = { name = oe_sr_hc_egypt value = 1 }
+    set_variable = { name = oe_sr_hc_italy value = 1 }
+    set_variable = { name = oe_sr_hc_persia value = 1 }
+    set_variable = { name = oe_sr_hc_blacksea value = 1 }
+}
+# BYZ scope. The goal places count as held ($g$ = 1, srg1) or not held ($g$ = 2, srg2) when a route's event is sent next.
+oe_sr_test_goal_set = {
+    set_variable = { name = oe_sr_test_goal value = $g$ }
+}
+# BYZ scope. The goal places are read from the map again (srg0).
+oe_sr_test_goal_off = {
+    remove_variable = oe_sr_test_goal
 }

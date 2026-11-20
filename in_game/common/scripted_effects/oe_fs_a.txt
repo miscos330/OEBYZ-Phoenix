@@ -9,6 +9,7 @@
 oe_fs_monthly_all = {
     oe_fs_monthly = yes
     oe_fs_a_monthly = yes
+    oe_fs_b_monthly = yes
 }
 # BYZ scope, monthly. At most one event a month: step 2's try and step 3's event both wait for a free main-line lock.
 oe_fs_a_monthly = {
@@ -118,7 +119,16 @@ oe_fs_fort_do = {
                 can_build_building = building_type:castle
                 scope:oe_fs_fl = { can_build_building = building_type:castle NOT = { has_building = building_type:castle } }
             }
-            scope:oe_fs_fl = { construct_building = { building_type = building_type:castle instant = yes } }
+            # r23 g2 (2026-11-20): instant = yes still charged the castle's own price (about 229 gold on top of our
+            # 150). cost_multiplier = 0 (vanilla's form, flavor_decisions_various.txt camara_comptos) waives it; any gold
+            # the engine takes all the same is paid back at once (oe_fs_aerr 32), so the player pays the 150 the text says.
+            save_scope_value_as = { name = oe_fs_g0 value = gold }
+            scope:oe_fs_fl = { construct_building = { building_type = building_type:castle instant = yes cost_multiplier = 0 cost_multiplier_reason = oe_fs_fort_paid } }
+            if = {
+                limit = { gold < scope:oe_fs_g0 }
+                set_variable = { name = oe_fs_aerr value = 32 }
+                add_gold = { value = scope:oe_fs_g0 subtract = gold }
+            }
         }
         if = {
             limit = { scope:oe_fs_fl = { has_building = building_type:castle } }
@@ -717,7 +727,7 @@ oe_fs_test_afort = {
         oe_fs_prep_12 = yes
         remove_variable = oe_fs_r3
         oe_fs_fort_do = yes
-        debug_log = "oe_fs A probe P6: r3=[GetCountry('BYZ').MakeScope.GetVariable('oe_fs_r3').GetValue|0] (1 castle built, 2 stand-in modifier, 7 no site or no gold) aerr=[GetCountry('BYZ').MakeScope.ScriptValue('oe_fs_v_aerr')|0] (31: the castle was tried and is not there)"
+        debug_log = "oe_fs A probe P6: r3=[GetCountry('BYZ').MakeScope.GetVariable('oe_fs_r3').GetValue|0] (1 castle built, 2 stand-in modifier, 7 no site or no gold) aerr=[GetCountry('BYZ').MakeScope.ScriptValue('oe_fs_v_aerr')|0] (31: the castle was tried and is not there; 32: the engine charged its own price all the same and it was paid back)"
         remove_variable = oe_fs_r3
         remove_variable = oe_fs_fort_at
         remove_variable = oe_fs_th_s
@@ -727,6 +737,7 @@ oe_fs_test_afort = {
 }
 # BYZ scope. fsaclr: forget part A (modifiers, castles and settlers already given stay; the centres may open again).
 oe_fs_test_areset = {
+    oe_fs_test_breset = yes
     oe_fs_e12_clear = yes
     if = { limit = { has_variable = oe_fs_p1 } var:oe_fs_p1 = { remove_variable = oe_fs_stage } }
     if = { limit = { has_variable = oe_fs_p2 } var:oe_fs_p2 = { remove_variable = oe_fs_stage } }

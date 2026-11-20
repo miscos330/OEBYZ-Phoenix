@@ -46,11 +46,11 @@ oe_tmc_send_one = {
 }
 # Theme scope. The theme hands over oe_tmc_fine_value (at most 100 gold) to the imperial treasury.
 oe_tmc_fine = {
-    set_variable = { name = oe_tmc_fine_amt value = oe_tmc_fine_value }
     save_scope_as = oe_tmc_payer
-    add_gold = { value = var:oe_tmc_fine_amt multiply = -1 }
-    c:BYZ = { add_gold = { value = scope:oe_tmc_payer.var:oe_tmc_fine_amt } }
-    remove_variable = oe_tmc_fine_amt
+    # batch14a: no temporary variable (a tooltip preview does not apply set_variable). The empire's share is read
+    # before the theme pays; the empire's add_gold does not change the theme's gold, so both amounts are the same.
+    c:BYZ = { add_gold = { value = scope:oe_tmc_payer.oe_tmc_fine_value } }
+    add_gold = { value = oe_tmc_fine_value multiply = -1 }
 }
 
 # ======================== campaign start ========================

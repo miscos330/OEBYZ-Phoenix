@@ -75,7 +75,8 @@ oe_yw_aid_one = {
 
 # ---------------------------------------------------------------- the princes
 # Prince scope. Usage: oe_yw_register = { n = N w = W name = KEY }: joins the line (order N, grant weight W, loyalty
-# 55, tier 2) and is called by its title KEY (decision 190; a full title, so the long name shows it alone).
+# 55, tier 2) and is called by its title KEY (decision 190; a full title, so the long name shows it alone). Phase 3: the
+# Yuan's vassal becomes a 投下宗王 (subject type oe_yw_touxia).
 oe_yw_register = {
     set_variable = { name = oe_yw_prince value = $n$ }
     set_variable = { name = oe_yw_w value = $w$ }
@@ -86,6 +87,7 @@ oe_yw_register = {
     change_country_name = $name$
     set_variable = oe_name_full_title
     if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out }
+    if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
 }
 # Prince scope. Usage: oe_yw_set_ev = { amount = N months = M }: an event item in the loyalty target (the latest replaces
 # an earlier one).
@@ -104,15 +106,20 @@ oe_yw_apply_tier = {
     else_if = { limit = { var:oe_yw_tier = 1 } add_country_modifier = { modifier = oe_yw_tier_aloof months = 13 mode = replace } }
     else_if = { limit = { var:oe_yw_tier = 0 } add_country_modifier = { modifier = oe_yw_tier_estranged months = 13 mode = replace } }
 }
-# Prince scope. The tier follows the loyalty; the modifier changes with it.
+# Prince scope. The tier follows the loyalty; the modifier changes with it. It compares with the script value itself (no
+# temporary variable): event options reach this through oe_yw_change_loyalty, and their tooltip preview does not apply
+# set_variable (r23 g5: "Invalid right side during comparison 'var:oe_yw_tier_new'").
 oe_yw_tier_update = {
-    set_variable = { name = oe_yw_tier_new value = oe_yw_tier_value }
     if = {
-        limit = { OR = { NOT = { has_variable = oe_yw_tier } var:oe_yw_tier < var:oe_yw_tier_new var:oe_yw_tier > var:oe_yw_tier_new } }
-        set_variable = { name = oe_yw_tier value = var:oe_yw_tier_new }
+        limit = { NOT = { has_variable = oe_yw_tier } }
+        set_variable = { name = oe_yw_tier value = oe_yw_tier_value }
         oe_yw_apply_tier = yes
     }
-    remove_variable = oe_yw_tier_new
+    else_if = {
+        limit = { NOT = { var:oe_yw_tier = oe_yw_tier_value } }
+        set_variable = { name = oe_yw_tier value = oe_yw_tier_value }
+        oe_yw_apply_tier = yes
+    }
 }
 # Prince scope, monthly for a member. Loyalty moves 1 point toward its target and stops there.
 oe_yw_loy_step = {
@@ -183,16 +190,16 @@ oe_yw_grant = {
         set_global_variable = { name = oe_yw_grant_total value = oe_yw_grant_total_value }
         if = {
             limit = { global_var:oe_yw_grant_total > 0 NOT = { c:CHI = { var:oe_yw_grant_level ?= 0 } } c:CHI = { gold >= oe_yw_grant_need } }
-            c:QAS ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
-            c:HCN ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
-            c:OTC ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
-            c:BGT ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
-            c:OGE ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
-            c:LNG ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
-            c:SYG ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
-            c:YLU ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
-            c:YZW ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
-            c:YBN ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:QAS ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:HCN ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:OTC ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:BGT ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:OGE ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:LNG ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:SYG ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:YLU ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:YZW ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
+            c:YBN ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } add_gold = oe_yw_share_value set_variable = { name = oe_yw_paid_y value = oe_yw_year } } }
             c:CHI = {
                 add_gold = { value = global_var:oe_yw_grant_total multiply = -1 }
                 if = { limit = { global_var:oe_yw_grant_mult = 2 } set_variable = { name = oe_yw_boost_y value = oe_yw_year } set_variable = { name = oe_yw_grant_level value = 1 } }
@@ -202,16 +209,16 @@ oe_yw_grant = {
         }
         else_if = {
             limit = { global_var:oe_yw_grant_total > 0 }
-            c:QAS ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
-            c:HCN ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
-            c:OTC ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
-            c:BGT ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
-            c:OGE ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
-            c:LNG ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
-            c:SYG ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
-            c:YLU ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
-            c:YZW ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
-            c:YBN ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:QAS ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:HCN ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:OTC ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:BGT ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:OGE ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:LNG ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:SYG ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:YLU ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:YZW ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
+            c:YBN ?= { if = { limit = { oe_yw_prince_active = yes var:oe_yw_w > 0 oe_yw_fy_stopped = no } set_variable = { name = oe_yw_lapse_y value = oe_yw_year } } }
             set_global_variable = { name = oe_yw_grant_ok value = -1 }
             debug_log = "oe_yw: annual grant not paid (stopped, or not enough gold)"
         }
@@ -268,12 +275,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: QAS is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: QAS is the Yuan's subject again"
         }
     } }
@@ -284,12 +293,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: HCN is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: HCN is the Yuan's subject again"
         }
     } }
@@ -300,12 +311,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: OTC is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: OTC is the Yuan's subject again"
         }
     } }
@@ -316,12 +329,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: BGT is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: BGT is the Yuan's subject again"
         }
     } }
@@ -332,12 +347,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: OGE is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: OGE is the Yuan's subject again"
         }
     } }
@@ -348,12 +365,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: LNG is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: LNG is the Yuan's subject again"
         }
     } }
@@ -364,12 +383,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: SYG is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: SYG is the Yuan's subject again"
         }
     } }
@@ -380,12 +401,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: YLU is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: YLU is the Yuan's subject again"
         }
     } }
@@ -396,12 +419,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: YZW is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: YZW is the Yuan's subject again"
         }
     } }
@@ -412,12 +437,14 @@ oe_yw_members = {
             if = { limit = { has_fired_unique_event = red_turban_rebellions.42 capital ?= { region = region:manchuria_region } } set_variable = { name = oe_yw_out value = 4 } }
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_out value = 2 } }
             else = { set_variable = { name = oe_yw_out value = 3 } }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
             debug_log = "oe_yw: YBN is no longer the Yuan's subject (oe_yw_out 2 independent, 3 another's subject, 4 released by vanilla .42)"
         }
         else_if = {
             limit = { has_variable = oe_yw_out oe_yw_sub = yes oe_yw_yuan_fallen = no }
             remove_variable = oe_yw_out
             if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier }
+            if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia }
             debug_log = "oe_yw: YBN is the Yuan's subject again"
         }
     } }
@@ -457,6 +484,279 @@ oe_yw_loyalty = {
     c:YBN ?= { if = { limit = { oe_yw_prince_active = yes } oe_yw_loy_step = yes } }
 }
 
+# ---------------------------------------------------------------- the appanages (phase 3, M2; Yuan shi 95)
+# Any scope, monthly. Each member with an appanage in the table (FIEF): country var oe_yw_fy_lost while no location of
+# it is held by the Yuan or a Yuan subject. Held again: the choice of event .8 ends (oe_yw_fy off) and an event still
+# queued is taken back (it may come later if the appanage is lost again; once sent it never comes again).
+oe_yw_fief_update = {
+    c:QAS ?= {
+        if = {
+            limit = { oe_yw_prince_active = yes }
+            if = {
+                limit = { oe_yw_fief_held = no }
+                if = { limit = { NOT = { has_variable = oe_yw_fy_lost } } set_variable = oe_yw_fy_lost debug_log = "oe_yw: QAS's appanage is lost" }
+            }
+            else_if = {
+                limit = { has_variable = oe_yw_fy_lost }
+                remove_variable = oe_yw_fy_lost
+                if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy }
+                if = { limit = { global_var:oe_yw_fy_QAS ?= 1 } remove_global_variable = oe_yw_fy_QAS }
+                debug_log = "oe_yw: QAS's appanage is held again"
+            }
+        }
+    }
+    c:HCN ?= {
+        if = {
+            limit = { oe_yw_prince_active = yes }
+            if = {
+                limit = { oe_yw_fief_held = no }
+                if = { limit = { NOT = { has_variable = oe_yw_fy_lost } } set_variable = oe_yw_fy_lost debug_log = "oe_yw: HCN's appanage is lost" }
+            }
+            else_if = {
+                limit = { has_variable = oe_yw_fy_lost }
+                remove_variable = oe_yw_fy_lost
+                if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy }
+                if = { limit = { global_var:oe_yw_fy_HCN ?= 1 } remove_global_variable = oe_yw_fy_HCN }
+                debug_log = "oe_yw: HCN's appanage is held again"
+            }
+        }
+    }
+    c:OTC ?= {
+        if = {
+            limit = { oe_yw_prince_active = yes }
+            if = {
+                limit = { oe_yw_fief_held = no }
+                if = { limit = { NOT = { has_variable = oe_yw_fy_lost } } set_variable = oe_yw_fy_lost debug_log = "oe_yw: OTC's appanage is lost" }
+            }
+            else_if = {
+                limit = { has_variable = oe_yw_fy_lost }
+                remove_variable = oe_yw_fy_lost
+                if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy }
+                if = { limit = { global_var:oe_yw_fy_OTC ?= 1 } remove_global_variable = oe_yw_fy_OTC }
+                debug_log = "oe_yw: OTC's appanage is held again"
+            }
+        }
+    }
+    c:BGT ?= {
+        if = {
+            limit = { oe_yw_prince_active = yes }
+            if = {
+                limit = { oe_yw_fief_held = no }
+                if = { limit = { NOT = { has_variable = oe_yw_fy_lost } } set_variable = oe_yw_fy_lost debug_log = "oe_yw: BGT's appanage is lost" }
+            }
+            else_if = {
+                limit = { has_variable = oe_yw_fy_lost }
+                remove_variable = oe_yw_fy_lost
+                if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy }
+                if = { limit = { global_var:oe_yw_fy_BGT ?= 1 } remove_global_variable = oe_yw_fy_BGT }
+                debug_log = "oe_yw: BGT's appanage is held again"
+            }
+        }
+    }
+    c:OGE ?= {
+        if = {
+            limit = { oe_yw_prince_active = yes }
+            if = {
+                limit = { oe_yw_fief_held = no }
+                if = { limit = { NOT = { has_variable = oe_yw_fy_lost } } set_variable = oe_yw_fy_lost debug_log = "oe_yw: OGE's appanage is lost" }
+            }
+            else_if = {
+                limit = { has_variable = oe_yw_fy_lost }
+                remove_variable = oe_yw_fy_lost
+                if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy }
+                if = { limit = { global_var:oe_yw_fy_OGE ?= 1 } remove_global_variable = oe_yw_fy_OGE }
+                debug_log = "oe_yw: OGE's appanage is held again"
+            }
+        }
+    }
+    c:LNG ?= {
+        if = {
+            limit = { oe_yw_prince_active = yes }
+            if = {
+                limit = { oe_yw_fief_held = no }
+                if = { limit = { NOT = { has_variable = oe_yw_fy_lost } } set_variable = oe_yw_fy_lost debug_log = "oe_yw: LNG's appanage is lost" }
+            }
+            else_if = {
+                limit = { has_variable = oe_yw_fy_lost }
+                remove_variable = oe_yw_fy_lost
+                if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy }
+                if = { limit = { global_var:oe_yw_fy_LNG ?= 1 } remove_global_variable = oe_yw_fy_LNG }
+                debug_log = "oe_yw: LNG's appanage is held again"
+            }
+        }
+    }
+    c:YLU ?= {
+        if = {
+            limit = { oe_yw_prince_active = yes }
+            if = {
+                limit = { oe_yw_fief_held = no }
+                if = { limit = { NOT = { has_variable = oe_yw_fy_lost } } set_variable = oe_yw_fy_lost debug_log = "oe_yw: YLU's appanage is lost" }
+            }
+            else_if = {
+                limit = { has_variable = oe_yw_fy_lost }
+                remove_variable = oe_yw_fy_lost
+                if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy }
+                if = { limit = { global_var:oe_yw_fy_YLU ?= 1 } remove_global_variable = oe_yw_fy_YLU }
+                debug_log = "oe_yw: YLU's appanage is held again"
+            }
+        }
+    }
+    c:YZW ?= {
+        if = {
+            limit = { oe_yw_prince_active = yes }
+            if = {
+                limit = { oe_yw_fief_held = no }
+                if = { limit = { NOT = { has_variable = oe_yw_fy_lost } } set_variable = oe_yw_fy_lost debug_log = "oe_yw: YZW's appanage is lost" }
+            }
+            else_if = {
+                limit = { has_variable = oe_yw_fy_lost }
+                remove_variable = oe_yw_fy_lost
+                if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy }
+                if = { limit = { global_var:oe_yw_fy_YZW ?= 1 } remove_global_variable = oe_yw_fy_YZW }
+                debug_log = "oe_yw: YZW's appanage is held again"
+            }
+        }
+    }
+}
+# Any scope, January (before the grant). A member whose appanage is lost and whose event never came is queued for .8
+# (global oe_yw_fy_<TAG> = 1).
+oe_yw_fief_year = {
+    if = { limit = { NOT = { has_global_variable = oe_yw_fy_QAS } country_exists = c:QAS c:QAS = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } set_global_variable = { name = oe_yw_fy_QAS value = 1 } debug_log = "oe_yw: QAS's appanage lost, event oe_yw.8 queued" }
+    if = { limit = { NOT = { has_global_variable = oe_yw_fy_HCN } country_exists = c:HCN c:HCN = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } set_global_variable = { name = oe_yw_fy_HCN value = 1 } debug_log = "oe_yw: HCN's appanage lost, event oe_yw.8 queued" }
+    if = { limit = { NOT = { has_global_variable = oe_yw_fy_OTC } country_exists = c:OTC c:OTC = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } set_global_variable = { name = oe_yw_fy_OTC value = 1 } debug_log = "oe_yw: OTC's appanage lost, event oe_yw.8 queued" }
+    if = { limit = { NOT = { has_global_variable = oe_yw_fy_BGT } country_exists = c:BGT c:BGT = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } set_global_variable = { name = oe_yw_fy_BGT value = 1 } debug_log = "oe_yw: BGT's appanage lost, event oe_yw.8 queued" }
+    if = { limit = { NOT = { has_global_variable = oe_yw_fy_OGE } country_exists = c:OGE c:OGE = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } set_global_variable = { name = oe_yw_fy_OGE value = 1 } debug_log = "oe_yw: OGE's appanage lost, event oe_yw.8 queued" }
+    if = { limit = { NOT = { has_global_variable = oe_yw_fy_LNG } country_exists = c:LNG c:LNG = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } set_global_variable = { name = oe_yw_fy_LNG value = 1 } debug_log = "oe_yw: LNG's appanage lost, event oe_yw.8 queued" }
+    if = { limit = { NOT = { has_global_variable = oe_yw_fy_YLU } country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } set_global_variable = { name = oe_yw_fy_YLU value = 1 } debug_log = "oe_yw: YLU's appanage lost, event oe_yw.8 queued" }
+    if = { limit = { NOT = { has_global_variable = oe_yw_fy_YZW } country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } set_global_variable = { name = oe_yw_fy_YZW value = 1 } debug_log = "oe_yw: YZW's appanage lost, event oe_yw.8 queued" }
+}
+# Any scope, monthly after the schedule. Sends .8 for the first queued member: at most one event a month, none in a month in
+# which a Yuan line (this one included) already sent the Yuan an event, none while an earlier .8 is unanswered (global
+# oe_yw_fy_p; given up after 6 months).
+oe_yw_fy_send = {
+    if = {
+        limit = { has_global_variable = oe_yw_fy_p has_global_variable = oe_yw_fy_pm global_var:oe_yw_m > oe_yw_fy_stale }
+        remove_global_variable = oe_yw_fy_p
+        debug_log = "oe_yw: event oe_yw.8 left unanswered, given up"
+    }
+    if = {
+        limit = { NOT = { has_global_variable = oe_yw_fy_p } oe_yw_yuan_busy = no country_exists = c:CHI }
+        if = { limit = { global_var:oe_yw_fy_QAS ?= 1 country_exists = c:QAS c:QAS = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } oe_yw_fy_fire_QAS = yes }
+        else_if = { limit = { global_var:oe_yw_fy_HCN ?= 1 country_exists = c:HCN c:HCN = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } oe_yw_fy_fire_HCN = yes }
+        else_if = { limit = { global_var:oe_yw_fy_OTC ?= 1 country_exists = c:OTC c:OTC = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } oe_yw_fy_fire_OTC = yes }
+        else_if = { limit = { global_var:oe_yw_fy_BGT ?= 1 country_exists = c:BGT c:BGT = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } oe_yw_fy_fire_BGT = yes }
+        else_if = { limit = { global_var:oe_yw_fy_OGE ?= 1 country_exists = c:OGE c:OGE = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } oe_yw_fy_fire_OGE = yes }
+        else_if = { limit = { global_var:oe_yw_fy_LNG ?= 1 country_exists = c:LNG c:LNG = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } oe_yw_fy_fire_LNG = yes }
+        else_if = { limit = { global_var:oe_yw_fy_YLU ?= 1 country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } oe_yw_fy_fire_YLU = yes }
+        else_if = { limit = { global_var:oe_yw_fy_YZW ?= 1 country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes has_variable = oe_yw_fy_lost } } oe_yw_fy_fire_YZW = yes }
+    }
+}
+# Event .8 for QAS (prince 1).
+oe_yw_fy_fire_QAS = {
+    set_global_variable = { name = oe_yw_fy_QAS value = 2 }
+    set_global_variable = { name = oe_yw_fy_p value = 1 }
+    set_global_variable = { name = oe_yw_fy_pm value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yw_ev_m value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_yw_m }
+    oe_yw_count = yes
+    debug_log = "oe_yw: event oe_yw.8 (QAS's appanage lost) sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_yw.8 }
+}
+# Event .8 for HCN (prince 2).
+oe_yw_fy_fire_HCN = {
+    set_global_variable = { name = oe_yw_fy_HCN value = 2 }
+    set_global_variable = { name = oe_yw_fy_p value = 2 }
+    set_global_variable = { name = oe_yw_fy_pm value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yw_ev_m value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_yw_m }
+    oe_yw_count = yes
+    debug_log = "oe_yw: event oe_yw.8 (HCN's appanage lost) sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_yw.8 }
+}
+# Event .8 for OTC (prince 3).
+oe_yw_fy_fire_OTC = {
+    set_global_variable = { name = oe_yw_fy_OTC value = 2 }
+    set_global_variable = { name = oe_yw_fy_p value = 3 }
+    set_global_variable = { name = oe_yw_fy_pm value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yw_ev_m value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_yw_m }
+    oe_yw_count = yes
+    debug_log = "oe_yw: event oe_yw.8 (OTC's appanage lost) sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_yw.8 }
+}
+# Event .8 for BGT (prince 4).
+oe_yw_fy_fire_BGT = {
+    set_global_variable = { name = oe_yw_fy_BGT value = 2 }
+    set_global_variable = { name = oe_yw_fy_p value = 4 }
+    set_global_variable = { name = oe_yw_fy_pm value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yw_ev_m value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_yw_m }
+    oe_yw_count = yes
+    debug_log = "oe_yw: event oe_yw.8 (BGT's appanage lost) sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_yw.8 }
+}
+# Event .8 for OGE (prince 5).
+oe_yw_fy_fire_OGE = {
+    set_global_variable = { name = oe_yw_fy_OGE value = 2 }
+    set_global_variable = { name = oe_yw_fy_p value = 5 }
+    set_global_variable = { name = oe_yw_fy_pm value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yw_ev_m value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_yw_m }
+    oe_yw_count = yes
+    debug_log = "oe_yw: event oe_yw.8 (OGE's appanage lost) sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_yw.8 }
+}
+# Event .8 for LNG (prince 6).
+oe_yw_fy_fire_LNG = {
+    set_global_variable = { name = oe_yw_fy_LNG value = 2 }
+    set_global_variable = { name = oe_yw_fy_p value = 6 }
+    set_global_variable = { name = oe_yw_fy_pm value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yw_ev_m value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_yw_m }
+    oe_yw_count = yes
+    debug_log = "oe_yw: event oe_yw.8 (LNG's appanage lost) sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_yw.8 }
+}
+# Event .8 for YLU (prince 8).
+oe_yw_fy_fire_YLU = {
+    set_global_variable = { name = oe_yw_fy_YLU value = 2 }
+    set_global_variable = { name = oe_yw_fy_p value = 8 }
+    set_global_variable = { name = oe_yw_fy_pm value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yw_ev_m value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_yw_m }
+    oe_yw_count = yes
+    debug_log = "oe_yw: event oe_yw.8 (YLU's appanage lost) sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_yw.8 }
+}
+# Event .8 for YZW (prince 9).
+oe_yw_fy_fire_YZW = {
+    set_global_variable = { name = oe_yw_fy_YZW value = 2 }
+    set_global_variable = { name = oe_yw_fy_p value = 9 }
+    set_global_variable = { name = oe_yw_fy_pm value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yw_ev_m value = global_var:oe_yw_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_yw_m }
+    oe_yw_count = yes
+    debug_log = "oe_yw: event oe_yw.8 (YZW's appanage lost) sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_yw.8 }
+}
+
+# CHI scope (event .8 options, inside hidden_effect; no debug_log here: a player command reaches it). Usage:
+# oe_yw_fy_set = { s = N }: the choice N for the prince of the event (global var oe_yw_fy_p), then the event is answered.
+oe_yw_fy_set = {
+    if = {
+        limit = { has_global_variable = oe_yw_fy_p }
+        if = { limit = { global_var:oe_yw_fy_p = 1 } c:QAS ?= { set_variable = { name = oe_yw_fy value = $s$ } } }
+        else_if = { limit = { global_var:oe_yw_fy_p = 2 } c:HCN ?= { set_variable = { name = oe_yw_fy value = $s$ } } }
+        else_if = { limit = { global_var:oe_yw_fy_p = 3 } c:OTC ?= { set_variable = { name = oe_yw_fy value = $s$ } } }
+        else_if = { limit = { global_var:oe_yw_fy_p = 4 } c:BGT ?= { set_variable = { name = oe_yw_fy value = $s$ } } }
+        else_if = { limit = { global_var:oe_yw_fy_p = 5 } c:OGE ?= { set_variable = { name = oe_yw_fy value = $s$ } } }
+        else_if = { limit = { global_var:oe_yw_fy_p = 6 } c:LNG ?= { set_variable = { name = oe_yw_fy value = $s$ } } }
+        else_if = { limit = { global_var:oe_yw_fy_p = 8 } c:YLU ?= { set_variable = { name = oe_yw_fy value = $s$ } } }
+        else_if = { limit = { global_var:oe_yw_fy_p = 9 } c:YZW ?= { set_variable = { name = oe_yw_fy value = $s$ } } }
+        remove_global_variable = oe_yw_fy_p
+    }
+}
+
 # ---------------------------------------------------------------- world steps (no popup; design 3.6)
 # W1 (Shen, 1339): Shen's prestige -5 and its opinion of Goryeo (the pair of Y1's oe_y1_shen_faction).
 oe_yw_do_w1 = {
@@ -486,16 +786,45 @@ oe_yw_do_w5 = {
     c:CDL = { add_opinion = { modifier = oe_yw_bw_duan_aid target = c:LNG } }
     debug_log = "oe_yw: W5 Dali came to Liang's aid against Xia"
 }
-# W6 (some years later): Liang murders Dali's governor. The goodwill ends; Dali's opinion of Liang, liberty desire +10.
+# W6 (some years later; phase 3: one account only, KBM 37 [14:56-18:04]): Liang and Dali fall out, by one account Liang
+# has Duan Gong killed. The goodwill ends; Dali's opinion of Liang -30 for 60 months, liberty desire +10. W9 follows.
 oe_yw_do_w6 = {
     set_global_variable = { name = oe_yw_w6 value = 1 }
+    set_global_variable = { name = oe_yw_w6_m value = global_var:oe_yw_m }
     c:LNG = { remove_opinion = { modifier = oe_yw_bw_duan_aid target = c:CDL } }
     c:CDL = {
         remove_opinion = { modifier = oe_yw_bw_duan_aid target = c:LNG }
         add_opinion = { modifier = oe_yw_bw_duan_slain target = c:LNG }
         add_liberty_desire = liberty_desire_mild_plus
     }
-    debug_log = "oe_yw: W6 Liang murdered Dali's governor"
+    debug_log = "oe_yw: W6 Liang and Dali fall out (one account: Duan Gong murdered)"
+}
+# W9 (phase 3; KBM 37 [18:04], [21:51]): reconciled through an official's mediation. The falling-out ends: Dali's ill
+# opinion off, both like each other (15, 120 months), Dali's liberty desire -10.
+oe_yw_do_w9 = {
+    set_global_variable = { name = oe_yw_w9 value = 1 }
+    c:CDL = {
+        remove_opinion = { modifier = oe_yw_bw_duan_slain target = c:LNG }
+        add_opinion = { modifier = oe_yw_bw_duan_peace target = c:LNG }
+        add_liberty_desire = liberty_desire_mild_minus
+    }
+    c:LNG = { add_opinion = { modifier = oe_yw_bw_duan_peace target = c:CDL } }
+    debug_log = "oe_yw: W9 Liang and Dali reconciled"
+}
+# W8 (phase 3; KBM 20 [17:38], 30 [14:11]; Yuan shi 95 术赤大王位): the Golden Horde's envoy receives the revenue of the
+# Jochid appanages (Pingyang, Jinzhou, Yongzhou). The Yuan pays oe_yw_glh_gold to the Golden Horde, whose opinion of the
+# Yuan rises (20, 120 months). Both AI.
+oe_yw_do_w8 = {
+    set_global_variable = { name = oe_yw_w8 value = 1 }
+    c:CHI = { set_global_variable = { name = oe_yw_tmp value = oe_yw_glh_gold } }
+    if = {
+        limit = { has_global_variable = oe_yw_tmp global_var:oe_yw_tmp > 0 }
+        c:CHI = { add_gold = { value = global_var:oe_yw_tmp multiply = -1 } }
+        c:GLH = { add_gold = global_var:oe_yw_tmp }
+    }
+    c:GLH = { add_opinion = { modifier = oe_yw_bw_glh_grant target = c:CHI } }
+    if = { limit = { has_global_variable = oe_yw_tmp } remove_global_variable = oe_yw_tmp }
+    debug_log = "oe_yw: W8 the Golden Horde's envoy received the Jochid appanage revenue"
 }
 # W7 (phase 2; 1352, Yuan shi 42: the Prince of Bin rewarded for killing the leader of the Xifan rebels): the prince's
 # prestige +5, loyalty +5 now (it moves back toward its target as usual; no event item).
@@ -504,7 +833,7 @@ oe_yw_do_w7 = {
     c:YBN = { add_prestige = prestige_weak_bonus oe_yw_change_loyalty = { amount = 5 } }
     debug_log = "oe_yw: W7 the Prince of Bin put down the Xifan rising (prestige +5, loyalty +5)"
 }
-# Any scope, monthly. The world steps W1, W2, W4, W5, W6 (W3 is in event .4's immediate).
+# Any scope, monthly. The world steps W1, W2, W4, W5, W6, W8, W9 (W3 is in event .4's immediate; W7 with the Prince of Bin).
 oe_yw_world = {
     if = {
         limit = { NOT = { has_global_variable = oe_yw_w1 } }
@@ -578,6 +907,28 @@ oe_yw_world = {
             random = { chance = oe_yw_wch_7 oe_yw_do_w7 = yes }
         }
     }
+    if = {
+        limit = { NOT = { has_global_variable = oe_yw_w8 } }
+        if = {
+            limit = { global_var:oe_yw_m > 32 }
+            set_global_variable = { name = oe_yw_w8 value = 2 } debug_log = "oe_yw: W8 (the Golden Horde's appanage revenue) dropped"
+        }
+        else_if = {
+            limit = { global_var:oe_yw_m >= 21 oe_yw_ok_w8 = yes }
+            random = { chance = oe_yw_wch_8 oe_yw_do_w8 = yes }
+        }
+    }
+    if = {
+        limit = { NOT = { has_global_variable = oe_yw_w9 } }
+        if = {
+            limit = { OR = { global_var:oe_yw_w6 ?= 2 global_var:oe_yw_m > oe_yw_hi_w9 } }
+            set_global_variable = { name = oe_yw_w9 value = 2 } debug_log = "oe_yw: W9 (Liang and Dali reconciled) dropped"
+        }
+        else_if = {
+            limit = { global_var:oe_yw_w6 ?= 1 global_var:oe_yw_m >= oe_yw_lo_w9 oe_yw_ok_w9 = yes }
+            random = { chance = oe_yw_wch_9 oe_yw_do_w9 = yes }
+        }
+    }
 }
 
 # ---------------------------------------------------------------- the collapse (F6's COLLAPSE_HOOKS; also this line's own check)
@@ -595,6 +946,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_QAS value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { country_exists = c:HCN } } set_global_variable = { name = oe_yw_fate_HCN value = 4 } }
         if = { limit = { country_exists = c:HCN } c:HCN = {
@@ -603,6 +955,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_HCN value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { country_exists = c:OTC } } set_global_variable = { name = oe_yw_fate_OTC value = 4 } }
         if = { limit = { country_exists = c:OTC } c:OTC = {
@@ -611,6 +964,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_OTC value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { country_exists = c:BGT } } set_global_variable = { name = oe_yw_fate_BGT value = 4 } }
         if = { limit = { country_exists = c:BGT } c:BGT = {
@@ -619,6 +973,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_BGT value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { country_exists = c:OGE } } set_global_variable = { name = oe_yw_fate_OGE value = 4 } }
         if = { limit = { country_exists = c:OGE } c:OGE = {
@@ -627,6 +982,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_OGE value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { country_exists = c:LNG } } set_global_variable = { name = oe_yw_fate_LNG value = 4 } }
         if = { limit = { country_exists = c:LNG } c:LNG = {
@@ -635,6 +991,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_LNG value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { country_exists = c:SYG } } set_global_variable = { name = oe_yw_fate_SYG value = 4 } }
         if = { limit = { country_exists = c:SYG } c:SYG = {
@@ -643,6 +1000,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_SYG value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { country_exists = c:YLU } } set_global_variable = { name = oe_yw_fate_YLU value = 4 } }
         if = { limit = { country_exists = c:YLU } c:YLU = {
@@ -651,6 +1009,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_YLU value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { country_exists = c:YZW } } set_global_variable = { name = oe_yw_fate_YZW value = 4 } }
         if = { limit = { country_exists = c:YZW } c:YZW = {
@@ -659,6 +1018,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_YZW value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { country_exists = c:YBN } } set_global_variable = { name = oe_yw_fate_YBN value = 4 } }
         if = { limit = { country_exists = c:YBN } c:YBN = {
@@ -667,6 +1027,7 @@ oe_yw_on_yuan_fall = {
             else_if = { limit = { is_subject = no } set_variable = { name = oe_yw_fate value = 2 } }
             else = { set_variable = { name = oe_yw_fate value = 3 } }
             set_global_variable = { name = oe_yw_fate_YBN value = var:oe_yw_fate }
+            if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal }
         } }
         if = { limit = { NOT = { has_global_variable = oe_yw_st_1 } } set_global_variable = { name = oe_yw_st_1 value = 2 } }
         if = { limit = { NOT = { has_global_variable = oe_yw_st_2 } } set_global_variable = { name = oe_yw_st_2 value = 2 } }
@@ -682,6 +1043,16 @@ oe_yw_on_yuan_fall = {
         if = { limit = { NOT = { has_global_variable = oe_yw_w5 } } set_global_variable = { name = oe_yw_w5 value = 2 } }
         if = { limit = { NOT = { has_global_variable = oe_yw_w6 } } set_global_variable = { name = oe_yw_w6 value = 2 } }
         if = { limit = { NOT = { has_global_variable = oe_yw_w7 } } set_global_variable = { name = oe_yw_w7 value = 2 } }
+        if = { limit = { NOT = { has_global_variable = oe_yw_w8 } } set_global_variable = { name = oe_yw_w8 value = 2 } }
+        if = { limit = { NOT = { has_global_variable = oe_yw_w9 } } set_global_variable = { name = oe_yw_w9 value = 2 } }
+        if = { limit = { global_var:oe_yw_fy_QAS ?= 1 } set_global_variable = { name = oe_yw_fy_QAS value = 3 } }
+        if = { limit = { global_var:oe_yw_fy_HCN ?= 1 } set_global_variable = { name = oe_yw_fy_HCN value = 3 } }
+        if = { limit = { global_var:oe_yw_fy_OTC ?= 1 } set_global_variable = { name = oe_yw_fy_OTC value = 3 } }
+        if = { limit = { global_var:oe_yw_fy_BGT ?= 1 } set_global_variable = { name = oe_yw_fy_BGT value = 3 } }
+        if = { limit = { global_var:oe_yw_fy_OGE ?= 1 } set_global_variable = { name = oe_yw_fy_OGE value = 3 } }
+        if = { limit = { global_var:oe_yw_fy_LNG ?= 1 } set_global_variable = { name = oe_yw_fy_LNG value = 3 } }
+        if = { limit = { global_var:oe_yw_fy_YLU ?= 1 } set_global_variable = { name = oe_yw_fy_YLU value = 3 } }
+        if = { limit = { global_var:oe_yw_fy_YZW ?= 1 } set_global_variable = { name = oe_yw_fy_YZW value = 3 } }
         if = { limit = { has_global_variable = oe_yw_on } remove_global_variable = oe_yw_on }
         debug_log = "oe_yw: the Yuan fell; the princes' markers are off and their fates recorded (oe_yw_fate_<TAG>)"
     }
@@ -803,11 +1174,13 @@ oe_yw_monthly = {
         if = { limit = { oe_yw_yuan_fallen = yes } oe_yw_on_yuan_fall = yes }
         else = {
             oe_yw_upkeep = yes
-            if = { limit = { current_month = 1 } oe_yw_grant = yes oe_yw_renew = yes }
+            oe_yw_fief_update = yes
+            if = { limit = { current_month = 1 } oe_yw_fief_year = yes oe_yw_grant = yes oe_yw_renew = yes }
             if = { limit = { current_month = 6 } oe_yw_assembly = yes }
             oe_yw_loyalty = yes
             oe_yw_world = yes
             if = { limit = { oe_yw_sched_open = yes } oe_yw_ev_lapse = yes oe_yw_ev_pick = yes }
+            oe_yw_fy_send = yes
         }
         if = { limit = { has_global_variable = oe_dbg_n_y1 } set_global_variable = { name = oe_yw_y1n value = global_var:oe_dbg_n_y1 } }
     }
@@ -919,6 +1292,8 @@ oe_yw_test_clear = {
     if = { limit = { has_global_variable = oe_yw_w5 } remove_global_variable = oe_yw_w5 }
     if = { limit = { has_global_variable = oe_yw_w6 } remove_global_variable = oe_yw_w6 }
     if = { limit = { has_global_variable = oe_yw_w7 } remove_global_variable = oe_yw_w7 }
+    if = { limit = { has_global_variable = oe_yw_w8 } remove_global_variable = oe_yw_w8 }
+    if = { limit = { has_global_variable = oe_yw_w9 } remove_global_variable = oe_yw_w9 }
     if = { limit = { has_global_variable = oe_yw_fate_QAS } remove_global_variable = oe_yw_fate_QAS }
     if = { limit = { has_global_variable = oe_yw_fate_HCN } remove_global_variable = oe_yw_fate_HCN }
     if = { limit = { has_global_variable = oe_yw_fate_OTC } remove_global_variable = oe_yw_fate_OTC }
@@ -930,16 +1305,27 @@ oe_yw_test_clear = {
     if = { limit = { has_global_variable = oe_yw_fate_YZW } remove_global_variable = oe_yw_fate_YZW }
     if = { limit = { has_global_variable = oe_yw_fate_YBN } remove_global_variable = oe_yw_fate_YBN }
     if = { limit = { has_global_variable = oe_yw_shazhou } remove_global_variable = oe_yw_shazhou }
-    c:QAS ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
-    c:HCN ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
-    c:OTC ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
-    c:BGT ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
-    c:OGE ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
-    c:LNG ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
-    c:SYG ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
-    c:YLU ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
-    c:YZW ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
-    c:YBN ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_tier_new } remove_variable = oe_yw_tier_new } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } }
+    if = { limit = { has_global_variable = oe_yw_fy_p } remove_global_variable = oe_yw_fy_p }
+    if = { limit = { has_global_variable = oe_yw_fy_pm } remove_global_variable = oe_yw_fy_pm }
+    if = { limit = { has_global_variable = oe_yw_w6_m } remove_global_variable = oe_yw_w6_m }
+    if = { limit = { has_global_variable = oe_yw_fy_QAS } remove_global_variable = oe_yw_fy_QAS }
+    if = { limit = { has_global_variable = oe_yw_fy_HCN } remove_global_variable = oe_yw_fy_HCN }
+    if = { limit = { has_global_variable = oe_yw_fy_OTC } remove_global_variable = oe_yw_fy_OTC }
+    if = { limit = { has_global_variable = oe_yw_fy_BGT } remove_global_variable = oe_yw_fy_BGT }
+    if = { limit = { has_global_variable = oe_yw_fy_OGE } remove_global_variable = oe_yw_fy_OGE }
+    if = { limit = { has_global_variable = oe_yw_fy_LNG } remove_global_variable = oe_yw_fy_LNG }
+    if = { limit = { has_global_variable = oe_yw_fy_YLU } remove_global_variable = oe_yw_fy_YLU }
+    if = { limit = { has_global_variable = oe_yw_fy_YZW } remove_global_variable = oe_yw_fy_YZW }
+    c:QAS ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:HCN ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:OTC ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:BGT ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:OGE ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:LNG ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:SYG ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:YLU ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:YZW ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:YBN ?= { if = { limit = { has_country_modifier = oe_yw_tier_loyal } remove_country_modifier = oe_yw_tier_loyal } if = { limit = { has_country_modifier = oe_yw_tier_aloof } remove_country_modifier = oe_yw_tier_aloof } if = { limit = { has_country_modifier = oe_yw_tier_estranged } remove_country_modifier = oe_yw_tier_estranged } if = { limit = { has_variable = oe_yw_prince } remove_variable = oe_yw_prince } if = { limit = { has_variable = oe_yw_w } remove_variable = oe_yw_w } if = { limit = { has_variable = oe_yw_loy } remove_variable = oe_yw_loy } if = { limit = { has_variable = oe_yw_loy_target } remove_variable = oe_yw_loy_target } if = { limit = { has_variable = oe_yw_tier } remove_variable = oe_yw_tier } if = { limit = { has_variable = oe_yw_paid_y } remove_variable = oe_yw_paid_y } if = { limit = { has_variable = oe_yw_lapse_y } remove_variable = oe_yw_lapse_y } if = { limit = { has_variable = oe_yw_att_y } remove_variable = oe_yw_att_y } if = { limit = { has_variable = oe_yw_ev } remove_variable = oe_yw_ev } if = { limit = { has_variable = oe_yw_ev_until } remove_variable = oe_yw_ev_until } if = { limit = { has_variable = oe_yw_out } remove_variable = oe_yw_out } if = { limit = { has_variable = oe_yw_fate } remove_variable = oe_yw_fate } if = { limit = { has_variable = oe_yw_fy } remove_variable = oe_yw_fy } if = { limit = { has_variable = oe_yw_fy_lost } remove_variable = oe_yw_fy_lost } if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
     c:CHI ?= { if = { limit = { has_variable = oe_yw_grant_level } remove_variable = oe_yw_grant_level } if = { limit = { has_variable = oe_yw_boost_y } remove_variable = oe_yw_boost_y } if = { limit = { has_variable = oe_yw_job } remove_variable = oe_yw_job } if = { limit = { has_country_modifier = oe_yw_qas_horses } remove_country_modifier = oe_yw_qas_horses } }
 }
 # The line runs from now in any game: the princes join again, every event pending (windows already past lapse at once).
@@ -973,6 +1359,66 @@ oe_yw_test_reset = {
     set_global_variable = oe_yw_init
     debug_log = "oe_yw TEST: line reset and off"
 }
+# ---- phase 3 tests (page 48)
+# Probe: every member that is the Yuan's vassal becomes a 投下宗王 now; and back.
+oe_yw_test_touxia = {
+    c:QAS ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    c:HCN ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    c:OTC ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    c:BGT ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    c:OGE ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    c:LNG ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    c:SYG ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    c:YLU ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    c:YZW ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    c:YBN ?= { if = { limit = { oe_yw_prince_active = yes } if = { limit = { is_subject_type = vassal country_exists = c:CHI is_subject_of = c:CHI } change_subject_type = subject_type:oe_yw_touxia } } }
+    debug_log = "oe_yw TEST: members switched to the 投下宗王 type (see ty<N> in oe_yw.90)"
+}
+oe_yw_test_vassal = {
+    c:QAS ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:HCN ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:OTC ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:BGT ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:OGE ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:LNG ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:SYG ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:YLU ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:YZW ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    c:YBN ?= { if = { limit = { is_subject = yes is_subject_type = oe_yw_touxia } change_subject_type = subject_type:vassal } }
+    debug_log = "oe_yw TEST: the princes switched back to vassals"
+}
+# The Prince of Qi's appanage counts as lost (no land moves), then the January check queues event .8; and back.
+oe_yw_test_fief_lose = {
+    c:QAS ?= { set_variable = oe_yw_fy_test }
+    if = { limit = { NOT = { has_global_variable = oe_yw_m } } set_global_variable = { name = oe_yw_m value = oe_yw_m_now } }
+    oe_yw_fief_update = yes
+    oe_yw_fief_year = yes
+}
+oe_yw_test_fief_back = {
+    c:QAS ?= { if = { limit = { has_variable = oe_yw_fy_test } remove_variable = oe_yw_fy_test } }
+    oe_yw_fief_update = yes
+}
+# Sends event .8 for the Prince of Qi to the current player's country (its trigger wants the Yuan: tag CHI first).
+oe_yw_test_fire_8 = {
+    if = { limit = { NOT = { has_global_variable = oe_yw_m } } set_global_variable = { name = oe_yw_m value = oe_yw_m_now } }
+    set_global_variable = { name = oe_yw_fy_p value = 1 }
+    set_global_variable = { name = oe_yw_fy_pm value = global_var:oe_yw_m }
+    trigger_event_non_silently = oe_yw.8
+}
+# World steps W6, W8, W9 now (they ignore the window and the AI condition; the countries must exist).
+oe_yw_test_w6 = {
+    if = { limit = { NOT = { has_global_variable = oe_yw_m } } set_global_variable = { name = oe_yw_m value = oe_yw_m_now } }
+    if = { limit = { country_exists = c:LNG country_exists = c:CDL c:CDL = { is_subject_of = c:LNG } } oe_yw_do_w6 = yes }
+    else = { debug_log = "oe_yw TEST: W6 not run (Liang or Dali gone, or Dali not Liang's subject)" }
+}
+oe_yw_test_w9 = {
+    if = { limit = { country_exists = c:LNG country_exists = c:CDL c:CDL = { is_subject_of = c:LNG } } oe_yw_do_w9 = yes }
+    else = { debug_log = "oe_yw TEST: W9 not run (Liang or Dali gone, or Dali not Liang's subject)" }
+}
+oe_yw_test_w8 = {
+    if = { limit = { country_exists = c:CHI country_exists = c:GLH } oe_yw_do_w8 = yes }
+    else = { debug_log = "oe_yw TEST: W8 not run (the Yuan or the Golden Horde gone)" }
+}
 
 # ---- TEST ONLY: copies every reading of the report event oe_yw.90 onto the current scope ----
 oe_yw_dev_snapshot = {
@@ -993,6 +1439,8 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_w5 value = oe_yw_dev_w5 }
     set_variable = { name = oe_yw_r_w6 value = oe_yw_dev_w6 }
     set_variable = { name = oe_yw_r_w7 value = oe_yw_dev_w7 }
+    set_variable = { name = oe_yw_r_w8 value = oe_yw_dev_w8 }
+    set_variable = { name = oe_yw_r_w9 value = oe_yw_dev_w9 }
     set_variable = { name = oe_yw_r_lvl value = oe_yw_dev_lvl }
     set_variable = { name = oe_yw_r_unit value = oe_yw_dev_unit }
     set_variable = { name = oe_yw_r_total value = oe_yw_dev_total }
@@ -1024,7 +1472,14 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_bncap value = oe_yw_dev_bncap }
     set_variable = { name = oe_yw_r_bnvas value = oe_yw_dev_bnvas }
     set_variable = { name = oe_yw_r_bnruler value = oe_yw_dev_bnruler }
+    set_variable = { name = oe_yw_r_fyp value = oe_yw_dev_fyp }
+    set_variable = { name = oe_yw_r_w6m value = oe_yw_dev_w6m }
+    set_variable = { name = oe_yw_r_ly value = oe_yw_dev_ly }
+    set_variable = { name = oe_yw_r_lyt value = oe_yw_dev_lyt }
     set_variable = { name = oe_yw_r_ex1 value = oe_yw_dev_ex1 }
+    set_variable = { name = oe_yw_r_ty1 value = oe_yw_dev_ty1 }
+    set_variable = { name = oe_yw_r_fy1 value = oe_yw_dev_fy1 }
+    set_variable = { name = oe_yw_r_fq1 value = oe_yw_dev_fq1 }
     set_variable = { name = oe_yw_r_loy1 value = oe_yw_dev_loy1 }
     set_variable = { name = oe_yw_r_tier1 value = oe_yw_dev_tier1 }
     set_variable = { name = oe_yw_r_att1 value = oe_yw_dev_att1 }
@@ -1032,6 +1487,9 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_out1 value = oe_yw_dev_out1 }
     set_variable = { name = oe_yw_r_fate1 value = oe_yw_dev_fate1 }
     set_variable = { name = oe_yw_r_ex2 value = oe_yw_dev_ex2 }
+    set_variable = { name = oe_yw_r_ty2 value = oe_yw_dev_ty2 }
+    set_variable = { name = oe_yw_r_fy2 value = oe_yw_dev_fy2 }
+    set_variable = { name = oe_yw_r_fq2 value = oe_yw_dev_fq2 }
     set_variable = { name = oe_yw_r_loy2 value = oe_yw_dev_loy2 }
     set_variable = { name = oe_yw_r_tier2 value = oe_yw_dev_tier2 }
     set_variable = { name = oe_yw_r_att2 value = oe_yw_dev_att2 }
@@ -1039,6 +1497,9 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_out2 value = oe_yw_dev_out2 }
     set_variable = { name = oe_yw_r_fate2 value = oe_yw_dev_fate2 }
     set_variable = { name = oe_yw_r_ex3 value = oe_yw_dev_ex3 }
+    set_variable = { name = oe_yw_r_ty3 value = oe_yw_dev_ty3 }
+    set_variable = { name = oe_yw_r_fy3 value = oe_yw_dev_fy3 }
+    set_variable = { name = oe_yw_r_fq3 value = oe_yw_dev_fq3 }
     set_variable = { name = oe_yw_r_loy3 value = oe_yw_dev_loy3 }
     set_variable = { name = oe_yw_r_tier3 value = oe_yw_dev_tier3 }
     set_variable = { name = oe_yw_r_att3 value = oe_yw_dev_att3 }
@@ -1046,6 +1507,9 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_out3 value = oe_yw_dev_out3 }
     set_variable = { name = oe_yw_r_fate3 value = oe_yw_dev_fate3 }
     set_variable = { name = oe_yw_r_ex4 value = oe_yw_dev_ex4 }
+    set_variable = { name = oe_yw_r_ty4 value = oe_yw_dev_ty4 }
+    set_variable = { name = oe_yw_r_fy4 value = oe_yw_dev_fy4 }
+    set_variable = { name = oe_yw_r_fq4 value = oe_yw_dev_fq4 }
     set_variable = { name = oe_yw_r_loy4 value = oe_yw_dev_loy4 }
     set_variable = { name = oe_yw_r_tier4 value = oe_yw_dev_tier4 }
     set_variable = { name = oe_yw_r_att4 value = oe_yw_dev_att4 }
@@ -1053,6 +1517,9 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_out4 value = oe_yw_dev_out4 }
     set_variable = { name = oe_yw_r_fate4 value = oe_yw_dev_fate4 }
     set_variable = { name = oe_yw_r_ex5 value = oe_yw_dev_ex5 }
+    set_variable = { name = oe_yw_r_ty5 value = oe_yw_dev_ty5 }
+    set_variable = { name = oe_yw_r_fy5 value = oe_yw_dev_fy5 }
+    set_variable = { name = oe_yw_r_fq5 value = oe_yw_dev_fq5 }
     set_variable = { name = oe_yw_r_loy5 value = oe_yw_dev_loy5 }
     set_variable = { name = oe_yw_r_tier5 value = oe_yw_dev_tier5 }
     set_variable = { name = oe_yw_r_att5 value = oe_yw_dev_att5 }
@@ -1060,6 +1527,9 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_out5 value = oe_yw_dev_out5 }
     set_variable = { name = oe_yw_r_fate5 value = oe_yw_dev_fate5 }
     set_variable = { name = oe_yw_r_ex6 value = oe_yw_dev_ex6 }
+    set_variable = { name = oe_yw_r_ty6 value = oe_yw_dev_ty6 }
+    set_variable = { name = oe_yw_r_fy6 value = oe_yw_dev_fy6 }
+    set_variable = { name = oe_yw_r_fq6 value = oe_yw_dev_fq6 }
     set_variable = { name = oe_yw_r_loy6 value = oe_yw_dev_loy6 }
     set_variable = { name = oe_yw_r_tier6 value = oe_yw_dev_tier6 }
     set_variable = { name = oe_yw_r_att6 value = oe_yw_dev_att6 }
@@ -1067,6 +1537,8 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_out6 value = oe_yw_dev_out6 }
     set_variable = { name = oe_yw_r_fate6 value = oe_yw_dev_fate6 }
     set_variable = { name = oe_yw_r_ex7 value = oe_yw_dev_ex7 }
+    set_variable = { name = oe_yw_r_ty7 value = oe_yw_dev_ty7 }
+    set_variable = { name = oe_yw_r_fy7 value = oe_yw_dev_fy7 }
     set_variable = { name = oe_yw_r_loy7 value = oe_yw_dev_loy7 }
     set_variable = { name = oe_yw_r_tier7 value = oe_yw_dev_tier7 }
     set_variable = { name = oe_yw_r_att7 value = oe_yw_dev_att7 }
@@ -1074,6 +1546,9 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_out7 value = oe_yw_dev_out7 }
     set_variable = { name = oe_yw_r_fate7 value = oe_yw_dev_fate7 }
     set_variable = { name = oe_yw_r_ex8 value = oe_yw_dev_ex8 }
+    set_variable = { name = oe_yw_r_ty8 value = oe_yw_dev_ty8 }
+    set_variable = { name = oe_yw_r_fy8 value = oe_yw_dev_fy8 }
+    set_variable = { name = oe_yw_r_fq8 value = oe_yw_dev_fq8 }
     set_variable = { name = oe_yw_r_loy8 value = oe_yw_dev_loy8 }
     set_variable = { name = oe_yw_r_tier8 value = oe_yw_dev_tier8 }
     set_variable = { name = oe_yw_r_att8 value = oe_yw_dev_att8 }
@@ -1081,6 +1556,9 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_out8 value = oe_yw_dev_out8 }
     set_variable = { name = oe_yw_r_fate8 value = oe_yw_dev_fate8 }
     set_variable = { name = oe_yw_r_ex9 value = oe_yw_dev_ex9 }
+    set_variable = { name = oe_yw_r_ty9 value = oe_yw_dev_ty9 }
+    set_variable = { name = oe_yw_r_fy9 value = oe_yw_dev_fy9 }
+    set_variable = { name = oe_yw_r_fq9 value = oe_yw_dev_fq9 }
     set_variable = { name = oe_yw_r_loy9 value = oe_yw_dev_loy9 }
     set_variable = { name = oe_yw_r_tier9 value = oe_yw_dev_tier9 }
     set_variable = { name = oe_yw_r_att9 value = oe_yw_dev_att9 }
@@ -1088,6 +1566,8 @@ oe_yw_dev_snapshot = {
     set_variable = { name = oe_yw_r_out9 value = oe_yw_dev_out9 }
     set_variable = { name = oe_yw_r_fate9 value = oe_yw_dev_fate9 }
     set_variable = { name = oe_yw_r_ex10 value = oe_yw_dev_ex10 }
+    set_variable = { name = oe_yw_r_ty10 value = oe_yw_dev_ty10 }
+    set_variable = { name = oe_yw_r_fy10 value = oe_yw_dev_fy10 }
     set_variable = { name = oe_yw_r_loy10 value = oe_yw_dev_loy10 }
     set_variable = { name = oe_yw_r_tier10 value = oe_yw_dev_tier10 }
     set_variable = { name = oe_yw_r_att10 value = oe_yw_dev_att10 }

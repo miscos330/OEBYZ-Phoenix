@@ -18,3 +18,48 @@ oe_ts_tribute_amount = {
     multiply = monthly_income_total
     min = 0
 }
+
+# theme-tribute. Any scope: month index year x 12 + month (Nirvana's NIR_CIV_month_index form): the once-a-month
+# guard, the founding month and the age of a theme.
+oe_ts_month_index = { value = current_year multiply = 12 add = current_month }
+# theme scope: months since the theme was founded (var:oe_te_founded, set with the first status); 999 when unknown
+# (old saves: counted as past the grace, design 3.3)
+oe_ts_trib_age = {
+    value = 999
+    if = { limit = { has_variable = oe_te_founded } value = oe_ts_month_index subtract = var:oe_te_founded }
+}
+# readouts (theme scope; 0 when not set): paid this month, due this month, paid the month before, months in
+# arrears, unpaid gold
+# TRIB_V2 = False in gen_territory_status.py: the remittance that sets this variable is not written; reads as not set
+oe_ts_trib_last_v = { value = 0 }
+oe_ts_trib_due_v = { value = 0 }
+oe_ts_trib_prev_v = { value = 0 }
+oe_ts_arrears_v = { value = 0 }
+oe_ts_arrears_gold_v = { value = 0 }
+# BYZ scope: remitted this calendar year (0 before the first remittance of the year)
+# TRIB_V2 = False in gen_territory_status.py: the remittance that sets this variable is not written; reads as not set
+oe_ts_trib_year_v = { value = 0 }
+# TEST ONLY readouts (test buttons tribc2, triblog; theme scope)
+oe_ts_trib_t_mb = { value = monthly_balance }
+oe_ts_trib_t_inc = { value = monthly_income_total }
+oe_ts_trib_t_gold = { value = gold }
+oe_ts_trib_t_infl = { value = inflation }
+oe_ts_trib_t_band = { value = -1 if = { limit = { has_variable = oe_theme_loyalty_band } value = var:oe_theme_loyalty_band } }
+oe_ts_trib_t_status = { value = -1 if = { limit = { has_variable = oe_theme_status } value = var:oe_theme_status } }
+oe_ts_trib_t_fiscal = { value = -1 if = { limit = { has_variable = oe_theme_fiscal } value = var:oe_theme_fiscal } }
+oe_ts_trib_t_adj = { value = 0 if = { limit = { has_variable = oe_te_trib_adj } value = var:oe_te_trib_adj } }
+oe_ts_trib_t_tq = { value = -1 if = { limit = { has_variable = oe_tq_last } value = var:oe_tq_last } }
+oe_ts_trib_t_month = { value = -1 }   # TRIB_V2 = False in gen_territory_status.py: the remittance that sets this variable is not written; reads as not set
+# the crown's army pay to this theme as the first maker's payment counts it (price 1 gold, no inflation, x the slider)
+oe_ts_trib_t_pay = {
+    value = 0
+    if = {
+        limit = { oe_theme_army_payment_trigger = yes }
+        if = { limit = { oe_pillars_naval_theme_trigger = yes } add = navy_size }
+        else = { add = army_size }
+        multiply = oe_theme_law_pay_ratio
+    }
+}
+# tax base of the theme's own buildings' locations owned by the crown: the seat's location, the posts' locations
+oe_ts_trib_t_seat = { value = 0 every_owned_foreign_building_location = { limit = { owner ?= c:BYZ oe_ts_trib_seat_loc = yes } add = location_tax_base } }
+oe_ts_trib_t_post = { value = 0 every_owned_foreign_building_location = { limit = { owner ?= c:BYZ NOT = { oe_ts_trib_seat_loc = yes } } add = location_tax_base } }

@@ -66,6 +66,9 @@ oe_ths_a_tick = {
         oe_ths_blockade_mod = yes
         if = { limit = { NOT = { location:thessaloniki = { owner ?= c:BYZ } } } oe_ths_a_end = { why = 8 } }
         else_if = { limit = { oe_ths_tur_gone = yes } oe_ths_a_finale = { why = 4 } }
+        # v6.7 sr-route2 (decision 261 no. 3): while the empire is restored an encircled city is not surrendered; the
+        # strong route's oe_sr.5 offers the defence roll (it calls this line's own oe_ths_a_end / oe_ths_1387).
+        else_if = { limit = { oe_ths_encircled = yes oe_sr_ths_roll_ok = yes OR = { var:oe_ths_will <= 0 AND = { var:oe_ths_bm >= 48 var:oe_ths_will < 30 } } } set_variable = { name = oe_ths_a_pending months = 3 } oe_sr_ths_offer = { part = 1 } }
         else_if = { limit = { var:oe_ths_will <= 0 } set_variable = { name = oe_ths_a_pending months = 3 } oe_ml_take_as = { line = 12 } trigger_event_non_silently = oe_ths.5 }
         else_if = { limit = { var:oe_ths_bm >= 48 var:oe_ths_will >= 30 } oe_ths_a_finale = { why = 1 } }
         else_if = { limit = { var:oe_ths_bm >= 48 } set_variable = { name = oe_ths_a_pending months = 3 } oe_ml_take_as = { line = 12 } trigger_event_non_silently = oe_ths.5 }
@@ -392,11 +395,11 @@ oe_ths_walls = {
     if = {
         limit = { location:constantinople = { owner ?= c:BYZ has_building = building_type:theodosian_walls } }
         add_stability = stability_weak_penalty
-        add_manpower = { value = monthly_manpower multiply = -2 }
+        if = { limit = { monthly_manpower > 0 } add_manpower = { value = monthly_manpower multiply = -2 } }
     }
     else = {
         add_stability = stability_mild_penalty
-        add_manpower = { value = monthly_manpower multiply = -4 }
+        if = { limit = { monthly_manpower > 0 } add_manpower = { value = monthly_manpower multiply = -4 } }
         location:constantinople = { if = { limit = { owner ?= c:BYZ } add_location_modifier = { modifier = oe_ths_siege_scars years = 5 mode = replace } } }
     }
 }
@@ -443,6 +446,8 @@ oe_ths_d_tick = {
         oe_ths_blockade_mod = yes
         if = { limit = { NOT = { location:thessaloniki = { owner ?= c:BYZ } } } oe_ths_d_end = { why = 6 } }
         else_if = { limit = { oe_ths_tur_gone = yes } oe_ths_d_end = { why = 7 } }
+        # v6.7 sr-route2 (decision 261 no. 3): the same for part D (oe_sr.5 calls oe_ths_d_end / oe_ths_d_outcome).
+        else_if = { limit = { var:oe_ths_will <= 0 oe_ths_encircled = yes oe_sr_ths_roll_ok = yes } set_variable = { name = oe_ths_d_pending months = 3 } oe_sr_ths_offer = { part = 2 } }
         else_if = { limit = { var:oe_ths_will <= 0 } set_variable = { name = oe_ths_d_pending months = 3 } oe_ml_take_as = { line = 12 } trigger_event_non_silently = oe_ths.23 }
         else_if = { limit = { var:oe_ths_bm >= 60 var:oe_ths_will >= 30 } set_variable = { name = oe_ths_d_pending months = 3 } oe_ml_take_as = { line = 12 } trigger_event_non_silently = oe_ths.23 }
         else_if = { limit = { oe_ths_ok_22 = yes oe_ml_free = yes } set_variable = oe_ths_done_22 set_variable = { name = oe_ths_d_pending months = 3 } oe_ml_take_as = { line = 12 } trigger_event_non_silently = oe_ths.22 }

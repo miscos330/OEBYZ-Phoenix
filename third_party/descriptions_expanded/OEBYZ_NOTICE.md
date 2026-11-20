@@ -29,7 +29,7 @@ Byte-identical copies of version 1.2.2 (SHA-256):
   19 new descriptions for countries and dynasties that exist only in Phoenix, and 7 adapted ones:
   for QAS, HCN, OTC, BGT, OGE, LNG, SYG the first paragraph is rewritten for Phoenix's setup (the Yuan princes are named
   by their titles) and the later paragraphs of the Descriptions Expanded entry follow unchanged.
-  For WAL, EPI, FEO, GAZ, SAO, ACH, NEO, ATH, gabras_dynasty, pontic_greek_culture, GLH, SMS, nakh_culture, ryazanian, CYP, GEO, HLG, QAR, AQQ the Descriptions Expanded entry is shown with single sentences replaced where it
+  For WAL, EPI, FEO, GAZ, SAO, ACH, NEO, ATH, gabras_dynasty, pontic_greek_culture, GLH, SMS, nakh_culture, ryazanian, CYP, GEO, HLG, QAR, AQQ, CDL the Descriptions Expanded entry is shown with single sentences replaced where it
   contradicts Phoenix's 1337 start or states as settled what the sources leave open. For AAI, AQQ, CYP, ERE, FEO, HCI, IME, JAL, SME, SUT, TLM, hazara_culture, iraqi_culture, laz_culture, arghunid_dynasty, bagrationi_dynasty, farumadi_dynasty, gabras_dynasty, haciemirids_dynasty, hindu_dynasty, komnenos_dynasty, lusignan_dynasty, mulai_dynasty, qushji_dynasty, tadjeddinids_dynasty the
   Chinese text is shown with names respelled as the game and Phoenix spell them (English unchanged); and 20 descriptions are
   new, for cultures that exist only in Phoenix.

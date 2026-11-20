@@ -2,6 +2,7 @@
 # 2026-11-19 v6.4 D2 phase 2 (the church framework, events 20-41) added to this file by the same generator.
 # 2026-11-19 v6.4 D2 phase 3 (the metropolitans of Rus', Lithuania, Wallachia and Moldavia; alms from Rus'; events 50-82) added to this file by the same generator.
 # 2026-11-19 v6.6 D2 phases 4 and 5 (the monastic lands, the council of 1368, the random pool: events 42, 70-72, 90-94; Rus' and the union: events 58, 59) added to this file by the same generator.
+# 2026-11-20 v6.7 phase 6, group ch-after-fall1 (the Church after the City is lost: the fall check, events 24, 25) added to this file by the same generator.
 namespace = oe_ecc
 
 oe_ecc.1 = { # 佩奇来的使团
@@ -15,7 +16,7 @@ oe_ecc.1 = { # 佩奇来的使团
             triggered_desc = { trigger = { always = yes } desc = oe_ecc.1.desc.b }
         }
     }
-    trigger = { tag = BYZ oe_ecc_ev_ok_1 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_1 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_scopes = yes oe_ecc_save_envoy = yes }
     option = {
         name = oe_ecc.1.a
@@ -106,7 +107,7 @@ oe_ecc.2 = { # 维丁的请求
     image = "gfx/interface/illustrations/international_organization_types/autocephalous_patriarchate.dds"
     title = oe_ecc.2.t
     desc = oe_ecc.2.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_2 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_2 = yes }
     immediate = {
         oe_ml_take_as = { line = 14 }
         oe_ecc_save_scopes = yes
@@ -159,7 +160,7 @@ oe_ecc.3 = { # 特尔诺沃的空座
             triggered_desc = { trigger = { always = yes } desc = oe_ecc.3.desc.b }
         }
     }
-    trigger = { tag = BYZ oe_ecc_ev_ok_3 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_3 = yes }
     immediate = {
         oe_ml_take_as = { line = 14 }
         oe_ecc_save_scopes = yes
@@ -232,7 +233,7 @@ oe_ecc.11 = {
     type = country_event
     title = empty_text
     hidden = yes
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } }
     immediate = {
         oe_ecc_save_scopes = yes
         if = {
@@ -247,7 +248,7 @@ oe_ecc.12 = {
     type = country_event
     title = empty_text
     hidden = yes
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } }
     immediate = { oe_ecc_save_scopes = yes oe_ecc_join_stray = { tag = VID } }
 }
 
@@ -256,7 +257,7 @@ oe_ecc.13 = {
     type = country_event
     title = empty_text
     hidden = yes
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } }
     immediate = {
         oe_ecc_save_scopes = yes
         if = {
@@ -273,7 +274,7 @@ oe_ecc.20 = {
     type = country_event
     title = empty_text
     hidden = yes
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } }
     immediate = { if = { limit = { NOT = { has_variable = oe_ecc_on } } oe_ecc_init = yes } }
 }
 
@@ -283,7 +284,7 @@ oe_ecc.21 = { # 教会的三派
     image = "gfx/interface/illustrations/society/religion.dds"
     title = oe_ecc.21.t
     desc = oe_ecc.21.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_21 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_21 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.21.a
@@ -297,7 +298,7 @@ oe_ecc.22 = { # 圣主教会议
     image = "gfx/interface/illustrations/situation/council_of_trent.dds"
     title = oe_ecc.22.t
     desc = oe_ecc.22.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_22 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_22 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.22.a
@@ -341,7 +342,7 @@ oe_ecc.23 = {
     type = country_event
     title = empty_text
     hidden = yes
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } }
     immediate = {
         if = {
             limit = { var:oe_ecc_job ?= 1 }
@@ -352,6 +353,56 @@ oe_ecc.23 = {
         remove_variable = oe_ecc_job
         remove_variable = oe_ecc_job_r
         remove_variable = oe_ecc_job_emp
+    }
+}
+
+oe_ecc.24 = { # 京城之后的牧首区
+    type = country_event
+    outcome = neutral
+    image = "gfx/interface/illustrations/international_organization_types/autocephalous_patriarchate.dds"
+    title = oe_ecc.24.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { global_var:oe_ecc_fall ?= 2 } desc = oe_ecc.24.desc.a }
+            triggered_desc = { trigger = { global_var:oe_ecc_fall ?= 1 oe_ecc_fall_ap_value = 0 current_date >= 1453.5.29 } desc = oe_ecc.24.desc.b }
+            triggered_desc = { trigger = { global_var:oe_ecc_fall ?= 1 oe_ecc_fall_ap_value = 0 } desc = oe_ecc.24.desc.c }
+            triggered_desc = { trigger = { global_var:oe_ecc_fall ?= 1 oe_ecc_fall_ap_value = 1 } desc = oe_ecc.24.desc.d }
+            triggered_desc = { trigger = { global_var:oe_ecc_fall ?= 1 oe_ecc_fall_ap_value = 2 } desc = oe_ecc.24.desc.e }
+            triggered_desc = { trigger = { always = yes } desc = oe_ecc.24.desc.f }
+        }
+    }
+    trigger = { tag = BYZ }
+    immediate = { oe_ml_take_as = { line = 14 } }
+    option = {
+        name = oe_ecc.24.a
+        custom_tooltip = oe_ecc_fall_tt_lines
+        if = { limit = { global_var:oe_ecc_fall ?= 1 } custom_tooltip = oe_ecc_fall_tt_union }
+        ai_chance = { base = 100 }
+    }
+}
+
+# (hidden) The church lines close: the worker
+oe_ecc.25 = {
+    type = country_event
+    title = empty_text
+    hidden = yes
+    trigger = { tag = BYZ }
+    immediate = {
+        oe_ecc_pat_tidy = yes
+        if = { limit = { NOT = { has_variable = oe_ecc_fall_n } } set_variable = { name = oe_ecc_fall_n value = 0 } }
+        change_variable = { name = oe_ecc_fall_n add = 1 }
+        if = {
+            limit = {
+                NOT = { has_variable = oe_ecc_fall_told }
+                OR = {
+                    NOT = { oe_ecc_fall_ap_value = 1 }
+                    AND = { has_variable = oe_ecc_fall_n var:oe_ecc_fall_n >= 6 }
+                }
+            }
+            set_variable = oe_ecc_fall_told
+            trigger_event_non_silently = oe_ecc.24
+        }
+        if = { limit = { var:oe_ecc_fall_n < 9 } trigger_event_silently = { id = oe_ecc.25 days = 10 } }
     }
 }
 
@@ -370,7 +421,7 @@ oe_ecc.30 = { # 圣主教会议报上的人选
             triggered_desc = { trigger = { always = yes } desc = oe_ecc.30.desc.f }
         }
     }
-    trigger = { tag = BYZ oe_ecc_ev_ok_30 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_30 = yes }
     immediate = {
         oe_ml_take_as = { line = 14 }
         if = {
@@ -638,7 +689,7 @@ oe_ecc.31 = {
     type = country_event
     title = empty_text
     hidden = yes
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } }
     immediate = { oe_ecc_install = yes }
 }
 
@@ -658,7 +709,7 @@ oe_ecc.32 = { # 新君与牧首
             triggered_desc = { trigger = { always = yes } desc = oe_ecc.32.desc.g }
         }
     }
-    trigger = { tag = BYZ oe_ecc_ev_ok_32 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_32 = yes }
     immediate = {
         oe_ml_take_as = { line = 14 }
         random_character = { limit = { has_character_modifier = oe_byz_religion_leader } save_scope_as = oe_ecc_pat }
@@ -698,7 +749,7 @@ oe_ecc.33 = { # 牧首拒绝加冕
     image = "gfx/interface/illustrations/society/religion.dds"
     title = oe_ecc.33.t
     desc = oe_ecc.33.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_33 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_33 = yes }
     immediate = {
         oe_ml_take_as = { line = 14 }
         random_character = { limit = { has_character_modifier = oe_byz_religion_leader } save_scope_as = oe_ecc_pat }
@@ -737,7 +788,7 @@ oe_ecc.40 = { # 1347年二月的会议
             triggered_desc = { trigger = { always = yes } desc = oe_ecc.40.desc.b }
         }
     }
-    trigger = { tag = BYZ oe_ecc_ev_ok_40 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_40 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.40.a
@@ -785,7 +836,7 @@ oe_ecc.41 = { # 布拉赫奈的会议
     image = "gfx/interface/illustrations/situation/council_of_trent.dds"
     title = oe_ecc.41.t
     desc = oe_ecc.41.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_41 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_41 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.41.a
@@ -813,7 +864,7 @@ oe_ecc.42 = { # 1368年的会议
     image = "gfx/interface/illustrations/situation/council_of_trent.dds"
     title = oe_ecc.42.t
     desc = oe_ecc.42.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_42 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_42 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.42.a
@@ -845,7 +896,7 @@ oe_ecc.50 = { # 全罗斯的都主教出缺
     image = "gfx/interface/illustrations/international_organization_types/autocephalous_patriarchate.dds"
     title = oe_ecc.50.t
     desc = oe_ecc.50.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_50 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_50 = yes }
     immediate = {
         oe_ml_take_as = { line = 14 }
         oe_ecc_save_rus_host = yes
@@ -899,7 +950,7 @@ oe_ecc.51 = { # 立陶宛要自己的都主教
             triggered_desc = { trigger = { always = yes } desc = oe_ecc.51.desc.b }
         }
     }
-    trigger = { tag = BYZ oe_ecc_ev_ok_51 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_51 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_rus_host = yes c:LIT ?= { save_scope_as = oe_ecc_lit } }
     option = {
         name = oe_ecc.51.a
@@ -943,7 +994,7 @@ oe_ecc.52 = { # 西普里安的祝圣
     image = "gfx/interface/illustrations/work_of_art_and_holy_sites/icon.dds"
     title = oe_ecc.52.t
     desc = oe_ecc.52.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_52 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_52 = yes }
     immediate = {
         oe_ml_take_as = { line = 14 }
         oe_ecc_save_rus_host = yes
@@ -980,7 +1031,7 @@ oe_ecc.53 = { # 莫斯科的人选
     image = "gfx/interface/illustrations/situation/council_of_trent.dds"
     title = oe_ecc.53.t
     desc = oe_ecc.53.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_53 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_53 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_rus_host = yes c:LIT ?= { save_scope_as = oe_ecc_lit } }
     option = {
         name = oe_ecc.53.a
@@ -1025,7 +1076,7 @@ oe_ecc.54 = { # 一位都主教，全罗斯
     image = "gfx/interface/illustrations/situation/council_of_trent.dds"
     title = oe_ecc.54.t
     desc = oe_ecc.54.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_54 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_54 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_rus_host = yes c:LIT ?= { save_scope_as = oe_ecc_lit } }
     option = {
         name = oe_ecc.54.a
@@ -1057,7 +1108,7 @@ oe_ecc.55 = { # 礼拜里的皇帝之名
     image = "gfx/interface/illustrations/society/religion.dds"
     title = oe_ecc.55.t
     desc = oe_ecc.55.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_55 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_55 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_rus_host = yes }
     option = {
         name = oe_ecc.55.a
@@ -1088,7 +1139,7 @@ oe_ecc.56 = { # 维托夫特的都主教
     image = "gfx/interface/illustrations/situation/council_of_trent.dds"
     title = oe_ecc.56.t
     desc = oe_ecc.56.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_56 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_56 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_rus_host = yes c:LIT ?= { save_scope_as = oe_ecc_lit } }
     option = {
         name = oe_ecc.56.a
@@ -1122,7 +1173,7 @@ oe_ecc.57 = { # 谁去罗斯
     image = "gfx/interface/illustrations/work_of_art_and_holy_sites/icon.dds"
     title = oe_ecc.57.t
     desc = oe_ecc.57.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_57 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_57 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_rus_host = yes }
     option = {
         name = oe_ecc.57.a
@@ -1152,7 +1203,7 @@ oe_ecc.58 = { # 莫斯科拒绝合一
     image = "gfx/interface/illustrations/government/diplomacy_illustration.dds"
     title = oe_ecc.58.t
     desc = oe_ecc.58.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_58 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_58 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_rus_host = yes }
     option = {
         name = oe_ecc.58.a
@@ -1178,7 +1229,7 @@ oe_ecc.59 = { # 罗斯自己选了都主教
     image = "gfx/interface/illustrations/situation/council_of_trent.dds"
     title = oe_ecc.59.t
     desc = oe_ecc.59.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_59 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_59 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_rus_host = yes }
     option = {
         name = oe_ecc.59.a
@@ -1213,7 +1264,7 @@ oe_ecc.60 = { # 瓦拉几亚的都主教
             triggered_desc = { trigger = { always = yes } desc = oe_ecc.60.desc.b }
         }
     }
-    trigger = { tag = BYZ oe_ecc_ev_ok_60 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_60 = yes }
     immediate = { oe_ml_take_as = { line = 14 } c:WAL ?= { save_scope_as = oe_ecc_wal } }
     option = {
         name = oe_ecc.60.a
@@ -1252,7 +1303,7 @@ oe_ecc.61 = { # 摩尔达维亚的约瑟夫
     image = "gfx/interface/illustrations/international_organization_types/autocephalous_patriarchate.dds"
     title = oe_ecc.61.t
     desc = oe_ecc.61.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_61 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_61 = yes }
     immediate = { oe_ml_take_as = { line = 14 } c:MOL ?= { save_scope_as = oe_ecc_mol } }
     option = {
         name = oe_ecc.61.a
@@ -1283,7 +1334,7 @@ oe_ecc.62 = { # 与摩尔达维亚教会和解
     image = "gfx/interface/illustrations/international_organization_types/autocephalous_patriarchate.dds"
     title = oe_ecc.62.t
     desc = oe_ecc.62.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_62 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_62 = yes }
     immediate = { oe_ml_take_as = { line = 14 } c:MOL ?= { save_scope_as = oe_ecc_mol } }
     option = {
         name = oe_ecc.62.a
@@ -1317,7 +1368,7 @@ oe_ecc.70 = { # 一半修院地产
     image = "gfx/interface/illustrations/society/religion.dds"
     title = oe_ecc.70.t
     desc = oe_ecc.70.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_70 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_70 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.70.a
@@ -1364,7 +1415,7 @@ oe_ecc.71 = { # 修院要回田产
             triggered_desc = { trigger = { always = yes } desc = oe_ecc.71.desc.b }
         }
     }
-    trigger = { tag = BYZ oe_ecc_ev_ok_71 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_71 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.71.a
@@ -1416,7 +1467,7 @@ oe_ecc.72 = { # 圣山的新主人
     image = "gfx/interface/illustrations/work_of_art_and_holy_sites/icon.dds"
     title = oe_ecc.72.t
     desc = oe_ecc.72.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_72 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_72 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.72.a
@@ -1440,7 +1491,7 @@ oe_ecc.80 = { # 向罗斯求援
     image = "gfx/interface/illustrations/government/diplomacy_illustration.dds"
     title = oe_ecc.80.t
     desc = oe_ecc.80.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_80 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_80 = yes }
     immediate = { oe_ml_take_as = { line = 14 } oe_ecc_save_rus_host = yes }
     option = {
         name = oe_ecc.80.a
@@ -1469,7 +1520,11 @@ oe_ecc.81 = { # 君士坦丁堡的求援信
     image = "gfx/interface/illustrations/society/religion.dds"
     title = oe_ecc.81.t
     desc = oe_ecc.81.desc
-    trigger = { country_exists = c:BYZ c:BYZ = { has_variable = oe_ecc_alms_v } }
+    trigger = {
+        country_exists = c:BYZ
+        c:BYZ = { has_variable = oe_ecc_alms_v }
+        NOT = { has_global_variable = oe_ecc_fall }
+    }
     option = {
         name = oe_ecc.81.a
         custom_tooltip = oe_ecc.81.a.tt
@@ -1525,7 +1580,7 @@ oe_ecc.82 = { # 北方来的银子
             triggered_desc = { trigger = { always = yes } desc = oe_ecc.82.desc.b }
         }
     }
-    trigger = { tag = BYZ has_variable = oe_ecc_alms_got }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } has_variable = oe_ecc_alms_got }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.82.a
@@ -1561,7 +1616,7 @@ oe_ecc.90 = { # 圣山来的修士
     image = "gfx/interface/illustrations/work_of_art_and_holy_sites/icon.dds"
     title = oe_ecc.90.t
     desc = oe_ecc.90.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_90 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_90 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.90.a
@@ -1586,7 +1641,7 @@ oe_ecc.91 = { # 学者的抄本
     image = "gfx/interface/illustrations/society/religion.dds"
     title = oe_ecc.91.t
     desc = oe_ecc.91.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_91 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_91 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.91.a
@@ -1610,7 +1665,7 @@ oe_ecc.92 = { # 拉丁修士来访
     image = "gfx/interface/illustrations/government/diplomacy_illustration.dds"
     title = oe_ecc.92.t
     desc = oe_ecc.92.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_92 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_92 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.92.a
@@ -1636,7 +1691,7 @@ oe_ecc.93 = { # 皇帝的教会权利
     image = "gfx/interface/illustrations/situation/council_of_trent.dds"
     title = oe_ecc.93.t
     desc = oe_ecc.93.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_93 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_93 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.93.a
@@ -1664,7 +1719,7 @@ oe_ecc.94 = { # 修院求赐金玺诏书
     image = "gfx/interface/illustrations/society/religion.dds"
     title = oe_ecc.94.t
     desc = oe_ecc.94.desc
-    trigger = { tag = BYZ oe_ecc_ev_ok_94 = yes }
+    trigger = { tag = BYZ NOT = { has_global_variable = oe_ecc_fall } oe_ecc_ev_ok_94 = yes }
     immediate = { oe_ml_take_as = { line = 14 } }
     option = {
         name = oe_ecc.94.a

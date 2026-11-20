@@ -742,23 +742,25 @@ oe_yp_monthly = {
     }
 }
 
-# Branch-secretariat country scope. The loyalty step of oe_yp_monthly (as Y3 step 1).
+# Branch-secretariat country scope. The loyalty step of oe_yp_monthly (as Y3 step 1). The target is read from the script
+# value itself (oe_yp_loyalty_target is still written as before): event options reach this through
+# oe_yp_change_loyalty, and their tooltip preview does not apply the set_variable just above (yuan-fix1, the r23 g5 pattern).
 oe_yp_monthly_loyalty = {
     if = { limit = { NOT = { has_variable = oe_yp_unit } } oe_yp_set_unit_by_tag = yes }
     set_variable = { name = oe_yp_loyalty_target value = oe_yp_loyalty_target_value }
     if = {
         limit = { NOT = { has_variable = oe_yp_loyalty } }
-        set_variable = { name = oe_yp_loyalty value = var:oe_yp_loyalty_target }
+        set_variable = { name = oe_yp_loyalty value = oe_yp_loyalty_target_value }
     }
     else_if = {
-        limit = { var:oe_yp_loyalty < var:oe_yp_loyalty_target }
+        limit = { var:oe_yp_loyalty < oe_yp_loyalty_target_value }
         change_variable = { name = oe_yp_loyalty add = 1 }
-        if = { limit = { var:oe_yp_loyalty > var:oe_yp_loyalty_target } set_variable = { name = oe_yp_loyalty value = var:oe_yp_loyalty_target } }
+        if = { limit = { var:oe_yp_loyalty > oe_yp_loyalty_target_value } set_variable = { name = oe_yp_loyalty value = oe_yp_loyalty_target_value } }
     }
     else_if = {
-        limit = { var:oe_yp_loyalty > var:oe_yp_loyalty_target }
+        limit = { var:oe_yp_loyalty > oe_yp_loyalty_target_value }
         change_variable = { name = oe_yp_loyalty add = -1 }
-        if = { limit = { var:oe_yp_loyalty < var:oe_yp_loyalty_target } set_variable = { name = oe_yp_loyalty value = var:oe_yp_loyalty_target } }
+        if = { limit = { var:oe_yp_loyalty < oe_yp_loyalty_target_value } set_variable = { name = oe_yp_loyalty value = oe_yp_loyalty_target_value } }
     }
     clamp_variable = { name = oe_yp_loyalty min = 0 max = 100 }
 }
@@ -1653,6 +1655,10 @@ oe_yp_dissolve_all = {
     oe_y1_on_yuan_fall = yes # registered clean-up of another Yuan line
     oe_yw_on_yuan_fall = yes # registered clean-up of another Yuan line
     oe_y7_on_yuan_fall = yes # registered clean-up of another Yuan line
+    oe_yc_on_yuan_fall = yes # registered clean-up of another Yuan line
+    oe_yh_on_yuan_fall = yes # registered clean-up of another Yuan line
+    oe_yr_on_yuan_fall = yes # registered clean-up of another Yuan line
+    oe_yk_on_yuan_fall = yes # registered clean-up of another Yuan line
     if = { limit = { NOT = { AND = { country_exists = c:YHN c:YHN = { this = root } } } } oe_yp_end_YHN = yes }
     if = { limit = { NOT = { AND = { country_exists = c:YJZ c:YJZ = { this = root } } } } oe_yp_end_YJZ = yes }
     if = { limit = { NOT = { AND = { country_exists = c:YJX c:YJX = { this = root } } } } oe_yp_end_YJX = yes }

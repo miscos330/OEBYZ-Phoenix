@@ -74,6 +74,50 @@ oe_yw_yuan_busy = {
     }
 }
 
+# Location scope. Held by the Yuan or by a Yuan subject (or a subject's subject).
+oe_yw_loc_ours = {
+    country_exists = c:CHI
+    owner ?= { OR = { this = c:CHI is_subject_or_below_of = c:CHI } }
+}
+# Country scope = a prince. It has an appanage in this line's table (FIEF in gen_yuan_y5b.py).
+oe_yw_has_fief = {
+    OR = { tag = QAS tag = HCN tag = OTC tag = BGT tag = OGE tag = LNG tag = YLU tag = YZW }
+}
+# Country scope = a prince with an appanage. One of its appanage's locations is held by the Yuan side, and no test
+# override (country var oe_yw_fy_test, test button ywtlose) says otherwise.
+oe_yw_fief_held = {
+    NOT = { has_variable = oe_yw_fy_test }
+    OR = {
+        AND = { tag = QAS OR = { location:zichuan = { oe_yw_loc_ours = yes } } }
+        AND = { tag = HCN OR = { location:licheng = { oe_yw_loc_ours = yes } } }
+        AND = { tag = OTC OR = { location:yidu_qingzhou = { oe_yw_loc_ours = yes } } }
+        AND = { tag = BGT OR = { location:enzhou = { oe_yw_loc_ours = yes } } }
+        AND = { tag = OGE OR = { location:yangdi = { oe_yw_loc_ours = yes } } }
+        AND = { tag = LNG OR = { location:fuan = { oe_yw_loc_ours = yes } } }
+        AND = { tag = YLU OR = { location:juye = { oe_yw_loc_ours = yes } location:rencheng = { oe_yw_loc_ours = yes } } }
+        AND = { tag = YZW OR = { location:gaotang = { oe_yw_loc_ours = yes } } }
+    }
+}
+# Country scope = a prince. Its appanage is lost and its grant stopped (choice c of event .8): no share, neither paid nor lapsed.
+oe_yw_fy_stopped = {
+    has_variable = oe_yw_fy_lost
+    var:oe_yw_fy ?= 3
+}
+# Country scope = a prince. One of the four eastern princes (the houses of Genghis Khan's brothers), checked by Liaoyang (M10).
+oe_yw_east = {
+    OR = { tag = QAS tag = HCN tag = OTC tag = BGT }
+}
+# Any scope. The prince of event .8 (global var oe_yw_fy_p = its number) is a far prince.
+oe_yw_fy_p_far = {
+    has_global_variable = oe_yw_fy_p
+    OR = { global_var:oe_yw_fy_p = 5 global_var:oe_yw_fy_p = 6 }
+}
+# Any scope. Event .8 can be shown: the sender set the prince, the Yuan stands.
+oe_yw_can_8 = {
+    has_global_variable = oe_yw_fy_p
+    oe_yw_yuan_fallen = no
+}
+
 # Any scope. Event 1 (CHI) can fire now (its event trigger).
 oe_yw_can_1 = {
     oe_yw_yuan_fallen = no character:yua_bayan_khutugh ?= { is_alive = yes is_spouse_of = character:yua_togon_temur } country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes }
@@ -388,4 +432,14 @@ oe_yw_ok_w6 = {
 # Any scope. World step W7 can run this month (besides its window).
 oe_yw_ok_w7 = {
     country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes is_ai = yes }
+}
+
+# Any scope. World step W8 can run this month (besides its window).
+oe_yw_ok_w8 = {
+    country_exists = c:CHI c:CHI = { is_ai = yes } country_exists = c:GLH c:GLH = { is_ai = yes }
+}
+
+# Any scope. World step W9 can run this month (besides its window).
+oe_yw_ok_w9 = {
+    country_exists = c:LNG c:LNG = { is_ai = yes } country_exists = c:CDL c:CDL = { is_ai = yes is_subject_of = c:LNG }
 }

@@ -89,6 +89,11 @@ oe_yv_left_12 = { value = oe_yv_hi_12 add = 1 subtract = var:oe_yv_m min = 1 }
 oe_yv_ch_12 = { value = 100 divide = oe_yv_left_12 }
 oe_yv_cut_12 = { value = oe_yv_hi_12 add = 6 }
 
+# CHI scope. Event 13: months left in its window (this one included), roll in percent, drop month.
+oe_yv_left_13 = { value = 40 add = 1 subtract = var:oe_yv_m min = 1 }
+oe_yv_ch_13 = { value = 100 divide = oe_yv_left_13 }
+oe_yv_cut_13 = { value = 40 add = 6 }
+
 # ---- TEST ONLY: readings for the report event oe_yv.90 (any scope) ----
 oe_yv_dev_m = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_m } } value = c:CHI.var:oe_yv_m } }
 oe_yv_dev_on = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_on } } value = 1 } }
@@ -105,6 +110,7 @@ oe_yv_dev_st9 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { ha
 oe_yv_dev_st10 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_10 } } value = c:CHI.var:oe_yv_st_10 } }
 oe_yv_dev_st11 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_11 } } value = c:CHI.var:oe_yv_st_11 } }
 oe_yv_dev_st12 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_12 } } value = c:CHI.var:oe_yv_st_12 } }
+oe_yv_dev_st13 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_13 } } value = c:CHI.var:oe_yv_st_13 } }
 oe_yv_dev_ycl = { value = 0 if = { limit = { has_global_variable = oe_yp_dissolved } value = global_var:oe_yp_dissolved } }
 oe_yv_dev_dict = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = yua_dictator_powers } } value = 1 } }
 oe_yv_dev_grand = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = oe_yv_grand_chancellor } } value = 1 } }
@@ -186,3 +192,46 @@ oe_yv_dev_flood = {
     location:enzhou = { if = { limit = { owner ?= c:CHI province = { has_province_modifier = oe_yv_yellow_river_breach } } add = 1 } }
     location:xiajin = { if = { limit = { owner ?= c:CHI province = { has_province_modifier = oe_yv_yellow_river_breach } } add = 1 } }
 }
+
+# ---- TEST ONLY (yuan-heir1): readings for the heir report oe_yv.91 ----
+# CHI's heir: 0 none (or no CHI), 1 the crown prince, 2 El Tegus, 3 someone else
+oe_yv_dev_hst = {
+    value = 0
+    if = {
+        limit = { country_exists = c:CHI c:CHI = { has_heir = yes } }
+        value = 3
+        if = { limit = { character:oe_s37_el_tegus ?= { is_heir_of = c:CHI } } value = 2 }
+        if = { limit = { exists = global_var:oe_yv_crown_prince global_var:oe_yv_crown_prince = { is_heir_of = c:CHI } } value = 1 }
+    }
+}
+# the crown prince: 0 not made, 1 alive at the Yuan court, 2 alive elsewhere, 3 dead
+oe_yv_dev_cp = {
+    value = 0
+    if = {
+        limit = { exists = global_var:oe_yv_crown_prince }
+        value = 3
+        if = { limit = { global_var:oe_yv_crown_prince = { is_alive = yes } } value = 2 }
+        if = { limit = { global_var:oe_yv_crown_prince = { is_alive = yes owner ?= c:CHI } } value = 1 }
+    }
+}
+# global oe_yv_cp: 0 unset, 1 made, 2 event 13 dropped and nobody made, 9 the making failed (no character read back)
+oe_yv_dev_cpg = { value = 0 if = { limit = { has_global_variable = oe_yv_cp } value = global_var:oe_yv_cp } }
+# the global variable oe_yv_crown_prince is set (1) or not (0)
+oe_yv_dev_cpv = { value = 0 if = { limit = { has_global_variable = oe_yv_crown_prince } value = 1 } }
+# El Tegus: -1 no such character, 0 dead, 1 alive at the Yuan court, 2 there and barred from ruling, 3 alive elsewhere
+oe_yv_dev_et = {
+    value = -1
+    if = { limit = { character:oe_s37_el_tegus ?= { always = yes } } value = 0 }
+    if = {
+        limit = { character:oe_s37_el_tegus ?= { is_alive = yes } }
+        value = 3
+        if = { limit = { character:oe_s37_el_tegus = { owner ?= c:CHI } } value = 1 }
+        if = { limit = { character:oe_s37_el_tegus = { owner ?= c:CHI has_character_modifier = blocked_from_being_ruler } } value = 2 }
+    }
+}
+# El Tegus is alive and on the road into exile (character var oe_yv_exiled; .21 comes 31 days after option a)
+oe_yv_dev_etx = { value = 0 if = { limit = { character:oe_s37_el_tegus ?= { is_alive = yes has_variable = oe_yv_exiled } } value = 1 } }
+# CHI has Wenzong's Son at Court (option b)
+oe_yv_dev_ws = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = oe_yv_wenzong_son } } value = 1 } }
+# the shared same-month guard of the Yuan lines (-1 unset)
+oe_yv_dev_evm = { value = -1 if = { limit = { has_global_variable = oe_yuan_ev_m } value = global_var:oe_yuan_ev_m } }

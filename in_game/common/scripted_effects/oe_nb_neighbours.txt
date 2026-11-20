@@ -47,6 +47,7 @@ oe_nb_lapse = {
         set_variable = { name = oe_nb_st_9 value = 3 }
         set_global_variable = { name = oe_nb_cil_safe value = 1 } c:BYZ ?= { set_variable = { name = oe_nb_cil_safe value = 1 } }
     }
+    oe_nb_mol_void_check = yes
     if = { limit = { NOT = { has_variable = oe_nb_st_1 } oe_nb_lapse_1 = yes } set_variable = { name = oe_nb_st_1 value = 2 } }
     if = { limit = { NOT = { has_variable = oe_nb_st_2 } oe_nb_lapse_2 = yes } set_variable = { name = oe_nb_st_2 value = 2 } }
     if = { limit = { NOT = { has_variable = oe_nb_st_3 } oe_nb_lapse_3 = yes } set_variable = { name = oe_nb_st_3 value = 2 } }
@@ -56,6 +57,11 @@ oe_nb_lapse = {
     if = { limit = { NOT = { has_variable = oe_nb_st_7 } oe_nb_lapse_7 = yes } set_variable = { name = oe_nb_st_7 value = 2 } }
     if = { limit = { NOT = { has_variable = oe_nb_st_8 } oe_nb_lapse_8 = yes } set_variable = { name = oe_nb_st_8 value = 2 } }
     if = { limit = { NOT = { has_variable = oe_nb_st_9 } oe_nb_lapse_9 = yes } set_variable = { name = oe_nb_st_9 value = 2 } }
+}
+# BYZ scope. patch296 (V-02, decision 296-2): oe_nb.4 lapses because no Moldavia exists after its window; the reason is
+# kept as result oe_nb_mol_void (read by the test readout mlnbmol). The lapse itself is the line below in oe_nb_lapse.
+oe_nb_mol_void_check = {
+    if = { limit = { NOT = { has_variable = oe_nb_st_4 } oe_nb_mol_never = yes } set_global_variable = { name = oe_nb_mol_void value = 1 } c:BYZ ?= { set_variable = { name = oe_nb_mol_void value = 1 } } }
 }
 
 # BYZ scope, monthly. The Bulgarian match: marry the two once both are 14 (if the engine has not already).
@@ -366,6 +372,18 @@ oe_nb_test_fire = {
     else_if = { limit = { var:oe_nb_tn = 11 } set_variable = { name = oe_nb_st_11 value = 1 } trigger_event_non_silently = oe_nb.11 }
     remove_variable = oe_nb_tn
 }
+# TEST ONLY (dev page mlnbmol, patch296). BYZ scope: oe_nb.4's state and why it lapsed, into the debug log.
+oe_nb_log_mol = {
+    debug_log = "oe_nb: Moldavia step .4 [GetCountry('BYZ').MakeScope.ScriptValue('oe_nb_v_mol')|0] (ones: 0 not yet, 1 fired, 2 lapsed; tens: 1 lapsed because no Moldavia existed after 1370.12; hundreds: 1 Moldavia exists now) line month [GetCountry('BYZ').MakeScope.ScriptValue('oe_nb_v_m')|0] (void from month 409)"
+}
+# TEST ONLY (dev page mlnbend, patch296). BYZ scope: the Moldavia step as the first month after its window would see it
+# (the month counter is put past the window; the next monthly run puts it back). Only .4 is looked at.
+oe_nb_test_mol_end = {
+    set_variable = { name = oe_nb_m value = 409 }
+    oe_nb_mol_void_check = yes
+    if = { limit = { NOT = { has_variable = oe_nb_st_4 } oe_nb_lapse_4 = yes } set_variable = { name = oe_nb_st_4 value = 2 } }
+    oe_nb_log_mol = yes
+}
 # Test helper (dev page, BYZ scope): clears every variable of this line; world effects already done stay.
 oe_nb_test_reset = {
     if = { limit = { has_variable = oe_nb_st_1 } remove_variable = oe_nb_st_1 }
@@ -410,4 +428,5 @@ oe_nb_test_reset = {
     if = { limit = { has_global_variable = oe_nb_tarnovo_fallen } remove_global_variable = oe_nb_tarnovo_fallen } c:BYZ ?= { if = { limit = { has_variable = oe_nb_tarnovo_fallen } remove_variable = oe_nb_tarnovo_fallen } }
     if = { limit = { has_global_variable = oe_nb_crusade_call } remove_global_variable = oe_nb_crusade_call } c:BYZ ?= { if = { limit = { has_variable = oe_nb_crusade_call } remove_variable = oe_nb_crusade_call } }
     if = { limit = { has_global_variable = oe_nb_bul_end } remove_global_variable = oe_nb_bul_end } c:BYZ ?= { if = { limit = { has_variable = oe_nb_bul_end } remove_variable = oe_nb_bul_end } }
+    if = { limit = { has_global_variable = oe_nb_mol_void } remove_global_variable = oe_nb_mol_void } c:BYZ ?= { if = { limit = { has_variable = oe_nb_mol_void } remove_variable = oe_nb_mol_void } }
 }

@@ -2,12 +2,16 @@
 # 2026-11-19 v6.4 D2 phase 2 (the church framework, events 20-41) added to this file by the same generator.
 # 2026-11-19 v6.4 D2 phase 3 (the metropolitans of Rus', Lithuania, Wallachia and Moldavia; alms from Rus'; events 50-82) added to this file by the same generator.
 # 2026-11-19 v6.6 D2 phases 4 and 5 (the monastic lands, the council of 1368, the random pool: events 42, 70-72, 90-94; Rus' and the union: events 58, 59) added to this file by the same generator.
+# 2026-11-20 v6.7 phase 6, group ch-after-fall1 (the Church after the City is lost: the fall check, events 24, 25) added to this file by the same generator.
 
-# Any scope. Imperial Authority $amount$ (negative = a cost), kept within 0-100.
+# Any scope. Imperial Authority $amount$ (negative = a cost), kept within 0-100. Nothing once the church lines were closed (phase 6, global oe_ecc_fall): a popup still open when the City fell does not charge.
 oe_ecc_auth = {
-    international_organization:oe_byz_empire_pillars = {
-        change_variable = { name = oe_pillars_authority add = $amount$ }
-        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+    if = {
+        limit = { NOT = { has_global_variable = oe_ecc_fall } }
+        international_organization:oe_byz_empire_pillars = {
+            change_variable = { name = oe_pillars_authority add = $amount$ }
+            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+        }
     }
 }
 
@@ -242,10 +246,10 @@ oe_ecc_norm = {
     remove_variable = oe_ecc_tot
 }
 
-# BYZ scope. Interface (design 4.2): moves the shares by $hes$ / $rat$ / $uni$ points and brings them back to 100. Does nothing before the framework starts. Other lines change the parties only through this.
+# BYZ scope. Interface (design 4.2): moves the shares by $hes$ / $rat$ / $uni$ points and brings them back to 100. Does nothing before the framework starts or after it ended (oe_ecc_off, phase 6). Other lines change the parties only through this.
 oe_ecc_shift = {
     if = {
-        limit = { has_variable = oe_ecc_hes }
+        limit = { has_variable = oe_ecc_hes NOT = { has_variable = oe_ecc_off } }
         change_variable = { name = oe_ecc_hes add = $hes$ }
         change_variable = { name = oe_ecc_rat add = $rat$ }
         change_variable = { name = oe_ecc_uni add = $uni$ }
@@ -319,10 +323,10 @@ oe_ecc_pres_mods = {
     }
 }
 
-# BYZ scope. Interface (design 4.2): the patriarchate's standing $amount$, kept within 0-100. Does nothing before the framework starts.
+# BYZ scope. Interface (design 4.2): the patriarchate's standing $amount$, kept within 0-100. Does nothing before the framework starts or after it ended (oe_ecc_off, phase 6: the modifiers oe_ecc_end took away do not come back).
 oe_ecc_pres_add = {
     if = {
-        limit = { has_variable = oe_ecc_pres }
+        limit = { has_variable = oe_ecc_pres NOT = { has_variable = oe_ecc_off } }
         change_variable = { name = oe_ecc_pres add = $amount$ }
         clamp_variable = { name = oe_ecc_pres min = 0 max = 100 }
         oe_ecc_pres_mods = yes
@@ -527,10 +531,10 @@ oe_ecc_pat_check = {
     else = { set_variable = { name = oe_ecc_pat_f value = 0 } }
 }
 
-# BYZ scope. Interface (design 4.2): the see falls vacant without a death. The patriarch loses the author's oe_byz_religion_leader (so a later death does not start oe_flavor_byz.403 again) and vanilla's is_patriarch, and retires to a monastery alive. oe_ecc_vacancy = $reason$: 1-6 a new ruler (.32), 7 union (L4, phase 5), 8 union set aside (L4's .21 c), 9 test page, 33 the refused crown (.33), 40 the council of 1347 (.40). .30 follows in the monthly round; every party puts up a candidate unless the caller narrows them (oe_ecc_offer_emp, or oe_ecc_offer_party from phase 5). One vacancy at a time.
+# BYZ scope. Interface (design 4.2): the see falls vacant without a death. The patriarch loses the author's oe_byz_religion_leader (so a later death does not start oe_flavor_byz.403 again) and vanilla's is_patriarch, and retires to a monastery alive. oe_ecc_vacancy = $reason$: 1-6 a new ruler (.32), 7 union (L4, phase 5), 8 union set aside (L4's .21 c), 9 test page, 33 the refused crown (.33), 40 the council of 1347 (.40). .30 follows in the monthly round; every party puts up a candidate unless the caller narrows them (oe_ecc_offer_emp, or oe_ecc_offer_party from phase 5). One vacancy at a time. Nothing after the framework ended (oe_ecc_off, phase 6): .30 would never fill the see.
 oe_ecc_vacate = {
     if = {
-        limit = { NOT = { has_variable = oe_ecc_vacancy } }
+        limit = { NOT = { has_variable = oe_ecc_vacancy } NOT = { has_variable = oe_ecc_off } }
         every_character = {
             limit = { has_character_modifier = oe_byz_religion_leader }
             remove_character_modifier = oe_byz_religion_leader
@@ -1198,7 +1202,7 @@ oe_ecc_mon_up = {
 
 # BYZ scope (the worker .23, job 2; .70 a). The soldiers settled on the monastic lands: manpower worth 6 months.
 oe_ecc_mon_levy = {
-    add_manpower = { value = monthly_manpower multiply = 6 }
+    if = { limit = { monthly_manpower > 0 } add_manpower = { value = monthly_manpower multiply = 6 } }
 }
 
 # BYZ scope, right after oe_ecc_vacate. Interface (L4 design 4.3): the synod puts up a candidate of party $f$ (1 hesychasts, 2 rationalists, 3 unionists) and of the largest party; when that is the same party, also of the larger of the other two. It records $f$ as the party the emperor favours (oe_ecc_emp_f) and narrows the candidates as .32 a does (oe_ecc_offer_emp). Nothing without a vacancy.
@@ -1345,6 +1349,74 @@ oe_ecc_test_mon_cycle = {
     else = { oe_ecc_mon_to = { level = 3 } }
 }
 
+# Any scope. Removes vanilla's is_patriarch from every character whose marker points at an organisation that no longer exists (vanilla's on_disband leaves it; character_address.txt:25 reads it on every name shown). A patriarch of a church that still stands is not touched; no organisation changes, no patriarch is chosen. Engine assumptions (in-game checks 3, 4): exists reads such a marker as false without an error; every_character of a country reaches that character.
+oe_ecc_pat_tidy = {
+    every_country = {
+        limit = { religion = { has_autocephalous_patriarchates = yes } }
+        every_character = { limit = { oe_ecc_pat_dangling = yes } remove_variable = is_patriarch }
+    }
+}
+
+# BYZ scope, monthly until the lines close. Records which organisation is Constantinople's church (global oe_ecc_ap) while the City is ours, for oe_ecc_ap_gone.
+oe_ecc_ap_note = {
+    if = {
+        limit = { oe_ecc_city_lost = no }
+        random_international_organizations_member_of = {
+            limit = { oe_ecc_is_byz_ap = yes }
+            save_scope_as = oe_ecc_ap_now
+        }
+        if = {
+            limit = { exists = scope:oe_ecc_ap_now }
+            set_global_variable = { name = oe_ecc_ap value = scope:oe_ecc_ap_now }
+        }
+    }
+}
+
+# BYZ scope. Closes every church line at once and for good (design 4.3), $why$ = 1 the City lost, 2 Constantinople's church dissolved while the City is ours: the global oe_ecc_fall; the framework ends (oe_ecc_end: oe_ecc_off, the party and standing modifiers go; also when it never started, so it never will); the open questions of phase 1 void with code 3 and phase 1 closed; phases 3-5 stop with the framework (their steps need oe_ecc_live). The monastic lands and the see codes stay (land and records). Not touched: the author's patriarch modifier, a vacancy that is open (it stays open), vanilla's organisations, other lines' variables. Then the worker .25.
+oe_ecc_close_all = {
+    set_global_variable = { name = oe_ecc_fall value = $why$ }
+    if = { limit = { NOT = { has_variable = oe_ecc_off } } oe_ecc_end = yes }
+    if = {
+        limit = { NOT = { has_variable = oe_ecc_serbia } NOT = { has_variable = oe_ecc_serbia_void } }
+        set_variable = { name = oe_ecc_serbia_void value = 3 }
+    }
+    if = {
+        limit = { NOT = { has_variable = oe_ecc_tarnovo } NOT = { has_variable = oe_ecc_tarnovo_void } }
+        set_variable = { name = oe_ecc_tarnovo_void value = 3 }
+    }
+    set_variable = oe_ecc_p1_closed
+    set_variable = { name = oe_ecc_fall_n value = 0 }
+    trigger_event_silently = oe_ecc.25
+    debug_log = "OE_ECC closed: why=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_fall_value')|0] ap=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_fall_ap_value')|0] live=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_live_value')|0] owner=[GetLocationByKey('constantinople').GetOwner.GetName]"
+}
+
+# BYZ scope, the first step of oe_ecc_monthly (design 4.2). Once: the City lost (1) before Constantinople's church dissolved while the City is ours and the empire is Orthodox (2); a converted empire is left to oe_ecc_fw_upkeep's silent end (design Q4). Else records the organisation. Every January, whatever the state, clears dangling patriarch markers (Tarnovo's or Peć's church dissolved by the Ottomans leaves them too).
+oe_ecc_fall_check = {
+    if = {
+        limit = { NOT = { has_global_variable = oe_ecc_fall } }
+        if = { limit = { oe_ecc_city_lost = yes } oe_ecc_close_all = { why = 1 } }
+        else_if = { limit = { oe_ecc_ap_gone = yes religion = religion:orthodox } oe_ecc_close_all = { why = 2 } }
+        else = { oe_ecc_ap_note = yes }
+    }
+    if = {
+        limit = { current_month = 1 NOT = { has_variable = oe_ecc_tidy_cd } }
+        set_variable = { name = oe_ecc_tidy_cd months = 6 }
+        oe_ecc_pat_tidy = yes
+    }
+}
+
+# Any scope. One debug-log line with phase 6's state (test page eccfflog). Absolute links only: debug_log text has no ROOT or SCOPE (decision 193).
+oe_ecc_fall_log = {
+    debug_log = "OE_ECC fall why=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_fall_value')|0] ap=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_fall_ap_value')|0] own=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_own_ap_value')|0] n=[GetCountry('BYZ').MakeScope.GetVariable('oe_ecc_fall_n').GetValue|0] told=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_fall_told_value')|0] dang=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_dang_n')|0] live=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_live_value')|0] p1=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_p1_closed_value')|0] un_off=[GetCountry('BYZ').MakeScope.ScriptValue('oe_ecc_un_off_value')|0] owner=[GetLocationByKey('constantinople').GetOwner.GetName]"
+}
+
+# TEST PAGE ONLY. BYZ scope. Clears phase 6's marks (oe_ecc_fall, the worker's count, told) so that the fall check can run again; the framework's end and phase 1's voids are not undone.
+oe_ecc_test_fall_clear = {
+    remove_global_variable = oe_ecc_fall
+    remove_variable = oe_ecc_fall_n
+    remove_variable = oe_ecc_fall_told
+}
+
 # BYZ scope. Every result of oe_ecc.1: r = 1 recognised, 2 Peć stepped down, 3 refused twice. Phase 1 records it in oe_ecc_serbia; later phases add their reactions after it (AFTER in gen_ecclesia.py).
 oe_ecc_after_serbia = {
     set_variable = { name = oe_ecc_serbia value = $r$ }
@@ -1365,6 +1437,7 @@ oe_ecc_after_tarnovo = {
 
 # BYZ scope, monthly: called by the main-line scheduler (gen_mainline_lock.py LINES, id 14 "ecc"); no hook of its own. Steps in order (MONTHLY in gen_ecclesia.py).
 oe_ecc_monthly = {
+    oe_ecc_fall_check = yes
     oe_ecc_hesy_snapshot = yes
     oe_ecc_fw_upkeep = yes
     if = { limit = { NOT = { has_variable = oe_ecc_p1_closed } } oe_ecc_p1_monthly = yes }

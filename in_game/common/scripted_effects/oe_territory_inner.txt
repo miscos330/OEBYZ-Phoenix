@@ -52,7 +52,7 @@ oe_ti_front_check = {
         remove_variable = oe_ti_q_quiet
         if = {
             limit = { oe_ts_core = yes }
-            if = { limit = { c:BYZ = { is_ai = yes } } oe_ti_make_frontier = yes }
+            if = { limit = { OR = { c:BYZ = { is_ai = yes } has_variable = oe_te_managed } } oe_ti_make_frontier = yes }
             else_if = { limit = { NOT = { has_variable = oe_ti_front_refused } } set_variable = oe_ti_q_front }
             else = { oe_ti_weak_front_apply = yes }
         }
@@ -67,7 +67,7 @@ oe_ti_front_check = {
             change_variable = { name = oe_ti_quiet add = 1 }
             if = {
                 limit = { has_variable = oe_ti_quiet var:oe_ti_quiet >= 5 }
-                if = { limit = { c:BYZ = { is_ai = yes } } oe_ti_restore_core = yes }
+                if = { limit = { OR = { c:BYZ = { is_ai = yes } has_variable = oe_te_managed } } oe_ti_restore_core = yes }
                 else = { set_variable = oe_ti_q_quiet }
             }
         }
@@ -244,6 +244,7 @@ oe_ti_pronoia_apply = {
 oe_ti_pronoia_set = {
     set_variable = { name = oe_ti_pronoia_months value = 0 }
     remove_variable = oe_ti_pronoia_hereditary
+    remove_variable = oe_ti_pronoia_auto
     remove_variable = oe_ti_pronoia_asked
     remove_variable = oe_ti_pronoia_postponed
     remove_variable = oe_ti_q_pronoia
@@ -266,6 +267,7 @@ oe_ti_pronoia_unset = {
         every_owned_foreign_building_location = { limit = { owner ?= c:BYZ } remove_location_modifier = oe_ti_pronoia_loc_s1 remove_location_modifier = oe_ti_pronoia_loc_s2 remove_location_modifier = oe_ti_pronoia_loc_s3 remove_location_modifier = oe_ti_pronoia_loc_s4 }
         remove_variable = oe_ti_pronoia_months
         remove_variable = oe_ti_pronoia_hereditary
+        remove_variable = oe_ti_pronoia_auto
         remove_variable = oe_ti_pronoia_asked
         remove_variable = oe_ti_pronoia_postponed
         remove_variable = oe_ti_pronoia_refresh
@@ -293,7 +295,11 @@ oe_ti_pronoia_monthly = {
                 NOT = { has_variable = oe_ti_pronoia_asked }
             }
             set_variable = oe_ti_pronoia_asked
-            set_variable = oe_ti_q_pronoia
+            # patch296 (review-b P6, decision 296-3): a managed theme (gen_theme_b2.py) is not asked; oe_ti.50 a is done
+            # for it (the AI's most likely answer, 60 of 100; b and c are never chosen for the player), and the year is kept
+            # in oe_ti_pronoia_auto (readout tiprlog; the managed card's line is a hook in plan_20261117/v67/patch296_实施.md).
+            if = { limit = { has_variable = oe_te_managed } set_variable = oe_ti_pronoia_hereditary set_variable = { name = oe_ti_pronoia_auto value = current_year } oe_ts_recent_loy = { amount = 5 } if = { limit = { oe_tg_house_born = yes } oe_ti_house_inf = { amount = 10 } } }
+            else = { set_variable = oe_ti_q_pronoia }
         }
     }
     else_if = {
@@ -490,6 +496,21 @@ oe_ti_test_despot_gone = {
 oe_ti_test_covet = { oe_ti_test_pick = yes scope:oe_ti_tt ?= { if = { limit = { oe_ts_despot = yes } set_variable = oe_ti_q_covet } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.32 }
 oe_ti_test_pronoia = { oe_ti_test_pick = yes scope:oe_ti_tt ?= { set_variable = { name = oe_theme_fiscal value = 3 } set_variable = oe_theme_tiers_dirty oe_ti_pronoia_set = yes } }
 oe_ti_test_pronoia_20y = { oe_ti_test_pick = yes scope:oe_ti_tt ?= { if = { limit = { has_variable = oe_ti_pronoia_months } set_variable = { name = oe_ti_pronoia_months value = 239 } remove_variable = oe_ti_pronoia_asked } } }
+# TEST ONLY (dev page tiprlog, patch296). BYZ scope: the pronoia state of the test theme (oe_ti_test_theme) in the debug log.
+oe_ti_test_prlog = {
+    oe_ti_test_pick = yes
+    debug_log = "oe_ti pronoia: theme [GetCountry('BYZ').MakeScope.GetVariable('oe_ti_test_theme').GetCountry.GetTag] managed [GetCountry('BYZ').MakeScope.GetVariable('oe_ti_test_theme').GetCountry.MakeScope.GetVariable('oe_te_managed').GetValue|0] months [GetCountry('BYZ').MakeScope.GetVariable('oe_ti_test_theme').GetCountry.MakeScope.GetVariable('oe_ti_pronoia_months').GetValue|0] hereditary [GetCountry('BYZ').MakeScope.GetVariable('oe_ti_test_theme').GetCountry.MakeScope.GetVariable('oe_ti_pronoia_hereditary').GetValue|0] auto_year [GetCountry('BYZ').MakeScope.GetVariable('oe_ti_test_theme').GetCountry.MakeScope.GetVariable('oe_ti_pronoia_auto').GetValue|0] asked [GetCountry('BYZ').MakeScope.GetVariable('oe_ti_test_theme').GetCountry.MakeScope.GetVariable('oe_ti_pronoia_asked').GetValue|0] queued [GetCountry('BYZ').MakeScope.GetVariable('oe_ti_test_theme').GetCountry.MakeScope.GetVariable('oe_ti_q_pronoia').GetValue|0]"
+    debug_log = "oe_ti pronoia: theme [GetCountry('BYZ').MakeScope.GetVariable('oe_ti_test_theme').GetCountry.GetTag] fiscal [GetCountry('BYZ').MakeScope.GetVariable('oe_ti_test_theme').GetCountry.MakeScope.GetVariable('oe_theme_fiscal').GetValue|0] (3 pronoia; the observer's tfi is the same variable)"
+}
+# TEST ONLY (dev page tiprmon, fix-g1222 item 9). BYZ scope: the pronoia's monthly step for the test theme now, without
+# waiting for the month (its months +1; at 240 a managed theme becomes hereditary without asking, another one is
+# queued for oe_ti.50; a theme no longer under pronoia loses its grants), then the readout.
+oe_ti_test_prmonth = {
+    oe_ti_test_pick = yes
+    save_temporary_scope_value_as = { name = oe_ti_stage value = oe_ti_pronoia_stage }
+    scope:oe_ti_tt ?= { oe_ti_pronoia_monthly = yes }
+    oe_ti_test_prlog = yes
+}
 oe_ti_test_settle = {
     oe_ti_test_pick = yes
     scope:oe_ti_tt ?= { remove_variable = oe_ti_settle_cd }

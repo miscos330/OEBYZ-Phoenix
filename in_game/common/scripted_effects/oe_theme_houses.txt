@@ -68,19 +68,47 @@ oe_tg_appoint = {
     international_organization:oe_byz_empire_pillars = {
         var:oe_nf_dynasty_$slot$ ?= { ordered_character_in_dynasty = { limit = { oe_tg_candidate = yes } order_by = mil save_scope_as = oe_tg_nominee } }
     }
+    # v6.7 theme-fix2 (r23 g7 甲 3): the price is charged only when the install took (the theme's ruler is the nominee).
     if = {
         limit = { exists = scope:oe_tg_nominee }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
         oe_tg_install = { slot = $slot$ }
+        if = {
+            limit = { scope:oe_tg_theme_s = { has_ruler = yes ruler = scope:oe_tg_nominee } }
+            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+        }
     }
 }
 # BYZ scope; scope:oe_tg_nominee takes over scope:oe_tg_theme_s.
+# v6.7 theme-fix2 (r23 g7 甲 3): the theme keeps a record of the last attempt for the test log (tb2mglog):
+# oe_tg_nflag = the nominee's state before the move (1 general, 2 admiral, 4 heir, 8 regent, summed); oe_tg_fail =
+# 0 the install took, 1 the nominee did not reach the theme, 2 he reached it but did not become its ruler (he then
+# goes back to the empire instead of staying in the theme as a courtier).
 oe_tg_install = {
+    clear_saved_scope = oe_tg_displaced
+    scope:oe_tg_theme_s = {
+        set_variable = { name = oe_tg_nflag value = 0 }
+        if = { limit = { scope:oe_tg_nominee = { is_general = yes } } change_variable = { name = oe_tg_nflag add = 1 } }
+        if = { limit = { scope:oe_tg_nominee = { is_admiral = yes } } change_variable = { name = oe_tg_nflag add = 2 } }
+        if = { limit = { scope:oe_tg_nominee = { is_heir = yes } } change_variable = { name = oe_tg_nflag add = 4 } }
+        if = { limit = { scope:oe_tg_nominee = { is_regent = yes } } change_variable = { name = oe_tg_nflag add = 8 } }
+    }
     scope:oe_tg_theme_s = { ruler ?= { save_scope_as = oe_tg_displaced } }
     scope:oe_tg_nominee = { move_country = scope:oe_tg_theme_s }
     scope:oe_tg_theme_s = { set_new_ruler = scope:oe_tg_nominee }
     if = {
+        limit = { NOT = { scope:oe_tg_theme_s = { ruler = scope:oe_tg_nominee } } }
+        scope:oe_tg_theme_s = { set_variable = { name = oe_tg_fail value = 1 } }
+        scope:oe_tg_nominee = {
+            if = {
+                limit = { is_alive = yes is_ruler = no owner ?= scope:oe_tg_theme_s }
+                scope:oe_tg_theme_s = { set_variable = { name = oe_tg_fail value = 2 } }
+                move_country = c:BYZ
+            }
+        }
+    }
+    if = {
         limit = { scope:oe_tg_theme_s = { ruler = scope:oe_tg_nominee } }
+        scope:oe_tg_theme_s = { set_variable = { name = oe_tg_fail value = 0 } }
         scope:oe_tg_nominee = { add_trait = trait:oe_character_war_score_trait_VI }
         scope:oe_tg_displaced ?= {
             if = { limit = { is_alive = yes NOT = { oe_nf_theme_governor = yes } } remove_trait = trait:oe_character_war_score_trait_VI }

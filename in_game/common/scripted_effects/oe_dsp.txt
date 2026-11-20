@@ -221,12 +221,10 @@ oe_dsp_opt_3b = {
     var:oe_dsp_t ?= {
         set_variable = oe_dsp_resk
         set_variable = { name = oe_dsp_succ_from value = oe_ml_month_now } change_variable = { name = oe_dsp_succ_from add = 24 }
-        set_variable = { name = oe_dsp_tmp value = oe_ml_month_now } change_variable = { name = oe_dsp_tmp add = 36 }
         if = {
-            limit = { OR = { NOT = { has_variable = oe_dsp_succ_until } var:oe_dsp_succ_until < var:oe_dsp_tmp } }
-            set_variable = { name = oe_dsp_succ_until value = var:oe_dsp_tmp }
+            limit = { OR = { NOT = { has_variable = oe_dsp_succ_until } var:oe_dsp_succ_until < oe_dsp_month_plus36 } }
+            set_variable = { name = oe_dsp_succ_until value = oe_dsp_month_plus36 }
         }
-        remove_variable = oe_dsp_tmp
         add_opinion = { modifier = oe_dsp_delayed target = c:BYZ }
     }
     if = { limit = { has_variable = oe_dsp_t } remove_variable = oe_dsp_t }

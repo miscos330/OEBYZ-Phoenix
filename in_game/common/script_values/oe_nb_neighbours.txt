@@ -30,6 +30,16 @@ oe_nb_chr_bul_n = {
     if = { limit = { var:oe_nb_st_10 ?= 1 } add = 1 }
     if = { limit = { var:oe_nb_st_11 ?= 1 } add = 1 }
 }
+# TEST ONLY (readout mlnbmol, patch296). BYZ scope. oe_nb.4: ones its state (0 none yet, 1 fired, 2 lapsed), tens 1 when it
+# lapsed because no Moldavia existed after the window, hundreds 1 when Moldavia exists now.
+oe_nb_v_mol = {
+    value = 0
+    if = { limit = { has_variable = oe_nb_st_4 } add = var:oe_nb_st_4 }
+    if = { limit = { has_variable = oe_nb_mol_void } add = 10 }
+    if = { limit = { country_exists = c:MOL } add = 100 }
+}
+# TEST ONLY (readout mlnbmol). BYZ scope. The line's month index (1337.1 = 1) as the monthly effect last saw it.
+oe_nb_v_m = { value = 0 if = { limit = { has_variable = oe_nb_m } value = var:oe_nb_m } }
 # BYZ scope. oe_nb.1: 25% a month, sure from month 84.
 oe_nb_ch_1 = { value = 25 if = { limit = { var:oe_nb_m >= 84 } value = 100 } }
 # BYZ scope. oe_nb.2: 15% a month, sure from month 288.

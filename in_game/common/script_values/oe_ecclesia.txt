@@ -2,6 +2,7 @@
 # 2026-11-19 v6.4 D2 phase 2 (the church framework, events 20-41) added to this file by the same generator.
 # 2026-11-19 v6.4 D2 phase 3 (the metropolitans of Rus', Lithuania, Wallachia and Moldavia; alms from Rus'; events 50-82) added to this file by the same generator.
 # 2026-11-19 v6.6 D2 phases 4 and 5 (the monastic lands, the council of 1368, the random pool: events 42, 70-72, 90-94; Rus' and the union: events 58, 59) added to this file by the same generator.
+# 2026-11-20 v6.7 phase 6, group ch-after-fall1 (the Church after the City is lost: the fall check, events 24, 25) added to this file by the same generator.
 
 # BYZ scope. 1 while oe_ecc_hesychast_strong holds.
 oe_ecc_hesy_strong_value = {
@@ -287,4 +288,74 @@ oe_ecc_p45_flags = {
     if = { limit = { has_variable = oe_ecc_mon1_t } add = 100 }
     if = { limit = { has_variable = oe_ecc_pool_cd } add = 1000 }
     if = { limit = { has_variable = oe_ecc_dispute_open } add = 10000 }
+}
+
+# Any scope. Why the church lines were closed (global oe_ecc_fall): 0 not closed, 1 the City was lost, 2 the City is ours but Constantinople's church was dissolved (a peace treaty).
+oe_ecc_fall_value = {
+    value = 0
+    if = { limit = { has_global_variable = oe_ecc_fall } value = global_var:oe_ecc_fall }
+}
+
+# Any scope. Read now: 0 no autocephalous church is seated at Constantinople (dissolved); 1 there is one and Byzantium leads it (vanilla kept it, or nothing has happened); 2 there is one led by another country (an Orthodox new master took it over).
+oe_ecc_fall_ap_value = {
+    value = 0
+    if = { limit = { oe_ecc_byz_ecumenical = yes } value = 1 }
+    else_if = { limit = { any_international_organization = { oe_ecc_is_ecumenical_ap = yes } } value = 2 }
+}
+
+# Any scope. Where the empire's church is now: 1 Byzantium leads an autocephalous church seated elsewhere than Constantinople (vanilla's on_disband made it found one); 2 it belongs to a church another country leads; 0 neither (also while Byzantium still leads Constantinople's own).
+oe_ecc_own_ap_value = {
+    value = 0
+    if = {
+        limit = {
+            country_exists = c:BYZ
+            c:BYZ = {
+                any_international_organizations_member_of = {
+                    international_organization_type = international_organization_type:autocephalous_patriarchate
+                    leader_country ?= { tag = BYZ }
+                    NOT = { var:seat ?= location:constantinople }
+                }
+            }
+        }
+        value = 1
+    }
+    else_if = {
+        limit = {
+            country_exists = c:BYZ
+            c:BYZ = {
+                any_international_organizations_member_of = {
+                    international_organization_type = international_organization_type:autocephalous_patriarchate
+                    NOT = { leader_country ?= { tag = BYZ } }
+                }
+            }
+        }
+        value = 2
+    }
+}
+
+# Any scope. Characters with vanilla's is_patriarch that points at no organisation (the same walk as oe_ecc_pat_tidy).
+oe_ecc_dang_n = {
+    value = 0
+    every_country = {
+        limit = { religion = { has_autocephalous_patriarchates = yes } }
+        every_character = { limit = { oe_ecc_pat_dangling = yes } add = 1 }
+    }
+}
+
+# BYZ scope. 1 once .24 was sent.
+oe_ecc_fall_told_value = {
+    value = 0
+    if = { limit = { has_variable = oe_ecc_fall_told } value = 1 }
+}
+
+# BYZ scope. 1 once phase 1 is closed (oe_ecc_p1_closed).
+oe_ecc_p1_closed_value = {
+    value = 0
+    if = { limit = { has_variable = oe_ecc_p1_closed } value = 1 }
+}
+
+# BYZ scope. 1 once the union line (gen_union.py) is closed (oe_un_off; read only).
+oe_ecc_un_off_value = {
+    value = 0
+    if = { limit = { has_variable = oe_un_off } value = 1 }
 }

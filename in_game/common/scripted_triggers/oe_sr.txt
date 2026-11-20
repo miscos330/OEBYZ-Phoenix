@@ -100,3 +100,47 @@ oe_sr_ev_3 = { has_variable = oe_sr_fired_3 }
 oe_sr_can_core = { has_variable = oe_sr_rw_core_n var:oe_sr_rw_core_n >= 1 }
 # BYZ scope. The chronicle row "中兴与霸业" runs from stage 1.
 oe_sr_chr_run = { has_variable = oe_sr_tier var:oe_sr_tier >= 1 }
+
+# ---- batch 2 (sr-route2; appended: the batch-1 triggers above stay as they were)
+# BYZ scope. The Pillars card may change the emphasis now: .1 was answered, the emphasis was never changed, no oe_sr.4 is
+# open, and the Authority is there (paid only when a new emphasis is set).
+oe_sr_emph_can_change = {
+    has_variable = oe_sr_emph
+    NOT = { has_variable = oe_sr_emph_changed }
+    NOT = { has_variable = oe_sr_emph_open }
+    oe_sr_auth >= 5
+}
+oe_sr_ev_4 = { has_variable = oe_sr_emph_open }
+# BYZ scope. .2 d: a frontier programme can be opened in the region the sender picked (oe_sr_fs_at, a region centre).
+oe_sr_fs_ok = {
+    has_variable = oe_sr_fs_at
+    oe_fs_slot_free = yes
+    oe_fs_calm = yes
+    var:oe_sr_fs_at ?= { oe_fs_center_ok = yes }
+}
+# Any scope. THE condition of the Thessalonica hook: an encircled Thessaloniki is not surrendered; oe_sr.5 offers the
+# defence roll instead (decision 261 no. 3).
+oe_sr_ths_roll_ok = { oe_sr_strong = yes }
+oe_sr_ev_5 = { has_variable = oe_sr_ths_part }
+oe_sr_ev_6 = { has_variable = oe_sr_ths_res }
+
+# ---- batch 3 (sr-route3): S2, the first four routes of the conquest campaigns (design 3.6).
+# BYZ scope. Egypt: the goal place (alexandria) is held by the imperial bloc (the test switch oe_sr_test_goal: 1 held, 2 not).
+oe_sr_goal_egypt = { OR = { var:oe_sr_test_goal ?= 1 AND = { NOT = { var:oe_sr_test_goal ?= 2 } location:alexandria = { owner ?= { oe_sr_bloc = yes } } } } }
+oe_sr_ev_21 = { var:oe_sr_hc_egypt ?= 2 }
+# BYZ scope. Italy: the goal place (rome) is held by the imperial bloc (the test switch oe_sr_test_goal: 1 held, 2 not).
+oe_sr_goal_italy = { OR = { var:oe_sr_test_goal ?= 1 AND = { NOT = { var:oe_sr_test_goal ?= 2 } location:rome = { owner ?= { oe_sr_bloc = yes } } } } }
+oe_sr_ev_23 = { var:oe_sr_hc_italy ?= 2 }
+# BYZ scope. Persia: the goal place (tabriz) is held by the imperial bloc (the test switch oe_sr_test_goal: 1 held, 2 not).
+oe_sr_goal_persia = { OR = { var:oe_sr_test_goal ?= 1 AND = { NOT = { var:oe_sr_test_goal ?= 2 } location:tabriz = { owner ?= { oe_sr_bloc = yes } } } } }
+oe_sr_ev_27 = { var:oe_sr_hc_persia ?= 2 }
+# BYZ scope. the Black Sea: the goal place (kaffa) is held by the imperial bloc (the test switch oe_sr_test_goal: 1 held, 2 not).
+oe_sr_goal_blacksea = { OR = { var:oe_sr_test_goal ?= 1 AND = { NOT = { var:oe_sr_test_goal ?= 2 } location:kaffa = { owner ?= { oe_sr_bloc = yes } } } } }
+oe_sr_ev_28 = { var:oe_sr_hc_blacksea ?= 2 }
+# BYZ scope. A route's event waits to be sent (its campaign was won and the line has not sent it yet).
+oe_sr_hc_due = { OR = { var:oe_sr_hc_egypt ?= 1 var:oe_sr_hc_italy ?= 1 var:oe_sr_hc_persia ?= 1 var:oe_sr_hc_blacksea ?= 1 } }
+# BYZ scope. The papacy sits at Avignon (as the Latin world line reads it: the pope's capital).
+oe_sr_pope_avignon = { country_exists = c:PAP c:PAP = { capital ?= { this = location:avignon } } }
+# Country scope. A ruler of Persia and Mesopotamia outside the imperial bloc (its capital in the Persian campaign's
+# land: the campaign line's oe_hc_persia_location), .27 b.
+oe_sr_persian_ruler = { NOT = { oe_heg_byz_bloc = yes } capital ?= { oe_hc_persia_location = yes } }

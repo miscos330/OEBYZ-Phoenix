@@ -28,3 +28,16 @@ oe_tb2_unit_half = {
     divide = 2
     floor = yes
 }
+
+# ---- 托管 (theme-managed1)
+# Theme scope. Military efficiency while managed (hooked into oe_theme_eff_value_1 by the main session).
+oe_tb2_mg_eff_term = { value = 0 if = { limit = { has_variable = oe_te_managed } add = -5 } }
+# BYZ scope. Managed themes now, and themes that may be put under management now.
+oe_tb2_mg_n = { value = 0 every_subject = { limit = { oe_theme_member_trigger = yes has_variable = oe_te_managed } add = 1 } }
+oe_tb2_mg_can_n = { value = 0 every_subject = { limit = { oe_tb2_mg_can = yes } add = 1 } }
+
+# TEST ONLY (test page button tb2mglog). Theme scope: 1 when the theme may be drawn by each scheduler (0 = skipped).
+oe_tb2_test_draw_ts = { value = 0 if = { limit = { oe_ts_can_pick = yes } value = 1 } }
+oe_tb2_test_draw_trs = { value = 0 if = { limit = { oe_trs_can_pick = yes } value = 1 } }
+oe_tb2_test_draw_tbd = { value = 0 if = { limit = { oe_tbd_can_strike = yes } value = 1 } }
+oe_tb2_test_mg_cd = { value = 0 if = { limit = { has_variable = oe_tb2_mg_cd } value = 1 } }

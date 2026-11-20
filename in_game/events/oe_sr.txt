@@ -76,8 +76,16 @@ oe_sr.2 = { # 旧疆复归
     }
     option = {
         name = oe_sr.2.c
+        trigger = { NOT = { oe_sr_fs_ok = yes } }
         custom_tooltip = oe_sr.2.c.tt
         hidden_effect = { set_variable = { name = oe_sr_job value = 23 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 20 modifier = { factor = 2 OR = { var:oe_sr_pick ?= 3 var:oe_sr_pick ?= 7 } } }
+    }
+    option = {
+        name = oe_sr.2.d
+        trigger = { oe_sr_fs_ok = yes }
+        custom_tooltip = oe_sr.2.d.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 24 } trigger_event_silently = oe_sr.90 }
         ai_chance = { base = 20 modifier = { factor = 2 OR = { var:oe_sr_pick ?= 3 var:oe_sr_pick ?= 7 } } }
     }
 }
@@ -111,6 +119,240 @@ oe_sr.3 = { # 中兴
         custom_tooltip = oe_sr.3.c.tt
         hidden_effect = { set_variable = { name = oe_sr_job value = 33 } trigger_event_silently = oe_sr.90 }
         ai_chance = { base = 20 }
+    }
+}
+
+oe_sr.4 = { # 改定方略
+    type = country_event
+    outcome = neutral
+    image = "gfx/interface/illustrations/government/geopolitics_illustration.dds"
+    title = oe_sr.4.t
+    desc = {
+        first_valid = {
+            triggered_desc = { desc = oe_sr.4.desc_x }
+        }
+    }
+    trigger = { tag = BYZ is_rebel_country = no oe_sr_ev_4 = yes }
+    immediate = { oe_ml_take_as = { line = 33 } }
+    option = {
+        name = oe_sr.4.a
+        trigger = { NOT = { var:oe_sr_emph ?= 1 } }
+        custom_tooltip = oe_sr.4.a.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 16 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 40 }
+    }
+    option = {
+        name = oe_sr.4.b
+        trigger = { NOT = { var:oe_sr_emph ?= 2 } }
+        custom_tooltip = oe_sr.4.b.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 17 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 30 }
+    }
+    option = {
+        name = oe_sr.4.c
+        trigger = { NOT = { var:oe_sr_emph ?= 3 } }
+        custom_tooltip = oe_sr.4.c.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 18 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 15 }
+    }
+    option = {
+        name = oe_sr.4.d
+        trigger = { NOT = { var:oe_sr_emph ?= 0 } }
+        custom_tooltip = oe_sr.4.d.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 19 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 5 }
+    }
+    option = {
+        name = oe_sr.4.e
+        custom_tooltip = oe_sr.4.e.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 20 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 60 }
+    }
+}
+
+oe_sr.5 = { # 死守还是开城
+    type = country_event
+    outcome = negative
+    image = "gfx/interface/illustrations/government/siege_battle_illustration.dds"
+    title = oe_sr.5.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { var:oe_sr_ths_part ?= 1 } desc = oe_sr.5.desc_a }
+            triggered_desc = { desc = oe_sr.5.desc_d }
+        }
+    }
+    trigger = { tag = BYZ is_rebel_country = no oe_sr_ev_5 = yes }
+    immediate = { oe_ml_take_as = { line = 33 } }
+    option = {
+        name = oe_sr.5.a
+        custom_tooltip = oe_sr.5.a.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 51 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 70 }
+    }
+    option = {
+        name = oe_sr.5.b
+        custom_tooltip = oe_sr.5.b.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 52 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 30 }
+    }
+}
+
+oe_sr.6 = { # 塞萨洛尼基的结局
+    type = country_event
+    outcome = neutral
+    image = "gfx/interface/illustrations/government/siege_battle_illustration.dds"
+    title = oe_sr.6.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { var:oe_sr_ths_res ?= 1 } desc = oe_sr.6.desc_held }
+            triggered_desc = { trigger = { var:oe_sr_ths_res ?= 2 } desc = oe_sr.6.desc_lost }
+            triggered_desc = { trigger = { var:oe_sr_ths_res ?= 3 } desc = oe_sr.6.desc_lostharac }
+            triggered_desc = { trigger = { var:oe_sr_ths_res ?= 4 } desc = oe_sr.6.desc_gave }
+            triggered_desc = { desc = oe_sr.6.desc_harac }
+        }
+    }
+    trigger = { tag = BYZ is_rebel_country = no oe_sr_ev_6 = yes }
+    immediate = { oe_ml_take_as = { line = 33 } }
+    option = {
+        name = oe_sr.6.a
+        custom_tooltip = oe_sr.6.a.tt
+        ai_chance = { base = 100 }
+    }
+}
+
+oe_sr.21 = { # 亚历山大与粮船
+    type = country_event
+    outcome = positive
+    image = "gfx/interface/illustrations/international_organization_types/autocephalous_patriarchate.dds"
+    title = oe_sr.21.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { var:oe_sr_hg_egypt ?= 1 } desc = oe_sr.21.desc_held }
+            triggered_desc = { desc = oe_sr.21.desc_x }
+        }
+    }
+    trigger = { tag = BYZ is_rebel_country = no oe_sr_ev_21 = yes }
+    immediate = { oe_ml_take_as = { line = 33 } }
+    option = {
+        name = oe_sr.21.a
+        trigger = { var:oe_sr_hg_egypt ?= 1 oe_ecc_stands = yes }
+        custom_tooltip = oe_sr.21.a.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 111 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 40 }
+    }
+    option = {
+        name = oe_sr.21.b
+        custom_tooltip = oe_sr.21.b.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 112 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 35 }
+    }
+    option = {
+        name = oe_sr.21.c
+        custom_tooltip = oe_sr.21.c.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 113 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 25 modifier = { factor = 2 var:oe_sr_hg_egypt ?= 1 } }
+    }
+}
+
+oe_sr.23 = { # 罗马主教
+    type = country_event
+    outcome = neutral
+    image = "gfx/interface/illustrations/international_organization_types/catholic_church.dds"
+    title = oe_sr.23.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { oe_un_made = yes } desc = oe_sr.23.desc_union }
+            triggered_desc = { trigger = { var:oe_sr_hg_italy ?= 1 oe_sr_pope_avignon = yes } desc = oe_sr.23.desc_avignon }
+            triggered_desc = { trigger = { var:oe_sr_hg_italy ?= 1 } desc = oe_sr.23.desc_held }
+            triggered_desc = { desc = oe_sr.23.desc_x }
+        }
+    }
+    trigger = { tag = BYZ is_rebel_country = no oe_sr_ev_23 = yes }
+    immediate = { oe_ml_take_as = { line = 33 } }
+    option = {
+        name = oe_sr.23.a
+        trigger = { country_exists = c:PAP }
+        custom_tooltip = oe_sr.23.a.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 131 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 40 modifier = { factor = 1.5 oe_un_made = yes } }
+    }
+    option = {
+        name = oe_sr.23.b
+        trigger = { var:oe_sr_hg_italy ?= 1 }
+        custom_tooltip = oe_sr.23.b.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 132 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 25 modifier = { factor = 0.2 oe_un_made = yes } }
+    }
+    option = {
+        name = oe_sr.23.c
+        custom_tooltip = oe_sr.23.c.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 133 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 35 }
+    }
+}
+
+oe_sr.27 = { # 大不里士商路
+    type = country_event
+    outcome = positive
+    image = "gfx/interface/illustrations/trade_market/trade.dds"
+    title = oe_sr.27.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { var:oe_sr_hg_persia ?= 1 has_global_variable = oe_ilk_w19 global_var:oe_ilk_w19 = 1 } desc = oe_sr.27.desc_heldsz }
+            triggered_desc = { trigger = { var:oe_sr_hg_persia ?= 1 } desc = oe_sr.27.desc_held }
+            triggered_desc = { trigger = { has_global_variable = oe_ilk_w19 global_var:oe_ilk_w19 = 1 } desc = oe_sr.27.desc_xsz }
+            triggered_desc = { desc = oe_sr.27.desc_x }
+        }
+    }
+    trigger = { tag = BYZ is_rebel_country = no oe_sr_ev_27 = yes }
+    immediate = { oe_ml_take_as = { line = 33 } }
+    option = {
+        name = oe_sr.27.a
+        custom_tooltip = oe_sr.27.a.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 171 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 60 modifier = { factor = 1.5 var:oe_sr_hg_persia ?= 1 } }
+    }
+    option = {
+        name = oe_sr.27.b
+        custom_tooltip = oe_sr.27.b.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 172 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 40 }
+    }
+}
+
+oe_sr.28 = { # 热那亚商站
+    type = country_event
+    outcome = positive
+    image = "gfx/interface/illustrations/government/economy_balance.dds"
+    title = oe_sr.28.t
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { var:oe_sr_hg_blacksea ?= 1 } desc = oe_sr.28.desc_held }
+            triggered_desc = { trigger = { location:kaffa = { oe_crm_gen_holds = yes } } desc = oe_sr.28.desc_gen }
+            triggered_desc = { desc = oe_sr.28.desc_x }
+        }
+    }
+    trigger = { tag = BYZ is_rebel_country = no oe_sr_ev_28 = yes }
+    immediate = { oe_ml_take_as = { line = 33 } }
+    option = {
+        name = oe_sr.28.a
+        trigger = { oe_cmp_has = yes }
+        custom_tooltip = oe_sr.28.a.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 181 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 40 }
+    }
+    option = {
+        name = oe_sr.28.b
+        trigger = { country_exists = c:GEN }
+        custom_tooltip = oe_sr.28.b.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 182 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 30 }
+    }
+    option = {
+        name = oe_sr.28.c
+        custom_tooltip = oe_sr.28.c.tt
+        hidden_effect = { set_variable = { name = oe_sr_job value = 183 } trigger_event_silently = oe_sr.90 }
+        ai_chance = { base = 30 }
     }
 }
 

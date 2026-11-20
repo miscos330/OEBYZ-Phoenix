@@ -13,3 +13,17 @@ oe_tb2_ui_marches = {
     is_valid = { tag = BYZ NOT = { has_variable = oe_tb2_job } oe_tb2_any_march = yes }
     effect = { trigger_event_non_silently = oe_tb2.2 }
 }
+# Country scope = a theme (its card). Put under management or take back (gen_theme_ui.py hook draws the button).
+oe_tb2_ui_manage = {
+    scope = country
+    is_shown = { oe_theme_member_trigger = yes }
+    is_valid = { oe_theme_member_trigger = yes c:BYZ = { is_ai = no } OR = { has_variable = oe_te_managed oe_tb2_mg_can = yes } }
+    effect = { oe_tb2_mg_toggle = yes }
+}
+# Country scope = the player (themes tab). The 'managed themes' menu.
+oe_tb2_ui_manage_all = {
+    scope = country
+    is_shown = { tag = BYZ }
+    is_valid = { tag = BYZ is_ai = no oe_tb2_mg_any = yes }
+    effect = { trigger_event_non_silently = oe_tb2.3 }
+}

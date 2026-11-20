@@ -164,6 +164,88 @@ oe_fs.12 = { # 筑堡置屯
     }
 }
 
+oe_fs.13 = { # 招资
+    type = country_event
+    outcome = positive
+    image = "gfx/interface/illustrations/institutions/banking.dds"
+    title = oe_fs.13.t
+    desc = {
+        first_valid = {
+            triggered_desc = { desc = oe_fs.13.desc_x }
+        }
+    }
+    trigger = { tag = BYZ is_rebel_country = no oe_fs_ev_13 = yes }
+    immediate = { oe_ml_take_as = { line = 29 } var:oe_fs_mk_at ?= { save_scope_as = oe_fs_mk } }
+    option = {
+        name = oe_fs.13.a
+        trigger = { oe_fs_house_ok = yes oe_fs_kc_free = yes }
+        custom_tooltip = oe_fs.13.a.tt
+        hidden_effect = { set_variable = { name = oe_fs_bjob value = 41 } trigger_event_silently = oe_fs.92 }
+        ai_chance = { base = 20 modifier = { add = 30 gold < 300 } }
+    }
+    option = {
+        name = oe_fs.13.b
+        trigger = { has_variable = oe_fs_mk_at OR = { var:oe_fs_e13_reg ?= 8 var:oe_fs_e13_reg ?= 9 } }
+        custom_tooltip = oe_fs.13.b.tt
+        hidden_effect = { set_variable = { name = oe_fs_bjob value = 42 } trigger_event_silently = oe_fs.92 }
+        ai_chance = { base = 30 }
+    }
+    option = {
+        name = oe_fs.13.c
+        trigger = { has_variable = oe_fs_mk_at NOT = { OR = { var:oe_fs_e13_reg ?= 8 var:oe_fs_e13_reg ?= 9 } } }
+        custom_tooltip = oe_fs.13.c.tt
+        hidden_effect = { set_variable = { name = oe_fs_bjob value = 42 } trigger_event_silently = oe_fs.92 }
+        ai_chance = { base = 30 }
+    }
+    option = {
+        name = oe_fs.13.d
+        trigger = { oe_fs_cmp_ok = yes oe_fs_kc_free = yes }
+        custom_tooltip = oe_fs.13.d.tt
+        hidden_effect = { set_variable = { name = oe_fs_bjob value = 43 } trigger_event_silently = oe_fs.92 }
+        ai_chance = { base = 25 }
+    }
+    option = {
+        name = oe_fs.13.e
+        trigger = { gold >= 150 }
+        custom_tooltip = oe_fs.13.e.tt
+        hidden_effect = { set_variable = { name = oe_fs_bjob value = 44 } trigger_event_silently = oe_fs.92 }
+        ai_chance = { base = 40 modifier = { factor = 0 gold < 800 } }
+    }
+    option = {
+        name = oe_fs.13.f
+        custom_tooltip = oe_fs.13.f.tt
+        hidden_effect = { set_variable = { name = oe_fs_bjob value = 45 } trigger_event_silently = oe_fs.92 }
+        ai_chance = { base = 5 }
+    }
+}
+
+oe_fs.14 = { # 归化
+    type = country_event
+    outcome = positive
+    image = "gfx/interface/illustrations/government/geopolitics_expansion_illustration.dds"
+    title = oe_fs.14.t
+    desc = {
+        first_valid = {
+            triggered_desc = { desc = oe_fs.14.desc_x }
+        }
+    }
+    trigger = { tag = BYZ is_rebel_country = no oe_fs_ev_14 = yes }
+    immediate = { oe_ml_take_as = { line = 29 } var:oe_fs_e14_at ?= { save_scope_as = oe_fs_cen } }
+    option = {
+        name = oe_fs.14.a
+        trigger = { has_variable = oe_fs_rw }
+        custom_tooltip = oe_fs.14.a.tt
+        hidden_effect = { set_variable = { name = oe_fs_bjob value = 51 } trigger_event_silently = oe_fs.92 }
+        ai_chance = { base = 70 }
+    }
+    option = {
+        name = oe_fs.14.b
+        custom_tooltip = oe_fs.14.b.tt
+        hidden_effect = { set_variable = { name = oe_fs_bjob value = 52 } trigger_event_silently = oe_fs.92 }
+        ai_chance = { base = 30 }
+    }
+}
+
 # Part A's worker (hidden): opening a programme and the work of oe_fs.12 (oe_fs_ajob, oe_fs_a_work in oe_fs_a.txt).
 oe_fs.91 = {
     type = country_event
@@ -171,4 +253,14 @@ oe_fs.91 = {
     title = empty_text
     trigger = { tag = BYZ is_rebel_country = no has_variable = oe_fs_ajob }
     immediate = { oe_fs_a_work = yes }
+}
+
+# Part A's second worker (hidden; batch 13): the options of oe_fs.13 and oe_fs.14 and the redemption action
+# (oe_fs_bjob, oe_fs_b_work in oe_fs_b.txt).
+oe_fs.92 = {
+    type = country_event
+    hidden = yes
+    title = empty_text
+    trigger = { tag = BYZ is_rebel_country = no has_variable = oe_fs_bjob }
+    immediate = { oe_fs_b_work = yes }
 }

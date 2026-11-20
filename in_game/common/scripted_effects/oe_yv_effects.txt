@@ -105,6 +105,12 @@ oe_yv_fire_12 = {
     oe_yv_count = yes
     trigger_event_non_silently = oe_yv.12
 }
+oe_yv_fire_13 = {
+    set_variable = { name = oe_yv_st_13 value = 1 }
+    oe_yv_count = yes
+    set_global_variable = { name = oe_yuan_ev_m value = var:oe_yv_m }
+    trigger_event_non_silently = oe_yv.13
+}
 
 # CHI scope. Drops events that can no longer fire. Tibet refused the Phagmodru (or event 11 dropped): drop event 12.
 oe_yv_ev_lapse = {
@@ -120,7 +126,19 @@ oe_yv_ev_lapse = {
     if = { limit = { oe_yv_lapse_10 = yes } set_variable = { name = oe_yv_st_10 value = 2 } }
     if = { limit = { oe_yv_lapse_11 = yes } set_variable = { name = oe_yv_st_11 value = 2 } }
     if = { limit = { oe_yv_lapse_12 = yes } set_variable = { name = oe_yv_st_12 value = 2 } }
+    if = { limit = { oe_yv_lapse_13 = yes } set_variable = { name = oe_yv_st_13 value = 2 } }
     if = { limit = { var:oe_yv_st_11 ?= 2 NOT = { has_variable = oe_yv_st_12 } } set_variable = { name = oe_yv_st_12 value = 2 } }
+    # yuan-heir1: event 13 dropped (Toghon Temur no longer reigns, or El Tegus is no longer at court): the crown prince
+    # is made now if the father still reigns (El Tegus gone); else nobody is made and global oe_yv_cp = 2.
+    if = {
+        limit = { var:oe_yv_st_13 ?= 2 NOT = { has_global_variable = oe_yv_cp } }
+        oe_yv_ensure_crown_prince = yes
+        if = {
+            limit = { NOT = { has_global_variable = oe_yv_cp } }
+            set_global_variable = { name = oe_yv_cp value = 2 }
+            debug_log = "oe_yv: event 13 dropped and the crown prince not made (oe_yv_cp 2)"
+        }
+    }
 }
 # CHI scope. Picks at most one event this month: an event at its window end first, else one roll per open event.
 oe_yv_ev_pick = {
@@ -137,6 +155,7 @@ oe_yv_ev_pick = {
     else_if = { limit = { oe_yv_due_10 = yes } set_variable = { name = oe_yv_pick value = 10 } }
     else_if = { limit = { oe_yv_due_11 = yes } set_variable = { name = oe_yv_pick value = 11 } }
     else_if = { limit = { oe_yv_due_12 = yes } set_variable = { name = oe_yv_pick value = 12 } }
+    else_if = { limit = { oe_yv_due_13 = yes NOT = { oe_yv_wait_13 = yes } } set_variable = { name = oe_yv_pick value = 13 } }
     else = {
         if = { limit = { var:oe_yv_pick = 0 oe_yv_open_1 = yes } random = { chance = oe_yv_ch_1 set_variable = { name = oe_yv_pick value = 1 } } }
         if = { limit = { var:oe_yv_pick = 0 oe_yv_open_2 = yes } random = { chance = oe_yv_ch_2 set_variable = { name = oe_yv_pick value = 2 } } }
@@ -150,6 +169,7 @@ oe_yv_ev_pick = {
         if = { limit = { var:oe_yv_pick = 0 oe_yv_open_10 = yes } random = { chance = oe_yv_ch_10 set_variable = { name = oe_yv_pick value = 10 } } }
         if = { limit = { var:oe_yv_pick = 0 oe_yv_open_11 = yes } random = { chance = oe_yv_ch_11 set_variable = { name = oe_yv_pick value = 11 } } }
         if = { limit = { var:oe_yv_pick = 0 oe_yv_open_12 = yes } random = { chance = oe_yv_ch_12 set_variable = { name = oe_yv_pick value = 12 } } }
+        if = { limit = { var:oe_yv_pick = 0 oe_yv_open_13 = yes NOT = { oe_yv_wait_13 = yes } } random = { chance = oe_yv_ch_13 set_variable = { name = oe_yv_pick value = 13 } } }
     }
     if = { limit = { var:oe_yv_pick = 1 } oe_yv_fire_1 = yes }
     else_if = { limit = { var:oe_yv_pick = 2 } oe_yv_fire_2 = yes }
@@ -163,6 +183,7 @@ oe_yv_ev_pick = {
     else_if = { limit = { var:oe_yv_pick = 10 } oe_yv_fire_10 = yes }
     else_if = { limit = { var:oe_yv_pick = 11 } oe_yv_fire_11 = yes }
     else_if = { limit = { var:oe_yv_pick = 12 } oe_yv_fire_12 = yes }
+    else_if = { limit = { var:oe_yv_pick = 13 } oe_yv_fire_13 = yes }
 }
 # CHI scope, monthly while var oe_yv_on is set.
 oe_yv_ev_monthly = {
@@ -186,6 +207,11 @@ oe_yv_ev_monthly = {
         limit = { has_country_modifier = chi_yellow_river_works NOT = { has_variable = oe_yv_works_seen } }
         set_variable = { name = oe_yv_works_seen value = var:oe_yv_m }
     }
+    # yuan-heir1: Wenzong's Son at Court (event 13 b) ends when El Tegus dies or leaves the Yuan.
+    if = {
+        limit = { has_country_modifier = oe_yv_wenzong_son NOT = { oe_yv_et_at_court = yes } }
+        remove_country_modifier = oe_yv_wenzong_son
+    }
     if = {
         limit = { var:oe_yv_m >= 1 NOT = { has_global_variable = oe_yp_dissolved } }
         oe_yv_ev_lapse = yes
@@ -200,7 +226,7 @@ oe_yv_ev_monthly = {
 # ---------------------------------------------------------------- test helpers (dev page buttons and console; CHI scope)
 # The schedule runs from now in any game (every event pending again; windows already past lapse at once).
 oe_yv_test_start = {
-    if = { limit = { has_variable = oe_yv_on } remove_variable = oe_yv_on } if = { limit = { has_variable = oe_yv_m } remove_variable = oe_yv_m } if = { limit = { has_variable = oe_yv_pick } remove_variable = oe_yv_pick } if = { limit = { has_variable = oe_yv_job } remove_variable = oe_yv_job } if = { limit = { has_variable = oe_yv_works_seen } remove_variable = oe_yv_works_seen } if = { limit = { has_variable = oe_yv_tib_ans } remove_variable = oe_yv_tib_ans } if = { limit = { has_variable = oe_yv_bayan_exiled } remove_variable = oe_yv_bayan_exiled } if = { limit = { has_variable = oe_yv_st_1 } remove_variable = oe_yv_st_1 } if = { limit = { has_variable = oe_yv_st_2 } remove_variable = oe_yv_st_2 } if = { limit = { has_variable = oe_yv_st_3 } remove_variable = oe_yv_st_3 } if = { limit = { has_variable = oe_yv_st_4 } remove_variable = oe_yv_st_4 } if = { limit = { has_variable = oe_yv_st_5 } remove_variable = oe_yv_st_5 } if = { limit = { has_variable = oe_yv_st_6 } remove_variable = oe_yv_st_6 } if = { limit = { has_variable = oe_yv_st_7 } remove_variable = oe_yv_st_7 } if = { limit = { has_variable = oe_yv_st_8 } remove_variable = oe_yv_st_8 } if = { limit = { has_variable = oe_yv_st_9 } remove_variable = oe_yv_st_9 } if = { limit = { has_variable = oe_yv_st_10 } remove_variable = oe_yv_st_10 } if = { limit = { has_variable = oe_yv_st_11 } remove_variable = oe_yv_st_11 } if = { limit = { has_variable = oe_yv_st_12 } remove_variable = oe_yv_st_12 }
+    if = { limit = { has_variable = oe_yv_on } remove_variable = oe_yv_on } if = { limit = { has_variable = oe_yv_m } remove_variable = oe_yv_m } if = { limit = { has_variable = oe_yv_pick } remove_variable = oe_yv_pick } if = { limit = { has_variable = oe_yv_job } remove_variable = oe_yv_job } if = { limit = { has_variable = oe_yv_works_seen } remove_variable = oe_yv_works_seen } if = { limit = { has_variable = oe_yv_tib_ans } remove_variable = oe_yv_tib_ans } if = { limit = { has_variable = oe_yv_bayan_exiled } remove_variable = oe_yv_bayan_exiled } if = { limit = { has_variable = oe_yv_st_1 } remove_variable = oe_yv_st_1 } if = { limit = { has_variable = oe_yv_st_2 } remove_variable = oe_yv_st_2 } if = { limit = { has_variable = oe_yv_st_3 } remove_variable = oe_yv_st_3 } if = { limit = { has_variable = oe_yv_st_4 } remove_variable = oe_yv_st_4 } if = { limit = { has_variable = oe_yv_st_5 } remove_variable = oe_yv_st_5 } if = { limit = { has_variable = oe_yv_st_6 } remove_variable = oe_yv_st_6 } if = { limit = { has_variable = oe_yv_st_7 } remove_variable = oe_yv_st_7 } if = { limit = { has_variable = oe_yv_st_8 } remove_variable = oe_yv_st_8 } if = { limit = { has_variable = oe_yv_st_9 } remove_variable = oe_yv_st_9 } if = { limit = { has_variable = oe_yv_st_10 } remove_variable = oe_yv_st_10 } if = { limit = { has_variable = oe_yv_st_11 } remove_variable = oe_yv_st_11 } if = { limit = { has_variable = oe_yv_st_12 } remove_variable = oe_yv_st_12 } if = { limit = { has_variable = oe_yv_st_13 } remove_variable = oe_yv_st_13 }
     set_variable = oe_yv_init
     set_variable = oe_yv_on
     set_variable = { name = oe_yv_m value = oe_yv_m_now }
@@ -223,14 +249,111 @@ oe_yv_test_fire_9 = { set_variable = { name = oe_yv_st_9 value = 1 } oe_yv_count
 oe_yv_test_fire_10 = { set_variable = { name = oe_yv_st_10 value = 1 } oe_yv_count = yes if = { limit = { NOT = { has_variable = oe_yv_m } } set_variable = { name = oe_yv_m value = oe_yv_m_now } } trigger_event_non_silently = oe_yv.10 }
 oe_yv_test_fire_11 = { set_variable = { name = oe_yv_st_11 value = 1 } oe_yv_count = yes if = { limit = { NOT = { has_variable = oe_yv_m } } set_variable = { name = oe_yv_m value = oe_yv_m_now } } c:TIB ?= { trigger_event_non_silently = oe_yv.11 } }
 oe_yv_test_fire_12 = { set_variable = { name = oe_yv_st_12 value = 1 } oe_yv_count = yes trigger_event_non_silently = oe_yv.12 }
+oe_yv_test_fire_13 = { set_variable = { name = oe_yv_st_13 value = 1 } oe_yv_count = yes trigger_event_non_silently = oe_yv.13 }
 
 # Clears this track's CHI variables, the grand-chancellor modifier and the 1344 flood modifiers (not characters,
 # policies or vanilla modifiers).
 oe_yv_test_reset = {
-    if = { limit = { has_variable = oe_yv_on } remove_variable = oe_yv_on } if = { limit = { has_variable = oe_yv_m } remove_variable = oe_yv_m } if = { limit = { has_variable = oe_yv_pick } remove_variable = oe_yv_pick } if = { limit = { has_variable = oe_yv_job } remove_variable = oe_yv_job } if = { limit = { has_variable = oe_yv_works_seen } remove_variable = oe_yv_works_seen } if = { limit = { has_variable = oe_yv_tib_ans } remove_variable = oe_yv_tib_ans } if = { limit = { has_variable = oe_yv_bayan_exiled } remove_variable = oe_yv_bayan_exiled } if = { limit = { has_variable = oe_yv_st_1 } remove_variable = oe_yv_st_1 } if = { limit = { has_variable = oe_yv_st_2 } remove_variable = oe_yv_st_2 } if = { limit = { has_variable = oe_yv_st_3 } remove_variable = oe_yv_st_3 } if = { limit = { has_variable = oe_yv_st_4 } remove_variable = oe_yv_st_4 } if = { limit = { has_variable = oe_yv_st_5 } remove_variable = oe_yv_st_5 } if = { limit = { has_variable = oe_yv_st_6 } remove_variable = oe_yv_st_6 } if = { limit = { has_variable = oe_yv_st_7 } remove_variable = oe_yv_st_7 } if = { limit = { has_variable = oe_yv_st_8 } remove_variable = oe_yv_st_8 } if = { limit = { has_variable = oe_yv_st_9 } remove_variable = oe_yv_st_9 } if = { limit = { has_variable = oe_yv_st_10 } remove_variable = oe_yv_st_10 } if = { limit = { has_variable = oe_yv_st_11 } remove_variable = oe_yv_st_11 } if = { limit = { has_variable = oe_yv_st_12 } remove_variable = oe_yv_st_12 }
+    if = { limit = { has_variable = oe_yv_on } remove_variable = oe_yv_on } if = { limit = { has_variable = oe_yv_m } remove_variable = oe_yv_m } if = { limit = { has_variable = oe_yv_pick } remove_variable = oe_yv_pick } if = { limit = { has_variable = oe_yv_job } remove_variable = oe_yv_job } if = { limit = { has_variable = oe_yv_works_seen } remove_variable = oe_yv_works_seen } if = { limit = { has_variable = oe_yv_tib_ans } remove_variable = oe_yv_tib_ans } if = { limit = { has_variable = oe_yv_bayan_exiled } remove_variable = oe_yv_bayan_exiled } if = { limit = { has_variable = oe_yv_st_1 } remove_variable = oe_yv_st_1 } if = { limit = { has_variable = oe_yv_st_2 } remove_variable = oe_yv_st_2 } if = { limit = { has_variable = oe_yv_st_3 } remove_variable = oe_yv_st_3 } if = { limit = { has_variable = oe_yv_st_4 } remove_variable = oe_yv_st_4 } if = { limit = { has_variable = oe_yv_st_5 } remove_variable = oe_yv_st_5 } if = { limit = { has_variable = oe_yv_st_6 } remove_variable = oe_yv_st_6 } if = { limit = { has_variable = oe_yv_st_7 } remove_variable = oe_yv_st_7 } if = { limit = { has_variable = oe_yv_st_8 } remove_variable = oe_yv_st_8 } if = { limit = { has_variable = oe_yv_st_9 } remove_variable = oe_yv_st_9 } if = { limit = { has_variable = oe_yv_st_10 } remove_variable = oe_yv_st_10 } if = { limit = { has_variable = oe_yv_st_11 } remove_variable = oe_yv_st_11 } if = { limit = { has_variable = oe_yv_st_12 } remove_variable = oe_yv_st_12 } if = { limit = { has_variable = oe_yv_st_13 } remove_variable = oe_yv_st_13 }
     if = { limit = { has_variable = oe_yv_init } remove_variable = oe_yv_init }
     if = { limit = { has_country_modifier = oe_yv_grand_chancellor } remove_country_modifier = oe_yv_grand_chancellor }
+    if = { limit = { has_country_modifier = oe_yv_wenzong_son } remove_country_modifier = oe_yv_wenzong_son }
     location:rencheng = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:jiaxiang = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:juye = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:yuncheng = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:shansu = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:yutai = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:jinxiang = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:chuqiu = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:chengwu = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:dingtao = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:jiyin = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:xucheng = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:shouzhang = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:pingyin = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:donge = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:wenshang = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:yanggu_yanzhou = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:dongping_lake = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:puyang = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:changyuan = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:dongming = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:qingfeng = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:suiyang_guide = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:luyi = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:ningling = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:xiayi = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:yongcheng = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:yucheng_kaifeng = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:xuzhou = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:dangshan = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:fengxian = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:xiaoxian = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:peixian = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:gaotang = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:enzhou = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } } location:xiajin = { province = { if = { limit = { has_province_modifier = oe_yv_yellow_river_breach } remove_province_modifier = oe_yv_yellow_river_breach } } }
+}
+
+# ---------------------------------------------------------------- yuan-heir1: the crown prince (interface)
+# Any scope. INTERFACE for the other Yuan lines (Korea .3, the restoration .11, the later court line): makes the crown
+# prince Ayushiridara once, if oe_yv_cp_can_make holds (never made, a 1337 game, on or after 1340.1.23, Toghon Temur
+# reigns): son of Toghon Temur and Empress Gi (yua_gi; without a mother if that character is gone), Borjigin, Mongol,
+# Tibetan Buddhist, nobles estate (the estate cognatic primogeniture admits), born at Dadu on 1340.1.23, script id
+# oe_yv_crown_prince. Afterwards global var oe_yv_crown_prince holds him and global oe_yv_cp = 1 (9 if no character could be read
+# back; no second try then). Never makes a second prince: callers call this, then read global_var:oe_yv_crown_prince
+# behind oe_yv_crown_prince_alive = yes. It designates nobody (event 13 does, through oe_yv_cp_designate).
+# Call it from an immediate block or a hidden event, not from an event option (the option preview would make him).
+oe_yv_ensure_crown_prince = {
+    if = {
+        limit = { oe_yv_cp_can_make = yes }
+        c:CHI = {
+            if = { limit = { exists = character:yua_gi } create_character = { first_name = oe_yv_name_ayushiridara dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no father = character:yua_togon_temur mother = character:yua_gi birth_date = 1340.1.23 birth_location = location:dadu adm = 55 dip = 45 mil = 45 trait_category = none script = oe_yv_crown_prince } }
+            else = { create_character = { first_name = oe_yv_name_ayushiridara dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no father = character:yua_togon_temur birth_date = 1340.1.23 birth_location = location:dadu adm = 55 dip = 45 mil = 45 trait_category = none script = oe_yv_crown_prince } }
+        }
+        oe_yv_cp_store = yes
+    }
+}
+# Any scope. After a making: the global variable and the status (1 made, 9 nothing to read back).
+oe_yv_cp_store = {
+    if = {
+        limit = { exists = character:oe_yv_crown_prince }
+        set_global_variable = { name = oe_yv_crown_prince value = character:oe_yv_crown_prince }
+        set_global_variable = { name = oe_yv_cp value = 1 }
+        character:oe_yv_crown_prince = {
+            if = { limit = { is_adult = no NOT = { has_trait = child_ambitious } } add_trait = trait:child_ambitious }
+        }
+    }
+    else = { set_global_variable = { name = oe_yv_cp value = 9 } }
+}
+# CHI scope. Makes the crown prince CHI's designated heir (vanilla's effect and reason, as flavor_mos.74), if he is
+# alive at the Yuan court and not the heir already.
+oe_yv_cp_designate = {
+    if = {
+        limit = {
+            exists = global_var:oe_yv_crown_prince
+            global_var:oe_yv_crown_prince = { is_alive = yes owner ?= c:CHI NOT = { is_heir_of = c:CHI } }
+        }
+        global_var:oe_yv_crown_prince = { save_scope_as = oe_yv_cpc }
+        set_as_designated_heir_with_reason_effect = { target = scope:oe_yv_cpc reason = preferred_heir_of_ruler }
+    }
+}
+# CHI scope. Event 13 option a (history), run by the hidden worker oe_yv.20: the crown prince becomes the heir; El
+# Tegus is barred from ruling (vanilla blocked_from_being_ruler) and sent into exile; .21 kills El Tegus silently
+# 31 days later (edict 1340-07-09, death 1340-08-09).
+oe_yv_et_exile = {
+    oe_yv_cp_designate = yes
+    if = {
+        limit = { oe_yv_et_at_court = yes }
+        character:oe_s37_el_tegus = {
+            add_character_modifier = { modifier = blocked_from_being_ruler years = -1 mode = add_and_extend }
+            set_variable = { name = oe_yv_exiled value = 1 }
+        }
+        trigger_event_silently = { id = oe_yv.21 days = 31 }
+    }
+}
+# CHI scope. Event 13 option b (counterfactual), run by oe_yv.20: the crown prince becomes the heir; El Tegus stays at
+# court as a prince (the modifier is given by the option itself).
+oe_yv_et_keep = {
+    oe_yv_cp_designate = yes
+}
+# ---- TEST ONLY (yuan-heir1; dev page 49)
+# Makes the crown prince even before 1340.1.23 (then 0 years old); every other condition of oe_yv_cp_can_make applies.
+oe_yv_test_make_prince = {
+    if = {
+        limit = { current_date >= 1340.1.23 }
+        oe_yv_ensure_crown_prince = yes
+    }
+    else_if = {
+        limit = {
+            NOT = { has_global_variable = oe_yv_crown_prince }
+            NOT = { exists = character:oe_yv_crown_prince }
+            country_exists = c:CHI
+            c:CHI = { has_ruler = yes ruler ?= character:yua_togon_temur }
+        }
+        c:CHI = {
+            if = { limit = { exists = character:yua_gi } create_character = { first_name = oe_yv_name_ayushiridara dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no father = character:yua_togon_temur mother = character:yua_gi age = 0 birth_location = location:dadu adm = 55 dip = 45 mil = 45 trait_category = none script = oe_yv_crown_prince } }
+            else = { create_character = { first_name = oe_yv_name_ayushiridara dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no father = character:yua_togon_temur age = 0 birth_location = location:dadu adm = 55 dip = 45 mil = 45 trait_category = none script = oe_yv_crown_prince } }
+        }
+        oe_yv_cp_store = yes
+    }
+}
+# Event 13 can be tried again: its state, the exile mark and the bar on El Tegus (if alive), Wenzong's Son at Court and
+# a "dropped" status go; the crown prince stays (he is made once).
+oe_yv_test_reset_13 = {
+    if = { limit = { has_variable = oe_yv_st_13 } remove_variable = oe_yv_st_13 }
+    if = { limit = { has_country_modifier = oe_yv_wenzong_son } remove_country_modifier = oe_yv_wenzong_son }
+    if = { limit = { global_var:oe_yv_cp ?= 2 } remove_global_variable = oe_yv_cp }
+    character:oe_s37_el_tegus ?= {
+        if = { limit = { has_variable = oe_yv_exiled } remove_variable = oe_yv_exiled }
+        if = { limit = { is_alive = yes has_character_modifier = blocked_from_being_ruler } remove_character_modifier = blocked_from_being_ruler }
+    }
 }
 
 # ---- TEST ONLY: copies every reading of the report event oe_yv.90 onto the current scope ----
@@ -250,6 +373,7 @@ oe_yv_dev_snapshot = {
     set_variable = { name = oe_yv_r_st10 value = oe_yv_dev_st10 }
     set_variable = { name = oe_yv_r_st11 value = oe_yv_dev_st11 }
     set_variable = { name = oe_yv_r_st12 value = oe_yv_dev_st12 }
+    set_variable = { name = oe_yv_r_st13 value = oe_yv_dev_st13 }
     set_variable = { name = oe_yv_r_ycl value = oe_yv_dev_ycl }
     set_variable = { name = oe_yv_r_dict value = oe_yv_dev_dict }
     set_variable = { name = oe_yv_r_grand value = oe_yv_dev_grand }
@@ -266,4 +390,24 @@ oe_yv_dev_snapshot = {
     set_variable = { name = oe_yv_r_intensity value = oe_yv_dev_intensity }
     set_variable = { name = oe_yv_r_hanlaw value = oe_yv_dev_hanlaw }
     set_variable = { name = oe_yv_r_flood value = oe_yv_dev_flood }
+}
+
+# ---- TEST ONLY (yuan-heir1): copies the heir report's readings (oe_yv.91) onto the current scope; the heir and the
+# crown prince as character variables (oe_yv_r_hc, oe_yv_r_cpc) for their names and ages ----
+oe_yv_dev_snapshot_h = {
+    set_variable = { name = oe_yv_r_hst value = oe_yv_dev_hst }
+    set_variable = { name = oe_yv_r_cp value = oe_yv_dev_cp }
+    set_variable = { name = oe_yv_r_cpg value = oe_yv_dev_cpg }
+    set_variable = { name = oe_yv_r_cpv value = oe_yv_dev_cpv }
+    set_variable = { name = oe_yv_r_et value = oe_yv_dev_et }
+    set_variable = { name = oe_yv_r_etx value = oe_yv_dev_etx }
+    set_variable = { name = oe_yv_r_ws value = oe_yv_dev_ws }
+    set_variable = { name = oe_yv_r_evm value = oe_yv_dev_evm }
+    set_variable = { name = oe_yv_r_st13 value = oe_yv_dev_st13 }
+    set_variable = { name = oe_yv_r_m value = oe_yv_dev_m }
+    if = { limit = { has_variable = oe_yv_r_hc } remove_variable = oe_yv_r_hc }
+    if = { limit = { has_variable = oe_yv_r_cpc } remove_variable = oe_yv_r_cpc }
+    c:CHI ?= { heir ?= { save_scope_as = oe_yv_rh } }
+    if = { limit = { exists = scope:oe_yv_rh } set_variable = { name = oe_yv_r_hc value = scope:oe_yv_rh } }
+    if = { limit = { exists = global_var:oe_yv_crown_prince } set_variable = { name = oe_yv_r_cpc value = global_var:oe_yv_crown_prince } }
 }

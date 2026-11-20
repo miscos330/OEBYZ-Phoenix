@@ -2,6 +2,7 @@
 # 2026-11-19 v6.4 D2 phase 2 (the church framework, events 20-41) added to this file by the same generator.
 # 2026-11-19 v6.4 D2 phase 3 (the metropolitans of Rus', Lithuania, Wallachia and Moldavia; alms from Rus'; events 50-82) added to this file by the same generator.
 # 2026-11-19 v6.6 D2 phases 4 and 5 (the monastic lands, the council of 1368, the random pool: events 42, 70-72, 90-94; Rus' and the union: events 58, 59) added to this file by the same generator.
+# 2026-11-20 v6.7 phase 6, group ch-after-fall1 (the Church after the City is lost: the fall check, events 24, 25) added to this file by the same generator.
 
 # The Athonite go-betweens of oe_ecc.1 while the hesychasts are strong.
 OeEccAthosLine = {
@@ -30,6 +31,8 @@ OeEccChrSerbia = {
     text = { localization_key = OE_ECC_CHR_SER_1 trigger = { var:oe_ecc_serbia ?= 1 } }
     text = { localization_key = OE_ECC_CHR_SER_2 trigger = { var:oe_ecc_serbia ?= 2 } }
     text = { localization_key = OE_ECC_CHR_SER_3 trigger = { var:oe_ecc_serbia ?= 3 } }
+    text = { localization_key = OE_ECC_CHR_SER_V3D trigger = { var:oe_ecc_serbia_void ?= 3 global_var:oe_ecc_fall ?= 2 } }
+    text = { localization_key = OE_ECC_CHR_SER_V3 trigger = { var:oe_ecc_serbia_void ?= 3 } }
     text = { localization_key = OE_ECC_CHR_SER_V2 trigger = { var:oe_ecc_serbia_void ?= 2 } }
     text = { localization_key = OE_ECC_CHR_SER_V1 trigger = { var:oe_ecc_serbia_void ?= 1 } }
     text = { localization_key = OE_ECC_CHR_SER_OPEN fallback = yes }
@@ -41,6 +44,8 @@ OeEccChrTarnovo = {
     text = { localization_key = OE_ECC_CHR_TAR_1 trigger = { var:oe_ecc_tarnovo ?= 1 } }
     text = { localization_key = OE_ECC_CHR_TAR_2 trigger = { var:oe_ecc_tarnovo ?= 2 } }
     text = { localization_key = OE_ECC_CHR_TAR_3 trigger = { var:oe_ecc_tarnovo ?= 3 } }
+    text = { localization_key = OE_ECC_CHR_TAR_V3D trigger = { var:oe_ecc_tarnovo_void ?= 3 global_var:oe_ecc_fall ?= 2 } }
+    text = { localization_key = OE_ECC_CHR_TAR_V3 trigger = { var:oe_ecc_tarnovo_void ?= 3 } }
     text = { localization_key = OE_ECC_CHR_TAR_V2 trigger = { var:oe_ecc_tarnovo_void ?= 2 } }
     text = { localization_key = OE_ECC_CHR_TAR_SELF trigger = { var:oe_ecc_tarnovo_void ?= 1 country_exists = c:BUL c:BUL = { oe_ecc_in_byz_ap = yes } } }
     text = { localization_key = OE_ECC_CHR_TAR_V1 trigger = { var:oe_ecc_tarnovo_void ?= 1 } }
@@ -157,6 +162,8 @@ OeEccChrRusDone = {
 # Chronicle (void): why the line can no longer go on.
 OeEccChrRusVoid = {
     type = country
+    text = { localization_key = OE_ECC_CHR_RUS_FALL trigger = { global_var:oe_ecc_fall ?= 1 } }
+    text = { localization_key = OE_ECC_CHR_RUS_DISS trigger = { global_var:oe_ecc_fall ?= 2 } }
     text = { localization_key = OE_ECC_CHR_RUS_OFF trigger = { has_variable = oe_ecc_off } }
     text = { localization_key = OE_ECC_CHR_RUS_NOFW trigger = { NOT = { has_variable = oe_ecc_on } } }
     text = { localization_key = OE_ECC_CHR_RUS_SELF trigger = { AND = { has_global_variable = oe_ecc_see_rus global_var:oe_ecc_see_rus = 4 } } }
@@ -202,4 +209,43 @@ OeEccDisputeLine = {
     type = country
     text = { localization_key = OE_ECC_DISPUTE_LINE trigger = { has_variable = oe_ecc_dispute_open } }
     text = { localization_key = OE_ECC_EMPTY fallback = yes }
+}
+
+# oe_ecc.24: where the empire's church is now (oe_ecc_own_ap_value).
+OeEccFallOwn = {
+    type = country
+    text = { localization_key = OE_ECC_FALL_OWN_1 trigger = { oe_ecc_own_ap_value = 1 } }
+    text = { localization_key = OE_ECC_FALL_OWN_2 trigger = { oe_ecc_own_ap_value = 2 } }
+    text = { localization_key = OE_ECC_EMPTY fallback = yes }
+}
+
+# Chronicle row ecf (under way): the shares and the standing.
+OeEccChrFwRun = {
+    type = country
+    text = { localization_key = OE_ECC_CHR_FW_RUN fallback = yes }
+}
+
+# Chronicle row ecf (not yet).
+OeEccChrFwWait = {
+    type = country
+    text = { localization_key = OE_ECC_CHR_FW_WAIT fallback = yes }
+}
+
+# Chronicle row ecf (ended): how the church lines ended (design 4.7).
+OeEccChrFwDone = {
+    type = country
+    text = { localization_key = OE_ECC_CHR_FW_BACK trigger = { global_var:oe_ecc_fall ?= 1 location:constantinople = { owner ?= c:BYZ } } }
+    text = { localization_key = OE_ECC_CHR_FW_DISS trigger = { global_var:oe_ecc_fall ?= 1 oe_ecc_fall_ap_value = 0 } }
+    text = { localization_key = OE_ECC_CHR_FW_KEPT trigger = { global_var:oe_ecc_fall ?= 1 oe_ecc_fall_ap_value = 1 } }
+    text = { localization_key = OE_ECC_CHR_FW_OTHER trigger = { global_var:oe_ecc_fall ?= 1 } }
+    text = { localization_key = OE_ECC_CHR_FW_TREATY trigger = { global_var:oe_ecc_fall ?= 2 } }
+    text = { localization_key = OE_ECC_CHR_FW_END fallback = yes }
+}
+
+# Chronicle row ecf (void): why the framework never began.
+OeEccChrFwVoid = {
+    type = country
+    text = { localization_key = OE_ECC_CHR_FW_V1 trigger = { global_var:oe_ecc_fall ?= 1 } }
+    text = { localization_key = OE_ECC_CHR_FW_V2 trigger = { global_var:oe_ecc_fall ?= 2 } }
+    text = { localization_key = OE_ECC_CHR_FW_V0 fallback = yes }
 }

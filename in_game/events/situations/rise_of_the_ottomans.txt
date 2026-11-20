@@ -399,6 +399,10 @@ rise_of_the_ottomans.101 = {
 			}
 			custom_tooltip = explain_flavor_tur.43_tt
 		}
+
+		ai_will_select = { # OEBYZ patch296 (V-07): as vanilla 1.4.9
+			value = 1
+		}
 	}
 
 	option = {
@@ -409,6 +413,10 @@ rise_of_the_ottomans.101 = {
 				name = rise_of_the_ottomans_vassal_cooldown_variable
 				years = 5
 			}
+		}
+
+		ai_will_select = { # OEBYZ patch296 (V-07): as vanilla 1.4.9
+			value = 0
 		}
 	}
 
@@ -486,6 +494,19 @@ rise_of_the_ottomans.103 = {
 				type = subject_type:vassal
 			}
 		}
+		if = { # OEBYZ patch296 (V-07): as vanilla 1.4.9: the new vassal joins its overlord's wars
+			limit = { at_war = yes }
+			every_current_war = {
+				scope:target_country = {
+					join_war_with = { 
+						war = prev
+						target = root
+						call_in_subjects = yes
+						ignore_rules = yes
+					}
+				}
+			}
+		}
 		if = {
 			limit = {
 				scope:target_country = { has_variable = more_likely_to_accept_vassalization_variable }
@@ -546,8 +567,7 @@ rise_of_the_ottomans.105 = {
 	}
 
 	option = {
-		name = rise_of_the_ottomans.105.a
-		historical_option = yes
+		name = rise_of_the_ottomans.105.a # OEBYZ patch296 (V-07): as vanilla 1.4.9: no historical_option here
 		scope:target_province = {
 			every_location_in_province = {
 				limit = {
@@ -578,6 +598,14 @@ rise_of_the_ottomans.105 = {
 
 		add_stability = stability_mild_bonus
 
+		ai_will_select = { # OEBYZ patch296 (V-07): as vanilla 1.4.9
+			if = {
+				limit = { 
+					stability < 10
+				}
+				value = 1
+			}
+		}
 	}
 }
 
@@ -906,11 +934,8 @@ rise_of_the_ottomans.111 = {
 	type = country_event
 	outcome = neutral # FIX 2026-11-17 P2：补 outcome（原版同ID）
 	category = situation_event
-
-	#Use desc and title of 109 because this is a different version of the same event
-	#separated into multiple events due to limitations of event insights
-	title = rise_of_the_ottomans.109.title
-	desc = rise_of_the_ottomans.109.desc
+	title = rise_of_the_ottomans.111.title # OEBYZ patch296 (V-07): as vanilla 1.4.9
+	desc = rise_of_the_ottomans.111.desc
 	illustration_tags = {
 		10 = regular
 		10 = interior
@@ -973,8 +998,8 @@ rise_of_the_ottomans.112 = {
 	outcome = neutral # FIX 2026-11-17 P2：补 outcome（原版同ID）
 	category = situation_event
 
-	title = rise_of_the_ottomans.109.title
-	desc = rise_of_the_ottomans.109.desc
+	title = rise_of_the_ottomans.112.title # OEBYZ patch296 (V-07): as vanilla 1.4.9
+	desc = rise_of_the_ottomans.112.desc
 	illustration_tags = {
 		10 = regular
 		10 = interior
@@ -1038,8 +1063,8 @@ rise_of_the_ottomans.113 = {
 	outcome = neutral # FIX 2026-11-17 P2：补 outcome（原版同ID）
 	category = situation_event
 
-	title = rise_of_the_ottomans.109.title
-	desc = rise_of_the_ottomans.109.desc
+	title = rise_of_the_ottomans.113.title # OEBYZ patch296 (V-07): as vanilla 1.4.9
+	desc = rise_of_the_ottomans.113.desc
 	illustration_tags = {
 		10 = regular
 		10 = interior
@@ -2957,7 +2982,7 @@ rise_of_the_ottomans.217 = {
 
 			while =  {
 				count = 2
-				capital = { create_sub_unit_of_category = sub_unit_category:army_infantry }
+				capital = { create_sub_unit_of_category = sub_unit_category:army_heavy_infantry } # OEBYZ patch296 (V-07): as vanilla 1.4.9 (army_infantry no longer exists)
 			}
 		}
 	}
@@ -2970,11 +2995,26 @@ rise_of_the_ottomans.217 = {
 			show_as_tooltip = {
 				while =  {
 					count = 2
-					capital = { create_sub_unit_of_category = sub_unit_category:army_infantry }
+					capital = { create_sub_unit_of_category = sub_unit_category:army_heavy_infantry } # OEBYZ patch296 (V-07): as vanilla 1.4.9
 				}
 			}
 			add_reform = government_reform:uc_bey_reform
 			change_subject_type = subject_type:uc_bey
+			if = { # OEBYZ patch296 (V-07): as vanilla 1.4.9
+				limit = { NOT = { religion.group = religion_group:muslim } }
+				add_liberty_desire = liberty_desire_mild_plus
+			}
+			if = {
+				limit = { culture != ROOT.culture }
+				change_culture = ROOT.culture
+			}
+			if = {
+				limit = {
+					exists = court_language
+					court_language != ROOT.court_language
+				}
+				set_court_language = ROOT.court_dialect
+			}
 		}
 	}
 }

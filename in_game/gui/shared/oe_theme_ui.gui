@@ -68,6 +68,18 @@ template oe_theme_ui_page {
                     }
                 }
                     expand = {}
+                    button_regular = {
+                        size = { 120 40 } text = "OE_TB2_BTN_MANAGE_ALL" fontsize = 15
+                        visible = "[GetScriptedGui('oe_tb2_ui_manage_all').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        enabled = "[GetScriptedGui('oe_tb2_ui_manage_all').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltipwidget = { using = action_tooltip_pop_out }
+                        action_tooltip = {
+                            title = "OE_TB2_BTN_MANAGE_ALL"
+                            description = "OE_TB2_BTN_MANAGE_ALL_DESC"
+                            enabled = "[GetScriptedGui('oe_tb2_ui_manage_all').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                            on_action = "[GetScriptedGui('oe_tb2_ui_manage_all').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        }
+                    }
                 }
                 hbox = {
                     layoutpolicy_horizontal = expanding
@@ -94,6 +106,7 @@ template oe_theme_ui_page {
                         size = { 120 40 } text = "OE_TB2_BTN_ADVISE" fontsize = 15
                         visible = "[GetScriptedGui('oe_tb2_ui_advise').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
                         enabled = "[GetScriptedGui('oe_tb2_ui_advise').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltipwidget = { using = action_tooltip_pop_out }
                         action_tooltip = {
                             title = "OE_TB2_BTN_ADVISE"
                             description = "OE_TB2_BTN_ADVISE_DESC"
@@ -105,6 +118,7 @@ template oe_theme_ui_page {
                         size = { 120 40 } text = "OE_TB2_BTN_MARCHES" fontsize = 15
                         visible = "[GetScriptedGui('oe_tb2_ui_marches').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
                         enabled = "[GetScriptedGui('oe_tb2_ui_marches').IsValid(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltipwidget = { using = action_tooltip_pop_out }
                         action_tooltip = {
                             title = "OE_TB2_BTN_MARCHES"
                             description = "OE_TB2_BTN_MARCHES_DESC"
@@ -115,6 +129,13 @@ template oe_theme_ui_page {
                     expand = {}
                 }
                 }
+            }
+            # v6.7 theme-ledger1 (design theme-econ 3.1): the crown's ledger of all themes this month (BYZ script values).
+            text_single = {
+                layoutpolicy_horizontal = expanding
+                text = "OE_TE_SUM_LINE"
+                tooltip = "OE_TE_SUM_TT"
+                fontsize = 14
             }
             text_single = {
                 layoutpolicy_horizontal = expanding
@@ -127,6 +148,13 @@ template oe_theme_ui_page {
                 layoutpolicy_horizontal = expanding
                 text = "OE_TQ_SUM_LINE"
                 tooltip = "OE_TQ_SUM_TT"
+                fontsize = 14
+            }
+            # v6.7 theme-managed1 (gen_theme_b2.py): the managed themes, one sentence (custom loc OeTb2Sum on BYZ).
+            text_single = {
+                layoutpolicy_horizontal = expanding
+                text = "OE_TB2_SUM_LINE"
+                tooltip = "OE_TB2_SUM_TT"
                 fontsize = 14
             }
             # Theme revolt under way: rebels' hold on Constantinople (gen_theme_usurp.py).
@@ -154,10 +182,10 @@ template oe_theme_ui_page {
             hbox = {
                 layoutpolicy_horizontal = expanding
                 margin = { 8 0 }
-                spacing = 6
-                text_single = { autoresize = no size = { 146 20 } text = "OE_THEME_UI_COL_THEME" fontsize = 14 default_format = "#weak" }
-                text_single = { autoresize = no size = { 104 20 } text = "OE_THEME_UI_COL_STRATEGOS" fontsize = 14 default_format = "#weak" }
-                text_single = { autoresize = no size = { 96 20 } text = "OE_THEME_UI_COL_LOYALTY" fontsize = 14 default_format = "#weak" }
+                spacing = 5
+                text_single = { autoresize = no size = { 140 20 } text = "OE_THEME_UI_COL_THEME" fontsize = 14 default_format = "#weak" }
+                text_single = { autoresize = no size = { 100 20 } text = "OE_THEME_UI_COL_STRATEGOS" fontsize = 14 default_format = "#weak" }
+                text_single = { autoresize = no size = { 88 20 } text = "OE_THEME_UI_COL_LOYALTY" fontsize = 14 default_format = "#weak" }
                 expand = {}
             }
             text_single = {
@@ -170,7 +198,17 @@ template oe_theme_ui_page {
                 maximumsize = { 380 -1 }
             }
 
-            # One card per theme, two lines: who / how loyal, then offices / focus / works and the orders.
+            # One card per theme, three lines: who / how loyal, then offices / focus / works and the orders, then the ledger.
+            # v6.7 theme-fix2 (r23 g7 甲 1, 甲 2): every width below is fixed, so a card's content never exceeds what a
+            # march card with a pretender needs. Card 570 - 2 x 16 page margin, about 30 for the scrollbar -> about 508 wide
+            # (385 px seen at a UI scale of 0.758), inner width about 492 (margin 8 each side).
+            #   line 1: name 140 + strategos 100 + loyalty 88 [+ pretender 66] + expand + button 46, spacing 5:
+            #           ordinary 374 + 4 x 5 = 394, with the pretender 440 + 5 x 5 = 465.
+            #   line 2: tiers 190 + cell 64 (replenishment above, a march's border pressure below) + expand + 4 buttons
+            #           (4 x 46 + 3 x 3 = 193), spacing 6: 447 + 3 x 6 = 465 on every card (the march adds nothing).
+            #   height: 5 + 44 + 2 + 42 + 2 + 22 + 5 = 122 (was 118 with an 18 px ledger line under a 0 px clearance:
+            #           the ledger and the fiscal line printed into each other). Texts of the lower lines are capped at
+            #           20 px and centred without the baseline offset.
             vbox = {
                 layoutpolicy_horizontal = expanding
                 spacing = 4
@@ -179,7 +217,7 @@ template oe_theme_ui_page {
                     widget = {
                         visible = "[GetScriptedGui('oe_theme_ui_row').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
                         layoutpolicy_horizontal = expanding
-                        size = { -1 98 }
+                        size = { -1 122 }
                         using = bg_paper_card
                         using = bg_cabinet_card_frame
                         vbox = {
@@ -188,73 +226,89 @@ template oe_theme_ui_page {
                             spacing = 2
                             hbox = {
                                 layoutpolicy_horizontal = expanding
-                                spacing = 6
-                                widget = { size = { 146 44 }
+                                spacing = 5
+                                widget = { size = { 140 44 }
                                     country_flag_small_plus = { size = { 28 21 } position = { 0 4 } }
-                                    text_single = { position = { 34 0 } size = { 112 24 } autoresize = no elide = right fontsize = 16 text = "[Country.GetNameWithNoTooltip]" tooltip = "[Country.GetName]" }
+                                    text_single = { position = { 34 0 } size = { 106 24 } autoresize = no elide = right fontsize = 16 text = "[Country.GetNameWithNoTooltip]" tooltip = "[Country.GetName]" }
                                     # Third round N1 (gen_round3_ui.py): status and course each carry their own tooltip.
                                     hbox = {
-                                        position = { 34 24 } size = { 112 20 } spacing = 3
-                                        text_single = { autoresize = yes maximumsize = { 56 20 } elide = right fontsize = 13 raw_text = "[Country.Custom('OeThemeTypeName')]" default_format = "#weak" tooltip = "OE_TU_CARD_STATUS_TT" }
-                                        text_single = { autoresize = yes fontsize = 13 raw_text = "·" default_format = "#weak" }
+                                        position = { 34 24 } size = { 106 20 } spacing = 3
+                                        text_single = { autoresize = yes maximumsize = { 50 20 } elide = right fontsize = 13 raw_text = "[Country.Custom('OeThemeTypeName')]" default_format = "#weak" tooltip = "OE_TU_CARD_STATUS_TT" }
+                                        text_single = { autoresize = yes maximumsize = { 8 20 } fontsize = 13 raw_text = "·" default_format = "#weak" }
                                         text_single = { autoresize = yes maximumsize = { 44 20 } elide = right fontsize = 13 raw_text = "[Country.Custom('OeThemeFocusName')]" default_format = "#weak" tooltip = "OE_TU_CARD_COURSE_TT" }
                                         expand = {}
                                     }
                                 }
-                                widget = { size = { 104 44 }
-                                    text_single = { position = { 0 0 } size = { 104 24 } autoresize = no elide = right fontsize = 15 text = "[Country.GetGovernment.GetRuler.GetShortNameWithNoTooltip]" tooltip = "[Country.GetGovernment.GetRuler.GetName]" }
-                                    text_single = { position = { 0 24 } size = { 104 20 } autoresize = no elide = right fontsize = 13 text = "OE_THEME_UI_TENURE" default_format = "#weak" }
+                                widget = { size = { 100 44 }
+                                    text_single = { position = { 0 0 } size = { 100 24 } autoresize = no elide = right fontsize = 15 text = "[Country.GetGovernment.GetRuler.GetShortNameWithNoTooltip]" tooltip = "[Country.GetGovernment.GetRuler.GetName]" }
+                                    text_single = { position = { 0 24 } size = { 100 20 } autoresize = no elide = right fontsize = 13 text = "OE_THEME_UI_TENURE" default_format = "#weak" }
                                 }
-                                widget = { size = { 96 44 }
+                                widget = { size = { 88 44 }
                                     tooltip = "OE_THEME_UI_LOYALTY_TT"
-                                    text_single = { position = { 0 0 } size = { 96 24 } autoresize = no fontsize = 15 raw_text = "[Country.MakeScope.GetVariable('oe_theme_loyalty').GetValue|0]  [Country.Custom('OeThemeBand')]" }
+                                    text_single = { position = { 0 0 } size = { 88 24 } autoresize = no elide = right fontsize = 15 raw_text = "[Country.MakeScope.GetVariable('oe_theme_loyalty').GetValue|0]  [Country.Custom('OeThemeBand')]" }
                                     progressbar_framed = {
                                         position = { 0 28 }
-                                        size = { 92 10 }
+                                        size = { 84 10 }
                                         using = progress_bar_green_red_alt
                                         min = 0
                                         max = 100
                                         value = "[FixedPointToFloat(Country.MakeScope.GetVariable('oe_theme_loyalty').GetValue)]"
                                     }
                                 }
-                                widget = { size = { 76 44 }
+                                widget = { size = { 66 44 }
                                     visible = "[GetScriptedGui('oe_theme_ui_ambitious').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
                                     tooltip = "OE_THEME_UI_AMBITION_TT"
-                                    text_single = { position = { 0 12 } size = { 76 22 } autoresize = no fontsize = 14 text = "OE_THEME_UI_AMBITION" }
+                                    text_single = { position = { 0 12 } size = { 66 22 } autoresize = no elide = right fontsize = 13 text = "OE_THEME_UI_AMBITION" }
                                 }
                                 expand = {}
+                                # v6.7 theme-managed1 (gen_theme_b2.py): 托管 / 已托管 (custom loc OeTb2MgBtn), at the right end of the
+                                # first line (line 2 holds four buttons already).
+                    button_regular = {
+                        size = { 46 26 } text = "OE_TB2_BTN_MANAGE" fontsize = 13
+                        enabled = "[GetScriptedGui('oe_tb2_ui_manage').IsValid(GuiScope.SetRoot(Country.MakeScope).End)]"
+                        tooltipwidget = { using = action_tooltip_pop_out }
+                        action_tooltip = {
+                            title = "OE_TB2_BTN_MANAGE"
+                            description = "OE_TB2_BTN_MANAGE_DESC"
+                            enabled = "[GetScriptedGui('oe_tb2_ui_manage').IsValid(GuiScope.SetRoot(Country.MakeScope).End)]"
+                            on_action = "[GetScriptedGui('oe_tb2_ui_manage').Execute(GuiScope.SetRoot(Country.MakeScope).End)]"
+                        }
+                    }
                             }
                             hbox = {
                                 layoutpolicy_horizontal = expanding
                                 spacing = 6
-                                widget = { size = { 210 42 }
-                                    text_single = { position = { 0 0 } size = { 210 22 } autoresize = no elide = right fontsize = 14 raw_text = "[Country.Custom('OeThemeTier1')]  [Country.Custom('OeThemeTier2')]  [Country.Custom('OeThemeTier3')]  [Country.Custom('OeThemeTier4')]  [Country.Custom('OeThemeTier5')]" tooltip = "OE_THEME_UI_TIERS_TT" }
+                                widget = { size = { 190 42 }
+                                    text_single = { position = { 0 0 } size = { 190 22 } autoresize = no elide = right fontsize = 14 raw_text = "[Country.Custom('OeThemeTier1')]  [Country.Custom('OeThemeTier2')]  [Country.Custom('OeThemeTier3')]  [Country.Custom('OeThemeTier4')]  [Country.Custom('OeThemeTier5')]" tooltip = "OE_THEME_UI_TIERS_TT" }
                                     # Third round N1 (gen_round3_ui.py): the fiscal regime carries its own tooltip; the works keep theirs.
                                     hbox = {
-                                        position = { 0 22 } size = { 210 20 } spacing = 3
-                                        text_single = { autoresize = yes maximumsize = { 116 20 } elide = right fontsize = 13 raw_text = "#weak [Localize('OE_THEME_UI_FISCAL_LABEL')]#! [Country.Custom('OeThemeFiscalName')]" tooltip = "OE_TU_CARD_FISCAL_TT" }
-                                        text_single = { autoresize = yes fontsize = 13 raw_text = "·" default_format = "#weak" }
-                                        text_single = { autoresize = yes maximumsize = { 80 20 } elide = right fontsize = 13 raw_text = "[Country.Custom('OeThemeProject')]" tooltip = "OE_THEME_UI_PROJ_TT" }
+                                        position = { 0 22 } size = { 190 20 } spacing = 3
+                                        text_single = { autoresize = yes maximumsize = { 104 20 } elide = right align = left|nobaseline fontsize = 13 raw_text = "#weak [Localize('OE_THEME_UI_FISCAL_LABEL')]#! [Country.Custom('OeThemeFiscalName')]" tooltip = "OE_TU_CARD_FISCAL_TT" }
+                                        text_single = { autoresize = yes maximumsize = { 8 20 } align = left|nobaseline fontsize = 13 raw_text = "·" default_format = "#weak" }
+                                        text_single = { autoresize = yes maximumsize = { 72 20 } elide = right align = left|nobaseline fontsize = 13 raw_text = "[Country.Custom('OeThemeProject')]" tooltip = "OE_THEME_UI_PROJ_TT" }
                                         expand = {}
                                     }
                                 }
-                                # Fourth round D3 (gen_round4_border.py): border pressure of a march; the tooltip lists its sources.
-                                widget = { size = { 56 42 }
-                                    visible = "[GetScriptedGui('oe_tbd_ui_march').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
-                                    tooltip = "OE_TBD_CARD_TT"
-                                    text_single = { position = { 0 11 } size = { 56 20 } autoresize = no elide = right fontsize = 13 raw_text = "[Country.Custom('OeTbdBand')] [Country.MakeScope.GetVariable('oe_tbd_pressure').GetValue|0]" }
-                                }
-                                # v6.7 A (gen_theme_quota.py): replenishment cell, have/quota (land: thousands of regulars, navy: ships);
-                                # red = stopped (loyalty under 40), weak = at quota, plain = short. One text per state.
+                                # One fixed 64 px cell: the replenishment on the upper line, a march's border pressure on the lower.
                                 widget = { size = { 64 42 }
-                                    visible = "[GetScriptedGui('oe_tq_ui_cell').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
-                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_none').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_NONE" tooltip = "OE_TQ_CELL_TT_LAND" }
-                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_land_red').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_LAND_RED" tooltip = "OE_TQ_CELL_TT_LAND" }
-                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_land_full').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_LAND_FULL" tooltip = "OE_TQ_CELL_TT_LAND" }
-                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_land_open').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_LAND_OPEN" tooltip = "OE_TQ_CELL_TT_LAND" }
-                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_sea_red').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_SEA_RED" tooltip = "OE_TQ_CELL_TT_SEA" }
-                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_sea_full').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_SEA_FULL" tooltip = "OE_TQ_CELL_TT_SEA" }
-                                    text_single = { visible = "[GetScriptedGui('oe_tq_ui_sea_open').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 11 } size = { 64 20 } autoresize = no elide = right fontsize = 13 text = "OE_TQ_CELL_SEA_OPEN" tooltip = "OE_TQ_CELL_TT_SEA" }
+                                    # v6.7 A (gen_theme_quota.py): replenishment cell, have/quota (land: thousands of regulars, navy: ships);
+                                    # red = stopped (loyalty under 40), weak = at quota, plain = short. One text per state.
+                                    widget = { size = { 64 20 } position = { 0 1 }
+                                        visible = "[GetScriptedGui('oe_tq_ui_cell').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+                                        text_single = { visible = "[GetScriptedGui('oe_tq_ui_none').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 0 } size = { 64 20 } autoresize = no elide = right align = left|nobaseline fontsize = 13 text = "OE_TQ_CELL_NONE" tooltip = "OE_TQ_CELL_TT_LAND" }
+                                        text_single = { visible = "[GetScriptedGui('oe_tq_ui_land_red').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 0 } size = { 64 20 } autoresize = no elide = right align = left|nobaseline fontsize = 13 text = "OE_TQ_CELL_LAND_RED" tooltip = "OE_TQ_CELL_TT_LAND" }
+                                        text_single = { visible = "[GetScriptedGui('oe_tq_ui_land_full').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 0 } size = { 64 20 } autoresize = no elide = right align = left|nobaseline fontsize = 13 text = "OE_TQ_CELL_LAND_FULL" tooltip = "OE_TQ_CELL_TT_LAND" }
+                                        text_single = { visible = "[GetScriptedGui('oe_tq_ui_land_open').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 0 } size = { 64 20 } autoresize = no elide = right align = left|nobaseline fontsize = 13 text = "OE_TQ_CELL_LAND_OPEN" tooltip = "OE_TQ_CELL_TT_LAND" }
+                                        text_single = { visible = "[GetScriptedGui('oe_tq_ui_sea_red').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 0 } size = { 64 20 } autoresize = no elide = right align = left|nobaseline fontsize = 13 text = "OE_TQ_CELL_SEA_RED" tooltip = "OE_TQ_CELL_TT_SEA" }
+                                        text_single = { visible = "[GetScriptedGui('oe_tq_ui_sea_full').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 0 } size = { 64 20 } autoresize = no elide = right align = left|nobaseline fontsize = 13 text = "OE_TQ_CELL_SEA_FULL" tooltip = "OE_TQ_CELL_TT_SEA" }
+                                        text_single = { visible = "[GetScriptedGui('oe_tq_ui_sea_open').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]" position = { 0 0 } size = { 64 20 } autoresize = no elide = right align = left|nobaseline fontsize = 13 text = "OE_TQ_CELL_SEA_OPEN" tooltip = "OE_TQ_CELL_TT_SEA" }
+                                    }
+                                    # Fourth round D3 (gen_round4_border.py): border pressure of a march; the tooltip lists its sources.
+                                    widget = { size = { 64 20 } position = { 0 22 }
+                                        visible = "[GetScriptedGui('oe_tbd_ui_march').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+                                        tooltip = "OE_TBD_CARD_TT"
+                                        text_single = { position = { 0 0 } size = { 64 20 } autoresize = no elide = right align = left|nobaseline fontsize = 13 raw_text = "[Country.Custom('OeTbdBand')] [Country.MakeScope.GetVariable('oe_tbd_pressure').GetValue|0]" }
+                                    }
                                 }
                                 expand = {}
                                 hbox = {
@@ -262,6 +316,7 @@ template oe_theme_ui_page {
                     button_regular = {
                         size = { 46 26 } text = "OE_THEME_UI_BTN_FOCUS" fontsize = 13
                         enabled = "[GetScriptedGui('oe_theme_ui_open_focus').IsValid(GuiScope.SetRoot(Country.MakeScope).End)]"
+                        tooltipwidget = { using = action_tooltip_pop_out }
                         action_tooltip = {
                             title = "OE_THEME_UI_BTN_FOCUS"
                             description = "OE_THEME_UI_BTN_FOCUS_DESC"
@@ -272,6 +327,7 @@ template oe_theme_ui_page {
                     button_regular = {
                         size = { 46 26 } text = "OE_THEME_UI_BTN_OFFICIALS" fontsize = 13
                         enabled = "[GetScriptedGui('oe_theme_ui_open_officials').IsValid(GuiScope.SetRoot(Country.MakeScope).End)]"
+                        tooltipwidget = { using = action_tooltip_pop_out }
                         action_tooltip = {
                             title = "OE_THEME_UI_BTN_OFFICIALS"
                             description = "OE_THEME_UI_BTN_OFFICIALS_DESC"
@@ -282,6 +338,7 @@ template oe_theme_ui_page {
                     button_regular = {
                         size = { 46 26 } text = "OE_THEME_UI_BTN_WORKS" fontsize = 13
                         enabled = "[GetScriptedGui('oe_theme_ui_open_works').IsValid(GuiScope.SetRoot(Country.MakeScope).End)]"
+                        tooltipwidget = { using = action_tooltip_pop_out }
                         action_tooltip = {
                             title = "OE_THEME_UI_BTN_WORKS"
                             description = "OE_THEME_UI_BTN_WORKS_DESC"
@@ -292,6 +349,7 @@ template oe_theme_ui_page {
                     button_regular = {
                         size = { 46 26 } text = "OE_THEME_UI_BTN_DISARM" fontsize = 13
                         enabled = "[GetScriptedGui('oe_theme_ui_disarm').IsValid(GuiScope.SetRoot(Country.MakeScope).End)]"
+                        tooltipwidget = { using = action_tooltip_pop_out }
                         action_tooltip = {
                             title = "OE_THEME_UI_BTN_DISARM"
                             description = "OE_THEME_UI_BTN_DISARM_DESC"
@@ -301,6 +359,8 @@ template oe_theme_ui_page {
                     }
                                 }
                             }
+                            # v6.7 theme-ledger1 (design theme-econ 3.1): the crown's ledger of this theme, display only.
+                            text_single = { layoutpolicy_horizontal = expanding size = { -1 22 } autoresize = no elide = right align = left|nobaseline fontsize = 13 text = "OE_TE_CARD_LINE" tooltip = "OE_TE_CARD_TT" }
                         }
                     }
                 }

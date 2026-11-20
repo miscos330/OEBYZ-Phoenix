@@ -15,6 +15,37 @@ oe_yv_tib_can_change = {
     NOT = { has_variable = oe_yv_phagmodru }
 }
 
+# Any scope. El Tegus (the start's heir, son of Tugh Temur) is alive at the Yuan court.
+oe_yv_et_at_court = {
+    character:oe_s37_el_tegus ?= { is_alive = yes owner ?= c:CHI }
+}
+# CHI scope. Event 13 holds back this month: another Yuan line sent CHI an event this month (the shared global
+# oe_yuan_ev_m, month index 1337.4 = 0), and the event is not yet 2 months past its window end.
+oe_yv_wait_13 = {
+    has_global_variable = oe_yuan_ev_m
+    has_variable = oe_yv_m
+    var:oe_yv_m = global_var:oe_yuan_ev_m
+    var:oe_yv_m < 42
+}
+# Any scope (interface). The crown prince Ayushiridara can be made now: never made before (global var
+# oe_yv_crown_prince unset, no failed try oe_yv_cp 9), a 1337 game, on or after the birth date 1340.1.23, and the
+# father Toghon Temur reigns over the Yuan.
+oe_yv_cp_can_make = {
+    NOT = { has_global_variable = oe_yv_crown_prince }
+    NOT = { global_var:oe_yv_cp ?= 9 }
+    NOT = { exists = character:oe_yv_crown_prince }
+    oe_start_is_1337 = yes
+    current_date >= 1340.1.23
+    country_exists = c:CHI
+    c:CHI = { has_ruler = yes ruler ?= character:yua_togon_temur }
+}
+# Any scope (interface for other lines). The crown prince was made and is alive (anywhere).
+oe_yv_crown_prince_alive = {
+    has_global_variable = oe_yv_crown_prince
+    exists = global_var:oe_yv_crown_prince
+    global_var:oe_yv_crown_prince = { is_alive = yes }
+}
+
 # CHI scope. Condition of event 1.
 oe_yv_ok_1 = {
     culture = culture:mongolian_culture
@@ -90,6 +121,15 @@ oe_yv_ok_12 = {
     culture = culture:mongolian_culture
     country_exists = c:TIB
     c:TIB = { is_subject_of = c:CHI has_variable = oe_yv_phagmodru }
+}
+
+# CHI scope. Condition of event 13.
+oe_yv_ok_13 = {
+    culture = culture:mongolian_culture
+    has_ruler = yes
+    ruler ?= character:yua_togon_temur
+    oe_yv_et_at_court = yes
+    oe_start_is_1337 = yes
 }
 
 # CHI scope. Event 1: open (inside its window, not at its end), due (end reached), lapse (dropped).
@@ -380,6 +420,30 @@ oe_yv_lapse_12 = {
     }
 }
 
+# CHI scope. Event 13: open (inside its window, not at its end), due (end reached), lapse (dropped).
+oe_yv_open_13 = {
+    NOT = { has_variable = oe_yv_st_13 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 39
+    var:oe_yv_m < 40
+    oe_yv_ok_13 = yes
+}
+oe_yv_due_13 = {
+    NOT = { has_variable = oe_yv_st_13 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 40
+    oe_yv_ok_13 = yes
+}
+oe_yv_lapse_13 = {
+    NOT = { has_variable = oe_yv_st_13 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 40
+    OR = {
+        NOT = { oe_yv_ok_13 = yes }
+        var:oe_yv_m > oe_yv_cut_13
+    }
+}
+
 # CHI scope. Every scheduled event has fired or been dropped.
 oe_yv_all_done = {
     has_variable = oe_yv_st_1
@@ -394,4 +458,5 @@ oe_yv_all_done = {
     has_variable = oe_yv_st_10
     has_variable = oe_yv_st_11
     has_variable = oe_yv_st_12
+    has_variable = oe_yv_st_13
 }

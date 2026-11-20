@@ -1276,6 +1276,27 @@ oe_y7_test_shi = {
 oe_y7_test_court = {
     oe_y7_add_court = { amount = $amount$ }
 }
+# TEST ONLY (button y7beaten; yuan-fix1). A Red Turban member at war with the Yuan counts as beaten the way .9 reads it
+# (oe_y7_amn_ok: the Yuan controls a quarter of its land): the Yuan takes control of all its locations but its capital (the
+# capital too when that is not enough). The occupation is real and is not undone. Nothing calls this in a normal game.
+oe_y7_test_beaten = {
+    if = {
+        limit = { oe_y7_amn_any = yes }
+        debug_log = "oe_y7 TEST: a Red Turban member already counts as beaten (press y7fire9)"
+    }
+    else_if = {
+        limit = { country_exists = c:CHI international_organization:red_turban_rebels ?= { any_international_organization_member = { is_at_war_with = c:CHI } } }
+        international_organization:red_turban_rebels = {
+            random_international_organization_member = {
+                limit = { is_at_war_with = c:CHI }
+                every_owned_location = { limit = { is_capital = no } change_location_controller = c:CHI }
+                if = { limit = { NOT = { oe_y7_amn_ok = yes } } every_owned_location = { change_location_controller = c:CHI } }
+            }
+        }
+        debug_log = "oe_y7 TEST: the Yuan now controls a Red Turban member's land (press y7fire9)"
+    }
+    else = { debug_log = "oe_y7 TEST: no Red Turban member is at war with the Yuan (y7rtr, y7start, y7month first)" }
+}
 # Sends one event now (its own trigger still applies; the console 'event oe_y7.N' ignores it).
 oe_y7_test_fire_1 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_1 = yes }
 oe_y7_test_fire_2 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_2 = yes }

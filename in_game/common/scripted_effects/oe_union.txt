@@ -53,8 +53,10 @@ oe_un_end_check = {
     }
     else = { set_variable = { name = oe_un_lost_m value = 1 } }
     if = {
-        limit = { OR = { current_date >= 1453.6.1 AND = { has_variable = oe_un_lost_m var:oe_un_lost_m >= 24 } } }
+        limit = { OR = { current_date >= 1453.6.1 AND = { has_variable = oe_un_lost_m var:oe_un_lost_m >= 24 } global_var:oe_ecc_fall ?= 1 } }
         set_variable = oe_un_off
+        if = { limit = { has_country_modifier = oe_un_emperor_away } remove_country_modifier = oe_un_emperor_away }
+        location:constantinople = { if = { limit = { has_location_modifier = oe_un_city_strife } remove_location_modifier = oe_un_city_strife } if = { limit = { has_location_modifier = oe_un_city_unease } remove_location_modifier = oe_un_city_unease } }
         debug_log = "OE_UN closed: st=[GetCountry('BYZ').MakeScope.ScriptValue('oe_un_rd_st')|0]"
     }
 }
@@ -177,23 +179,25 @@ oe_un_fire = {
 # BYZ scope. The one way to change the union's state (design 3.6): $st$ 0 none, 2 signed (with reservations when
 # oe_un_terms is set), 3 proclaimed, 4 repudiated (10 years), 5 converted. Swaps the state modifiers; a union made,
 # void or converted ends the talks.
+# fix-g1222 item 1 (r23 g12): an option's preview runs this without executing the set_variable above, so every read of
+# oe_un_st below is guarded (`?=`, or has_variable before the comparison); error.log had "var:oe_un_st not set" from .11 a.
 oe_un_set_state = {
     set_variable = { name = oe_un_st value = $st$ }
     if = { limit = { has_country_modifier = oe_un_signed } remove_country_modifier = oe_un_signed }
     if = { limit = { has_country_modifier = oe_un_signed_soft } remove_country_modifier = oe_un_signed_soft }
     if = { limit = { has_country_modifier = oe_un_proclaimed } remove_country_modifier = oe_un_proclaimed }
     if = {
-        limit = { NOT = { var:oe_un_st = 4 } has_country_modifier = oe_un_repudiated }
+        limit = { NOT = { var:oe_un_st ?= 4 } has_country_modifier = oe_un_repudiated }
         remove_country_modifier = oe_un_repudiated
     }
     if = {
-        limit = { var:oe_un_st = 2 }
+        limit = { var:oe_un_st ?= 2 }
         if = { limit = { has_variable = oe_un_terms } add_country_modifier = { modifier = oe_un_signed_soft years = -1 mode = add } }
         else = { add_country_modifier = { modifier = oe_un_signed years = -1 mode = add } }
     }
-    else_if = { limit = { var:oe_un_st = 3 } add_country_modifier = { modifier = oe_un_proclaimed years = -1 mode = add } }
-    else_if = { limit = { var:oe_un_st = 4 } add_country_modifier = { modifier = oe_un_repudiated years = 10 mode = replace } }
-    if = { limit = { var:oe_un_st >= 2 } oe_un_close_talks = yes }
+    else_if = { limit = { var:oe_un_st ?= 3 } add_country_modifier = { modifier = oe_un_proclaimed years = -1 mode = add } }
+    else_if = { limit = { var:oe_un_st ?= 4 } add_country_modifier = { modifier = oe_un_repudiated years = 10 mode = replace } }
+    if = { limit = { has_variable = oe_un_st var:oe_un_st >= 2 } oe_un_close_talks = yes }
 }
 
 # BYZ scope. Talks of union for $years$ years (design 3.5 "开谈判"): only while no union is in force and the empire is

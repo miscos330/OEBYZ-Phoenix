@@ -2,6 +2,7 @@
 # 2026-11-19 v6.4 D2 phase 2 (the church framework, events 20-41) added to this file by the same generator.
 # 2026-11-19 v6.4 D2 phase 3 (the metropolitans of Rus', Lithuania, Wallachia and Moldavia; alms from Rus'; events 50-82) added to this file by the same generator.
 # 2026-11-19 v6.6 D2 phases 4 and 5 (the monastic lands, the council of 1368, the random pool: events 42, 70-72, 90-94; Rus' and the union: events 58, 59) added to this file by the same generator.
+# 2026-11-20 v6.7 phase 6, group ch-after-fall1 (the Church after the City is lost: the fall check, events 24, 25) added to this file by the same generator.
 
 # International organisation scope. An autocephalous church seated at Constantinople.
 oe_ecc_is_ecumenical_ap = {
@@ -188,8 +189,9 @@ oe_ecc_live = {
     NOT = { has_variable = oe_ecc_off }
 }
 
-# BYZ scope. The framework may start (design 3.1): Byzantium leads Constantinople's church, and the 1341 council has its recorded outcome (oe_ecc_hesy), or it is past 1342.9.1 and the author's chain never held it.
+# BYZ scope. The framework may start (design 3.1): Byzantium leads Constantinople's church, and the 1341 council has its recorded outcome (oe_ecc_hesy), or it is past 1342.9.1 and the author's chain never held it. Never after the church lines were closed (phase 6, global oe_ecc_fall).
 oe_ecc_fw_start = {
+    NOT = { has_global_variable = oe_ecc_fall }
     oe_ecc_byz_ecumenical = yes
     OR = { has_variable = oe_ecc_hesy AND = { current_date >= 1342.9.1 NOT = { has_variable = john_war_8_has_on } } }
 }
@@ -794,4 +796,49 @@ oe_ecc_pool_ok = {
     NOT = { has_variable = oe_ecc_pool_cd }
     oe_story_gap_open = yes
     OR = { oe_ecc_ok_90 = yes oe_ecc_ok_91 = yes oe_ecc_ok_92 = yes oe_ecc_ok_93 = yes oe_ecc_ok_94 = yes }
+}
+
+# Any scope. The City is lost (design 4.2): its owner is not Byzantium, not a rebel state (a civil war) and not a subject of Byzantium (the vassal sultan line's usurper). No grace period: the owner changes only by a treaty, an annexation or a script; an occupation does not count.
+oe_ecc_city_lost = {
+    country_exists = c:BYZ
+    location:constantinople = {
+        has_owner = yes
+        NOT = { owner ?= c:BYZ }
+        owner = { is_rebel_country = no NOT = { is_subject_of = c:BYZ } }
+    }
+}
+
+# Any scope. The church recorded in the global oe_ecc_ap (Constantinople's, led by BYZ) no longer exists. Engine assumption (in-game check 3): exists on a variable that points at a destroyed organisation reads false without an error, as vanilla's can_join_trigger writes it.
+oe_ecc_ap_gone = {
+    has_global_variable = oe_ecc_ap
+    NOT = { exists = global_var:oe_ecc_ap }
+}
+
+# Any scope. Shared trigger for every line (design 4.2, 5.3): the Ecumenical Patriarchate still counts: the church lines were not closed, Byzantium leads Constantinople's church and the City is not lost. Later lines read this (or the global oe_ecc_fall) and never write oe_ecc_fall.
+oe_ecc_stands = {
+    NOT = { has_global_variable = oe_ecc_fall }
+    oe_ecc_byz_ecumenical = yes
+    oe_ecc_city_lost = no
+}
+
+# Character scope. Vanilla's is_patriarch is set but points at no organisation that exists (a dissolved church). Engine assumption (in-game check 3): exists reads such a marker as false without an error.
+oe_ecc_pat_dangling = {
+    AND = { has_variable = is_patriarch NOT = { exists = var:is_patriarch } }
+}
+
+# BYZ scope. Chronicle row ecf: the church framework runs.
+oe_ecc_chr_fw_run = {
+    oe_ecc_live = yes
+}
+
+# BYZ scope. Chronicle row ecf: the framework ran and ended (the City lost, the church dissolved, or the empire no longer leads it).
+oe_ecc_chr_fw_done = {
+    has_variable = oe_ecc_on
+    has_variable = oe_ecc_off
+}
+
+# BYZ scope. Chronicle row ecf: the framework never started and never will (closed by phase 6 before it began).
+oe_ecc_chr_fw_void = {
+    NOT = { has_variable = oe_ecc_on }
+    has_variable = oe_ecc_off
 }
