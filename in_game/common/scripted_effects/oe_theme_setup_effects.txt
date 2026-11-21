@@ -57,23 +57,75 @@ oe_theme_found_at_seat = {
         }
     }
     # The new country's capital link resolves to a location scope during this effect; use the seat itself.
-    scope:oe_theme_seat = {
-        while = {
-            count = 3
-            create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:target_building_country }
-        }
-        if = {
-            limit = { is_coastal = yes }
+    # v9.7 Theme 2.0: scale founding troops, ships, gold, and manpower by jurisdiction size (<=6 / 7-12 / 13+).
+    if = {
+        limit = { oe_t2_seat_region_size >= 13 }
+        scope:oe_theme_seat = {
             while = {
-                count = 6
-                create_sub_unit_with_owner = { type = n_cog owner = scope:target_building_country }
+                count = 3
+                create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:target_building_country }
+            }
+            if = {
+                limit = { is_coastal = yes }
+                while = {
+                    count = 6
+                    create_sub_unit_with_owner = { type = n_cog owner = scope:target_building_country }
+                }
             }
         }
+        scope:target_building_country = {
+            set_gold = 300
+            add_manpower = 3
+        }
     }
+    else_if = {
+        limit = { oe_t2_seat_region_size >= 7 }
+        scope:oe_theme_seat = {
+            while = {
+                count = 2
+                create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:target_building_country }
+            }
+            if = {
+                limit = { is_coastal = yes }
+                while = {
+                    count = 4
+                    create_sub_unit_with_owner = { type = n_cog owner = scope:target_building_country }
+                }
+            }
+        }
+        scope:target_building_country = {
+            set_gold = 200
+            add_manpower = 2
+        }
+    }
+    else = {
+        scope:oe_theme_seat = {
+            while = {
+                count = 1
+                create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:target_building_country }
+            }
+            if = {
+                limit = { is_coastal = yes }
+                while = {
+                    count = 2
+                    create_sub_unit_with_owner = { type = n_cog owner = scope:target_building_country }
+                }
+            }
+        }
+        scope:target_building_country = {
+            set_gold = 120
+            add_manpower = 1
+        }
+    }
+    # Initialize Day-1 loyalty band and office state immediately so O(1) loyalty sync activates on Day 1.
+    # Guard on has_variable = oe_theme_named: in option tooltip dry-runs, create_building_country_in_location
+    # leaves scope:target_building_country pointing at the seat location and set_variable does not persist,
+    # so checking has_variable skips oe_theme_admin_init during preview (preventing is_subject_type on location).
     scope:target_building_country = {
-        set_gold = 300
-        add_manpower = 3
-        # Author decision 2026-11-17: no food-access relation on founding.
+        if = {
+            limit = { has_variable = oe_theme_named }
+            oe_theme_admin_init = yes
+        }
     }
 }
 
@@ -92,6 +144,46 @@ oe_theme_found_all = {
             international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -$cost$ } }
             oe_theme_found_at_seat = yes
             c:BYZ = { change_variable = { name = oe_theme_found_all_count add = 1 } }
+        }
+    }
+}
+
+# BYZ scope. v9.7 Streamlined 1337 opening (Option A): configures ONLY 2 core themes —
+# Thrace-Macedonia (R2, edirne) and Thessaloniki (R8, pre-existing BYT01 or newly founded, temporarily
+# co-administering R9 Serres), leaving R3 Plovdiv and R12 Thessaly as direct crownland.
+oe_theme_found_streamlined = {
+    if = {
+        limit = { location:edirne = { oe_theme_region_center_creatable = yes } }
+        location:edirne = { save_scope_as = oe_theme_seat }
+        oe_theme_found_at_seat = yes
+        change_variable = { name = oe_theme_found_all_count add = 1 }
+    }
+    if = {
+        limit = { location:thessaloniki = { oe_theme_region_center_creatable = yes } }
+        location:thessaloniki = { save_scope_as = oe_theme_seat }
+        oe_theme_found_at_seat = yes
+        change_variable = { name = oe_theme_found_all_count add = 1 }
+        if = {
+            limit = { location:serres = { oe_theme_region_center_creatable = yes } }
+            location:serres = { save_scope_as = oe_t2_absorb_seat }
+            scope:target_building_country = {
+                if = {
+                    limit = { has_variable = oe_theme_named }
+                    oe_t2_absorb_region_into_theme = { region_id = 9 }
+                }
+            }
+        }
+    }
+    else_if = {
+        limit = { country_exists = c:BYT01 c:BYT01 = { oe_theme_member_trigger = yes } }
+        c:BYT01 = { oe_theme_admin_init = yes }
+        change_variable = { name = oe_theme_found_all_count add = 1 }
+        if = {
+            limit = { location:serres = { oe_theme_region_center_creatable = yes } }
+            location:serres = { save_scope_as = oe_t2_absorb_seat }
+            c:BYT01 = {
+                oe_t2_absorb_region_into_theme = { region_id = 9 }
+            }
         }
     }
 }

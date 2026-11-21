@@ -63,7 +63,8 @@ oe_ent_sync_ar_and_tiers = {
     }
 }
 
-# Country scope. Recomputes and caches the 5 transparent dimensions (O(1) variables) and net monthly delta.
+# Country scope. Recomputes and caches the 5 transparent dimensions (O(1) variables), net monthly delta,
+# and 4 scalar mitigation snapshots so GUI frames NEVER run any iterator.
 oe_ent_recalc_cache = {
     set_variable = { name = oe_ent_d1_overext value = oe_ent_calc_d1 }
     set_variable = { name = oe_ent_d2_inflation value = oe_ent_calc_d2 }
@@ -83,6 +84,72 @@ oe_ent_recalc_cache = {
         set_variable = { name = oe_ent_raw_pos value = 0 }
     }
     set_variable = { name = oe_ent_delta value = oe_ent_calc_net_delta }
+    if = {
+        limit = { oe_ent_is_byz_or_rom = yes }
+        set_variable = { name = oe_ent_cache_prf_rel value = oe_prf_strain_relief }
+        set_variable = { name = oe_ent_cache_prf_civ value = oe_prf_civil_prefectures }
+        set_variable = { name = oe_ent_cache_prf_mil value = oe_prf_mil_prefectures }
+        set_variable = { name = oe_ent_cache_low_loy value = oe_ent_low_loyal_themes }
+    }
+    else = {
+        set_variable = { name = oe_ent_cache_prf_rel value = 0 }
+        set_variable = { name = oe_ent_cache_prf_civ value = 0 }
+        set_variable = { name = oe_ent_cache_prf_mil value = 0 }
+        set_variable = { name = oe_ent_cache_low_loy value = 0 }
+    }
+    if = {
+        limit = { has_variable = oe_ar_strain oe_ent_rule_active = yes NOT = { has_variable = oe_ent_ar_merged } }
+        set_variable = { name = oe_ent_ar_merged value = 1 }
+    }
+}
+
+# Country scope. Shared countermeasure payloads (single source of truth for oe_ent_decisions.txt & oe_ent_ui.txt).
+oe_ent_do_currency_reform = {
+    add_gold = -220
+    add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_penalty }
+    add_inflation = inflation_mild_bonus
+    set_variable = { name = oe_ent_cd_currency months = 120 }
+    add_country_modifier = { modifier = oe_ent_mod_currency_reform years = 10 mode = replace }
+    oe_ent_add_index = { amt = -8 }
+    oe_ent_recalc_cache = yes
+}
+
+oe_ent_do_admin_inspect = {
+    add_gold = -200
+    add_stability = -4
+    add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_penalty }
+    set_variable = { name = oe_ent_cd_inspect months = 120 }
+    add_country_modifier = { modifier = oe_ent_mod_admin_inspect years = 10 mode = replace }
+    if = {
+        limit = { oe_ent_is_byz_or_rom = yes }
+        every_subject = {
+            limit = { has_variable = oe_ar_exarchate }
+            oe_ts_recent_loy = { amount = 10 }
+        }
+    }
+    oe_ent_add_index = { amt = -10 }
+    oe_ent_recalc_cache = yes
+}
+
+oe_ent_do_tolerance_charter = {
+    add_gold = -160
+    add_prestige = -10
+    add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_penalty }
+    set_variable = { name = oe_ent_cd_tolerance months = 120 }
+    add_country_modifier = { modifier = oe_ent_mod_tolerance_charter years = 10 mode = replace }
+    oe_ent_add_index = { amt = -8 }
+    oe_ent_recalc_cache = yes
+}
+
+oe_ent_do_amnesty_peace = {
+    add_gold = -180
+    add_prestige = -12
+    add_war_exhaustion = war_exhaustion_severe_bonus
+    set_variable = { name = oe_ent_war_months value = 0 }
+    set_variable = { name = oe_ent_cd_amnesty months = 72 }
+    add_country_modifier = { modifier = oe_ent_mod_amnesty_peace years = 6 mode = replace }
+    oe_ent_add_index = { amt = -12 }
+    oe_ent_recalc_cache = yes
 }
 
 # Country scope. Core monthly tick for an eligible empire (called via oe_ent_monthly).
@@ -467,6 +534,10 @@ oe_ent_test_clear = {
     remove_variable = oe_ent_d3_satrapy
     remove_variable = oe_ent_d4_culture
     remove_variable = oe_ent_d5_war
+    remove_variable = oe_ent_cache_prf_rel
+    remove_variable = oe_ent_cache_prf_civ
+    remove_variable = oe_ent_cache_prf_mil
+    remove_variable = oe_ent_cache_low_loy
     remove_variable = oe_ent_raw_sum
     remove_variable = oe_ent_raw_pos
     remove_variable = oe_ent_low_months

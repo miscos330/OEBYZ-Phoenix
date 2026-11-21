@@ -84,9 +84,9 @@ oe_col_east_lands = {
 # Any scope. The imperial bloc holds land in Albania, northern Greece or the Morea.
 oe_col_g1_bloc = {
     OR = {
-        area:albania_area = { any_location_in_area = { owner ?= { oe_heg_byz_bloc = yes } } }
-        area:northern_greece_area = { any_location_in_area = { owner ?= { oe_heg_byz_bloc = yes } } }
-        area:morea_area = { any_location_in_area = { owner ?= { oe_heg_byz_bloc = yes } } }
+        area:albania_area = { any_location_in_area = { has_owner = yes owner ?= { oe_heg_byz_bloc = yes } } }
+        area:northern_greece_area = { any_location_in_area = { has_owner = yes owner ?= { oe_heg_byz_bloc = yes } } }
+        area:morea_area = { any_location_in_area = { has_owner = yes owner ?= { oe_heg_byz_bloc = yes } } }
     }
 }
 
@@ -95,15 +95,17 @@ oe_col_g2_ok = {
     OR = {
         AND = { has_global_variable = oe_glh_troubles global_var:oe_glh_troubles = 1 }
         AND = { country_exists = c:GLH c:GLH = { has_active_disaster = disaster_type:horde_civil_war } }
-        region:steppes_region = { any_location_in_region = { owner ?= { oe_heg_byz_bloc = yes } } }
+        region:steppes_region = { any_location_in_region = { has_owner = yes owner ?= { oe_heg_byz_bloc = yes } } }
     }
 }
 
 # Any scope. Armenians may come wherever: the imperial bloc holds land in the Armenian highlands or Cilicia, or Armenian Cilicia has fallen (from 1375).
 oe_col_g3_bloc = {
     OR = {
-        area:armenian_highlands_area = { any_location_in_area = { owner ?= { oe_heg_byz_bloc = yes } } }
-        area:cilicia_area = { any_location_in_area = { owner ?= { oe_heg_byz_bloc = yes } } }
+        area:armenian_highlands_area = {
+            any_location_in_area = { has_owner = yes owner ?= { oe_heg_byz_bloc = yes } }
+        }
+        area:cilicia_area = { any_location_in_area = { has_owner = yes owner ?= { oe_heg_byz_bloc = yes } } }
         AND = { current_date >= 1375.1.1 NOT = { country_exists = c:CIL } }
     }
 }

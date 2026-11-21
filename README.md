@@ -1,8 +1,8 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v8.5
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v9.9
 
-欧陆风云 5 的东罗马（拜占庭）重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
+欧陆风云 5 的东罗马（拜占庭）与欧亚全时代重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
-> **v8.5 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。1337–1515 已完成 178 年实机长局验证，v8.5 热修与 1560–1836 后期线路按“实验性测试版”发布。
+> **v9.9 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。`v9.9-rc1` 做过两局实机测试（1337 拜占庭局；50 年纯观察者长局 `1337→1387`，零崩溃、无卡死，结束时内存约 8.0 GB），测出 5 项严重问题和若干次要问题。这些问题已在本版修正并通过离线检查（改动文件静态检查 0 错误、140 个决议的标题与说明词条齐全、原版覆写核对无变化），**修后没有再进游戏复测**；整体按“实验性测试版”发布。
 
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
@@ -38,6 +38,18 @@
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
 
+## v9.9 主要内容（整合 v9.0 / v9.5 / v9.6 / v9.7 / v9.8 罗马多神教 / v9.9 全生态）
+
+对比 `v8.5`，事件由 **1,747 个增至 1,946 个（+199）**，决议由 **104 个增至 140 个（+36）**，中文词条由 **30,907 条增至 34,870 条（+3,963，英文同步 36,601 条）**，原生 `.dds` 美术与图标资产由 **646 枚增至 888 枚（+242，发布包未压缩增加约 150.6 MB）**，开局游戏规则扩至 **12 条**。
+
+- **《罗马多神教（Religio Romana）》深度重制（v9.8）：** 保留原版 ID `hellenism_religion` 无损更名、不强锁 D008、修补 4 处原版多神教错字；新增 **10 尊新神 × 50 项新神谕**（通过「六柱万神殿」动态入祀轮换保持 6 尊活跃神），配齐 **103 枚专用图标与原版大理石基底合成的 10 尊新神立像**；新增 8 面向、2+1 宗教律法、罗马大祭司团 IO、6 项古典祭仪、9 座可重修古典大神殿与三阶「众神和平」加成、4 项时代 5–6 科技与 35 个四幕史诗事件（仅玩家可控转教，AI 不自发改信）。
+- **军区 2.0 与三大文明经典系统精修（v9.7）：** 1337 拜占庭开局改为三选一（推荐选项 A 仅立 2 个核心大军区，大幅减轻外交容量压力），军区忠诚档自动同步原版附庸忠诚度，新增拆分/整并与 4 项驭将之术；深化拜占庭豪族/内战/双轨罗马化、大元宝钞/漕粮/投下、罗斯诺夫哥罗德/哥萨克/特辖军与五大枢纽市场需求桥接。
+- **AI 2.0、殖民 2.0、四速有机同化与全球宗教（v9.9）：** 15 条 AI 扩张走廊 + 反边界癌 + 非作弊财政紧缩 + 年度 AI 总管；4 个零覆写原创欧亚殖民宪章目标与 5 生态限速；纯 C++ 地块级四速有机同化（都会/海港/低控山区/边疆）+ 5 大文化融合弧 + 七大文化首都争霸；景教/东方正统教/伊斯兰/新教改革 8 面向/腾格里 4 神/印度教 6 化身 + **24 座新圣地**。
+- **政务减负、奇观修会、原生引擎与 3D 兵模（v9.0 / v9.5 / v9.6）：** 左下角 8 钮快捷栏、帝国熵增仪表盘与 5 项顶栏预警、可选政务自动化总控台（默认关闭）、28 项议会议题、4 类新附庸与 24 项交互、12 座欧亚奇观与修会、18 项文化融合科技、规则 #11（同盟降级保独开关）与 #12（动态思潮起源）、7 色决议分类、5 文明摄政与 3 条帝国大道、俄罗斯/大明/草原 18 国零覆写 3D 兵模及 160 城 LDE 批五百科。
+- **工坊生态兼容与实机排雷：** 自 v9.6 起至 v9.9 新增文件零新增原版覆写与 GUI 覆写，对 28 个常见本地工坊模组保持 0 新增碰撞；首轮实机测试报出的 5 项严重问题与多项次要问题已在本版修正（修后未实机复测）。
+
+完整改动见 [CHANGELOG.md](CHANGELOG.md)。
+
 ## v8.5 主要内容（整合 v7.0–v8.5 全时代大版本）
 
 事件从 1372 个增加到 1747 个（+375），中文文本从约 18300 条增加到约 23800 条，新增 28 张原创高精度原生 `.dds` 美术资产（发布包增加约 59 MB）。**1337–1515 已跑过 178 年纯观察者实机长局（零崩溃、无卡死）；那一局之后的 v8.5 热修与 1560–1836 近代后期线路只过了 23/23 离线门禁，没有再进游戏复测，整体仍按“实验性测试版”发布。**
@@ -64,26 +76,29 @@
 
 ## 上手建议
 
-1. 开局的“设立军区”事件选“依历史辖区设立全部军区”，不花帝国权威。
+1. 开局的“设立军区”事件推荐选 **选项 A（精简核心大军区制：仅建色雷斯—马其顿与塞萨洛尼基两个核心军区）**，开局外交容量占用更低；后期随时可拆分或增设。
 2. 在“帝国财政”里调高“维系帝国权威”的拨款，抵消权威每月的衰减。
-3. 开局财政偏紧，先存钱。1341 年前预留约 250 金币和 5 帝国权威，就可以选择避免内战。
-4. 想让约翰五世顺利继位，要趁安德洛尼卡三世在世时“加冕共治皇帝”。
-5. 忠诚低于 20 的军区要早处理，内战开始时离心的军区会倒向坎塔库泽努斯。
-6. “设置”里的调试和作弊开关（例如“打开约柜”）会破坏平衡，正常游玩不要点。
+3. 开局财政偏紧，先存钱。1341 年前预留约 250 金币和 5 帝国权威，就可以选择避免内战；趁安德洛尼卡三世在世时“加冕共治皇帝”。
+4. 想体验《罗马多神教》路线的玩家，可在触发米斯特拉斯卜列东事件或 1415 年后（或同时直辖君堡、雅典、罗马）通过决议「重光罗马古教」主动转教；不想转教则正教主线完全不受影响。
+5. 善用左下角 8 钮快捷导航栏与 12 项开局游戏规则（例如规则 #11 可关闭同盟自动降级保独、规则 #12 可开启动态思潮起源）；“设置”里的调试开关正常游玩不要点。
 
 ## 后续更新计划
 
 计划会根据测试和玩家反馈调整，以实际更新为准。
 
-- **v9.0（品质登顶）：**清零全仓剩余旧代码债务、升级 6 份核心原版覆写锁定、新增帝国熵增可视化仪表盘与顶部精简预警栏、补完跨时代兵种/科技 Tier A 美术、接通已实机探针验证通过的“远洋海外总督区（建筑型附庸 + 脚本年红）”模式。
-- **v9.5（政务减负与深度机制）：**可选政务自动化助手、附庸系统与 24 项深度外交交互、28 项特色议会议题、欧亚奇观/圣地与骑士团/东正教修会、文化融合与可选动态思潮。
-- **v10.0–v11.0（全欧亚主角与典藏总纲）：**新增金帐、马穆鲁克、波立联邦、威尼斯/热那亚四大 500 年主角线与明清双轨；新增可选架空分支“第四奥德赛·极乐洲新罗马”（规则开关控制）；引入动态瘟疫隔离、霸权博弈与多轮长局平衡审计。
-- **长期：**持续跟进《欧陆风云 5》官方版本更新，优先维护 1337 开局与原版重叠文件适配。
+- **v10.5（优先推进 · 可选传奇架空资料片）：** 《第四奥德赛 · 极乐洲新罗马（*Nova Elysia*）》——由开局规则 `#13` 自由开关（1453 流亡触发 / 1337 提前启航 / 关闭），深度联动 `v9.8` 罗马多神教（新西海万神殿）与 `v9.9` 殖民/原住民盟邦体系，支持重返地中海与“大西洋双都帝国”双结局。
+- **v10.0（全欧亚可玩大主角）：** 金帐/帖木儿、马穆鲁克、波立三海联邦、威尼斯/热那亚与大明/满洲双轨 500 年主角线 + 25 国天命任务链。
+- **v11.0–v12.0（终局、全球文明与底层深化）：** 动态疫病检疫港与后期霸权、波斯/印度/日朝/西欧全球扩展、帝国御用工场与跨时代特色征召/陆海军阵、欧亚世界协调会与原生 Wwise 情境音乐调度。
+- **v12.5–v13.0（历史大危机与全球补完）：** 谍报密谋与海洋私掠/雇佣兵哗变、小冰期与十六世纪白银价格革命、深度议会诉求与真实叛军纲领、非洲三轴与美洲本土现代化抗衡线。
 
 ## 已知问题
 
-- 本版整体按“实验性测试版”发布：1337–1515 已跑过 178 年实机长局；v8.5-rc2 热修与 1560–1836 近代后期线路已通过全部离线门禁，尚未做第二轮实机复测。
-- 旧存档不支持，请新开一局。
+- 本版整体按“实验性测试版”发布：`v9.9-rc1` 做过 1337 拜占庭局与 50 年纯观察者长局（`1337→1387`）；之后的热修只过了离线检查，修后没有再进游戏复测。
+- 旧存档不支持，请新开一局；只适配 EU5 `1.4.9`。
+- 下面几项是 rc1 实机里出现过的问题，本版已修正但修后未实机复测，如果仍然遇到请反馈：29 个新决议的标题和说明显示成原始键名；罗马多神教神殿面板显示 16 尊神（设计是 6 尊）且未入祀的神也能求神谕、也给加成；军区开局选项 A 的第二个军区（塞萨洛尼基）没有初始化、忠诚为 0；开局和长局的 `error.log` 报错量偏大。
+- 下面这些新内容只过了离线检查，实机还没逐项看过：9 座大神殿的重修与“众神和平”加成、四速同化修正、少数族群特权、4 个新殖民宪章目标、24 座新圣地、军区拆分/整并与驭将之术、摄政与教育、帝国大道、俄罗斯/大明/草原 3D 兵模、顶栏提醒。
+- 大元中兴局势：rc1 实机里 6 年进度只到 29/100，节奏可能偏慢，后续版本再调。
+- 打开国际组织成员页（包括罗马大祭司团）时日志里可能刷布局提示；`YUA` 文化容量、`SSK` 封邑等早期遗留的非阻断日志提示仍在。
 - 1337 开局头 20 天东正教农民减少约 6.1 万、以及大元建筑式行省偶尔加入原版独立运动，属于原版底层人口/外交结算机制，仍在持续跟踪。
 - 军区（建筑型国家）不能自行招募正规军：这是原版引擎规则（与汉萨同盟相同）。
 - 拜占庭部队模型在日志里有两类无害贴图/挂点提示（头盔多余 UV 通道、重步兵盾牌缺默认项），不影响游戏内显示。
@@ -95,7 +110,7 @@
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v8.5` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v9.9` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
@@ -120,11 +135,11 @@
 
 ---
 
-# Phoenix Beta (OEBYZ) v8.5 — English
+# Phoenix Beta (OEBYZ) v9.9 — English
 
-The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
+The beta of an Eastern Roman (Byzantine) and Pan-Eurasian overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
-> **v8.5: Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.** 1337–1515 passed a 178-year live observer run; subsequent hotfixes and 1560–1836 late-game lines are released as an experimental beta.
+> **v9.9: Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.** `v9.9-rc1` ran two live EU5 `1.4.9` sessions (a 1337 Byzantium game and a 50-year pure observer run `1337→1387` with no crash or freeze; about 8.0 GB of memory at the end) and turned up 5 serious and several minor problems. They are fixed in this build and passed the offline checks (static check of the changed files, title and description keys of all 140 decisions, vanilla-override check), but **the fixes were not re-checked in game**. This remains an experimental beta.
 
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
@@ -145,6 +160,17 @@ The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made
 - **Three rings of territory:** provinces with five statuses and a senate; a ladder of subjects from tributary to province; the Family of Kings, dignities and buying peace.
 - **Imperial campaigns and the Roman Reconquest:** win the Balkans and Anatolia, then campaign towards Egypt, Italy, Iberia and beyond; restore 10 regions to complete the Reconquest.
 - **Court, great houses and finance:** seven court offices, great houses to court or curb, and separate treasury and privy purse.
+
+## Highlights of v9.9 (Consolidated v9.0–v9.9 Release)
+
+Compared to `v8.5`, events grow from **1,747 to 1,946 (+199)**, decisions from **104 to 140 (+36)**, English localisation from **32,640 to 36,601 keys (+3,961; Chinese 34,870)**, native `.dds` art and icons from **646 to 888 (+242, +150.6 MB unpacked)**, and Game Rules from **10 to 12**.
+
+- **Religio Romana Overhaul (v9.8):** Non-destructive rename of `hellenism_religion` with no D008 lock and 4 vanilla loc fixes; **10 new deities × 50 new omens** rotating through the 6-pillar Hexapantheon (103 icons & marble-style statues), 8 aspects, *Collegium Pontificum* IO, 6 priestly actions, 9 rebuildable Grand Temples with 3-tier *Pax Deorum* synergy, 4 Ages 5–6 advances, and 35 events across 4 Acts (human-only conversion).
+- **Theme System 2.0 & Core Refinements (v9.7):** Streamlined 1337 Byzantine opening choice (recommended Option A: 2 core themes), automatic loyalty-band sync to vanilla subject loyalty, split/consolidate & 4 Arts of Managing Generals, plus deep updates for Byzantine Houses/Civil Wars, Great Yuan Chao/Grain/Tou-Xia, Russia Veche/Cossacks/Oprichnina, and 5-hub market demand bridges.
+- **Eurasian AI 2.0, Colonization 2.0, 4-Speed Assimilation & Global Religion (v9.9):** 15 AI corridors, anti-bordergore, non-cheat fiscal austerity & O(1) annual AI Macro-Steward; 4 zero-override Eurasian colonial charter goals & eco-zone pacing; location-level 4-speed organic assimilation, 5 hybridization arcs & 7 Cultural Capitals race; expanded Nestorian, Miaphysite, Islamic, Protestant (8 aspects), Tengri (4 gods), Hindu (6 avatars), Shinto & Theravada content + **24 new holy sites**.
+- **Automation, Wonders, 3D Units & Zero-Collision Ecosystem (v9.0 / v9.5 / v9.6):** 8-button bottom-left Quick Nav bar, Entropy Dashboard & 5 top-bar alerts, optional Governance Automation console, 28 parliament issues, 4 subject types & 24 interactions, 12 Eurasian wonders & orders, 18 culture fusion advances, Game Rules #11 & #12, 7-color decisions, 5 regencies, 3 Imperial Roads, 18-tag zero-override Russia/Ming/Steppe 3D units, and 160-city LDE Batch 5. Zero new file collisions against 28 tested local Workshop mods.
+
+See [CHANGELOG.md](CHANGELOG.md) for the full list.
 
 ## Highlights of v8.5 (Full 1337–1836 Mega Release, v7.0–v8.5)
 
@@ -172,10 +198,11 @@ Events grow from 1229 to 1372, and three new looks arrive for the Byzantine and 
 
 Plans will change with testing and player feedback.
 
-- **v9.0 (Quality Summit):** Zero out remaining legacy script warnings, add an O(1) Empire Entropy dashboard & compact top-bar alerts, expand Tier A unit/advance artwork, and enable the probe-verified building-country Overseas Exarchates with script-paid annual dividends.
-- **v9.5 (QoL & Deep Mechanics):** Optional governance automation assistant, expanded subject system with 24 interactions, 28 bespoke parliament issues, Eurasian wonders/holy sites/orders, and cultural synthesis with optional dynamic institutions.
-- **v10.0–v11.0 (Pan-Eurasian Protagonists & Definitive Edition):** Four new 500-year protagonist arcs (Golden Horde, Mamluks, Polish-Lithuanian Commonwealth, Venice/Genoa), Ming/Manchu dual track, optional alternate-history branch *Fourth Odyssey: Nova Elysia* (gated by Game Rule), dynamic plagues, hegemons, and multi-run observer balance audits.
-- **Ongoing:** Keep pace with Europa Universalis V patches and maintain 1337 setup compatibility.
+- **v10.5 (first in line, an optional alternate-history expansion):** *Fourth Odyssey: Nova Elysia*, switched by a Game Rule (triggered by the exile of 1453, an early departure from 1337, or off), tied to the v9.8 Religio Romana and the v9.9 colonisation and native-ally systems.
+- **v10.0 (Pan-Eurasian protagonists):** 500-year lines for the Golden Horde and the Timurids, the Mamluks, Poland-Lithuania, Venice and Genoa, and a Ming/Manchu dual track.
+- **v11.0–v12.0 (endgame, world civilisations and deeper systems):** plague and quarantine ports, late-game hegemony, Persia, India, Japan and Korea, Western Europe, imperial workshops and era-specific levies.
+- **v12.5–v13.0 (historical crises):** espionage and plots, privateers and mercenary mutinies, the Little Ice Age and the price revolution, deeper parliaments and rebel programmes, Africa and the Americas.
+- **Ongoing:** keep pace with Europa Universalis V patches and maintain the 1337 start.
 
 ## Install
 

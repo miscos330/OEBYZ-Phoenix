@@ -54,6 +54,16 @@ button_secondary_tab_alt = {
         onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
         down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_chronicle')]"
     }
+    # NEW 2026-11-21 v9.0 Route 2: 熵增 tab (page body in gui/shared/oe_ent_dashboard_ui.gui, gen_empire_entropy.py).
+    button_secondary_tab_alt = {
+        using = layoutpolicy_expanding
+        blockoverride "tab_text" { text = "OE_PILLARS_ENTROPY" }
+        tooltip = "OE_PILLARS_ENTROPY_DESC"
+        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_entropy')]"
+        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_entropy')]"
+    }
 
         
 }
@@ -812,6 +822,24 @@ widget = {
         using = layoutpolicy_expanding
         visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_chronicle')]"
         using = oe_chr_page
+    }
+# NEW 2026-11-21 v9.0 Route 2: 熵增 page (O(1) visual dashboard in gui/shared/oe_ent_dashboard_ui.gui).
+widget = {
+        using = layoutpolicy_expanding
+        visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_entropy')]"
+        scrollarea = {
+            size = { 100% 100% }
+            scrollbarpolicy_horizontal = always_off
+            scrollbar_vertical = { using = Scrollbar_Vertical }
+            scrollwidget = {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 12 10 }
+                    spacing = 8
+                    oe_ent_dashboard_body = {}
+                }
+            }
+        }
     }
 widget = {
         using = layoutpolicy_expanding

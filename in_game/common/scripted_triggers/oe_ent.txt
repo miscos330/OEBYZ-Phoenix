@@ -185,3 +185,39 @@ oe_ent_pax_ready = {
         has_variable = oe_ent_force_on
     }
 }
+
+# Country scope. Shared O(1) readiness triggers for the 4 countermeasure decisions & dashboard ScriptedGuis (single source of truth).
+oe_ent_can_currency_reform = {
+    is_subject = no
+    gold >= 220
+    NOT = { has_variable = oe_ent_cd_currency }
+    OR = {
+        inflation >= 0.04
+        oe_ent_idx_ge_25 = yes
+    }
+}
+
+oe_ent_can_admin_inspect = {
+    is_subject = no
+    gold >= 200
+    stability >= 0
+    NOT = { has_variable = oe_ent_cd_inspect }
+    oe_ent_idx_ge_20 = yes
+}
+
+oe_ent_can_tolerance_charter = {
+    is_subject = no
+    gold >= 160
+    prestige >= 10
+    NOT = { has_variable = oe_ent_cd_tolerance }
+    oe_ent_idx_ge_20 = yes
+}
+
+oe_ent_can_amnesty_peace = {
+    is_subject = no
+    at_war = no
+    gold >= 180
+    prestige >= 12
+    NOT = { has_variable = oe_ent_cd_amnesty }
+    oe_ent_idx_ge_15 = yes
+}
