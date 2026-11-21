@@ -1,52 +1,52 @@
-﻿# Country scope; the start button rechecks ownership before creating the movement.
+﻿# Country scope; upgraded by fx23 (Decision 306 R3B) to two-tier region-scoped origin selection.
 oe_rw_start_armenia_romanization = {
     if = {
         limit = { oe_rw_start_armenia_romanization_allowed = yes }
-        if = {
-            limit = { area:armenian_highlands_area = { any_location_in_area = { oe_rw_armenia_spread_location = yes } } }
-            area:armenian_highlands_area = { oe_rw_spawn_armenian_in_area = yes }
-        }
-        else = { area:armenia_area = { oe_rw_spawn_armenian_in_area = yes } }
-    }
-}
-# Area scope, limited to one of the two required areas; no world scan.
-oe_rw_spawn_armenian_in_area = {
-    ordered_location_in_area = {
-        limit = { oe_rw_armenia_spread_location = yes }
-        max = 1
-        check_range_bounds = no
-        order_by = { value = population multiply = "culture_percentage(culture:armenian_culture)" }
-        # Remove only empty remnants, on this click, before asking the engine to spawn.
-        # A living legacy movement is blocked by oe_armenia_identity_start_count.
-        culture:oe_armenian_greek_culture = {
-            every_movement_in_culture = {
-                limit = {
-                    movement_type = movement_definition:oe_armenian_identity_movement
-                    num_locations_affected = 0
+        region:caucasus_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_armenia_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_armenia_source_share
+                    if = { limit = { oe_rw_armenia_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { OR = { this = location:yerevan this = location:ani } } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
                 }
-                destroy_movement = yes
-            }
-        }
-        spawn_movement = {
-            movement_definition = movement_definition:oe_armenian_identity_movement
-            supporters = { value = population multiply = "culture_percentage(culture:armenian_culture)" multiply = 0.1 }
-        }
-        culture:oe_armenian_greek_culture = {
-            if = {
-                limit = {
-                    any_movement_in_culture = {
-                        movement_type = movement_definition:oe_armenian_identity_movement
-                        num_locations_affected > 0
+                # Remove only empty remnants before spawning.
+                culture:oe_armenian_greek_culture = {
+                    every_movement_in_culture = {
+                        limit = {
+                            movement_type = movement_definition:oe_armenian_identity_movement
+                            num_locations_affected = 0
+                        }
+                        destroy_movement = yes
                     }
                 }
-                set_variable = { name = oe_armenia_identity_starts value = 1 }
-                set_variable = oe_armenia_single_start_v3
-                # Retain the legacy timer-family marker to ignore older queued expiry events.
-                set_variable = oe_armenia_two_start_timer
-                set_variable = oe_identity_timer_v2
-                set_variable = oe_identity_start_verified
-                set_variable = oe_identity_fixed_30y_scheduled
-                location:constantinople = { trigger_event_silently = { id = oe_eastern_identity.13 years = 30 } }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_armenian_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_armenia_source_share multiply = 0.1 }
+                }
+                culture:oe_armenian_greek_culture = {
+                    if = {
+                        limit = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_armenian_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                        set_variable = { name = oe_armenia_identity_starts value = 1 }
+                        set_variable = oe_armenia_single_start_v3
+                        set_variable = oe_armenia_two_start_timer
+                        set_variable = oe_identity_timer_v2
+                        set_variable = oe_identity_start_verified
+                        set_variable = oe_identity_fixed_30y_scheduled
+                        c:BYZ = { set_variable = { name = oe_rw_origin_armenia value = scope:oe_rw_origin_loc } }
+                        location:constantinople = { trigger_event_silently = { id = oe_eastern_identity.13 years = 30 } }
+                    }
+                }
             }
         }
     }

@@ -18,7 +18,7 @@ oe_byz_start_old_dynasty_restoration = {
             scope:old_ruler.dynasty = {
                 any_character_in_dynasty = {
                     is_alive = yes
-                    owner = c:BYZ
+                    owner ?= c:BYZ
                     NOT = { modifier:blocked_from_being_ruler = yes }
                 }
             }
@@ -31,8 +31,9 @@ oe_byz_start_old_dynasty_restoration = {
             limit = {
                 this != c:BYZ.capital.province
                 any_location_in_province = {
-                    owner = c:BYZ
-                    any_pop = { owner = c:BYZ }
+                    has_owner = yes
+                    owner ?= c:BYZ
+                    any_pop = { owner ?= c:BYZ }
                 }
             }
             save_scope_as = oe_restoration_province
@@ -45,7 +46,7 @@ oe_byz_start_old_dynasty_restoration = {
                     limit = {
                         is_alive = yes
                         is_adult = yes
-                        owner = c:BYZ
+                        owner ?= c:BYZ
                         NOT = { modifier:blocked_from_being_ruler = yes }
                     }
                     save_scope_as = oe_restoration_claimant
@@ -55,7 +56,7 @@ oe_byz_start_old_dynasty_restoration = {
                     random_character_in_dynasty = {
                         limit = {
                             is_alive = yes
-                            owner = c:BYZ
+                            owner ?= c:BYZ
                             NOT = { modifier:blocked_from_being_ruler = yes }
                         }
                         save_scope_as = oe_restoration_claimant
@@ -63,13 +64,13 @@ oe_byz_start_old_dynasty_restoration = {
                 }
                 # Capture this list before civil-war land transfers move residences.
                 every_character_in_dynasty = {
-                    limit = { is_alive = yes owner = c:BYZ }
+                    limit = { is_alive = yes owner ?= c:BYZ }
                     add_to_list = oe_restoration_people
                 }
             }
             scope:oe_restoration_province = {
                 every_location_in_province = {
-                    limit = { owner = c:BYZ is_capital = no }
+                    limit = { has_owner = yes owner ?= c:BYZ is_capital = no }
                     add_to_list = oe_restoration_locations
                 }
             }
@@ -80,13 +81,14 @@ oe_byz_start_old_dynasty_restoration = {
             }
             every_in_list = {
                 list = oe_restoration_people
+                limit = { is_alive = yes owner ?= c:BYZ }
                 change_character_allegiance = scope:oe_restoration_rebels
             }
             # Native civil-war secession needs supporting pops, not just characters.
             every_in_list = {
                 list = oe_restoration_locations
                 every_pop = {
-                    limit = { owner = c:BYZ }
+                    limit = { owner ?= c:BYZ }
                     change_pop_allegiance = scope:oe_restoration_rebels
                 }
             }
@@ -102,14 +104,14 @@ oe_byz_start_old_dynasty_restoration = {
                 every_in_list = {
                     list = oe_restoration_locations
                     if = {
-                        limit = { owner = c:BYZ }
+                        limit = { has_owner = yes owner ?= c:BYZ }
                         change_location_owner = scope:oe_restoration_country
                     }
                 }
                 every_in_list = {
                     list = oe_restoration_people
                     if = {
-                        limit = { is_alive = yes owner = c:BYZ }
+                        limit = { is_alive = yes owner ?= c:BYZ }
                         move_country = scope:oe_restoration_country
                     }
                 }

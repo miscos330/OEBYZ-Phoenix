@@ -1,0 +1,200 @@
+﻿# NEW 2026-11-21 v7.0 Wave 1 Package 4, Golden Horde 5-Wing Ulus & Dynamic Decline (gen_glh_ulus.py). Generated; edit gen_glh_ulus.py, not this file.
+
+namespace = oe_ghh
+
+oe_ghh.1 = { # 术赤五翼格局
+	type = country_event
+	outcome = neutral
+	image = "gfx/interface/illustrations/government/throne_rooms/throne_room_horde.dds"
+	title = oe_ghh.1.t
+	desc = oe_ghh.1.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.1.a
+		custom_tooltip = oe_ghh.1.a.tt
+		hidden_effect = { add_prestige = prestige_weak_bonus }
+		ai_chance = { base = 100 }
+	}
+}
+
+oe_ghh.2 = { # 草原瘟疫
+	type = country_event
+	outcome = negative
+	image = "gfx/interface/illustrations/government/siege_battle_illustration.dds"
+	title = oe_ghh.2.t
+	desc = oe_ghh.2.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.2.a
+		trigger = { gold >= 80 }
+		custom_tooltip = oe_ghh.2.a.tt
+		hidden_effect = { add_gold = -80 oe_ghh_shift_cohesion = { amount = -8 } oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_ghh.2.b
+		custom_tooltip = oe_ghh.2.b.tt
+		hidden_effect = { add_stability = stability_weak_penalty oe_ghh_shift_cohesion = { amount = -18 } oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 60 }
+	}
+}
+
+oe_ghh.3 = { # 大混乱降临
+	type = country_event
+	outcome = negative
+	image = "gfx/interface/illustrations/disaster/horde_civil_war.dds"
+	title = oe_ghh.3.t
+	desc = oe_ghh.3.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.3.a
+		trigger = { gold >= 120 }
+		custom_tooltip = oe_ghh.3.a.tt
+		hidden_effect = { add_gold = -120 oe_ghh_shift_cohesion = { amount = 10 } every_subject = { limit = { is_subject_type = oe_glh_ulus } add_opinion = { modifier = oe_ghh_b_ulus_appeased target = c:GLH } } oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_ghh.3.b
+		custom_tooltip = oe_ghh.3.b.tt
+		hidden_effect = { add_stability = stability_mild_penalty add_horde_unity = horde_unity_mild_bonus oe_ghh_shift_cohesion = { amount = 5 } oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 25 }
+	}
+	option = {
+		name = oe_ghh.3.c
+		custom_tooltip = oe_ghh.3.c.tt
+		hidden_effect = { oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 40 }
+	}
+}
+
+oe_ghh.4 = { # 花剌子模苏菲自立
+	type = country_event
+	outcome = negative
+	image = "gfx/interface/illustrations/disaster/aspiration_for_liberty.dds"
+	title = oe_ghh.4.t
+	desc = oe_ghh.4.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.4.a
+		trigger = { gold >= 150 has_global_variable = oe_ghh_cohesion global_var:oe_ghh_cohesion >= 35 }
+		custom_tooltip = oe_ghh.4.a.tt
+		hidden_effect = { add_gold = -150 add_stability = stability_mild_penalty oe_ghh_shift_cohesion = { amount = 5 } oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = oe_ghh.4.b
+		custom_tooltip = oe_ghh.4.b.tt
+		hidden_effect = { oe_ghh_break_wing = { tag = KHW ind_name = OE_GHH_NAME_KHW_KHANATE } oe_ghh_shift_cohesion = { amount = -5 } oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 90 }
+	}
+}
+
+oe_ghh.5 = { # 帖木儿兵锋与萨莱之劫
+	type = country_event
+	outcome = negative
+	image = "gfx/interface/illustrations/situation/rise_of_timur.dds"
+	title = oe_ghh.5.t
+	desc = oe_ghh.5.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.5.a
+		custom_tooltip = oe_ghh.5.a.tt
+		hidden_effect = { oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 100 }
+	}
+}
+
+oe_ghh.6 = { # 也迪古与诺盖帐自立
+	type = country_event
+	outcome = negative
+	image = "gfx/interface/illustrations/expeditions/steppe_embassy_expedition.dds"
+	title = oe_ghh.6.t
+	desc = oe_ghh.6.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.6.a
+		trigger = { gold >= 200 has_global_variable = oe_ghh_cohesion global_var:oe_ghh_cohesion >= 25 }
+		custom_tooltip = oe_ghh.6.a.tt
+		hidden_effect = { add_gold = -200 add_stability = stability_mild_penalty add_horde_unity = horde_unity_mild_penalty set_global_variable = { name = oe_ghh_rel_NOG value = 2 } }
+		ai_chance = { base = 5 }
+	}
+	option = {
+		name = oe_ghh.6.b
+		custom_tooltip = oe_ghh.6.b.tt
+		hidden_effect = { oe_ghh_release_nog = yes }
+		ai_chance = { base = 95 }
+	}
+}
+
+oe_ghh.7 = { # 兀鲁思分立
+	type = country_event
+	outcome = negative
+	image = "gfx/interface/illustrations/disaster/aspiration_for_liberty.dds"
+	title = oe_ghh.7.t
+	desc = oe_ghh.7.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.7.a
+		custom_tooltip = oe_ghh.7.a.tt
+		hidden_effect = { add_prestige = prestige_mild_penalty }
+		ai_chance = { base = 100 }
+	}
+}
+
+oe_ghh.8 = { # 阿斯特拉罕汗国分化
+	type = country_event
+	outcome = negative
+	image = "gfx/interface/illustrations/disaster/horde_civil_war.dds"
+	title = oe_ghh.8.t
+	desc = oe_ghh.8.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.8.a
+		trigger = { gold >= 200 has_global_variable = oe_ghh_cohesion global_var:oe_ghh_cohesion >= 25 }
+		custom_tooltip = oe_ghh.8.a.tt
+		hidden_effect = { add_gold = -200 add_stability = stability_mild_penalty set_global_variable = { name = oe_ghh_rel_ATR value = 2 } }
+		ai_chance = { base = 5 }
+	}
+	option = {
+		name = oe_ghh.8.b
+		custom_tooltip = oe_ghh.8.b.tt
+		hidden_effect = { oe_ghh_release_atr = yes }
+		ai_chance = { base = 95 }
+	}
+}
+
+oe_ghh.9 = { # 整肃异密，收归藩翼
+	type = country_event
+	outcome = positive
+	image = "gfx/interface/illustrations/disaster/struggle_for_royal_power.dds"
+	title = oe_ghh.9.t
+	desc = oe_ghh.9.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.9.a
+		custom_tooltip = oe_ghh.9.a.tt
+		hidden_effect = { oe_ghh_shift_cohesion = { amount = 10 } every_subject = { add_opinion = { modifier = oe_ghh_b_ulus_appeased target = c:GLH } } oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 60 }
+	}
+	option = {
+		name = oe_ghh.9.b
+		custom_tooltip = oe_ghh.9.b.tt
+		hidden_effect = { add_prestige = prestige_mild_bonus add_horde_unity = horde_unity_mild_bonus oe_ghh_shift_cohesion = { amount = 5 } oe_ghh_sync_modifiers = yes }
+		ai_chance = { base = 40 }
+	}
+}
+
+oe_ghh.10 = { # 术赤中兴
+	type = country_event
+	outcome = positive
+	image = "gfx/interface/illustrations/government/throne_rooms/throne_room_horde.dds"
+	title = oe_ghh.10.t
+	desc = oe_ghh.10.d
+	trigger = { tag = GLH }
+	option = {
+		name = oe_ghh.10.a
+		custom_tooltip = oe_ghh.10.a.tt
+		hidden_effect = { add_horde_unity = horde_unity_radical_bonus }
+		ai_chance = { base = 100 }
+	}
+}

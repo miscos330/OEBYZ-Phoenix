@@ -1,0 +1,338 @@
+﻿# NEW 2026-11-21 v8.0 SIT-3 Two Emperors (gen_sit_two_emperors.py). Generated; edit gen_sit_two_emperors.py, not this file.
+namespace = oe_twe
+
+# .1: Opening event (East & West Emperors)
+oe_twe.1 = {
+	type = country_event
+	title = oe_twe.1.t
+	desc = oe_twe.1.d
+	image = "gfx/interface/illustrations/situation/oe_sit_two_emperors.dds"
+	outcome = neutral
+	option = {
+		name = oe_twe.1.a
+		add_prestige = prestige_weak_bonus
+		add_stability = stability_weak_penalty
+		situation:oe_sit_two_emperors = {
+			if = {
+				limit = { root = { oe_twe_is_east_tag = yes } }
+				change_variable = { name = oe_twe_balance add = 3 }
+			}
+			else = {
+				change_variable = { name = oe_twe_balance add = -3 }
+			}
+			change_variable = { name = oe_twe_tension add = 4 }
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	option = {
+		name = oe_twe.1.b
+		add_prestige = prestige_weak_penalty
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_concord add = 6 }
+			change_variable = { name = oe_twe_tension add = -3 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+}
+
+# .2: Papal Protest & Translatio Imperii Debate
+oe_twe.2 = {
+	type = country_event
+	title = oe_twe.2.t
+	desc = oe_twe.2.d
+	image = "gfx/interface/illustrations/situation/council_of_trent.dds"
+	outcome = neutral
+	option = {
+		name = oe_twe.2.a
+		add_gold = { value = oe_twe_gold_120 multiply = -1 }
+		add_country_modifier = { modifier = oe_twe_papal_crown_mod years = 6 mode = replace }
+		situation:oe_sit_two_emperors = {
+			if = {
+				limit = { root = { oe_twe_is_east_tag = yes } }
+				change_variable = { name = oe_twe_balance add = 5 }
+			}
+			else = {
+				change_variable = { name = oe_twe_balance add = -5 }
+			}
+			change_variable = { name = oe_twe_tension add = 6 }
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	option = {
+		name = oe_twe.2.b
+		add_prestige = prestige_weak_penalty
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_concord add = 8 }
+			change_variable = { name = oe_twe_tension add = -5 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+}
+
+# .3: Danube & Adriatic Frontier Flashpoint
+oe_twe.3 = {
+	type = country_event
+	title = oe_twe.3.t
+	desc = oe_twe.3.d
+	image = "gfx/interface/illustrations/government/geopolitics_expansion_illustration.dds"
+	outcome = negative
+	option = {
+		name = oe_twe.3.a
+		add_gold = { value = oe_twe_gold_150 multiply = -1 }
+		add_country_modifier = { modifier = oe_twe_danube_alert_mod years = 8 mode = replace }
+		situation:oe_sit_two_emperors = {
+			if = {
+				limit = { root = { oe_twe_is_east_tag = yes } }
+				change_variable = { name = oe_twe_balance add = 6 }
+			}
+			else = {
+				change_variable = { name = oe_twe_balance add = -6 }
+			}
+			change_variable = { name = oe_twe_tension add = 8 }
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	option = {
+		name = oe_twe.3.b
+		add_country_modifier = { modifier = oe_twe_adriatic_accord_mod years = 8 mode = replace }
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_concord add = 6 }
+			change_variable = { name = oe_twe_tension add = -6 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+}
+
+# .4: French Counterweight Envoys (FRA / East Emperor)
+oe_twe.4 = {
+	type = country_event
+	title = oe_twe.4.t
+	desc = oe_twe.4.d
+	image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
+	outcome = neutral
+	option = {
+		name = oe_twe.4.a
+		add_gold = { value = oe_twe_gold_120 multiply = -1 }
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_twe_french_subsidy_mod years = 8 mode = replace }
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_balance add = 5 }
+			change_variable = { name = oe_twe_tension add = 4 }
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	option = {
+		name = oe_twe.4.b
+		add_prestige = prestige_weak_penalty
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_concord add = 5 }
+			change_variable = { name = oe_twe_tension add = -4 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+}
+
+# .5: Twin Eagles Amid the War of Religions (Zero-override vanilla bridge)
+oe_twe.5 = {
+	type = country_event
+	title = oe_twe.5.t
+	desc = oe_twe.5.d
+	image = "gfx/interface/illustrations/situation/war_of_religions.dds"
+	outcome = negative
+	option = {
+		name = oe_twe.5.a
+		add_gold = { value = oe_twe_gold_150 multiply = -1 }
+		add_country_modifier = { modifier = oe_twe_imperial_diet_schism_mod years = 8 mode = replace }
+		situation:oe_sit_two_emperors = {
+			if = {
+				limit = { root = { oe_twe_is_east_tag = yes } }
+				change_variable = { name = oe_twe_balance add = 6 }
+			}
+			else = {
+				change_variable = { name = oe_twe_balance add = -6 }
+			}
+			change_variable = { name = oe_twe_tension add = 8 }
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	option = {
+		name = oe_twe.5.b
+		add_stability = stability_weak_bonus
+		add_prestige = prestige_weak_penalty
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_concord add = 8 }
+			change_variable = { name = oe_twe_tension add = -6 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+}
+
+# .6: Blueprint for Concord (Vienna-Constantinople Embassy)
+oe_twe.6 = {
+	type = country_event
+	title = oe_twe.6.t
+	desc = oe_twe.6.d
+	image = "gfx/interface/illustrations/situation/western_schism.dds"
+	outcome = positive
+	option = {
+		name = oe_twe.6.a
+		add_gold = { value = oe_twe_gold_100 multiply = -1 }
+		add_country_modifier = { modifier = oe_twe_concord_talks_mod years = 8 mode = replace }
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_concord add = 12 }
+			change_variable = { name = oe_twe_tension add = -8 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	option = {
+		name = oe_twe.6.b
+		add_prestige = prestige_weak_bonus
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_concord add = -8 }
+			change_variable = { name = oe_twe_tension add = 6 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+}
+
+# .7: Outcome 1 — Unus Imperator
+oe_twe.7 = {
+	type = country_event
+	title = oe_twe.7.t
+	desc = oe_twe.7.d
+	image = "gfx/interface/illustrations/situation/oe_sit_two_emperors.dds"
+	outcome = positive
+	option = {
+		name = oe_twe.7.a
+		add_prestige = prestige_mild_bonus
+	}
+}
+
+# .8: Outcome 2 — Pax Duorum Imperiorum (Concordat)
+oe_twe.8 = {
+	type = country_event
+	title = oe_twe.8.t
+	desc = oe_twe.8.d
+	image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
+	outcome = positive
+	option = {
+		name = oe_twe.8.a
+		add_stability = stability_weak_bonus
+	}
+}
+
+# .9: Outcome 3 — Imperial Retreat (Real Failure State for East / Vindication for West)
+oe_twe.9 = {
+	type = country_event
+	title = oe_twe.9.t
+	desc = oe_twe.9.d
+	image = "gfx/interface/illustrations/government/geopolitics_expansion_illustration.dds"
+	outcome = negative
+	option = {
+		name = oe_twe.9.a
+		if = {
+			limit = { oe_twe_is_east_tag = yes }
+			add_prestige = prestige_mild_penalty
+		}
+		else = {
+			add_prestige = prestige_mild_bonus
+		}
+	}
+}
+
+# .10: Outcome 4 — Fall of the Old Imperial Order (Age of Revolutions Closure)
+oe_twe.10 = {
+	type = country_event
+	title = oe_twe.10.t
+	desc = oe_twe.10.d
+	image = "gfx/interface/illustrations/situation/the_revolution.dds"
+	outcome = neutral
+	option = {
+		name = oe_twe.10.a
+		add_stability = stability_weak_penalty
+	}
+}
+
+# .20: Hidden Worker (deferred outcome/test execution outside command tooltip preview)
+oe_twe.20 = {
+	type = country_event
+	hidden = yes
+	title = oe_twe.20.t
+	outcome = neutral
+	immediate = {
+		if = {
+			limit = { global_var:oe_twe_worker_job ?= 1 }
+			remove_global_variable = oe_twe_worker_job
+			set_global_variable = { name = oe_twe_ended value = 1 }
+			set_global_variable = { name = oe_twe_outcome value = 1 }
+			remove_global_variable = oe_twe_on
+			oe_twe_dismantle_hre_safe = yes
+			add_country_modifier = { modifier = oe_twe_unus_imperator_mod years = -1 mode = replace }
+			trigger_event_non_silently = oe_twe.7
+		}
+		else_if = {
+			limit = { global_var:oe_twe_worker_job ?= 2 }
+			remove_global_variable = oe_twe_worker_job
+			set_global_variable = { name = oe_twe_ended value = 2 }
+			set_global_variable = { name = oe_twe_outcome value = 2 }
+			remove_global_variable = oe_twe_on
+			add_country_modifier = { modifier = oe_twe_concordat_mod years = 40 mode = replace }
+			trigger_event_non_silently = oe_twe.8
+		}
+		else_if = {
+			limit = { global_var:oe_twe_worker_job ?= 3 }
+			remove_global_variable = oe_twe_worker_job
+			set_global_variable = { name = oe_twe_ended value = 3 }
+			set_global_variable = { name = oe_twe_outcome value = 3 }
+			remove_global_variable = oe_twe_on
+			add_country_modifier = { modifier = oe_twe_west_retreat_mod years = 20 mode = replace }
+			trigger_event_non_silently = oe_twe.9
+		}
+		else_if = {
+			limit = { global_var:oe_twe_worker_job ?= 4 }
+			remove_global_variable = oe_twe_worker_job
+			set_global_variable = { name = oe_twe_ended value = 4 }
+			set_global_variable = { name = oe_twe_outcome value = 4 }
+			set_global_variable = { name = oe_twe_old_order_shaken value = 1 }
+			remove_global_variable = oe_twe_on
+			add_country_modifier = { modifier = oe_twe_old_order_shaken_mod years = 15 mode = replace }
+			trigger_event_non_silently = oe_twe.10
+		}
+	}
+}
+
+# .90: Diagnostic Readout Event (Page 61 tweread)
+oe_twe.90 = {
+	type = country_event
+	title = oe_twe.90.t
+	desc = oe_twe.90.d
+	image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
+	outcome = neutral
+	option = {
+		name = oe_twe.90.a
+	}
+}

@@ -57,7 +57,19 @@ oe_russian_ambition.2 = {
             modifier = { factor = 0 government_type = government_type:monarchy location:moscow = { owner = root } }
         }
     }
-    # The four cities may all belong to other countries when Russia forms.
+    # fx25 (f): add Kyiv as the fifth valid capital candidate
+    option = {
+        name = oe_russian_ambition.2.kyiv
+        trigger = { location:kyiv = { has_owner = yes owner = root } }
+        oe_ra_choose_capital = { destination = location:kyiv }
+        ai_chance = {
+            factor = 1
+            modifier = { factor = 100 var:oe_rpl_path ?= 3 }
+            modifier = { factor = 0 government_type = government_type:monarchy NOT = { var:oe_rpl_path ?= 3 } location:moscow = { owner = root } }
+            modifier = { factor = 0 government_type = government_type:republic location:novgorod = { owner = root } }
+        }
+    }
+    # The five cities may all belong to other countries when Russia forms.
     option = {
         name = oe_russian_ambition.2.none
         trigger = { NOT = { oe_ra_owns_capital_candidate = yes } }

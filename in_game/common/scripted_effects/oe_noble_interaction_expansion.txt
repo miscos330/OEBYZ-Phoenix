@@ -116,7 +116,11 @@ oe_nf_end_monopoly = {
         limit = { oe_nf_antimonopoly_ready = yes scope:target_province = { oe_nf_antimonopoly_target = yes } }
         change_variable = { name = oe_pillars_authority subtract = 5 }
         scope:target_province.province_definition = { save_scope_as = oe_nf_banned_province }
-        add_to_variable_list = { name = oe_nf_protected_provinces target = scope:oe_nf_banned_province }
+        # fx21 L1 (decision 305): guard against duplicate entries in oe_nf_protected_provinces
+        if = {
+            limit = { NOT = { is_target_in_variable_list = { name = oe_nf_protected_provinces target = scope:oe_nf_banned_province } } }
+            add_to_variable_list = { name = oe_nf_protected_provinces target = scope:oe_nf_banned_province }
+        }
         scope:oe_nf_banned_province = {
             every_location_in_province_definition = {
                 oe_nf_remove_control = { slot = 1 }

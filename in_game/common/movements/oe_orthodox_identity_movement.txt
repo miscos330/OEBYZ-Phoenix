@@ -146,7 +146,27 @@ monthly_spawn_chance = { value = 0 }
 
 
 
-		map_color = {
-
+	map_color = {
+		if = {
+			limit = {
+				"religion_percentage(religion:orthodox)" = 0
+			}
+			value = define:NMapColors|MAP_COLOR_NULL
+		}
+		else_if = {
+			limit = {
+				dominant_religion = religion:orthodox
+			}
+			value = define:NMapColors|MAP_COLOR_HIGH
+		}
+		else_if = {
+			limit = {
+				"religion_percentage(religion:orthodox)" > 0.05
+			}
+			value = define:NMapColors|MAP_COLOR_MID
+		}
+		else = {
+			value = define:NMapColors|MAP_COLOR_LOW
+		}
 	}
 }

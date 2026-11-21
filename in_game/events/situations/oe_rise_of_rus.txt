@@ -169,3 +169,60 @@ oe_rise_of_rus.6 = {
     desc = oe_rise_of_rus.6.d
     option = { name = oe_rise_of_rus.6.a }
 }
+# fx25 (c): human-target refusal popup for oe_rus_purchase
+oe_rise_of_rus.7 = {
+    type = country_event
+    outcome = neutral
+    category = situation_event
+    title = oe_rise_of_rus.7.t
+    desc = oe_rise_of_rus.7.d
+    image = "gfx/interface/illustrations/government/diplomacy_illustration.dds"
+    option = {
+        name = oe_rise_of_rus.7.a
+        ai_chance = { base = 100 }
+        add_cooldown = { type = oe_rus_purchase_refused_cooldown years = 5 }
+        add_prestige = 5
+    }
+    option = {
+        name = oe_rise_of_rus.7.b
+        trigger = { exists = scope:oe_rus_buyer country_exists = scope:oe_rus_buyer is_subject = no }
+        ai_chance = { base = 0 }
+        save_scope_value_as = { name = oe_rus_offer value = oe_rus_purchase_cost }
+        scope:oe_rus_buyer = { add_gold = { value = scope:oe_rus_offer multiply = -1 } }
+        add_gold = scope:oe_rus_offer
+        make_subject_of = { target = scope:oe_rus_buyer type = subject_type:vassal }
+        situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
+    }
+}
+# fx25 (c): human-target refusal/autonomy popup for oe_rus_integrate_kyiv
+oe_rise_of_rus.8 = {
+    type = country_event
+    outcome = negative
+    category = situation_event
+    title = oe_rise_of_rus.8.t
+    desc = oe_rise_of_rus.8.d
+    image = "gfx/interface/illustrations/disaster/court_and_country.dds"
+    trigger = { tag = KIE }
+    option = {
+        name = oe_rise_of_rus.8.a
+        ai_chance = { base = 80 }
+        add_cooldown = { type = oe_rus_kyiv_refused_cooldown years = 10 }
+        add_prestige = 10
+        add_stability = -5
+        if = {
+            limit = {
+                country_exists = c:LIT
+                exists = c:LIT.union
+                is_member_of_international_organization = c:LIT.union
+            }
+            c:LIT.union = { remove_country_from_international_organization = { country = root } }
+        }
+        situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
+    }
+    option = {
+        name = oe_rise_of_rus.8.b
+        ai_chance = { base = 20 }
+        add_cooldown = { type = oe_rus_kyiv_refused_cooldown years = 10 }
+        add_prestige = -10
+    }
+}

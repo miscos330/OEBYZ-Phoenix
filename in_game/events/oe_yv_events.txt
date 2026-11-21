@@ -363,7 +363,98 @@ oe_yv.13 = { # 撤文宗庙主
     }
 }
 
-# Hidden worker, fired from options of oe_yv.9, oe_yv.10 and oe_yv.13 (var:oe_yv_job).
+# CHI scope. Scheduled 1344.5-1344.12 while Mongol Yuan stands and Toqto'a is active (1337 game); waits up to 2 months on oe_yuan_ev_m. Worker jobs 141, 142.
+oe_yv.14 = { # 脱脱辞相
+    type = country_event
+    outcome = neutral
+    title = oe_yv.14.t
+    desc = oe_yv.14.d
+    illustration_tags = { 10 = interior 10 = regular }
+    trigger = { tag = CHI oe_yv_ok_14 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_yv.14.a
+        historical_option = yes
+        add_legitimacy = legitimacy_weak_bonus add_country_modifier = { modifier = oe_yv_divided_chancery years = 5 mode = replace }
+        custom_tooltip = oe_yv.14.a.tt
+        hidden_effect = { set_variable = { name = oe_yv_job value = 141 } trigger_event_non_silently = oe_yv.20 }
+        ai_chance = { base = 75 }
+    }
+    option = {
+        name = oe_yv.14.b
+        add_country_modifier = { modifier = oe_yv_sole_chancellor years = 10 mode = replace } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+        custom_tooltip = oe_yv.14.b.tt
+        hidden_effect = { set_variable = { name = oe_yv_job value = 142 } trigger_event_non_silently = oe_yv.20 }
+        ai_chance = { base = 25 }
+    }
+}
+
+# CHI scope. Scheduled 1347.1-1347.12 when .14 chose a (oe_yv_toqto_out = 1) and Toqto'a is active; waits up to 2 months on oe_yuan_ev_m. Worker jobs 151, 152.
+oe_yv.15 = { # 别儿怯不花之劾与徙甘州
+    type = country_event
+    outcome = negative
+    title = oe_yv.15.t
+    desc = oe_yv.15.d
+    illustration_tags = { 10 = interior 10 = angry }
+    trigger = { tag = CHI oe_yv_ok_15 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_yv.15.a
+        historical_option = yes
+        add_stability = stability_weak_penalty
+        custom_tooltip = oe_yv.15.a.tt
+        hidden_effect = { set_variable = { name = oe_yv_job value = 151 } trigger_event_non_silently = oe_yv.20 }
+        ai_chance = { base = 75 }
+    }
+    option = {
+        name = oe_yv.15.b
+        add_prestige = prestige_weak_penalty add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+        custom_tooltip = oe_yv.15.b.tt
+        hidden_effect = { set_variable = { name = oe_yv_job value = 152 } trigger_event_non_silently = oe_yv.20 }
+        ai_chance = { base = 25 }
+    }
+}
+
+# CHI scope. Scheduled 1349.6-1349.12 while Mongol Yuan stands and Toqto'a is active (1337 game); waits up to 2 months on oe_yuan_ev_m. Worker jobs 161, 162, 163.
+oe_yv.16 = { # 脱脱复相与追封
+    type = country_event
+    outcome = neutral
+    title = oe_yv.16.t
+    desc = { first_valid = { triggered_desc = { trigger = { global_var:oe_yv_toqto_out ?= 1 global_var:oe_yv_hama_fav ?= 1 } desc = oe_yv.16.d1 } triggered_desc = { trigger = { global_var:oe_yv_toqto_out ?= 1 } desc = oe_yv.16.d2 } triggered_desc = { trigger = { has_country_modifier = oe_yv_sole_chancellor } desc = oe_yv.16.d3 } desc = oe_yv.16.d } }
+    illustration_tags = { 10 = interior 10 = regular }
+    trigger = { tag = CHI oe_yv_ok_16 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_yv.16.a
+        historical_option = yes
+        add_country_modifier = { modifier = oe_yv_sole_chancellor years = 5 mode = replace } add_legitimacy = -3
+        custom_tooltip = oe_yv.16.a.tt
+        hidden_effect = { set_variable = { name = oe_yv_job value = 161 } trigger_event_non_silently = oe_yv.20 }
+        ai_chance = { base = 60 }
+    }
+    option = {
+        name = oe_yv.16.b
+        add_country_modifier = { modifier = oe_yv_sole_chancellor years = 5 mode = replace } add_legitimacy = -3 add_prestige = prestige_weak_penalty add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+        custom_tooltip = oe_yv.16.b.tt
+        hidden_effect = { set_variable = { name = oe_yv_job value = 162 } trigger_event_non_silently = oe_yv.20 }
+        ai_chance = { base = 25 }
+    }
+    option = {
+        name = oe_yv.16.c
+        add_legitimacy = legitimacy_weak_bonus add_country_modifier = { modifier = oe_yv_divided_chancery years = 3 mode = replace }
+        custom_tooltip = oe_yv.16.c.tt
+        hidden_effect = { set_variable = { name = oe_yv_job value = 163 } trigger_event_non_silently = oe_yv.20 }
+        ai_chance = { base = 15 }
+    }
+}
+
+# Hidden worker, fired from options of oe_yv.9, oe_yv.10, oe_yv.13 and oe_yv.14-.16 (var:oe_yv_job).
 oe_yv.20 = {
     type = country_event
     hidden = yes
@@ -375,6 +466,13 @@ oe_yv.20 = {
         else_if = { limit = { var:oe_yv_job ?= 103 } location:rencheng = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:jiaxiang = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:juye = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:yuncheng = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:shansu = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:yutai = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:jinxiang = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:chuqiu = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:chengwu = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:dingtao = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:jiyin = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:xucheng = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:shouzhang = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:pingyin = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:donge = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:wenshang = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:yanggu_yanzhou = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:dongping_lake = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:puyang = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:changyuan = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:dongming = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:qingfeng = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:suiyang_guide = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:luyi = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:ningling = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:xiayi = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:yongcheng = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:yucheng_kaifeng = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:xuzhou = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:dangshan = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:fengxian = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:xiaoxian = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:peixian = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:gaotang = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:enzhou = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } location:xiajin = { if = { limit = { owner ?= root province = { has_province_modifier = oe_yv_yellow_river_breach } } province = { add_province_modifier = { modifier = oe_yv_yellow_river_breach years = 6 mode = replace } } } } }
         else_if = { limit = { var:oe_yv_job ?= 131 } oe_yv_et_exile = yes debug_log = "oe_yv: .13 a, crown prince designated (if alive at court), El Tegus barred and on the road" }
         else_if = { limit = { var:oe_yv_job ?= 132 } oe_yv_et_keep = yes debug_log = "oe_yv: .13 b, crown prince designated (if alive at court), El Tegus kept as a prince" }
+        else_if = { limit = { var:oe_yv_job ?= 141 } oe_yv_m6_14a = yes debug_log = "oe_yv: .14 a, Toqto'a resigned (oe_yv_toqto_out 1, divided chancery 5y)" }
+        else_if = { limit = { var:oe_yv_job ?= 142 } oe_yv_m6_14b = yes debug_log = "oe_yv: .14 b, Toqto'a kept as sole chancellor (10y)" }
+        else_if = { limit = { var:oe_yv_job ?= 151 } oe_yv_m6_15a = yes debug_log = "oe_yv: .15 a, Toqto'a to Ganzhou, Hama noted (oe_yv_hama_fav 1)" }
+        else_if = { limit = { var:oe_yv_job ?= 152 } oe_yv_m6_15b = yes debug_log = "oe_yv: .15 b, Majartai and Toqto'a kept at court (oe_yv_toqto_out cleared)" }
+        else_if = { limit = { var:oe_yv_job ?= 161 } oe_yv_m6_16ab = yes debug_log = "oe_yv: .16 a, Toqto'a returns as sole chancellor (5y)" }
+        else_if = { limit = { var:oe_yv_job ?= 162 } oe_yv_m6_16ab = yes debug_log = "oe_yv: .16 b, Toqto'a returns as sole chancellor with posthumous titles (5y)" }
+        else_if = { limit = { var:oe_yv_job ?= 163 } oe_yv_m6_16c = yes debug_log = "oe_yv: .16 c, kept divided chancery (3y), no sole chancellor" }
         if = { limit = { has_variable = oe_yv_job } remove_variable = oe_yv_job }
     }
 }
@@ -415,4 +513,15 @@ oe_yv.91 = {
     immediate = { oe_yv_dev_snapshot_h = yes }
     option = { name = oe_yv.91.a }
     option = { name = oe_yv.91.b trigger_event_non_silently = oe_yv.91 }
+}
+
+# TEST ONLY. Readings of M6 chancellorship (yuan-m6-power, .14-.16), any country. Console: event oe_yv.92
+oe_yv.92 = {
+    type = country_event
+    outcome = neutral
+    title = oe_yv.92.t
+    desc = oe_yv.92.d
+    immediate = { oe_yv_dev_snapshot_m = yes }
+    option = { name = oe_yv.92.a }
+    option = { name = oe_yv.92.b trigger_event_non_silently = oe_yv.92 }
 }

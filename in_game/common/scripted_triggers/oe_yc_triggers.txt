@@ -20,13 +20,15 @@ oe_yc_late_1 = { NOT = { has_global_variable = oe_yc_st_1 } global_var:oe_yc_m >
 oe_yc_due_2 = { has_global_variable = oe_yc_due2 }
 # Any scope. .3: the meter is in tier 0 for the first time.
 oe_yc_due_3 = { NOT = { has_global_variable = oe_yc_st_3 } global_var:oe_yc_tier = 0 }
-# Any scope. .4: the suppression ended with code 1 (the Yuan restored), or its phase 3 has lasted 24 months; 钞信 < 40.
+# Any scope. .4: the suppression ended with code 1 (the Yuan restored), or its phase 3 has lasted 24 months,
+# or (YC-H1, yuan-restore23) the restoration line is open on a chosen path at stage 0; 钞信 < 40.
 oe_yc_due_4 = {
     NOT = { has_global_variable = oe_yc_st_4 }
     global_var:oe_yc_trust < 40
     OR = {
         global_var:oe_y7_end ?= 1
         AND = { has_global_variable = oe_yc_p3m global_var:oe_yc_m >= oe_yc_p3_until }
+        AND = { has_global_variable = oe_yr_path global_var:oe_yr_path >= 1 global_var:oe_yr_stage ?= 0 }
     }
 }
 # Any scope. Something must go out this month (the guard waits at most 2 months for it).

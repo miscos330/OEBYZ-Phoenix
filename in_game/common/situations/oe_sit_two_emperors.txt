@@ -1,0 +1,299 @@
+﻿# NEW 2026-11-21 v8.0 SIT-3 Two Emperors (gen_sit_two_emperors.py). Generated; edit gen_sit_two_emperors.py, not this file.
+
+oe_sit_two_emperors = {
+	monthly_spawn_chance = monthly_spawn_chance_unique
+	can_start = {
+		NOT = { has_global_variable = oe_twe_started }
+		NOT = { has_global_variable = oe_twe_ended }
+		current_year >= 1520
+		current_year <= 1790
+		exists = international_organization:hre
+		international_organization:hre = { exists = leader_country }
+		oe_twe_east_host_ready = yes
+		oe_twe_westward_threshold = yes
+	}
+	visible = {
+		oe_twe_is_participant = yes
+	}
+
+	# Outcome 1: Unus Imperator (Safe HRE Dismantling)
+	outcome = {
+		name = "oe_sit_two_emperors_outcome_unus"
+		desc = "oe_sit_two_emperors_outcome_unus_desc"
+		trigger = {
+			oe_twe_east_host_ready = yes
+			OR = {
+				AND = {
+					has_variable = oe_twe_balance
+					var:oe_twe_balance >= 85
+				}
+				AND = {
+					has_variable = oe_twe_hegemony_months
+					var:oe_twe_hegemony_months >= 12
+				}
+				NOT = { exists = international_organization:hre }
+				international_organization:hre = { NOT = { exists = leader_country } }
+			}
+		}
+		immediate = {
+			set_global_variable = { name = oe_twe_ended value = 1 }
+			set_global_variable = { name = oe_twe_outcome value = 1 }
+			remove_global_variable = oe_twe_on
+			oe_twe_dismantle_hre_safe = yes
+			if = {
+				limit = { country_exists = c:ROM }
+				c:ROM = {
+					add_country_modifier = { modifier = oe_twe_unus_imperator_mod years = -1 mode = replace }
+					trigger_event_non_silently = oe_twe.7
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = {
+					add_country_modifier = { modifier = oe_twe_unus_imperator_mod years = -1 mode = replace }
+					trigger_event_non_silently = oe_twe.7
+				}
+			}
+		}
+	}
+
+	# Outcome 2: Pax Duorum Imperiorum (Concordat of the Two Romes)
+	outcome = {
+		name = "oe_sit_two_emperors_outcome_concord"
+		desc = "oe_sit_two_emperors_outcome_concord_desc"
+		trigger = {
+			oe_twe_east_host_ready = yes
+			exists = international_organization:hre
+			international_organization:hre = { exists = leader_country }
+			oe_twe_emperors_at_war = no
+			has_variable = oe_twe_concord
+			var:oe_twe_concord >= 80
+			has_variable = oe_twe_balance
+			var:oe_twe_balance >= 35
+			var:oe_twe_balance <= 65
+			has_variable = oe_twe_concord_months
+			var:oe_twe_concord_months >= 12
+		}
+		immediate = {
+			set_global_variable = { name = oe_twe_ended value = 2 }
+			set_global_variable = { name = oe_twe_outcome value = 2 }
+			remove_global_variable = oe_twe_on
+			if = {
+				limit = { country_exists = c:ROM }
+				c:ROM = {
+					add_country_modifier = { modifier = oe_twe_concordat_mod years = 40 mode = replace }
+					if = {
+						limit = { exists = international_organization:hre international_organization:hre = { exists = leader_country } }
+						add_opinion = { modifier = oe_twe_op_concordat target = international_organization:hre.leader_country }
+						international_organization:hre.leader_country = {
+							add_opinion = { modifier = oe_twe_op_concordat target = c:ROM }
+						}
+					}
+					trigger_event_non_silently = oe_twe.8
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = {
+					add_country_modifier = { modifier = oe_twe_concordat_mod years = 40 mode = replace }
+					if = {
+						limit = { exists = international_organization:hre international_organization:hre = { exists = leader_country } }
+						add_opinion = { modifier = oe_twe_op_concordat target = international_organization:hre.leader_country }
+						international_organization:hre.leader_country = {
+							add_opinion = { modifier = oe_twe_op_concordat target = c:BYZ }
+						}
+					}
+					trigger_event_non_silently = oe_twe.8
+				}
+			}
+			if = {
+				limit = { exists = international_organization:hre international_organization:hre = { exists = leader_country } }
+				international_organization:hre.leader_country = {
+					add_country_modifier = { modifier = oe_twe_concordat_mod years = 40 mode = replace }
+					trigger_event_non_silently = oe_twe.8
+				}
+			}
+		}
+	}
+
+	# Outcome 3: Imperial Retreat (Real Failure State for East Rome)
+	outcome = {
+		name = "oe_sit_two_emperors_outcome_retreat"
+		desc = "oe_sit_two_emperors_outcome_retreat_desc"
+		trigger = {
+			OR = {
+				AND = {
+					has_variable = oe_twe_balance
+					var:oe_twe_balance <= 15
+				}
+				AND = {
+					NOT = { country_exists = c:ROM }
+					NOT = { country_exists = c:BYZ }
+				}
+				AND = {
+					current_year >= 1680
+					has_variable = oe_twe_hub_east
+					var:oe_twe_hub_east <= 0
+					has_variable = oe_twe_balance
+					var:oe_twe_balance <= 35
+				}
+			}
+		}
+		immediate = {
+			set_global_variable = { name = oe_twe_ended value = 3 }
+			set_global_variable = { name = oe_twe_outcome value = 3 }
+			remove_global_variable = oe_twe_on
+			if = {
+				limit = { exists = international_organization:hre international_organization:hre = { exists = leader_country } }
+				international_organization:hre.leader_country = {
+					add_country_modifier = { modifier = oe_twe_hre_vindicated_mod years = 25 mode = replace }
+					trigger_event_non_silently = oe_twe.9
+				}
+			}
+			if = {
+				limit = { country_exists = c:ROM }
+				c:ROM = {
+					add_country_modifier = { modifier = oe_twe_west_retreat_mod years = 20 mode = replace }
+					trigger_event_non_silently = oe_twe.9
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = {
+					add_country_modifier = { modifier = oe_twe_west_retreat_mod years = 20 mode = replace }
+					trigger_event_non_silently = oe_twe.9
+				}
+			}
+		}
+	}
+
+	# Outcome 4: Fall of the Old Imperial Order (Age of Revolutions graceful closure)
+	outcome = {
+		name = "oe_sit_two_emperors_outcome_revolution"
+		desc = "oe_sit_two_emperors_outcome_revolution_desc"
+		trigger = {
+			oe_twe_rev_end_ready = yes
+		}
+		immediate = {
+			set_global_variable = { name = oe_twe_ended value = 4 }
+			set_global_variable = { name = oe_twe_outcome value = 4 }
+			set_global_variable = { name = oe_twe_old_order_shaken value = 1 }
+			remove_global_variable = oe_twe_on
+			if = {
+				limit = { country_exists = c:ROM }
+				c:ROM = {
+					add_country_modifier = { modifier = oe_twe_old_order_shaken_mod years = 15 mode = replace }
+					trigger_event_non_silently = oe_twe.10
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = {
+					add_country_modifier = { modifier = oe_twe_old_order_shaken_mod years = 15 mode = replace }
+					trigger_event_non_silently = oe_twe.10
+				}
+			}
+			if = {
+				limit = { exists = international_organization:hre international_organization:hre = { exists = leader_country } }
+				international_organization:hre.leader_country = {
+					add_country_modifier = { modifier = oe_twe_old_order_shaken_mod years = 15 mode = replace }
+					trigger_event_non_silently = oe_twe.10
+				}
+			}
+		}
+	}
+
+	on_start = {
+		oe_twe_init = yes
+		oe_twe_notify_both_emperors_1 = yes
+	}
+	on_monthly = {
+		oe_twe_sync = yes
+	}
+	on_ended = { }
+
+	tooltip = {
+		if = {
+			limit = { has_owner = yes owner = { oe_twe_is_east_tag = yes } }
+			custom_tooltip = oe_twe_map_east_tt
+		}
+		else_if = {
+			limit = {
+				has_owner = yes
+				owner = {
+					OR = {
+						AND = { country_exists = c:ROM is_subject_of = c:ROM }
+						AND = { country_exists = c:BYZ is_subject_of = c:BYZ }
+					}
+				}
+			}
+			custom_tooltip = oe_twe_map_east_sub_tt
+		}
+		else_if = {
+			limit = { has_owner = yes owner = { is_emperor = yes } }
+			custom_tooltip = oe_twe_map_west_emp_tt
+		}
+		else_if = {
+			limit = {
+				has_owner = yes
+				exists = international_organization:hre
+				owner = { is_member_of_international_organization = international_organization:hre }
+			}
+			custom_tooltip = oe_twe_map_hre_mem_tt
+		}
+		else_if = {
+			limit = {
+				has_owner = yes
+				owner = {
+					OR = {
+						tag = FRA
+						oe_twe_is_protestant_actor = yes
+					}
+				}
+			}
+			custom_tooltip = oe_twe_map_counter_tt
+		}
+		else_if = {
+			limit = { has_owner = yes owner = { oe_twe_is_participant = yes } }
+			custom_tooltip = oe_twe_map_watch_tt
+		}
+	}
+
+	map_color = {
+		if = { limit = { has_owner = yes owner ?= { oe_twe_is_east_tag = yes } } value = owner.country_color }
+		else_if = {
+			limit = {
+				has_owner = yes
+				owner ?= {
+					OR = {
+						AND = { country_exists = c:ROM is_subject_of = c:ROM }
+						AND = { country_exists = c:BYZ is_subject_of = c:BYZ }
+					}
+				}
+			}
+			value = define:NMapColors|MAP_COLOR_HIGH
+		}
+		else_if = { limit = { has_owner = yes owner ?= { is_emperor = yes } } value = owner.country_color }
+		else_if = {
+			limit = {
+				has_owner = yes
+				exists = international_organization:hre
+				owner ?= { is_member_of_international_organization = international_organization:hre }
+			}
+			value = define:NMapColors|MAP_COLOR_MID
+		}
+		else_if = {
+			limit = {
+				has_owner = yes
+				owner ?= {
+					OR = {
+						tag = FRA
+						oe_twe_is_protestant_actor = yes
+					}
+				}
+			}
+			value = define:NMapColors|MAP_COLOR_LOW
+		}
+		else = { value = define:NMapColors|DEFAULT_COLOR }
+	}
+}

@@ -87,7 +87,7 @@ oe_theme_admin_monthly = {
     if = { limit = { NOT = { var:oe_theme_tier_5 ?= var:oe_theme_new_tier } } set_variable = { name = oe_theme_tier_5 value = var:oe_theme_new_tier } set_variable = oe_theme_tiers_dirty }
     remove_variable = oe_theme_new_tier
     # 属官俸禄与包税
-    save_scope_value_as = { name = oe_theme_official_cost_now value = oe_theme_official_cost }
+    if = { limit = { OR = { var:oe_theme_judge ?= 1 var:oe_theme_fiscal ?= 1 } } save_scope_value_as = { name = oe_theme_official_cost_now value = oe_theme_official_cost } }
     if = { limit = { var:oe_theme_judge ?= 1 country_exists = c:BYZ } c:BYZ = { add_gold = { value = scope:oe_theme_official_cost_now multiply = -1 } } }
     if = { limit = { var:oe_theme_fiscal ?= 1 country_exists = c:BYZ } c:BYZ = { add_gold = { value = scope:oe_theme_official_cost_now multiply = -1 } } }
     if = { limit = { var:oe_theme_fiscal ?= 2 } add_gold = oe_theme_taxfarm_gain }

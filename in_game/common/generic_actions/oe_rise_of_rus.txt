@@ -63,9 +63,17 @@ oe_rus_purchase = {
 
     effect = { if = { limit = { exists = scope:target }
         save_scope_value_as = { name = oe_rus_price value = scope:target.oe_rus_purchase_cost }
-        scope:actor = { add_gold = { value = scope:oe_rus_price multiply = -1 } add_political_influence = -25 }
-        scope:target = { add_gold = scope:oe_rus_price make_subject_of = { target = scope:actor type = subject_type:vassal } }
-        situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
+        # fx25 (c): human targets receive a refusal popup instead of silent forced vassalization
+        if = {
+            limit = { scope:target = { is_ai = yes } }
+            scope:actor = { add_gold = { value = scope:oe_rus_price multiply = -1 } add_political_influence = -25 }
+            scope:target = { add_gold = scope:oe_rus_price make_subject_of = { target = scope:actor type = subject_type:vassal } }
+            situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
+        }
+        else = {
+            scope:actor = { add_political_influence = -25 save_scope_as = oe_rus_buyer }
+            scope:target = { trigger_event_non_silently = oe_rise_of_rus.7 }
+        }
     } }
     ai_will_do = { add = 80 }
 }
@@ -215,11 +223,19 @@ oe_rus_integrate_kyiv = {
         visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
     }
     effect = {
-        scope:actor = {
-            add_political_influence = -50
-            annex_country = { country = c:KIE reason = Diplomatic }
+        # fx25 (c): never silently annex a human-played Kyiv; send refusal/autonomy popup instead
+        if = {
+            limit = { c:KIE = { is_ai = yes } }
+            scope:actor = {
+                add_political_influence = -50
+                annex_country = { country = c:KIE reason = Diplomatic }
+            }
+            situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
         }
-        situation:oe_rise_of_rus = { oe_rus_recalculate = yes }
+        else = {
+            scope:actor = { add_political_influence = -50 save_scope_as = oe_rus_kyiv_integrator }
+            c:KIE = { trigger_event_non_silently = oe_rise_of_rus.8 }
+        }
     }
     ai_will_do = { add = 100 }
 }
@@ -424,11 +440,13 @@ oe_rus_unify_russia = {
     ai_will_do = { add = 80 }
 }
 
- oe_rus_accelerate_unification = {
+oe_rus_accelerate_unification = {
     type = situation
     show_message = no
     potential = { scope:actor = { oe_rus_first_power = yes } }
     allow = { scope:actor = { oe_rus_first_power = yes legitimacy >= 25 } }
+    # fx25 (d): prevent zero-cooldown monthly truce-breaking
+    cooldown = { type = oe_rus_accelerate_unification_cooldown years = 5 }
     automation_tick = never
     ai_tick = monthly
     ai_tick_frequency = 1

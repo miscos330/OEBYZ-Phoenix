@@ -443,3 +443,89 @@ oe_yw_ok_w8 = {
 oe_yw_ok_w9 = {
     country_exists = c:LNG c:LNG = { is_ai = yes } country_exists = c:CDL c:CDL = { is_ai = yes is_subject_of = c:LNG }
 }
+
+# Any scope. World step W10 can run this month (besides its window).
+oe_yw_ok_w10 = {
+    country_exists = c:LNG c:LNG = { is_ai = yes any_subject = { is_subject_type = tusi is_ai = yes } }
+}
+
+# Country scope = LNG (phase 4, M3). Liang still stands under the old Mongol/Northern Yuan line (independent or old Yuan's subject).
+oe_yw_liang_stands = {
+    culture = culture:mongolian_culture
+    OR = {
+        is_subject = no
+        OR = { AND = { has_global_variable = oe_yp_yuan is_subject_of = global_var:oe_yp_yuan } AND = { NOT = { has_global_variable = oe_yp_yuan } country_exists = c:CHI c:CHI = { culture = culture:mongolian_culture } is_subject_of = c:CHI } }
+    }
+}
+# Location scope (phase 4, M3). Held by Mongol culture, the old Yuan, YBN or LNG side (keeps the Hexi corridor open).
+oe_yw_hexi_loc_ours = {
+    owner ?= {
+        OR = {
+            culture = culture:mongolian_culture
+            AND = { country_exists = c:CHI c:CHI = { culture = culture:mongolian_culture } OR = { this = c:CHI is_subject_or_below_of = c:CHI } }
+        AND = { has_global_variable = oe_yp_yuan OR = { this = global_var:oe_yp_yuan is_subject_or_below_of = global_var:oe_yp_yuan } }
+        AND = { country_exists = c:YBN OR = { this = c:YBN is_subject_or_below_of = c:YBN } }
+            AND = { country_exists = c:LNG OR = { this = c:LNG is_subject_or_below_of = c:LNG } }
+        }
+    }
+}
+# Any scope (phase 4, M3). Neither Lanzhou nor Suzhou (Gansu) is held by the Mongol/Yuan/YBN/LNG side.
+oe_yw_hexi_cut_off = {
+    location:lanzhou = { oe_yw_hexi_loc_ours = no }
+    location:suzhou_gansu = { oe_yw_hexi_loc_ours = no }
+}
+# Any scope (phase 4, M3). A non-Mongol leader holds the Middle Kingdom (e.g. Ming).
+oe_yw_new_son_of_heaven = {
+    exists = international_organization:middle_kingdom
+    exists = international_organization:middle_kingdom.leader_country
+    international_organization:middle_kingdom.leader_country ?= {
+        NOT = { culture = culture:mongolian_culture }
+    }
+}
+# Any scope (phase 4, M3). Notice event oe_yw.9 can be shown.
+oe_yw_can_9 = {
+    country_exists = c:LNG
+}
+# Any scope (phase 4, M3). Dali petition event oe_yw.10 (1375-1390): Yuan fallen, CDL exists, non-Mongol Celestial leader,
+# and either LNG is gone or CDL is independent/fighting and fighting/neighboring the new Celestial leader.
+oe_yw_can_10 = {
+    oe_yw_yuan_fallen = yes
+    country_exists = c:CDL
+    oe_yw_new_son_of_heaven = yes
+    c:CDL = {
+        NOT = { this = international_organization:middle_kingdom.leader_country }
+        OR = {
+            NOT = { country_exists = c:LNG }
+            AND = {
+                OR = {
+                    is_subject = no
+                    is_at_war_with = international_organization:middle_kingdom.leader_country
+                }
+                OR = {
+                    is_at_war_with = international_organization:middle_kingdom.leader_country
+                    is_neighbor_of = international_organization:middle_kingdom.leader_country
+                }
+            }
+        }
+    }
+}
+# Any scope (phase 4). Post-fall Yunnan/NW tail stays open through 1390.12 while LNG, CDL or YBN exists.
+oe_yw_post_needed = {
+    has_global_variable = oe_yw_m
+    global_var:oe_yw_m <= 644
+    OR = {
+        country_exists = c:LNG
+        country_exists = c:CDL
+        country_exists = c:YBN
+    }
+}
+
+# Any scope (phase 4, M8). Both Ganzhou (YGU seat) and Suzhou (Gansu) are no longer held by the Yuan side.
+oe_yw_gansu_fallen = {
+    location:ganzhou = { oe_yw_loc_ours = no }
+    location:suzhou_gansu = { oe_yw_loc_ours = no }
+}
+# Any scope (phase 4, M8). Notice event oe_yw.11 can be shown.
+oe_yw_can_11 = {
+    country_exists = c:YBN
+}

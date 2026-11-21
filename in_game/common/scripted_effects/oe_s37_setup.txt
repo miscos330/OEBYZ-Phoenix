@@ -12,11 +12,16 @@ oe_s37_setup_start = {
             if = { limit = { country_exists = c:KRD c:KRD = { is_subject_of = c:GRM } } cancel_subject = c:KRD }
         }
         # Umur of Aydin, Byzantium's ally since 1335 (2,000 Turks for the Albanian campaign of 1337).
-        # Fallback only: the alliance is in 12_oe_s37_diplomacy.txt since r11.
-        c:AYD ?= { if = { limit = { NOT = { is_allied_with = { target = c:BYZ } } } create_relation = { first = c:BYZ second = c:AYD type = relation_type:alliance } } }
+        # Mutual +60 historical opinion prevents vanilla alliance.txt from expiring & downgrading to guarantee on 1337.4.4 due to orthodox-sunni base penalty.
+        # Fallback only for alliance creation: the alliance is in 12_oe_s37_diplomacy.txt since r11.
+        c:AYD ?= {
+            add_opinion = { modifier = oe_s37_umur_pact target = c:BYZ }
+            if = { limit = { NOT = { is_allied_with = { target = c:BYZ } } } create_relation = { first = c:BYZ second = c:AYD type = relation_type:alliance } }
+        }
         c:SRU ?= { add_opinion = { modifier = oe_s37_saruhan_friend target = c:BYZ } }
         c:KRD ?= { add_opinion = { modifier = oe_s37_karasi_raids target = c:BYZ } }
         c:BYZ = {
+            if = { limit = { country_exists = c:AYD } add_opinion = { modifier = oe_s37_umur_pact target = c:AYD } }
             if = { limit = { country_exists = c:KRD } add_opinion = { modifier = oe_s37_karasi_raids target = c:KRD } }
             # Peace with Serbia (1334) and Bulgaria (1332): two quiet years at the start.
             if = { limit = { country_exists = c:SER } add_truce_with = { target = c:SER years = 2 mutual = yes } }
@@ -99,6 +104,8 @@ oe_s37_setup_start = {
         if = { limit = { country_exists = c:PEG country_exists = c:SUK } c:PEG = { add_opinion = { modifier = oe_s37_southeast_asia_martaban_war target = c:SUK } } c:SUK = { add_opinion = { modifier = oe_s37_southeast_asia_martaban_war target = c:PEG } } }
         # southeast_asia-05: 1327 年彬牙劫掠若开的兰里岛；1334 年 1 月若开王敏底越过若开山脉劫掠彬牙属地德耶谬，把总督敏信梭一家掳往朗耶，直到约 1343 年才放回彬牙。 (中)
         if = { limit = { country_exists = c:ARK country_exists = c:PIN } c:ARK = { add_opinion = { modifier = oe_s37_southeast_asia_thayet_raid target = c:PIN } } c:PIN = { add_opinion = { modifier = oe_s37_southeast_asia_thayet_raid target = c:ARK } } }
+        # glh_ulus-29: 1337.4.1 开局当日初始化术赤兀鲁思凝聚度（85）、第一阶段状态及五翼动态国名（含克里米亚万户）。 (高)
+        oe_ghh_init = yes
     }
 }
 

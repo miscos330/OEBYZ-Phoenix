@@ -608,6 +608,156 @@ oe_byz_empire_org_action_create_pronia_infastry = {#普罗尼亚征召
 	}
 }
 
+# fx22 (Decision 306 R3A): Post-disaster Imperial Pillars continuation of theme-land and Greek unification actions.
+oe_pillars_protect_peasants = {
+	type = internationalorganization
+	show_message = no
+	potential = { scope:actor = { tag = BYZ } }
+	allow = {
+		scope:actor = {
+			at_war = no
+			has_raised_levies = no
+			government_power > 30
+			stability > 30
+			NOT = { has_estate_privilege = estate_privilege:oe_peasants_own_theme_IV }
+		}
+	}
+	automation_tick = never
+	automation_tick_frequency = 12
+	ai_tick = never
+	price = price:oe_protect_peasants_price
+	cooldown = {
+		type = oe_protect_peasants_cooldown_key
+		years = 3
+	}
+	select_trigger = {
+		looking_for_a = international_organization
+		source = actor
+		target_flag = recipient
+		name = "choose_international_organization"
+		none_available_msg_key = "leave_international_organization_none"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_byz_empire_pillars
+			scope:actor = {
+				tag = BYZ
+				has_variable = won_fate_of_the_phoenix_disaster_variable
+			}
+		}
+	}
+	effect = {
+		scope:actor = { oe_phoenix_protect_peasants_effect = yes }
+	}
+}
+
+oe_pillars_protect_noble = {
+	type = internationalorganization
+	show_message = no
+	potential = { scope:actor = { tag = BYZ } }
+	allow = {
+		scope:actor = {
+			at_war = no
+			has_raised_levies = no
+			government_power > 30
+			stability > 30
+			NOT = { has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV }
+		}
+	}
+	automation_tick = never
+	automation_tick_frequency = 12
+	ai_tick = never
+	price = price:oe_protect_noble_price
+	cooldown = {
+		type = oe_protect_noble_cooldown_key
+		years = 3
+	}
+	select_trigger = {
+		looking_for_a = international_organization
+		source = actor
+		target_flag = recipient
+		name = "choose_international_organization"
+		none_available_msg_key = "leave_international_organization_none"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_byz_empire_pillars
+			scope:actor = {
+				tag = BYZ
+				has_variable = won_fate_of_the_phoenix_disaster_variable
+			}
+		}
+	}
+	effect = {
+		scope:actor = { oe_phoenix_protect_noble_effect = yes }
+	}
+}
+
+oe_pillars_own_greek_country = {
+	type = internationalorganization
+	show_message = no
+	potential = { scope:actor = { tag = BYZ } }
+	allow = {
+		scope:actor = {
+			at_war = no
+			has_raised_levies = no
+			num_locations_owned_or_owned_by_subjects_or_below > 200
+			societal_value:latinization_vs_hellenization >= 75
+		}
+	}
+	automation_tick = never
+	automation_tick_frequency = 12
+	ai_tick = never
+	price = price:oe_byz_create_theme_price
+	cooldown = {
+		type = oe_bbyz_phoe_own_greek_country_cooldown_key
+		months = 0
+	}
+	select_trigger = {
+		looking_for_a = international_organization
+		source = actor
+		target_flag = recipient
+		name = "choose_international_organization"
+		none_available_msg_key = "leave_international_organization_none"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_byz_empire_pillars
+			scope:actor = {
+				tag = BYZ
+				has_variable = won_fate_of_the_phoenix_disaster_variable
+			}
+		}
+	}
+	select_trigger = {
+		only_color_selectable = yes
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+		looking_for_a = country
+		target_flag = target_country
+		name = "oe_byz_selcet_oe_rome_sub_country"
+		none_available_msg_key = "oe_byz_selcet_bank_country_non"
+		column = { data = name }
+		column = { data = great_power_score }
+		visible = {
+			root.culture = { has_culture_group = culture_group:greek_group }
+			root = {
+				country_type = location
+				NOT = { this = scope:actor }
+				NOT = { is_subject_of = scope:actor }
+			}
+		}
+	}
+	effect = {
+		custom_tooltip = {
+			text = oe_bbyz_phoe_own_greek_country_tt
+			scope:target_country = {
+				make_subject_of = {
+					target = scope:actor
+					type = subject_type:oe_rome_sub
+				}
+			}
+		}
+		scope:actor = { oe_byz_check_nirvana_complete = yes }
+	}
+}
+
 
 
 

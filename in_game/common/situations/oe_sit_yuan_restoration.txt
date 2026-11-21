@@ -1,0 +1,109 @@
+﻿# NEW 2026-11-21 v7.1 SIT-2 Flagship Situations & Vanilla Bridges (gen_situations_flagship.py). Generated; edit gen_situations_flagship.py, not this file.
+
+oe_sit_yuan_restoration = {
+	monthly_spawn_chance = monthly_spawn_chance_unique
+	can_start = {
+		NOT = { has_global_variable = oe_sit2_yr_started }
+		country_exists = c:CHI
+		OR = {
+			AND = {
+				has_global_variable = oe_yr_on
+				has_global_variable = oe_yr_opened
+			}
+			AND = {
+				current_year >= 1368
+				c:CHI = {
+					stability >= 10
+					legitimacy >= 50
+				}
+			}
+		}
+	}
+	visible = {
+		oe_sit2_yuan_participant = yes
+	}
+	outcome = {
+		name = "oe_sit_yuan_restoration_outcome_restored"
+		desc = "oe_sit_yuan_restoration_outcome_restored_desc"
+		trigger = {
+			country_exists = c:CHI
+			OR = {
+				AND = {
+					has_variable = oe_sit2_yr_progress
+					var:oe_sit2_yr_progress >= 80
+				}
+				AND = {
+					has_global_variable = oe_yr_end
+					global_var:oe_yr_end = 1
+				}
+			}
+		}
+		immediate = {
+			set_global_variable = { name = oe_sit2_yr_ended value = 1 }
+			c:CHI = {
+				add_country_modifier = { modifier = oe_sit2_yr_restored_mod years = 25 mode = replace }
+				trigger_event_non_silently = oe_sit2.2
+			}
+		}
+	}
+	outcome = {
+		name = "oe_sit_yuan_restoration_outcome_retreat"
+		desc = "oe_sit_yuan_restoration_outcome_retreat_desc"
+		trigger = {
+			country_exists = c:CHI
+			OR = {
+				NOT = { location:dadu = { owner ?= c:CHI } }
+				AND = {
+					current_year >= 1415
+					has_variable = oe_sit2_yr_progress
+					var:oe_sit2_yr_progress < 80
+				}
+			}
+		}
+		immediate = {
+			set_global_variable = { name = oe_sit2_yr_ended value = 2 }
+			c:CHI = {
+				add_country_modifier = { modifier = oe_sit2_yr_northern_mod years = 20 mode = replace }
+				trigger_event_non_silently = oe_sit2.2
+			}
+		}
+	}
+	outcome = {
+		name = "oe_sit_yuan_restoration_outcome_lost"
+		desc = "oe_sit_yuan_restoration_outcome_lost_desc"
+		trigger = {
+			NOT = { country_exists = c:CHI }
+		}
+		immediate = {
+			set_global_variable = { name = oe_sit2_yr_ended value = 3 }
+		}
+	}
+	on_start = {
+		oe_sit2_yr_init = yes
+		c:CHI ?= { trigger_event_non_silently = oe_sit2.1 }
+	}
+	on_monthly = {
+		oe_sit2_yr_sync = yes
+	}
+	on_ended = { }
+	tooltip = {
+		if = {
+			limit = { has_owner = yes owner = { tag = CHI } }
+			custom_tooltip = oe_sit2_yr_map_chi_tt
+		}
+		else_if = {
+			limit = { has_owner = yes country_exists = c:CHI owner = { is_subject_of = c:CHI } }
+			custom_tooltip = oe_sit2_yr_map_sub_tt
+		}
+		else_if = {
+			limit = { has_owner = yes owner = { oe_sit2_yuan_participant = yes } }
+			custom_tooltip = oe_sit2_yr_map_nbr_tt
+		}
+	}
+	map_color = {
+		if = { limit = { has_owner = yes owner ?= { tag = CHI } } value = owner.country_color }
+		else_if = { limit = { has_owner = yes country_exists = c:CHI owner ?= { is_subject_of = c:CHI } } value = define:NMapColors|MAP_COLOR_HIGH }
+		else_if = { limit = { has_owner = yes owner ?= { oe_sit2_yuan_participant = yes } } value = define:NMapColors|MAP_COLOR_MID }
+		else = { value = define:NMapColors|DEFAULT_COLOR }
+	}
+}

@@ -12,20 +12,7 @@
 	}
 	
 	can_end = {
-        OR = {
-            has_estate_privilege = estate_privilege:oe_peasants_own_theme_IV
-            has_estate_privilege = estate_privilege:oe_peasants_own_theme_negative_IV
-        }
-		num_locations_owned_or_owned_by_subjects_or_below > 350
-		
-		has_variable = oe_ir_army_1_done
-		has_variable = oe_ir_central_done
-		any_owned_location = {
-			percent = 1
-			NOT = {
-				has_building = building_type:oe_byz_bad_thief_greek
-			}
-		}
+		oe_phoenix_disaster_can_end = yes
 	}
 
 	modifier = {
@@ -38,24 +25,50 @@
 	}
 	
 	on_start = {
-        set_variable = {
-			name = strongest_belik_variable
-			value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+		if = {
+			limit = {
+				is_situation_active = situation:rise_of_the_ottomans
+				situation:rise_of_the_ottomans = {
+					has_variable = strongest_beylik_variable
+					exists = var:strongest_beylik_variable.ruler_or_regent
+				}
+			}
+			set_variable = {
+				name = strongest_belik_variable
+				value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+			}
 		}
         c:BYZ = { trigger_event_non_silently = oe_fate_of_the_phoenix.21 }
     }
 
 	on_end = {
         oe_phoenix_auto_bandit_stop = yes
-		remove_variable = strongest_belik_variable
+		every_owned_location = {
+			limit = { has_building = building_type:oe_byz_bad_thief_greek }
+			destroy_building = "building(building_type:oe_byz_bad_thief_greek|c:BYZ)"
+		}
+		if = {
+			limit = { has_variable = strongest_belik_variable }
+			remove_variable = strongest_belik_variable
+		}
 		set_variable = won_fate_of_the_phoenix_disaster_variable
-		set_global_variable = phoenix_nirvana_is_end
+		trigger_event_non_silently = oe_fate_of_the_phoenix.1000
+		oe_byz_check_nirvana_complete = yes
 	}
 	
 	on_monthly = {
-        set_variable = {
-			name = strongest_belik_variable
-			value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+		if = {
+			limit = {
+				is_situation_active = situation:rise_of_the_ottomans
+				situation:rise_of_the_ottomans = {
+					has_variable = strongest_beylik_variable
+					exists = var:strongest_beylik_variable.ruler_or_regent
+				}
+			}
+			set_variable = {
+				name = strongest_belik_variable
+				value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+			}
 		}
         hidden_effect = {
             # Fixed denominator: unavailable categories become empty outcomes.

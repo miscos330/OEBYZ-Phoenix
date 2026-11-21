@@ -1,0 +1,436 @@
+﻿# NEW 2026-11-21 v8.0 SIT-3 Two Emperors (gen_sit_two_emperors.py). Generated; edit gen_sit_two_emperors.py, not this file.
+
+# ----------------------------------------------------------------------------- Safe HRE Dismantle (vanilla events/hre.txt:159-166)
+# Sets imperial_authority = 0 on international_organization:hre before destroy_international_organization
+# to prevent vanilla error log noise and allow war_of_religions to close cleanly via confessional_exhaustion.
+oe_twe_dismantle_hre_safe = {
+	if = {
+		limit = { exists = international_organization:hre }
+		international_organization:hre = {
+			set_variable = { name = imperial_authority value = 0 }
+		}
+		destroy_international_organization = { target = international_organization:hre }
+	}
+}
+
+# ----------------------------------------------------------------------------- Init & O(1) Sync (Zero Iterators)
+oe_twe_init = {
+	set_global_variable = { name = oe_twe_started value = 1 }
+	set_global_variable = { name = oe_twe_on value = 1 }
+	set_global_variable = { name = oe_twe_status_code value = 0 }
+	situation:oe_sit_two_emperors = {
+		set_variable = { name = oe_twe_balance value = 50 }
+		set_variable = { name = oe_twe_concord value = 0 }
+		set_variable = { name = oe_twe_tension value = 25 }
+		set_variable = { name = oe_twe_hub_east value = 0 }
+		set_variable = { name = oe_twe_hub_west value = 0 }
+		set_variable = { name = oe_twe_concord_months value = 0 }
+		set_variable = { name = oe_twe_hegemony_months value = 0 }
+	}
+	oe_twe_sync = yes
+}
+
+oe_twe_sync = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_two_emperors }
+		situation:oe_sit_two_emperors = {
+			if = { limit = { NOT = { has_variable = oe_twe_balance } } set_variable = { name = oe_twe_balance value = 50 } }
+			if = { limit = { NOT = { has_variable = oe_twe_concord } } set_variable = { name = oe_twe_concord value = 0 } }
+			if = { limit = { NOT = { has_variable = oe_twe_tension } } set_variable = { name = oe_twe_tension value = 25 } }
+			if = { limit = { NOT = { has_variable = oe_twe_concord_months } } set_variable = { name = oe_twe_concord_months value = 0 } }
+			if = { limit = { NOT = { has_variable = oe_twe_hegemony_months } } set_variable = { name = oe_twe_hegemony_months value = 0 } }
+
+			# Real-time anchor of East Emperor (seamless BYZ -> ROM handoff)
+			if = {
+				limit = { country_exists = c:ROM }
+				set_variable = { name = oe_twe_east_emperor value = c:ROM }
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				set_variable = { name = oe_twe_east_emperor value = c:BYZ }
+			}
+
+			# Real-time anchor of West Emperor (auto-tracks HRE elections)
+			if = {
+				limit = {
+					exists = international_organization:hre
+					international_organization:hre = { exists = leader_country }
+				}
+				set_variable = { name = oe_twe_west_emperor value = international_organization:hre.leader_country }
+			}
+
+			# O(1) explicit count of the 8 contested hubs (zero iterators; strict has_owner = yes)
+			set_variable = { name = oe_twe_hub_east value = 0 }
+			set_variable = { name = oe_twe_hub_west value = 0 }
+			if = { limit = { location:rome = { oe_twe_loc_east_held = yes } } change_variable = { name = oe_twe_hub_east add = 1 } }
+			else_if = { limit = { location:rome = { oe_twe_loc_west_held = yes } } change_variable = { name = oe_twe_hub_west add = 1 } }
+			if = { limit = { location:ravenna = { oe_twe_loc_east_held = yes } } change_variable = { name = oe_twe_hub_east add = 1 } }
+			else_if = { limit = { location:ravenna = { oe_twe_loc_west_held = yes } } change_variable = { name = oe_twe_hub_west add = 1 } }
+			if = { limit = { location:milano = { oe_twe_loc_east_held = yes } } change_variable = { name = oe_twe_hub_east add = 1 } }
+			else_if = { limit = { location:milano = { oe_twe_loc_west_held = yes } } change_variable = { name = oe_twe_hub_west add = 1 } }
+			if = { limit = { location:venice = { oe_twe_loc_east_held = yes } } change_variable = { name = oe_twe_hub_east add = 1 } }
+			else_if = { limit = { location:venice = { oe_twe_loc_west_held = yes } } change_variable = { name = oe_twe_hub_west add = 1 } }
+			if = { limit = { location:buda = { oe_twe_loc_east_held = yes } } change_variable = { name = oe_twe_hub_east add = 1 } }
+			else_if = { limit = { location:buda = { oe_twe_loc_west_held = yes } } change_variable = { name = oe_twe_hub_west add = 1 } }
+			if = { limit = { location:vienna = { oe_twe_loc_east_held = yes } } change_variable = { name = oe_twe_hub_east add = 1 } }
+			else_if = { limit = { location:vienna = { oe_twe_loc_west_held = yes } } change_variable = { name = oe_twe_hub_west add = 1 } }
+			if = { limit = { location:prague = { oe_twe_loc_east_held = yes } } change_variable = { name = oe_twe_hub_east add = 1 } }
+			else_if = { limit = { location:prague = { oe_twe_loc_west_held = yes } } change_variable = { name = oe_twe_hub_west add = 1 } }
+			if = { limit = { location:aachen = { oe_twe_loc_east_held = yes } } change_variable = { name = oe_twe_hub_east add = 1 } }
+			else_if = { limit = { location:aachen = { oe_twe_loc_west_held = yes } } change_variable = { name = oe_twe_hub_west add = 1 } }
+
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+
+			# Pre-cache O(1) posture status code for GUI custom loc oe_twe_status_cloc (4 evals total)
+			if = {
+				limit = { var:oe_twe_concord >= 60 var:oe_twe_balance >= 35 var:oe_twe_balance <= 65 }
+				set_global_variable = { name = oe_twe_status_code value = 3 }
+			}
+			else_if = {
+				limit = { var:oe_twe_tension >= 70 }
+				set_global_variable = { name = oe_twe_status_code value = 4 }
+			}
+			else_if = {
+				limit = { var:oe_twe_balance >= 60 }
+				set_global_variable = { name = oe_twe_status_code value = 1 }
+			}
+			else_if = {
+				limit = { var:oe_twe_balance <= 40 }
+				set_global_variable = { name = oe_twe_status_code value = 2 }
+			}
+			else = {
+				set_global_variable = { name = oe_twe_status_code value = 0 }
+			}
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------- Monthly Progression & Narrative Event Triggers
+oe_twe_tick = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_two_emperors }
+		oe_twe_sync = yes
+		situation:oe_sit_two_emperors = {
+			# Hub advantage gently shifts balance each month
+			if = {
+				limit = { var:oe_twe_hub_east > var:oe_twe_hub_west }
+				change_variable = { name = oe_twe_balance add = 1 }
+			}
+			else_if = {
+				limit = { var:oe_twe_hub_west > var:oe_twe_hub_east }
+				change_variable = { name = oe_twe_balance add = -1 }
+			}
+
+			# HRE Imperial Authority influence on balance
+			if = {
+				limit = {
+					exists = international_organization:hre
+					international_organization:hre = {
+						has_variable = imperial_authority
+						var:imperial_authority >= 70
+					}
+				}
+				change_variable = { name = oe_twe_balance add = -1 }
+			}
+			else_if = {
+				limit = {
+					exists = international_organization:hre
+					international_organization:hre = {
+						has_variable = imperial_authority
+						var:imperial_authority <= 15
+					}
+				}
+				change_variable = { name = oe_twe_balance add = 1 }
+			}
+
+			# War & War of Religions pressure on tension & concord
+			if = {
+				limit = { is_situation_active = situation:war_of_religions }
+				change_variable = { name = oe_twe_tension add = 1 }
+			}
+			if = {
+				limit = { oe_twe_emperors_at_war = yes }
+				change_variable = { name = oe_twe_tension add = 2 }
+				change_variable = { name = oe_twe_concord add = -2 }
+			}
+			else_if = {
+				limit = { var:oe_twe_tension > 25 }
+				change_variable = { name = oe_twe_tension add = -1 }
+			}
+
+			# Track 12-month Concord window (Outcome 2)
+			if = {
+				limit = {
+					var:oe_twe_concord >= 80
+					var:oe_twe_balance >= 35
+					var:oe_twe_balance <= 65
+					oe_twe_emperors_at_war = no
+				}
+				change_variable = { name = oe_twe_concord_months add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_twe_concord_months value = 0 }
+			}
+
+			# Track 12-month Direct Hegemony window (Outcome 1 alt path)
+			if = {
+				limit = { oe_twe_east_direct_hegemony = yes }
+				change_variable = { name = oe_twe_hegemony_months add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_twe_hegemony_months value = 0 }
+			}
+
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+
+		# Re-sync posture code after monthly tick
+		oe_twe_sync = yes
+
+		# Milestone multi-country narrative events (oe_twe.2 - oe_twe.6), max one per month via else_if chain
+		if = {
+			limit = {
+				NOT = { has_global_variable = oe_twe_ev2_done }
+				situation:oe_sit_two_emperors = {
+					has_variable = oe_twe_tension
+					var:oe_twe_tension >= 35
+				}
+			}
+			set_global_variable = { name = oe_twe_ev2_done value = 1 }
+			oe_twe_notify_both_emperors_2 = yes
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_twe_ev3_done }
+				situation:oe_sit_two_emperors = {
+					has_variable = oe_twe_tension
+					var:oe_twe_tension >= 50
+					has_variable = oe_twe_hub_east
+					var:oe_twe_hub_east >= 1
+				}
+			}
+			set_global_variable = { name = oe_twe_ev3_done value = 1 }
+			oe_twe_notify_both_emperors_3 = yes
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_twe_ev4_done }
+				country_exists = c:FRA
+				situation:oe_sit_two_emperors = {
+					has_variable = oe_twe_tension
+					var:oe_twe_tension >= 40
+				}
+			}
+			set_global_variable = { name = oe_twe_ev4_done value = 1 }
+			oe_twe_notify_french_4 = yes
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_twe_ev5_done }
+				is_situation_active = situation:war_of_religions
+			}
+			set_global_variable = { name = oe_twe_ev5_done value = 1 }
+			oe_twe_notify_both_emperors_5 = yes
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_twe_ev6_done }
+				oe_twe_emperors_at_war = no
+				situation:oe_sit_two_emperors = {
+					has_variable = oe_twe_concord
+					var:oe_twe_concord >= 45
+				}
+			}
+			set_global_variable = { name = oe_twe_ev6_done value = 1 }
+			oe_twe_notify_both_emperors_6 = yes
+		}
+	}
+}
+
+# Event dispatch helpers (explicitly read oe_twe_east_emperor & oe_twe_west_emperor)
+oe_twe_notify_both_emperors_1 = {
+	situation:oe_sit_two_emperors = {
+		if = {
+			limit = { has_variable = oe_twe_east_emperor }
+			var:oe_twe_east_emperor = { trigger_event_non_silently = oe_twe.1 }
+		}
+		if = {
+			limit = { has_variable = oe_twe_west_emperor }
+			var:oe_twe_west_emperor = { trigger_event_non_silently = oe_twe.1 }
+		}
+	}
+}
+
+oe_twe_notify_both_emperors_2 = {
+	situation:oe_sit_two_emperors = {
+		if = {
+			limit = { has_variable = oe_twe_east_emperor }
+			var:oe_twe_east_emperor = { trigger_event_non_silently = oe_twe.2 }
+		}
+		if = {
+			limit = { has_variable = oe_twe_west_emperor }
+			var:oe_twe_west_emperor = { trigger_event_non_silently = oe_twe.2 }
+		}
+	}
+}
+
+oe_twe_notify_both_emperors_3 = {
+	situation:oe_sit_two_emperors = {
+		if = {
+			limit = { has_variable = oe_twe_east_emperor }
+			var:oe_twe_east_emperor = { trigger_event_non_silently = oe_twe.3 }
+		}
+		if = {
+			limit = { has_variable = oe_twe_west_emperor }
+			var:oe_twe_west_emperor = { trigger_event_non_silently = oe_twe.3 }
+		}
+	}
+}
+
+oe_twe_notify_french_4 = {
+	if = {
+		limit = { country_exists = c:FRA }
+		c:FRA = { trigger_event_non_silently = oe_twe.4 }
+	}
+	situation:oe_sit_two_emperors = {
+		if = {
+			limit = { has_variable = oe_twe_east_emperor }
+			var:oe_twe_east_emperor = { trigger_event_non_silently = oe_twe.4 }
+		}
+	}
+}
+
+oe_twe_notify_both_emperors_5 = {
+	situation:oe_sit_two_emperors = {
+		if = {
+			limit = { has_variable = oe_twe_east_emperor }
+			var:oe_twe_east_emperor = { trigger_event_non_silently = oe_twe.5 }
+		}
+		if = {
+			limit = { has_variable = oe_twe_west_emperor }
+			var:oe_twe_west_emperor = { trigger_event_non_silently = oe_twe.5 }
+		}
+	}
+}
+
+oe_twe_notify_both_emperors_6 = {
+	situation:oe_sit_two_emperors = {
+		if = {
+			limit = { has_variable = oe_twe_east_emperor }
+			var:oe_twe_east_emperor = { trigger_event_non_silently = oe_twe.6 }
+		}
+		if = {
+			limit = { has_variable = oe_twe_west_emperor }
+			var:oe_twe_west_emperor = { trigger_event_non_silently = oe_twe.6 }
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------- Slot 56 & Fallback Pulse Entry Point (Idempotent per month)
+oe_twe_monthly = {
+	if = {
+		limit = { NOT = { global_var:oe_twe_ran_m ?= oe_twe_m_now } }
+		set_global_variable = { name = oe_twe_ran_m value = oe_twe_m_now }
+		if = {
+			limit = { is_situation_active = situation:oe_sit_two_emperors }
+			set_global_variable = { name = oe_twe_on value = 1 }
+			oe_twe_tick = yes
+		}
+		else_if = {
+			limit = { has_global_variable = oe_twe_ended has_global_variable = oe_twe_on }
+			remove_global_variable = oe_twe_on
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------- Dev / Test Helpers (DEV_LINES only; zero debug_log)
+oe_twe_test_start = {
+	remove_global_variable = oe_twe_ended
+	remove_global_variable = oe_twe_outcome
+	remove_global_variable = oe_twe_old_order_shaken
+	if = {
+		limit = { NOT = { is_situation_active = situation:oe_sit_two_emperors } }
+		activate_situation = situation:oe_sit_two_emperors
+	}
+	oe_twe_init = yes
+}
+
+oe_twe_test_tick = {
+	remove_global_variable = oe_twe_ran_m
+	oe_twe_monthly = yes
+}
+
+oe_twe_test_unus = {
+	oe_twe_test_start = yes
+	situation:oe_sit_two_emperors = {
+		set_variable = { name = oe_twe_balance value = 86 }
+	}
+	oe_twe_sync = yes
+	set_global_variable = { name = oe_twe_worker_job value = 1 }
+	trigger_event_silently = oe_twe.20
+}
+
+oe_twe_test_concord = {
+	oe_twe_test_start = yes
+	situation:oe_sit_two_emperors = {
+		set_variable = { name = oe_twe_balance value = 50 }
+		set_variable = { name = oe_twe_concord value = 82 }
+		set_variable = { name = oe_twe_concord_months value = 12 }
+	}
+	oe_twe_sync = yes
+	set_global_variable = { name = oe_twe_worker_job value = 2 }
+	trigger_event_silently = oe_twe.20
+}
+
+oe_twe_test_retreat = {
+	oe_twe_test_start = yes
+	situation:oe_sit_two_emperors = {
+		set_variable = { name = oe_twe_balance value = 14 }
+	}
+	oe_twe_sync = yes
+	set_global_variable = { name = oe_twe_worker_job value = 3 }
+	trigger_event_silently = oe_twe.20
+}
+
+oe_twe_test_revolution = {
+	oe_twe_test_start = yes
+	set_global_variable = { name = oe_twe_worker_job value = 4 }
+	trigger_event_silently = oe_twe.20
+}
+
+oe_twe_test_reset = {
+	remove_global_variable = oe_twe_started
+	remove_global_variable = oe_twe_on
+	remove_global_variable = oe_twe_ended
+	remove_global_variable = oe_twe_outcome
+	remove_global_variable = oe_twe_old_order_shaken
+	remove_global_variable = oe_twe_ran_m
+	remove_global_variable = oe_twe_status_code
+	remove_global_variable = oe_twe_ev2_done
+	remove_global_variable = oe_twe_ev3_done
+	remove_global_variable = oe_twe_ev4_done
+	remove_global_variable = oe_twe_ev5_done
+	remove_global_variable = oe_twe_ev6_done
+	remove_global_variable = oe_twe_worker_job
+	remove_global_variable = oe_twe_papal_arb_gcd
+	remove_global_variable = oe_twe_prot_sub_gcd
+	remove_country_modifier = oe_twe_translatio_edict_mod
+	remove_country_modifier = oe_twe_hre_bulwark_mod
+	remove_country_modifier = oe_twe_french_subsidy_mod
+	remove_country_modifier = oe_twe_papal_crown_mod
+	remove_country_modifier = oe_twe_prot_eastern_relief_mod
+	remove_country_modifier = oe_twe_envoy_detente_mod
+	remove_country_modifier = oe_twe_unus_imperator_mod
+	remove_country_modifier = oe_twe_concordat_mod
+	remove_country_modifier = oe_twe_hre_vindicated_mod
+	remove_country_modifier = oe_twe_west_retreat_mod
+	remove_country_modifier = oe_twe_old_order_shaken_mod
+	remove_country_modifier = oe_twe_danube_alert_mod
+	remove_country_modifier = oe_twe_adriatic_accord_mod
+	remove_country_modifier = oe_twe_imperial_diet_schism_mod
+	remove_country_modifier = oe_twe_concord_talks_mod
+}

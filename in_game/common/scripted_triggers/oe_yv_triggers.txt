@@ -46,6 +46,45 @@ oe_yv_crown_prince_alive = {
     global_var:oe_yv_crown_prince = { is_alive = yes }
 }
 
+# Any scope. The Yuan stands as the Mongol dynasty (delegates to Y7's oe_y7_yuan_ok when present).
+oe_yv_m6_yuan_ok = {
+    oe_y7_yuan_ok = yes
+}
+# Any scope. Toqto'a is alive at the Yuan court and neither imprisoned nor permanently banned from the cabinet
+# (the latter is set when Y7 .12 dismisses Toqto'a, so sole_chancellor clears immediately after dismissal).
+oe_yv_toqto_active = {
+    character:yua_toqto ?= {
+        is_alive = yes
+        owner ?= c:CHI
+        NOT = { has_character_modifier = imprisoned }
+        NOT = { has_character_modifier = permanently_banned_from_cabinet }
+    }
+}
+
+# CHI scope. Event 14 holds back this month while another Yuan line already used oe_yuan_ev_m (at most 2 months past due).
+oe_yv_wait_14 = {
+    has_global_variable = oe_yuan_ev_m
+    has_variable = oe_yv_m
+    var:oe_yv_m = global_var:oe_yuan_ev_m
+    var:oe_yv_m < 94
+}
+
+# CHI scope. Event 15 holds back this month while another Yuan line already used oe_yuan_ev_m (at most 2 months past due).
+oe_yv_wait_15 = {
+    has_global_variable = oe_yuan_ev_m
+    has_variable = oe_yv_m
+    var:oe_yv_m = global_var:oe_yuan_ev_m
+    var:oe_yv_m < 130
+}
+
+# CHI scope. Event 16 holds back this month while another Yuan line already used oe_yuan_ev_m (at most 2 months past due).
+oe_yv_wait_16 = {
+    has_global_variable = oe_yuan_ev_m
+    has_variable = oe_yv_m
+    var:oe_yv_m = global_var:oe_yuan_ev_m
+    var:oe_yv_m < 154
+}
+
 # CHI scope. Condition of event 1.
 oe_yv_ok_1 = {
     culture = culture:mongolian_culture
@@ -129,6 +168,28 @@ oe_yv_ok_13 = {
     has_ruler = yes
     ruler ?= character:yua_togon_temur
     oe_yv_et_at_court = yes
+    oe_start_is_1337 = yes
+}
+
+# CHI scope. Condition of event 14.
+oe_yv_ok_14 = {
+    oe_yv_m6_yuan_ok = yes
+    oe_yv_toqto_active = yes
+    oe_start_is_1337 = yes
+}
+
+# CHI scope. Condition of event 15.
+oe_yv_ok_15 = {
+    oe_yv_m6_yuan_ok = yes
+    oe_yv_toqto_active = yes
+    global_var:oe_yv_toqto_out ?= 1
+    oe_start_is_1337 = yes
+}
+
+# CHI scope. Condition of event 16.
+oe_yv_ok_16 = {
+    oe_yv_m6_yuan_ok = yes
+    oe_yv_toqto_active = yes
     oe_start_is_1337 = yes
 }
 
@@ -444,6 +505,78 @@ oe_yv_lapse_13 = {
     }
 }
 
+# CHI scope. Event 14: open (inside its window, not at its end), due (end reached), lapse (dropped).
+oe_yv_open_14 = {
+    NOT = { has_variable = oe_yv_st_14 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 85
+    var:oe_yv_m < 92
+    oe_yv_ok_14 = yes
+}
+oe_yv_due_14 = {
+    NOT = { has_variable = oe_yv_st_14 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 92
+    oe_yv_ok_14 = yes
+}
+oe_yv_lapse_14 = {
+    NOT = { has_variable = oe_yv_st_14 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 92
+    OR = {
+        NOT = { oe_yv_ok_14 = yes }
+        var:oe_yv_m > oe_yv_cut_14
+    }
+}
+
+# CHI scope. Event 15: open (inside its window, not at its end), due (end reached), lapse (dropped).
+oe_yv_open_15 = {
+    NOT = { has_variable = oe_yv_st_15 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 117
+    var:oe_yv_m < 128
+    oe_yv_ok_15 = yes
+}
+oe_yv_due_15 = {
+    NOT = { has_variable = oe_yv_st_15 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 128
+    oe_yv_ok_15 = yes
+}
+oe_yv_lapse_15 = {
+    NOT = { has_variable = oe_yv_st_15 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 128
+    OR = {
+        NOT = { oe_yv_ok_15 = yes }
+        var:oe_yv_m > oe_yv_cut_15
+    }
+}
+
+# CHI scope. Event 16: open (inside its window, not at its end), due (end reached), lapse (dropped).
+oe_yv_open_16 = {
+    NOT = { has_variable = oe_yv_st_16 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 146
+    var:oe_yv_m < 152
+    oe_yv_ok_16 = yes
+}
+oe_yv_due_16 = {
+    NOT = { has_variable = oe_yv_st_16 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 152
+    oe_yv_ok_16 = yes
+}
+oe_yv_lapse_16 = {
+    NOT = { has_variable = oe_yv_st_16 }
+    has_variable = oe_yv_m
+    var:oe_yv_m >= 152
+    OR = {
+        NOT = { oe_yv_ok_16 = yes }
+        var:oe_yv_m > oe_yv_cut_16
+    }
+}
+
 # CHI scope. Every scheduled event has fired or been dropped.
 oe_yv_all_done = {
     has_variable = oe_yv_st_1
@@ -459,4 +592,7 @@ oe_yv_all_done = {
     has_variable = oe_yv_st_11
     has_variable = oe_yv_st_12
     has_variable = oe_yv_st_13
+    has_variable = oe_yv_st_14
+    has_variable = oe_yv_st_15
+    has_variable = oe_yv_st_16
 }

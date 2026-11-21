@@ -1,22 +1,39 @@
 ﻿oe_rw_start_egypt_romanization = {
     if = {
         limit = { oe_rw_start_egypt_romanization_allowed = yes }
-        set_variable = oe_rw_egypt_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_egypt_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:alexandria } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        region:egypt_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_egypt_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_egypt_source_share
+                    if = { limit = { oe_rw_egypt_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:alexandria } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_egypt_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_egypt_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_egypt_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_egypt_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_egypt_romanization_started
+                        set_variable = { name = oe_rw_origin_egypt value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_egypt_greek_culture event = oe_identity_expiry.6 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_egypt_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_egypt_greek_culture event = oe_identity_expiry.6 }
         }
     }
 }
@@ -24,22 +41,39 @@
 oe_rw_start_syria_romanization = {
     if = {
         limit = { oe_rw_start_syria_romanization_allowed = yes }
-        set_variable = oe_rw_syria_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_syria_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:damascus } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        area:levant_area = {
+            ordered_location_in_area = {
+                limit = { oe_rw_syria_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_syria_source_share
+                    if = { limit = { oe_rw_syria_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:damascus } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_syria_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_syria_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_levantine_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_syria_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_syria_romanization_started
+                        set_variable = { name = oe_rw_origin_syria value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_levantine_greek_culture event = oe_identity_expiry.15 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_syria_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_levantine_greek_culture event = oe_identity_expiry.15 }
         }
     }
 }
@@ -47,22 +81,39 @@ oe_rw_start_syria_romanization = {
 oe_rw_start_africa_romanization = {
     if = {
         limit = { oe_rw_start_africa_romanization_allowed = yes }
-        set_variable = oe_rw_africa_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_africa_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:tunis } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        region:maghreb_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_africa_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_africa_source_share
+                    if = { limit = { oe_rw_africa_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:tunis } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_africa_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_africa_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_tunis_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_africa_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_africa_romanization_started
+                        set_variable = { name = oe_rw_origin_africa value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_tunis_greek_culture event = oe_identity_expiry.1 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_africa_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_tunis_greek_culture event = oe_identity_expiry.1 }
         }
     }
 }
@@ -70,22 +121,39 @@ oe_rw_start_africa_romanization = {
 oe_rw_start_gaul_romanization = {
     if = {
         limit = { oe_rw_start_gaul_romanization_allowed = yes }
-        set_variable = oe_rw_gaul_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_gaul_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:paris } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        region:france_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_gaul_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_gaul_source_share
+                    if = { limit = { oe_rw_gaul_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:paris } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_gaul_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_gaul_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_french_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_gaul_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_gaul_romanization_started
+                        set_variable = { name = oe_rw_origin_gaul value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_french_greek_culture event = oe_identity_expiry.7 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_gaul_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_french_greek_culture event = oe_identity_expiry.7 }
         }
     }
 }
@@ -93,22 +161,39 @@ oe_rw_start_gaul_romanization = {
 oe_rw_start_iberia_romanization = {
     if = {
         limit = { oe_rw_start_iberia_romanization_allowed = yes }
-        set_variable = oe_rw_iberia_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_iberia_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:toledo } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        region:iberia_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_iberia_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_iberia_source_share
+                    if = { limit = { oe_rw_iberia_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:toledo } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_iberia_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_iberia_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_iberia_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_iberia_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_iberia_romanization_started
+                        set_variable = { name = oe_rw_origin_iberia value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_iberia_greek_culture event = oe_identity_expiry.9 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_iberia_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_iberia_greek_culture event = oe_identity_expiry.9 }
         }
     }
 }
@@ -116,22 +201,39 @@ oe_rw_start_iberia_romanization = {
 oe_rw_start_britain_romanization = {
     if = {
         limit = { oe_rw_start_britain_romanization_allowed = yes }
-        set_variable = oe_rw_britain_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_britain_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:london } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        region:great_britain_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_britain_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_britain_source_share
+                    if = { limit = { oe_rw_britain_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:london } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_britain_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_britain_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_english_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_britain_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_britain_romanization_started
+                        set_variable = { name = oe_rw_origin_britain value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_english_greek_culture event = oe_identity_expiry.3 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_britain_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_english_greek_culture event = oe_identity_expiry.3 }
         }
     }
 }
@@ -139,22 +241,39 @@ oe_rw_start_britain_romanization = {
 oe_rw_start_serbia_romanization = {
     if = {
         limit = { oe_rw_start_serbia_romanization_allowed = yes }
-        set_variable = oe_rw_serbia_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_serbia_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:belgrad } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        area:serbia_area = {
+            ordered_location_in_area = {
+                limit = { oe_rw_serbia_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_serbia_source_share
+                    if = { limit = { oe_rw_serbia_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:belgrad } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_serbia_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_serbia_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_serbian_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_serbia_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_serbia_romanization_started
+                        set_variable = { name = oe_rw_origin_serbia value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_serbian_greek_culture event = oe_identity_expiry.14 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_serbia_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_serbian_greek_culture event = oe_identity_expiry.14 }
         }
     }
 }
@@ -162,22 +281,39 @@ oe_rw_start_serbia_romanization = {
 oe_rw_start_bulgaria_romanization = {
     if = {
         limit = { oe_rw_start_bulgaria_romanization_allowed = yes }
-        set_variable = oe_rw_bulgaria_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_bulgaria_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:tarnovo } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        area:bulgaria_area = {
+            ordered_location_in_area = {
+                limit = { oe_rw_bulgaria_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_bulgaria_source_share
+                    if = { limit = { oe_rw_bulgaria_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:tarnovo } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_bulgaria_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_bulgaria_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_bulgarian_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_bulgaria_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_bulgaria_romanization_started
+                        set_variable = { name = oe_rw_origin_bulgaria value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_bulgarian_greek_culture event = oe_identity_expiry.4 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_bulgaria_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_bulgarian_greek_culture event = oe_identity_expiry.4 }
         }
     }
 }
@@ -185,23 +321,39 @@ oe_rw_start_bulgaria_romanization = {
 oe_rw_start_albania_romanization = {
     if = {
         limit = { oe_rw_start_albania_romanization_allowed = yes }
-        set_variable = oe_rw_albania_romanization_started
-        ordered_ownable_location = {
-            # fm_patches1 A1 (decision 281): only where Albanians are at least half (the region has Greek and Aromanian places)
-            limit = { oe_rw_assim_albania_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } "culture_percentage(culture:albanian)" >= 0.5 }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:durres } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        area:albania_area = {
+            ordered_location_in_area = {
+                limit = { oe_rw_albania_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_albania_source_share
+                    if = { limit = { oe_rw_albania_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:durres } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_albania_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_albania_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_albanian_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_albania_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_albania_romanization_started
+                        set_variable = { name = oe_rw_origin_albania value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_albanian_greek_culture event = oe_identity_expiry.2 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_albania_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_albanian_greek_culture event = oe_identity_expiry.2 }
         }
     }
 }
@@ -209,22 +361,39 @@ oe_rw_start_albania_romanization = {
 oe_rw_start_illyria_romanization = {
     if = {
         limit = { oe_rw_start_illyria_romanization_allowed = yes }
-        set_variable = oe_rw_illyria_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_illyria_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the three regional centres, if it passes the ownership/region limit.
-                if = { limit = { OR = { this = location:split this = location:zagreb this = location:vrhbosna } } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        region:balkan_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_illyria_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_illyria_source_share
+                    if = { limit = { oe_rw_illyria_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { OR = { this = location:split this = location:zagreb this = location:vrhbosna } } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_illyria_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_illyria_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_croatian_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_illyria_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_illyria_romanization_started
+                        set_variable = { name = oe_rw_origin_illyria value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_croatian_greek_culture event = oe_identity_expiry.10 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_illyria_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_croatian_greek_culture event = oe_identity_expiry.10 }
         }
     }
 }
@@ -232,22 +401,39 @@ oe_rw_start_illyria_romanization = {
 oe_rw_start_latin_romanization = {
     if = {
         limit = { oe_rw_start_latin_romanization_allowed = yes }
-        set_variable = oe_rw_latin_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_latin_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:rome } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        region:italy_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_latin_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_latin_source_share
+                    if = { limit = { oe_rw_latin_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:rome } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_latin_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_latin_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_latin_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_latin_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_latin_romanization_started
+                        set_variable = { name = oe_rw_origin_latin value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_latin_greek_culture event = oe_identity_expiry.11 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_latin_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_latin_greek_culture event = oe_identity_expiry.11 }
         }
     }
 }
@@ -255,22 +441,49 @@ oe_rw_start_latin_romanization = {
 oe_rw_start_german_romanization = {
     if = {
         limit = { oe_rw_start_german_romanization_allowed = yes }
-        set_variable = oe_rw_german_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_german_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
+        region:north_german_region = {
+            every_location_in_region = {
+                limit = { oe_rw_german_origin_ge25 = yes }
+                add_to_temporary_list = oe_rw_german_candidates
+            }
+        }
+        region:south_german_region = {
+            every_location_in_region = {
+                limit = { oe_rw_german_origin_ge25 = yes }
+                add_to_temporary_list = oe_rw_german_candidates
+            }
+        }
+        ordered_in_list = {
+            list = oe_rw_german_candidates
             max = 1
+            check_range_bounds = no
             order_by = {
                 value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
+                multiply = oe_rw_assim_german_source_share
+                if = { limit = { oe_rw_german_origin_ge50 = yes } add = 10000000 }
                 if = { limit = { this = location:vienna } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
                 if = { limit = { owner = c:BYZ } add = 100000000 }
             }
+            save_scope_as = oe_rw_origin_loc
             spawn_movement = {
                 movement_definition = movement_definition:oe_german_identity_movement
-                supporters = { value = population multiply = 0.1 }
+                supporters = { value = population multiply = oe_rw_assim_german_source_share multiply = 0.1 }
             }
-            oe_identity_schedule_30_years = { holder = culture:oe_german_greek_culture event = oe_identity_expiry.8 }
+            if = {
+                limit = {
+                    culture:oe_german_greek_culture = {
+                        any_movement_in_culture = {
+                            movement_type = movement_definition:oe_german_identity_movement
+                            num_locations_affected > 0
+                        }
+                    }
+                }
+                c:BYZ = {
+                    set_variable = oe_rw_german_romanization_started
+                    set_variable = { name = oe_rw_origin_german value = scope:oe_rw_origin_loc }
+                }
+                oe_identity_schedule_30_years = { holder = culture:oe_german_greek_culture event = oe_identity_expiry.8 }
+            }
         }
     }
 }

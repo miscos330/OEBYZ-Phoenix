@@ -11,13 +11,82 @@ types oe_roman_hegemony_widgets {
                 layoutpolicy_horizontal = expanding
                 margin = { 12 12 }
                 spacing = 12
-                text_single = { text = "OE_HEG_ROMAN_ACTIONS_NOTICE" fontsize = 17 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                vbox = {
+                    name = "oe_ui2_heg_notice_banner"
+                    layoutpolicy_horizontal = expanding
+                    margin = { 12 8 }
+                    using = oe_era_banner_purple
+                    text_single = { text = "OE_HEG_ROMAN_ACTIONS_NOTICE" fontsize = 16 default_format = "#color_gold" multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                }
                 # NEW 2026-11-17 Roman Reconquest: summary card (fervour, ten regions, stages).
                 oe_rr_card = {}
                 # NEW r6 a-ui: tribute actions after the contest ended (the contest page is hidden then).
                 oe_r6_tribute_card = {}
+                # fx27 UI-2 (Decision 309): O(1) client-side 4-theater declutter filter bar (GetVariableSystem).
+                vbox = {
+                    name = "oe_ui2_heg_filter_bar"
+                    layoutpolicy_horizontal = expanding
+                    spacing = 5
+                    widget = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 28 }
+                        using = oe_era_banner_purple
+                        hbox = {
+                            size = { 100% 100% }
+                            margin = { 10 0 }
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = left|nobaseline
+                                fontsize = 14
+                                default_format = "#color_gold"
+                                text = "OE_UI2_HEG_FILTER_BANNER"
+                            }
+                        }
+                    }
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 4
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 30 }
+                            blockoverride "tab_text" { text = "OE_UI2_HEG_TAB_ALL" fontsize = 13 }
+                            tooltip = "OE_UI2_HEG_TAB_ALL_TT"
+                            onclick = "[GetVariableSystem.Set('oe_heg_reg','all')]"
+                            down = "[Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all'))]"
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 30 }
+                            blockoverride "tab_text" { text = "OE_UI2_HEG_TAB_EAST" fontsize = 13 }
+                            tooltip = "OE_UI2_HEG_TAB_EAST_TT"
+                            onclick = "[GetVariableSystem.Set('oe_heg_reg','east')]"
+                            down = "[GetVariableSystem.HasValue('oe_heg_reg','east')]"
+                        }
+                    }
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 4
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 30 }
+                            blockoverride "tab_text" { text = "OE_UI2_HEG_TAB_WEST" fontsize = 13 }
+                            tooltip = "OE_UI2_HEG_TAB_WEST_TT"
+                            onclick = "[GetVariableSystem.Set('oe_heg_reg','west')]"
+                            down = "[GetVariableSystem.HasValue('oe_heg_reg','west')]"
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 30 }
+                            blockoverride "tab_text" { text = "OE_UI2_HEG_TAB_NORTH" fontsize = 13 }
+                            tooltip = "OE_UI2_HEG_TAB_NORTH_TT"
+                            onclick = "[GetVariableSystem.Set('oe_heg_reg','north')]"
+                            down = "[GetVariableSystem.HasValue('oe_heg_reg','north')]"
+                        }
+                    }
+                }
                 card_common = {
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','east'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_EGYPT" fontsize = 20 } }
                     blockoverride "common_bottom_content" {
@@ -339,7 +408,8 @@ types oe_roman_hegemony_widgets {
                     }
                 }
 card_common = {
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','east'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_AFRICA" fontsize = 20 } }
                     blockoverride "common_bottom_content" {
@@ -672,7 +742,8 @@ card_common = {
                     }
                 }
 card_common = {
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','west'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_ITALY" fontsize = 20 } }
                     blockoverride "common_bottom_content" {
@@ -989,7 +1060,8 @@ card_common = {
                     }
                 }
 card_common = {
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','west'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_IBERIA" fontsize = 20 } }
                     blockoverride "common_bottom_content" {
@@ -1276,7 +1348,8 @@ card_common = {
                     }
                 }
 card_common = {
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','west'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_FRANCE" fontsize = 20 } }
                     blockoverride "common_bottom_content" {
@@ -1563,7 +1636,8 @@ card_common = {
                     }
                 }
 card_common = {
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','west'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_BRITAIN" fontsize = 20 } }
                     blockoverride "common_bottom_content" {
@@ -1851,7 +1925,8 @@ card_common = {
                 }
                 card_common = {
                     name = "oe_rw_germany_panel"
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','north'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_GERMANY" fontsize = 20 } }
                     blockoverride "common_bottom_content" {
@@ -2014,7 +2089,8 @@ card_common = {
                 }
                 
                 card_common = {
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','north'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_RUSSIA" fontsize = 20 } }
                     blockoverride "common_bottom_content" {
@@ -2238,7 +2314,8 @@ vbox = {
                     }
                 }
                 card_common = {
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','east'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_PERSIA" fontsize = 20 } }
                     blockoverride "common_bottom_content" {
@@ -2462,7 +2539,8 @@ vbox = {
                     }
                 }
                 card_common = {
-                    blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_heg_reg')),GetVariableSystem.HasValue('oe_heg_reg','all')),GetVariableSystem.HasValue('oe_heg_reg','east'))]"
+                    blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
                     blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
                     blockoverride "common_header_text_full" { text_single = { text = "OE_RW_ARABIA" fontsize = 20 } }
                     blockoverride "common_bottom_content" {

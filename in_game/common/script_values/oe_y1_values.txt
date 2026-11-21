@@ -18,8 +18,9 @@ oe_y1_m_now = {
     if = { limit = { current_month = 11 } add = 11 }
     if = { limit = { current_month = 12 } add = 12 }
 }
-# Country scope. Event cost: three months of trade and tax income (vanilla flavor_chi pattern), at least 30.
+# Country scope. Event cost: three / six months of trade and tax income (vanilla flavor_chi pattern), floors 30 / 60.
 oe_y1_cost_3m = { value = monthly_income_trade_and_tax multiply = 3 min = 30 }
+oe_y1_cost_6m = { value = monthly_income_trade_and_tax multiply = 6 min = 60 }
 # Any scope. Event 4 (Lady Gi): from the month after Bayan lost power, not before month 33 (1340.1); 3 months.
 oe_y1_lo_4 = {
     value = 9999
@@ -43,6 +44,14 @@ oe_y1_hi_5 = { value = 9999 if = { limit = { has_global_variable = oe_y1_d_st3 }
 # Any scope. Event 6: 48-66 months after global var oe_y1_d_rtr (9999 while it is unset).
 oe_y1_lo_6 = { value = 9999 if = { limit = { has_global_variable = oe_y1_d_rtr } value = global_var:oe_y1_d_rtr add = 48 } }
 oe_y1_hi_6 = { value = 9999 if = { limit = { has_global_variable = oe_y1_d_rtr } value = global_var:oe_y1_d_rtr add = 66 } }
+
+# Any scope. Event 11: 1-3 months after global var oe_y1_d_phm (9999 while it is unset).
+oe_y1_lo_11 = { value = 9999 if = { limit = { has_global_variable = oe_y1_d_phm } value = global_var:oe_y1_d_phm add = 1 } }
+oe_y1_hi_11 = { value = 9999 if = { limit = { has_global_variable = oe_y1_d_phm } value = global_var:oe_y1_d_phm add = 3 } }
+
+# Any scope. Event 12: 18-48 months after global var oe_y1_d_phm (9999 while it is unset).
+oe_y1_lo_12 = { value = 9999 if = { limit = { has_global_variable = oe_y1_d_phm } value = global_var:oe_y1_d_phm add = 18 } }
+oe_y1_hi_12 = { value = 9999 if = { limit = { has_global_variable = oe_y1_d_phm } value = global_var:oe_y1_d_phm add = 48 } }
 
 # Any scope. Event 1: months left in its window (this one included), roll in percent, drop month.
 oe_y1_left_1 = { value = 6 add = 1 subtract = global_var:oe_y1_m min = 1 }
@@ -74,6 +83,26 @@ oe_y1_left_6 = { value = oe_y1_hi_6 add = 1 subtract = global_var:oe_y1_m min = 
 oe_y1_ch_6 = { value = 100 divide = oe_y1_left_6 }
 oe_y1_cut_6 = { value = oe_y1_hi_6 add = 6 }
 
+# Any scope. Event 10: months left in its window (this one included), roll in percent, drop month.
+oe_y1_left_10 = { value = 224 add = 1 subtract = global_var:oe_y1_m min = 1 }
+oe_y1_ch_10 = { value = 100 divide = oe_y1_left_10 }
+oe_y1_cut_10 = { value = 224 add = 6 }
+
+# Any scope. Event 11: months left in its window (this one included), roll in percent, drop month.
+oe_y1_left_11 = { value = oe_y1_hi_11 add = 1 subtract = global_var:oe_y1_m min = 1 }
+oe_y1_ch_11 = { value = 100 divide = oe_y1_left_11 }
+oe_y1_cut_11 = { value = oe_y1_hi_11 add = 6 }
+
+# Any scope. Event 12: months left in its window (this one included), roll in percent, drop month.
+oe_y1_left_12 = { value = oe_y1_hi_12 add = 1 subtract = global_var:oe_y1_m min = 1 }
+oe_y1_ch_12 = { value = 100 divide = oe_y1_left_12 }
+oe_y1_cut_12 = { value = oe_y1_hi_12 add = 6 }
+
+# Any scope. Event 13: months left in its window (this one included), roll in percent, drop month.
+oe_y1_left_13 = { value = 584 add = 1 subtract = global_var:oe_y1_m min = 1 }
+oe_y1_ch_13 = { value = 100 divide = oe_y1_left_13 }
+oe_y1_cut_13 = { value = 584 add = 6 }
+
 # ---- TEST ONLY: readings for the report event oe_y1.90 (any scope) ----
 oe_y1_dev_m = { value = -1 if = { limit = { has_global_variable = oe_y1_m } value = global_var:oe_y1_m } }
 oe_y1_dev_on = { value = 0 if = { limit = { has_global_variable = oe_y1_on } value = 1 } }
@@ -84,6 +113,10 @@ oe_y1_dev_st3 = { value = 0 if = { limit = { has_global_variable = oe_y1_st_3 } 
 oe_y1_dev_st4 = { value = 0 if = { limit = { has_global_variable = oe_y1_st_4 } value = global_var:oe_y1_st_4 } }
 oe_y1_dev_st5 = { value = 0 if = { limit = { has_global_variable = oe_y1_st_5 } value = global_var:oe_y1_st_5 } }
 oe_y1_dev_st6 = { value = 0 if = { limit = { has_global_variable = oe_y1_st_6 } value = global_var:oe_y1_st_6 } }
+oe_y1_dev_st10 = { value = 0 if = { limit = { has_global_variable = oe_y1_st_10 } value = global_var:oe_y1_st_10 } }
+oe_y1_dev_st11 = { value = 0 if = { limit = { has_global_variable = oe_y1_st_11 } value = global_var:oe_y1_st_11 } }
+oe_y1_dev_st12 = { value = 0 if = { limit = { has_global_variable = oe_y1_st_12 } value = global_var:oe_y1_st_12 } }
+oe_y1_dev_st13 = { value = 0 if = { limit = { has_global_variable = oe_y1_st_13 } value = global_var:oe_y1_st_13 } }
 oe_y1_dev_dking = { value = -1 if = { limit = { has_global_variable = oe_y1_d_king } value = global_var:oe_y1_d_king } }
 oe_y1_dev_dbayan = { value = -1 if = { limit = { has_global_variable = oe_y1_d_bayan } value = global_var:oe_y1_d_bayan } }
 oe_y1_dev_drtr = { value = -1 if = { limit = { has_global_variable = oe_y1_d_rtr } value = global_var:oe_y1_d_rtr } }
@@ -104,6 +137,10 @@ oe_y1_dev_bayan = { value = 0 if = { limit = { oe_y1_bayan_in_power = yes } valu
 oe_y1_dev_rtr = { value = 0 if = { limit = { situation:red_turban_rebellions = { situation_is_active = yes } } value = 1 } }
 oe_y1_dev_rtr44 = { value = 0 if = { limit = { has_fired_unique_event = red_turban_rebellions.44 } value = 1 } }
 oe_y1_dev_fallen = { value = 0 if = { limit = { oe_y1_yuan_fallen = yes } value = 1 } }
+oe_y1_dev_phm = { value = 0 if = { limit = { has_global_variable = oe_y1_phm } value = global_var:oe_y1_phm } }
+oe_y1_dev_phmexp = { value = 0 if = { limit = { has_global_variable = oe_y1_phm_exp } value = global_var:oe_y1_phm_exp } }
+oe_y1_dev_phmset = { value = 0 if = { limit = { has_global_variable = oe_y1_phm_settle } value = global_var:oe_y1_phm_settle } }
+oe_y1_dev_phmfin = { value = 0 if = { limit = { has_global_variable = oe_y1_phm_final } value = global_var:oe_y1_phm_final } }
 # CHI's subjects whose capital lies in tibet_region (the countries vanilla red_turban_rebellions.44 abandons)
 oe_y1_dev_tibsub = {
     value = 0

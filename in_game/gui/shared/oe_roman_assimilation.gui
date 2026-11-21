@@ -1,6 +1,6 @@
 ﻿types oe_roman_assimilation_widgets {
     type oe_rw_assimilation_panel = card_common {
-        blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
+        blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
         blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_roman_world.dds" }
         blockoverride "common_header_text_full" { text_single = { text = "OE_RW_ASSIM_TITLE" fontsize = 20 } }
         blockoverride "common_bottom_content" {
@@ -16,9 +16,75 @@
                     }
                 }
                 text_single = { text = "OE_RW_ASSIM_FLAVOR" fontsize = 17 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
+                # fx27 UI-2 (Decision 309): O(1) client-side 4-region filter bar (GetVariableSystem).
+                vbox = {
+                    name = "oe_ui2_assim_filter_bar"
+                    layoutpolicy_horizontal = expanding
+                    spacing = 5
+                    widget = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 28 }
+                        using = oe_era_banner_purple
+                        hbox = {
+                            size = { 100% 100% }
+                            margin = { 10 0 }
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = left|nobaseline
+                                fontsize = 14
+                                default_format = "#color_gold"
+                                text = "OE_UI2_ASSIM_FILTER_BANNER"
+                            }
+                        }
+                    }
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 4
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 30 }
+                            blockoverride "tab_text" { text = "OE_UI2_ASSIM_TAB_ALL" fontsize = 13 }
+                            tooltip = "OE_UI2_ASSIM_TAB_ALL_TT"
+                            onclick = "[GetVariableSystem.Set('oe_assim_reg','all')]"
+                            down = "[Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all'))]"
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 30 }
+                            blockoverride "tab_text" { text = "OE_UI2_ASSIM_TAB_BALKAN" fontsize = 13 }
+                            tooltip = "OE_UI2_ASSIM_TAB_BALKAN_TT"
+                            onclick = "[GetVariableSystem.Set('oe_assim_reg','balkan')]"
+                            down = "[GetVariableSystem.HasValue('oe_assim_reg','balkan')]"
+                        }
+                    }
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 4
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 30 }
+                            blockoverride "tab_text" { text = "OE_UI2_ASSIM_TAB_ANATOLIA" fontsize = 13 }
+                            tooltip = "OE_UI2_ASSIM_TAB_ANATOLIA_TT"
+                            onclick = "[GetVariableSystem.Set('oe_assim_reg','anatolia')]"
+                            down = "[GetVariableSystem.HasValue('oe_assim_reg','anatolia')]"
+                        }
+                        button_secondary_tab_alt = {
+                            layoutpolicy_horizontal = expanding
+                            size = { -1 30 }
+                            blockoverride "tab_text" { text = "OE_UI2_ASSIM_TAB_MEDWEST" fontsize = 13 }
+                            tooltip = "OE_UI2_ASSIM_TAB_MEDWEST_TT"
+                            onclick = "[GetVariableSystem.Set('oe_assim_reg','medwest')]"
+                            down = "[GetVariableSystem.HasValue('oe_assim_reg','medwest')]"
+                        }
+                    }
+                }
                 hbox = {
                     name = "oe_rw_turkish_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','anatolia'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_TURKISH_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -50,7 +116,11 @@
                 }
                 hbox = {
                     name = "oe_rw_egypt_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','medwest'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_EGYPT_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -82,7 +152,11 @@
                 }
                 hbox = {
                     name = "oe_rw_syria_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','medwest'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_SYRIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -114,7 +188,11 @@
                 }
                 hbox = {
                     name = "oe_rw_africa_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','medwest'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_AFRICA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -146,7 +224,11 @@
                 }
                 hbox = {
                     name = "oe_rw_gaul_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','medwest'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_GAUL_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -178,7 +260,11 @@
                 }
                 hbox = {
                     name = "oe_rw_iberia_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','medwest'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_IBERIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -210,7 +296,11 @@
                 }
                 hbox = {
                     name = "oe_rw_britain_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','medwest'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_BRITAIN_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -242,7 +332,11 @@
                 }
                 hbox = {
                     name = "oe_rw_serbia_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','balkan'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_SERBIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -274,7 +368,11 @@
                 }
                 hbox = {
                     name = "oe_rw_bulgaria_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','balkan'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_BULGARIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -306,7 +404,11 @@
                 }
                 hbox = {
                     name = "oe_rw_albania_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','balkan'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_ALBANIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -338,7 +440,11 @@
                 }
                 hbox = {
                     name = "oe_rw_illyria_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','balkan'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_ILLYRIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -370,7 +476,11 @@
                 }
                 hbox = {
                     name = "oe_rw_dacia_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','balkan'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_DACIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -402,7 +512,11 @@
                 }
                 hbox = {
                     name = "oe_rw_armenia_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','anatolia'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_ARMENIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -434,7 +548,11 @@
                 }
                 hbox = {
                     name = "oe_rw_griko_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','medwest'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_GRIKO_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -466,7 +584,11 @@
                 }
                 hbox = {
                     name = "oe_rw_mesopotamia_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','anatolia'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_MESOPOTAMIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -498,7 +620,11 @@
                 }
                 hbox = {
                     name = "oe_rw_georgia_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','anatolia'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_GEORGIA_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -530,7 +656,11 @@
                 }
                 hbox = {
                     name = "oe_rw_kudoyr_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','anatolia'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_KUDOYR_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -562,7 +692,11 @@
                 }
                 hbox = {
                     name = "oe_rw_paeones_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','balkan'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_PAEONES_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -594,7 +728,11 @@
                 }
                 hbox = {
                     name = "oe_rw_latin_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','medwest'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_LATIN_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -626,7 +764,11 @@
                 }
                 hbox = {
                     name = "oe_rw_german_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','medwest'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_GERMAN_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }
@@ -658,7 +800,11 @@
                 }
                 hbox = {
                     name = "oe_rw_pentarchy_assimilation_row"
+                    visible = "[Or(Or(Not(GetVariableSystem.Exists('oe_assim_reg')),GetVariableSystem.HasValue('oe_assim_reg','all')),GetVariableSystem.HasValue('oe_assim_reg','balkan'))]"
                     layoutpolicy_horizontal = expanding spacing = 14
+                    margin = { 10 8 }
+                    using = bg_paper_card
+                    using = bg_cabinet_card_frame
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         text_single = { text = "OE_RW_ASSIM_PENTARCHY_ROW" fontsize = 20 layoutpolicy_horizontal = expanding }

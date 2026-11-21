@@ -1,25 +1,51 @@
 ﻿oe_rw_start_pentarchy_romanization = {
     if = {
         limit = { oe_rw_start_pentarchy_romanization_allowed = yes }
-        set_variable = oe_rw_pentarchy_romanization_started
-        # Preserve the movement's original European origin pool and Roman priority.
-        ordered_ownable_location = {
-            limit = {
-                OR = {
-                    sub_continent = sub_continent:western_europe
-                    sub_continent = sub_continent:eastern_europe
-                }
+        # Preserve European origin pool (Rome strongly preferred) plus eastern sees; no global scan.
+        sub_continent:western_europe = {
+            every_location_in_sub_continent = {
+                limit = { oe_rw_pentarchy_origin = yes }
+                add_to_temporary_list = oe_rw_pentarchy_candidates
             }
+        }
+        sub_continent:eastern_europe = {
+            every_location_in_sub_continent = {
+                limit = { oe_rw_pentarchy_origin = yes }
+                add_to_temporary_list = oe_rw_pentarchy_candidates
+            }
+        }
+        location:alexandria = { if = { limit = { oe_rw_pentarchy_origin = yes } add_to_temporary_list = oe_rw_pentarchy_candidates } }
+        location:antioch = { if = { limit = { oe_rw_pentarchy_origin = yes } add_to_temporary_list = oe_rw_pentarchy_candidates } }
+        location:jerusalem = { if = { limit = { oe_rw_pentarchy_origin = yes } add_to_temporary_list = oe_rw_pentarchy_candidates } }
+        ordered_in_list = {
+            list = oe_rw_pentarchy_candidates
             max = 1
+            check_range_bounds = no
             order_by = {
                 value = population
+                if = { limit = { owner = c:BYZ } add = 10000000 }
                 if = { limit = { this = location:rome } add = 100000000 }
             }
+            save_scope_as = oe_rw_origin_loc
             spawn_movement = {
                 movement_definition = movement_definition:oe_orthodox_identity_movement
                 supporters = { value = population multiply = 0.1 }
             }
-            oe_identity_schedule_30_years = { holder = religion:orthodox event = oe_identity_expiry.12 }
+            if = {
+                limit = {
+                    religion:orthodox = {
+                        any_movement_in_religion = {
+                            movement_type = movement_definition:oe_orthodox_identity_movement
+                            num_locations_affected > 0
+                        }
+                    }
+                }
+                c:BYZ = {
+                    set_variable = oe_rw_pentarchy_romanization_started
+                    set_variable = { name = oe_rw_origin_pentarchy value = scope:oe_rw_origin_loc }
+                }
+                oe_identity_schedule_30_years = { holder = religion:orthodox event = oe_identity_expiry.12 }
+            }
         }
     }
 }

@@ -20,7 +20,7 @@
             # Keep the five oldest commissioned Kremlins. The serial is unique,
             # so simultaneous checks cannot remove every building at overcap.
             AND = {
-                has_variable = oe_rus_kremlin_serial
+                location = { has_variable = oe_rus_kremlin_serial }
                 owner = {
                     any_owned_building = {
                         count >= 5
@@ -28,8 +28,10 @@
                             building_type = building_type:kremlin
                             AND = {
                                 building_type = building_type:oe_rus_kremlin
-                                has_variable = oe_rus_kremlin_serial
-                                var:oe_rus_kremlin_serial < root.var:oe_rus_kremlin_serial
+                                location = {
+                                    has_variable = oe_rus_kremlin_serial
+                                    var:oe_rus_kremlin_serial < root.location.var:oe_rus_kremlin_serial
+                                }
                             }
                         }
                     }
@@ -38,14 +40,16 @@
         }
     }
     on_built = {
-        if = {
-            limit = { NOT = { has_variable = oe_rus_kremlin_serial } }
+        location = {
             if = {
-                limit = { NOT = { has_global_variable = oe_rus_kremlin_serial_counter } }
-                set_global_variable = { name = oe_rus_kremlin_serial_counter value = 0 }
+                limit = { NOT = { has_variable = oe_rus_kremlin_serial } }
+                if = {
+                    limit = { NOT = { has_global_variable = oe_rus_kremlin_serial_counter } }
+                    set_global_variable = { name = oe_rus_kremlin_serial_counter value = 0 }
+                }
+                change_global_variable = { name = oe_rus_kremlin_serial_counter add = 1 }
+                set_variable = { name = oe_rus_kremlin_serial value = global_var:oe_rus_kremlin_serial_counter }
             }
-            change_global_variable = { name = oe_rus_kremlin_serial_counter add = 1 }
-            set_variable = { name = oe_rus_kremlin_serial value = global_var:oe_rus_kremlin_serial_counter }
         }
     }
     unique_production_methods = {

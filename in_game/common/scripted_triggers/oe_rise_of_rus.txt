@@ -31,6 +31,7 @@ oe_rus_buy_target = {
     is_subject = no
     NOT = { exists = union }
     NOT = { has_variable = oe_rus_rank }
+    NOT = { has_cooldown = oe_rus_purchase_refused_cooldown }
     country_tax_base < scope:actor.country_tax_base
     opinion = { target = scope:actor value > 50 }
     OR = {
@@ -77,6 +78,7 @@ oe_rus_kremlin_capacity = {
     }
 }
 oe_rus_kremlin_site = {
+    has_owner = yes
     owner = scope:actor
     is_capital = no
     oe_rus_region = yes
@@ -95,7 +97,7 @@ oe_rus_can_integrate_kyiv = {
     union.leader_country = this
     in_union_with = c:KIE
     years_in_international_organization = { international_organization = c:LIT.union value >= 50 }
-    c:KIE = { years_in_international_organization = { international_organization = c:LIT.union value >= 50 } }
+    c:KIE = { years_in_international_organization = { international_organization = c:LIT.union value >= 50 } NOT = { has_cooldown = oe_rus_kyiv_refused_cooldown } }
 }
 # Target-country scope. Do not confuse membership in another Orthodox
 # patriarchate with membership in Constantinople's BYZ-led patriarchate.

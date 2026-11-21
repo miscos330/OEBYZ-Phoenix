@@ -1,0 +1,402 @@
+﻿# NEW 2026-11-21 v8.0 SIT-3 Two Emperors (gen_sit_two_emperors.py). Generated; edit gen_sit_two_emperors.py, not this file.
+
+# ----------------------------------------------------------------------------- Action 1: East Roman Edict of Sole Imperium
+oe_twe_act_translatio_edict = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			oe_twe_is_east_tag = yes
+			is_subject = no
+		}
+	}
+	allow = {
+		scope:actor = {
+			oe_twe_is_east_tag = yes
+			gold >= oe_twe_gold_180
+		}
+	}
+	cooldown = { type = oe_twe_act_translatio_edict_cd years = 5 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 8
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_two_emperors = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_two_emperors situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_twe_gold_180 multiply = -1 }
+			add_country_modifier = { modifier = oe_twe_translatio_edict_mod years = 5 mode = replace }
+			if = {
+				limit = { exists = international_organization:hre international_organization:hre = { exists = leader_country } }
+				international_organization:hre.leader_country = {
+					add_opinion = { modifier = oe_twe_op_edict_hostility target = scope:actor }
+				}
+			}
+			if = {
+				limit = { country_exists = c:PAP }
+				c:PAP = {
+					add_opinion = { modifier = oe_twe_op_edict_hostility target = scope:actor }
+				}
+			}
+		}
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_balance add = 8 }
+			if = {
+				limit = { has_variable = oe_twe_hub_east var:oe_twe_hub_east >= 3 }
+				change_variable = { name = oe_twe_balance add = 4 }
+			}
+			change_variable = { name = oe_twe_tension add = 6 }
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	ai_will_do = {
+		add = 18
+	}
+}
+
+# ----------------------------------------------------------------------------- Action 2: HRE Imperial Diet Defiance
+oe_twe_act_hre_diet_defiance = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			is_emperor = yes
+			NOT = { oe_twe_is_east_tag = yes }
+		}
+	}
+	allow = {
+		scope:actor = {
+			is_emperor = yes
+			OR = {
+				oe_twe_hre_ia_at_least_10 = yes
+				gold >= oe_twe_gold_160
+			}
+		}
+	}
+	cooldown = { type = oe_twe_act_hre_diet_defiance_cd years = 5 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 8
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_two_emperors = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_two_emperors situation_is_active = yes }
+	}
+	effect = {
+		if = {
+			limit = { oe_twe_hre_ia_at_least_10 = yes }
+			change_imperial_authority = { value = imperial_authority_mild_penalty }
+		}
+		else = {
+			scope:actor = { add_gold = { value = oe_twe_gold_160 multiply = -1 } }
+		}
+		scope:actor = {
+			add_estate_satisfaction = {
+				type = estate_type:nobles_estate
+				value = estate_satisfaction_weak_penalty
+			}
+			add_country_modifier = { modifier = oe_twe_hre_bulwark_mod years = 5 mode = replace }
+			if = {
+				limit = { country_exists = c:ROM }
+				c:ROM = { add_opinion = { modifier = oe_twe_op_hre_defiance target = scope:actor } }
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = { add_opinion = { modifier = oe_twe_op_hre_defiance target = scope:actor } }
+			}
+		}
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_balance add = -8 }
+			change_variable = { name = oe_twe_tension add = 5 }
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	ai_will_do = {
+		add = 18
+	}
+}
+
+# ----------------------------------------------------------------------------- Action 3: French Counterweight Compact
+oe_twe_act_french_counterweight = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			tag = FRA
+			NOT = { is_emperor = yes }
+			NOT = { oe_twe_is_east_tag = yes }
+		}
+	}
+	allow = {
+		scope:actor = {
+			tag = FRA
+			gold >= oe_twe_gold_150
+		}
+	}
+	cooldown = { type = oe_twe_act_french_counterweight_cd years = 6 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 10
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_two_emperors = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_two_emperors situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_twe_gold_150 multiply = -1 }
+			add_estate_satisfaction = {
+				type = estate_type:clergy_estate
+				value = estate_satisfaction_mild_penalty
+			}
+			add_country_modifier = { modifier = oe_twe_french_subsidy_mod years = 5 mode = replace }
+			if = {
+				limit = { country_exists = c:PAP }
+				c:PAP = { add_opinion = { modifier = oe_twe_op_french_scandal target = scope:actor } }
+			}
+			if = {
+				limit = { exists = international_organization:hre international_organization:hre = { exists = leader_country } }
+				international_organization:hre.leader_country = {
+					add_opinion = { modifier = oe_twe_op_french_scandal target = scope:actor }
+				}
+			}
+			if = {
+				limit = { country_exists = c:ROM }
+				add_opinion = { modifier = oe_twe_op_french_pact target = c:ROM }
+				c:ROM = { add_opinion = { modifier = oe_twe_op_french_pact target = scope:actor } }
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				add_opinion = { modifier = oe_twe_op_french_pact target = c:BYZ }
+				c:BYZ = { add_opinion = { modifier = oe_twe_op_french_pact target = scope:actor } }
+			}
+		}
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_balance add = 6 }
+			change_variable = { name = oe_twe_tension add = 4 }
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	ai_will_do = {
+		add = 14
+	}
+}
+
+# ----------------------------------------------------------------------------- Action 4: Papal / Electoral Crown Arbitration
+oe_twe_act_papal_arbitration = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			NOT = { oe_twe_is_east_tag = yes }
+			NOT = { is_emperor = yes }
+			OR = {
+				tag = PAP
+				is_elector = yes
+			}
+		}
+	}
+	allow = {
+		scope:actor = {
+			gold >= oe_twe_gold_120
+		}
+	}
+	cooldown = { type = oe_twe_act_papal_arbitration_cd years = 6 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_two_emperors = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_two_emperors situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_twe_gold_120 multiply = -1 }
+			if = {
+				limit = { religion = { has_religious_influence = yes } }
+				add_religious_influence = religious_influence_mild_penalty
+			}
+			else = {
+				add_prestige = prestige_mild_penalty
+			}
+			add_country_modifier = { modifier = oe_twe_papal_crown_mod years = 5 mode = replace }
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_twe_papal_arb_gcd } }
+			set_global_variable = { name = oe_twe_papal_arb_gcd value = 1 years = 1 }
+			situation:oe_sit_two_emperors = {
+				if = {
+					limit = {
+						OR = {
+							AND = { has_variable = oe_twe_tension var:oe_twe_tension >= 50 }
+							AND = { has_variable = oe_twe_balance var:oe_twe_balance >= 55 }
+						}
+					}
+					change_variable = { name = oe_twe_concord add = 5 }
+					change_variable = { name = oe_twe_tension add = -3 }
+				}
+				else = {
+					change_variable = { name = oe_twe_balance add = -3 }
+					change_variable = { name = oe_twe_tension add = 2 }
+				}
+				clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+				clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+				clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+			}
+		}
+		if = {
+			limit = { exists = international_organization:hre international_organization:hre = { exists = leader_country } }
+			international_organization:hre.leader_country = {
+				add_opinion = { modifier = oe_twe_op_papal_med target = scope:actor }
+			}
+		}
+		oe_twe_sync = yes
+	}
+	ai_will_do = {
+		add = 12
+	}
+}
+
+# ----------------------------------------------------------------------------- Action 5: Protestant Eastern Overture
+oe_twe_act_protestant_subsidy = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			oe_twe_is_protestant_actor = yes
+		}
+	}
+	allow = {
+		scope:actor = {
+			oe_twe_is_protestant_actor = yes
+			gold >= oe_twe_gold_100
+		}
+	}
+	cooldown = { type = oe_twe_act_protestant_subsidy_cd years = 6 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_two_emperors = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_two_emperors situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_twe_gold_100 multiply = -1 }
+			add_stability = stability_weak_penalty
+			add_country_modifier = { modifier = oe_twe_prot_eastern_relief_mod years = 5 mode = replace }
+			if = {
+				limit = { exists = international_organization:hre international_organization:hre = { exists = leader_country } }
+				international_organization:hre.leader_country = {
+					add_opinion = { modifier = oe_twe_op_prot_east_tie target = scope:actor }
+				}
+			}
+			if = {
+				limit = { country_exists = c:PAP }
+				c:PAP = { add_opinion = { modifier = oe_twe_op_prot_east_tie target = scope:actor } }
+			}
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_twe_prot_sub_gcd } }
+			set_global_variable = { name = oe_twe_prot_sub_gcd value = 1 years = 1 }
+			situation:oe_sit_two_emperors = {
+				change_variable = { name = oe_twe_balance add = 3 }
+				change_variable = { name = oe_twe_tension add = 3 }
+				clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+				clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+			}
+		}
+		oe_twe_sync = yes
+	}
+	ai_will_do = {
+		add = 12
+	}
+}
+
+# ----------------------------------------------------------------------------- Action 6: Envoys of the Two Romes (Detente)
+oe_twe_act_two_romes_envoy = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			OR = {
+				oe_twe_is_east_tag = yes
+				is_emperor = yes
+			}
+		}
+	}
+	allow = {
+		scope:actor = {
+			gold >= oe_twe_gold_120
+		}
+		oe_twe_emperors_at_war = no
+		oe_twe_tension_under_75 = yes
+	}
+	cooldown = { type = oe_twe_act_two_romes_envoy_cd years = 5 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_two_emperors = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_two_emperors situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_twe_gold_120 multiply = -1 }
+			add_prestige = -8
+			add_country_modifier = { modifier = oe_twe_envoy_detente_mod years = 5 mode = replace }
+		}
+		situation:oe_sit_two_emperors = {
+			change_variable = { name = oe_twe_concord add = 14 }
+			change_variable = { name = oe_twe_tension add = -8 }
+			if = {
+				limit = { has_variable = oe_twe_balance var:oe_twe_balance > 54 }
+				change_variable = { name = oe_twe_balance add = -4 }
+			}
+			else_if = {
+				limit = { has_variable = oe_twe_balance var:oe_twe_balance < 46 }
+				change_variable = { name = oe_twe_balance add = 4 }
+			}
+			else = {
+				set_variable = { name = oe_twe_balance value = 50 }
+			}
+			clamp_variable = { name = oe_twe_balance max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_concord max = 100 min = 0 }
+			clamp_variable = { name = oe_twe_tension max = 100 min = 0 }
+		}
+		oe_twe_sync = yes
+	}
+	ai_will_do = {
+		add = 10
+	}
+}

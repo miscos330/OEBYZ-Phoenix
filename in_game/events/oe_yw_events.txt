@@ -252,6 +252,68 @@ oe_yw.8 = { # 食邑陷没
     }
 }
 
+# LNG or CHI scope (player notice only; AI logs silently). Phase 4 (M3): sent once from oe_yw_do_liang_fall on Yuan's fall.
+oe_yw.9 = { # 仍奉北元正朔
+    type = country_event
+    outcome = neutral
+    title = oe_yw.9.t
+    desc = { first_valid = { triggered_desc = { trigger = { tag = LNG } desc = oe_yw.9.d1 } desc = oe_yw.9.d } }
+    illustration_tags = { 10 = exterior 10 = armed }
+    trigger = { oe_yw_can_9 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_yw.9.a
+        ai_chance = { base = 1 }
+    }
+}
+
+# CDL scope. Phase 4 (M3): 1375-1390 after Yuan falls, non-Mongol Middle Kingdom leader; player CDL gets event, AI CDL resolves 75/25.
+oe_yw.10 = { # 请依唐宋故事
+    type = country_event
+    outcome = neutral
+    title = oe_yw.10.t
+    desc = oe_yw.10.d
+    illustration_tags = { 10 = exterior 10 = armed }
+    trigger = { tag = CDL country_exists = c:CDL }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_yw.10.a
+        historical_option = yes
+        add_prestige = prestige_weak_penalty add_country_modifier = { modifier = oe_yw_duan_petition months = 60 mode = replace }
+        custom_tooltip = oe_yw.10.a.tt
+        hidden_effect = { oe_yw_duan_op_a = yes }
+        ai_chance = { base = 75 }
+    }
+    option = {
+        name = oe_yw.10.b
+        add_country_modifier = { modifier = oe_yw_duan_defiant months = 60 mode = replace }
+        custom_tooltip = oe_yw.10.b.tt
+        hidden_effect = { oe_yw_duan_op_b = yes }
+        ai_chance = { base = 25 }
+    }
+}
+
+# YBN or CHI scope (player notice only; AI logs silently). Phase 4 (M8): sent once from oe_yw_do_bin_west on Yuan's fall or Gansu lost.
+oe_yw.11 = { # 豳王西徙
+    type = country_event
+    outcome = neutral
+    title = oe_yw.11.t
+    desc = { first_valid = { triggered_desc = { trigger = { tag = YBN } desc = oe_yw.11.d1 } desc = oe_yw.11.d } }
+    illustration_tags = { 10 = exterior 10 = armed }
+    trigger = { oe_yw_can_11 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_yw.11.a
+        ai_chance = { base = 1 }
+    }
+}
+
 # Hidden worker, fired from options of oe_yw.2, .4 and .7 (CHI) with the country var oe_yw_job.
 oe_yw.20 = {
     type = country_event
@@ -308,6 +370,13 @@ oe_yw.26 = {
     hidden = yes
     title = oe_yw.26.t
     immediate = { oe_yw_test_w9 = yes }
+}
+# TEST ONLY (phase 4). World step W10 (Yunnan tusi unrest) now.
+oe_yw.27 = {
+    type = country_event
+    hidden = yes
+    title = oe_yw.27.t
+    immediate = { oe_yw_test_w10 = yes }
 }
 
 # TEST ONLY. Readings of this line, any country. Console: event oe_yw.90

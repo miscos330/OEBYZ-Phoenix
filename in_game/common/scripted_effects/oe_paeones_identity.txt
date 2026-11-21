@@ -3,31 +3,40 @@
         limit = { oe_rw_start_paeones_romanization_allowed = yes }
         region:carpathia_region = {
             ordered_location_in_region = {
-                limit = { oe_rw_paeones_origin = yes }
+                limit = { oe_rw_paeones_origin_ge25 = yes }
                 max = 1
+                check_range_bounds = no
                 order_by = {
                     value = population
-                    multiply = "culture_percentage(culture:hungarian)"
-                    # Prefer the historic centres, irrespective of direct/subject ownership.
+                    multiply = oe_rw_assim_paeones_source_share
+                    if = { limit = { oe_rw_paeones_origin_ge50 = yes } add = 10000000 }
                     if = { limit = { OR = { this = location:buda this = location:pest } } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
                 }
-                # The old one-shot start could create only one movement of this culture.
-                # Rebuild that movement once, retaining all already converted population.
+                # Rebuild any legacy movement once, retaining already converted pops.
                 culture:oe_paeones_culture = {
                     random_movement_in_culture = { destroy_movement = yes }
                 }
+                save_scope_as = oe_rw_origin_loc
                 spawn_movement = {
                     movement_definition = movement_definition:oe_paeones_identity_movement
-                    supporters = {
-                        value = population
-                        multiply = "culture_percentage(culture:hungarian)"
-                        multiply = 0.1
-                    }
+                    supporters = { value = population multiply = oe_rw_assim_paeones_source_share multiply = 0.1 }
                 }
-                oe_identity_schedule_30_years = { holder = culture:oe_paeones_culture event = oe_identity_expiry.13 }
-                c:BYZ = {
-                    set_variable = oe_rw_paeones_romanization_started
-                    set_variable = oe_rw_paeones_movement_corrected
+                if = {
+                    limit = {
+                        culture:oe_paeones_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_paeones_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_paeones_romanization_started
+                        set_variable = oe_rw_paeones_movement_corrected
+                        set_variable = { name = oe_rw_origin_paeones value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_paeones_culture event = oe_identity_expiry.13 }
                 }
             }
         }

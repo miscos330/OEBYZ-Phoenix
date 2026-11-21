@@ -57,3 +57,34 @@ oe_raid_can_resolve = {
     exists = scope:target_location
     scope:target_location = { owner = root }
 }
+# Country scope (BYZ). Early survival crisis exit gate (fx22, Decision 306 R3A).
+oe_phoenix_disaster_can_end = {
+    owns = location:constantinople
+    capital = location:constantinople
+    at_war = no
+    in_civil_war = no
+    stability >= 20
+    legitimacy >= 60
+    custom_tooltip = {
+        text = OE_PHOENIX_END_CIVIL_WAR_SETTLED_TT
+        NOT = { has_variable = oe_cw_active }
+        NOT = { has_variable = oe_cw2_active }
+        oe_bi_active = no
+        OR = {
+            has_global_variable = oe_cw_done
+            current_year >= 1355
+        }
+    }
+    OR = {
+        num_locations_owned_or_owned_by_subjects_or_below >= 135
+        AND = {
+            is_ai = yes
+            current_year >= 1405
+            num_locations_owned_or_owned_by_subjects_or_below >= 110
+        }
+    }
+    any_owned_location = {
+        percent = 1
+        NOT = { has_building = building_type:oe_byz_bad_thief_greek }
+    }
+}

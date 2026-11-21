@@ -1868,6 +1868,9 @@ oe_hc_make_ally = {
 }
 
 # BYZ scope, yearly, AI Byzantium only: plan the next region in order, then launch when clearly stronger.
+# perf overhaul R2 (decision 305): guard the 9 campaign-launch checks with gold >= 2000, at_war = no and
+# NOT = { has_global_variable = oe_hc_any_active } up front, and test has_variable = <plan_var> before
+# oe_hc_<r>_declare_allowed = yes so the 9 x any_country target scans are skipped when no plan is done.
 oe_hc_ai_yearly = {
     if = {
         limit = { NOT = { has_variable = oe_heg_egypt_plan_done } oe_heg_egypt_plan_allowed = yes gold >= 3000 }
@@ -1906,85 +1909,88 @@ oe_hc_ai_yearly = {
         oe_heg_plan_arabia_effect = yes
     }
     if = {
-        limit = {
-            oe_hc_egypt_declare_allowed = yes
-            gold >= 2000
-            at_war = no
-            NOT = { any_country = { oe_hc_egypt_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+        limit = { gold >= 2000 at_war = no NOT = { has_global_variable = oe_hc_any_active } }
+        if = {
+            limit = {
+                has_variable = oe_heg_egypt_plan_done
+                NOT = { has_variable = oe_hc_egypt_cd }
+                oe_hc_egypt_declare_allowed = yes
+                NOT = { any_country = { oe_hc_egypt_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+            }
+            oe_hc_egypt_start = yes
         }
-        oe_hc_egypt_start = yes
-    }
-    else_if = {
-        limit = {
-            oe_hc_africa_declare_allowed = yes
-            gold >= 2000
-            at_war = no
-            NOT = { any_country = { oe_hc_africa_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+        else_if = {
+            limit = {
+                has_variable = oe_heg_africa_plan_done
+                NOT = { has_variable = oe_hc_africa_cd }
+                oe_hc_africa_declare_allowed = yes
+                NOT = { any_country = { oe_hc_africa_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+            }
+            oe_hc_africa_start = yes
         }
-        oe_hc_africa_start = yes
-    }
-    else_if = {
-        limit = {
-            oe_hc_italy_declare_allowed = yes
-            gold >= 2000
-            at_war = no
-            NOT = { any_country = { oe_hc_italy_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+        else_if = {
+            limit = {
+                has_variable = oe_heg_italy_plan_done
+                NOT = { has_variable = oe_hc_italy_cd }
+                oe_hc_italy_declare_allowed = yes
+                NOT = { any_country = { oe_hc_italy_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+            }
+            oe_hc_italy_start = yes
         }
-        oe_hc_italy_start = yes
-    }
-    else_if = {
-        limit = {
-            oe_hc_france_declare_allowed = yes
-            gold >= 2000
-            at_war = no
-            NOT = { any_country = { oe_hc_france_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+        else_if = {
+            limit = {
+                has_variable = oe_heg_france_plan_done
+                NOT = { has_variable = oe_hc_france_cd }
+                oe_hc_france_declare_allowed = yes
+                NOT = { any_country = { oe_hc_france_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+            }
+            oe_hc_france_start = yes
         }
-        oe_hc_france_start = yes
-    }
-    else_if = {
-        limit = {
-            oe_hc_iberia_declare_allowed = yes
-            gold >= 2000
-            at_war = no
-            NOT = { any_country = { oe_hc_iberia_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+        else_if = {
+            limit = {
+                has_variable = oe_heg_iberia_plan_done
+                NOT = { has_variable = oe_hc_iberia_cd }
+                oe_hc_iberia_declare_allowed = yes
+                NOT = { any_country = { oe_hc_iberia_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+            }
+            oe_hc_iberia_start = yes
         }
-        oe_hc_iberia_start = yes
-    }
-    else_if = {
-        limit = {
-            oe_hc_britain_declare_allowed = yes
-            gold >= 2000
-            at_war = no
-            NOT = { any_country = { oe_hc_britain_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+        else_if = {
+            limit = {
+                has_variable = oe_heg_britain_plan_done
+                NOT = { has_variable = oe_hc_britain_cd }
+                oe_hc_britain_declare_allowed = yes
+                NOT = { any_country = { oe_hc_britain_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+            }
+            oe_hc_britain_start = yes
         }
-        oe_hc_britain_start = yes
-    }
-    else_if = {
-        limit = {
-            oe_hc_persia_declare_allowed = yes
-            gold >= 2000
-            at_war = no
-            NOT = { any_country = { oe_hc_persia_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+        else_if = {
+            limit = {
+                has_variable = oe_heg_persia_plan_done
+                NOT = { has_variable = oe_hc_persia_cd }
+                oe_hc_persia_declare_allowed = yes
+                NOT = { any_country = { oe_hc_persia_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+            }
+            oe_hc_persia_start = yes
         }
-        oe_hc_persia_start = yes
-    }
-    else_if = {
-        limit = {
-            oe_hc_blacksea_declare_allowed = yes
-            gold >= 2000
-            at_war = no
-            NOT = { any_country = { oe_hc_blacksea_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+        else_if = {
+            limit = {
+                has_variable = oe_heg_black_sea_plan_done
+                NOT = { has_variable = oe_hc_blacksea_cd }
+                oe_hc_blacksea_declare_allowed = yes
+                NOT = { any_country = { oe_hc_blacksea_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+            }
+            oe_hc_blacksea_start = yes
         }
-        oe_hc_blacksea_start = yes
-    }
-    else_if = {
-        limit = {
-            oe_hc_arabia_declare_allowed = yes
-            gold >= 2000
-            at_war = no
-            NOT = { any_country = { oe_hc_arabia_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+        else_if = {
+            limit = {
+                has_variable = oe_heg_arabia_plan_done
+                NOT = { has_variable = oe_hc_arabia_cd }
+                oe_hc_arabia_declare_allowed = yes
+                NOT = { any_country = { oe_hc_arabia_target = yes military_strength > { value = root.military_strength multiply = 0.6 } } }
+            }
+            oe_hc_arabia_start = yes
         }
-        oe_hc_arabia_start = yes
     }
 }
 

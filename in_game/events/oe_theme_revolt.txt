@@ -32,9 +32,12 @@ oe_theme_revolt.1 = {
                 limit = { scope:oe_recall_theme = { var:oe_theme_loyalty < 20 } }
                 random = { chance = 30 scope:oe_recall_theme = { set_variable = oe_theme_revolt_now } }
             }
-            scope:oe_recall_theme.ruler = { save_scope_as = oe_recall_strategos }
-            scope:oe_recall_strategos = { remove_ruler = scope:oe_recall_theme }
-            if = { limit = { scope:oe_recall_strategos = { NOT = { is_ruler_of = scope:oe_recall_theme } } } scope:oe_recall_strategos = { move_country = c:BYZ reset_ruler_title = {} } }
+            if = {
+                limit = { scope:oe_recall_theme = { has_ruler = yes } }
+                scope:oe_recall_theme.ruler = { save_scope_as = oe_recall_strategos }
+                scope:oe_recall_strategos = { remove_ruler = scope:oe_recall_theme }
+                if = { limit = { scope:oe_recall_strategos = { NOT = { is_ruler_of = scope:oe_recall_theme } } } scope:oe_recall_strategos = { move_country = c:BYZ reset_ruler_title = {} } }
+            }
         }
         remove_variable = oe_theme_revolt_target
         ai_chance = { base = 15 }

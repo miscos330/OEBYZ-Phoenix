@@ -1,22 +1,39 @@
 ﻿oe_rw_start_dacia_romanization = {
     if = {
         limit = { oe_rw_start_dacia_romanization_allowed = yes }
-        set_variable = oe_rw_dacia_romanization_started
-        ordered_ownable_location = {
-            limit = { oe_rw_assim_dacia_location = yes is_ownable = yes has_owner = yes owner = { oe_heg_byz_bloc = yes } }
-            max = 1
-            order_by = {
-                value = population
-                # Strongly prefer the historical centre, if it passes the ownership/region limit.
-                if = { limit = { this = location:targoviste } add = 1000000 }
-                # Preserve the existing direct-BYZ origin preference; subjects remain eligible to spread.
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+        region:carpathia_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_dacia_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_dacia_source_share
+                    if = { limit = { oe_rw_dacia_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:targoviste } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_dacia_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_dacia_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_moldova_greek_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_dacia_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    c:BYZ = {
+                        set_variable = oe_rw_dacia_romanization_started
+                        set_variable = { name = oe_rw_origin_dacia value = scope:oe_rw_origin_loc }
+                    }
+                    oe_identity_schedule_30_years = { holder = culture:oe_moldova_greek_culture event = oe_identity_expiry.5 }
+                }
             }
-            spawn_movement = {
-                movement_definition = movement_definition:oe_dacia_identity_movement
-                supporters = { value = population multiply = 0.1 }
-            }
-            oe_identity_schedule_30_years = { holder = culture:oe_moldova_greek_culture event = oe_identity_expiry.5 }
         }
     }
 }

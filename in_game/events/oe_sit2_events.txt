@@ -1,0 +1,189 @@
+﻿# NEW 2026-11-21 v7.1 SIT-2 Flagship Situations & Vanilla Bridges (gen_situations_flagship.py). Generated; edit gen_situations_flagship.py, not this file.
+namespace = oe_sit2
+
+# --- Flagship 1: Great Yuan Restoration ---
+oe_sit2.1 = {
+	type = country_event
+	title = oe_sit2.1.t
+	desc = oe_sit2.1.d
+	image = "gfx/interface/illustrations/situation/oe_sit_yuan_restoration.dds"
+	outcome = neutral
+	option = {
+		name = oe_sit2.1.a
+		add_prestige = prestige_weak_bonus
+	}
+}
+
+oe_sit2.2 = {
+	type = country_event
+	title = oe_sit2.2.t
+	desc = oe_sit2.2.d
+	image = "gfx/interface/illustrations/situation/oe_sit_yuan_restoration.dds"
+	outcome = positive
+	option = {
+		name = oe_sit2.2.a
+		add_prestige = prestige_mild_bonus
+	}
+}
+
+# --- Flagship 2: Great Troubles of the Golden Horde ---
+oe_sit2.3 = {
+	type = country_event
+	title = oe_sit2.3.t
+	desc = oe_sit2.3.d
+	image = "gfx/interface/illustrations/situation/oe_sit_glh_troubles.dds"
+	outcome = negative
+	option = {
+		name = oe_sit2.3.a
+		add_prestige = prestige_weak_bonus
+	}
+}
+
+oe_sit2.4 = {
+	type = country_event
+	title = oe_sit2.4.t
+	desc = oe_sit2.4.d
+	image = "gfx/interface/illustrations/situation/oe_sit_glh_troubles.dds"
+	outcome = neutral
+	option = {
+		name = oe_sit2.4.a
+		add_prestige = prestige_mild_bonus
+	}
+}
+
+# --- Flagship 3: Byzantine Renaissance ---
+oe_sit2.5 = {
+	type = country_event
+	title = oe_sit2.5.t
+	desc = oe_sit2.5.d
+	image = "gfx/interface/illustrations/situation/oe_sit_byz_renaissance.dds"
+	outcome = positive
+	option = {
+		name = oe_sit2.5.a
+		add_prestige = prestige_weak_bonus
+	}
+}
+
+oe_sit2.6 = {
+	type = country_event
+	title = oe_sit2.6.t
+	desc = oe_sit2.6.d
+	image = "gfx/interface/illustrations/situation/oe_sit_byz_renaissance.dds"
+	outcome = positive
+	option = {
+		name = oe_sit2.6.a
+		add_prestige = prestige_mild_bonus
+	}
+}
+
+# --- Flagship 4: Crossroads of Rus' & the Steppe ---
+oe_sit2.7 = {
+	type = country_event
+	title = oe_sit2.7.t
+	desc = oe_sit2.7.d
+	image = "gfx/interface/illustrations/situation/oe_sit_eastern_crossroads.dds"
+	outcome = neutral
+	option = {
+		name = oe_sit2.7.a
+		add_prestige = prestige_weak_bonus
+	}
+}
+
+oe_sit2.8 = {
+	type = country_event
+	title = oe_sit2.8.t
+	desc = oe_sit2.8.d
+	image = "gfx/interface/illustrations/situation/oe_sit_eastern_crossroads.dds"
+	outcome = positive
+	option = {
+		name = oe_sit2.8.a
+		add_prestige = prestige_mild_bonus
+	}
+}
+
+# --- Part B: Vanilla Situation Bridges (Non-invasive, zero vanilla file copies) ---
+# Bridge 1: Red Turban Rebellions -> CHI
+oe_sit2.21 = {
+	type = country_event
+	title = oe_sit2.21.t
+	desc = oe_sit2.21.d
+	image = "gfx/interface/illustrations/situation/oe_sit_yuan_restoration.dds"
+	outcome = neutral
+	option = {
+		name = oe_sit2.21.a
+		add_country_modifier = { modifier = oe_sit2_br_rtr_order_mod years = 10 mode = replace }
+	}
+	option = {
+		name = oe_sit2.21.b
+		add_country_modifier = { modifier = oe_sit2_br_rtr_guard_mod years = 10 mode = replace }
+	}
+}
+
+# Bridge 2: Rise of Timur -> BYZ / GLH / CHI
+oe_sit2.22 = {
+	type = country_event
+	title = oe_sit2.22.t
+	desc = oe_sit2.22.d
+	image = "gfx/interface/illustrations/situation/rise_of_timur.dds"
+	outcome = neutral
+	option = {
+		name = oe_sit2.22.a
+		if = {
+			limit = { oe_sit2_ren_byz_or_rom = yes }
+			add_country_modifier = { modifier = oe_sit2_br_timur_byz_mod years = 10 mode = replace }
+		}
+		else = {
+			add_country_modifier = { modifier = oe_sit2_br_timur_steppe_mod years = 10 mode = replace }
+		}
+	}
+}
+
+# Bridge 3: Western Schism -> BYZ / ROM
+oe_sit2.23 = {
+	type = country_event
+	title = oe_sit2.23.t
+	desc = oe_sit2.23.d
+	image = "gfx/interface/illustrations/situation/western_schism.dds"
+	outcome = neutral
+	option = {
+		name = oe_sit2.23.a
+		add_country_modifier = { modifier = oe_sit2_br_schism_diplo_mod years = 10 mode = replace }
+		if = {
+			limit = { country_exists = c:PAP }
+			add_opinion = { modifier = oe_sit2_bridge_schism_op target = c:PAP }
+		}
+	}
+	option = {
+		name = oe_sit2.23.b
+		add_country_modifier = { modifier = oe_sit2_br_schism_ortho_mod years = 10 mode = replace }
+	}
+}
+
+# Bridge 4: Italian Wars -> BYZ / ROM
+oe_sit2.24 = {
+	type = country_event
+	title = oe_sit2.24.t
+	desc = oe_sit2.24.d
+	image = "gfx/interface/illustrations/situation/italian_wars.dds"
+	outcome = neutral
+	option = {
+		name = oe_sit2.24.a
+		add_country_modifier = { modifier = oe_sit2_br_iw_italy_mod years = 10 mode = replace }
+	}
+	option = {
+		name = oe_sit2.24.b
+		add_country_modifier = { modifier = oe_sit2_br_iw_vigil_mod years = 10 mode = replace }
+	}
+}
+
+# --- Dev Readout Event ---
+oe_sit2.90 = {
+	type = country_event
+	title = oe_sit2.90.t
+	desc = oe_sit2.90.d
+	image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
+	outcome = neutral
+	option = {
+		name = oe_sit2.90.a
+	}
+}

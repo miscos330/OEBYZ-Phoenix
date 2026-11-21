@@ -1,0 +1,145 @@
+﻿# NEW 2026-11-21 v7.0 Wave 1 Package 4, Golden Horde 5-Wing Ulus & Dynamic Decline (gen_glh_ulus.py). Generated; edit gen_glh_ulus.py, not this file.
+
+# Repeatable Kurultai gifts decision for player GLH to bolster cohesion and appease wings.
+oe_ghh_dec_kurultai_gifts = {
+	decision_category = country_specific_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		tag = GLH
+		has_global_variable = oe_ghh_on
+		any_subject = { is_subject_type = oe_glh_ulus }
+	}
+	allow = {
+		is_subject = no
+		gold >= 100
+		prestige >= 10
+		NOT = { has_variable = oe_ghh_kurultai_cd }
+	}
+	ai_will_do = { value = 0 }
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:nobles background = pop_type:soldiers } }
+	option = {
+		name = oe_ghh_dec_kurultai_gifts.a
+		effect = {
+			add_gold = -100
+			set_variable = { name = oe_ghh_kurultai_cd months = 60 }
+			oe_ghh_shift_cohesion = { amount = 12 }
+			every_subject = {
+				limit = { is_subject_type = oe_glh_ulus }
+				add_opinion = { modifier = oe_ghh_b_ulus_appeased target = c:GLH }
+			}
+			oe_ghh_sync_modifiers = yes
+		}
+	}
+}
+
+# Stage 1 Revival: Yassa-Sharia Centralization Code.
+oe_ghh_dec_yassa_reform = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		tag = GLH
+		has_global_variable = oe_ghh_on
+		has_global_variable = oe_ghh_revival_stage
+		global_var:oe_ghh_revival_stage = 0
+	}
+	allow = {
+		is_subject = no
+		horde_unity >= 70
+		stability >= 10
+		prestige >= 20
+		gold >= 150
+	}
+	ai_will_do = { value = 0 }
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:nobles background = pop_type:clergy } }
+	option = {
+		name = oe_ghh_dec_yassa_reform.a
+		effect = {
+			add_gold = -150
+			set_global_variable = { name = oe_ghh_revival_stage value = 1 }
+			set_global_variable = { name = oe_ghh_cohesion_cap value = 100 }
+			oe_ghh_shift_cohesion = { amount = 20 }
+			add_country_modifier = { modifier = oe_ghh_yassa_reform years = 15 mode = replace }
+			every_subject = {
+				limit = { is_subject_type = oe_glh_ulus }
+				add_opinion = { modifier = oe_ghh_b_ulus_appeased target = c:GLH }
+			}
+			oe_ghh_sync_modifiers = yes
+		}
+	}
+}
+
+# Stage 2 Revival: Purge Rival Begs & convert oe_glh_ulus subjects into standard annexable vassals.
+oe_ghh_dec_purge_begs = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		tag = GLH
+		has_global_variable = oe_ghh_on
+		has_global_variable = oe_ghh_revival_stage
+		global_var:oe_ghh_revival_stage = 1
+	}
+	allow = {
+		is_subject = no
+		in_civil_war = no
+		NOT = { has_active_disaster = disaster_type:horde_civil_war }
+		horde_unity >= 75
+		stability >= 15
+		gold >= 250
+		has_global_variable = oe_ghh_cohesion
+		global_var:oe_ghh_cohesion >= 65
+	}
+	ai_will_do = { value = 0 }
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_ghh_dec_purge_begs.a
+		effect = {
+			add_gold = -250
+			add_stability = stability_mild_penalty
+			set_global_variable = { name = oe_ghh_revival_stage value = 2 }
+			oe_ghh_shift_cohesion = { amount = 15 }
+			oe_ghh_convert_wings_to_vassal = yes
+			set_global_variable = { name = oe_ghh_ev_9 value = 1 }
+			trigger_event_non_silently = oe_ghh.9
+		}
+	}
+}
+
+# Stage 3 Revival: Complete Jochid Revival -> Phase 4, permanently locks out Great Troubles & Fragmentation.
+oe_ghh_dec_jochid_revival = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		tag = GLH
+		has_global_variable = oe_ghh_on
+		has_global_variable = oe_ghh_revival_stage
+		global_var:oe_ghh_revival_stage = 2
+	}
+	allow = {
+		is_subject = no
+		in_civil_war = no
+		NOT = { has_active_disaster = disaster_type:horde_civil_war }
+		horde_unity >= 85
+		stability >= 25
+		owns = location:sarai_al_jadid
+		owns = location:astrakhan
+		has_global_variable = oe_ghh_cohesion
+		global_var:oe_ghh_cohesion >= 80
+	}
+	ai_will_do = { value = 0 }
+	illustration_tags = { 10 = armed 10 = interior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:nobles background = pop_type:soldiers } }
+	option = {
+		name = oe_ghh_dec_jochid_revival.a
+		effect = {
+			oe_ghh_complete_revival = yes
+			set_global_variable = { name = oe_ghh_ev_10 value = 1 }
+			trigger_event_non_silently = oe_ghh.10
+		}
+	}
+}

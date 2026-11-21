@@ -1,0 +1,199 @@
+﻿# NEW 2026-11-21 v7.1 SIT-2 Flagship Situations & Vanilla Bridges (gen_situations_flagship.py). Generated; edit gen_situations_flagship.py, not this file.
+situation_panel = {
+    blockoverride "situation_panel_image" {
+        using = one_country_header_template
+        blockoverride "one_country_header_background" {
+            background = {
+                texture = "gfx/interface/illustrations/situation/oe_sit_byz_renaissance.dds"
+                spriteType = stretched
+                modify_texture = {
+                    texture = "gfx/interface/component_masks/mask_fade_horizontal_middle.dds"
+                    texture_density = 2
+                    spriteType = stretched
+                    spriteborder = { 250 250 }
+                    blend_mode = alphamultiply
+                    alpha = 0.35
+                }
+            }
+        }
+        blockoverride "CountryContext" {
+            datacontext = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_sit2_ren_leader').GetCountry]"
+        }
+        blockoverride "character_portrait_anchor" {
+            parentanchor = bottom|left
+        }
+        blockoverride "character_religion_visibility" {
+            visible = no
+        }
+        blockoverride "character_name_maximumsize" {
+            maximumsize = { 270 -1 }
+        }
+        blockoverride "country_header_extra" {
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                layoutpolicy_vertical = expanding
+                margin = { 10 10 }
+                spacing = 8
+                expand = {}
+            }
+        }
+    }
+
+    blockoverride "situation_subheader_content" {}
+
+    blockoverride "situation_panel_main_content" {
+        card_common = {
+            layoutpolicy_horizontal = expanding
+            blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
+            blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+            blockoverride "common_header_text_full" { text_single = { text = "OE_SIT2_REN_TITLE" fontsize = 18 } }
+            blockoverride "common_bottom_content" {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 10 8 }
+                    spacing = 6
+                oe_sit_tug_bar = {
+                    blockoverride "tug_left" {
+                        text_single = { fontsize = 13 default_format = "#color_gold" text = "OE_SIT2_REN_BEA_L" }
+                    }
+                    blockoverride "tug_center" {
+                        text_single = { fontsize = 14 default_format = "#bold" raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_sit2_ren_beacon').GetValue|0] / 100" }
+                    }
+                    blockoverride "tug_right" {
+                        text_single = { fontsize = 13 default_format = "#weak" text = "OE_SIT2_REN_BEA_R" }
+                    }
+                    blockoverride "tug_bar_style" { using = progress_bar_goldish }
+                    blockoverride "tug_bar_bounds" { min = 0 max = 100 }
+                    blockoverride "tug_bar_value" { value = "[FixedPointToFloat(SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_sit2_ren_beacon').GetValue)]" }
+                    blockoverride "tug_bar_ticks" {
+                        widget = {
+                            position = { 45% 0 }
+                            size = { 2 100% }
+                            using = bg_header_golden_frame
+                        }
+                        widget = {
+                            position = { 85% 0 }
+                            size = { 2 100% }
+                            using = bg_header_golden_frame
+                        }
+                    }
+                blockoverride "tug_footer" {
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        multiline = yes
+                        autoresize = yes
+                        maximumsize = { 440 -1 }
+                        fontsize = 12
+                        default_format = "#weak"
+                        text = "OE_SIT2_REN_BEA_FOOT"
+                    }
+                }
+                }
+                oe_sit_tug_bar = {
+                    blockoverride "tug_left" {
+                        text_single = { fontsize = 13 default_format = "#color_gold" text = "OE_SIT2_REN_EXC_L" }
+                    }
+                    blockoverride "tug_center" {
+                        text_single = { fontsize = 14 default_format = "#bold" raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_sit2_ren_exchange').GetValue|0] / 100" }
+                    }
+                    blockoverride "tug_right" {
+                        text_single = { fontsize = 13 default_format = "#weak" text = "OE_SIT2_REN_EXC_R" }
+                    }
+                    blockoverride "tug_bar_style" { using = progress_bar_blue_red_alt }
+                    blockoverride "tug_bar_bounds" { min = 0 max = 100 }
+                    blockoverride "tug_bar_value" { value = "[FixedPointToFloat(SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_sit2_ren_exchange').GetValue)]" }
+                    blockoverride "tug_bar_ticks" {
+                        widget = {
+                            position = { 50% 0 }
+                            size = { 2 100% }
+                            using = bg_header_golden_frame
+                        }
+                        widget = {
+                            position = { 80% 0 }
+                            size = { 2 100% }
+                            using = bg_header_golden_frame
+                        }
+                    }
+                blockoverride "tug_footer" {
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        multiline = yes
+                        autoresize = yes
+                        maximumsize = { 440 -1 }
+                        fontsize = 12
+                        default_format = "#weak"
+                        text = "OE_SIT2_REN_EXC_FOOT"
+                    }
+                }
+                }
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    spacing = 6
+                    oe_kpi_tile = {
+                        blockoverride "kpi_label" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                fontsize = 12
+                                default_format = "#weak"
+                                text = "OE_SIT2_REN_SCH_KPI"
+                            }
+                        }
+                        blockoverride "kpi_value" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                elide = right
+                                fontsize = 15
+                                default_format = "#bold #color_gold"
+                                raw_text = "[SituationView.GetPlayer.Custom('OeSit2RenSchool')]"
+                            }
+                        }
+                    }
+                    oe_kpi_tile = {
+                        blockoverride "kpi_label" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                fontsize = 12
+                                default_format = "#weak"
+                                text = "OE_SIT2_MONTHS"
+                            }
+                        }
+                        blockoverride "kpi_value" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                elide = right
+                                fontsize = 15
+                                default_format = "#bold #color_gold"
+                                raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_sit2_ren_months').GetValue|0]"
+                            }
+                        }
+                    }
+                }
+                }
+            }
+        }
+        card_common = {
+            layoutpolicy_horizontal = expanding
+            blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
+            blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+            blockoverride "common_header_text_full" { text_single = { text = "OE_SIT2_MAP_LEGEND" fontsize = 18 } }
+            blockoverride "common_bottom_content" {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 10 8 }
+                    spacing = 6
+                    text_multi = {
+                        layoutpolicy_horizontal = expanding
+                        autoresize = yes
+                        max_width = 448
+                        fontsize = 13
+                        text = "OE_SIT2_REN_LEGEND"
+                    }
+                }
+            }
+        }
+    }
+}

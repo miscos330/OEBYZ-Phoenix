@@ -197,13 +197,13 @@ monthly_country_pulse  = {#@@@每月扳机
 # PAUSED 2026-09-24: retained as comments at user request.
 # oe_rr_country_monthly_check = {#军事领主诞生
 # 	trigger = {
-# 		is_subject_type = oe_sub_rr_indep
+# [fx24: retired zombie subject_type ref removed]
 # 	}
 # 	effect = {
 # 		c:BYZ = {
 # 			every_subject = {
 # 				limit = {
-# 					is_subject_type = oe_sub_rr_indep
+# [fx24: retired zombie subject_type ref removed]
 # 					at_war = no
 # 				}
 # 				ruler = {
@@ -626,23 +626,36 @@ oe_byz_war_hurt = {#战争造成盗匪
 			limit = {
 				scope:winner ?= c:BYZ
 				root.location_rank = location_rank:rural_settlement
+				NOT = { has_building = building_type:oe_byz_bad_thief_greek }
+				current_year < 1365
 				scope:winner = {
-				NOT = {
-					has_variable = won_fate_of_the_phoenix_disaster_variable
+					NOT = { has_variable = won_fate_of_the_phoenix_disaster_variable }
+					any_active_disaster = { disaster_type = disaster_type:oe_fate_of_the_phoenix }
+					NOT = { has_country_modifier = oe_phoenix_auto_bandit_modifier }
+					NOT = {
+						any_owned_location = {
+							count >= 15
+							has_building = building_type:oe_byz_bad_thief_greek
+						}
+					}
 				}
-				}
-
 			}
 			random_list = {
 				75 = {}
 				25 = {
 					root = {
-		construct_building ={ building_type = building_type:oe_byz_bad_thief_greek
-						cost_multiplier = 0
-				cost_multiplier_reason = "game_concept_event"}
+						construct_building = {
+							building_type = building_type:oe_byz_bad_thief_greek
+							cost_multiplier = 0
+							cost_multiplier_reason = "game_concept_event"
+						}
 					}
 				}
 			}
+		}
+		if = {
+			limit = { scope:winner ?= c:BYZ }
+			scope:winner = { oe_byz_check_nirvana_complete = yes }
 		}
 	}
 }
@@ -682,7 +695,7 @@ on_location_occupied = {#@@@占领地点扳机
 # if = {#军事远征
 # 			limit = {
 # 				root = {
-# 					is_subject_type = oe_sub_rr_indep
+# [fx24: retired zombie subject_type ref removed]
 # 					has_reform = government_reform:oe_byz_rr_mil_subject
 # 				}
 # 			}
@@ -830,7 +843,7 @@ oe_byz_siege_won_turkish_transfer = {#围城胜利：土耳其文化地点转给
 # if = {#军事远征
 # 			limit = {
 # 				root = {
-# 					is_subject_type = oe_sub_rr_indep
+# [fx24: retired zombie subject_type ref removed]
 # 					has_reform = government_reform:oe_byz_rr_mil_subject
 # 				}
 # 			}
@@ -950,9 +963,13 @@ on_battle_won_character = {#@@@角色战斗胜利扳机
 oe_character_war_score = {#战功
 	trigger = {
 		root = {
+			exists = owner
 			OR = {
-				owner = c:BYZ
-				owner = {
+				AND = {
+					country_exists = c:BYZ
+					owner ?= c:BYZ
+				}
+				owner ?= {
 					is_subject_type = oe_empire_theme
 				}
 			}

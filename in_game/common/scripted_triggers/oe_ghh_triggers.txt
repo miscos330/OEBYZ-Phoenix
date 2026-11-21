@@ -1,0 +1,98 @@
+﻿# NEW 2026-11-21 v7.0 Wave 1 Package 4, Golden Horde 5-Wing Ulus & Dynamic Decline (gen_glh_ulus.py). Generated; edit gen_glh_ulus.py, not this file.
+
+# Country scope: true if this country is one of the five starting Jochid wings.
+oe_ghh_is_wing = {
+	OR = {
+		tag = WHO
+		tag = SBR
+		tag = KHW
+		tag = KZN
+		tag = CRI
+	}
+}
+
+# Any scope: true while GLH exists and leads the Jochid system.
+oe_ghh_glh_alive = {
+	country_exists = c:GLH
+	c:GLH = {
+		is_subject = no
+		num_locations > 0
+	}
+}
+
+# Any scope: true when no oe_ghh event has fired to GLH in the current calendar month.
+oe_ghh_ev_month_free = {
+	OR = {
+		NOT = { has_global_variable = oe_ghh_last_ev_m }
+		global_var:oe_ghh_last_ev_m != oe_ml_month_now
+	}
+}
+
+# Any scope: true if Phase 2 Great Troubles should begin.
+oe_ghh_should_start_phase2 = {
+	has_global_variable = oe_ghh_phase
+	global_var:oe_ghh_phase = 1
+	country_exists = c:GLH
+	OR = {
+		AND = {
+			has_global_variable = oe_glh_troubles
+			global_var:oe_glh_troubles = 1
+		}
+		c:GLH = { has_active_disaster = disaster_type:horde_civil_war }
+		AND = {
+			current_date >= 1359.8.1
+			OR = {
+				c:GLH = { is_ai = yes }
+				c:GLH = { horde_unity < 65 }
+				AND = {
+					has_global_variable = oe_ghh_cohesion
+					global_var:oe_ghh_cohesion < 55
+				}
+			}
+		}
+	}
+}
+
+# Any scope: true if Phase 3 Timur Shock & Fragmentation should begin.
+oe_ghh_should_start_phase3 = {
+	has_global_variable = oe_ghh_phase
+	global_var:oe_ghh_phase >= 1
+	global_var:oe_ghh_phase <= 2
+	country_exists = c:GLH
+	OR = {
+		has_global_variable = oe_glh_tana_ruined
+		AND = {
+			current_date >= 1395.1.1
+			OR = {
+				NOT = { location:sarai_al_jadid = { owner ?= c:GLH controller ?= c:GLH } }
+				AND = {
+					has_global_variable = oe_ghh_cohesion
+					global_var:oe_ghh_cohesion < 25
+				}
+				AND = {
+					c:GLH = { is_ai = yes }
+					current_date >= 1396.1.1
+					has_global_variable = oe_ghh_cohesion
+					global_var:oe_ghh_cohesion < 45
+				}
+			}
+		}
+		AND = {
+			has_global_variable = oe_ghh_p2_months
+			global_var:oe_ghh_p2_months >= 240
+			has_global_variable = oe_ghh_cohesion
+			global_var:oe_ghh_cohesion < 35
+		}
+	}
+}
+
+# Any scope: true if the last wing independence wave was at least 12 months ago.
+oe_ghh_break_cd_ready = {
+	OR = {
+		NOT = { has_global_variable = oe_ghh_last_break_m }
+		global_var:oe_ghh_last_break_m <= {
+			value = oe_ml_month_now
+			subtract = 12
+		}
+	}
+}

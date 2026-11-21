@@ -94,6 +94,21 @@ oe_yv_left_13 = { value = 40 add = 1 subtract = var:oe_yv_m min = 1 }
 oe_yv_ch_13 = { value = 100 divide = oe_yv_left_13 }
 oe_yv_cut_13 = { value = 40 add = 6 }
 
+# CHI scope. Event 14: months left in its window (this one included), roll in percent, drop month.
+oe_yv_left_14 = { value = 92 add = 1 subtract = var:oe_yv_m min = 1 }
+oe_yv_ch_14 = { value = 100 divide = oe_yv_left_14 }
+oe_yv_cut_14 = { value = 92 add = 6 }
+
+# CHI scope. Event 15: months left in its window (this one included), roll in percent, drop month.
+oe_yv_left_15 = { value = 128 add = 1 subtract = var:oe_yv_m min = 1 }
+oe_yv_ch_15 = { value = 100 divide = oe_yv_left_15 }
+oe_yv_cut_15 = { value = 128 add = 6 }
+
+# CHI scope. Event 16: months left in its window (this one included), roll in percent, drop month.
+oe_yv_left_16 = { value = 152 add = 1 subtract = var:oe_yv_m min = 1 }
+oe_yv_ch_16 = { value = 100 divide = oe_yv_left_16 }
+oe_yv_cut_16 = { value = 152 add = 6 }
+
 # ---- TEST ONLY: readings for the report event oe_yv.90 (any scope) ----
 oe_yv_dev_m = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_m } } value = c:CHI.var:oe_yv_m } }
 oe_yv_dev_on = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_on } } value = 1 } }
@@ -111,6 +126,9 @@ oe_yv_dev_st10 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { h
 oe_yv_dev_st11 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_11 } } value = c:CHI.var:oe_yv_st_11 } }
 oe_yv_dev_st12 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_12 } } value = c:CHI.var:oe_yv_st_12 } }
 oe_yv_dev_st13 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_13 } } value = c:CHI.var:oe_yv_st_13 } }
+oe_yv_dev_st14 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_14 } } value = c:CHI.var:oe_yv_st_14 } }
+oe_yv_dev_st15 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_15 } } value = c:CHI.var:oe_yv_st_15 } }
+oe_yv_dev_st16 = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_st_16 } } value = c:CHI.var:oe_yv_st_16 } }
 oe_yv_dev_ycl = { value = 0 if = { limit = { has_global_variable = oe_yp_dissolved } value = global_var:oe_yp_dissolved } }
 oe_yv_dev_dict = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = yua_dictator_powers } } value = 1 } }
 oe_yv_dev_grand = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = oe_yv_grand_chancellor } } value = 1 } }
@@ -235,3 +253,17 @@ oe_yv_dev_etx = { value = 0 if = { limit = { character:oe_s37_el_tegus ?= { is_a
 oe_yv_dev_ws = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = oe_yv_wenzong_son } } value = 1 } }
 # the shared same-month guard of the Yuan lines (-1 unset)
 oe_yv_dev_evm = { value = -1 if = { limit = { has_global_variable = oe_yuan_ev_m } value = global_var:oe_yuan_ev_m } }
+
+# ---- TEST ONLY (yuan-m6-power): readings for the M6 chancellorship report oe_yv.92 ----
+# global oe_yv_toqto_out: 0 unset, 1 Toqto'a resigned (.14 a)
+oe_yv_dev_m6out = { value = 0 if = { limit = { has_global_variable = oe_yv_toqto_out } value = global_var:oe_yv_toqto_out } }
+# global oe_yv_hama_fav: 0 unset, 1 Hama noted by the emperor (.15 a)
+oe_yv_dev_m6hama = { value = 0 if = { limit = { has_global_variable = oe_yv_hama_fav } value = global_var:oe_yv_hama_fav } }
+# CHI has oe_yv_sole_chancellor (1) or not (0)
+oe_yv_dev_m6sole = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = oe_yv_sole_chancellor } } value = 1 } }
+# CHI has oe_yv_divided_chancery (1) or not (0)
+oe_yv_dev_m6div = { value = 0 if = { limit = { country_exists = c:CHI c:CHI = { has_country_modifier = oe_yv_divided_chancery } } value = 1 } }
+# Toqto'a satisfies oe_yv_toqto_active (1) or not (0)
+oe_yv_dev_m6act = { value = 0 if = { limit = { oe_yv_toqto_active = yes } value = 1 } }
+# Yuan satisfies oe_yv_m6_yuan_ok (1) or not (0)
+oe_yv_dev_m6yok = { value = 0 if = { limit = { oe_yv_m6_yuan_ok = yes } value = 1 } }

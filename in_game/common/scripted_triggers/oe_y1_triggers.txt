@@ -46,9 +46,23 @@ oe_y1_ended = {
     has_global_variable = oe_y1_m
     NOT = { has_global_variable = oe_y1_on }
 }
-# Any scope. Y4 already sent CHI an event this month (its scheduler ran before ours): CHI's events skip the roll.
+# Any scope. Y4 or another Yuan line (shared oe_yuan_ev_m) already sent CHI an event this month: CHI's events skip the roll.
 oe_y1_yv_busy = {
-    country_exists = c:CHI c:CHI = { has_variable = oe_yv_pick var:oe_yv_pick > 0 has_variable = oe_yv_m var:oe_yv_m = global_var:oe_y1_m }
+    OR = {
+        AND = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_pick var:oe_yv_pick > 0 has_variable = oe_yv_m var:oe_yv_m = global_var:oe_y1_m } }
+        AND = { has_global_variable = oe_yuan_ev_m has_global_variable = oe_y1_m global_var:oe_yuan_ev_m = global_var:oe_y1_m }
+    }
+}
+# Any scope. Yuan strength test for the 1354 Tibetan expedition (.10 option b).
+oe_y1_phm_strong = {
+    OR = { AND = { oe_y7_running = yes has_global_variable = oe_y7_shi global_var:oe_y7_shi >= 55 } AND = { oe_y7_running = no country_exists = c:CHI c:CHI = { stability >= 10 legitimacy >= 60 } } }
+}
+# Any scope. Restoration stage >= 2 or Tibet still subject (for .13 option b branch bureau oversight).
+oe_y1_phm_direct_ok = {
+    OR = {
+        AND = { has_global_variable = oe_yr_stage global_var:oe_yr_stage >= 2 }
+        AND = { country_exists = c:TIB c:TIB = { oe_y1_sub = yes } }
+    }
 }
 # Any scope. A deposed King of Goryeo still has to die in exile.
 oe_y1_exile_pending = {
@@ -174,6 +188,75 @@ oe_y1_never_6 = {
     OR = {
         oe_y1_yuan_fallen = yes
         AND = { global_var:oe_y1_m > 380 }
+    }
+}
+
+# Any scope. Event 10 (CHI) can fire now (its event trigger).
+oe_y1_can_10 = {
+    oe_y1_yuan_fallen = no country_exists = c:CHI country_exists = c:TIB c:TIB = { oe_y1_sub = yes owns = location:sakya owns = location:nedong }
+}
+
+# Any scope. Event 10: the scheduler may send it (its condition and timing).
+oe_y1_ok_10 = {
+    oe_y1_can_10 = yes
+}
+
+# Any scope. Event 10 can no longer come: drop it now.
+oe_y1_never_10 = {
+    oe_y1_yuan_fallen = yes
+}
+
+# Any scope. Event 11 (TIB) can fire now (its event trigger).
+oe_y1_can_11 = {
+    oe_y1_yuan_fallen = no country_exists = c:TIB c:TIB = { is_ai = no oe_y1_sub = yes owns = location:sakya owns = location:nedong } has_global_variable = oe_y1_phm
+}
+
+# Any scope. Event 11: the scheduler may send it (its condition and timing).
+oe_y1_ok_11 = {
+    oe_y1_can_11 = yes
+}
+
+# Any scope. Event 11 can no longer come: drop it now.
+oe_y1_never_11 = {
+    OR = {
+        oe_y1_yuan_fallen = yes
+        AND = { OR = { global_var:oe_y1_st_10 ?= 2 AND = { country_exists = c:TIB c:TIB = { is_ai = yes } has_global_variable = oe_y1_d_phm } } }
+    }
+}
+
+# Any scope. Event 12 (CHI) can fire now (its event trigger).
+oe_y1_can_12 = {
+    oe_y1_yuan_fallen = no country_exists = c:CHI country_exists = c:TIB c:TIB = { owns = location:nedong owns = location:lhasa } OR = { global_var:oe_y1_phm ?= 1 global_var:oe_y1_phm_exp ?= 2 }
+}
+
+# Any scope. Event 12: the scheduler may send it (its condition and timing).
+oe_y1_ok_12 = {
+    oe_y1_can_12 = yes global_var:oe_y1_m <= 296
+}
+
+# Any scope. Event 12 can no longer come: drop it now.
+oe_y1_never_12 = {
+    OR = {
+        oe_y1_yuan_fallen = yes
+        AND = { OR = { global_var:oe_y1_st_10 ?= 2 global_var:oe_y1_phm ?= 3 global_var:oe_y1_phm_exp ?= 1 AND = { has_global_variable = oe_y1_m global_var:oe_y1_m > 296 } } }
+    }
+}
+
+# Any scope. Event 13 (CHI) can fire now (its event trigger).
+oe_y1_can_13 = {
+    oe_y1_yuan_fallen = no country_exists = c:CHI country_exists = c:TIB has_global_variable = oe_y1_phm c:TIB = { owns = location:lhasa owns = location:nedong } OR = { AND = { has_global_variable = oe_yr_stage global_var:oe_yr_stage >= 2 } current_date >= 1368.1.1 }
+}
+
+# Any scope. Event 13: the scheduler may send it (its condition and timing).
+oe_y1_ok_13 = {
+    oe_y1_can_13 = yes
+}
+
+# Any scope. Event 13 can no longer come: drop it now.
+oe_y1_never_13 = {
+    OR = {
+        oe_y1_yuan_fallen = yes
+        AND = { global_var:oe_y1_st_10 ?= 2 }
     }
 }
 
@@ -351,6 +434,122 @@ oe_y1_lapse_6 = {
     }
 }
 
+# Any scope. Event 10: open (inside its window, not at its end), due (end reached), lapse (dropped).
+oe_y1_open_10 = {
+    NOT = { has_global_variable = oe_y1_st_10 }
+    has_global_variable = oe_y1_m
+    global_var:oe_y1_m >= 194
+    global_var:oe_y1_m < 224
+    oe_y1_ok_10 = yes
+}
+oe_y1_due_10 = {
+    NOT = { has_global_variable = oe_y1_st_10 }
+    has_global_variable = oe_y1_m
+    global_var:oe_y1_m >= 224
+    oe_y1_ok_10 = yes
+}
+oe_y1_lapse_10 = {
+    NOT = { has_global_variable = oe_y1_st_10 }
+    has_global_variable = oe_y1_m
+    OR = {
+        oe_y1_never_10 = yes
+        AND = {
+            global_var:oe_y1_m >= 224
+            OR = {
+                NOT = { oe_y1_ok_10 = yes }
+                global_var:oe_y1_m > oe_y1_cut_10
+            }
+        }
+    }
+}
+
+# Any scope. Event 11: open (inside its window, not at its end), due (end reached), lapse (dropped).
+oe_y1_open_11 = {
+    NOT = { has_global_variable = oe_y1_st_11 }
+    has_global_variable = oe_y1_m
+    global_var:oe_y1_m >= oe_y1_lo_11
+    global_var:oe_y1_m < oe_y1_hi_11
+    oe_y1_ok_11 = yes
+}
+oe_y1_due_11 = {
+    NOT = { has_global_variable = oe_y1_st_11 }
+    has_global_variable = oe_y1_m
+    global_var:oe_y1_m >= oe_y1_hi_11
+    oe_y1_ok_11 = yes
+}
+oe_y1_lapse_11 = {
+    NOT = { has_global_variable = oe_y1_st_11 }
+    has_global_variable = oe_y1_m
+    OR = {
+        oe_y1_never_11 = yes
+        AND = {
+            global_var:oe_y1_m >= oe_y1_hi_11
+            OR = {
+                NOT = { oe_y1_ok_11 = yes }
+                global_var:oe_y1_m > oe_y1_cut_11
+            }
+        }
+    }
+}
+
+# Any scope. Event 12: open (inside its window, not at its end), due (end reached), lapse (dropped).
+oe_y1_open_12 = {
+    NOT = { has_global_variable = oe_y1_st_12 }
+    has_global_variable = oe_y1_m
+    global_var:oe_y1_m >= oe_y1_lo_12
+    global_var:oe_y1_m < oe_y1_hi_12
+    oe_y1_ok_12 = yes
+}
+oe_y1_due_12 = {
+    NOT = { has_global_variable = oe_y1_st_12 }
+    has_global_variable = oe_y1_m
+    global_var:oe_y1_m >= oe_y1_hi_12
+    oe_y1_ok_12 = yes
+}
+oe_y1_lapse_12 = {
+    NOT = { has_global_variable = oe_y1_st_12 }
+    has_global_variable = oe_y1_m
+    OR = {
+        oe_y1_never_12 = yes
+        AND = {
+            global_var:oe_y1_m >= oe_y1_hi_12
+            OR = {
+                NOT = { oe_y1_ok_12 = yes }
+                global_var:oe_y1_m > oe_y1_cut_12
+            }
+        }
+    }
+}
+
+# Any scope. Event 13: open (inside its window, not at its end), due (end reached), lapse (dropped).
+oe_y1_open_13 = {
+    NOT = { has_global_variable = oe_y1_st_13 }
+    has_global_variable = oe_y1_m
+    global_var:oe_y1_m >= 333
+    global_var:oe_y1_m < 584
+    oe_y1_ok_13 = yes
+}
+oe_y1_due_13 = {
+    NOT = { has_global_variable = oe_y1_st_13 }
+    has_global_variable = oe_y1_m
+    global_var:oe_y1_m >= 584
+    oe_y1_ok_13 = yes
+}
+oe_y1_lapse_13 = {
+    NOT = { has_global_variable = oe_y1_st_13 }
+    has_global_variable = oe_y1_m
+    OR = {
+        oe_y1_never_13 = yes
+        AND = {
+            global_var:oe_y1_m >= 584
+            OR = {
+                NOT = { oe_y1_ok_13 = yes }
+                global_var:oe_y1_m > oe_y1_cut_13
+            }
+        }
+    }
+}
+
 # Any scope. Every scheduled event has fired or been dropped.
 oe_y1_all_done = {
     has_global_variable = oe_y1_st_1
@@ -359,11 +558,15 @@ oe_y1_all_done = {
     has_global_variable = oe_y1_st_4
     has_global_variable = oe_y1_st_5
     has_global_variable = oe_y1_st_6
+    has_global_variable = oe_y1_st_10
+    has_global_variable = oe_y1_st_11
+    has_global_variable = oe_y1_st_12
+    has_global_variable = oe_y1_st_13
 }
 
-# Any scope. The schedule is open: not every event is settled and month 400 (1370.8) is not reached.
+# Any scope. The schedule is open: not every event is settled and month 585 (1370.8) is not reached.
 oe_y1_sched_open = {
     has_global_variable = oe_y1_m
-    global_var:oe_y1_m < 400
+    global_var:oe_y1_m < 585
     NOT = { oe_y1_all_done = yes }
 }

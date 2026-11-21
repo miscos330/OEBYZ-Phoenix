@@ -174,7 +174,142 @@ oe_y1.6 = { # 罢征东行省理问所
     }
 }
 
-# Hidden worker, fired from options of oe_y1.1, .5 (CHI) and .6 (KOR) with the country var oe_y1_job.
+# CHI scope. Scheduled 1353.6-1355.12 (history: 1354 Phagmodrupa uprising from Nedong against Sakya).
+oe_y1.10 = { # 帕木竹巴起兵与萨迦告急
+    type = country_event
+    outcome = neutral
+    title = oe_y1.10.t
+    desc = oe_y1.10.d
+    illustration_tags = { 10 = exterior 10 = armed }
+    trigger = { tag = CHI oe_y1_can_10 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+    }
+    option = {
+        name = oe_y1.10.a
+        historical_option = yes
+        add_prestige = prestige_weak_penalty
+        custom_tooltip = oe_y1.10.a.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 101 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 70 }
+    }
+    option = {
+        name = oe_y1.10.b
+        trigger = { gold >= oe_y1_cost_6m }
+        add_gold = { value = oe_y1_cost_6m multiply = -1 } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+        custom_tooltip = oe_y1.10.b.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 102 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 20 modifier = { factor = 0 gold < oe_y1_cost_6m } }
+    }
+    option = {
+        name = oe_y1.10.c
+        add_stability = stability_weak_bonus add_prestige = -10
+        custom_tooltip = oe_y1.10.c.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 103 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 10 }
+    }
+}
+
+# TIB scope (human TIB only). 1-3 months after event 10 fires.
+oe_y1.11 = { # 乃东兴起：萨迦残晖与吐蕃新制
+    type = country_event
+    outcome = neutral
+    title = oe_y1.11.t
+    desc = oe_y1.11.d
+    illustration_tags = { 10 = interior 10 = regular }
+    trigger = { tag = TIB oe_y1_can_11 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+    }
+    option = {
+        name = oe_y1.11.a
+        historical_option = yes
+        add_stability = stability_weak_bonus add_legitimacy = legitimacy_weak_bonus add_liberty_desire = liberty_desire_mild_plus add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty }
+        custom_tooltip = oe_y1.11.a.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 111 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 65 }
+    }
+    option = {
+        name = oe_y1.11.b
+        add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty } add_liberty_desire = -10
+        custom_tooltip = oe_y1.11.b.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 112 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 20 }
+    }
+    option = {
+        name = oe_y1.11.c
+        add_prestige = prestige_weak_bonus add_stability = stability_weak_penalty add_liberty_desire = 25
+        custom_tooltip = oe_y1.11.c.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 113 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 15 }
+    }
+}
+
+# CHI scope. 18-48 months after event 10 if invested or expedition failed (dropped after month 296, 1361.12).
+oe_y1.12 = { # 废十三万户、复吐蕃古制
+    type = country_event
+    outcome = neutral
+    title = oe_y1.12.t
+    desc = oe_y1.12.d
+    illustration_tags = { 10 = interior 10 = angry }
+    trigger = { tag = CHI oe_y1_can_12 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+    }
+    option = {
+        name = oe_y1.12.a
+        historical_option = yes
+        add_prestige = prestige_weak_penalty
+        custom_tooltip = oe_y1.12.a.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 121 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 70 }
+    }
+    option = {
+        name = oe_y1.12.b
+        add_prestige = prestige_weak_bonus add_legitimacy = legitimacy_weak_bonus
+        custom_tooltip = oe_y1.12.b.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 122 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 30 }
+    }
+}
+
+# CHI scope. Scheduled 1365.1-1385.12 after event 10 when Yuan restores (oe_yr_stage >= 2) or holds past 1368.
+oe_y1.13 = { # 雪域新约：后至正吐蕃定局
+    type = country_event
+    outcome = neutral
+    title = oe_y1.13.t
+    desc = oe_y1.13.d
+    illustration_tags = { 10 = interior 10 = regular }
+    trigger = { tag = CHI oe_y1_can_13 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+    }
+    option = {
+        name = oe_y1.13.a
+        historical_option = yes
+        add_gold = { value = oe_y1_cost_3m multiply = -1 } add_prestige = prestige_weak_bonus
+        custom_tooltip = oe_y1.13.a.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 131 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 60 modifier = { factor = 0 gold < oe_y1_cost_3m } }
+    }
+    option = {
+        name = oe_y1.13.b
+        trigger = { gold >= oe_y1_cost_6m oe_y1_phm_direct_ok = yes }
+        add_gold = { value = oe_y1_cost_6m multiply = -1 } add_stability = stability_weak_penalty
+        custom_tooltip = oe_y1.13.b.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 132 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 25 modifier = { factor = 0 gold < oe_y1_cost_6m } }
+    }
+    option = {
+        name = oe_y1.13.c
+        add_prestige = prestige_weak_penalty
+        custom_tooltip = oe_y1.13.c.tt
+        hidden_effect = { set_variable = { name = oe_y1_job value = 133 } trigger_event_non_silently = oe_y1.20 }
+        ai_chance = { base = 15 }
+    }
+}
+
+# Hidden worker, fired from options of oe_y1.1, .5, .10, .12, .13 (CHI), .6 (KOR) and .11 (TIB) with the country var oe_y1_job.
 oe_y1.20 = {
     type = country_event
     hidden = yes
@@ -185,6 +320,17 @@ oe_y1.20 = {
         else_if = { limit = { var:oe_y1_job = 13 } every_subject = { limit = { oe_y1_xz_marked = yes } add_liberty_desire = liberty_desire_weak_plus } }
         else_if = { limit = { var:oe_y1_job = 51 } oe_y1_job_depose = yes }
         else_if = { limit = { var:oe_y1_job = 61 } oe_y1_job_lisuo = yes }
+        else_if = { limit = { var:oe_y1_job = 101 } oe_y1_job_101 = yes }
+        else_if = { limit = { var:oe_y1_job = 102 } oe_y1_job_102 = yes }
+        else_if = { limit = { var:oe_y1_job = 103 } oe_y1_job_103 = yes }
+        else_if = { limit = { var:oe_y1_job = 111 } oe_y1_job_111 = yes }
+        else_if = { limit = { var:oe_y1_job = 112 } oe_y1_job_112 = yes }
+        else_if = { limit = { var:oe_y1_job = 113 } oe_y1_job_113 = yes }
+        else_if = { limit = { var:oe_y1_job = 121 } oe_y1_job_121 = yes }
+        else_if = { limit = { var:oe_y1_job = 122 } oe_y1_job_122 = yes }
+        else_if = { limit = { var:oe_y1_job = 131 } oe_y1_job_131 = yes }
+        else_if = { limit = { var:oe_y1_job = 132 } oe_y1_job_132 = yes }
+        else_if = { limit = { var:oe_y1_job = 133 } oe_y1_job_133 = yes }
         remove_variable = oe_y1_job
     }
 }

@@ -18,17 +18,41 @@
         oe_rsc_visits = { start = 0 min = 0 max = 3 display = fraction icon = "gfx/interface/icons/flat_icons/opportunities.dds" }
         oe_rsc_days = { start = 0 min = 0 max = 200 display = fraction }
     }
-    potential = { tag = BYZ }
+    # fx25 (a): allow BYZ or Orthodox East Slavic countries to convene the All-Rus' Council
+    potential = {
+        OR = {
+            tag = BYZ
+            AND = {
+                oe_rus_country = yes
+                religion = religion:orthodox
+            }
+        }
+    }
     can_start = {
-        tag = BYZ
-        is_situation_active = situation:oe_rise_of_rus
+        OR = {
+            AND = {
+                tag = BYZ
+                is_situation_active = situation:oe_rise_of_rus
+            }
+            AND = {
+                oe_rus_country = yes
+                religion = religion:orthodox
+                oe_rus_controller = yes
+                OR = {
+                    AND = {
+                        is_situation_active = situation:oe_rise_of_rus
+                        oe_rus_top_power = yes
+                    }
+                    var:oe_rpl_path ?= 3
+                }
+            }
+        }
         NOT = { has_cooldown = oe_rsc_cooldown }
         NOT = { has_variable = oe_rsc_active }
         oe_rsc_has_independent_rus = yes
         oe_rsc_has_venue = yes
     }
     leader = {
-        owner = c:BYZ
         has_estate = estate_type:clergy_estate
         is_alive = yes
         is_adult = yes

@@ -1,0 +1,22 @@
+﻿# NEW 2026-11-21 v7.1 SIT-2 Flagship Situations & Vanilla Bridges (gen_situations_flagship.py). Generated; edit gen_situations_flagship.py, not this file.
+# Runs at most once per game month globally (guarded by global_var:oe_sit2_ran_m).
+# Keeps all 4 flagship situations' cached O(1) GUI variables & vanilla situation bridges synchronized.
+monthly_country_pulse = { on_actions = { oe_sit2_monthly_pulse } }
+
+oe_sit2_monthly_pulse = {
+	trigger = {
+		OR = {
+			is_ai = no
+			AND = { tag = BYZ is_rebel_country = no }
+			tag = ROM
+			tag = CHI
+			tag = GLH
+			tag = MOS
+			tag = RUS
+		}
+		NOT = { global_var:oe_sit2_ran_m ?= oe_sit2_m_now }
+	}
+	effect = {
+		oe_sit2_monthly_sync = yes
+	}
+}

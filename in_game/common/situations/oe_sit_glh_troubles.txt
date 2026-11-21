@@ -1,0 +1,121 @@
+﻿# NEW 2026-11-21 v7.1 SIT-2 Flagship Situations & Vanilla Bridges (gen_situations_flagship.py). Generated; edit gen_situations_flagship.py, not this file.
+
+oe_sit_glh_troubles = {
+	monthly_spawn_chance = monthly_spawn_chance_unique
+	can_start = {
+		NOT = { has_global_variable = oe_sit2_glh_started }
+		country_exists = c:GLH
+		OR = {
+			AND = {
+				has_global_variable = oe_ghh_phase
+				global_var:oe_ghh_phase >= 2
+			}
+			AND = {
+				has_global_variable = oe_glh_troubles
+				global_var:oe_glh_troubles >= 1
+			}
+			current_year >= 1360
+		}
+	}
+	visible = {
+		oe_sit2_glh_participant = yes
+	}
+	outcome = {
+		name = "oe_sit_glh_troubles_outcome_revival"
+		desc = "oe_sit_glh_troubles_outcome_revival_desc"
+		trigger = {
+			country_exists = c:GLH
+			OR = {
+				AND = {
+					has_global_variable = oe_ghh_phase
+					global_var:oe_ghh_phase >= 4
+				}
+				AND = {
+					has_global_variable = oe_ghh_phase
+					global_var:oe_ghh_phase >= 2
+					has_global_variable = oe_ghh_cohesion
+					global_var:oe_ghh_cohesion >= 85
+					has_variable = oe_sit2_glh_months
+					var:oe_sit2_glh_months >= 24
+				}
+			}
+		}
+		immediate = {
+			set_global_variable = { name = oe_sit2_glh_ended value = 1 }
+			c:GLH = {
+				add_country_modifier = { modifier = oe_sit2_glh_revived_mod years = 25 mode = replace }
+				trigger_event_non_silently = oe_sit2.4
+			}
+		}
+	}
+	outcome = {
+		name = "oe_sit_glh_troubles_outcome_fractured"
+		desc = "oe_sit_glh_troubles_outcome_fractured_desc"
+		trigger = {
+			country_exists = c:GLH
+			OR = {
+				AND = {
+					has_global_variable = oe_ghh_phase
+					global_var:oe_ghh_phase = 3
+					has_global_variable = oe_ghh_cohesion
+					global_var:oe_ghh_cohesion <= 10
+				}
+				AND = {
+					current_year >= 1490
+					has_global_variable = oe_ghh_cohesion
+					global_var:oe_ghh_cohesion <= 20
+				}
+			}
+		}
+		immediate = {
+			set_global_variable = { name = oe_sit2_glh_ended value = 2 }
+			c:GLH = {
+				add_country_modifier = { modifier = oe_sit2_glh_fractured_mod years = 20 mode = replace }
+				trigger_event_non_silently = oe_sit2.4
+			}
+		}
+	}
+	outcome = {
+		name = "oe_sit_glh_troubles_outcome_extinguished"
+		desc = "oe_sit_glh_troubles_outcome_extinguished_desc"
+		trigger = {
+			NOT = { country_exists = c:GLH }
+		}
+		immediate = {
+			set_global_variable = { name = oe_sit2_glh_ended value = 3 }
+		}
+	}
+	on_start = {
+		oe_sit2_glh_init = yes
+		c:GLH ?= { trigger_event_non_silently = oe_sit2.3 }
+	}
+	on_monthly = {
+		oe_sit2_glh_sync = yes
+	}
+	on_ended = { }
+	tooltip = {
+		if = {
+			limit = { has_owner = yes owner = { tag = GLH } }
+			custom_tooltip = oe_sit2_glh_map_khan_tt
+		}
+		else_if = {
+			limit = { has_owner = yes country_exists = c:GLH owner = { oe_sit2_glh_wing_tag = yes is_subject_of = c:GLH } }
+			custom_tooltip = oe_sit2_glh_map_wing_tt
+		}
+		else_if = {
+			limit = { has_owner = yes owner = { oe_sit2_glh_wing_tag = yes } }
+			custom_tooltip = oe_sit2_glh_map_free_tt
+		}
+		else_if = {
+			limit = { has_owner = yes owner = { oe_sit2_glh_neighbor_tag = yes } }
+			custom_tooltip = oe_sit2_glh_map_nbr_tt
+		}
+	}
+	map_color = {
+		if = { limit = { has_owner = yes owner ?= { tag = GLH } } value = owner.country_color }
+		else_if = { limit = { has_owner = yes country_exists = c:GLH owner ?= { oe_sit2_glh_wing_tag = yes is_subject_of = c:GLH } } value = define:NMapColors|MAP_COLOR_HIGH }
+		else_if = { limit = { has_owner = yes owner ?= { oe_sit2_glh_wing_tag = yes } } value = define:NMapColors|MAP_COLOR_LOW }
+		else_if = { limit = { has_owner = yes owner ?= { oe_sit2_glh_neighbor_tag = yes } } value = define:NMapColors|MAP_COLOR_MID }
+		else = { value = define:NMapColors|DEFAULT_COLOR }
+	}
+}

@@ -1,0 +1,567 @@
+﻿# NEW 2026-11-21 v7.1 SIT-2 Flagship Situations & Vanilla Bridges (gen_situations_flagship.py). Generated; edit gen_situations_flagship.py, not this file.
+
+# ============================================================================= Situation 1 Actions: Great Yuan Restoration
+oe_sit2_yr_han_reform = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = { tag = CHI }
+	}
+	allow = {
+		scope:actor = {
+			tag = CHI
+			gold >= oe_sit2_action_gold_med
+		}
+	}
+	cooldown = { type = oe_sit2_yr_han_reform_cd years = 3 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 6
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_yuan_restoration = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_yuan_restoration situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_med multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_yr_reform_mod years = 5 mode = replace }
+		}
+		situation:oe_sit_yuan_restoration = {
+			change_variable = { name = oe_sit2_yr_progress add = 8 }
+			change_variable = { name = oe_sit2_yr_balance add = -12 }
+			clamp_variable = { name = oe_sit2_yr_progress max = 100 min = 0 }
+			clamp_variable = { name = oe_sit2_yr_balance max = 100 min = 0 }
+		}
+	}
+	ai_will_do = {
+		add = 20
+	}
+}
+
+oe_sit2_yr_steppe_banner = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = { tag = CHI }
+	}
+	allow = {
+		scope:actor = {
+			tag = CHI
+			gold >= oe_sit2_action_gold_small
+		}
+	}
+	cooldown = { type = oe_sit2_yr_steppe_banner_cd years = 3 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 6
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_yuan_restoration = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_yuan_restoration situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_small multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_yr_steppe_mod years = 5 mode = replace }
+		}
+		situation:oe_sit_yuan_restoration = {
+			change_variable = { name = oe_sit2_yr_progress add = 6 }
+			change_variable = { name = oe_sit2_yr_balance add = 12 }
+			clamp_variable = { name = oe_sit2_yr_progress max = 100 min = 0 }
+			clamp_variable = { name = oe_sit2_yr_balance max = 100 min = 0 }
+		}
+	}
+	ai_will_do = {
+		add = 15
+	}
+}
+
+oe_sit2_yr_vassal_tribute = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			NOT = { tag = CHI }
+			oe_sit2_yuan_participant = yes
+		}
+	}
+	allow = {
+		scope:actor = {
+			NOT = { tag = CHI }
+			country_exists = c:CHI
+			NOT = { is_at_war_with = c:CHI }
+			gold >= oe_sit2_action_gold_small
+		}
+	}
+	cooldown = { type = oe_sit2_yr_vassal_tribute_cd years = 4 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_yuan_restoration = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_yuan_restoration situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_small multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_yr_tribute_mod years = 5 mode = replace }
+			if = {
+				limit = { country_exists = c:CHI }
+				add_opinion = { modifier = oe_sit2_yuan_tribute_op target = c:CHI }
+				c:CHI = { add_opinion = { modifier = oe_sit2_yuan_tribute_op target = scope:actor } }
+			}
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_sit2_yr_trib_gcd } }
+			set_global_variable = { name = oe_sit2_yr_trib_gcd value = 1 years = 1 }
+			situation:oe_sit_yuan_restoration = {
+				change_variable = { name = oe_sit2_yr_progress add = 2 }
+				clamp_variable = { name = oe_sit2_yr_progress max = 100 min = 0 }
+			}
+		}
+	}
+	ai_will_do = {
+		add = 10
+	}
+}
+
+# ============================================================================= Situation 2 Actions: Great Troubles of the Golden Horde
+oe_sit2_glh_rally_ulus = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = { tag = GLH }
+	}
+	allow = {
+		scope:actor = {
+			tag = GLH
+			gold >= oe_sit2_action_gold_med
+		}
+	}
+	cooldown = { type = oe_sit2_glh_rally_ulus_cd years = 3 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 6
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_glh_troubles = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_glh_troubles situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_med multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_glh_rally_mod years = 5 mode = replace }
+		}
+		if = { limit = { NOT = { has_global_variable = oe_ghh_cohesion } } set_global_variable = { name = oe_ghh_cohesion value = 45 } }
+		change_global_variable = { name = oe_ghh_cohesion add = 8 }
+		if = { limit = { global_var:oe_ghh_cohesion > 100 } set_global_variable = { name = oe_ghh_cohesion value = 100 } }
+		oe_sit2_glh_sync = yes
+	}
+	ai_will_do = {
+		add = 20
+	}
+}
+
+oe_sit2_glh_wing_autonomy = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			OR = {
+				oe_sit2_glh_wing_tag = yes
+				AND = { country_exists = c:GLH is_subject_of = c:GLH }
+			}
+		}
+	}
+	allow = {
+		scope:actor = {
+			NOT = { tag = GLH }
+			gold >= oe_sit2_action_gold_small
+		}
+	}
+	cooldown = { type = oe_sit2_glh_wing_autonomy_cd years = 3 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 8
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_glh_troubles = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_glh_troubles situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_small multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_glh_autonomy_mod years = 5 mode = replace }
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_sit2_glh_wing_gcd } }
+			set_global_variable = { name = oe_sit2_glh_wing_gcd value = 1 years = 1 }
+			if = { limit = { NOT = { has_global_variable = oe_ghh_cohesion } } set_global_variable = { name = oe_ghh_cohesion value = 45 } }
+			change_global_variable = { name = oe_ghh_cohesion add = -3 }
+			if = { limit = { global_var:oe_ghh_cohesion < 0 } set_global_variable = { name = oe_ghh_cohesion value = 0 } }
+		}
+		oe_sit2_glh_sync = yes
+	}
+	ai_will_do = {
+		add = 15
+	}
+}
+
+oe_sit2_glh_exploit_strife = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			NOT = { tag = GLH }
+			NOT = { oe_sit2_glh_wing_tag = yes }
+			oe_sit2_glh_participant = yes
+		}
+	}
+	allow = {
+		scope:actor = {
+			gold >= oe_sit2_action_gold_small
+		}
+	}
+	cooldown = { type = oe_sit2_glh_exploit_strife_cd years = 4 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_glh_troubles = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_glh_troubles situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_small multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_glh_frontier_mod years = 5 mode = replace }
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_sit2_glh_strife_gcd } }
+			set_global_variable = { name = oe_sit2_glh_strife_gcd value = 1 years = 1 }
+			if = { limit = { NOT = { has_global_variable = oe_ghh_cohesion } } set_global_variable = { name = oe_ghh_cohesion value = 45 } }
+			change_global_variable = { name = oe_ghh_cohesion add = -2 }
+			if = { limit = { global_var:oe_ghh_cohesion < 0 } set_global_variable = { name = oe_ghh_cohesion value = 0 } }
+		}
+		oe_sit2_glh_sync = yes
+	}
+	ai_will_do = {
+		add = 12
+	}
+}
+
+# ============================================================================= Situation 3 Actions: Byzantine Renaissance
+oe_sit2_ren_sponsor_academy = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = { oe_sit2_ren_byz_or_rom = yes }
+	}
+	allow = {
+		scope:actor = {
+			oe_sit2_ren_byz_or_rom = yes
+			gold >= oe_sit2_action_gold_med
+		}
+	}
+	cooldown = { type = oe_sit2_ren_sponsor_academy_cd years = 3 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 6
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_byz_renaissance = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_byz_renaissance situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_med multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_ren_academy_mod years = 5 mode = replace }
+		}
+		situation:oe_sit_byz_renaissance = {
+			change_variable = { name = oe_sit2_ren_beacon add = 10 }
+			clamp_variable = { name = oe_sit2_ren_beacon max = 100 min = 0 }
+		}
+	}
+	ai_will_do = {
+		add = 20
+	}
+}
+
+oe_sit2_ren_debate_patronage = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = { oe_sit2_ren_byz_or_rom = yes }
+	}
+	allow = {
+		scope:actor = {
+			oe_sit2_ren_byz_or_rom = yes
+			gold >= oe_sit2_action_gold_small
+		}
+	}
+	cooldown = { type = oe_sit2_ren_debate_patronage_cd years = 3 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 8
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_byz_renaissance = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_byz_renaissance situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_small multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_ren_debate_mod years = 5 mode = replace }
+		}
+		situation:oe_sit_byz_renaissance = {
+			change_variable = { name = oe_sit2_ren_beacon add = 6 }
+			change_variable = { name = oe_sit2_ren_exchange add = 4 }
+			if = {
+				limit = { has_variable = oe_sit2_ren_school var:oe_sit2_ren_school >= 3 }
+				set_variable = { name = oe_sit2_ren_school value = 1 }
+			}
+			else = {
+				change_variable = { name = oe_sit2_ren_school add = 1 }
+			}
+			clamp_variable = { name = oe_sit2_ren_beacon max = 100 min = 0 }
+			clamp_variable = { name = oe_sit2_ren_exchange max = 100 min = 0 }
+		}
+	}
+	ai_will_do = {
+		add = 15
+	}
+}
+
+oe_sit2_ren_invite_scholars = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			NOT = { oe_sit2_ren_byz_or_rom = yes }
+			oe_sit2_ren_italian_or_ortho = yes
+		}
+	}
+	allow = {
+		scope:actor = {
+			gold >= oe_sit2_action_gold_small
+		}
+	}
+	cooldown = { type = oe_sit2_ren_invite_scholars_cd years = 4 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_byz_renaissance = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_byz_renaissance situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_small multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_ren_scholars_mod years = 5 mode = replace }
+			if = {
+				limit = { country_exists = c:ROM }
+				add_opinion = { modifier = oe_sit2_ren_exchange_op target = c:ROM }
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				add_opinion = { modifier = oe_sit2_ren_exchange_op target = c:BYZ }
+			}
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_sit2_ren_scholars_gcd } }
+			set_global_variable = { name = oe_sit2_ren_scholars_gcd value = 1 years = 1 }
+			situation:oe_sit_byz_renaissance = {
+				change_variable = { name = oe_sit2_ren_exchange add = 3 }
+				clamp_variable = { name = oe_sit2_ren_exchange max = 100 min = 0 }
+			}
+		}
+	}
+	ai_will_do = {
+		add = 15
+	}
+}
+
+# ============================================================================= Situation 4 Actions: Crossroads of Rus' & the Steppe
+oe_sit2_ec_border_garrison = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = { oe_sit2_ec_participant = yes }
+	}
+	allow = {
+		scope:actor = {
+			gold >= oe_sit2_action_gold_med
+		}
+	}
+	cooldown = { type = oe_sit2_ec_border_garrison_cd years = 3 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 8
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_eastern_crossroads = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_eastern_crossroads situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_med multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_ec_garrison_mod years = 5 mode = replace }
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_sit2_ec_garr_gcd } }
+			set_global_variable = { name = oe_sit2_ec_garr_gcd value = 1 years = 1 }
+			if = {
+				limit = { scope:actor = { oe_sit2_ec_rus_bloc = yes } }
+				situation:oe_sit_eastern_crossroads = { change_variable = { name = oe_sit2_ec_rus_power add = 3 } }
+			}
+			else_if = {
+				limit = { scope:actor = { oe_sit2_ec_west_bloc = yes } }
+				situation:oe_sit_eastern_crossroads = { change_variable = { name = oe_sit2_ec_west_power add = 3 } }
+			}
+			else = {
+				situation:oe_sit_eastern_crossroads = { change_variable = { name = oe_sit2_ec_steppe_power add = 3 } }
+			}
+		}
+		oe_sit2_ec_sync = yes
+	}
+	ai_will_do = {
+		add = 15
+	}
+}
+
+oe_sit2_ec_cossack_pact = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = { oe_sit2_ec_participant = yes }
+	}
+	allow = {
+		scope:actor = {
+			gold >= oe_sit2_action_gold_small
+		}
+	}
+	cooldown = { type = oe_sit2_ec_cossack_pact_cd years = 4 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 10
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_eastern_crossroads = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_eastern_crossroads situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_small multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_ec_cossack_mod years = 5 mode = replace }
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_sit2_ec_cos_gcd } }
+			set_global_variable = { name = oe_sit2_ec_cos_gcd value = 1 years = 1 }
+			if = {
+				limit = { scope:actor = { oe_sit2_ec_rus_bloc = yes } }
+				situation:oe_sit_eastern_crossroads = { change_variable = { name = oe_sit2_ec_rus_power add = 3 } }
+			}
+			else_if = {
+				limit = { scope:actor = { oe_sit2_ec_west_bloc = yes } }
+				situation:oe_sit_eastern_crossroads = { change_variable = { name = oe_sit2_ec_west_power add = 3 } }
+			}
+			else = {
+				situation:oe_sit_eastern_crossroads = { change_variable = { name = oe_sit2_ec_steppe_power add = 3 } }
+			}
+		}
+		oe_sit2_ec_sync = yes
+	}
+	ai_will_do = {
+		add = 12
+	}
+}
+
+oe_sit2_ec_diplo_alignment = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = { oe_sit2_ec_participant = yes }
+	}
+	allow = {
+		scope:actor = {
+			gold >= oe_sit2_action_gold_small
+		}
+	}
+	cooldown = { type = oe_sit2_ec_diplo_alignment_cd years = 4 }
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = { situation:oe_sit_eastern_crossroads = { add_to_list = source } }
+		target_flag = recipient
+		name = choose_situation
+		column = { data = name }
+		visible = { this = situation:oe_sit_eastern_crossroads situation_is_active = yes }
+	}
+	effect = {
+		scope:actor = {
+			add_gold = { value = oe_sit2_action_gold_small multiply = -1 }
+			add_country_modifier = { modifier = oe_sit2_ec_envoy_mod years = 5 mode = replace }
+			if = {
+				limit = { country_exists = c:BYZ NOT = { tag = BYZ } }
+				add_opinion = { modifier = oe_sit2_ec_pact_op target = c:BYZ }
+			}
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_sit2_ec_dip_gcd } }
+			set_global_variable = { name = oe_sit2_ec_dip_gcd value = 1 years = 1 }
+			if = {
+				limit = { scope:actor = { oe_sit2_ec_rus_bloc = yes } }
+				situation:oe_sit_eastern_crossroads = { change_variable = { name = oe_sit2_ec_rus_power add = 2 } }
+			}
+			else_if = {
+				limit = { scope:actor = { oe_sit2_ec_west_bloc = yes } }
+				situation:oe_sit_eastern_crossroads = { change_variable = { name = oe_sit2_ec_west_power add = 2 } }
+			}
+			else = {
+				situation:oe_sit_eastern_crossroads = { change_variable = { name = oe_sit2_ec_steppe_power add = 2 } }
+			}
+		}
+		oe_sit2_ec_sync = yes
+	}
+	ai_will_do = {
+		add = 10
+	}
+}

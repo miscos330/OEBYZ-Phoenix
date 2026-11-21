@@ -1,8 +1,8 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v6.8
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v8.5
 
 欧陆风云 5 的东罗马（拜占庭）重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
-> **v6.8 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。v6.5 以来的新内容大多只在短测试局里看过、没有跑过长局，按“实验性”发布。
+> **v8.5 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。1337–1515 已完成 178 年实机长局验证，v8.5 热修与 1560–1836 后期线路按“实验性测试版”发布。
 
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
@@ -16,7 +16,7 @@
 - **从 1337 年的危局起步。** 帝国只剩君士坦丁堡、色雷斯、马其顿、色萨利和摩里亚的一部分，亚洲一侧只剩几处据点，国库空虚。你要先稳住皇权和财政，挺过 1341 年的内战，再一步步收复失地，最终光复罗马。
 - **史实优先。** 开局、人物和事件按史料校正，每条改动都有来源清单。剧情尽量写成历史上真实摆在皇帝面前的抉择。
 - **制度驱动。** 帝国权威、军区、豪族、元老院和附庸阶梯互相牵制。玩法的重心是怎样治理帝国，而不只是打仗扩张。
-- **不只东罗马。** 全图 15 个地区的开局都做了史实校正，大元另有一条专线。
+- **不只东罗马。** 全图 15 个地区的开局都做了史实校正，大元与俄罗斯均有完整可玩 500 年专线，覆盖欧亚与远洋多战区。
 - **测试版。** 新内容先在测试版放出。想要稳定体验或继续旧存档，请玩正式版。
 
 ## 主要玩法系统
@@ -38,6 +38,18 @@
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
 
+## v8.5 主要内容（整合 v7.0–v8.5 全时代大版本）
+
+事件从 1372 个增加到 1747 个（+375），中文文本从约 18300 条增加到约 23800 条，新增 28 张原创高精度原生 `.dds` 美术资产（发布包增加约 59 MB）。**1337–1515 已跑过 178 年纯观察者实机长局（零崩溃无卡顿）；v8.5 热修与 1560–1836 近代后期线路已过全部 23/23 离线门禁，整体仍按“实验性测试版”发布。**
+
+- **三大文明 500 年完整主线（1337–1836）：**东罗马近代线（33 幕）、大元近代线（1450–1750）、俄罗斯玩家可玩全线（莫斯科→第三罗马→彼得改革）；配套 **23 支跨时代特色兵种 + 20 项军事科技**。
+- **五大旗舰局势与全球战区：**大元中兴、金帐分裂、拜占庭文艺复兴、东方十字路口、两帝之争（均配原生横幅与徽章）；拓展西欧反罗马同盟、南亚/东南亚海上丝路、马格里布与非洲总督区、北欧/多瑙河/东亚边缘及远洋殖民线。
+- **帝国熵增引擎 & 12 强动态反霸权 AI：**新增 10 项开局游戏规则自由开关，打破中后期滚雪球无聊期，与“罗马之重负”零双重扣减合并。
+- **UI 2.0 & 编年史 2.0 & 28 张原生美术：**主界面顶部快捷导航栏、6 分页 74 线编年史 2.0、LDE 批四词库、227+ 核心事件配图升级与 4 张欧亚载入画面。
+- **根治历史遗留与原版缺陷：**零覆写根治 1337 拜占庭—艾登自动保独、零覆写清零 8 条原版 `gui.log` 简中报错与 28 条原版缺漏词条，清空 178 年长局运行时报错。
+
+完整改动见 [CHANGELOG.md](CHANGELOG.md)。
+
 ## v6.8 主要内容
 
 事件从 1229 个增加到 1372 个，中文文本从约 17200 条增加到约 18300 条，另有东罗马与大元的三套新外观（发布包因此大了约 100 MB）。原定 v6.7.1 的修正也在这一版里。**新内容大多只在短测试局里用测试按钮看过一次，没有跑过长局，全部按“实验性”发布。**
@@ -47,18 +59,6 @@
 - **巴尔干与拉丁世界：**塞尔维亚与多瑙河防线一至三期（1371–1444）；阿尔巴尼亚与斯坎德培一期；爱琴海诸领主一期；拉丁世界四期（教廷）、五期（立陶宛的洗礼与托伦和约）。
 - **大元：**钞法、海运与京仓、大元中兴、高丽各一期；1340 年立皇太子；投下宗王与食邑；土司第三轮；六位元廷人物。哈密开局改归豳王
 - **外观：**东罗马军队、大元军队的单位模型和大元官服肖像（来自竹子大王的社区DLC，经竹子大王本人同意使用）。
-
-完整改动见 [CHANGELOG.md](CHANGELOG.md)。
-
-## v6.7 主要内容（含 v6.5、v6.6）
-
-这一版合并了三版的内容，事件从 1082 个增加到 1229 个，中文文本从约 13600 条增加到约 17200 条。**新内容大半只做过离线检查和冒烟测试，全部按“实验性”发布。**
-
-- **拜占庭主线：**黑死病、布达之行与色雷斯（1347–1371，阿德里安堡守城）；长房之争（约翰七世，1390–1399）；最后的围城（只在帝国真的衰弱时才来）和城破之后；中兴与霸业（给强盛的帝国的一条线）；教会合一二至四期、修院地产与 1368 年会议。
-- **制度：**军区每年自行补员；罗马商社（章程、年账、置地、保护约）；战后安排与经营边区；殖民城；治绩、以正统固权、民心所向；军区忠诚分项。
-- **周边世界：**克里米亚、拉丁希腊、格鲁吉亚、伊尔汗国的继承者各四期左右，做到 15 世纪；突厥诸侯、塞浦路斯与瓦拉几亚；黑海粮道与商站；意大利特权二至四期；两位教皇与求援。
-- **大元：**元末平乱全线做完；“行省与诸王”面板和地图模式；第十位藩王豳王；行省长官、藩王、土司显示各自的称谓。
-- **文本：**国家、文化、王朝的浮窗加历史介绍；恢复约 590 个希腊语地名；统一一批译名。
 
 完整改动见 [CHANGELOG.md](CHANGELOG.md)。
 
@@ -75,32 +75,27 @@
 
 计划会根据测试和玩家反馈调整，以实际更新为准。
 
-- **下一步：验证。**跑长局，把 v6.5 以来的内容在自然流程里逐条看过、修好，再摘“实验性”。
-- **接着做的：**军区按忠诚和地位向朝廷“上缴”（第一步已放进模组、开关关着，读完账再打开）；迁民契约与特许商社的新阶段；爱琴海、塞尔维亚、阿尔巴尼亚、拉丁世界的后续各期；大元的两宫与东宫，中兴与高丽的后几期。
-- **之后：**马穆鲁克、红海与印度、1481 年以后的内容。
-- **长期：**跟进游戏版本。MOD 改写了部分原版开局文件，游戏大版本更新后要重新生成，这类适配会优先处理。
+- **v9.0（品质登顶）：**清零全仓剩余旧代码债务、升级 6 份核心原版覆写锁定、新增帝国熵增可视化仪表盘与顶部精简预警栏、补完跨时代兵种/科技 Tier A 美术、接通已实机探针验证通过的“远洋海外总督区（建筑型附庸 + 脚本年红）”模式。
+- **v9.5（政务减负与深度机制）：**可选政务自动化助手、附庸系统与 24 项深度外交交互、28 项特色议会议题、欧亚奇观/圣地与骑士团/东正教修会、文化融合与可选动态思潮。
+- **v10.0–v11.0（全欧亚主角与典藏总纲）：**新增金帐、马穆鲁克、波立联邦、威尼斯/热那亚四大 500 年主角线与明清双轨；新增可选架空分支“第四奥德赛·极乐洲新罗马”（规则开关控制）；引入动态瘟疫隔离、霸权博弈与多轮长局平衡审计。
+- **长期：**持续跟进《欧陆风云 5》官方版本更新，优先维护 1337 开局与原版重叠文件适配。
 
 ## 已知问题
 
-- 这一版的新内容只在短测试局里看过，没有跑过长局；v6.5 以来的内容也大半没有经过完整的游戏内测试，全部按“实验性”发布。
+- 本版整体按“实验性测试版”发布：1337–1515 已跑过 178 年实机长局；v8.5-rc2 热修与 1560–1836 近代后期线路已通过全部离线门禁，尚未做第二轮实机复测。
 - 旧存档不支持，请新开一局。
-- 开局头 20 天，东正教农民会减少约 6.1 万人，原因还在查。
-- 开局几周内可能出现“拜占庭对艾登保障独立”。本 MOD 和原版都没有替玩家做这个决定的脚本，最可能是艾登按原版规则请求保障、被接受了，还在核实。
-- 托管军区的“授地世袭”自动作答在测试局里还没看到成立（授地月数在月初被清零），原因还在查。
-- 京城的新主人可能解散普世牧首区（原版让新主人决定去留，和约里也可能解散）；京城一失，教会各线就一齐收线（教会线第六期）。
-- 大元的建筑式行省可能加入原版的独立运动（测试局里见过河南江北行省加入），是否应当如此还在查。
-- 大元“行省与诸王”面板的九行摘要卡还没在游戏里看过。
-- 拜占庭部队外观在日志里有两类警告（罗马头盔多余的贴图通道、重步兵盾牌挂载缺默认项），不影响显示。
-- 军区（建筑型国家）不能自己招正规军：这是原版规则，原版的汉萨同盟也一样。
-- 中文的右括号偶尔会落到行首，这是游戏换行规则造成的。
-- 少数原有文件在加载或运行时有提示，不影响游戏。
+- 1337 开局头 20 天东正教农民减少约 6.1 万、以及大元建筑式行省偶尔加入原版独立运动，属于原版底层人口/外交结算机制，仍在持续跟踪。
+- 军区（建筑型国家）不能自行招募正规军：这是原版引擎规则（与汉萨同盟相同）。
+- 拜占庭部队模型在日志里有两类无害贴图/挂点提示（头盔多余 UV 通道、重步兵盾牌缺默认项），不影响游戏内显示。
+- “两帝之争”局势中，6 项公开行动按拜占庭、神圣罗马帝国、奥地利、俄罗斯、教廷五方阵营分属显示，拜占庭视角看到 2 项属正常设计。
+- 1430 年代奥斯曼处于苏丹国阶位时出现叠字国名，为 EU5 1.4.9 原版突厥王朝后缀规则，不影响游玩。
 
 ## 安装
 
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v6.8` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v8.5` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
@@ -125,11 +120,11 @@
 
 ---
 
-# Phoenix Beta (OEBYZ) v6.8 — English
+# Phoenix Beta (OEBYZ) v8.5 — English
 
 The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
-> **v6.8: Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.** Most of the content added since v6.5 has only been seen in short test games, never in a long game, and is released as experimental.
+> **v8.5: Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.** 1337–1515 passed a 178-year live observer run; subsequent hotfixes and 1560–1836 late-game lines are released as an experimental beta.
 
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
@@ -141,7 +136,7 @@ The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made
 - **Start from the crisis of 1337:** the empire holds only Constantinople, Thrace, Macedonia, Thessaly and part of the Morea, a few footholds in Asia, and an empty treasury. Secure the throne and the finances, survive the civil war of 1341, win back the lost lands, and in the end restore Rome.
 - **History first:** the start, characters and events are checked against the sources, and stories follow the choices emperors actually faced.
 - **Driven by institutions:** imperial authority, themes, great houses, the senate and the ladder of subjects pull against each other. The game is about governing, not only conquest.
-- **Beyond Byzantium:** the start is corrected in 15 regions across the map, and the Yuan get their own content line.
+- **Beyond Byzantium:** the start is corrected in 15 regions across the map, with full 500-year playable lines for Byzantium, Great Yuan, and Russia across Eurasian and overseas theatres.
 
 ## Main systems
 
@@ -150,6 +145,18 @@ The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made
 - **Three rings of territory:** provinces with five statuses and a senate; a ladder of subjects from tributary to province; the Family of Kings, dignities and buying peace.
 - **Imperial campaigns and the Roman Reconquest:** win the Balkans and Anatolia, then campaign towards Egypt, Italy, Iberia and beyond; restore 10 regions to complete the Reconquest.
 - **Court, great houses and finance:** seven court offices, great houses to court or curb, and separate treasury and privy purse.
+
+## Highlights of v8.5 (Full 1337–1836 Mega Release, v7.0–v8.5)
+
+Events grow from 1372 to 1747 (+375), Chinese localisation keys grow from about 18300 to about 23800 (with full English coverage), and 28 bespoke native `.dds` artworks are added (+59 MB). **1337–1515 passed a 178-year clean live observer run (zero crashes, zero slowdown); subsequent hotfixes and 1560–1836 late-game lines passed all 23/23 offline gates and are released as an experimental beta.**
+
+- **500-Year Three-Civilisation Arc (1337–1836):** Byzantine Early Modern line (33 events), Great Yuan Early Modern line (1450–1750), and a full playable Russia arc (Moscow → Third Rome → Petrine reforms), backed by **23 cross-era unique units and 20 military advances**.
+- **Five Flagship Situations & Global Theatres:** Yuan Restoration, Golden Horde Troubles (multi-khanate splintering), Byzantine Renaissance, Eastern Crossroads, and War of the Two Emperors — plus Western Europe Anti-Roman League, Maritime Silk Road (South/SE Asia), Maghreb/Barbary & Africa Exarchate, Nordic/Danube/East Asia rim, and Far Seas overseas ventures.
+- **Empire Entropy Engine & 12-Major Anti-Hegemon AI:** Configurable via 10 Game Rules to keep late-game empires challenging without double-stacking penalties with the Burden of Rome.
+- **UI 2.0, Chronicle 2.0 & 28 Native Artworks:** Top-bar Quick Navigation, 6-tab 74-line Chronicle 2.0, LDE Batch 4 history tooltips, 4 Eurasian loading screens, and 227+ upgraded event illustrations.
+- **Vanilla & Legacy Fixes:** Non-invasive fix for the 1337 Byzantium–Aydın auto-guarantee, zero-override fixes for 8 vanilla `gui.log` Chinese errors and 28 missing vanilla keys, plus clean 178-year runtime logs.
+
+See [CHANGELOG.md](CHANGELOG.md) for the full list.
 
 ## Highlights of v6.8
 
@@ -161,24 +168,14 @@ Events grow from 1229 to 1372, and three new looks arrive for the Byzantine and 
 - **The Yuan:** paper money, sea transport and the capital granaries, a Yuan restoration and Goryeo, each a first phase; a crown prince in 1340; the touxia princes and their appanages; a third round of tusi changes; six officials at the start.
 - **Looks:** unit models for the Byzantine and Yuan armies and Yuan court dress, from Bamboo King's Community Flavor Pack, used with the maker's consent.
 
-## Highlights of v6.7 (with v6.5 and v6.6)
-
-Three versions in one release: events grow from 1082 to 1229. **Most of the new content has only passed offline checks and smoke tests; all of it is experimental.**
-
-- **Byzantium:** the Black Death, the journey to Buda and the loss of Thrace (1347–1371, with the defence of Adrianople); the elder line (John VII, 1390–1399); the last siege, which comes only when the empire is truly weak, and what follows the fall; Restoration and Hegemony, a line for a strong empire; Church union phases 2–4, monastic lands and the council of 1368.
-- **Institutions:** themes replenish their own troops every January; the Roman Company (charter, yearly accounts, land purchases, protection treaties); post-war settlement and frontier programmes; coloniae; deeds of government, legitimacy for authority, and the people's favour.
-- **The wider world:** the Crimea, Latin Greece, Georgia and the heirs of the Ilkhanate, each carried into the fifteenth century; the Turkish emirates, Cyprus and Wallachia; the Black Sea grain route and trading posts; Italian privileges phases 2–4; the two popes and the appeal to Rome.
-- **The Yuan:** the suppression of the Red Turbans completed; a "Secretariats and Princes" panel and map mode; a tenth prince; governors, princes and tusi shown by their own titles.
-- **Text:** history notes in the tooltips of countries, cultures and dynasties; about 590 Greek place names restored.
-
 ## Roadmap
 
 Plans will change with testing and player feedback.
 
-- **Next:** run long games, check the content added since v6.5 in the natural course of play, fix what fails, then drop the experimental labels.
-- **Then:** themes paying the crown by loyalty and status (step 1 is in the mod, switched off until the accounts have been read); the next stages of settlers and the chartered company; further phases for the Aegean, Serbia, Albania and the Latin world; the two courts of the Yuan, and later phases of the Yuan restoration and Goryeo.
-- **Later:** the Mamluks, the Red Sea and India, content after 1481.
-- **Ongoing:** keep up with game updates; the rewritten vanilla start files must be regenerated after major patches.
+- **v9.0 (Quality Summit):** Zero out remaining legacy script warnings, add an O(1) Empire Entropy dashboard & compact top-bar alerts, expand Tier A unit/advance artwork, and enable the probe-verified building-country Overseas Exarchates with script-paid annual dividends.
+- **v9.5 (QoL & Deep Mechanics):** Optional governance automation assistant, expanded subject system with 24 interactions, 28 bespoke parliament issues, Eurasian wonders/holy sites/orders, and cultural synthesis with optional dynamic institutions.
+- **v10.0–v11.0 (Pan-Eurasian Protagonists & Definitive Edition):** Four new 500-year protagonist arcs (Golden Horde, Mamluks, Polish-Lithuanian Commonwealth, Venice/Genoa), Ming/Manchu dual track, optional alternate-history branch *Fourth Odyssey: Nova Elysia* (gated by Game Rule), dynamic plagues, hegemons, and multi-run observer balance audits.
+- **Ongoing:** Keep pace with Europa Universalis V patches and maintain 1337 setup compatibility.
 
 ## Install
 

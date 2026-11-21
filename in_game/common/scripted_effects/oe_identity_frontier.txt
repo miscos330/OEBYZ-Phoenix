@@ -1,63 +1,111 @@
-﻿oe_rw_start_griko_romanization = {
+﻿# Upgraded by fx23 (Decision 306 R3B) to two-tier unified origin selection.
+oe_rw_start_griko_romanization = {
     if = {
         limit = { oe_rw_start_griko_romanization_allowed = yes }
-        if = { limit = { area:abruzzo_area = { any_location_in_area = { oe_rw_griko_spread_location = yes } } } area:abruzzo_area = { oe_rw_spawn_griko_in_area = yes } }
-        else_if = { limit = { area:apulia_area = { any_location_in_area = { oe_rw_griko_spread_location = yes } } } area:apulia_area = { oe_rw_spawn_griko_in_area = yes } }
-        else_if = { limit = { area:basilicata_area = { any_location_in_area = { oe_rw_griko_spread_location = yes } } } area:basilicata_area = { oe_rw_spawn_griko_in_area = yes } }
-        else_if = { limit = { area:campania_area = { any_location_in_area = { oe_rw_griko_spread_location = yes } } } area:campania_area = { oe_rw_spawn_griko_in_area = yes } }
-        else_if = { limit = { area:sicily_area = { any_location_in_area = { oe_rw_griko_spread_location = yes } } } area:sicily_area = { oe_rw_spawn_griko_in_area = yes } }
-    }
-}
-oe_rw_spawn_griko_in_area = {
-    ordered_location_in_area = {
-        limit = { oe_rw_griko_spread_location = yes }
-        max = 1
-        check_range_bounds = no
-        order_by = { value = population multiply = oe_rw_assim_griko_source_share }
-        spawn_movement = {
-            movement_definition = movement_definition:oe_griko_identity_movement
-            supporters = { value = population multiply = oe_rw_assim_griko_source_share multiply = 0.1 }
+        region:italy_region = {
+            ordered_location_in_region = {
+                limit = { oe_rw_griko_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_griko_source_share
+                    if = { limit = { oe_rw_griko_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { OR = { this = location:palermo this = location:catania this = location:syracuse } } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_griko_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_griko_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:griko_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_griko_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    oe_identity_confirm_start = { holder = culture:griko_culture movement = oe_griko_identity_movement event = oe_identity_start_repair.18 }
+                    c:BYZ = { set_variable = { name = oe_rw_origin_griko value = scope:oe_rw_origin_loc } }
+                }
+            }
         }
-        oe_identity_confirm_start = { holder = culture:griko_culture movement = oe_griko_identity_movement event = oe_identity_start_repair.18 }
     }
 }
 
 oe_rw_start_mesopotamia_romanization = {
     if = {
         limit = { oe_rw_start_mesopotamia_romanization_allowed = yes }
-        if = { limit = { area:iraq_arabi_area = { any_location_in_area = { oe_rw_mesopotamia_spread_location = yes } } } area:iraq_arabi_area = { oe_rw_spawn_mesopotamia_in_area = yes } }
-    }
-}
-oe_rw_spawn_mesopotamia_in_area = {
-    ordered_location_in_area = {
-        limit = { oe_rw_mesopotamia_spread_location = yes }
-        max = 1
-        check_range_bounds = no
-        order_by = { value = population multiply = oe_rw_assim_mesopotamia_source_share }
-        spawn_movement = {
-            movement_definition = movement_definition:oe_mesopotamia_identity_movement
-            supporters = { value = population multiply = oe_rw_assim_mesopotamia_source_share multiply = 0.1 }
+        area:iraq_arabi_area = {
+            ordered_location_in_area = {
+                limit = { oe_rw_mesopotamia_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_mesopotamia_source_share
+                    if = { limit = { oe_rw_mesopotamia_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:baghdad } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_mesopotamia_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_mesopotamia_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_mesopotamian_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_mesopotamia_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    oe_identity_confirm_start = { holder = culture:oe_mesopotamian_culture movement = oe_mesopotamia_identity_movement event = oe_identity_start_repair.19 }
+                    c:BYZ = { set_variable = { name = oe_rw_origin_mesopotamia value = scope:oe_rw_origin_loc } }
+                }
+            }
         }
-        oe_identity_confirm_start = { holder = culture:oe_mesopotamian_culture movement = oe_mesopotamia_identity_movement event = oe_identity_start_repair.19 }
     }
 }
 
 oe_rw_start_kudoyr_romanization = {
     if = {
         limit = { oe_rw_start_kudoyr_romanization_allowed = yes }
-        if = { limit = { area:kordestan_area = { any_location_in_area = { oe_rw_kudoyr_spread_location = yes } } } area:kordestan_area = { oe_rw_spawn_kudoyr_in_area = yes } }
-    }
-}
-oe_rw_spawn_kudoyr_in_area = {
-    ordered_location_in_area = {
-        limit = { oe_rw_kudoyr_spread_location = yes }
-        max = 1
-        check_range_bounds = no
-        order_by = { value = population multiply = oe_rw_assim_kudoyr_source_share }
-        spawn_movement = {
-            movement_definition = movement_definition:oe_kudoyr_identity_movement
-            supporters = { value = population multiply = oe_rw_assim_kudoyr_source_share multiply = 0.1 }
+        area:kordestan_area = {
+            ordered_location_in_area = {
+                limit = { oe_rw_kudoyr_origin_ge25 = yes }
+                max = 1
+                check_range_bounds = no
+                order_by = {
+                    value = population
+                    multiply = oe_rw_assim_kudoyr_source_share
+                    if = { limit = { oe_rw_kudoyr_origin_ge50 = yes } add = 10000000 }
+                    if = { limit = { this = location:kermanshah } add = 1000000 }
+                    if = { limit = { owner = c:BYZ } add = 100000000 }
+                }
+                save_scope_as = oe_rw_origin_loc
+                spawn_movement = {
+                    movement_definition = movement_definition:oe_kudoyr_identity_movement
+                    supporters = { value = population multiply = oe_rw_assim_kudoyr_source_share multiply = 0.1 }
+                }
+                if = {
+                    limit = {
+                        culture:oe_kudoyr_culture = {
+                            any_movement_in_culture = {
+                                movement_type = movement_definition:oe_kudoyr_identity_movement
+                                num_locations_affected > 0
+                            }
+                        }
+                    }
+                    oe_identity_confirm_start = { holder = culture:oe_kudoyr_culture movement = oe_kudoyr_identity_movement event = oe_identity_start_repair.20 }
+                    c:BYZ = { set_variable = { name = oe_rw_origin_kudoyr value = scope:oe_rw_origin_loc } }
+                }
+            }
         }
-        oe_identity_confirm_start = { holder = culture:oe_kudoyr_culture movement = oe_kudoyr_identity_movement event = oe_identity_start_repair.20 }
     }
 }

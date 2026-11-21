@@ -1,0 +1,636 @@
+﻿# NEW 2026-11-21 v7.0 Wave 1 Package 4, Golden Horde 5-Wing Ulus & Dynamic Decline (gen_glh_ulus.py). Generated; edit gen_glh_ulus.py, not this file.
+
+# ---------------------------------------------------------------- Initialization (1337.4.1 & fallback)
+oe_ghh_init = {
+	if = {
+		limit = { NOT = { has_global_variable = oe_ghh_init } country_exists = c:GLH }
+		set_global_variable = { name = oe_ghh_init value = 1 }
+		set_global_variable = { name = oe_ghh_on value = 1 }
+		set_global_variable = { name = oe_ghh_cohesion value = 85 }
+		set_global_variable = { name = oe_ghh_cohesion_cap value = 100 }
+		set_global_variable = { name = oe_ghh_phase value = 1 }
+		set_global_variable = { name = oe_ghh_tier value = 3 }
+		set_global_variable = { name = oe_ghh_p2_months value = 0 }
+		set_global_variable = { name = oe_ghh_revival_stage value = 0 }
+		if = {
+			limit = { country_exists = c:WHO c:WHO = { is_subject_of = c:GLH } }
+			c:WHO = { change_country_name = OE_GHH_NAME_WHO_ULUS }
+		}
+		if = {
+			limit = { country_exists = c:SBR c:SBR = { is_subject_of = c:GLH } }
+			c:SBR = { change_country_name = OE_GHH_NAME_SBR_ULUS }
+		}
+		if = {
+			limit = { country_exists = c:KHW c:KHW = { is_subject_of = c:GLH } }
+			c:KHW = { change_country_name = OE_GHH_NAME_KHW_ULUS }
+		}
+		if = {
+			limit = { country_exists = c:KZN c:KZN = { is_subject_of = c:GLH } }
+			c:KZN = { change_country_name = OE_GHH_NAME_KZN_ULUS }
+		}
+		if = {
+			limit = { country_exists = c:CRI c:CRI = { is_subject_of = c:GLH } }
+			c:CRI = { change_country_name = OE_GHH_NAME_CRI_ULUS }
+		}
+		oe_ghh_sync_modifiers = yes
+	}
+}
+
+# ---------------------------------------------------------------- Cohesion adjustment & clamping
+oe_ghh_shift_cohesion = {
+	if = {
+		limit = { has_global_variable = oe_ghh_cohesion }
+		change_global_variable = { name = oe_ghh_cohesion add = $amount$ }
+		if = {
+			limit = { global_var:oe_ghh_cohesion < 0 }
+			set_global_variable = { name = oe_ghh_cohesion value = 0 }
+		}
+		if = {
+			limit = { has_global_variable = oe_ghh_cohesion_cap global_var:oe_ghh_cohesion > global_var:oe_ghh_cohesion_cap }
+			set_global_variable = { name = oe_ghh_cohesion value = global_var:oe_ghh_cohesion_cap }
+		}
+		if = {
+			limit = { global_var:oe_ghh_cohesion > 100 }
+			set_global_variable = { name = oe_ghh_cohesion value = 100 }
+		}
+		oe_ghh_update_tier = yes
+	}
+}
+
+oe_ghh_update_tier = {
+	if = {
+		limit = { has_global_variable = oe_ghh_cohesion }
+		if = {
+			limit = { global_var:oe_ghh_cohesion >= 70 }
+			set_global_variable = { name = oe_ghh_tier value = 3 }
+		}
+		else_if = {
+			limit = { global_var:oe_ghh_cohesion >= 40 }
+			set_global_variable = { name = oe_ghh_tier value = 2 }
+		}
+		else_if = {
+			limit = { global_var:oe_ghh_cohesion >= 20 }
+			set_global_variable = { name = oe_ghh_tier value = 1 }
+		}
+		else = {
+			set_global_variable = { name = oe_ghh_tier value = 0 }
+		}
+	}
+}
+
+# ---------------------------------------------------------------- Sync wing & GLH modifiers + independent wing names
+oe_ghh_sync_modifiers = {
+	oe_ghh_update_tier = yes
+	if = {
+		limit = { country_exists = c:GLH }
+		c:GLH = {
+			if = {
+				limit = { has_global_variable = oe_ghh_phase global_var:oe_ghh_phase = 2 }
+				if = { limit = { has_country_modifier = oe_ghh_glh_shattered } remove_country_modifier = oe_ghh_glh_shattered }
+				add_country_modifier = { modifier = oe_ghh_glh_troubles months = 14 mode = replace }
+			}
+			else_if = {
+				limit = { has_global_variable = oe_ghh_phase global_var:oe_ghh_phase = 3 }
+				if = { limit = { has_country_modifier = oe_ghh_glh_troubles } remove_country_modifier = oe_ghh_glh_troubles }
+				add_country_modifier = { modifier = oe_ghh_glh_shattered months = 14 mode = replace }
+			}
+			else = {
+				if = { limit = { has_country_modifier = oe_ghh_glh_troubles } remove_country_modifier = oe_ghh_glh_troubles }
+				if = { limit = { has_country_modifier = oe_ghh_glh_shattered } remove_country_modifier = oe_ghh_glh_shattered }
+			}
+			every_subject = {
+				limit = { is_subject_type = oe_glh_ulus }
+				if = { limit = { has_country_modifier = oe_ghh_ulus_loyal } remove_country_modifier = oe_ghh_ulus_loyal }
+				if = { limit = { has_country_modifier = oe_ghh_ulus_restless } remove_country_modifier = oe_ghh_ulus_restless }
+				if = { limit = { has_country_modifier = oe_ghh_ulus_defiant } remove_country_modifier = oe_ghh_ulus_defiant }
+				if = {
+					limit = { has_global_variable = oe_ghh_tier global_var:oe_ghh_tier = 3 }
+					add_country_modifier = { modifier = oe_ghh_ulus_loyal months = 14 mode = replace }
+				}
+				else_if = {
+					limit = { has_global_variable = oe_ghh_tier global_var:oe_ghh_tier = 1 }
+					add_country_modifier = { modifier = oe_ghh_ulus_restless months = 14 mode = replace }
+				}
+				else_if = {
+					limit = { has_global_variable = oe_ghh_tier global_var:oe_ghh_tier = 0 }
+					add_country_modifier = { modifier = oe_ghh_ulus_defiant months = 14 mode = replace }
+				}
+			}
+		}
+	}
+	# If any wing became independent on its own (war/treaty), switch its name to its independent khanate name & clear ulus modifiers.
+	if = {
+		limit = { country_exists = c:WHO c:WHO = { is_subject = no } NOT = { has_global_variable = oe_ghh_free_WHO } }
+		set_global_variable = { name = oe_ghh_free_WHO value = 1 }
+		c:WHO = {
+			change_country_name = WHO
+			if = { limit = { has_country_modifier = oe_ghh_ulus_loyal } remove_country_modifier = oe_ghh_ulus_loyal }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_restless } remove_country_modifier = oe_ghh_ulus_restless }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_defiant } remove_country_modifier = oe_ghh_ulus_defiant }
+		}
+	}
+	if = {
+		limit = { country_exists = c:SBR c:SBR = { is_subject = no } NOT = { has_global_variable = oe_ghh_free_SBR } }
+		set_global_variable = { name = oe_ghh_free_SBR value = 1 }
+		c:SBR = {
+			change_country_name = SBR
+			if = { limit = { has_country_modifier = oe_ghh_ulus_loyal } remove_country_modifier = oe_ghh_ulus_loyal }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_restless } remove_country_modifier = oe_ghh_ulus_restless }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_defiant } remove_country_modifier = oe_ghh_ulus_defiant }
+		}
+	}
+	if = {
+		limit = { country_exists = c:KHW c:KHW = { is_subject = no } NOT = { has_global_variable = oe_ghh_free_KHW } }
+		set_global_variable = { name = oe_ghh_free_KHW value = 1 }
+		c:KHW = {
+			change_country_name = OE_GHH_NAME_KHW_KHANATE
+			if = { limit = { has_country_modifier = oe_ghh_ulus_loyal } remove_country_modifier = oe_ghh_ulus_loyal }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_restless } remove_country_modifier = oe_ghh_ulus_restless }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_defiant } remove_country_modifier = oe_ghh_ulus_defiant }
+		}
+	}
+	if = {
+		limit = { country_exists = c:KZN c:KZN = { is_subject = no } NOT = { has_global_variable = oe_ghh_free_KZN } }
+		set_global_variable = { name = oe_ghh_free_KZN value = 1 }
+		c:KZN = {
+			change_country_name = OE_GHH_NAME_KZN_KHANATE
+			if = { limit = { has_country_modifier = oe_ghh_ulus_loyal } remove_country_modifier = oe_ghh_ulus_loyal }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_restless } remove_country_modifier = oe_ghh_ulus_restless }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_defiant } remove_country_modifier = oe_ghh_ulus_defiant }
+		}
+	}
+	if = {
+		limit = { country_exists = c:CRI c:CRI = { is_subject = no } NOT = { has_global_variable = oe_ghh_free_CRI } }
+		set_global_variable = { name = oe_ghh_free_CRI value = 1 }
+		c:CRI = {
+			change_country_name = OE_GHH_NAME_CRI_KHANATE
+			if = { limit = { has_country_modifier = oe_ghh_ulus_loyal } remove_country_modifier = oe_ghh_ulus_loyal }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_restless } remove_country_modifier = oe_ghh_ulus_restless }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_defiant } remove_country_modifier = oe_ghh_ulus_defiant }
+		}
+	}
+}
+
+# ---------------------------------------------------------------- Wing breakaway helper (cancels oe_glh_ulus -> independent khanate)
+oe_ghh_break_wing = {
+	if = {
+		limit = { country_exists = c:GLH country_exists = c:$tag$ c:$tag$ = { is_subject_of = c:GLH } }
+		c:GLH = { cancel_subject = c:$tag$ }
+		c:$tag$ = {
+			change_country_name = $ind_name$
+			if = { limit = { has_country_modifier = oe_ghh_ulus_loyal } remove_country_modifier = oe_ghh_ulus_loyal }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_restless } remove_country_modifier = oe_ghh_ulus_restless }
+			if = { limit = { has_country_modifier = oe_ghh_ulus_defiant } remove_country_modifier = oe_ghh_ulus_defiant }
+			add_opinion = { modifier = oe_ghh_b_ulus_breakaway target = c:GLH }
+		}
+		c:GLH = { add_opinion = { modifier = oe_ghh_b_ulus_breakaway target = c:$tag$ } }
+		set_global_variable = { name = oe_ghh_free_$tag$ value = 1 }
+		set_global_variable = { name = oe_ghh_last_break_m value = oe_ml_month_now }
+	}
+}
+
+# ---------------------------------------------------------------- Dynamic release of vanilla dormant NOG (Nogai) & ATR (Astrakhan)
+oe_ghh_release_nog = {
+	if = {
+		limit = {
+			country_exists = c:GLH
+			NOT = { country_exists = c:NOG }
+			location:sarayjuk = { owner ?= c:GLH }
+			c:GLH = { num_locations > 40 }
+		}
+		c:GLH = {
+			# Keep GLH's capital and non-lower_yik_area core untouched; NOG rises around Sarayjuk (lower_yik_area).
+			every_owned_location = {
+				limit = {
+					OR = {
+						this = c:GLH.capital
+						NOT = { area = area:lower_yik_area }
+					}
+				}
+				remove_core = c:NOG
+			}
+			create_country_from_cores_in_our_locations = c:NOG
+		}
+		if = {
+			limit = { country_exists = c:NOG }
+			c:NOG = {
+				add_opinion = { modifier = oe_ghh_b_ulus_breakaway target = c:GLH }
+			}
+			c:GLH = { add_opinion = { modifier = oe_ghh_b_ulus_breakaway target = c:NOG } }
+			set_global_variable = { name = oe_ghh_rel_NOG value = 1 }
+			set_global_variable = { name = oe_ghh_last_break_m value = oe_ml_month_now }
+		}
+	}
+}
+
+oe_ghh_release_atr = {
+	if = {
+		limit = {
+			country_exists = c:GLH
+			NOT = { country_exists = c:ATR }
+			location:astrakhan = { owner ?= c:GLH }
+			c:GLH = { num_locations > 40 }
+		}
+		c:GLH = {
+			# CRITICAL: Strip ATR cores outside astrakhan_area (esp. sarai_al_jadid in lower_don_area) so GLH keeps its capital!
+			every_owned_location = {
+				limit = {
+					OR = {
+						this = c:GLH.capital
+						this = location:sarai_al_jadid
+						NOT = { area = area:astrakhan_area }
+					}
+				}
+				remove_core = c:ATR
+			}
+			create_country_from_cores_in_our_locations = c:ATR
+		}
+		if = {
+			limit = { country_exists = c:ATR }
+			c:ATR = {
+				add_opinion = { modifier = oe_ghh_b_ulus_breakaway target = c:GLH }
+			}
+			c:GLH = { add_opinion = { modifier = oe_ghh_b_ulus_breakaway target = c:ATR } }
+			set_global_variable = { name = oe_ghh_rel_ATR value = 1 }
+			set_global_variable = { name = oe_ghh_last_break_m value = oe_ml_month_now }
+		}
+	}
+}
+
+# ---------------------------------------------------------------- Send a GLH event (with same-month guard)
+oe_ghh_send_ev = {
+	if = {
+		limit = { country_exists = c:GLH }
+		set_global_variable = { name = oe_ghh_last_ev_m value = oe_ml_month_now }
+		c:GLH = { trigger_event_non_silently = oe_ghh.$n$ }
+	}
+}
+
+# ---------------------------------------------------------------- Annual January cohesion tick
+oe_ghh_yearly_cohesion = {
+	if = {
+		limit = { country_exists = c:GLH has_global_variable = oe_ghh_cohesion }
+		c:GLH = {
+			# Stabilizing factors
+			if = { limit = { horde_unity >= 80 } oe_ghh_shift_cohesion = { amount = 2 } }
+			if = { limit = { stability >= 25 } oe_ghh_shift_cohesion = { amount = 2 } }
+			if = { limit = { owns = location:sarai_al_jadid owns = location:astrakhan } oe_ghh_shift_cohesion = { amount = 1 } }
+			if = { limit = { has_global_variable = oe_ghh_revival_stage global_var:oe_ghh_revival_stage = 1 } oe_ghh_shift_cohesion = { amount = 3 } }
+			if = { limit = { has_global_variable = oe_ghh_revival_stage global_var:oe_ghh_revival_stage >= 2 } oe_ghh_shift_cohesion = { amount = 5 } }
+			if = { limit = { has_global_variable = oe_ghh_phase global_var:oe_ghh_phase = 4 } oe_ghh_shift_cohesion = { amount = 6 } }
+			# Destabilizing factors
+			if = { limit = { has_active_disaster = disaster_type:horde_civil_war } oe_ghh_shift_cohesion = { amount = -6 } }
+			if = { limit = { horde_unity < 50 } oe_ghh_shift_cohesion = { amount = -3 } }
+			if = { limit = { horde_unity < 30 } oe_ghh_shift_cohesion = { amount = -3 } }
+			if = { limit = { stability < 0 } oe_ghh_shift_cohesion = { amount = -3 } }
+			if = { limit = { has_regent = yes } oe_ghh_shift_cohesion = { amount = -2 } }
+			if = { limit = { in_civil_war = yes } oe_ghh_shift_cohesion = { amount = -4 } }
+			if = { limit = { war_exhaustion >= 5 } oe_ghh_shift_cohesion = { amount = -2 } }
+			if = { limit = { NOT = { location:sarai_al_jadid = { owner ?= c:GLH controller ?= c:GLH } } } oe_ghh_shift_cohesion = { amount = -5 } }
+			# Gentle AI historical decline drift (never applied to human GLH player!)
+			if = {
+				limit = { is_ai = yes current_date >= 1359.1.1 has_global_variable = oe_ghh_phase global_var:oe_ghh_phase < 4 }
+				oe_ghh_shift_cohesion = { amount = -2 }
+			}
+			if = {
+				limit = { is_ai = yes current_date >= 1395.1.1 has_global_variable = oe_ghh_phase global_var:oe_ghh_phase = 3 }
+				oe_ghh_shift_cohesion = { amount = -3 }
+			}
+		}
+		oe_ghh_sync_modifiers = yes
+	}
+}
+
+# ---------------------------------------------------------------- Phase 2 inter-ulus raiding friction (every 36m while cohesion < 50)
+oe_ghh_phase2_friction = {
+	if = {
+		limit = {
+			has_global_variable = oe_ghh_phase global_var:oe_ghh_phase = 2
+			has_global_variable = oe_ghh_cohesion global_var:oe_ghh_cohesion < 50
+			OR = {
+				NOT = { has_global_variable = oe_ghh_last_raid_m }
+				global_var:oe_ghh_last_raid_m <= { value = oe_ml_month_now subtract = 36 }
+			}
+		}
+		set_global_variable = { name = oe_ghh_last_raid_m value = oe_ml_month_now }
+		if = {
+			limit = { country_exists = c:WHO country_exists = c:SBR c:WHO = { is_subject_of = c:GLH } c:SBR = { is_subject_of = c:GLH } }
+			c:WHO = { add_opinion = { modifier = oe_ghh_b_ulus_raid target = c:SBR } }
+			c:SBR = { add_opinion = { modifier = oe_ghh_b_ulus_raid target = c:WHO } }
+		}
+		if = {
+			limit = { country_exists = c:CRI country_exists = c:KZN c:CRI = { is_subject_of = c:GLH } c:KZN = { is_subject_of = c:GLH } }
+			c:CRI = { add_opinion = { modifier = oe_ghh_b_ulus_raid target = c:KZN } }
+			c:KZN = { add_opinion = { modifier = oe_ghh_b_ulus_raid target = c:CRI } }
+		}
+		oe_ghh_shift_cohesion = { amount = -2 }
+	}
+}
+
+# ---------------------------------------------------------------- Main monthly pulse (called by gen_mainline_lock.py slot 45)
+oe_ghh_monthly = {
+	if = {
+		limit = { NOT = { has_global_variable = oe_ghh_init } }
+		oe_ghh_init = yes
+	}
+	if = {
+		limit = { has_global_variable = oe_ghh_on }
+		# Stop cleanly if GLH ceases to exist or after 1520
+		if = {
+			limit = { OR = { NOT = { country_exists = c:GLH } current_date >= 1520.1.1 } }
+			remove_global_variable = oe_ghh_on
+			oe_ghh_sync_modifiers = yes
+		}
+		else = {
+			# 1. Human GLH 1337 intro event (.1)
+			if = {
+				limit = {
+					NOT = { has_global_variable = oe_ghh_ev_1 }
+					current_date >= 1337.5.1
+					oe_ghh_ev_month_free = yes
+					c:GLH = { is_ai = no }
+				}
+				set_global_variable = { name = oe_ghh_ev_1 value = 1 }
+				oe_ghh_send_ev = { n = 1 }
+			}
+			# 2. Annual January cohesion drift & modifier sync
+			if = {
+				limit = { current_month = 1 }
+				oe_ghh_yearly_cohesion = yes
+			}
+			# 3. Black Death shock (1346-1354)
+			if = {
+				limit = {
+					NOT = { has_global_variable = oe_ghh_plague_hit }
+					has_global_variable = oe_ghh_phase global_var:oe_ghh_phase < 4
+					current_date >= 1346.1.1 current_date < 1358.1.1
+					OR = {
+						disease_is_active = disease:bubonic_plague
+						current_date >= 1348.6.1
+					}
+				}
+				set_global_variable = { name = oe_ghh_plague_hit value = 1 }
+				if = {
+					limit = { c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes }
+					set_global_variable = { name = oe_ghh_ev_2 value = 1 }
+					oe_ghh_send_ev = { n = 2 }
+				}
+				else = {
+					oe_ghh_shift_cohesion = { amount = -15 }
+					oe_ghh_sync_modifiers = yes
+				}
+			}
+			# 4. Phase 2 trigger — Great Troubles (1359+)
+			if = {
+				limit = { oe_ghh_should_start_phase2 = yes }
+				set_global_variable = { name = oe_ghh_phase value = 2 }
+				oe_ghh_shift_cohesion = { amount = -25 }
+				oe_ghh_sync_modifiers = yes
+				if = {
+					limit = { NOT = { has_global_variable = oe_ghh_ev_3 } c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes }
+					set_global_variable = { name = oe_ghh_ev_3 value = 1 }
+					oe_ghh_send_ev = { n = 3 }
+				}
+			}
+			# Track months spent in Phase 2 + Tokhtamysh brief resurgence (sensing oe_glh_troubles = 2)
+			if = {
+				limit = { has_global_variable = oe_ghh_phase global_var:oe_ghh_phase = 2 }
+				change_global_variable = { name = oe_ghh_p2_months add = 1 }
+				oe_ghh_phase2_friction = yes
+				if = {
+					limit = {
+						NOT = { has_global_variable = oe_ghh_tokhtamysh_bump }
+						has_global_variable = oe_glh_troubles global_var:oe_glh_troubles = 2
+					}
+					set_global_variable = { name = oe_ghh_tokhtamysh_bump value = 1 }
+					oe_ghh_shift_cohesion = { amount = 20 }
+					oe_ghh_sync_modifiers = yes
+				}
+				# Early Phase 2 breakaway: Khwarazm (KHW, Sufi dynasty, 1361+)
+				if = {
+					limit = {
+						current_date >= 1361.1.1
+						NOT = { has_global_variable = oe_ghh_free_KHW }
+						NOT = { has_global_variable = oe_ghh_ev_4 }
+						has_global_variable = oe_ghh_cohesion global_var:oe_ghh_cohesion < 50
+						country_exists = c:KHW c:KHW = { is_subject_of = c:GLH is_subject_type = oe_glh_ulus }
+					}
+					if = {
+						limit = { c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes }
+						set_global_variable = { name = oe_ghh_ev_4 value = 1 }
+						oe_ghh_send_ev = { n = 4 }
+					}
+					else_if = {
+						limit = { c:GLH = { is_ai = yes } }
+						oe_ghh_break_wing = { tag = KHW ind_name = OE_GHH_NAME_KHW_KHANATE }
+					}
+				}
+			}
+			# 5. Phase 3 trigger — Timur Shock & Great Fragmentation (1395+)
+			if = {
+				limit = { oe_ghh_should_start_phase3 = yes }
+				set_global_variable = { name = oe_ghh_phase value = 3 }
+				set_global_variable = { name = oe_ghh_timur_hit value = 1 }
+				set_global_variable = { name = oe_ghh_cohesion_cap value = 55 }
+				oe_ghh_shift_cohesion = { amount = -30 }
+				oe_ghh_sync_modifiers = yes
+				if = {
+					limit = { NOT = { has_global_variable = oe_ghh_ev_5 } c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes }
+					set_global_variable = { name = oe_ghh_ev_5 value = 1 }
+					oe_ghh_send_ev = { n = 5 }
+				}
+			}
+			# 6. Phase 3 Sequential Fragmentation & Dynamic NOG / ATR Releases (at most 1 per 12m)
+			if = {
+				limit = {
+					has_global_variable = oe_ghh_phase global_var:oe_ghh_phase = 3
+					has_global_variable = oe_ghh_cohesion global_var:oe_ghh_cohesion < 35
+					oe_ghh_break_cd_ready = yes
+				}
+				# 6a. Dynamic Nogai (NOG) release (1396+, Sarayjuk)
+				if = {
+					limit = {
+						current_date >= 1396.1.1
+						NOT = { has_global_variable = oe_ghh_rel_NOG }
+						NOT = { has_global_variable = oe_ghh_ev_6 }
+						NOT = { country_exists = c:NOG }
+						location:sarayjuk = { owner ?= c:GLH }
+						c:GLH = { num_locations > 40 }
+					}
+					if = {
+						limit = { c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes }
+						set_global_variable = { name = oe_ghh_ev_6 value = 1 }
+						oe_ghh_send_ev = { n = 6 }
+					}
+					else_if = {
+						limit = { c:GLH = { is_ai = yes } }
+						oe_ghh_release_nog = yes
+					}
+				}
+				# 6b. Khwarazm (if still subject in Phase 3)
+				else_if = {
+					limit = {
+						NOT = { has_global_variable = oe_ghh_free_KHW }
+						country_exists = c:KHW c:KHW = { is_subject_of = c:GLH is_subject_type = oe_glh_ulus }
+					}
+					oe_ghh_break_wing = { tag = KHW ind_name = OE_GHH_NAME_KHW_KHANATE }
+					if = { limit = { c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes } set_global_variable = { name = oe_ghh_ev_7 value = 1 } oe_ghh_send_ev = { n = 7 } }
+				}
+				# 6c. White Horde (WHO, 1396+ or cohesion < 20)
+				else_if = {
+					limit = {
+						NOT = { has_global_variable = oe_ghh_free_WHO }
+						country_exists = c:WHO c:WHO = { is_subject_of = c:GLH is_subject_type = oe_glh_ulus }
+						OR = { current_date >= 1396.6.1 global_var:oe_ghh_cohesion < 20 }
+					}
+					oe_ghh_break_wing = { tag = WHO ind_name = WHO }
+					if = { limit = { c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes } set_global_variable = { name = oe_ghh_ev_7 value = 1 } oe_ghh_send_ev = { n = 7 } }
+				}
+				# 6d. Sibir (SBR, 1410+ or cohesion < 18)
+				else_if = {
+					limit = {
+						NOT = { has_global_variable = oe_ghh_free_SBR }
+						country_exists = c:SBR c:SBR = { is_subject_of = c:GLH is_subject_type = oe_glh_ulus }
+						OR = { current_date >= 1410.1.1 global_var:oe_ghh_cohesion < 18 }
+					}
+					oe_ghh_break_wing = { tag = SBR ind_name = SBR }
+					if = { limit = { c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes } set_global_variable = { name = oe_ghh_ev_7 value = 1 } oe_ghh_send_ev = { n = 7 } }
+				}
+				# 6e. Crimea (CRI -> Crimean Khanate, 1420+ or cohesion < 18)
+				else_if = {
+					limit = {
+						NOT = { has_global_variable = oe_ghh_free_CRI }
+						country_exists = c:CRI c:CRI = { is_subject_of = c:GLH is_subject_type = oe_glh_ulus }
+						OR = { current_date >= 1420.1.1 global_var:oe_ghh_cohesion < 18 }
+					}
+					oe_ghh_break_wing = { tag = CRI ind_name = OE_GHH_NAME_CRI_KHANATE }
+					if = { limit = { c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes } set_global_variable = { name = oe_ghh_ev_7 value = 1 } oe_ghh_send_ev = { n = 7 } }
+				}
+				# 6f. Kazan (KZN, 1430+ or cohesion < 18)
+				else_if = {
+					limit = {
+						NOT = { has_global_variable = oe_ghh_free_KZN }
+						country_exists = c:KZN c:KZN = { is_subject_of = c:GLH is_subject_type = oe_glh_ulus }
+						OR = { current_date >= 1430.1.1 global_var:oe_ghh_cohesion < 18 }
+					}
+					oe_ghh_break_wing = { tag = KZN ind_name = OE_GHH_NAME_KZN_KHANATE }
+					if = { limit = { c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes } set_global_variable = { name = oe_ghh_ev_7 value = 1 } oe_ghh_send_ev = { n = 7 } }
+				}
+				# 6g. Dynamic Astrakhan (ATR) release (1450+ or cohesion < 15 after NOG)
+				else_if = {
+					limit = {
+						NOT = { has_global_variable = oe_ghh_rel_ATR }
+						NOT = { has_global_variable = oe_ghh_ev_8 }
+						NOT = { country_exists = c:ATR }
+						location:astrakhan = { owner ?= c:GLH }
+						c:GLH = { num_locations > 40 }
+						OR = {
+							current_date >= 1450.1.1
+							AND = { has_global_variable = oe_ghh_rel_NOG global_var:oe_ghh_cohesion < 15 }
+						}
+					}
+					if = {
+						limit = { c:GLH = { is_ai = no } oe_ghh_ev_month_free = yes }
+						set_global_variable = { name = oe_ghh_ev_8 value = 1 }
+						oe_ghh_send_ev = { n = 8 }
+					}
+					else_if = {
+						limit = { c:GLH = { is_ai = yes } }
+						oe_ghh_release_atr = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------- Player GLH Revival Helpers (called by decisions)
+oe_ghh_convert_wings_to_vassal = {
+	if = {
+		limit = { country_exists = c:GLH }
+		c:GLH = {
+			every_subject = {
+				limit = { is_subject_type = oe_glh_ulus }
+				change_subject_type = subject_type:vassal
+				if = { limit = { has_country_modifier = oe_ghh_ulus_loyal } remove_country_modifier = oe_ghh_ulus_loyal }
+				if = { limit = { has_country_modifier = oe_ghh_ulus_restless } remove_country_modifier = oe_ghh_ulus_restless }
+				if = { limit = { has_country_modifier = oe_ghh_ulus_defiant } remove_country_modifier = oe_ghh_ulus_defiant }
+				add_opinion = { modifier = oe_ghh_b_ulus_purged target = c:GLH }
+			}
+		}
+	}
+}
+
+oe_ghh_complete_revival = {
+	set_global_variable = { name = oe_ghh_revival_stage value = 3 }
+	set_global_variable = { name = oe_ghh_phase value = 4 }
+	set_global_variable = { name = oe_ghh_cohesion_cap value = 100 }
+	set_global_variable = { name = oe_ghh_cohesion value = 100 }
+	oe_ghh_sync_modifiers = yes
+	if = {
+		limit = { country_exists = c:GLH }
+		c:GLH = {
+			if = { limit = { has_country_modifier = oe_ghh_yassa_reform } remove_country_modifier = oe_ghh_yassa_reform }
+			add_country_modifier = { modifier = oe_ghh_jochid_revival years = -1 mode = replace }
+			add_prestige = prestige_severe_bonus
+		}
+	}
+}
+
+# ---------------------------------------------------------------- Dev test helpers (never called from player commands)
+oe_ghh_test_reset = {
+	remove_global_variable = oe_ghh_init
+	remove_global_variable = oe_ghh_on
+	remove_global_variable = oe_ghh_cohesion
+	remove_global_variable = oe_ghh_cohesion_cap
+	remove_global_variable = oe_ghh_phase
+	remove_global_variable = oe_ghh_tier
+	remove_global_variable = oe_ghh_p2_months
+	remove_global_variable = oe_ghh_revival_stage
+	remove_global_variable = oe_ghh_plague_hit
+	remove_global_variable = oe_ghh_timur_hit
+	remove_global_variable = oe_ghh_tokhtamysh_bump
+	remove_global_variable = oe_ghh_last_ev_m
+	remove_global_variable = oe_ghh_last_break_m
+	remove_global_variable = oe_ghh_last_raid_m
+	remove_global_variable = oe_ghh_rel_NOG
+	remove_global_variable = oe_ghh_rel_ATR
+	remove_global_variable = oe_ghh_free_WHO
+	remove_global_variable = oe_ghh_free_SBR
+	remove_global_variable = oe_ghh_free_KHW
+	remove_global_variable = oe_ghh_free_KZN
+	remove_global_variable = oe_ghh_free_CRI
+	remove_global_variable = oe_ghh_ev_1
+	remove_global_variable = oe_ghh_ev_2
+	remove_global_variable = oe_ghh_ev_3
+	remove_global_variable = oe_ghh_ev_4
+	remove_global_variable = oe_ghh_ev_5
+	remove_global_variable = oe_ghh_ev_6
+	remove_global_variable = oe_ghh_ev_7
+	remove_global_variable = oe_ghh_ev_8
+	remove_global_variable = oe_ghh_ev_9
+	remove_global_variable = oe_ghh_ev_10
+	oe_ghh_init = yes
+}
+
+oe_ghh_test_phase2 = {
+	if = { limit = { NOT = { has_global_variable = oe_ghh_init } } oe_ghh_init = yes }
+	set_global_variable = { name = oe_ghh_phase value = 2 }
+	set_global_variable = { name = oe_ghh_cohesion value = 42 }
+	oe_ghh_sync_modifiers = yes
+}
+
+oe_ghh_test_phase3 = {
+	if = { limit = { NOT = { has_global_variable = oe_ghh_init } } oe_ghh_init = yes }
+	set_global_variable = { name = oe_ghh_phase value = 3 }
+	set_global_variable = { name = oe_ghh_timur_hit value = 1 }
+	set_global_variable = { name = oe_ghh_cohesion_cap value = 55 }
+	set_global_variable = { name = oe_ghh_cohesion value = 18 }
+	oe_ghh_sync_modifiers = yes
+}
+
+oe_ghh_test_revival = {
+	if = { limit = { NOT = { has_global_variable = oe_ghh_init } } oe_ghh_init = yes }
+	oe_ghh_convert_wings_to_vassal = yes
+	oe_ghh_complete_revival = yes
+}

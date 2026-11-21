@@ -31,7 +31,9 @@
     }
     on_start = {
         set_global_variable = oe_rus_started
-        oe_rus_collapse_yoke = yes
+        # fx25 (b): no instant Tatar Yoke destruction or free +20 stability / 1-year gold windfall on start;
+        # only clean up an orphaned yoke IO if GLH no longer exists (otherwise break_the_yoke & oe_rpl_ govern it).
+        if = { limit = { NOT = { country_exists = c:GLH } } oe_rus_collapse_yoke = yes }
         oe_rus_recalculate = yes
         every_country = { trigger_event_non_silently = oe_rise_of_rus.1 }
     }

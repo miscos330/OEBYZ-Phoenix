@@ -1,0 +1,427 @@
+﻿# NEW 2026-11-21 v7.1 SIT-2 Flagship Situations & Vanilla Bridges (gen_situations_flagship.py). Generated; edit gen_situations_flagship.py, not this file.
+
+# ----------------------------------------------------------------------------- Situation 1: Great Yuan Restoration
+oe_sit2_yr_init = {
+	set_global_variable = { name = oe_sit2_yr_started value = 1 }
+	# Bridge with the inner Zhizheng Restoration track (oe_yr_*) so both panels stay consistent (zero debug_log).
+	if = {
+		limit = {
+			country_exists = c:CHI
+			NOT = { has_global_variable = oe_yr_end }
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_yr_on } }
+			set_global_variable = oe_yr_init
+			set_global_variable = oe_yr_on
+			set_global_variable = { name = oe_yr_path value = 0 }
+			set_global_variable = { name = oe_yr_stage value = 0 }
+			set_global_variable = { name = oe_yr_strain value = 0 }
+			set_global_variable = { name = oe_yr_hold value = 0 }
+		}
+		if = {
+			limit = { NOT = { has_global_variable = oe_yr_opened } }
+			set_global_variable = oe_yr_opened
+			if = { limit = { NOT = { has_global_variable = oe_yr_how } } set_global_variable = { name = oe_yr_how value = 4 } }
+			if = { limit = { NOT = { has_global_variable = oe_yr_open_m } } set_global_variable = { name = oe_yr_open_m value = oe_sit2_m_now } }
+			if = { limit = { NOT = { has_global_variable = oe_yr_lit0 } } c:CHI = { set_global_variable = { name = oe_yr_lit0 value = average_country_literacy } } }
+		}
+	}
+	situation:oe_sit_yuan_restoration = {
+		set_variable = { name = oe_sit2_yr_progress value = 25 }
+		set_variable = { name = oe_sit2_yr_balance value = 50 }
+		set_variable = { name = oe_sit2_yr_months value = 0 }
+		set_variable = { name = oe_sit2_yr_strain value = 0 }
+		set_variable = { name = oe_sit2_yr_stage_cache value = 0 }
+	}
+	oe_sit2_yr_sync = yes
+}
+
+oe_sit2_yr_sync = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_yuan_restoration }
+		situation:oe_sit_yuan_restoration = {
+			if = { limit = { NOT = { has_variable = oe_sit2_yr_progress } } set_variable = { name = oe_sit2_yr_progress value = 25 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_yr_balance } } set_variable = { name = oe_sit2_yr_balance value = 50 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_yr_months } } set_variable = { name = oe_sit2_yr_months value = 0 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_yr_strain } } set_variable = { name = oe_sit2_yr_strain value = 0 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_yr_stage_cache } } set_variable = { name = oe_sit2_yr_stage_cache value = 0 } }
+
+			# Mirror live oe_yr_* global state when Great Yuan Restoration line is active.
+			if = {
+				limit = { has_global_variable = oe_yr_strain }
+				set_variable = { name = oe_sit2_yr_strain value = global_var:oe_yr_strain }
+			}
+			if = {
+				limit = { has_global_variable = oe_yr_stage }
+				set_variable = { name = oe_sit2_yr_stage_cache value = global_var:oe_yr_stage }
+				if = {
+					limit = { global_var:oe_yr_stage >= 3 var:oe_sit2_yr_progress < 75 }
+					set_variable = { name = oe_sit2_yr_progress value = 75 }
+				}
+				else_if = {
+					limit = { global_var:oe_yr_stage >= 2 var:oe_sit2_yr_progress < 50 }
+					set_variable = { name = oe_sit2_yr_progress value = 50 }
+				}
+				else_if = {
+					limit = { global_var:oe_yr_stage >= 1 var:oe_sit2_yr_progress < 30 }
+					set_variable = { name = oe_sit2_yr_progress value = 30 }
+				}
+			}
+			if = {
+				limit = { has_global_variable = oe_yr_path }
+				if = {
+					limit = { global_var:oe_yr_path = 1 var:oe_sit2_yr_balance > 45 }
+					change_variable = { name = oe_sit2_yr_balance add = -2 }
+				}
+				else_if = {
+					limit = { global_var:oe_yr_path = 2 var:oe_sit2_yr_balance < 55 }
+					change_variable = { name = oe_sit2_yr_balance add = 2 }
+				}
+			}
+			clamp_variable = { name = oe_sit2_yr_progress max = 100 min = 0 }
+			clamp_variable = { name = oe_sit2_yr_balance max = 100 min = 0 }
+		}
+	}
+}
+
+oe_sit2_yr_tick = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_yuan_restoration }
+		situation:oe_sit_yuan_restoration = {
+			change_variable = { name = oe_sit2_yr_months add = 1 }
+			if = {
+				limit = {
+					country_exists = c:CHI
+					c:CHI = { stability >= 15 legitimacy >= 60 }
+				}
+				change_variable = { name = oe_sit2_yr_progress add = 1 }
+			}
+			else_if = {
+				limit = {
+					country_exists = c:CHI
+					c:CHI = { stability < 0 }
+				}
+				change_variable = { name = oe_sit2_yr_progress add = -1 }
+			}
+		}
+		oe_sit2_yr_sync = yes
+	}
+}
+
+# ----------------------------------------------------------------------------- Situation 2: Great Troubles of the Golden Horde
+oe_sit2_glh_init = {
+	set_global_variable = { name = oe_sit2_glh_started value = 1 }
+	# Unified live source of truth: global_var:oe_ghh_cohesion & global_var:oe_ghh_phase (never diverge from 5-Wing system).
+	if = { limit = { NOT = { has_global_variable = oe_ghh_cohesion } } set_global_variable = { name = oe_ghh_cohesion value = 45 } }
+	if = { limit = { NOT = { has_global_variable = oe_ghh_phase } } set_global_variable = { name = oe_ghh_phase value = 2 } }
+	situation:oe_sit_glh_troubles = {
+		set_variable = { name = oe_sit2_glh_months value = 0 }
+	}
+	oe_sit2_glh_sync = yes
+}
+
+oe_sit2_glh_sync = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_glh_troubles }
+		if = { limit = { NOT = { has_global_variable = oe_ghh_cohesion } } set_global_variable = { name = oe_ghh_cohesion value = 45 } }
+		if = { limit = { NOT = { has_global_variable = oe_ghh_phase } } set_global_variable = { name = oe_ghh_phase value = 2 } }
+		if = { limit = { global_var:oe_ghh_cohesion > 100 } set_global_variable = { name = oe_ghh_cohesion value = 100 } }
+		if = { limit = { global_var:oe_ghh_cohesion < 0 } set_global_variable = { name = oe_ghh_cohesion value = 0 } }
+		situation:oe_sit_glh_troubles = {
+			if = { limit = { NOT = { has_variable = oe_sit2_glh_months } } set_variable = { name = oe_sit2_glh_months value = 0 } }
+			set_variable = { name = oe_sit2_glh_cohesion value = global_var:oe_ghh_cohesion }
+			set_variable = { name = oe_sit2_glh_phase value = global_var:oe_ghh_phase }
+			# O(1) count of the 5 Jochid wings still subject to GLH (zero iterators).
+			set_variable = { name = oe_sit2_glh_wings_loyal value = 0 }
+			if = { limit = { country_exists = c:GLH country_exists = c:WHO c:WHO = { is_subject_of = c:GLH } } change_variable = { name = oe_sit2_glh_wings_loyal add = 1 } }
+			if = { limit = { country_exists = c:GLH country_exists = c:SBR c:SBR = { is_subject_of = c:GLH } } change_variable = { name = oe_sit2_glh_wings_loyal add = 1 } }
+			if = { limit = { country_exists = c:GLH country_exists = c:KHW c:KHW = { is_subject_of = c:GLH } } change_variable = { name = oe_sit2_glh_wings_loyal add = 1 } }
+			if = { limit = { country_exists = c:GLH country_exists = c:KZN c:KZN = { is_subject_of = c:GLH } } change_variable = { name = oe_sit2_glh_wings_loyal add = 1 } }
+			if = { limit = { country_exists = c:GLH country_exists = c:CRI c:CRI = { is_subject_of = c:GLH } } change_variable = { name = oe_sit2_glh_wings_loyal add = 1 } }
+			clamp_variable = { name = oe_sit2_glh_cohesion max = 100 min = 0 }
+		}
+	}
+}
+
+oe_sit2_glh_tick = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_glh_troubles }
+		situation:oe_sit_glh_troubles = {
+			change_variable = { name = oe_sit2_glh_months add = 1 }
+		}
+		oe_sit2_glh_sync = yes
+	}
+}
+
+# ----------------------------------------------------------------------------- Situation 3: Byzantine Renaissance
+oe_sit2_ren_init = {
+	set_global_variable = { name = oe_sit2_ren_started value = 1 }
+	situation:oe_sit_byz_renaissance = {
+		set_variable = { name = oe_sit2_ren_beacon value = 30 }
+		set_variable = { name = oe_sit2_ren_exchange value = 25 }
+		set_variable = { name = oe_sit2_ren_school value = 1 }
+		set_variable = { name = oe_sit2_ren_months value = 0 }
+	}
+	oe_sit2_ren_sync = yes
+}
+
+oe_sit2_ren_sync = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_byz_renaissance }
+		situation:oe_sit_byz_renaissance = {
+			if = { limit = { NOT = { has_variable = oe_sit2_ren_beacon } } set_variable = { name = oe_sit2_ren_beacon value = 30 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_ren_exchange } } set_variable = { name = oe_sit2_ren_exchange value = 25 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_ren_school } } set_variable = { name = oe_sit2_ren_school value = 1 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_ren_months } } set_variable = { name = oe_sit2_ren_months value = 0 } }
+			if = {
+				limit = { country_exists = c:ROM }
+				set_variable = { name = oe_sit2_ren_leader value = c:ROM }
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				set_variable = { name = oe_sit2_ren_leader value = c:BYZ }
+			}
+			clamp_variable = { name = oe_sit2_ren_beacon max = 100 min = 0 }
+			clamp_variable = { name = oe_sit2_ren_exchange max = 100 min = 0 }
+		}
+	}
+}
+
+oe_sit2_ren_tick = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_byz_renaissance }
+		oe_sit2_ren_sync = yes
+		situation:oe_sit_byz_renaissance = {
+			change_variable = { name = oe_sit2_ren_months add = 1 }
+			if = {
+				limit = {
+					has_variable = oe_sit2_ren_leader
+					exists = var:oe_sit2_ren_leader
+					var:oe_sit2_ren_leader = { stability >= 15 }
+				}
+				change_variable = { name = oe_sit2_ren_beacon add = 1 }
+			}
+		}
+		oe_sit2_ren_sync = yes
+	}
+}
+
+# ----------------------------------------------------------------------------- Situation 4: Crossroads of Rus' & the Steppe
+oe_sit2_ec_init = {
+	set_global_variable = { name = oe_sit2_ec_started value = 1 }
+	situation:oe_sit_eastern_crossroads = {
+		set_variable = { name = oe_sit2_ec_rus_power value = 35 }
+		set_variable = { name = oe_sit2_ec_west_power value = 35 }
+		set_variable = { name = oe_sit2_ec_steppe_power value = 30 }
+		set_variable = { name = oe_sit2_ec_months value = 0 }
+	}
+	oe_sit2_ec_sync = yes
+}
+
+oe_sit2_ec_sync = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_eastern_crossroads }
+		situation:oe_sit_eastern_crossroads = {
+			if = { limit = { NOT = { has_variable = oe_sit2_ec_rus_power } } set_variable = { name = oe_sit2_ec_rus_power value = 35 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_ec_west_power } } set_variable = { name = oe_sit2_ec_west_power value = 35 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_ec_steppe_power } } set_variable = { name = oe_sit2_ec_steppe_power value = 30 } }
+			if = { limit = { NOT = { has_variable = oe_sit2_ec_months } } set_variable = { name = oe_sit2_ec_months value = 0 } }
+			if = { limit = { country_exists = c:RUS } set_variable = { name = oe_sit2_ec_rus_lead value = c:RUS } }
+			else_if = { limit = { country_exists = c:MOS } set_variable = { name = oe_sit2_ec_rus_lead value = c:MOS } }
+			else_if = { limit = { country_exists = c:NOV } set_variable = { name = oe_sit2_ec_rus_lead value = c:NOV } }
+			else_if = { limit = { country_exists = c:TVE } set_variable = { name = oe_sit2_ec_rus_lead value = c:TVE } }
+
+			if = { limit = { country_exists = c:PLC } set_variable = { name = oe_sit2_ec_rival_lead value = c:PLC } }
+			else_if = { limit = { country_exists = c:POL } set_variable = { name = oe_sit2_ec_rival_lead value = c:POL } }
+			else_if = { limit = { country_exists = c:LIT } set_variable = { name = oe_sit2_ec_rival_lead value = c:LIT } }
+			else_if = { limit = { country_exists = c:TUR } set_variable = { name = oe_sit2_ec_rival_lead value = c:TUR } }
+			else_if = { limit = { country_exists = c:GLH } set_variable = { name = oe_sit2_ec_rival_lead value = c:GLH } }
+
+			clamp_variable = { name = oe_sit2_ec_rus_power max = 100 min = 0 }
+			clamp_variable = { name = oe_sit2_ec_west_power max = 100 min = 0 }
+			clamp_variable = { name = oe_sit2_ec_steppe_power max = 100 min = 0 }
+		}
+	}
+}
+
+oe_sit2_ec_tick = {
+	if = {
+		limit = { is_situation_active = situation:oe_sit_eastern_crossroads }
+		situation:oe_sit_eastern_crossroads = {
+			change_variable = { name = oe_sit2_ec_months add = 1 }
+			if = {
+				limit = { country_exists = c:RUS }
+				change_variable = { name = oe_sit2_ec_rus_power add = 1 }
+			}
+			if = {
+				limit = { country_exists = c:PLC }
+				change_variable = { name = oe_sit2_ec_west_power add = 1 }
+			}
+		}
+		oe_sit2_ec_sync = yes
+	}
+}
+
+# ----------------------------------------------------------------------------- Part B: Non-Invasive Vanilla Situation Bridges
+oe_sit2_check_bridges = {
+	# Bridge 1: Vanilla Red Turban Rebellions <-> Great Yuan Restoration
+	if = {
+		limit = {
+			NOT = { has_global_variable = oe_sit2_br_rtr }
+			oe_sit2_bridge_rtr_active = yes
+			country_exists = c:CHI
+		}
+		set_global_variable = { name = oe_sit2_br_rtr value = 1 }
+		c:CHI = { trigger_event_non_silently = oe_sit2.21 }
+	}
+	# Bridge 2: Vanilla Rise of Timur <-> BYZ / GLH / CHI cross-line shock
+	if = {
+		limit = {
+			NOT = { has_global_variable = oe_sit2_br_timur }
+			oe_sit2_bridge_timur_active = yes
+		}
+		set_global_variable = { name = oe_sit2_br_timur value = 1 }
+		if = { limit = { country_exists = c:BYZ } c:BYZ = { trigger_event_non_silently = oe_sit2.22 } }
+		if = { limit = { country_exists = c:GLH } c:GLH = { trigger_event_non_silently = oe_sit2.22 } }
+		if = { limit = { country_exists = c:CHI } c:CHI = { trigger_event_non_silently = oe_sit2.22 } }
+	}
+	# Bridge 3: Vanilla Western Schism <-> BYZ / ROM Papal Diplomacy
+	if = {
+		limit = {
+			NOT = { has_global_variable = oe_sit2_br_schism }
+			oe_sit2_bridge_schism_active = yes
+			OR = { country_exists = c:BYZ country_exists = c:ROM }
+		}
+		set_global_variable = { name = oe_sit2_br_schism value = 1 }
+		if = { limit = { country_exists = c:ROM } c:ROM = { trigger_event_non_silently = oe_sit2.23 } }
+		else_if = { limit = { country_exists = c:BYZ } c:BYZ = { trigger_event_non_silently = oe_sit2.23 } }
+	}
+	# Bridge 4: Vanilla Italian Wars <-> BYZ / ROM Italian Theatre Presence
+	if = {
+		limit = {
+			NOT = { has_global_variable = oe_sit2_br_iw }
+			oe_sit2_bridge_iw_active = yes
+			OR = { country_exists = c:BYZ country_exists = c:ROM }
+		}
+		set_global_variable = { name = oe_sit2_br_iw value = 1 }
+		if = { limit = { country_exists = c:ROM } c:ROM = { trigger_event_non_silently = oe_sit2.24 } }
+		else_if = { limit = { country_exists = c:BYZ } c:BYZ = { trigger_event_non_silently = oe_sit2.24 } }
+	}
+}
+
+# ----------------------------------------------------------------------------- Monthly Global O(1) Sync Entry Point
+oe_sit2_monthly_sync = {
+	set_global_variable = { name = oe_sit2_ran_m value = oe_sit2_m_now }
+	oe_sit2_yr_tick = yes
+	oe_sit2_glh_tick = yes
+	oe_sit2_ren_tick = yes
+	oe_sit2_ec_tick = yes
+	oe_sit2_check_bridges = yes
+}
+
+# ----------------------------------------------------------------------------- Dev / Test Helpers (DEV_LINES only)
+oe_sit2_log = {
+	debug_log = "OE_SIT2 status check triggered"
+}
+
+oe_sit2_test_start_yuan = {
+	if = {
+		limit = { NOT = { is_situation_active = situation:oe_sit_yuan_restoration } }
+		activate_situation = situation:oe_sit_yuan_restoration
+	}
+	oe_sit2_yr_init = yes
+}
+
+oe_sit2_test_yuan_win = {
+	oe_sit2_test_start_yuan = yes
+	situation:oe_sit_yuan_restoration = {
+		set_variable = { name = oe_sit2_yr_progress value = 85 }
+	}
+}
+
+oe_sit2_test_start_glh = {
+	# Synchronize 5-Wing global state to Phase 2 Great Troubles (45 cohesion) so panel & engine match on test start.
+	set_global_variable = { name = oe_ghh_cohesion value = 45 }
+	set_global_variable = { name = oe_ghh_phase value = 2 }
+	set_global_variable = { name = oe_ghh_tier value = 2 }
+	if = {
+		limit = { NOT = { is_situation_active = situation:oe_sit_glh_troubles } }
+		activate_situation = situation:oe_sit_glh_troubles
+	}
+	oe_sit2_glh_init = yes
+}
+
+oe_sit2_test_glh_revival = {
+	oe_sit2_test_start_glh = yes
+	set_global_variable = { name = oe_ghh_cohesion value = 90 }
+	set_global_variable = { name = oe_ghh_phase value = 4 }
+	set_global_variable = { name = oe_ghh_tier value = 3 }
+	situation:oe_sit_glh_troubles = {
+		set_variable = { name = oe_sit2_glh_months value = 24 }
+	}
+	oe_sit2_glh_sync = yes
+}
+
+oe_sit2_test_start_ren = {
+	if = {
+		limit = { NOT = { is_situation_active = situation:oe_sit_byz_renaissance } }
+		activate_situation = situation:oe_sit_byz_renaissance
+	}
+	oe_sit2_ren_init = yes
+}
+
+oe_sit2_test_ren_win = {
+	oe_sit2_test_start_ren = yes
+	situation:oe_sit_byz_renaissance = {
+		set_variable = { name = oe_sit2_ren_beacon value = 90 }
+	}
+}
+
+oe_sit2_test_start_ec = {
+	if = {
+		limit = { NOT = { is_situation_active = situation:oe_sit_eastern_crossroads } }
+		activate_situation = situation:oe_sit_eastern_crossroads
+	}
+	oe_sit2_ec_init = yes
+}
+
+oe_sit2_test_ec_win = {
+	oe_sit2_test_start_ec = yes
+	situation:oe_sit_eastern_crossroads = {
+		set_variable = { name = oe_sit2_ec_rus_power value = 85 }
+	}
+}
+
+oe_sit2_test_bridges = {
+	set_global_variable = { name = oe_sit2_br_rtr value = 1 }
+	set_global_variable = { name = oe_sit2_br_timur value = 1 }
+	set_global_variable = { name = oe_sit2_br_schism value = 1 }
+	set_global_variable = { name = oe_sit2_br_iw value = 1 }
+	trigger_event_non_silently = oe_sit2.21
+	trigger_event_non_silently = oe_sit2.22
+	trigger_event_non_silently = oe_sit2.23
+	trigger_event_non_silently = oe_sit2.24
+}
+
+oe_sit2_test_reset = {
+	remove_global_variable = oe_sit2_yr_started
+	remove_global_variable = oe_sit2_yr_ended
+	remove_global_variable = oe_sit2_glh_started
+	remove_global_variable = oe_sit2_glh_ended
+	remove_global_variable = oe_sit2_ren_started
+	remove_global_variable = oe_sit2_ren_ended
+	remove_global_variable = oe_sit2_ec_started
+	remove_global_variable = oe_sit2_ec_ended
+	remove_global_variable = oe_sit2_br_rtr
+	remove_global_variable = oe_sit2_br_timur
+	remove_global_variable = oe_sit2_br_schism
+	remove_global_variable = oe_sit2_br_iw
+	remove_global_variable = oe_sit2_ran_m
+	remove_global_variable = oe_sit2_yr_trib_gcd
+	remove_global_variable = oe_sit2_glh_wing_gcd
+	remove_global_variable = oe_sit2_glh_strife_gcd
+	remove_global_variable = oe_sit2_ren_scholars_gcd
+	remove_global_variable = oe_sit2_ec_garr_gcd
+	remove_global_variable = oe_sit2_ec_cos_gcd
+	remove_global_variable = oe_sit2_ec_dip_gcd
+}

@@ -1,0 +1,227 @@
+﻿# NEW 2026-11-21 v8.0 SIT-3 Two Emperors (gen_sit_two_emperors.py). Generated; edit gen_sit_two_emperors.py, not this file.
+# O(1) Dual-Emperor Situation Panel: 0 iterators, 0 GUIPERF, 4 total script evaluations (<= 8 budget).
+# Tier S bespoke banner placeholder: gfx/interface/illustrations/situation/oe_sit_two_emperors.dds
+situation_panel = {
+    blockoverride "situation_panel_image" {
+        using = two_countries_header_template
+        blockoverride "two_countries_header_image" {
+            background = {
+                texture = "gfx/interface/illustrations/situation/oe_sit_two_emperors.dds"
+                texture_density = 2
+                spriteType = stretched
+                spriteborder = { 0 0 }
+            }
+        }
+        blockoverride "FirstCountryContext" {
+            datacontext = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_east_emperor').GetCountry]"
+        }
+        blockoverride "SecondCountryContext" {
+            datacontext = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_west_emperor').GetCountry]"
+        }
+        blockoverride "first_character_portrait_anchor" {
+            parentanchor = bottom|left
+        }
+        blockoverride "second_character_portrait_anchor" {
+            parentanchor = bottom|right
+        }
+        blockoverride "character_religion_visibility" {
+            visible = no
+        }
+        blockoverride "character_name_maximumsize" {
+            maximumsize = { 240 -1 }
+        }
+        blockoverride "country_header_extra" {
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                layoutpolicy_vertical = expanding
+                margin = { 10 10 }
+                spacing = 8
+                expand = {}
+            }
+        }
+    }
+
+    blockoverride "situation_subheader_content" {}
+
+    blockoverride "situation_panel_main_content" {
+        card_common = {
+            layoutpolicy_horizontal = expanding
+            blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
+            blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+            blockoverride "common_header_text_full" { text_single = { text = "OE_TWE_PANEL_TITLE" fontsize = 18 } }
+            blockoverride "common_bottom_content" {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 10 8 }
+                    spacing = 6
+                oe_sit_tug_bar = {
+                    blockoverride "tug_left" {
+                        text_single = { fontsize = 13 default_format = "#color_purple" text = "OE_TWE_BAL_L" }
+                    }
+                    blockoverride "tug_center" {
+                        text_single = { fontsize = 14 default_format = "#bold" raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_balance').GetValue|0] / 100" }
+                    }
+                    blockoverride "tug_right" {
+                        text_single = { fontsize = 13 default_format = "#color_gold" text = "OE_TWE_BAL_R" }
+                    }
+                    blockoverride "tug_bar_style" { using = progress_bar_red_alt }
+                    blockoverride "tug_bar_bounds" { min = 0 max = 100 }
+                    blockoverride "tug_bar_value" { value = "[FixedPointToFloat(SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_balance').GetValue)]" }
+                    blockoverride "tug_bar_ticks" {
+                        widget = {
+                            position = { 15% 0 }
+                            size = { 2 100% }
+                            using = bg_header_golden_frame
+                        }
+                        widget = {
+                            position = { 50% 0 }
+                            size = { 2 100% }
+                            using = bg_header_golden_frame
+                        }
+                        widget = {
+                            position = { 85% 0 }
+                            size = { 2 100% }
+                            using = bg_header_golden_frame
+                        }
+                    }
+                blockoverride "tug_footer" {
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        multiline = yes
+                        autoresize = yes
+                        maximumsize = { 440 -1 }
+                        fontsize = 12
+                        default_format = "#weak"
+                        text = "OE_TWE_BAL_FOOT"
+                    }
+                }
+                }
+                oe_sit_tug_bar = {
+                    blockoverride "tug_left" {
+                        text_single = { fontsize = 13 default_format = "#color_gold" text = "OE_TWE_CON_L" }
+                    }
+                    blockoverride "tug_center" {
+                        text_single = { fontsize = 14 default_format = "#bold" raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_concord').GetValue|0] / 100" }
+                    }
+                    blockoverride "tug_right" {
+                        text_single = { fontsize = 13 default_format = "#weak" text = "OE_TWE_CON_R" }
+                    }
+                    blockoverride "tug_bar_style" { using = progress_bar_goldish }
+                    blockoverride "tug_bar_bounds" { min = 0 max = 100 }
+                    blockoverride "tug_bar_value" { value = "[FixedPointToFloat(SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_concord').GetValue)]" }
+                    blockoverride "tug_bar_ticks" {
+                        widget = {
+                            position = { 50% 0 }
+                            size = { 2 100% }
+                            using = bg_header_golden_frame
+                        }
+                        widget = {
+                            position = { 80% 0 }
+                            size = { 2 100% }
+                            using = bg_header_golden_frame
+                        }
+                    }
+                blockoverride "tug_footer" {
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        multiline = yes
+                        autoresize = yes
+                        maximumsize = { 440 -1 }
+                        fontsize = 12
+                        default_format = "#weak"
+                        text = "OE_TWE_CON_FOOT"
+                    }
+                }
+                }
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    spacing = 6
+                    oe_kpi_tile = {
+                        blockoverride "kpi_label" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                fontsize = 12
+                                default_format = "#weak"
+                                text = "OE_TWE_KPI_HUBS"
+                            }
+                        }
+                        blockoverride "kpi_value" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                elide = right
+                                fontsize = 15
+                                default_format = "#bold #color_gold"
+                                raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_hub_east').GetValue|0] : [SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_hub_west').GetValue|0]"
+                            }
+                        }
+                    }
+                    oe_kpi_tile = {
+                        blockoverride "kpi_label" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                fontsize = 12
+                                default_format = "#weak"
+                                text = "OE_TWE_KPI_TENSION"
+                            }
+                        }
+                        blockoverride "kpi_value" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                elide = right
+                                fontsize = 15
+                                default_format = "#bold #color_orange"
+                                raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_tension').GetValue|0] / 100"
+                            }
+                        }
+                    }
+                    oe_kpi_tile = {
+                        blockoverride "kpi_label" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                fontsize = 12
+                                default_format = "#weak"
+                                text = "OE_TWE_KPI_POSTURE"
+                            }
+                        }
+                        blockoverride "kpi_value" {
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                align = hcenter|nobaseline
+                                elide = right
+                                fontsize = 15
+                                default_format = "#bold"
+                                raw_text = "[SituationView.GetPlayer.Custom('oe_twe_status_cloc')]"
+                            }
+                        }
+                    }
+                }
+                }
+            }
+        }
+        card_common = {
+            layoutpolicy_horizontal = expanding
+            blockoverride "header_decor_templates" { using = bg_header_golden_frame }
+            blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
+            blockoverride "common_header_text_full" { text_single = { text = "OE_TWE_LEGEND_TITLE" fontsize = 18 } }
+            blockoverride "common_bottom_content" {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 10 8 }
+                    spacing = 6
+                    text_multi = {
+                        layoutpolicy_horizontal = expanding
+                        autoresize = yes
+                        max_width = 448
+                        fontsize = 13
+                        text = "OE_TWE_LEGEND_BODY"
+                    }
+                }
+            }
+        }
+    }
+}

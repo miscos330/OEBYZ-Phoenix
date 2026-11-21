@@ -223,6 +223,7 @@ oe_y1_end_xuanzheng = {
 oe_y1_on_yuan_fall = {
     oe_y1_end_zhengdong = yes
     oe_y1_end_xuanzheng = yes
+    if = { limit = { country_exists = c:CHI } c:CHI = { if = { limit = { has_country_modifier = oe_y1_tibet_charter } remove_country_modifier = oe_y1_tibet_charter } if = { limit = { has_country_modifier = oe_y1_tibet_direct } remove_country_modifier = oe_y1_tibet_direct } if = { limit = { has_country_modifier = oe_y1_tea_horse_accord } remove_country_modifier = oe_y1_tea_horse_accord } } }
 }
 
 # Any scope, January. The standing markers get 13 more months (they lapse by themselves if the scheduler stops).
@@ -299,6 +300,7 @@ oe_y1_upkeep = {
 oe_y1_fire_1 = {
     set_global_variable = { name = oe_y1_st_1 value = 1 }
     set_global_variable = { name = oe_y1_d_st1 value = oe_y1_m_now }
+    set_global_variable = { name = oe_yuan_ev_m value = oe_y1_m_now }
     oe_y1_count = yes
     debug_log = "oe_y1: event oe_y1.1 sent to CHI"
     c:CHI ?= { trigger_event_non_silently = oe_y1.1 }
@@ -318,12 +320,14 @@ oe_y1_fire_3 = {
 }
 oe_y1_fire_4 = {
     set_global_variable = { name = oe_y1_st_4 value = 1 }
+    set_global_variable = { name = oe_yuan_ev_m value = oe_y1_m_now }
     oe_y1_count = yes
     debug_log = "oe_y1: event oe_y1.4 sent to CHI"
     c:CHI ?= { trigger_event_non_silently = oe_y1.4 }
 }
 oe_y1_fire_5 = {
     set_global_variable = { name = oe_y1_st_5 value = 1 }
+    set_global_variable = { name = oe_yuan_ev_m value = oe_y1_m_now }
     oe_y1_count = yes
     debug_log = "oe_y1: event oe_y1.5 sent to CHI"
     c:CHI ?= { trigger_event_non_silently = oe_y1.5 }
@@ -334,6 +338,34 @@ oe_y1_fire_6 = {
     debug_log = "oe_y1: event oe_y1.6 sent to KOR"
     c:KOR ?= { trigger_event_non_silently = oe_y1.6 }
 }
+oe_y1_fire_10 = {
+    set_global_variable = { name = oe_y1_st_10 value = 1 }
+    set_global_variable = { name = oe_y1_d_phm value = oe_y1_m_now }
+    set_global_variable = { name = oe_yuan_ev_m value = oe_y1_m_now }
+    oe_y1_count = yes
+    debug_log = "oe_y1: event oe_y1.10 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y1.10 }
+}
+oe_y1_fire_11 = {
+    set_global_variable = { name = oe_y1_st_11 value = 1 }
+    oe_y1_count = yes
+    debug_log = "oe_y1: event oe_y1.11 sent to TIB"
+    c:TIB ?= { trigger_event_non_silently = oe_y1.11 }
+}
+oe_y1_fire_12 = {
+    set_global_variable = { name = oe_y1_st_12 value = 1 }
+    set_global_variable = { name = oe_yuan_ev_m value = oe_y1_m_now }
+    oe_y1_count = yes
+    debug_log = "oe_y1: event oe_y1.12 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y1.12 }
+}
+oe_y1_fire_13 = {
+    set_global_variable = { name = oe_y1_st_13 value = 1 }
+    set_global_variable = { name = oe_yuan_ev_m value = oe_y1_m_now }
+    oe_y1_count = yes
+    debug_log = "oe_y1: event oe_y1.13 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y1.13 }
+}
 
 # Any scope. Drops events that can no longer fire.
 oe_y1_ev_lapse = {
@@ -343,6 +375,10 @@ oe_y1_ev_lapse = {
     if = { limit = { oe_y1_lapse_4 = yes } set_global_variable = { name = oe_y1_st_4 value = 2 } debug_log = "oe_y1: event oe_y1.4 dropped" }
     if = { limit = { oe_y1_lapse_5 = yes } set_global_variable = { name = oe_y1_st_5 value = 2 } debug_log = "oe_y1: event oe_y1.5 dropped" }
     if = { limit = { oe_y1_lapse_6 = yes } set_global_variable = { name = oe_y1_st_6 value = 2 } debug_log = "oe_y1: event oe_y1.6 dropped" }
+    if = { limit = { oe_y1_lapse_10 = yes } set_global_variable = { name = oe_y1_st_10 value = 2 } debug_log = "oe_y1: event oe_y1.10 dropped" }
+    if = { limit = { oe_y1_lapse_11 = yes } set_global_variable = { name = oe_y1_st_11 value = 2 } debug_log = "oe_y1: event oe_y1.11 dropped" }
+    if = { limit = { oe_y1_lapse_12 = yes } set_global_variable = { name = oe_y1_st_12 value = 2 } debug_log = "oe_y1: event oe_y1.12 dropped" }
+    if = { limit = { oe_y1_lapse_13 = yes } set_global_variable = { name = oe_y1_st_13 value = 2 } debug_log = "oe_y1: event oe_y1.13 dropped" }
 }
 # Any scope. Picks at most one event this month: an event at its window end first, else one roll per open event.
 oe_y1_ev_pick = {
@@ -353,6 +389,10 @@ oe_y1_ev_pick = {
     else_if = { limit = { oe_y1_due_4 = yes } set_global_variable = { name = oe_y1_pick value = 4 } }
     else_if = { limit = { oe_y1_due_5 = yes } set_global_variable = { name = oe_y1_pick value = 5 } }
     else_if = { limit = { oe_y1_due_6 = yes } set_global_variable = { name = oe_y1_pick value = 6 } }
+    else_if = { limit = { oe_y1_due_10 = yes } set_global_variable = { name = oe_y1_pick value = 10 } }
+    else_if = { limit = { oe_y1_due_11 = yes } set_global_variable = { name = oe_y1_pick value = 11 } }
+    else_if = { limit = { oe_y1_due_12 = yes } set_global_variable = { name = oe_y1_pick value = 12 } }
+    else_if = { limit = { oe_y1_due_13 = yes } set_global_variable = { name = oe_y1_pick value = 13 } }
     else = {
         if = { limit = { global_var:oe_y1_pick = 0 oe_y1_open_1 = yes NOT = { oe_y1_yv_busy = yes } } random = { chance = oe_y1_ch_1 set_global_variable = { name = oe_y1_pick value = 1 } } }
         if = { limit = { global_var:oe_y1_pick = 0 oe_y1_open_2 = yes } random = { chance = oe_y1_ch_2 set_global_variable = { name = oe_y1_pick value = 2 } } }
@@ -360,6 +400,10 @@ oe_y1_ev_pick = {
         if = { limit = { global_var:oe_y1_pick = 0 oe_y1_open_4 = yes NOT = { oe_y1_yv_busy = yes } } random = { chance = oe_y1_ch_4 set_global_variable = { name = oe_y1_pick value = 4 } } }
         if = { limit = { global_var:oe_y1_pick = 0 oe_y1_open_5 = yes NOT = { oe_y1_yv_busy = yes } } random = { chance = oe_y1_ch_5 set_global_variable = { name = oe_y1_pick value = 5 } } }
         if = { limit = { global_var:oe_y1_pick = 0 oe_y1_open_6 = yes } random = { chance = oe_y1_ch_6 set_global_variable = { name = oe_y1_pick value = 6 } } }
+        if = { limit = { global_var:oe_y1_pick = 0 oe_y1_open_10 = yes NOT = { oe_y1_yv_busy = yes } } random = { chance = oe_y1_ch_10 set_global_variable = { name = oe_y1_pick value = 10 } } }
+        if = { limit = { global_var:oe_y1_pick = 0 oe_y1_open_11 = yes } random = { chance = oe_y1_ch_11 set_global_variable = { name = oe_y1_pick value = 11 } } }
+        if = { limit = { global_var:oe_y1_pick = 0 oe_y1_open_12 = yes NOT = { oe_y1_yv_busy = yes } } random = { chance = oe_y1_ch_12 set_global_variable = { name = oe_y1_pick value = 12 } } }
+        if = { limit = { global_var:oe_y1_pick = 0 oe_y1_open_13 = yes NOT = { oe_y1_yv_busy = yes } } random = { chance = oe_y1_ch_13 set_global_variable = { name = oe_y1_pick value = 13 } } }
     }
     if = { limit = { global_var:oe_y1_pick = 1 } oe_y1_fire_1 = yes }
     else_if = { limit = { global_var:oe_y1_pick = 2 } oe_y1_fire_2 = yes }
@@ -367,6 +411,10 @@ oe_y1_ev_pick = {
     else_if = { limit = { global_var:oe_y1_pick = 4 } oe_y1_fire_4 = yes }
     else_if = { limit = { global_var:oe_y1_pick = 5 } oe_y1_fire_5 = yes }
     else_if = { limit = { global_var:oe_y1_pick = 6 } oe_y1_fire_6 = yes }
+    else_if = { limit = { global_var:oe_y1_pick = 10 } oe_y1_fire_10 = yes }
+    else_if = { limit = { global_var:oe_y1_pick = 11 } oe_y1_fire_11 = yes }
+    else_if = { limit = { global_var:oe_y1_pick = 12 } oe_y1_fire_12 = yes }
+    else_if = { limit = { global_var:oe_y1_pick = 13 } oe_y1_fire_13 = yes }
 }
 
 # BYZ scope (any scope works), monthly: called by the main-line scheduler (gen_mainline_lock.py, LINES id 10 "y1") while
@@ -433,6 +481,130 @@ oe_y1_job_lisuo = {
         random_character = { limit = { has_variable = kor_is_mongol_aristocrat } move_country = c:CHI }
     }
 }
+# ---- 1354 Tibet Phagmodrupa worker jobs (hidden event oe_y1.20; zero debug_log for CMDLOG discipline)
+oe_y1_job_101 = {
+    set_global_variable = { name = oe_y1_phm value = 1 }
+    if = {
+        limit = { country_exists = c:TIB }
+        c:TIB = {
+            if = { limit = { oe_y1_sub = yes } add_liberty_desire = 15 }
+            if = { limit = { country_exists = c:CHI } add_opinion = { modifier = oe_y1_phm_invested target = c:CHI } }
+        }
+    }
+    location:nedong = { add_location_modifier = { modifier = oe_y1_phm_dzong months = 120 mode = replace } }
+    location:sakya = { add_location_modifier = { modifier = oe_y1_sakya_twilight months = 120 mode = replace } }
+}
+oe_y1_job_102 = {
+    set_global_variable = { name = oe_y1_phm value = 2 }
+    if = {
+        limit = { oe_y1_phm_strong = yes }
+        set_global_variable = { name = oe_y1_phm_exp value = 1 }
+        if = { limit = { country_exists = c:CHI } c:CHI = { add_prestige = prestige_weak_bonus } }
+        if = {
+            limit = { country_exists = c:TIB }
+            c:TIB = {
+                if = { limit = { oe_y1_sub = yes } add_liberty_desire = -10 }
+                if = { limit = { country_exists = c:CHI } add_opinion = { modifier = oe_y1_phm_expedition target = c:CHI } }
+            }
+        }
+        location:sakya = { add_location_modifier = { modifier = oe_y1_sakya_garrison months = 60 mode = replace } }
+        location:shigatse = { add_location_modifier = { modifier = oe_y1_sakya_garrison months = 60 mode = replace } }
+    }
+    else = {
+        set_global_variable = { name = oe_y1_phm_exp value = 2 }
+        if = { limit = { country_exists = c:CHI } c:CHI = { add_prestige = -10 } }
+        if = {
+            limit = { country_exists = c:TIB }
+            c:TIB = {
+                if = { limit = { oe_y1_sub = yes } add_liberty_desire = 25 }
+                if = { limit = { country_exists = c:CHI } add_opinion = { modifier = oe_y1_phm_failed_exp target = c:CHI } }
+            }
+        }
+        location:lhasa = { add_location_modifier = { modifier = oe_y1_plateau_turmoil months = 60 mode = replace } }
+        location:shigatse = { add_location_modifier = { modifier = oe_y1_plateau_turmoil months = 60 mode = replace } }
+    }
+}
+oe_y1_job_103 = {
+    set_global_variable = { name = oe_y1_phm value = 3 }
+    if = {
+        limit = { country_exists = c:TIB }
+        c:TIB = {
+            if = { limit = { oe_y1_sub = yes } add_liberty_desire = 30 }
+            if = { limit = { country_exists = c:CHI } add_opinion = { modifier = oe_y1_phm_abandoned target = c:CHI } }
+        }
+    }
+    location:lhasa = { add_location_modifier = { modifier = oe_y1_phm_autonomy months = 120 mode = replace } }
+    location:nedong = { add_location_modifier = { modifier = oe_y1_phm_autonomy months = 120 mode = replace } }
+}
+oe_y1_job_111 = {
+    location:nedong = { add_location_modifier = { modifier = oe_y1_phm_dzong months = 120 mode = replace } }
+    location:lhasa = { add_location_modifier = { modifier = oe_y1_phm_dzong months = 120 mode = replace } }
+    if = { limit = { country_exists = c:CHI country_exists = c:TIB } c:CHI = { add_opinion = { modifier = oe_y1_tib_dzong_reform target = c:TIB } } }
+}
+oe_y1_job_112 = {
+    location:sakya = { add_location_modifier = { modifier = oe_y1_sakya_garrison months = 60 mode = replace } }
+    if = { limit = { country_exists = c:CHI country_exists = c:TIB } c:CHI = { add_opinion = { modifier = oe_y1_tib_upheld_sakya target = c:TIB } } }
+}
+oe_y1_job_113 = {
+    location:lhasa = { add_location_modifier = { modifier = oe_y1_phm_autonomy months = 120 mode = replace } }
+    location:nedong = { add_location_modifier = { modifier = oe_y1_phm_autonomy months = 120 mode = replace } }
+    location:shigatse = { add_location_modifier = { modifier = oe_y1_phm_autonomy months = 120 mode = replace } }
+    if = { limit = { country_exists = c:CHI country_exists = c:TIB } c:CHI = { add_opinion = { modifier = oe_y1_tib_broke_pact target = c:TIB } } }
+}
+oe_y1_job_121 = {
+    set_global_variable = { name = oe_y1_phm_settle value = 1 }
+    if = {
+        limit = { country_exists = c:TIB }
+        c:TIB = {
+            if = { limit = { oe_y1_sub = yes } add_liberty_desire = 10 }
+            add_country_modifier = { modifier = oe_y1_phm_autonomous_pact months = 120 mode = replace }
+        }
+    }
+    location:nedong = { add_location_modifier = { modifier = oe_y1_phm_dzong months = 120 mode = replace } }
+    location:lhasa = { add_location_modifier = { modifier = oe_y1_phm_dzong months = 120 mode = replace } }
+}
+oe_y1_job_122 = {
+    set_global_variable = { name = oe_y1_phm_settle value = 2 }
+    if = {
+        limit = { country_exists = c:TIB }
+        c:TIB = {
+            if = { limit = { oe_y1_sub = yes } add_liberty_desire = 25 }
+            if = { limit = { country_exists = c:CHI } add_opinion = { modifier = oe_y1_phm_denounced target = c:CHI } }
+        }
+    }
+    location:sakya = { add_location_modifier = { modifier = oe_y1_plateau_turmoil months = 60 mode = replace } }
+    location:shigatse = { add_location_modifier = { modifier = oe_y1_plateau_turmoil months = 60 mode = replace } }
+}
+oe_y1_job_131 = {
+    set_global_variable = { name = oe_y1_phm_final value = 1 }
+    if = { limit = { country_exists = c:CHI } c:CHI = { add_country_modifier = { modifier = oe_y1_tibet_charter months = 120 mode = replace } } }
+    if = {
+        limit = { country_exists = c:TIB }
+        c:TIB = {
+            if = { limit = { oe_y1_sub = yes } add_liberty_desire = -15 }
+            if = { limit = { country_exists = c:CHI } add_opinion = { modifier = oe_y1_phm_new_charter target = c:CHI } }
+        }
+    }
+    location:lhasa = { add_location_modifier = { modifier = oe_y1_tibet_settled months = 120 mode = replace } }
+    location:nedong = { add_location_modifier = { modifier = oe_y1_tibet_settled months = 120 mode = replace } }
+}
+oe_y1_job_132 = {
+    set_global_variable = { name = oe_y1_phm_final value = 2 }
+    if = { limit = { country_exists = c:CHI } c:CHI = { add_country_modifier = { modifier = oe_y1_tibet_direct months = 120 mode = replace } } }
+    if = {
+        limit = { country_exists = c:TIB }
+        c:TIB = {
+            if = { limit = { oe_y1_sub = yes } add_liberty_desire = 15 }
+            if = { limit = { country_exists = c:CHI } add_opinion = { modifier = oe_y1_phm_direct_bureau target = c:CHI } }
+        }
+    }
+    location:sakya = { add_location_modifier = { modifier = oe_y1_sakya_garrison months = 120 mode = replace } }
+    location:shigatse = { add_location_modifier = { modifier = oe_y1_sakya_garrison months = 120 mode = replace } }
+}
+oe_y1_job_133 = {
+    set_global_variable = { name = oe_y1_phm_final value = 3 }
+    if = { limit = { country_exists = c:CHI } c:CHI = { add_country_modifier = { modifier = oe_y1_tea_horse_accord months = 120 mode = replace } } }
+}
 
 # ---------------------------------------------------------------- test helpers (dev page buttons; any scope)
 # Clears every global of this line and every marker, event modifier and variable it set (not opinions, not characters).
@@ -446,6 +618,11 @@ oe_y1_test_clear = {
     if = { limit = { has_global_variable = oe_y1_d_rtr } remove_global_variable = oe_y1_d_rtr }
     if = { limit = { has_global_variable = oe_y1_d_st1 } remove_global_variable = oe_y1_d_st1 }
     if = { limit = { has_global_variable = oe_y1_d_st3 } remove_global_variable = oe_y1_d_st3 }
+    if = { limit = { has_global_variable = oe_y1_d_phm } remove_global_variable = oe_y1_d_phm }
+    if = { limit = { has_global_variable = oe_y1_phm } remove_global_variable = oe_y1_phm }
+    if = { limit = { has_global_variable = oe_y1_phm_exp } remove_global_variable = oe_y1_phm_exp }
+    if = { limit = { has_global_variable = oe_y1_phm_settle } remove_global_variable = oe_y1_phm_settle }
+    if = { limit = { has_global_variable = oe_y1_phm_final } remove_global_variable = oe_y1_phm_final }
     if = { limit = { has_global_variable = oe_y1_ki_empress } remove_global_variable = oe_y1_ki_empress }
     if = { limit = { has_global_variable = oe_y1_exile_m } remove_global_variable = oe_y1_exile_m }
     if = { limit = { has_global_variable = oe_y1_exile_done } remove_global_variable = oe_y1_exile_done }
@@ -461,6 +638,10 @@ oe_y1_test_clear = {
     if = { limit = { has_global_variable = oe_y1_st_4 } remove_global_variable = oe_y1_st_4 }
     if = { limit = { has_global_variable = oe_y1_st_5 } remove_global_variable = oe_y1_st_5 }
     if = { limit = { has_global_variable = oe_y1_st_6 } remove_global_variable = oe_y1_st_6 }
+    if = { limit = { has_global_variable = oe_y1_st_10 } remove_global_variable = oe_y1_st_10 }
+    if = { limit = { has_global_variable = oe_y1_st_11 } remove_global_variable = oe_y1_st_11 }
+    if = { limit = { has_global_variable = oe_y1_st_12 } remove_global_variable = oe_y1_st_12 }
+    if = { limit = { has_global_variable = oe_y1_st_13 } remove_global_variable = oe_y1_st_13 }
     c:KOR ?= {
         if = { limit = { has_country_modifier = oe_y1_zhengdong } remove_country_modifier = oe_y1_zhengdong } if = { limit = { has_country_modifier = oe_y1_ki_clan } remove_country_modifier = oe_y1_ki_clan } if = { limit = { has_country_modifier = oe_y1_king_in_dadu } remove_country_modifier = oe_y1_king_in_dadu } if = { limit = { has_variable = oe_y1_lisuo_abolished } remove_variable = oe_y1_lisuo_abolished } if = { limit = { has_variable = oe_y1_job } remove_variable = oe_y1_job }
         if = { limit = { has_ruler = yes } ruler = { if = { limit = { has_variable = oe_y1_start_king } remove_variable = oe_y1_start_king } if = { limit = { has_variable = oe_y1_confirmed_king } remove_variable = oe_y1_confirmed_king } } }
@@ -475,8 +656,12 @@ oe_y1_test_clear = {
     c:MNZ ?= { if = { limit = { has_country_modifier = oe_y1_xz_amdo } remove_country_modifier = oe_y1_xz_amdo } if = { limit = { has_variable = oe_y1_xz_unit } remove_variable = oe_y1_xz_unit } if = { limit = { has_variable = oe_y1_xz_end } remove_variable = oe_y1_xz_end } }
     c:TAZ ?= { if = { limit = { has_country_modifier = oe_y1_xz_amdo } remove_country_modifier = oe_y1_xz_amdo } if = { limit = { has_variable = oe_y1_xz_unit } remove_variable = oe_y1_xz_unit } if = { limit = { has_variable = oe_y1_xz_end } remove_variable = oe_y1_xz_end } }
     c:KHG ?= { if = { limit = { has_country_modifier = oe_y1_xz_amdo } remove_country_modifier = oe_y1_xz_amdo } if = { limit = { has_variable = oe_y1_xz_unit } remove_variable = oe_y1_xz_unit } if = { limit = { has_variable = oe_y1_xz_end } remove_variable = oe_y1_xz_end } }
-    c:CHI ?= { if = { limit = { has_variable = oe_y1_job } remove_variable = oe_y1_job } }
-    c:TIB ?= { if = { limit = { has_variable = oe_y1_job } remove_variable = oe_y1_job } }
+    c:CHI ?= { if = { limit = { has_country_modifier = oe_y1_tibet_charter } remove_country_modifier = oe_y1_tibet_charter } if = { limit = { has_country_modifier = oe_y1_tibet_direct } remove_country_modifier = oe_y1_tibet_direct } if = { limit = { has_country_modifier = oe_y1_tea_horse_accord } remove_country_modifier = oe_y1_tea_horse_accord } if = { limit = { has_variable = oe_y1_job } remove_variable = oe_y1_job } }
+    c:TIB ?= { if = { limit = { has_country_modifier = oe_y1_phm_autonomous_pact } remove_country_modifier = oe_y1_phm_autonomous_pact } if = { limit = { has_variable = oe_y1_job } remove_variable = oe_y1_job } }
+    location:lhasa = { if = { limit = { has_location_modifier = oe_y1_phm_dzong } remove_location_modifier = oe_y1_phm_dzong } if = { limit = { has_location_modifier = oe_y1_sakya_twilight } remove_location_modifier = oe_y1_sakya_twilight } if = { limit = { has_location_modifier = oe_y1_sakya_garrison } remove_location_modifier = oe_y1_sakya_garrison } if = { limit = { has_location_modifier = oe_y1_plateau_turmoil } remove_location_modifier = oe_y1_plateau_turmoil } if = { limit = { has_location_modifier = oe_y1_phm_autonomy } remove_location_modifier = oe_y1_phm_autonomy } if = { limit = { has_location_modifier = oe_y1_tibet_settled } remove_location_modifier = oe_y1_tibet_settled } }
+    location:sakya = { if = { limit = { has_location_modifier = oe_y1_phm_dzong } remove_location_modifier = oe_y1_phm_dzong } if = { limit = { has_location_modifier = oe_y1_sakya_twilight } remove_location_modifier = oe_y1_sakya_twilight } if = { limit = { has_location_modifier = oe_y1_sakya_garrison } remove_location_modifier = oe_y1_sakya_garrison } if = { limit = { has_location_modifier = oe_y1_plateau_turmoil } remove_location_modifier = oe_y1_plateau_turmoil } if = { limit = { has_location_modifier = oe_y1_phm_autonomy } remove_location_modifier = oe_y1_phm_autonomy } if = { limit = { has_location_modifier = oe_y1_tibet_settled } remove_location_modifier = oe_y1_tibet_settled } }
+    location:nedong = { if = { limit = { has_location_modifier = oe_y1_phm_dzong } remove_location_modifier = oe_y1_phm_dzong } if = { limit = { has_location_modifier = oe_y1_sakya_twilight } remove_location_modifier = oe_y1_sakya_twilight } if = { limit = { has_location_modifier = oe_y1_sakya_garrison } remove_location_modifier = oe_y1_sakya_garrison } if = { limit = { has_location_modifier = oe_y1_plateau_turmoil } remove_location_modifier = oe_y1_plateau_turmoil } if = { limit = { has_location_modifier = oe_y1_phm_autonomy } remove_location_modifier = oe_y1_phm_autonomy } if = { limit = { has_location_modifier = oe_y1_tibet_settled } remove_location_modifier = oe_y1_tibet_settled } }
+    location:shigatse = { if = { limit = { has_location_modifier = oe_y1_phm_dzong } remove_location_modifier = oe_y1_phm_dzong } if = { limit = { has_location_modifier = oe_y1_sakya_twilight } remove_location_modifier = oe_y1_sakya_twilight } if = { limit = { has_location_modifier = oe_y1_sakya_garrison } remove_location_modifier = oe_y1_sakya_garrison } if = { limit = { has_location_modifier = oe_y1_plateau_turmoil } remove_location_modifier = oe_y1_plateau_turmoil } if = { limit = { has_location_modifier = oe_y1_phm_autonomy } remove_location_modifier = oe_y1_phm_autonomy } if = { limit = { has_location_modifier = oe_y1_tibet_settled } remove_location_modifier = oe_y1_tibet_settled } }
 }
 # The line runs from now in any game: markers on again, every event pending (windows already past lapse at once).
 oe_y1_test_start = {
@@ -496,6 +681,10 @@ oe_y1_test_fire_3 = { if = { limit = { NOT = { has_global_variable = oe_y1_m } }
 oe_y1_test_fire_4 = { if = { limit = { NOT = { has_global_variable = oe_y1_m } } set_global_variable = { name = oe_y1_m value = oe_y1_m_now } } oe_y1_fire_4 = yes }
 oe_y1_test_fire_5 = { if = { limit = { NOT = { has_global_variable = oe_y1_m } } set_global_variable = { name = oe_y1_m value = oe_y1_m_now } } oe_y1_fire_5 = yes }
 oe_y1_test_fire_6 = { if = { limit = { NOT = { has_global_variable = oe_y1_m } } set_global_variable = { name = oe_y1_m value = oe_y1_m_now } } oe_y1_fire_6 = yes }
+oe_y1_test_fire_10 = { if = { limit = { NOT = { has_global_variable = oe_y1_m } } set_global_variable = { name = oe_y1_m value = oe_y1_m_now } } oe_y1_fire_10 = yes }
+oe_y1_test_fire_11 = { if = { limit = { NOT = { has_global_variable = oe_y1_m } } set_global_variable = { name = oe_y1_m value = oe_y1_m_now } } oe_y1_fire_11 = yes }
+oe_y1_test_fire_12 = { if = { limit = { NOT = { has_global_variable = oe_y1_m } } set_global_variable = { name = oe_y1_m value = oe_y1_m_now } } oe_y1_fire_12 = yes }
+oe_y1_test_fire_13 = { if = { limit = { NOT = { has_global_variable = oe_y1_m } } set_global_variable = { name = oe_y1_m value = oe_y1_m_now } } oe_y1_fire_13 = yes }
 
 # Switches the line off and clears it (the next scheduler round finds it initialised and leaves it off).
 oe_y1_test_reset = {
@@ -515,6 +704,10 @@ oe_y1_dev_snapshot = {
     set_variable = { name = oe_y1_r_st4 value = oe_y1_dev_st4 }
     set_variable = { name = oe_y1_r_st5 value = oe_y1_dev_st5 }
     set_variable = { name = oe_y1_r_st6 value = oe_y1_dev_st6 }
+    set_variable = { name = oe_y1_r_st10 value = oe_y1_dev_st10 }
+    set_variable = { name = oe_y1_r_st11 value = oe_y1_dev_st11 }
+    set_variable = { name = oe_y1_r_st12 value = oe_y1_dev_st12 }
+    set_variable = { name = oe_y1_r_st13 value = oe_y1_dev_st13 }
     set_variable = { name = oe_y1_r_dking value = oe_y1_dev_dking }
     set_variable = { name = oe_y1_r_dbayan value = oe_y1_dev_dbayan }
     set_variable = { name = oe_y1_r_drtr value = oe_y1_dev_drtr }
@@ -535,5 +728,9 @@ oe_y1_dev_snapshot = {
     set_variable = { name = oe_y1_r_rtr value = oe_y1_dev_rtr }
     set_variable = { name = oe_y1_r_rtr44 value = oe_y1_dev_rtr44 }
     set_variable = { name = oe_y1_r_fallen value = oe_y1_dev_fallen }
+    set_variable = { name = oe_y1_r_phm value = oe_y1_dev_phm }
+    set_variable = { name = oe_y1_r_phmexp value = oe_y1_dev_phmexp }
+    set_variable = { name = oe_y1_r_phmset value = oe_y1_dev_phmset }
+    set_variable = { name = oe_y1_r_phmfin value = oe_y1_dev_phmfin }
     set_variable = { name = oe_y1_r_tibsub value = oe_y1_dev_tibsub }
 }

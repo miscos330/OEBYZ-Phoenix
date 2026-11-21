@@ -101,8 +101,9 @@ oe_rus_recalculate = {
     }
 }
 oe_rus_collapse_yoke = {
+    # fx25 (b): only dissolve an orphaned Tatar Yoke after GLH ceases to exist; modest +5 stability, no 1-year gold windfall.
     if = {
-        limit = { exists = international_organization:tatar_yoke }
+        limit = { NOT = { country_exists = c:GLH } exists = international_organization:tatar_yoke }
         international_organization:tatar_yoke = {
             every_country_with_special_status_of_type = {
                 type = tatar_tax_collector
@@ -110,8 +111,7 @@ oe_rus_collapse_yoke = {
             }
             every_international_organization_member = {
                 limit = { NOT = { tag = GLH } }
-                add_stability = 20
-                add_gold = oe_rus_annual_income
+                add_stability = 5
             }
         }
         destroy_international_organization_no_instigator = {

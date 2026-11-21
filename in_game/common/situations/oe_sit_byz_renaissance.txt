@@ -1,0 +1,144 @@
+﻿# NEW 2026-11-21 v7.1 SIT-2 Flagship Situations & Vanilla Bridges (gen_situations_flagship.py). Generated; edit gen_situations_flagship.py, not this file.
+
+oe_sit_byz_renaissance = {
+	monthly_spawn_chance = monthly_spawn_chance_unique
+	can_start = {
+		NOT = { has_global_variable = oe_sit2_ren_started }
+		current_year >= 1390
+		OR = {
+			country_exists = c:BYZ
+			country_exists = c:ROM
+		}
+	}
+	visible = {
+		OR = {
+			oe_sit2_ren_byz_or_rom = yes
+			oe_sit2_ren_italian_or_ortho = yes
+		}
+	}
+	outcome = {
+		name = "oe_sit_byz_renaissance_outcome_beacon"
+		desc = "oe_sit_byz_renaissance_outcome_beacon_desc"
+		trigger = {
+			OR = {
+				country_exists = c:BYZ
+				country_exists = c:ROM
+			}
+			has_variable = oe_sit2_ren_beacon
+			var:oe_sit2_ren_beacon >= 85
+		}
+		immediate = {
+			set_global_variable = { name = oe_sit2_ren_ended value = 1 }
+			if = {
+				limit = { has_variable = oe_sit2_ren_leader exists = var:oe_sit2_ren_leader }
+				var:oe_sit2_ren_leader = {
+					add_country_modifier = { modifier = oe_sit2_ren_beacon_mod years = 25 mode = replace }
+					trigger_event_non_silently = oe_sit2.6
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:ROM }
+				c:ROM = {
+					add_country_modifier = { modifier = oe_sit2_ren_beacon_mod years = 25 mode = replace }
+					trigger_event_non_silently = oe_sit2.6
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = {
+					add_country_modifier = { modifier = oe_sit2_ren_beacon_mod years = 25 mode = replace }
+					trigger_event_non_silently = oe_sit2.6
+				}
+			}
+		}
+	}
+	outcome = {
+		name = "oe_sit_byz_renaissance_outcome_shared"
+		desc = "oe_sit_byz_renaissance_outcome_shared_desc"
+		trigger = {
+			has_variable = oe_sit2_ren_exchange
+			var:oe_sit2_ren_exchange >= 80
+			has_variable = oe_sit2_ren_beacon
+			var:oe_sit2_ren_beacon >= 45
+		}
+		immediate = {
+			set_global_variable = { name = oe_sit2_ren_ended value = 2 }
+			if = {
+				limit = { has_variable = oe_sit2_ren_leader exists = var:oe_sit2_ren_leader }
+				var:oe_sit2_ren_leader = {
+					add_country_modifier = { modifier = oe_sit2_ren_shared_mod years = 25 mode = replace }
+					trigger_event_non_silently = oe_sit2.6
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:ROM }
+				c:ROM = {
+					add_country_modifier = { modifier = oe_sit2_ren_shared_mod years = 25 mode = replace }
+					trigger_event_non_silently = oe_sit2.6
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = {
+					add_country_modifier = { modifier = oe_sit2_ren_shared_mod years = 25 mode = replace }
+					trigger_event_non_silently = oe_sit2.6
+				}
+			}
+			if = { limit = { country_exists = c:VEN } c:VEN = { add_country_modifier = { modifier = oe_sit2_ren_shared_mod years = 20 mode = replace } } }
+			if = { limit = { country_exists = c:FLO } c:FLO = { add_country_modifier = { modifier = oe_sit2_ren_shared_mod years = 20 mode = replace } } }
+			if = { limit = { country_exists = c:GEN } c:GEN = { add_country_modifier = { modifier = oe_sit2_ren_shared_mod years = 20 mode = replace } } }
+		}
+	}
+	outcome = {
+		name = "oe_sit_byz_renaissance_outcome_flight"
+		desc = "oe_sit_byz_renaissance_outcome_flight_desc"
+		trigger = {
+			OR = {
+				AND = {
+					NOT = { country_exists = c:BYZ }
+					NOT = { country_exists = c:ROM }
+				}
+				AND = {
+					current_year >= 1530
+					has_variable = oe_sit2_ren_beacon
+					var:oe_sit2_ren_beacon < 85
+				}
+			}
+		}
+		immediate = {
+			set_global_variable = { name = oe_sit2_ren_ended value = 3 }
+			if = { limit = { country_exists = c:VEN } c:VEN = { add_country_modifier = { modifier = oe_sit2_ren_flight_mod years = 20 mode = replace } } }
+			if = { limit = { country_exists = c:FLO } c:FLO = { add_country_modifier = { modifier = oe_sit2_ren_flight_mod years = 20 mode = replace } } }
+			if = { limit = { country_exists = c:PAP } c:PAP = { add_country_modifier = { modifier = oe_sit2_ren_flight_mod years = 20 mode = replace } } }
+		}
+	}
+	on_start = {
+		oe_sit2_ren_init = yes
+		if = { limit = { country_exists = c:ROM } c:ROM = { trigger_event_non_silently = oe_sit2.5 } }
+		else_if = { limit = { country_exists = c:BYZ } c:BYZ = { trigger_event_non_silently = oe_sit2.5 } }
+	}
+	on_monthly = {
+		oe_sit2_ren_sync = yes
+	}
+	on_ended = { }
+	tooltip = {
+		if = {
+			limit = { has_owner = yes owner = { oe_sit2_ren_byz_or_rom = yes } }
+			custom_tooltip = oe_sit2_ren_map_byz_tt
+		}
+		else_if = {
+			limit = { has_owner = yes owner = { capital ?= { region = region:italy_region } } }
+			custom_tooltip = oe_sit2_ren_map_ita_tt
+		}
+		else_if = {
+			limit = { has_owner = yes owner = { religion = religion:orthodox } }
+			custom_tooltip = oe_sit2_ren_map_orth_tt
+		}
+	}
+	map_color = {
+		if = { limit = { has_owner = yes owner ?= { oe_sit2_ren_byz_or_rom = yes } } value = owner.country_color }
+		else_if = { limit = { has_owner = yes owner ?= { capital ?= { region = region:italy_region } } } value = define:NMapColors|MAP_COLOR_HIGH }
+		else_if = { limit = { has_owner = yes owner ?= { religion = religion:orthodox } } value = define:NMapColors|MAP_COLOR_MID }
+		else = { value = define:NMapColors|DEFAULT_COLOR }
+	}
+}
