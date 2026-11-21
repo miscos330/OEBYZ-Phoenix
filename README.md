@@ -40,13 +40,13 @@
 
 ## v8.5 主要内容（整合 v7.0–v8.5 全时代大版本）
 
-事件从 1372 个增加到 1747 个（+375），中文文本从约 18300 条增加到约 23800 条，新增 28 张原创高精度原生 `.dds` 美术资产（发布包增加约 59 MB）。**1337–1515 已跑过 178 年纯观察者实机长局（零崩溃无卡顿）；v8.5 热修与 1560–1836 近代后期线路已过全部 23/23 离线门禁，整体仍按“实验性测试版”发布。**
+事件从 1372 个增加到 1747 个（+375），中文文本从约 18300 条增加到约 23800 条，新增 28 张原创高精度原生 `.dds` 美术资产（发布包增加约 59 MB）。**1337–1515 已跑过 178 年纯观察者实机长局（零崩溃、无卡死）；那一局之后的 v8.5 热修与 1560–1836 近代后期线路只过了 23/23 离线门禁，没有再进游戏复测，整体仍按“实验性测试版”发布。**
 
 - **三大文明 500 年完整主线（1337–1836）：**东罗马近代线（33 幕）、大元近代线（1450–1750）、俄罗斯玩家可玩全线（莫斯科→第三罗马→彼得改革）；配套 **23 支跨时代特色兵种 + 20 项军事科技**。
 - **五大旗舰局势与全球战区：**大元中兴、金帐分裂、拜占庭文艺复兴、东方十字路口、两帝之争（均配原生横幅与徽章）；拓展西欧反罗马同盟、南亚/东南亚海上丝路、马格里布与非洲总督区、北欧/多瑙河/东亚边缘及远洋殖民线。
 - **帝国熵增引擎 & 12 强动态反霸权 AI：**新增 10 项开局游戏规则自由开关，打破中后期滚雪球无聊期，与“罗马之重负”零双重扣减合并。
-- **UI 2.0 & 编年史 2.0 & 28 张原生美术：**主界面顶部快捷导航栏、6 分页 74 线编年史 2.0、LDE 批四词库、227+ 核心事件配图升级与 4 张欧亚载入画面。
-- **根治历史遗留与原版缺陷：**零覆写根治 1337 拜占庭—艾登自动保独、零覆写清零 8 条原版 `gui.log` 简中报错与 28 条原版缺漏词条，清空 178 年长局运行时报错。
+- **UI 2.0 & 编年史 2.0 & 28 张原生美术：**主界面左下角的快捷导航栏、6 分页 74 线编年史 2.0、LDE 批四词库、227+ 核心事件配图升级与 4 张欧亚载入画面。
+- **修正历史遗留与原版缺陷：**针对 1337 拜占庭—艾登自动保独做了修正、补了 8 条原版 `gui.log` 简中报错对应的词条、修正了 178 年长局里记到的运行时报错（都不改原版文件，修后未实机复测）；补齐 28 条原版缺漏词条（实机已见清零）。
 
 完整改动见 [CHANGELOG.md](CHANGELOG.md)。
 
@@ -148,13 +148,13 @@ The beta of an Eastern Roman (Byzantine) overhaul for Europa Universalis V, made
 
 ## Highlights of v8.5 (Full 1337–1836 Mega Release, v7.0–v8.5)
 
-Events grow from 1372 to 1747 (+375), Chinese localisation keys grow from about 18300 to about 23800 (with full English coverage), and 28 bespoke native `.dds` artworks are added (+59 MB). **1337–1515 passed a 178-year clean live observer run (zero crashes, zero slowdown); subsequent hotfixes and 1560–1836 late-game lines passed all 23/23 offline gates and are released as an experimental beta.**
+Events grow from 1372 to 1747 (+375), Chinese localisation keys grow from about 18300 to about 23800 (with full English coverage), and 28 bespoke native `.dds` artworks are added (+59 MB). **1337–1515 ran 178 years in a live observer game without a crash or freeze; the hotfixes made after that run and the 1560–1836 late-game lines passed only the 23/23 offline checks, were not re-checked in game, and are released as an experimental beta.**
 
 - **500-Year Three-Civilisation Arc (1337–1836):** Byzantine Early Modern line (33 events), Great Yuan Early Modern line (1450–1750), and a full playable Russia arc (Moscow → Third Rome → Petrine reforms), backed by **23 cross-era unique units and 20 military advances**.
 - **Five Flagship Situations & Global Theatres:** Yuan Restoration, Golden Horde Troubles (multi-khanate splintering), Byzantine Renaissance, Eastern Crossroads, and War of the Two Emperors — plus Western Europe Anti-Roman League, Maritime Silk Road (South/SE Asia), Maghreb/Barbary & Africa Exarchate, Nordic/Danube/East Asia rim, and Far Seas overseas ventures.
 - **Empire Entropy Engine & 12-Major Anti-Hegemon AI:** Configurable via 10 Game Rules to keep late-game empires challenging without double-stacking penalties with the Burden of Rome.
-- **UI 2.0, Chronicle 2.0 & 28 Native Artworks:** Top-bar Quick Navigation, 6-tab 74-line Chronicle 2.0, LDE Batch 4 history tooltips, 4 Eurasian loading screens, and 227+ upgraded event illustrations.
-- **Vanilla & Legacy Fixes:** Non-invasive fix for the 1337 Byzantium–Aydın auto-guarantee, zero-override fixes for 8 vanilla `gui.log` Chinese errors and 28 missing vanilla keys, plus clean 178-year runtime logs.
+- **UI 2.0, Chronicle 2.0 & 28 Native Artworks:** a Quick Nav bar at the bottom left, 6-tab 74-line Chronicle 2.0, LDE Batch 4 history tooltips, 4 Eurasian loading screens, and 227+ upgraded event illustrations.
+- **Vanilla & Legacy Fixes:** a fix for the 1337 Byzantium–Aydın auto-guarantee, fixes for 8 vanilla `gui.log` Chinese errors and for the run-time errors recorded in the 178-year run (none re-checked in game yet), and 28 missing vanilla keys filled in (seen clean in game).
 
 See [CHANGELOG.md](CHANGELOG.md) for the full list.
 
