@@ -59,7 +59,7 @@ oe_yw.2 = { # 郯王之死
         name = oe_yw.2.b
         add_gold = { value = oe_yw_cost_3m multiply = -1 }
         custom_tooltip = oe_yw.2.b.tt
-        hidden_effect = { set_global_variable = { name = oe_yw_grief value = 5 } set_global_variable = { name = oe_yw_pot value = oe_yw_cost_3m } set_variable = { name = oe_yw_job value = 21 } trigger_event_non_silently = oe_yw.20 }
+        hidden_effect = { set_global_variable = { name = oe_yw_grief value = 5 } set_global_variable = { name = oe_yw_pot value = oe_yw_cost_3m } set_variable = { name = oe_yw_job value = 21 } trigger_event_non_silently = oe_yw.29 }
         ai_chance = { base = 30 modifier = { factor = 0 gold < oe_yw_cost_3m } }
     }
     option = {
@@ -120,7 +120,7 @@ oe_yw.4 = { # 进封梁王
         name = oe_yw.4.a
         historical_option = yes
         custom_tooltip = oe_yw.4.a.tt
-        hidden_effect = { c:LNG ?= { oe_yw_set_ev = { amount = 10 months = 60 } } set_variable = { name = oe_yw_job value = 41 } trigger_event_non_silently = oe_yw.20 }
+        hidden_effect = { c:LNG ?= { oe_yw_set_ev = { amount = 10 months = 60 } } set_variable = { name = oe_yw_job value = 41 } trigger_event_non_silently = oe_yw.29 }
         ai_chance = { base = 85 }
     }
     option = {
@@ -210,7 +210,7 @@ oe_yw.7 = { # 沙州兵入蜀
         historical_option = yes
         add_gold = { value = oe_yw_cost_1m multiply = -1 }
         custom_tooltip = oe_yw.7.a.tt
-        hidden_effect = { c:YBN ?= { oe_yw_set_ev = { amount = 5 months = 36 } } set_global_variable = { name = oe_yw_shazhou value = 1 } set_variable = { name = oe_yw_job value = 71 } trigger_event_non_silently = oe_yw.20 }
+        hidden_effect = { c:YBN ?= { oe_yw_set_ev = { amount = 5 months = 36 } } set_global_variable = { name = oe_yw_shazhou value = 1 } set_variable = { name = oe_yw_job value = 71 } trigger_event_non_silently = oe_yw.29 }
         ai_chance = { base = 70 modifier = { factor = 0 gold < oe_yw_cost_1m } }
     }
     option = {
@@ -314,11 +314,80 @@ oe_yw.11 = { # 豳王西徙
     }
 }
 
+# CHI scope (v14.5 Princes 2.0). Unified 10-year / new-ruler Shangdu Kurultai choice event (replaces retired legacy Kurultai/Liang events).
+oe_yw.20 = { # 上都库里台大朝会
+    type = country_event
+    outcome = neutral
+    title = oe_yw.20.t
+    desc = oe_yw.20.d
+    illustration_tags = { 10 = interior 10 = happy }
+    trigger = { tag = CHI oe_yw_yuan_fallen = no }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_yw.20.a
+        historical_option = yes
+        add_gold = { value = oe_yw_cost_3m multiply = -1 } add_country_modifier = { modifier = oe_yw_kurultai_tradition_mod years = 10 mode = replace }
+        custom_tooltip = oe_yw.20.a.tt
+        hidden_effect = { set_global_variable = { name = oe_yw_kurultai_choice value = 1 } oe_yw_change_loyalty_all = { amount = 12 } oe_yw_kurultai_opt_a = yes }
+        ai_chance = { base = 45 modifier = { factor = 0 gold < oe_yw_cost_3m } }
+    }
+    option = {
+        name = oe_yw.20.b
+        add_gold = oe_yw_cost_1m add_country_modifier = { modifier = oe_yw_kurultai_commute_mod years = 10 mode = replace }
+        custom_tooltip = oe_yw.20.b.tt
+        hidden_effect = { set_global_variable = { name = oe_yw_kurultai_choice value = 2 } oe_yw_change_loyalty_all = { amount = 4 } }
+        ai_chance = { base = 35 }
+    }
+    option = {
+        name = oe_yw.20.c
+        add_legitimacy = legitimacy_weak_bonus add_country_modifier = { modifier = oe_yw_kurultai_hanlaw_mod years = 10 mode = replace }
+        custom_tooltip = oe_yw.20.c.tt
+        hidden_effect = { set_global_variable = { name = oe_yw_kurultai_choice value = 3 } oe_yw_change_loyalty_all = { amount = -8 } }
+        ai_chance = { base = 20 }
+    }
+}
+
+# CHI scope (v14.5 Princes 2.0). Low-shi crisis event triggered when oe_y7_shi < 35 and an active prince is estranged (<40).
+oe_yw.21 = { # 东道与豳王索赐危机
+    type = country_event
+    outcome = neutral
+    title = oe_yw.21.t
+    desc = oe_yw.21.d
+    illustration_tags = { 10 = interior 10 = angry }
+    trigger = { tag = CHI oe_yw_yuan_fallen = no }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_yw.21.a
+        add_gold = { value = oe_yw_cost_3m multiply = -1 }
+        custom_tooltip = oe_yw.21.a.tt
+        hidden_effect = { oe_yw_crisis21_opt_a = yes }
+        ai_chance = { base = 50 modifier = { factor = 0 gold < oe_yw_cost_3m } }
+    }
+    option = {
+        name = oe_yw.21.b
+        add_prestige = prestige_mild_penalty add_legitimacy = legitimacy_weak_penalty
+        custom_tooltip = oe_yw.21.b.tt
+        hidden_effect = { oe_yw_crisis21_opt_b = yes }
+        ai_chance = { base = 30 }
+    }
+    option = {
+        name = oe_yw.21.c
+        add_prestige = prestige_weak_bonus add_country_modifier = { modifier = oe_yw_crisis_strict_mod years = 5 mode = replace }
+        custom_tooltip = oe_yw.21.c.tt
+        hidden_effect = { oe_yw_crisis21_opt_c = yes }
+        ai_chance = { base = 20 }
+    }
+}
+
 # Hidden worker, fired from options of oe_yw.2, .4 and .7 (CHI) with the country var oe_yw_job.
-oe_yw.20 = {
+oe_yw.29 = {
     type = country_event
     hidden = yes
-    title = oe_yw.20.t
+    title = oe_yw.29.t
     trigger = { has_variable = oe_yw_job }
     immediate = {
         if = { limit = { var:oe_yw_job = 21 } oe_yw_job_console = yes }
@@ -328,11 +397,11 @@ oe_yw.20 = {
     }
 }
 
-# TEST ONLY. The annual grant now (as in January).
-oe_yw.21 = {
+# TEST ONLY (moved from .21 in v14.5). The annual grant now (as in January).
+oe_yw.28 = {
     type = country_event
     hidden = yes
-    title = oe_yw.21.t
+    title = oe_yw.28.t
     immediate = { if = { limit = { has_global_variable = oe_yw_on } oe_yw_grant = yes debug_log = "oe_yw TEST: grant now" } }
 }
 
@@ -384,7 +453,6 @@ oe_yw.90 = {
     type = country_event
     outcome = neutral
     title = oe_yw.90.t
-    image = "gfx/interface/illustrations/events/oe_ev_yuan_court_envoy.dds"
     desc = oe_yw.90.d
     immediate = { oe_yw_dev_snapshot = yes }
     option = { name = oe_yw.90.a ai_chance = { base = 1 } }

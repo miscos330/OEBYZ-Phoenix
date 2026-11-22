@@ -1,0 +1,97 @@
+﻿# NEW 2026-11-22 v12.2 Stage Integrator: Unified Additive Hooks for Imperial Roads & Colonization 3.0 (0 slots, 0 rules, 0 vanilla overrides).
+
+on_game_start = {
+	on_actions = { oe_v122_game_start_hook }
+}
+
+monthly_country_pulse = {
+	on_actions = {
+		oe_v122_road_monthly_hook
+		oe_v122_col3_quarterly_hook
+	}
+}
+
+yearly_country_pulse = {
+	on_actions = {
+		oe_v122_col3_yearly_hook
+		oe_v122_road_ai_yearly_hook
+	}
+}
+
+on_colonial_charter_finished = {
+	on_actions = { oe_v122_col3_charter_finished_hook }
+}
+
+oe_v122_game_start_hook = {
+	effect = {
+		oe_col3_assign_ai_corridors = yes
+	}
+}
+
+oe_v122_road_monthly_hook = {
+	trigger = {
+		is_ai = no
+		is_rebel_country = no
+		var:oe_road_auto_enabled ?= 1
+		NOT = { oe_road_ogas_active = yes }
+	}
+	effect = {
+		oe_road_monthly_tick = yes
+	}
+}
+
+# Lightweight O(1)-gated annual AI road pulse (major powers >= 20 locs + Yuan frontier provinces YLB/YLY/YGU).
+oe_v122_road_ai_yearly_hook = {
+	trigger = {
+		is_ai = yes
+		is_rebel_country = no
+		at_war = no
+		gold >= 400
+		OR = {
+			num_locations >= 20
+			tag = YLB
+			tag = YLY
+			tag = YGU
+		}
+	}
+	effect = {
+		oe_road_ai_yearly_pulse = yes
+	}
+}
+
+# Quarterly gate inside monthly_country_pulse (EU5 1.4.9 has no native quarterly_country_pulse on_action).
+oe_v122_col3_quarterly_hook = {
+	trigger = {
+		is_rebel_country = no
+		num_locations > 0
+		OR = {
+			current_month = 1
+			current_month = 4
+			current_month = 7
+			current_month = 10
+		}
+	}
+	effect = {
+		oe_col3_quarterly_tick = yes
+	}
+}
+
+oe_v122_col3_yearly_hook = {
+	trigger = {
+		is_rebel_country = no
+		num_locations > 0
+	}
+	effect = {
+		oe_col3_yearly_tick = yes
+	}
+}
+
+oe_v122_col3_charter_finished_hook = {
+	trigger = {
+		is_rebel_country = no
+		num_locations > 0
+	}
+	effect = {
+		oe_col3_on_charter_finished = yes
+	}
+}

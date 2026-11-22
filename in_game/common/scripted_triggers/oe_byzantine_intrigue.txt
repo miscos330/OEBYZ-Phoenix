@@ -20,6 +20,9 @@ oe_bi_any_house_above_400 = { OR = {
 } }
 oe_bi_start_ready = {
     tag = BYZ
+    NOT = { has_variable = oe_ely_is_elysia }
+    NOT = { has_variable = oe_ely_voyager }
+    NOT = { has_global_variable = oe_ely_settled }
     # NEW 2026-11-18 1341 civil war (gen_civil_war_1341.py): not while the 1341 civil war runs
     NOT = { has_variable = oe_cw_active }
     # NEW 2026-11-18 round 6 B1 (gen_civil_war_1352.py): not while the second civil war runs
@@ -36,8 +39,13 @@ oe_bi_start_ready = {
     international_organization:oe_byz_empire_pillars = { oe_bi_rival_above_300 = yes }
 }
 oe_bi_end_ready = {
-    stability > 30 legitimacy > 30
-    international_organization:oe_byz_empire_pillars = { NOT = { oe_bi_rival_at_least_300 = yes } }
+    OR = {
+        has_variable = oe_ely_is_elysia
+        AND = {
+            stability > 30 legitimacy > 30
+            international_organization:oe_byz_empire_pillars = { NOT = { oe_bi_rival_at_least_300 = yes } }
+        }
+    }
 }
 oe_bi_purge_ready = {
     oe_bi_active = yes

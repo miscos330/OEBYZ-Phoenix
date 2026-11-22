@@ -584,8 +584,10 @@ oe_ely.13 = {
 	option = {
 		name = oe_ely.13.a
 		custom_tooltip = oe_ely.13.a.tt
-		set_variable = { name = oe_ely_capital_choice value = 1 }
-		oe_ely_complete_landfall = yes
+		hidden_effect = {
+			set_variable = { name = oe_ely_capital_choice value = 1 }
+			trigger_event_silently = oe_ely.130
+		}
 		ai_chance = { base = 60 }
 	}
 
@@ -593,9 +595,38 @@ oe_ely.13 = {
 	option = {
 		name = oe_ely.13.b
 		custom_tooltip = oe_ely.13.b.tt
-		set_variable = { name = oe_ely_capital_choice value = 2 }
-		oe_ely_complete_landfall = yes
+		hidden_effect = {
+			set_variable = { name = oe_ely_capital_choice value = 2 }
+			trigger_event_silently = oe_ely.130
+		}
 		ai_chance = { base = 40 }
+	}
+}
+
+# Event 130: Hidden instant landfall shell-swap worker (keeps oe_ely.13 option preview dry-run at 0 errors).
+oe_ely.130 = {
+	type = country_event
+	hidden = yes
+	interface_lock = no
+	title = empty_text
+	outcome = neutral
+
+	trigger = {
+		is_rebel_country = no
+		NOT = { has_global_variable = oe_ely_settled }
+		oe_ely_chesapeake_claimable = yes
+	}
+
+	immediate = {
+		oe_ely_complete_landfall_setup = yes
+		if = {
+			limit = { exists = scope:oe_ely_new_realm }
+			if = {
+				limit = { is_ai = no }
+				change_player = scope:oe_ely_new_realm
+			}
+			oe_ely_dissolve_old_host = yes
+		}
 	}
 }
 

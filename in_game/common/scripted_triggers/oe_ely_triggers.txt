@@ -36,20 +36,24 @@ oe_ely_rule_is_exile_only = {
 # Host, Crisis, Faith & Bridgehead Triggers
 # ==============================================================================
 
-# Country scope. Valid Roman / Byzantine successor host (non-rebel BYZ, TRE, or FEO).
+# Country scope. Valid Roman / Byzantine successor host (non-rebel BYZ, TRE, FEO, or ELR).
 oe_ely_eligible_tag = {
 	is_rebel_country = no
 	OR = {
 		AND = { tag = BYZ is_rebel_country = no }
 		tag = TRE
 		tag = FEO
+		tag = ELR
+		has_or_had_tag = ELR
 	}
 }
 
-# Country scope. Active Nova Elysia state (compatible with both oe_ely_is_elysia & oe_ely_is_nova_elysia).
+# Country scope. Active Nova Elysia state (compatible with ELR tag & oe_ely_is_elysia / oe_ely_is_nova_elysia).
 oe_ely_is_elysian_host = {
 	is_rebel_country = no
 	OR = {
+		tag = ELR
+		has_or_had_tag = ELR
 		has_variable = oe_ely_is_elysia
 		has_variable = oe_ely_is_nova_elysia
 	}
@@ -71,10 +75,12 @@ oe_ely_constantinople_lost = {
 	}
 }
 
-# Country scope. Exile-Only mode crisis gate: never interferes with a strong healthy Byzantium.
+# Country scope. Exile-Only mode crisis gate: never interferes with a strong healthy Byzantium or settled ELR.
 oe_ely_old_world_crisis = {
 	is_ai = no
 	oe_ely_eligible_tag = yes
+	NOT = { tag = ELR }
+	NOT = { has_or_had_tag = ELR }
 	NOT = { has_global_variable = oe_ely_settled }
 	NOT = { has_global_variable = oe_ely_odyssey_launched }
 	NOT = { has_global_variable = oe_ely_aborted }

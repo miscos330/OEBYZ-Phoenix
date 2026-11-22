@@ -89,14 +89,13 @@ oe_msn_byz_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_byz_05_aegean_anatolia_req_tt
-				owns = location:iznik owns = location:smyrna
+				OR = { owns = location:iznik any_subject = { owns = location:iznik } } OR = { owns = location:smyrna any_subject = { owns = location:smyrna } } stability >= 10
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:iznik } location:iznik = { add_core = root } }
-			if = { limit = { owns = location:smyrna } location:smyrna = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			add_stability = stability_mild_bonus
+			culture = { add_cultural_tradition = 6 }
 		}
 	}
 	oe_msn_byz_06_levant_antioch = {
@@ -105,14 +104,14 @@ oe_msn_byz_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_byz_06_levant_antioch_req_tt
-				owns = location:antioch owns = location:jerusalem
+				OR = { AND = { OR = { owns = location:antioch any_subject = { owns = location:antioch } } OR = { owns = location:jerusalem any_subject = { owns = location:jerusalem } } } AND = { num_subjects >= 3 gold >= 350 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:antioch } location:antioch = { add_core = root } }
-			if = { limit = { owns = location:jerusalem } location:jerusalem = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			add_religious_influence_if_valid = { VALUE = 15 }
+			culture = { add_cultural_tradition = 6 }
+			add_diplomats = diplomats_mild_bonus
 		}
 	}
 	oe_msn_byz_07_nile_granary = {
@@ -121,14 +120,13 @@ oe_msn_byz_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_byz_07_nile_granary_req_tt
-				owns = location:alexandria owns = location:cairo
+				OR = { AND = { OR = { owns = location:alexandria any_subject = { owns = location:alexandria } } OR = { owns = location:cairo any_subject = { owns = location:cairo } } } AND = { gold >= 600 num_locations >= 30 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:alexandria } location:alexandria = { add_core = root } }
-			if = { limit = { owns = location:cairo } location:cairo = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			add_gold = 200
+			add_country_modifier = { modifier = oe_msn2_byz_granary_mod years = 20 mode = replace }
 		}
 	}
 	oe_msn_byz_08_eternal_rome = {
@@ -137,14 +135,13 @@ oe_msn_byz_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_byz_08_eternal_rome_req_tt
-				owns = location:rome owns = location:naples
+				OR = { AND = { OR = { owns = location:rome any_subject = { owns = location:rome } } OR = { owns = location:naples any_subject = { owns = location:naples } } } AND = { stability >= 25 current_age_or_later = { age = age_4_reformation } num_locations >= 60 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:rome } location:rome = { add_core = root } }
-			if = { limit = { owns = location:naples } location:naples = { add_core = root } }
 			add_country_modifier = { modifier = oe_msn_byz_m2 years = 20 mode = replace }
+			add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_byz_09_golden_horn_clearing = {

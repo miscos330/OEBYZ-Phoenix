@@ -63,14 +63,14 @@ oe_y7.2 = { # 征调探马赤与五投下
     }
     option = {
         name = oe_y7.2.c
-        trigger = { country_exists = c:YLU c:YLU = { is_subject_of = c:CHI oe_yw_prince_active = yes var:oe_yw_loy >= 50 } }
+        trigger = { country_exists = c:YLU c:YLU = { is_subject_of = c:CHI oe_yw_prince_active = yes var:oe_yw_loy >= 70 } }
         custom_tooltip = oe_y7.2.c.tt
         hidden_effect = { add_country_modifier = { modifier = oe_y7_touxia_levy years = 3 mode = replace } c:YLU ?= { oe_yw_change_loyalty = { amount = -5 } } oe_y7_add_bonus = { amount = 4 } set_variable = { name = oe_y7_job value = 4 } trigger_event_non_silently = oe_y7.20 }
         ai_chance = { base = 15 }
     }
 }
 
-# CHI scope. Window S+6..S+14, rolled only while the momentum is below 55 and Toqto'a is in charge (dropped otherwise). Immediate: every army's morale -40%, momentum pool -8.
+# CHI scope. Window S+6..S+14, rolled only while the momentum is below 55 and Toqto'a is in charge (dropped otherwise). Immediate: every army's morale -15%, momentum pool -8.
 oe_y7.3 = { # 沙河夜惊
     type = country_event
     outcome = neutral
@@ -80,7 +80,7 @@ oe_y7.3 = { # 沙河夜惊
     trigger = { tag = CHI oe_y7_can_3 = yes }
     immediate = {
         event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
-        every_unit = { limit = { is_navy = no } damage_unit_morale_percent = 0.4 } oe_y7_add_bonus = { amount = -8 }
+        every_unit = { limit = { is_navy = no } damage_unit_morale_percent = 0.15 } oe_y7_add_bonus = { amount = -8 }
     }
     option = {
         name = oe_y7.3.a
@@ -351,7 +351,7 @@ oe_y7.11 = { # 高邮之役：总制诸王诸省军
     }
 }
 
-# CHI scope. Due 3 months after .11 a, or at S+48 after .11 b; Toqto'a in charge (dropped otherwise). AI weight of a = oe_y7_dismiss_w (35-90, stored in CHI var oe_y7_dw when the event is sent), b = 100 - a.
+# CHI scope. Due 3 months after .11 a, or at S+48 after .11 b; Toqto'a in charge (dropped otherwise). AI weight of a = oe_y7_dismiss_w (25-75, stored in CHI var oe_y7_dw when the event is sent), b = 100 - a.
 oe_y7.12 = { # 罢相诏
     type = country_event
     outcome = neutral
@@ -361,21 +361,21 @@ oe_y7.12 = { # 罢相诏
     trigger = { tag = CHI oe_y7_can_12 = yes }
     immediate = {
         event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
-        if = { limit = { has_global_variable = oe_y7_opp2 country_exists = global_var:oe_y7_opp2 } global_var:oe_y7_opp2 = { save_scope_as = oe_y7_o } }
+        if = { limit = { has_global_variable = oe_y7_opp2 country_exists = global_var:oe_y7_opp2 } global_var:oe_y7_opp2 = { save_scope_as = oe_y7_o } } if = { limit = { has_global_variable = oe_y7_dev_force_12 } remove_global_variable = oe_y7_dev_force_12 } if = { limit = { NOT = { has_variable = oe_y7_dw } } set_variable = { name = oe_y7_dw value = oe_y7_dismiss_w } }
     }
     option = {
         name = oe_y7.12.a
         historical_option = yes
         custom_tooltip = oe_y7.12.a.tt
         hidden_effect = { set_variable = { name = oe_y7_job value = 1 } trigger_event_non_silently = oe_y7.20 }
-        ai_chance = { base = 35 modifier = { add = 5 var:oe_y7_dw >= 40 } modifier = { add = 5 var:oe_y7_dw >= 45 } modifier = { add = 5 var:oe_y7_dw >= 50 } modifier = { add = 5 var:oe_y7_dw >= 55 } modifier = { add = 5 var:oe_y7_dw >= 60 } modifier = { add = 5 var:oe_y7_dw >= 65 } modifier = { add = 5 var:oe_y7_dw >= 70 } modifier = { add = 5 var:oe_y7_dw >= 75 } modifier = { add = 5 var:oe_y7_dw >= 80 } modifier = { add = 5 var:oe_y7_dw >= 85 } modifier = { add = 5 var:oe_y7_dw >= 90 } }
+        ai_chance = { base = 50 modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw >= 55 } modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw >= 60 } modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw >= 65 } modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw >= 70 } modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw >= 75 } modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw < 50 } modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw < 45 } modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw < 40 } modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw < 35 } modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw < 30 } }
     }
     option = {
         name = oe_y7.12.b
         add_stability = stability_mild_penalty add_legitimacy = legitimacy_mild_penalty
         custom_tooltip = oe_y7.12.b.tt
         hidden_effect = { set_variable = { name = oe_y7_job value = 13 } trigger_event_non_silently = oe_y7.20 }
-        ai_chance = { base = 65 modifier = { add = -5 var:oe_y7_dw >= 40 } modifier = { add = -5 var:oe_y7_dw >= 45 } modifier = { add = -5 var:oe_y7_dw >= 50 } modifier = { add = -5 var:oe_y7_dw >= 55 } modifier = { add = -5 var:oe_y7_dw >= 60 } modifier = { add = -5 var:oe_y7_dw >= 65 } modifier = { add = -5 var:oe_y7_dw >= 70 } modifier = { add = -5 var:oe_y7_dw >= 75 } modifier = { add = -5 var:oe_y7_dw >= 80 } modifier = { add = -5 var:oe_y7_dw >= 85 } modifier = { add = -5 var:oe_y7_dw >= 90 } }
+        ai_chance = { base = 50 modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw >= 55 } modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw >= 60 } modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw >= 65 } modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw >= 70 } modifier = { add = -5 has_variable = oe_y7_dw var:oe_y7_dw >= 75 } modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw < 50 } modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw < 45 } modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw < 40 } modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw < 35 } modifier = { add = 5 has_variable = oe_y7_dw var:oe_y7_dw < 30 } }
     }
 }
 
@@ -831,6 +831,114 @@ oe_y7.32 = { # 大都的结局
     }
 }
 
+# CHI scope (v14.5 Great Yuan 3.0). Garrison Prince Office choice for Prince of Zhennan (Yangzhou); sets global oe_y7_pr_role_1 (1/2/3).
+oe_y7.33 = { # 扬州镇南王行府之议
+    type = country_event
+    outcome = neutral
+    title = oe_y7.33.t
+    desc = oe_y7.33.d
+    illustration_tags = { 10 = interior 10 = armed }
+    trigger = { tag = CHI oe_y7_can_33 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_y7.33.a
+        historical_option = yes
+        add_gold = { value = oe_y7_cost_3m multiply = -1 } add_estate_satisfaction = { type = estate_type:nobles_estate value = 0.05 }
+        custom_tooltip = oe_y7.33.a.tt
+        hidden_effect = { set_global_variable = { name = oe_y7_pr_role_1 value = 1 } set_variable = { name = oe_y7_job value = 40 } trigger_event_non_silently = oe_y7.20 }
+        ai_chance = { base = 60 modifier = { factor = 0 gold < oe_y7_cost_3m } }
+    }
+    option = {
+        name = oe_y7.33.b
+        add_legitimacy = legitimacy_weak_bonus
+        custom_tooltip = oe_y7.33.b.tt
+        hidden_effect = { set_global_variable = { name = oe_y7_pr_role_1 value = 2 } set_variable = { name = oe_y7_job value = 43 } trigger_event_non_silently = oe_y7.20 }
+        ai_chance = { base = 25 }
+    }
+    option = {
+        name = oe_y7.33.c
+        trigger = { OR = { global_var:oe_y7_phase ?= 3 is_situation_active = situation:oe_sit_yuan_restoration NOT = { is_situation_active = situation:red_turban_rebellions } has_global_variable = oe_yr_opened } }
+        add_prestige = prestige_mild_bonus add_country_modifier = { modifier = oe_y7_prince_overseas_marque years = 20 mode = replace }
+        custom_tooltip = oe_y7.33.c.tt
+        hidden_effect = { set_global_variable = { name = oe_y7_pr_role_1 value = 3 } oe_y7_add_bonus = { amount = 5 } }
+        ai_chance = { base = 45 }
+    }
+}
+
+# CHI scope (v14.5 Great Yuan 3.0). Garrison Prince Office choice for Prince of Weishun (Wuchang); sets global oe_y7_pr_role_2 (1/2/3).
+oe_y7.34 = { # 武昌威顺王行府之议
+    type = country_event
+    outcome = neutral
+    title = oe_y7.34.t
+    desc = oe_y7.34.d
+    illustration_tags = { 10 = interior 10 = armed }
+    trigger = { tag = CHI oe_y7_can_34 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_y7.34.a
+        historical_option = yes
+        add_gold = { value = oe_y7_cost_3m multiply = -1 } add_estate_satisfaction = { type = estate_type:nobles_estate value = 0.05 }
+        custom_tooltip = oe_y7.34.a.tt
+        hidden_effect = { set_global_variable = { name = oe_y7_pr_role_2 value = 1 } set_variable = { name = oe_y7_job value = 41 } trigger_event_non_silently = oe_y7.20 }
+        ai_chance = { base = 60 modifier = { factor = 0 gold < oe_y7_cost_3m } }
+    }
+    option = {
+        name = oe_y7.34.b
+        add_legitimacy = legitimacy_weak_bonus
+        custom_tooltip = oe_y7.34.b.tt
+        hidden_effect = { set_global_variable = { name = oe_y7_pr_role_2 value = 2 } set_variable = { name = oe_y7_job value = 44 } trigger_event_non_silently = oe_y7.20 }
+        ai_chance = { base = 25 }
+    }
+    option = {
+        name = oe_y7.34.c
+        trigger = { OR = { global_var:oe_y7_phase ?= 3 is_situation_active = situation:oe_sit_yuan_restoration NOT = { is_situation_active = situation:red_turban_rebellions } has_global_variable = oe_yr_opened } }
+        add_prestige = prestige_mild_bonus add_country_modifier = { modifier = oe_y7_prince_overseas_marque years = 20 mode = replace }
+        custom_tooltip = oe_y7.34.c.tt
+        hidden_effect = { set_global_variable = { name = oe_y7_pr_role_2 value = 3 } oe_y7_add_bonus = { amount = 5 } }
+        ai_chance = { base = 45 }
+    }
+}
+
+# CHI scope (v14.5 Great Yuan 3.0). Garrison Prince Office choice for Prince of Xuanrang (Luzhou); sets global oe_y7_pr_role_3 (1/2/3).
+oe_y7.35 = { # 庐州宣让王行府之议
+    type = country_event
+    outcome = neutral
+    title = oe_y7.35.t
+    desc = oe_y7.35.d
+    illustration_tags = { 10 = interior 10 = armed }
+    trigger = { tag = CHI oe_y7_can_35 = yes }
+    immediate = {
+        event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:nobles_estate }
+    }
+    option = {
+        name = oe_y7.35.a
+        historical_option = yes
+        add_gold = { value = oe_y7_cost_3m multiply = -1 } add_estate_satisfaction = { type = estate_type:nobles_estate value = 0.05 }
+        custom_tooltip = oe_y7.35.a.tt
+        hidden_effect = { set_global_variable = { name = oe_y7_pr_role_3 value = 1 } set_variable = { name = oe_y7_job value = 42 } trigger_event_non_silently = oe_y7.20 }
+        ai_chance = { base = 60 modifier = { factor = 0 gold < oe_y7_cost_3m } }
+    }
+    option = {
+        name = oe_y7.35.b
+        add_legitimacy = legitimacy_weak_bonus
+        custom_tooltip = oe_y7.35.b.tt
+        hidden_effect = { set_global_variable = { name = oe_y7_pr_role_3 value = 2 } set_variable = { name = oe_y7_job value = 45 } trigger_event_non_silently = oe_y7.20 }
+        ai_chance = { base = 25 }
+    }
+    option = {
+        name = oe_y7.35.c
+        trigger = { OR = { global_var:oe_y7_phase ?= 3 is_situation_active = situation:oe_sit_yuan_restoration NOT = { is_situation_active = situation:red_turban_rebellions } has_global_variable = oe_yr_opened } }
+        add_prestige = prestige_mild_bonus add_country_modifier = { modifier = oe_y7_prince_overseas_marque years = 20 mode = replace }
+        custom_tooltip = oe_y7.35.c.tt
+        hidden_effect = { set_global_variable = { name = oe_y7_pr_role_3 value = 3 } oe_y7_add_bonus = { amount = 5 } }
+        ai_chance = { base = 45 }
+    }
+}
+
 # Hidden worker, fired from options (CHI) with the country var oe_y7_job: heavy work stays out of option previews.
 oe_y7.20 = {
     type = country_event
@@ -877,6 +985,12 @@ oe_y7.20 = {
         else_if = { limit = { var:oe_y7_job = 37 } oe_y7_job_d31b = yes }
         else_if = { limit = { var:oe_y7_job = 38 } oe_y7_job_d32 = yes }
         else_if = { limit = { var:oe_y7_job = 39 } oe_y7_job_d32b = yes }
+        else_if = { limit = { var:oe_y7_job = 40 } oe_y7_job_pr_office_1 = yes }
+        else_if = { limit = { var:oe_y7_job = 41 } oe_y7_job_pr_office_2 = yes }
+        else_if = { limit = { var:oe_y7_job = 42 } oe_y7_job_pr_office_3 = yes }
+        else_if = { limit = { var:oe_y7_job = 43 } oe_y7_job_pr_recall_1 = yes }
+        else_if = { limit = { var:oe_y7_job = 44 } oe_y7_job_pr_recall_2 = yes }
+        else_if = { limit = { var:oe_y7_job = 45 } oe_y7_job_pr_recall_3 = yes }
         remove_variable = oe_y7_job
     }
 }
@@ -974,7 +1088,6 @@ oe_y7.90 = {
     type = country_event
     outcome = neutral
     title = oe_y7.90.t
-    image = "gfx/interface/illustrations/events/oe_ev_yuan_court_envoy.dds"
     desc = oe_y7.90.d
     immediate = { oe_y7_dev_snapshot = yes }
     option = { name = oe_y7.90.a ai_chance = { base = 1 } }

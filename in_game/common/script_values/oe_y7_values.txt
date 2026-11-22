@@ -64,12 +64,35 @@ oe_y7_hi_18 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } va
 oe_y7_left_18 = { value = oe_y7_hi_18 add = 1 subtract = global_var:oe_y7_m min = 1 }
 oe_y7_ch_18 = { value = 100 divide = oe_y7_left_18 }
 oe_y7_cut_18 = { value = oe_y7_hi_18 add = 3 }
+oe_y7_lo_33 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 4 } }
+oe_y7_hi_33 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 14 } }
+oe_y7_left_33 = { value = oe_y7_hi_33 add = 1 subtract = global_var:oe_y7_m min = 1 }
+oe_y7_ch_33 = { value = 100 divide = oe_y7_left_33 }
+oe_y7_cut_33 = { value = oe_y7_hi_33 add = 3 }
+oe_y7_lo_34 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 6 } }
+oe_y7_hi_34 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 16 } }
+oe_y7_left_34 = { value = oe_y7_hi_34 add = 1 subtract = global_var:oe_y7_m min = 1 }
+oe_y7_ch_34 = { value = 100 divide = oe_y7_left_34 }
+oe_y7_cut_34 = { value = oe_y7_hi_34 add = 3 }
+oe_y7_lo_35 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 8 } }
+oe_y7_hi_35 = { value = 9999 if = { limit = { has_global_variable = oe_y7_s } value = global_var:oe_y7_s add = 18 } }
+oe_y7_left_35 = { value = oe_y7_hi_35 add = 1 subtract = global_var:oe_y7_m min = 1 }
+oe_y7_ch_35 = { value = 100 divide = oe_y7_left_35 }
+oe_y7_cut_35 = { value = oe_y7_hi_35 add = 3 }
 # Any scope. The intensity of the Mongol-Han strife (vanilla CHI var chi_rtr_modifier_intensity, 1 when unset), 0.5-2.
 oe_y7_i_value = { value = 1 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = chi_rtr_modifier_intensity } } value = c:CHI.var:chi_rtr_modifier_intensity } min = 0.5 max = 2 }
-# Any scope. Size of the counter-modifier oe_y7_court_command: shares (global var oe_y7_cmd) x intensity x Y7_SCALE (1).
+# Any scope. Size of the counter-modifier oe_y7_court_command: shares (global var oe_y7_cmd) x Y7_SCALE (1).
+# v14.5: decoupled from chi_rtr_modifier_intensity so oe_yr restoration reforms never reduce court_command.
 oe_y7_cmd_size = {
     value = 0
-    if = { limit = { has_global_variable = oe_y7_cmd } value = global_var:oe_y7_cmd multiply = oe_y7_i_value multiply = 1 }
+    if = { limit = { has_global_variable = oe_y7_cmd } value = global_var:oe_y7_cmd multiply = 1 }
+}
+# CHI scope (v14.5 Action #2): 4 months of trade & tax income, clamped [150, 500].
+oe_y7_chao_payout = {
+    value = monthly_income_trade_and_tax
+    multiply = 4
+    min = 150
+    max = 500
 }
 # Any scope. Size of a prince's seat modifier: 1, or 2 after .1 b.
 oe_y7_seat_size = { value = 1 if = { limit = { global_var:oe_y7_seat2 ?= 1 } value = 2 } }
@@ -117,19 +140,19 @@ oe_y7_t_value = {
 # Any scope. Weight in percent that the edict against Toqto'a is issued (the AI's choice at .12; the roll at .13 after a
 # failed campaign adds 20): design .12.
 oe_y7_dismiss_w = {
-    value = 70
-    if = { limit = { global_var:oe_y7_court >= 70 } add = -15 }
-    else_if = { limit = { global_var:oe_y7_court >= 55 } add = -5 }
-    else_if = { limit = { global_var:oe_y7_court < 40 } add = 15 }
-    if = { limit = { global_var:oe_y7_shi >= 65 } add = -10 }
-    else_if = { limit = { global_var:oe_y7_shi < 40 } add = 10 }
+    value = 55
+    if = { limit = { has_global_variable = oe_y7_court global_var:oe_y7_court >= 70 } add = -15 }
+    else_if = { limit = { has_global_variable = oe_y7_court global_var:oe_y7_court >= 55 } add = -5 }
+    else_if = { limit = { has_global_variable = oe_y7_court global_var:oe_y7_court < 40 } add = 15 }
+    if = { limit = { has_global_variable = oe_y7_shi global_var:oe_y7_shi >= 65 } add = -10 }
+    else_if = { limit = { has_global_variable = oe_y7_shi global_var:oe_y7_shi < 40 } add = 10 }
     if = { limit = { global_var:oe_y7_camp ?= 2 global_var:oe_y7_camp_ok ?= 1 } add = -20 }
     if = { limit = { has_global_variable = oe_y7_esen } add = 5 }
     if = { limit = { has_global_variable = oe_y7_ki } add = 5 }
     if = { limit = { has_global_variable = oe_y7_slow } add = 10 }
     if = { limit = { has_global_variable = oe_y7_reroll } add = 20 }
-    min = 35
-    max = 90
+    min = 25
+    max = 75
 }
 # Any scope. Y1's event counter as this line last saw it (0 = never).
 oe_y7_y1n_seen = { value = 0 if = { limit = { has_global_variable = oe_y7_y1n } value = global_var:oe_y7_y1n } }

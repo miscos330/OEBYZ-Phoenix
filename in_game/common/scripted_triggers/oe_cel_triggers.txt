@@ -140,6 +140,79 @@ oe_cel_is_protected_yuan_province = {
 	}
 }
 
+# Country or any scope. Rule #18 wrapper for Celestial 2.0 AI activation.
+# Default ON unless Rule #18 = Off (overridable via Dev Page 88 global_var:oe_v120_rule_override).
+oe_cel_ai_enabled = {
+	NOT = { global_var:oe_v120_rule_override ?= 3 }
+	OR = {
+		global_var:oe_v120_rule_override ?= 1
+		global_var:oe_v120_rule_override ?= 2
+		NOT = { oe_rule_is_world_concert_off = yes }
+	}
+}
+
+# Location scope. Chinese heartland regions where AI must never enfeoff princely fiefs (anti-bordergore lock).
+oe_cel_is_chinese_heartland = {
+	OR = {
+		region = region:north_china_region
+		region = region:east_china_region
+		region = region:south_china_region
+	}
+}
+
+# Location scope. Historical southwestern and Tibetan gaituguiliu belt for Qing/Ming AI targeting.
+oe_cel_is_gtgl_core_region = {
+	OR = {
+		region = region:west_china_region
+		region = region:south_china_region
+		region = region:tibet_region
+	}
+}
+
+# Country scope. True when root or any subject owns Palembang or Malacca (Nanyang Strait hub).
+oe_cel_controls_nanyang_hub = {
+	OR = {
+		owns = location:palembang
+		owns = location:malacca
+		any_subject = {
+			OR = {
+				owns = location:palembang
+				owns = location:malacca
+			}
+		}
+	}
+}
+
+# Country scope. True when root or any subject owns Hami, Turpan, or Kashgar (Western Regions Silk Road hub).
+oe_cel_controls_western_regions_hub = {
+	OR = {
+		owns = location:hami
+		owns = location:turpan
+		owns = location:kashgar
+		any_subject = {
+			OR = {
+				owns = location:hami
+				owns = location:turpan
+				owns = location:kashgar
+			}
+		}
+	}
+}
+
+# Country scope. True when root or any subject owns Nurgan or Ningguta (Northeast / Amur frontier hub).
+oe_cel_controls_nurgan_hub = {
+	OR = {
+		owns = location:nurgan
+		owns = location:ningguta
+		any_subject = {
+			OR = {
+				owns = location:nurgan
+				owns = location:ningguta
+			}
+		}
+	}
+}
+
 # ==============================================================================
 # Zone triggers (blueprint 1.2), location scope
 # ==============================================================================

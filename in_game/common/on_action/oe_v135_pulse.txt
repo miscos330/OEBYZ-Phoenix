@@ -1,0 +1,66 @@
+﻿# v14.5: Zero-slot additive on_action hooks for Masterpieces, Zero-DLC World Heritage, 12-Nation Day-1 Briefings & Shinto IO Auto-Enrollment.
+
+on_game_started_after_lobby = {
+	on_actions = { oe_v135_on_start }
+}
+
+monthly_country_pulse = {
+	on_actions = { oe_v135_monthly_guard }
+}
+
+yearly_country_pulse = {
+	on_actions = { oe_v135_yearly_pulse }
+}
+
+oe_v135_on_start = {
+	effect = {
+		every_country = {
+			limit = {
+				is_ai = no
+				is_rebel_country = no
+			}
+			oe_scn_dispatch_day1_briefing = yes
+		}
+	}
+}
+
+oe_v135_monthly_guard = {
+	trigger = {
+		is_rebel_country = no
+		num_locations > 0
+	}
+	effect = {
+		# 1) Day-1 briefing fallback (1337.4-1337.5 only, idempotent via oe_scn_day1_dispatched)
+		if = {
+			limit = {
+				is_ai = no
+				current_year = 1337
+				current_month <= 5
+				NOT = { has_variable = oe_scn_day1_dispatched }
+			}
+			oe_scn_dispatch_day1_briefing = yes
+		}
+		# 2) Shinto IO auto-enrollment for any Shinto nation not yet in international_organization:shinto
+		if = {
+			limit = {
+				religion = religion:shinto
+				exists = international_organization:shinto
+				NOT = { is_member_of_international_organization = international_organization:shinto }
+			}
+			international_organization:shinto = {
+				add_country_to_international_organization = root
+			}
+		}
+	}
+}
+
+oe_v135_yearly_pulse = {
+	trigger = {
+		is_rebel_country = no
+		num_locations > 0
+	}
+	effect = {
+		oe_mst_yearly_masterpiece_check = yes
+		oe_mst_yearly_heritage_check = yes
+	}
+}

@@ -175,13 +175,14 @@ oe_cel_cool_revocation_tension = {
 	}
 }
 
-# Country scope (the throne). Counts the three subject types and the zones covered by grand protectorates.
+# Country scope (the throne). Counts the three subject types, commuted touxia, and zones covered by grand protectorates.
 # Only walks the throne's own subjects (no map scan).
 oe_cel_sync_duhu_count = {
 	set_variable = { name = oe_cel_fanwang_count value = 0 }
 	set_variable = { name = oe_cel_xuanweisi_count value = 0 }
 	set_variable = { name = oe_cel_duhu_count value = 0 }
 	set_variable = { name = oe_cel_global_continents value = 0 }
+	set_variable = { name = oe_cel_touxia_commuted_count value = 0 }
 	every_subject = {
 		limit = { is_subject_type = oe_cel_fanwang }
 		prev = { change_variable = { name = oe_cel_fanwang_count add = 1 } }
@@ -193,6 +194,10 @@ oe_cel_sync_duhu_count = {
 	every_subject = {
 		limit = { is_subject_type = oe_cel_grand_duhu }
 		prev = { change_variable = { name = oe_cel_duhu_count add = 1 } }
+	}
+	every_subject = {
+		limit = { has_variable = oe_cel_touxia_commuted }
+		prev = { change_variable = { name = oe_cel_touxia_commuted_count add = 1 } }
 	}
 	if = {
 		limit = {
@@ -477,8 +482,54 @@ oe_cel_dev_make_subjects = {
 	}
 }
 
-# Dev page 83: readout.
+# Dev page 83 & 87: Celestial 2.0 live readout (oe_cel.90).
 oe_cel_dev_readout = {
 	oe_cel_sync_duhu_count = yes
 	trigger_event_non_silently = oe_cel.90
+}
+
+# Dev page 87 (v120_cel2_touxia_ev): test Yuan Touxia dual-path event (oe_cel.25).
+oe_cel_dev_touxia_provincialize_test = {
+	if = {
+		limit = { has_variable = oe_cel_touxia_prov_target }
+		remove_variable = oe_cel_touxia_prov_target
+	}
+	random_subject = {
+		limit = {
+			is_subject_type = oe_yw_touxia
+			NOT = { has_variable = oe_cel_touxia_commuted }
+		}
+		save_scope_as = oe_cel_dev_touxia_pick
+	}
+	if = {
+		limit = { exists = scope:oe_cel_dev_touxia_pick }
+		set_variable = { name = oe_cel_touxia_prov_target value = scope:oe_cel_dev_touxia_pick }
+	}
+	set_variable = { name = oe_cel_dev_ev25_unlock value = 1 }
+	trigger_event_non_silently = oe_cel.25
+}
+
+# Dev page 87 (v120_cel2_nanyang_suite): fire Nanyang, Treasure Fleet, Western Regions, Nurgan & Recall Prince events (.26-.30).
+oe_cel_dev_nanyang_suite = {
+	if = {
+		limit = { has_variable = oe_cel_ev30_cd }
+		remove_variable = oe_cel_ev30_cd
+	}
+	trigger_event_non_silently = oe_cel.26
+	trigger_event_non_silently = oe_cel.27
+	trigger_event_non_silently = oe_cel.28
+	trigger_event_non_silently = oe_cel.29
+	trigger_event_non_silently = oe_cel.30
+}
+
+# Dev page 87: toggle Celestial 2.0 AI rule-override test state (off=3 vs default on) and open readout.
+oe_cel_dev_toggle_ai_override = {
+	if = {
+		limit = { global_var:oe_v120_rule_override ?= 3 }
+		remove_global_variable = oe_v120_rule_override
+	}
+	else = {
+		set_global_variable = { name = oe_v120_rule_override value = 3 }
+	}
+	oe_cel_dev_readout = yes
 }

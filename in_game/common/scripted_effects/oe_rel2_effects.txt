@@ -255,10 +255,92 @@ oe_rel2_eval_eastern_caliphate_hellenic = {
 			}
 		}
 	}
+
+	# Axis 5d (v12.0 Fix-2): Imperial Millet Autonomous Courts Charter (oe_rel2.10, 1520+)
+	location:constantinople = {
+		if = {
+			limit = { has_owner = yes }
+			owner = {
+				if = {
+					limit = {
+						is_ai = no
+						is_rebel_country = no
+						current_year >= 1520
+						NOT = { has_variable = oe_rel2_ev10_done }
+						OR = {
+							has_variable = oe_rel2_ev8_done
+							oe_rel2_is_islamic_tradition = yes
+						}
+					}
+					set_variable = { name = oe_rel2_ev10_done value = 1 }
+					trigger_event_non_silently = oe_rel2.10
+				}
+			}
+		}
+	}
+	location:cairo = {
+		if = {
+			limit = { has_owner = yes }
+			owner = {
+				if = {
+					limit = {
+						is_ai = no
+						is_rebel_country = no
+						current_year >= 1520
+						NOT = { has_variable = oe_rel2_ev10_done }
+						OR = {
+							has_variable = oe_rel2_ev8_done
+							oe_rel2_is_islamic_tradition = yes
+						}
+					}
+					set_variable = { name = oe_rel2_ev10_done value = 1 }
+					trigger_event_non_silently = oe_rel2.10
+				}
+			}
+		}
+	}
+
+	# Axis 5e (v12.0 Fix-2): Eurasian Republic of Letters & Cross-Faith Academies (oe_rel2.13, 1600+)
+	location:constantinople = {
+		if = {
+			limit = { has_owner = yes }
+			owner = {
+				if = {
+					limit = {
+						is_ai = no
+						is_rebel_country = no
+						current_year >= 1600
+						NOT = { has_variable = oe_rel2_ev13_done }
+						has_variable = oe_rel2_concordat_signed
+					}
+					set_variable = { name = oe_rel2_ev13_done value = 1 }
+					trigger_event_non_silently = oe_rel2.13
+				}
+			}
+		}
+	}
+	location:venice = {
+		if = {
+			limit = { has_owner = yes }
+			owner = {
+				if = {
+					limit = {
+						is_ai = no
+						is_rebel_country = no
+						current_year >= 1600
+						NOT = { has_variable = oe_rel2_ev13_done }
+						has_variable = oe_rel2_concordat_signed
+					}
+					set_variable = { name = oe_rel2_ev13_done value = 1 }
+					trigger_event_non_silently = oe_rel2.13
+				}
+			}
+		}
+	}
 }
 
 # ==============================================================================
-# Dev Panel Page 79 Helper Effects (Stage wires directly to oe_dev.79)
+# Dev Panel Page 79 & Page 87 Helper Effects (Stage wires directly to oe_dev.79 / oe_dev.87)
 # ==============================================================================
 
 # Country scope. Convenes the Counter-Ecumenical Pentarchy Synod & Florence chain.
@@ -271,12 +353,13 @@ oe_rel2_dev_pentarchy_synod = {
 	trigger_event_non_silently = oe_rel2.2
 }
 
-# Country scope. Fires Tubingen (1573), Lucaris (1629) & Jerusalem Synod (1672).
+# Country scope. Fires Tubingen (1573), Lucaris (1629), Jerusalem Synod (1672) & Republic of Letters (oe_rel2.13).
 oe_rel2_dev_reformation_suite = {
 	set_global_variable = { name = oe_rel2_init value = 1 }
 	trigger_event_non_silently = oe_rel2.3
 	trigger_event_non_silently = oe_rel2.4
 	trigger_event_non_silently = oe_rel2.5
+	trigger_event_non_silently = oe_rel2.13
 }
 
 # Country scope. Fires Cantate Domino Red Sea Chalcedon Accord & Silk Road Nestorian Relay.
@@ -286,11 +369,19 @@ oe_rel2_dev_chalcedon_nestorian = {
 	trigger_event_non_silently = oe_rel2.7
 }
 
-# Country scope. Fires Cairo vs Constantinople Caliphate & 1501 Tabriz Shia Revival.
+# Country scope. Fires Cairo vs Constantinople Caliphate, 1501 Tabriz Shia Revival & Imperial Millet Courts (oe_rel2.10).
 oe_rel2_dev_caliphate_tabriz = {
 	set_global_variable = { name = oe_rel2_init value = 1 }
 	trigger_event_non_silently = oe_rel2.8
 	trigger_event_non_silently = oe_rel2.9
+	trigger_event_non_silently = oe_rel2.10
+}
+
+# Country scope. Dev page 87 (v120_fix_rel2_orphans): directly fires wired oe_rel2.10 & oe_rel2.13.
+oe_rel2_dev_test_orphans_fixed = {
+	set_global_variable = { name = oe_rel2_init value = 1 }
+	trigger_event_non_silently = oe_rel2.10
+	trigger_event_non_silently = oe_rel2.13
 }
 
 # Country scope. Verifies Edict of Milan Reborn (v9.8 hellenism_religion bridge, <= 6 gods untouched) + readout.

@@ -20,16 +20,27 @@
 oe_yn_tiers = {
 	icon = "gfx/interface/icons/map_modes/provinces.dds"
 	map_color = {
-		# the Yuan's own land inside a branch secretariat: the tier's location modifier (none = as usual)
+		# the Yuan's own land inside a branch secretariat: v14.5 regional Tier 3/2/1/0 location modifiers
 		if = {
 			limit = { country_exists = c:CHI owner ?= c:CHI has_variable = oe_yp_unit }
-			if = { limit = { has_location_modifier = oe_yp_tier_loyal } value = rgb { 70 150 90 } }
+			if = {
+				limit = {
+					OR = {
+						has_location_modifier = oe_yp_tier_loyal
+						has_location_modifier = oe_yp_prof_wealth_t3
+						has_location_modifier = oe_yp_prof_front_t3
+						has_location_modifier = oe_yp_prof_fortress_t3
+						has_location_modifier = oe_yp_prof_frontier_t3
+					}
+				}
+				value = rgb { 70 150 90 }
+			}
 			else_if = { limit = { has_location_modifier = oe_yp_tier_lax } value = rgb { 214 150 60 } }
 			else_if = { limit = { has_location_modifier = oe_yp_tier_estranged } value = rgb { 190 60 50 } }
 			else = { value = rgb { 170 160 120 } }
 		}
 		else_if = {
-			limit = { country_exists = c:CHI owner ?= { is_subject_of = c:CHI is_subject_type = oe_yp_frontier } }
+			limit = { country_exists = c:CHI owner ?= { is_subject_of = c:CHI OR = { is_subject_type = oe_yp_frontier tag = KOR } } }
 			if = { limit = { owner = { var:oe_yp_tier ?= 3 } } value = rgb { 70 150 90 } }
 			else_if = { limit = { owner = { var:oe_yp_tier ?= 1 } } value = rgb { 214 150 60 } }
 			else_if = { limit = { owner = { var:oe_yp_tier ?= 0 } } value = rgb { 190 60 50 } }

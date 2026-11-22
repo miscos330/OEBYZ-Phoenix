@@ -69,7 +69,7 @@ oe_yw_yuan_ev_this_month = {
 oe_yw_yuan_busy = {
     OR = {
         AND = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_pick var:oe_yv_pick > 0 has_variable = oe_yv_m var:oe_yv_m = global_var:oe_yw_m } }
-        AND = { has_global_variable = oe_y1_m global_var:oe_y1_m = global_var:oe_yw_m has_global_variable = oe_y1_pick OR = { global_var:oe_y1_pick = 1 global_var:oe_y1_pick = 4 global_var:oe_y1_pick = 5 } has_global_variable = oe_dbg_n_y1 global_var:oe_dbg_n_y1 > oe_yw_y1n_seen }
+        AND = { has_global_variable = oe_y1_m global_var:oe_y1_m = global_var:oe_yw_m has_global_variable = oe_y1_pick OR = { global_var:oe_y1_pick = 1 global_var:oe_y1_pick = 4 global_var:oe_y1_pick = 5 global_var:oe_y1_pick = 10 global_var:oe_y1_pick = 12 global_var:oe_y1_pick = 13 } has_global_variable = oe_dbg_n_y1 global_var:oe_dbg_n_y1 > oe_yw_y1n_seen }
         AND = { has_global_variable = oe_yuan_ev_m global_var:oe_yuan_ev_m = global_var:oe_yw_m }
     }
 }
@@ -116,6 +116,29 @@ oe_yw_fy_p_far = {
 oe_yw_can_8 = {
     has_global_variable = oe_yw_fy_p
     oe_yw_yuan_fallen = no
+}
+# Any scope (v14.5 Princes 2.0). At least one active prince is estranged (tier 0, loyalty < 40).
+oe_yw_any_estranged = {
+    OR = {
+        AND = { country_exists = c:QAS c:QAS = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+        AND = { country_exists = c:HCN c:HCN = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+        AND = { country_exists = c:OTC c:OTC = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+        AND = { country_exists = c:BGT c:BGT = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+        AND = { country_exists = c:OGE c:OGE = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+        AND = { country_exists = c:LNG c:LNG = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+        AND = { country_exists = c:SYG c:SYG = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+        AND = { country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+        AND = { country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+        AND = { country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes var:oe_yw_tier ?= 0 } }
+    }
+}
+# Any scope (v14.5 Princes 2.0). Unified 10-year / new-ruler Shangdu Kurultai is due.
+oe_yw_kurultai_due = {
+    OR = {
+        AND = { NOT = { has_global_variable = oe_yw_kurultai_y } current_year >= 1340 }
+        AND = { has_global_variable = oe_yw_kurultai_y current_year >= oe_yw_kurultai_next_y }
+        AND = { country_exists = c:CHI c:CHI = { ruler ?= { NOT = { has_variable = oe_yw_kurultai_done } } } current_year >= 1338 }
+    }
 }
 
 # Any scope. Event 1 (CHI) can fire now (its event trigger).

@@ -2,12 +2,12 @@
 # Country scope = the leader of the Middle Kingdom. The tab shows for the Yuan while it has a branch secretariat or a prince.
 oe_yuan_ui_tab = {
     scope = country
-    is_shown = { tag = CHI is_rebel_country = no any_subject = { OR = { OR = { is_subject_type = oe_yp_xingsheng is_subject_type = oe_yp_frontier } oe_yw_prince_active = yes } } }
+    is_shown = { tag = CHI is_rebel_country = no any_subject = { OR = { OR = { is_subject_type = oe_yp_xingsheng is_subject_type = oe_yp_frontier tag = LNG tag = KOR } oe_yw_prince_active = yes } } }
 }
-# Country scope = a subject of the leader.
+# Country scope = a subject of the leader. v14.5: includes Yunnan (LNG) and Zhengdong (KOR) alongside the 9 oe_yp secretariats.
 oe_yuan_ui_prov = {
     scope = country
-    is_shown = { country_exists = c:CHI is_subject_of = c:CHI OR = { is_subject_type = oe_yp_xingsheng is_subject_type = oe_yp_frontier } }
+    is_shown = { country_exists = c:CHI is_subject_of = c:CHI OR = { is_subject_type = oe_yp_xingsheng is_subject_type = oe_yp_frontier tag = LNG tag = KOR } }
 }
 oe_yuan_ui_prince = {
     scope = country
@@ -28,4 +28,116 @@ oe_yuan_ui_grant_2 = {
     scope = country
     is_valid = { tag = CHI is_rebel_country = no has_global_variable = oe_yw_on NOT = { var:oe_yw_grant_level ?= 2 } }
     effect = { oe_yw_set_grant_level = { level = 2 } }
+}
+# v14.5 Princes 2.0: 3 per-prince interactive buttons (CMDLOG=0, O(1), AddScope target_country).
+oe_yw_gui_bestow_seal = {
+    scope = country
+    saved_scopes = { target_country }
+    is_valid = {
+        tag = CHI
+        is_rebel_country = no
+        gold >= 35
+        scope:target_country = {
+            oe_yw_prince_active = yes
+            NOT = { has_variable = oe_yw_cd_seal }
+        }
+    }
+    effect = { oe_yw_gui_bestow_seal_effect = yes }
+}
+oe_yw_gui_summon_banner = {
+    scope = country
+    saved_scopes = { target_country }
+    is_valid = {
+        tag = CHI
+        is_rebel_country = no
+        gold >= 40
+        scope:target_country = {
+            oe_yw_prince_active = yes
+            has_variable = oe_yw_loy
+            var:oe_yw_loy >= 65
+            manpower >= 0.8
+            NOT = { has_variable = oe_yw_cd_banner }
+        }
+    }
+    effect = { oe_yw_gui_summon_banner_effect = yes }
+}
+oe_yw_gui_commute_prov = {
+    scope = country
+    saved_scopes = { target_country }
+    is_valid = {
+        tag = CHI
+        is_rebel_country = no
+        OR = {
+            is_situation_active = situation:oe_sit_yuan_restoration
+            has_global_variable = oe_sit2_yr_ended
+            current_year >= 1400
+        }
+        scope:target_country = {
+            oe_yw_prince_active = yes
+            has_variable = oe_yw_loy
+            var:oe_yw_loy >= 75
+        }
+    }
+    effect = { oe_yw_gui_commute_prov_effect = yes }
+}
+# v14.5 Secretariats 2.0: 4 per-province interactive buttons (CMDLOG=0, O(1), AddScope target_country).
+oe_yp_gui_shumiyuan = {
+    scope = country
+    saved_scopes = { target_country }
+    is_valid = {
+        tag = CHI
+        is_rebel_country = no
+        scope:target_country = {
+            oe_yp_is_managed_province = yes
+            NOT = { has_variable = oe_yp_cd_shumiyuan }
+        }
+    }
+    effect = { oe_yp_gui_shumiyuan_effect = yes }
+}
+oe_yp_gui_censorate = {
+    scope = country
+    saved_scopes = { target_country }
+    is_valid = {
+        tag = CHI
+        is_rebel_country = no
+        gold >= 25
+        scope:target_country = {
+            oe_yp_is_managed_province = yes
+            NOT = { has_variable = oe_yp_cd_censorate }
+        }
+    }
+    effect = { oe_yp_gui_censorate_effect = yes }
+}
+oe_yp_gui_requisition = {
+    scope = country
+    saved_scopes = { target_country }
+    is_valid = {
+        tag = CHI
+        is_rebel_country = no
+        scope:target_country = {
+            oe_yp_is_managed_province = yes
+            NOT = { has_variable = oe_yp_cd_requisition }
+        }
+    }
+    effect = { oe_yp_gui_requisition_effect = yes }
+}
+oe_yp_gui_sansi_reform = {
+    scope = country
+    saved_scopes = { target_country }
+    is_valid = {
+        tag = CHI
+        is_rebel_country = no
+        oe_yp_sansi_unlock_ok = yes
+        scope:target_country = {
+            oe_yp_is_managed_province = yes
+            NOT = { has_variable = oe_yp_sansi_reformed }
+            has_variable = oe_yp_loyalty
+            var:oe_yp_loyalty >= 75
+            OR = {
+                NOT = { has_variable = oe_yp_warlordism }
+                var:oe_yp_warlordism <= 25
+            }
+        }
+    }
+    effect = { oe_yp_gui_sansi_reform_effect = yes }
 }

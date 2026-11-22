@@ -6,13 +6,19 @@
 
 	can_start = {
 		tag = BYZ
+		NOT = { has_variable = oe_ely_is_elysia }
+		NOT = { has_variable = oe_ely_voyager }
+		NOT = { has_global_variable = oe_ely_settled }
 		current_age = age_1_traditions
 		
 		current_year < 1338
 	}
 	
 	can_end = {
-		oe_phoenix_disaster_can_end = yes
+		OR = {
+			has_variable = oe_ely_is_elysia
+			oe_phoenix_disaster_can_end = yes
+		}
 	}
 
 	modifier = {
@@ -51,9 +57,12 @@
 			limit = { has_variable = strongest_belik_variable }
 			remove_variable = strongest_belik_variable
 		}
-		set_variable = won_fate_of_the_phoenix_disaster_variable
-		trigger_event_non_silently = oe_fate_of_the_phoenix.1000
-		oe_byz_check_nirvana_complete = yes
+		if = {
+			limit = { NOT = { has_variable = oe_ely_is_elysia } }
+			set_variable = won_fate_of_the_phoenix_disaster_variable
+			trigger_event_non_silently = oe_fate_of_the_phoenix.1000
+			oe_byz_check_nirvana_complete = yes
+		}
 	}
 	
 	on_monthly = {

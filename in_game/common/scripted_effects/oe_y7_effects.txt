@@ -112,7 +112,7 @@ oe_y7_seats_refresh = {
 # Any scope. Takes every modifier of this line off the Yuan, its locations, its rival and its characters (not the opinions,
 # not the characters themselves).
 oe_y7_strip = {
-    c:CHI ?= { if = { limit = { has_country_modifier = oe_y7_court_command } remove_country_modifier = oe_y7_court_command } if = { limit = { has_country_modifier = oe_y7_militia } remove_country_modifier = oe_y7_militia } if = { limit = { has_country_modifier = oe_y7_warlord_army } remove_country_modifier = oe_y7_warlord_army } if = { limit = { has_country_modifier = oe_y7_general_sway } remove_country_modifier = oe_y7_general_sway } if = { limit = { has_country_modifier = oe_y7_tammachi_hold } remove_country_modifier = oe_y7_tammachi_hold } if = { limit = { has_country_modifier = oe_y7_garrison_thin } remove_country_modifier = oe_y7_garrison_thin } if = { limit = { has_country_modifier = oe_y7_touxia_levy } remove_country_modifier = oe_y7_touxia_levy } if = { limit = { has_country_modifier = oe_y7_scattered } remove_country_modifier = oe_y7_scattered } if = { limit = { has_country_modifier = oe_y7_court_rift } remove_country_modifier = oe_y7_court_rift } if = { limit = { has_country_modifier = oe_y7_restoration } remove_country_modifier = oe_y7_restoration } if = { limit = { has_country_modifier = oe_y7_despair } remove_country_modifier = oe_y7_despair } if = { limit = { has_country_modifier = oe_y7_bolod_regime } remove_country_modifier = oe_y7_bolod_regime } if = { limit = { has_country_modifier = oe_y7_bolod_command } remove_country_modifier = oe_y7_bolod_command } if = { limit = { has_country_modifier = oe_y7_two_courts } remove_country_modifier = oe_y7_two_courts } if = { limit = { has_country_modifier = oe_y7_heir_command } remove_country_modifier = oe_y7_heir_command } }
+    c:CHI ?= { if = { limit = { has_country_modifier = oe_y7_court_command } remove_country_modifier = oe_y7_court_command } if = { limit = { has_country_modifier = oe_y7_militia } remove_country_modifier = oe_y7_militia } if = { limit = { has_country_modifier = oe_y7_warlord_army } remove_country_modifier = oe_y7_warlord_army } if = { limit = { has_country_modifier = oe_y7_general_sway } remove_country_modifier = oe_y7_general_sway } if = { limit = { has_country_modifier = oe_y7_tammachi_hold } remove_country_modifier = oe_y7_tammachi_hold } if = { limit = { has_country_modifier = oe_y7_garrison_thin } remove_country_modifier = oe_y7_garrison_thin } if = { limit = { has_country_modifier = oe_y7_touxia_levy } remove_country_modifier = oe_y7_touxia_levy } if = { limit = { has_country_modifier = oe_y7_scattered } remove_country_modifier = oe_y7_scattered } if = { limit = { has_country_modifier = oe_y7_court_rift } remove_country_modifier = oe_y7_court_rift } if = { limit = { has_country_modifier = oe_y7_restoration } remove_country_modifier = oe_y7_restoration } if = { limit = { has_country_modifier = oe_y7_despair } remove_country_modifier = oe_y7_despair } if = { limit = { has_country_modifier = oe_y7_bolod_regime } remove_country_modifier = oe_y7_bolod_regime } if = { limit = { has_country_modifier = oe_y7_bolod_command } remove_country_modifier = oe_y7_bolod_command } if = { limit = { has_country_modifier = oe_y7_two_courts } remove_country_modifier = oe_y7_two_courts } if = { limit = { has_country_modifier = oe_y7_heir_command } remove_country_modifier = oe_y7_heir_command } if = { limit = { has_country_modifier = oe_y7_rtr_yuan_crisis } remove_country_modifier = oe_y7_rtr_yuan_crisis } if = { limit = { has_country_modifier = oe_y7_strife_levy_floor } remove_country_modifier = oe_y7_strife_levy_floor } if = { limit = { has_country_modifier = oe_y7_ai_factional_decay } remove_country_modifier = oe_y7_ai_factional_decay } if = { limit = { has_country_modifier = oe_y7_ai_gaoyou_collapse } remove_country_modifier = oe_y7_ai_gaoyou_collapse } if = { limit = { has_country_modifier = oe_y7_act_marshal_mod } remove_country_modifier = oe_y7_act_marshal_mod } if = { limit = { has_country_modifier = oe_y7_act_mediate_mod } remove_country_modifier = oe_y7_act_mediate_mod } }
     province_definition:yangzhou_province = { every_location_in_province_definition = { limit = { has_location_modifier = oe_y7_seat_guard } remove_location_modifier = oe_y7_seat_guard } }
     province_definition:wuchang_province = { every_location_in_province_definition = { limit = { has_location_modifier = oe_y7_seat_guard } remove_location_modifier = oe_y7_seat_guard } }
     province_definition:luzhou_province = { every_location_in_province_definition = { limit = { has_location_modifier = oe_y7_seat_guard } remove_location_modifier = oe_y7_seat_guard } }
@@ -133,7 +133,6 @@ oe_y7_strip = {
     character:cko_temur_koke ?= { if = { limit = { has_character_modifier = oe_y7_title_henan } remove_character_modifier = oe_y7_title_henan } }
     # third batch: Dadu's two modifiers, the titles of Huai and the regent (kept while the epilogue runs: it ends them)
     if = { limit = { NOT = { has_global_variable = oe_y7_epi } } oe_y7_strip_dadu = yes }
-    if = { limit = { has_global_variable = oe_y7_relief_c country_exists = global_var:oe_y7_relief_c } global_var:oe_y7_relief_c = { if = { limit = { has_country_modifier = oe_y7_relief } remove_country_modifier = oe_y7_relief } } }
 }
 
 # ---------------------------------------------------------------- phases
@@ -268,6 +267,7 @@ oe_y7_meters = {
         }
     }
     c:CHI ?= { set_global_variable = { name = oe_y7_levy value = country_total_army_levy_size } }
+    oe_y7_rtr_sync_sit_vars = yes
 }
 # Any scope, monthly after .1. The seats: a prince dead or gone (status 4), lost months, held months.
 oe_y7_seats = {
@@ -400,7 +400,7 @@ oe_y7_on_yuan_fall = {
     if = { limit = { has_global_variable = oe_y7_on } oe_y7_finish = { code = 4 } }
     if = { limit = { has_global_variable = oe_y7_epi } oe_y7_epi_close = { code = 2 } }
 }
-# Any scope, monthly. The end checks: collapse (4), the situation over (1-3), 1368.1.1 (5).
+# Any scope, monthly. The end checks: collapse (4), the situation over (1-3), 1385.1.1 (5).
 oe_y7_end_check = {
     if = { limit = { oe_y7_yuan_fallen = yes } oe_y7_on_yuan_fall = yes }
     else_if = {
@@ -409,7 +409,7 @@ oe_y7_end_check = {
         oe_y7_finish = { code = global_var:oe_y7_tmp }
         if = { limit = { has_global_variable = oe_y7_tmp } remove_global_variable = oe_y7_tmp }
     }
-    else_if = { limit = { current_date >= 1368.1.1 } oe_y7_epi_open = yes oe_y7_finish = { code = 5 } }
+    else_if = { limit = { current_date >= 1385.1.1 NOT = { is_situation_active = situation:red_turban_rebellions } } oe_y7_epi_open = yes oe_y7_finish = { code = 5 } }
 }
 
 # ---------------------------------------------------------------- setup
@@ -472,7 +472,7 @@ oe_y7_setup_p1 = {
             limit = { location:jiangdu = { owner ?= c:CHI controller ?= c:CHI } character:oe_y7_zhennan ?= { is_alive = yes owner ?= c:CHI } }
             set_global_variable = { name = oe_y7_ps_1 value = 1 }
             province_definition:yangzhou_province = { every_location_in_province_definition = { limit = { owner ?= c:CHI } add_location_modifier = { modifier = oe_y7_seat_guard years = -1 mode = replace size = oe_y7_seat_size } } }
-            location:jiangdu = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_hc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_zhennan } } debug_log = "oe_y7: 4 regiments (p1) raised for the Yuan" }
+            location:jiangdu = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_zhennan } } debug_log = "oe_y7: 1 regiments (p1) raised for the Yuan" }
         }
         else = { set_global_variable = { name = oe_y7_ps_1 value = 2 } }
         set_global_variable = { name = oe_y7_pl_1 value = 0 }
@@ -488,7 +488,7 @@ oe_y7_setup_p1 = {
             limit = { location:jiangxia = { owner ?= c:CHI controller ?= c:CHI } character:oe_y7_weishun ?= { is_alive = yes owner ?= c:CHI } }
             set_global_variable = { name = oe_y7_ps_2 value = 1 }
             province_definition:wuchang_province = { every_location_in_province_definition = { limit = { owner ?= c:CHI } add_location_modifier = { modifier = oe_y7_seat_guard years = -1 mode = replace size = oe_y7_seat_size } } }
-            location:jiangxia = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_hc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_weishun } } debug_log = "oe_y7: 4 regiments (p2) raised for the Yuan" }
+            location:jiangxia = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_weishun } } debug_log = "oe_y7: 1 regiments (p2) raised for the Yuan" }
         }
         else = { set_global_variable = { name = oe_y7_ps_2 value = 2 } }
         set_global_variable = { name = oe_y7_pl_2 value = 0 }
@@ -504,7 +504,7 @@ oe_y7_setup_p1 = {
             limit = { location:hefei = { owner ?= c:CHI controller ?= c:CHI } character:oe_y7_xuanrang ?= { is_alive = yes owner ?= c:CHI } }
             set_global_variable = { name = oe_y7_ps_3 value = 1 }
             province_definition:luzhou_province = { every_location_in_province_definition = { limit = { owner ?= c:CHI } add_location_modifier = { modifier = oe_y7_seat_guard years = -1 mode = replace size = oe_y7_seat_size } } }
-            location:hefei = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_xuanrang } } debug_log = "oe_y7: 3 regiments (p3) raised for the Yuan" }
+            location:hefei = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_xuanrang } } debug_log = "oe_y7: 1 regiments (p3) raised for the Yuan" }
         }
         else = { set_global_variable = { name = oe_y7_ps_3 value = 2 } }
         set_global_variable = { name = oe_y7_pl_3 value = 0 }
@@ -788,6 +788,33 @@ oe_y7_fire_32 = {
     debug_log = "oe_y7: event oe_y7.32 sent to CHI"
     c:CHI ?= { trigger_event_non_silently = oe_y7.32 }
 }
+oe_y7_fire_33 = {
+    set_global_variable = { name = oe_y7_st_33 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.33 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.33 }
+}
+oe_y7_fire_34 = {
+    set_global_variable = { name = oe_y7_st_34 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.34 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.34 }
+}
+oe_y7_fire_35 = {
+    set_global_variable = { name = oe_y7_st_35 value = 1 }
+    set_global_variable = { name = oe_y7_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_yuan_ev_m value = global_var:oe_y7_m }
+    set_global_variable = { name = oe_y7_wait value = 0 }
+    oe_y7_count = yes
+    debug_log = "oe_y7: event oe_y7.35 sent to CHI"
+    c:CHI ?= { trigger_event_non_silently = oe_y7.35 }
+}
 
 # Any scope. Drops events that can no longer fire.
 oe_y7_ev_lapse = {
@@ -807,6 +834,10 @@ oe_y7_ev_lapse = {
     if = { limit = { oe_y7_lapse_25 = yes } set_global_variable = { name = oe_y7_st_25 value = 2 } debug_log = "oe_y7: event oe_y7.25 dropped" }
     # phase 3, second batch (.19): it cannot fire at the end of its window, or the window and its grace are over.
     if = { limit = { oe_y7_lapse_19 = yes } set_global_variable = { name = oe_y7_st_19 value = 2 } debug_log = "oe_y7: event oe_y7.19 dropped" }
+    # v14.5 inland garrison prince offices (.33-.35).
+    if = { limit = { oe_y7_lapse_33 = yes } set_global_variable = { name = oe_y7_st_33 value = 2 } debug_log = "oe_y7: event oe_y7.33 dropped" }
+    if = { limit = { oe_y7_lapse_34 = yes } set_global_variable = { name = oe_y7_st_34 value = 2 } debug_log = "oe_y7: event oe_y7.34 dropped" }
+    if = { limit = { oe_y7_lapse_35 = yes } set_global_variable = { name = oe_y7_st_35 value = 2 } debug_log = "oe_y7: event oe_y7.35 dropped" }
 }
 # Any scope. At most one event a month: a due event first (in the design's order), else one roll per open event. Nothing in a
 # month in which another Yuan line already sent the Yuan an event, but a due event waits at most two such months.
@@ -837,6 +868,9 @@ oe_y7_ev_pick = {
         else_if = { limit = { oe_y7_due_5 = yes } set_global_variable = { name = oe_y7_pick value = 5 } }
         else_if = { limit = { oe_y7_due_10 = yes } set_global_variable = { name = oe_y7_pick value = 10 } }
         else_if = { limit = { oe_y7_due_11 = yes } set_global_variable = { name = oe_y7_pick value = 11 } }
+        else_if = { limit = { oe_y7_due_33 = yes } set_global_variable = { name = oe_y7_pick value = 33 } }
+        else_if = { limit = { oe_y7_due_34 = yes } set_global_variable = { name = oe_y7_pick value = 34 } }
+        else_if = { limit = { oe_y7_due_35 = yes } set_global_variable = { name = oe_y7_pick value = 35 } }
         else_if = { limit = { oe_y7_due_16 = yes } set_global_variable = { name = oe_y7_pick value = 16 } }
         else_if = { limit = { oe_y7_due_18 = yes } set_global_variable = { name = oe_y7_pick value = 18 } }
         else_if = { limit = { oe_y7_due_25 = yes } set_global_variable = { name = oe_y7_pick value = 25 } }
@@ -850,6 +884,9 @@ oe_y7_ev_pick = {
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_5 = yes } random = { chance = oe_y7_ch_5 set_global_variable = { name = oe_y7_pick value = 5 } } }
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_10 = yes } random = { chance = oe_y7_ch_10 set_global_variable = { name = oe_y7_pick value = 10 } } }
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_11 = yes } random = { chance = oe_y7_ch_11 set_global_variable = { name = oe_y7_pick value = 11 } } }
+        if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_33 = yes } random = { chance = oe_y7_ch_33 set_global_variable = { name = oe_y7_pick value = 33 } } }
+        if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_34 = yes } random = { chance = oe_y7_ch_34 set_global_variable = { name = oe_y7_pick value = 34 } } }
+        if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_35 = yes } random = { chance = oe_y7_ch_35 set_global_variable = { name = oe_y7_pick value = 35 } } }
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_16 = yes } random = { chance = oe_y7_ch_16 set_global_variable = { name = oe_y7_pick value = 16 } } }
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_18 = yes } random = { chance = oe_y7_ch_18 set_global_variable = { name = oe_y7_pick value = 18 } } }
         if = { limit = { global_var:oe_y7_pick = 0 oe_y7_open_25 = yes } random = { chance = oe_y7_ch_25 set_global_variable = { name = oe_y7_pick value = 25 } } }
@@ -884,11 +921,26 @@ oe_y7_ev_pick = {
     else_if = { limit = { global_var:oe_y7_pick = 30 } oe_y7_fire_30 = yes }
     else_if = { limit = { global_var:oe_y7_pick = 31 } oe_y7_fire_31 = yes }
     else_if = { limit = { global_var:oe_y7_pick = 32 } oe_y7_fire_32 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 33 } oe_y7_fire_33 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 34 } oe_y7_fire_34 = yes }
+    else_if = { limit = { global_var:oe_y7_pick = 35 } oe_y7_fire_35 = yes }
 }
 
 # BYZ scope (any scope works), monthly: called by the main-line scheduler (gen_mainline_lock.py, LINES id 21 "y7") while
 # OR = { has_global_variable = oe_y7_on NOT = { has_global_variable = oe_y7_init } }. The events take no main-line lock.
 oe_y7_monthly = {
+    if = {
+        limit = { country_exists = c:MNG }
+        if = {
+            limit = { NOT = { has_global_variable = oe_y7_mng_seen } }
+            set_global_variable = { name = oe_y7_mng_seen value = 1 }
+        }
+    }
+    else_if = {
+        limit = { has_global_variable = oe_y7_mng_seen }
+        remove_global_variable = oe_y7_mng_seen
+        debug_log = "OE_Y7_MNG_DEATH: vanished_detected_monthly"
+    }
     if = { limit = { NOT = { has_global_variable = oe_y7_init } } oe_y7_setup = yes }
     if = {
         limit = { has_global_variable = oe_y7_on }
@@ -909,7 +961,7 @@ oe_y7_monthly = {
         }
         if = { limit = { has_global_variable = oe_dbg_n_y1 } set_global_variable = { name = oe_y7_y1n value = global_var:oe_dbg_n_y1 } }
     }
-    # phase 3, third batch: the epilogue (from the month after the line closed at 1368.1.1; design 3.8). The scheduler calls this
+    # phase 3, third batch: the epilogue (from the month after the line closed at 1385.1.1; design 3.8). The scheduler calls this
     # effect in the epilogue only once its LINES row 21 also accepts oe_y7_epi (hook A of y7-sup3c).
     else_if = { limit = { has_global_variable = oe_y7_epi } oe_y7_epi_step = yes }
 }
@@ -924,7 +976,7 @@ oe_y7_job_seat2 = {
 oe_y7_job_tammachi = {
     create_character = { culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no age = { 35 50 } mil = { 50 65 } save_scope_as = oe_y7_wanhu }
     if = { limit = { exists = scope:oe_y7_wanhu } set_global_variable = { name = oe_y7_c_5 value = scope:oe_y7_wanhu } }
-    location:kaifeng = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc = yes oe_y7_u_lc = yes oe_y7_u_lc = yes oe_y7_u_lc = yes oe_y7_u_hc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = scope:oe_y7_wanhu } } debug_log = "oe_y7: 6 regiments (tam) raised for the Yuan" }
+    location:kaifeng = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = scope:oe_y7_wanhu } } debug_log = "oe_y7: 2 regiments (tam) raised for the Yuan" }
 }
 # .2 c: the Five Touxia (raised as men of the Prince of Lu's land).
 oe_y7_job_touxia = {
@@ -942,16 +994,16 @@ oe_y7_job_militia = {
         character:oe_y7_chaghan ?= { add_character_modifier = { modifier = oe_y7_title_chaghan years = -1 mode = replace } set_variable = { name = oe_y7_who value = 4 } }
     }
     if = { limit = { exists = character:oe_y7_chaghan } set_global_variable = { name = oe_y7_c_4 value = character:oe_y7_chaghan } }
-    location:shenqiu = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_lc = yes oe_y7_u_lc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_chaghan } } debug_log = "oe_y7: 6 regiments (mil) raised for the Yuan" }
+    location:shenqiu = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_lc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_chaghan } } debug_log = "oe_y7: 2 regiments (mil) raised for the Yuan" }
 }
 # .5: the Xuzhou campaign (a: the chancellor in person, b: generals).
 oe_y7_job_xuzhou_a = {
     oe_y7_start_camp = { n = 1 }
-    location:xuzhou = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_hi = yes oe_y7_u_hi = yes oe_y7_u_lc = yes oe_y7_u_lc = yes } debug_log = "oe_y7: 10 regiments (xa) raised for the Yuan" }
+    location:xuzhou = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_hi = yes oe_y7_u_lc = yes } debug_log = "oe_y7: 3 regiments (xa) raised for the Yuan" }
 }
 oe_y7_job_xuzhou_b = {
     oe_y7_start_camp = { n = 1 }
-    location:xuzhou = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_lc = yes oe_y7_u_lc = yes } debug_log = "oe_y7: 6 regiments (xb) raised for the Yuan" }
+    location:xuzhou = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_lc = yes } debug_log = "oe_y7: 2 regiments (xb) raised for the Yuan" }
 }
 # .6 a / b (Xuzhou taken): war score against the city's defender, Henan Jiangbei's loyalty; a: the massacre.
 oe_y7_job_xuzhou_won = {
@@ -986,8 +1038,8 @@ oe_y7_job_gaoyou = {
     global_var:oe_y7_tgt ?= { save_scope_as = oe_y7_gy }
     if = {
         limit = { exists = scope:oe_y7_gy }
-        scope:oe_y7_gy = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_hi = yes oe_y7_u_hi = yes oe_y7_u_hi = yes oe_y7_u_hi = yes oe_y7_u_lc = yes oe_y7_u_lc = yes oe_y7_u_lc = yes oe_y7_u_lc = yes oe_y7_u_hc = yes oe_y7_u_hc = yes } debug_log = "oe_y7: 18 regiments (ga) raised for the Yuan" }
-        if = { limit = { oe_y1_zd_active = yes country_exists = c:KOR } if = { limit = { exists = scope:oe_y7_origin } clear_saved_scope = oe_y7_origin } c:KOR = { capital ?= { save_scope_as = oe_y7_origin } } scope:oe_y7_gy = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc_o = yes oe_y7_u_lc_o = yes } debug_log = "oe_y7: 2 regiments (kor) raised for the Yuan" } set_global_variable = { name = oe_y7_kor_gaoyou value = 1 } }
+        scope:oe_y7_gy = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_hi = yes oe_y7_u_lc = yes oe_y7_u_hc = yes } debug_log = "oe_y7: 4 regiments (ga) raised for the Yuan" }
+        if = { limit = { oe_y1_zd_active = yes country_exists = c:KOR } if = { limit = { exists = scope:oe_y7_origin } clear_saved_scope = oe_y7_origin } c:KOR = { capital ?= { save_scope_as = oe_y7_origin } } scope:oe_y7_gy = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc_o = yes } debug_log = "oe_y7: 1 regiments (kor) raised for the Yuan" } set_global_variable = { name = oe_y7_kor_gaoyou value = 1 } }
     }
     if = { limit = { oe_y7_toqto_in_charge = yes } oe_yw_ask_aid = { kind = 2 } }
 }
@@ -1009,23 +1061,24 @@ oe_y7_job_dismiss = {
     if = { limit = { exists = scope:oe_y7_toqto_gone scope:oe_y7_toqto_gone = { in_cabinet = yes } } remove_from_cabinet = scope:oe_y7_toqto_gone }
     if = { limit = { has_country_modifier = yua_dictator_powers } remove_country_modifier = yua_dictator_powers }
     add_country_modifier = { modifier = oe_y7_scattered months = 12 mode = replace }
-    every_unit = { limit = { is_navy = no } damage_unit_percent = 0.3 damage_unit_morale_percent = 0.5 }
-    if = {
-        limit = { has_global_variable = oe_y7_opp2 country_exists = global_var:oe_y7_opp2 }
-        global_var:oe_y7_opp2 = {
-            save_scope_as = oe_y7_o
-            add_country_modifier = { modifier = oe_y7_relief months = 60 mode = replace }
-            set_global_variable = { name = oe_y7_relief_c value = scope:oe_y7_o }
-        }
-    }
-    if = { limit = { exists = scope:oe_y7_o } "war_with_country(scope:oe_y7_o)" ?= { add_bonus_warscore = { country = scope:oe_y7_o amount = 20 } } }
-    if = { limit = { global_var:oe_y7_shi > 35 } set_global_variable = { name = oe_y7_shi value = 35 } }
+    every_unit = { limit = { is_navy = no } damage_unit_morale_percent = 0.2 }
+    if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } }
+    if = { limit = { has_global_variable = oe_y7_shi global_var:oe_y7_shi > 40 } set_global_variable = { name = oe_y7_shi value = 40 } }
     set_global_variable = { name = oe_y7_toqto value = 2 }
     set_global_variable = { name = oe_y7_death_m value = global_var:oe_y7_m }
     change_global_variable = { name = oe_y7_death_m add = 12 }
+    if = {
+        limit = { country_exists = c:CHI c:CHI = { is_ai = yes } }
+        c:CHI = {
+            if = { limit = { has_country_modifier = oe_y7_strife_levy_floor } remove_country_modifier = oe_y7_strife_levy_floor }
+            add_country_modifier = { modifier = oe_y7_ai_gaoyou_collapse years = 15 mode = replace }
+        }
+        debug_log = "OE_Y7_AI_FORK: gaoyou_dismissed_collapse"
+    }
     oe_y7_unit_loyalty = { unit = 2 amount = -5 }
     oe_y7_unit_loyalty = { unit = 3 amount = -5 }
     oe_y7_to_phase2 = yes
+    oe_y7_rtr_sync_sit_vars = yes
     set_global_variable = { name = oe_y7_d_14 value = global_var:oe_y7_m }
     change_global_variable = { name = oe_y7_d_14 add = 1 }
     debug_log = "oe_y7: Toqto'a dismissed; the army scatters"
@@ -1121,8 +1174,8 @@ oe_y7_job_return = {
 oe_y7_job_bianliang = {
     oe_y7_start_camp = { n = 3 }
     change_global_variable = { name = oe_y7_campend add = 2 }
-    if = { limit = { character:oe_y7_chaghan ?= { is_alive = yes owner ?= c:CHI } } location:kaifeng = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_lc = yes oe_y7_u_lc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_chaghan } } debug_log = "oe_y7: 8 regiments (bl) raised for the Yuan" } }
-    else = { location:kaifeng = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_lc = yes oe_y7_u_lc = yes } debug_log = "oe_y7: 8 regiments (bl) raised for the Yuan" } }
+    if = { limit = { character:oe_y7_chaghan ?= { is_alive = yes owner ?= c:CHI } } location:kaifeng = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_lc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_chaghan } } debug_log = "oe_y7: 2 regiments (bl) raised for the Yuan" } }
+    else = { location:kaifeng = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_lc = yes } debug_log = "oe_y7: 2 regiments (bl) raised for the Yuan" } }
 }
 
 # ---------------------------------------------------------------- test helpers (dev page buttons; any scope)
@@ -1158,7 +1211,6 @@ oe_y7_test_clear = {
     if = { limit = { has_global_variable = oe_y7_tgtk } remove_global_variable = oe_y7_tgtk }
     if = { limit = { has_global_variable = oe_y7_opp1 } remove_global_variable = oe_y7_opp1 }
     if = { limit = { has_global_variable = oe_y7_opp2 } remove_global_variable = oe_y7_opp2 }
-    if = { limit = { has_global_variable = oe_y7_relief_c } remove_global_variable = oe_y7_relief_c }
     if = { limit = { has_global_variable = oe_y7_amn_c } remove_global_variable = oe_y7_amn_c }
     if = { limit = { has_global_variable = oe_y7_amn_m } remove_global_variable = oe_y7_amn_m }
     if = { limit = { has_global_variable = oe_y7_amn_ph } remove_global_variable = oe_y7_amn_ph }
@@ -1251,6 +1303,15 @@ oe_y7_test_clear = {
     if = { limit = { has_global_variable = oe_y7_epi_end } remove_global_variable = oe_y7_epi_end }
     if = { limit = { has_global_variable = oe_y7_t_press } remove_global_variable = oe_y7_t_press }
     if = { limit = { has_global_variable = oe_y7_t_fall } remove_global_variable = oe_y7_t_fall }
+    if = { limit = { has_global_variable = oe_y7_st_33 } remove_global_variable = oe_y7_st_33 }
+    if = { limit = { has_global_variable = oe_y7_st_34 } remove_global_variable = oe_y7_st_34 }
+    if = { limit = { has_global_variable = oe_y7_st_35 } remove_global_variable = oe_y7_st_35 }
+    if = { limit = { has_global_variable = oe_y7_pr_role_1 } remove_global_variable = oe_y7_pr_role_1 }
+    if = { limit = { has_global_variable = oe_y7_pr_role_2 } remove_global_variable = oe_y7_pr_role_2 }
+    if = { limit = { has_global_variable = oe_y7_pr_role_3 } remove_global_variable = oe_y7_pr_role_3 }
+    if = { limit = { has_global_variable = oe_y7_mng_seen } remove_global_variable = oe_y7_mng_seen }
+    if = { limit = { has_global_variable = oe_y7_dev_force_ming } remove_global_variable = oe_y7_dev_force_ming }
+    if = { limit = { has_global_variable = oe_y7_dev_force_12 } remove_global_variable = oe_y7_dev_force_12 }
     c:CHI ?= { if = { limit = { has_variable = oe_y7_job } remove_variable = oe_y7_job } if = { limit = { has_variable = oe_y7_dw } remove_variable = oe_y7_dw } }
     c:CHI ?= { if = { limit = { has_variable = oe_y7_win26 } remove_variable = oe_y7_win26 } }
 }
@@ -1325,6 +1386,9 @@ oe_y7_test_fire_29 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } 
 oe_y7_test_fire_30 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_30 = yes }
 oe_y7_test_fire_31 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_31 = yes }
 oe_y7_test_fire_32 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_32 = yes }
+oe_y7_test_fire_33 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_33 = yes }
+oe_y7_test_fire_34 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_34 = yes }
+oe_y7_test_fire_35 = { if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } oe_y7_fire_35 = yes }
 
 # Usage: oe_y7_test_bl = { ok = 1|0 }: the Bianliang campaign counts as decided now (1 won, 0 lost) and its outcome event
 # (.17) goes to the Yuan.
@@ -1341,6 +1405,13 @@ oe_y7_test_reset = {
     oe_y7_test_clear = yes
     set_global_variable = oe_y7_init
     debug_log = "oe_y7 TEST: line reset and off"
+}
+# Dev test bypass flag setters (consumed automatically by red_turban_rebellions.12 / oe_y7.12 immediate).
+oe_y7_test_force_ming = {
+    set_global_variable = { name = oe_y7_dev_force_ming value = 1 }
+}
+oe_y7_test_force_12 = {
+    set_global_variable = { name = oe_y7_dev_force_12 value = 1 }
 }
 
 # ---------------------------------------------------------------- phase 3, first batch "孛罗之乱" (v6.6 y7-sup3a)
@@ -1361,7 +1432,7 @@ oe_y7_void_b1 = {
     if = { limit = { NOT = { has_global_variable = oe_y7_st_26 } } set_global_variable = { name = oe_y7_st_26 value = 2 } }
     if = { limit = { NOT = { has_global_variable = oe_y7_st_27 } } set_global_variable = { name = oe_y7_st_27 value = 2 } }
 }
-# CHI scope. World step W-1 (design 3.6): Bolod Temür at Datong with 4 regiments under Bolod Temür; no popup, no
+# CHI scope. World step W-1 (design 3.6): Bolod Temür at Datong with 2 regiments under Bolod Temür; no popup, no
 # oe_yuan_ev_m. oe_y7_bolod 9 when the character cannot be made or read back (the first batch is then void).
 oe_y7_w1_fx = {
     oe_y7_make_bolod = yes
@@ -1369,7 +1440,7 @@ oe_y7_w1_fx = {
     if = {
         limit = { oe_y7_bolod_ok = yes }
         set_global_variable = { name = oe_y7_bolod value = 1 }
-        location:datong_datong = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc = yes oe_y7_u_lc = yes oe_y7_u_hc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_bolod } } debug_log = "oe_y7: 4 regiments (bolod) raised for the Yuan" }
+        location:datong_datong = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } set_as_commander = character:oe_y7_bolod } } debug_log = "oe_y7: 2 regiments (bolod) raised for the Yuan" }
         debug_log = "oe_y7: W-1 Bolod Temür at Datong (oe_y7_bolod 1)"
     }
     else = {
@@ -1836,7 +1907,7 @@ oe_y7_c3c_step = {
 }
 
 # ---- the epilogue (design 3.8; global oe_y7_epi, end code oe_y7_epi_end)
-# Any scope. Called by the 1368.1.1 close just BEFORE oe_y7_finish = { code = 5 } (so that oe_y7_strip keeps Dadu's modifiers
+# Any scope. Called by the 1385.1.1 close just BEFORE oe_y7_finish = { code = 5 } (so that oe_y7_strip keeps Dadu's modifiers
 # and the titles of this batch): the epilogue opens while the Yuan stands, is Mongol, owns Dadu and has Dadu as its capital
 # (or .31 has come and .32 still waits) and .32 has not come.
 oe_y7_epi_open = {
@@ -1931,10 +2002,10 @@ oe_y7_job_d31a = {
     }
     debug_log = "oe_y7: the emperor goes north; Dadu left to a regent (oe_y7_dadu 1)"
 }
-# .31 b: the capital held: oe_y7_dadu_stand (12 months), 6 regiments at Dadu, campaign 4 "守大都" (8 months).
+# .31 b: the capital held: oe_y7_dadu_stand (12 months), 2 regiments at Dadu, campaign 4 "守大都" (8 months).
 oe_y7_job_d31b = {
     location:dadu = { add_location_modifier = { modifier = oe_y7_dadu_stand months = 12 mode = replace } }
-    location:dadu = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_li = yes oe_y7_u_li = yes oe_y7_u_hi = yes oe_y7_u_hi = yes oe_y7_u_hc = yes oe_y7_u_hc = yes } debug_log = "oe_y7: 6 regiments (dd) raised for the Yuan" }
+    location:dadu = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_hi = yes oe_y7_u_hc = yes } debug_log = "oe_y7: 2 regiments (dd) raised for the Yuan" }
     oe_y7_start_camp = { n = 4 }
     change_global_variable = { name = oe_y7_campend add = 2 }
     debug_log = "oe_y7: the emperor holds Dadu (oe_y7_dadu 2); campaign 4 begins"
@@ -1964,7 +2035,7 @@ oe_y7_test_me_30 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NO
 oe_y7_test_me_31 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_31 } remove_global_variable = oe_y7_st_31 } oe_y7_fire_31 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.31 not sent" } }
 oe_y7_test_me_32 = { if = { limit = { tag = CHI is_ai = no } if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } } if = { limit = { has_global_variable = oe_y7_st_32 } remove_global_variable = oe_y7_st_32 } oe_y7_fire_32 = yes } else = { debug_log = "oe_y7 TEST: the current player is not the Yuan (switch with tag CHI first); event oe_y7.32 not sent" } }
 
-# The line closes now as at 1368.1.1 (code 5) and the epilogue opens when the Yuan owns Dadu as its capital and .32 has not
+# The line closes now as at 1385.1.1 (code 5) and the epilogue opens when the Yuan owns Dadu as its capital and .32 has not
 # come (button y73epi). The epilogue goes on monthly only with the scheduler hook A; y7month runs one month of it.
 oe_y7_test_epi = {
     if = { limit = { NOT = { has_global_variable = oe_y7_m } } set_global_variable = { name = oe_y7_m value = oe_y7_m_now } }
@@ -2001,6 +2072,298 @@ oe_y7_test_held = {
     set_global_variable = { name = oe_y7_camp_ok value = 1 }
     set_global_variable = oe_y7_camp_done
     debug_log = "oe_y7 TEST: Dadu counts as held (campaign 4 won)"
+}
+
+# ---------------------------------------------------------------- v14.5 Great Yuan 3.0 (RTR Unified Dashboard & Actions)
+# Any scope. Direct bounded shift of momentum oe_y7_shi (0-100) with immediate situation UI sync.
+oe_y7_add_shi_direct = {
+    if = { limit = { NOT = { has_global_variable = oe_y7_shi } } set_global_variable = { name = oe_y7_shi value = 50 } }
+    change_global_variable = { name = oe_y7_shi add = $amount$ }
+    clamp_global_variable = { name = oe_y7_shi min = 0 max = 100 }
+    oe_y7_rtr_sync_sit_vars = yes
+}
+# Any scope. O(1) sync of Great Yuan 3.0 telemetry onto situation:red_turban_rebellions for the unified Situation UI.
+oe_y7_rtr_sync_sit_vars = {
+    if = {
+        limit = { situation:red_turban_rebellions = { situation_is_active = yes } }
+        situation:red_turban_rebellions = {
+            if = { limit = { has_global_variable = oe_y7_shi } set_variable = { name = oe_y7_sit_shi value = global_var:oe_y7_shi } }
+            else = { set_variable = { name = oe_y7_sit_shi value = 50 } }
+            clamp_variable = { name = oe_y7_sit_shi min = 0 max = 100 }
+            if = { limit = { has_global_variable = oe_y7_court } set_variable = { name = oe_y7_sit_court value = global_var:oe_y7_court } }
+            else = { set_variable = { name = oe_y7_sit_court value = 50 } }
+            clamp_variable = { name = oe_y7_sit_court min = 0 max = 100 }
+            if = {
+                limit = { OR = { global_var:oe_y7_phase ?= 3 has_global_variable = oe_y7_st_31 current_year >= 1365 } }
+                set_variable = { name = oe_y7_sit_phase value = 4 }
+            }
+            else_if = {
+                limit = { global_var:oe_y7_phase ?= 2 }
+                set_variable = { name = oe_y7_sit_phase value = 3 }
+            }
+            else_if = {
+                limit = { OR = { has_global_variable = oe_y7_st_5 has_global_variable = oe_y7_st_11 global_var:oe_y7_camp ?= 1 global_var:oe_y7_camp ?= 2 } }
+                set_variable = { name = oe_y7_sit_phase value = 2 }
+            }
+            else = { set_variable = { name = oe_y7_sit_phase value = 1 } }
+            if = { limit = { has_global_variable = oe_yc_tier } set_variable = { name = oe_y7_sit_chao value = global_var:oe_yc_tier } }
+            else_if = { limit = { country_exists = c:CHI c:CHI = { inflation >= 0.25 } } set_variable = { name = oe_y7_sit_chao value = 0 } }
+            else_if = { limit = { country_exists = c:CHI c:CHI = { inflation >= 0.16 } } set_variable = { name = oe_y7_sit_chao value = 1 } }
+            else_if = { limit = { country_exists = c:CHI c:CHI = { inflation >= 0.08 } } set_variable = { name = oe_y7_sit_chao value = 2 } }
+            else = { set_variable = { name = oe_y7_sit_chao value = 3 } }
+            if = { limit = { has_global_variable = oe_yh_tier } set_variable = { name = oe_y7_sit_grain value = global_var:oe_yh_tier } }
+            else_if = { limit = { location:dadu = { owner ?= c:CHI controller ?= c:CHI } } set_variable = { name = oe_y7_sit_grain value = 2 } }
+            else = { set_variable = { name = oe_y7_sit_grain value = 0 } }
+        }
+    }
+}
+# CHI scope (v14.5 Action #4): summon up to 4 cavalry regiments from loyal (loy >= 70) appanage princes using real prince manpower.
+oe_y7_rtr_summon_princes_fx = {
+    set_global_variable = { name = oe_y7_tmp value = 0 }
+    if = { limit = { exists = scope:oe_y7_aim } clear_saved_scope = oe_y7_aim }
+    if = { limit = { owns = location:dadu location:dadu = { controller ?= c:CHI } } location:dadu = { save_scope_as = oe_y7_aim } }
+    else = { capital ?= { save_scope_as = oe_y7_aim } }
+    oe_y7_find_spot = yes
+    if = {
+        limit = { exists = scope:oe_y7_at }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:QAS
+                c:QAS = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:QAS = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_hc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_hc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:HCN
+                c:HCN = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:HCN = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_lc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_lc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:OTC
+                c:OTC = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:OTC = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_hc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_hc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:BGT
+                c:BGT = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:BGT = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_lc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_lc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:OGE
+                c:OGE = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:OGE = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_hc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_hc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:LNG
+                c:LNG = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:LNG = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_lc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_lc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:SYG
+                c:SYG = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:SYG = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_hc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_hc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:YLU
+                c:YLU = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:YLU = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_lc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_lc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:YZW
+                c:YZW = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:YZW = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_hc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_hc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+        if = {
+            limit = {
+                global_var:oe_y7_tmp < 4
+                country_exists = c:YBN
+                c:YBN = { is_subject_of = c:CHI has_variable = oe_yw_prince has_variable = oe_yw_loy var:oe_yw_loy >= 70 manpower >= 0.4 }
+            }
+            c:YBN = {
+                add_manpower = -0.4
+                add_opinion = { modifier = oe_y7_bias_prince_summon target = c:CHI }
+                capital ?= { save_scope_as = oe_y7_origin }
+            }
+            if = { limit = { exists = scope:oe_y7_origin } scope:oe_y7_at = { oe_y7_u_lc_o = yes } }
+            else = { scope:oe_y7_at = { oe_y7_u_lc = yes } }
+            change_global_variable = { name = oe_y7_tmp add = 1 }
+        }
+    }
+    if = { limit = { has_global_variable = oe_y7_tmp } remove_global_variable = oe_y7_tmp }
+}
+# Country scope (v14.5 Action #5): empower selected branch secretariat with wartime Shumiyuan control & levies (+18 warlordism).
+oe_y7_rtr_shumiyuan_apply = {
+    if = {
+        limit = { exists = scope:target }
+        scope:target = {
+            if = { limit = { NOT = { has_variable = oe_yp_warlordism } } set_variable = { name = oe_yp_warlordism value = 10 } }
+            change_variable = { name = oe_yp_warlordism add = 18 }
+            clamp_variable = { name = oe_yp_warlordism min = 0 max = 100 }
+        }
+        if = {
+            limit = { scope:target = { is_subject_type = oe_yp_xingsheng has_variable = oe_yp_unit } }
+            scope:actor = {
+                every_owned_location = {
+                    limit = { has_variable = oe_yp_unit var:oe_yp_unit = scope:target.var:oe_yp_unit }
+                    change_control = 0.10
+                    add_location_modifier = { modifier = oe_y7_rtr_branch_shumiyuan_loc years = 5 mode = replace }
+                }
+            }
+        }
+        else = {
+            scope:target = {
+                every_owned_location = {
+                    change_control = 0.10
+                    add_location_modifier = { modifier = oe_y7_rtr_branch_shumiyuan_loc years = 5 mode = replace }
+                }
+            }
+        }
+    }
+}
+oe_y7_job_pr_office_1 = {
+    province_definition:yangzhou_province = {
+        every_location_in_province_definition = {
+            limit = { owner ?= c:CHI }
+            add_location_modifier = { modifier = oe_y7_prince_shumiyuan_seat years = 10 mode = replace }
+        }
+    }
+    if = { limit = { manpower >= 0.6 } add_manpower = -0.6 }
+    location:jiangdu = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } if = { limit = { exists = character:oe_y7_zhennan character:oe_y7_zhennan = { is_alive = yes owner ?= c:CHI } } set_as_commander = character:oe_y7_zhennan } } } debug_log = "oe_y7: 2 regiments (pr_office) raised for the Yuan" }
+    oe_y7_add_court = { amount = -3 }
+    oe_y7_rtr_sync_sit_vars = yes
+}
+oe_y7_job_pr_recall_1 = {
+    province_definition:yangzhou_province = { every_location_in_province_definition = { limit = { has_location_modifier = oe_y7_seat_guard } remove_location_modifier = oe_y7_seat_guard } }
+    add_country_modifier = { modifier = oe_y7_prince_capital_guard years = 15 mode = replace }
+    character:oe_y7_zhennan ?= { if = { limit = { is_alive = yes } remove_commander = this } }
+    set_global_variable = { name = oe_y7_ps_1 value = 5 }
+    oe_y7_rtr_sync_sit_vars = yes
+}
+oe_y7_job_pr_office_2 = {
+    province_definition:wuchang_province = {
+        every_location_in_province_definition = {
+            limit = { owner ?= c:CHI }
+            add_location_modifier = { modifier = oe_y7_prince_shumiyuan_seat years = 10 mode = replace }
+        }
+    }
+    if = { limit = { manpower >= 0.6 } add_manpower = -0.6 }
+    location:jiangxia = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } if = { limit = { exists = character:oe_y7_weishun character:oe_y7_weishun = { is_alive = yes owner ?= c:CHI } } set_as_commander = character:oe_y7_weishun } } } debug_log = "oe_y7: 2 regiments (pr_office) raised for the Yuan" }
+    oe_y7_add_court = { amount = -3 }
+    oe_y7_rtr_sync_sit_vars = yes
+}
+oe_y7_job_pr_recall_2 = {
+    province_definition:wuchang_province = { every_location_in_province_definition = { limit = { has_location_modifier = oe_y7_seat_guard } remove_location_modifier = oe_y7_seat_guard } }
+    add_country_modifier = { modifier = oe_y7_prince_capital_guard years = 15 mode = replace }
+    character:oe_y7_weishun ?= { if = { limit = { is_alive = yes } remove_commander = this } }
+    set_global_variable = { name = oe_y7_ps_2 value = 5 }
+    oe_y7_rtr_sync_sit_vars = yes
+}
+oe_y7_job_pr_office_3 = {
+    province_definition:luzhou_province = {
+        every_location_in_province_definition = {
+            limit = { owner ?= c:CHI }
+            add_location_modifier = { modifier = oe_y7_prince_shumiyuan_seat years = 10 mode = replace }
+        }
+    }
+    if = { limit = { manpower >= 0.6 } add_manpower = -0.6 }
+    location:hefei = { save_scope_as = oe_y7_aim } oe_y7_find_spot = yes if = { limit = { exists = scope:oe_y7_at } scope:oe_y7_at = { oe_y7_u_lc = yes oe_y7_u_hc = yes random_unit_in_location = { limit = { owner ?= c:CHI is_navy = no has_commander = no } if = { limit = { exists = character:oe_y7_xuanrang character:oe_y7_xuanrang = { is_alive = yes owner ?= c:CHI } } set_as_commander = character:oe_y7_xuanrang } } } debug_log = "oe_y7: 2 regiments (pr_office) raised for the Yuan" }
+    oe_y7_add_court = { amount = -3 }
+    oe_y7_rtr_sync_sit_vars = yes
+}
+oe_y7_job_pr_recall_3 = {
+    province_definition:luzhou_province = { every_location_in_province_definition = { limit = { has_location_modifier = oe_y7_seat_guard } remove_location_modifier = oe_y7_seat_guard } }
+    add_country_modifier = { modifier = oe_y7_prince_capital_guard years = 15 mode = replace }
+    character:oe_y7_xuanrang ?= { if = { limit = { is_alive = yes } remove_commander = this } }
+    set_global_variable = { name = oe_y7_ps_3 value = 5 }
+    oe_y7_rtr_sync_sit_vars = yes
 }
 
 # ---- TEST ONLY: copies every reading of the report event oe_y7.90 onto the current scope ----

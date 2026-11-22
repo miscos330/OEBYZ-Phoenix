@@ -12,12 +12,21 @@ oe_ely_fallback_pulse = {
 		is_rebel_country = no
 		NOT = { oe_ely_rule_is_off = yes }
 		NOT = { var:oe_ely_ran_m ?= oe_ml_month_now }
-		NOT = { has_variable = oe_ely_charter_proclaimed }
+		OR = {
+			NOT = { has_variable = oe_ely_charter_proclaimed }
+			AND = {
+				has_global_variable = oe_ely_settled
+				oe_ely_is_elysian_host = yes
+				NOT = { has_variable = oe_ely_landfall_v2_done }
+			}
+		}
 		NOT = { has_global_variable = oe_ely_aborted }
 		OR = {
 			AND = { tag = BYZ is_rebel_country = no }
 			tag = TRE
 			tag = FEO
+			tag = ELR
+			has_or_had_tag = ELR
 			has_variable = oe_ely_voyager
 			has_variable = oe_ely_is_elysia
 		}
@@ -31,7 +40,7 @@ oe_ely_fallback_pulse = {
 	}
 }
 
-# Lightweight non-BYZ fallback pulse for Slots 73-74 (TRE / FEO / ROM human Nova Elysia hosts).
+# Lightweight non-BYZ fallback pulse for Slots 73-74 (ELR / TRE / FEO / ROM human Nova Elysia hosts).
 # Disjoint from oe_mainline_lock (which only runs on BYZ), so BYZ never double-ticks.
 oe_eln_elr_fallback_pulse = {
 	trigger = {
@@ -40,7 +49,7 @@ oe_eln_elr_fallback_pulse = {
 		NOT = { tag = BYZ }
 		NOT = { oe_ely_rule_is_off = yes }
 		has_global_variable = oe_ely_settled
-		has_variable = oe_ely_is_elysia
+		oe_ely_is_elysian_host = yes
 	}
 	effect = {
 		oe_eln_monthly = yes

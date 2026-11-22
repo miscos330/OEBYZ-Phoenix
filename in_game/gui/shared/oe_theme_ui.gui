@@ -157,6 +157,47 @@ template oe_theme_ui_page {
                 tooltip = "OE_TB2_SUM_TT"
                 fontsize = 14
             }
+            # NEW 2026-11-22 v13.6 W1: Collapsible Theme Force Targets (migrated from Overview red box).
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                spacing = 4
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    spacing = 6
+                    widget = {
+                        size = { 26 32 }
+                        button = {
+                            size = { 22 22 } parentanchor = center
+                            visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_ui2_tfr_open'))]"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_ui2_tfr_open')]"
+                            texture = "gfx/interface/buttons/flats/button_simple_right.dds"
+                            using = button_regular_icon_color
+                            tooltip = "OE_UI2_TFR_FOLD_TT"
+                        }
+                        button = {
+                            size = { 22 22 } parentanchor = center
+                            visible = "[InternationalOrganizationsView.Vars.Exists('oe_ui2_tfr_open')]"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_ui2_tfr_open')]"
+                            texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+                            using = button_regular_icon_color
+                            tooltip = "OE_UI2_TFR_FOLD_TT"
+                        }
+                    }
+                    button_secondary_tab_alt = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 32 }
+                        blockoverride "tab_text" { text = "OE_UI2_TFR_FOLD_TITLE" fontsize = 15 }
+                        tooltip = "OE_UI2_TFR_FOLD_TT"
+                        onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_ui2_tfr_open')]"
+                        down = "[InternationalOrganizationsView.Vars.Exists('oe_ui2_tfr_open')]"
+                    }
+                }
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    visible = "[InternationalOrganizationsView.Vars.Exists('oe_ui2_tfr_open')]"
+                    using = oe_pillars_force_targets_panel
+                }
+            }
             # Theme revolt under way: rebels' hold on Constantinople (gen_theme_usurp.py).
             vbox = {
                 layoutpolicy_horizontal = expanding

@@ -7,13 +7,8 @@ oe_cel_dec_yuan_kurultai = {
 		is_rebel_country = no
 		oe_cel_is_yuan_track = yes
 		NOT = { has_variable = oe_cel_dec_yuan_kurultai_done }
-
 	}
 	allow = {
-		custom_tooltip = {
-			text = oe_cel_player_only_tt
-			is_ai = no
-		}
 		custom_tooltip = {
 			text = oe_cel_two_fiefs_tt
 			any_subject = {
@@ -26,10 +21,23 @@ oe_cel_dec_yuan_kurultai = {
 		}
 		gold >= 100
 	}
-	ai_will_do = { value = 0 }
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				oe_cel_ai_enabled = yes
+				gold >= 200
+				oe_cel_revocation_heat_value >= 1
+			}
+			value = 45
+		}
+	}
 	illustration_tags = { 10 = exterior }
 	option = {
 		name = oe_cel_dec_yuan_kurultai.a
+		ai_chance = {
+			value = 100
+		}
 		effect = {
 			set_variable = { name = oe_cel_dec_yuan_kurultai_done value = 1 }
 			add_gold = -100
@@ -55,20 +63,27 @@ oe_cel_dec_ming_zongren_fu = {
 		is_rebel_country = no
 		oe_cel_is_han_ming_track = yes
 		NOT = { has_variable = oe_cel_dec_ming_zongren_fu_done }
-
 	}
 	allow = {
-		custom_tooltip = {
-			text = oe_cel_player_only_tt
-			is_ai = no
-		}
 		any_subject = { is_subject_type = oe_cel_fanwang }
 		gold >= 80
 	}
-	ai_will_do = { value = 0 }
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				oe_cel_ai_enabled = yes
+				gold >= 160
+			}
+			value = 45
+		}
+	}
 	illustration_tags = { 10 = exterior }
 	option = {
 		name = oe_cel_dec_ming_zongren_fu.a
+		ai_chance = {
+			value = 100
+		}
 		effect = {
 			set_variable = { name = oe_cel_dec_ming_zongren_fu_done value = 1 }
 			add_gold = -80
@@ -84,13 +99,8 @@ oe_cel_dec_qing_mengqi = {
 		is_rebel_country = no
 		oe_cel_is_manchu_qing_track = yes
 		NOT = { has_variable = oe_cel_dec_qing_mengqi_done }
-
 	}
 	allow = {
-		custom_tooltip = {
-			text = oe_cel_player_only_tt
-			is_ai = no
-		}
 		custom_tooltip = {
 			text = oe_cel_mongol_commission_tt
 			any_subject = {
@@ -99,10 +109,19 @@ oe_cel_dec_qing_mengqi = {
 			}
 		}
 	}
-	ai_will_do = { value = 0 }
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { oe_cel_ai_enabled = yes }
+			value = 45
+		}
+	}
 	illustration_tags = { 10 = exterior }
 	option = {
 		name = oe_cel_dec_qing_mengqi.a
+		ai_chance = {
+			value = 100
+		}
 		effect = {
 			set_variable = { name = oe_cel_dec_qing_mengqi_done value = 1 }
 			every_subject = {
@@ -130,16 +149,29 @@ oe_cel_dec_alt_mandate = {
 		}
 	}
 	allow = {
-		custom_tooltip = {
-			text = oe_cel_player_only_tt
-			is_ai = no
-		}
 		stability >= 0
 	}
-	ai_will_do = { value = 0 }
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { oe_cel_ai_enabled = yes }
+			value = 45
+		}
+	}
 	illustration_tags = { 10 = exterior }
 	option = {
 		name = oe_cel_dec_alt_mandate.a
+		ai_chance = {
+			value = 25
+			if = {
+				limit = { oe_cel_is_sinosphere_alt_track = yes }
+				value = 75
+			}
+			else_if = {
+				limit = { oe_cel_is_foreign_conqueror_track = yes }
+				value = 15
+			}
+		}
 		effect = {
 			set_variable = { name = oe_cel_dec_alt_mandate_done value = 1 }
 			add_country_modifier = { modifier = oe_cel_full_sinicization_mod years = 30 mode = replace }
@@ -148,6 +180,17 @@ oe_cel_dec_alt_mandate = {
 	}
 	option = {
 		name = oe_cel_dec_alt_mandate.b
+		ai_chance = {
+			value = 25
+			if = {
+				limit = { oe_cel_is_foreign_conqueror_track = yes }
+				value = 85
+			}
+			else_if = {
+				limit = { oe_cel_is_sinosphere_alt_track = yes }
+				value = 25
+			}
+		}
 		effect = {
 			set_variable = { name = oe_cel_dec_alt_mandate_done value = 1 }
 			add_country_modifier = { modifier = oe_cel_dual_sovereign_mod years = 30 mode = replace }

@@ -123,10 +123,22 @@ oe_cel.6 = {
 			var:oe_cel_rebel_fief ?= {
 				add_liberty_desire = 50
 			}
-			add_casus_belli = {
-				target = var:oe_cel_rebel_fief
-				type = casus_belli:oe_cel_cb_punish_rebel_fief
-				years = 10
+			if = {
+				limit = {
+					var:oe_cel_rebel_fief ?= {
+						is_rebel_country = no
+						num_locations > 0
+						NOT = { this = root }
+						NOT = { is_allied_with = { target = root } }
+						NOT = { is_at_war_with = root }
+					}
+					NOT = { has_casus_belli_on = var:oe_cel_rebel_fief }
+				}
+				add_casus_belli = {
+					target = var:oe_cel_rebel_fief
+					type = casus_belli:oe_cel_cb_punish_rebel_fief
+					years = 10
+				}
 			}
 		}
 	}
@@ -520,7 +532,270 @@ oe_cel.24 = {
 	}
 }
 
-# 90. Dev page 83 readout
+# 25. Yuan Touxia dual-path commutation / provincialization (fired by oe_cel_ci_touxia_provincialize)
+oe_cel.25 = {
+	type = country_event
+	title = oe_cel.25.title
+	desc = oe_cel.25.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_cel2_touxia_province.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_cel.25.a
+		ai_chance = { base = 80 }
+		if = {
+			limit = { has_variable = oe_cel_touxia_prov_target }
+			var:oe_cel_touxia_prov_target ?= {
+				add_country_modifier = { modifier = oe_cel_touxia_commuted_chao_mod mode = replace }
+				set_variable = { name = oe_cel_touxia_commuted value = 1 }
+			}
+			remove_variable = oe_cel_touxia_prov_target
+		}
+		if = {
+			limit = { has_variable = oe_cel_dev_ev25_unlock }
+			remove_variable = oe_cel_dev_ev25_unlock
+		}
+		add_country_modifier = { modifier = oe_cel_yuan_xingsheng_fiscal_mod years = 15 mode = replace }
+		oe_cel_cool_revocation_tension = { amount = 1 }
+		oe_cel_sync_duhu_count = yes
+	}
+	option = {
+		name = oe_cel.25.b
+		trigger = {
+			OR = {
+				has_variable = oe_cel_dev_ev25_unlock
+				AND = {
+					current_year >= 1410
+					gold >= 180
+					NOT = { has_variable = oe_cel_crisis_active }
+					trigger_if = {
+						limit = { has_variable = oe_cel_touxia_prov_target }
+						var:oe_cel_touxia_prov_target ?= {
+							is_subject_of = root
+							is_subject_type = oe_yw_touxia
+							subject_loyalty >= 60
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				factor = 0
+				NOT = { current_celestial_authority = { value = 80 } }
+			}
+			modifier = {
+				factor = 0
+				gold < 400
+			}
+		}
+		if = {
+			limit = { gold >= 180 }
+			add_gold = -180
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_cel_touxia_provincialized_count } }
+			set_variable = { name = oe_cel_touxia_provincialized_count value = 0 }
+		}
+		change_variable = { name = oe_cel_touxia_provincialized_count add = 1 }
+		if = {
+			limit = { has_variable = oe_cel_touxia_prov_target }
+			var:oe_cel_touxia_prov_target ?= {
+				if = {
+					limit = {
+						is_subject_of = root
+						is_subject_type = oe_yw_touxia
+					}
+					change_subject_type = subject_type:vassal
+					if = {
+						limit = { has_variable = oe_yw_prince }
+						remove_variable = oe_yw_prince
+					}
+					set_variable = { name = oe_yw_out value = 5 }
+					if = {
+						limit = { has_variable = oe_yw_fy_lost }
+						remove_variable = oe_yw_fy_lost
+					}
+					if = {
+						limit = { has_country_modifier = oe_yw_tier_loyal }
+						remove_country_modifier = oe_yw_tier_loyal
+					}
+					if = {
+						limit = { has_country_modifier = oe_yw_tier_aloof }
+						remove_country_modifier = oe_yw_tier_aloof
+					}
+					if = {
+						limit = { has_country_modifier = oe_yw_tier_estranged }
+						remove_country_modifier = oe_yw_tier_estranged
+					}
+					add_country_modifier = { modifier = oe_cel_touxia_transition_grant_mod years = 10 mode = replace }
+				}
+			}
+			remove_variable = oe_cel_touxia_prov_target
+		}
+		if = {
+			limit = { has_variable = oe_cel_dev_ev25_unlock }
+			remove_variable = oe_cel_dev_ev25_unlock
+		}
+		oe_cel_bump_revocation_tension = yes
+		oe_cel_sync_duhu_count = yes
+	}
+}
+
+# 26. Nanyang Palembang / Malacca hub milestone (yearly pulse, 1400+)
+oe_cel.26 = {
+	type = country_event
+	title = oe_cel.26.title
+	desc = oe_cel.26.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_cel2_nanyang_malacca.dds"
+	trigger = { is_rebel_country = no }
+	immediate = {
+		set_variable = { name = oe_cel_ev26_done value = 1 }
+	}
+	option = {
+		name = oe_cel.26.a
+		ai_chance = { base = 70 }
+		add_prestige = 10
+		change_celestial_authority = { value = celestial_authority_very_weak_bonus }
+		add_country_modifier = { modifier = oe_cel_nanyang_hub_mod years = 25 mode = replace }
+	}
+	option = {
+		name = oe_cel.26.b
+		ai_chance = { base = 30 }
+		add_gold = -60
+		add_country_modifier = { modifier = oe_cel_nanyang_fleet_depot_mod years = 25 mode = replace }
+	}
+}
+
+# 27. Indian Ocean Treasure Fleet milestone at Calicut / Kotte (yearly pulse)
+oe_cel.27 = {
+	type = country_event
+	title = oe_cel.27.title
+	desc = oe_cel.27.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_cel_treasure_ocean.dds"
+	trigger = { is_rebel_country = no }
+	immediate = {
+		set_variable = { name = oe_cel_ev27_done value = 1 }
+	}
+	option = {
+		name = oe_cel.27.a
+		ai_chance = { base = 75 }
+		add_gold = -80
+		add_prestige = 15
+		add_country_modifier = { modifier = oe_cel_indian_ocean_stele_mod years = 25 mode = replace }
+		if = {
+			limit = {
+				country_exists = c:ZMR
+				NOT = { tag = ZMR }
+			}
+			c:ZMR = { add_opinion = { target = root modifier = oe_cel_op_enfeoffed } }
+		}
+		if = {
+			limit = {
+				country_exists = c:VIJ
+				NOT = { tag = VIJ }
+			}
+			c:VIJ = { add_opinion = { target = root modifier = oe_cel_op_enfeoffed } }
+		}
+		location:kotte = {
+			if = {
+				limit = {
+					has_owner = yes
+					owner = {
+						NOT = { this = root }
+						is_rebel_country = no
+					}
+				}
+				owner = { add_opinion = { target = root modifier = oe_cel_op_enfeoffed } }
+			}
+		}
+	}
+	option = {
+		name = oe_cel.27.b
+		ai_chance = { base = 25 }
+		add_prestige = 10
+		change_celestial_authority = { value = celestial_authority_very_weak_bonus }
+	}
+}
+
+# 28. Western Regions Hami / Turpan / Kashgar hub milestone (yearly pulse)
+oe_cel.28 = {
+	type = country_event
+	title = oe_cel.28.title
+	desc = oe_cel.28.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_cel_duhu_opening.dds"
+	trigger = { is_rebel_country = no }
+	immediate = {
+		set_variable = { name = oe_cel_ev28_done value = 1 }
+	}
+	option = {
+		name = oe_cel.28.a
+		ai_chance = { base = 70 }
+		add_prestige = 10
+		add_country_modifier = { modifier = oe_cel_western_regions_relay_mod years = 25 mode = replace }
+	}
+	option = {
+		name = oe_cel.28.b
+		ai_chance = { base = 30 }
+		add_gold = 120
+		change_celestial_authority = { value = celestial_authority_very_weak_bonus }
+	}
+}
+
+# 29. Northeast Nurgan / Ningguta milestone (yearly pulse)
+oe_cel.29 = {
+	type = country_event
+	title = oe_cel.29.title
+	desc = oe_cel.29.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_cel_mandate_court.dds"
+	trigger = { is_rebel_country = no }
+	immediate = {
+		set_variable = { name = oe_cel_ev29_done value = 1 }
+	}
+	option = {
+		name = oe_cel.29.a
+		ai_chance = { base = 75 }
+		add_prestige = 12
+		change_celestial_authority = { value = celestial_authority_very_weak_bonus }
+		add_country_modifier = { modifier = oe_cel_nurgan_stele_mod years = 25 mode = replace }
+	}
+	option = {
+		name = oe_cel.29.b
+		ai_chance = { base = 25 }
+		add_gold = 90
+		add_country_modifier = { modifier = oe_cel_nurgan_fur_market_mod years = 20 mode = replace }
+	}
+}
+
+# 30. Prince recalled to court (fired by oe_cel_chi_recall_prince)
+oe_cel.30 = {
+	type = country_event
+	title = oe_cel.30.title
+	desc = oe_cel.30.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_cel2_recall_prince.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_cel.30.a
+		ai_chance = { base = 70 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_cel_court_guard_princes_mod years = 15 mode = replace }
+	}
+	option = {
+		name = oe_cel.30.b
+		ai_chance = { base = 30 }
+		add_gold = -40
+		change_celestial_authority = { value = celestial_authority_very_weak_bonus }
+		oe_cel_cool_revocation_tension = { amount = 1 }
+	}
+}
+
+# 90. Dev page 83 & 87 readout (Celestial 2.0)
 oe_cel.90 = {
 	type = country_event
 	title = oe_cel.90.title
@@ -540,7 +815,15 @@ oe_cel.90 = {
 			}
 			desc = oe_cel.90.desc_override_off
 		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { oe_cel_ai_enabled = yes }
+				desc = oe_cel.90.desc_ai_on
+			}
+			desc = oe_cel.90.desc_ai_off
+		}
 		desc = oe_cel.90.desc_counts
+		desc = oe_cel.90.desc_cel2_counts
 		first_valid = {
 			triggered_desc = {
 				trigger = { has_variable = oe_cel_crisis_active }

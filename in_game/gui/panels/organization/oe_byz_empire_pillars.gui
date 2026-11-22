@@ -5,6 +5,7 @@ organization_panel = {
     blockoverride "io_overview_actions" {}
     blockoverride "organization_overview_payments" {}
     blockoverride "organization_custom_tabs" {
+        # v13.6 W1: Slimmed top tab bar to 4 permanent tabs (Overview | Edicts | Themes | Entropy).
         button_secondary_tab_alt = {
             using = layoutpolicy_expanding
             blockoverride "tab_text" { text = "OE_PILLARS_EDICTS" }
@@ -14,70 +15,28 @@ organization_panel = {
             onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
             down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_edicts')]"
         }
-    
-button_secondary_tab_alt = {
-        using = layoutpolicy_expanding
-        blockoverride "tab_text" { text = "OE_CHR_TAB_REFORMS" }
-        tooltip = "OE_PILLARS_REFORMS_DESC"
-        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_reforms')]"
-            onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
-            onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
-        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_reforms')]"
-    }
-    # NEW 2026-11-17 theme-rework UI-1: 军区 tab (page body in gui/shared/oe_theme_ui.gui).
-    button_secondary_tab_alt = {
-        using = layoutpolicy_expanding
-        blockoverride "tab_text" { text = "OE_PILLARS_THEMES" }
-        tooltip = "OE_PILLARS_THEMES_DESC"
-        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_themes')]"
-        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
-        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
-        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_themes')]"
-    }
-    # NEW 2026-11-18 territory rework UI: 附庸 tab (page body in gui/shared/oe_vassal_ui.gui, gen_territory_ui.py).
-    button_secondary_tab_alt = {
-        using = layoutpolicy_expanding
-        blockoverride "tab_text" { text = "OE_PILLARS_VASSALS" }
-        tooltip = "OE_PILLARS_VASSALS_DESC"
-        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_vassals')]"
-        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
-        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
-        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_vassals')]"
-    }
-    # NEW 2026-11-19 r7 F3: 编年史 tab (page body in gui/shared/oe_chronicle_ui.gui, gen_chronicle.py).
-    button_secondary_tab_alt = {
-        using = layoutpolicy_expanding
-        blockoverride "tab_text" { text = "OE_CHR_TAB" }
-        tooltip = "OE_CHR_TAB_DESC"
-        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_chronicle')]"
-        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
-        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
-        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_chronicle')]"
-    }
-    # NEW 2026-11-21 v9.0 Route 2: 熵增 tab (page body in gui/shared/oe_ent_dashboard_ui.gui, gen_empire_entropy.py).
-    button_secondary_tab_alt = {
-        using = layoutpolicy_expanding
-        blockoverride "tab_text" { text = "OE_PILLARS_ENTROPY" }
-        tooltip = "OE_PILLARS_ENTROPY_DESC"
-        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_entropy')]"
-        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
-        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
-        down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_entropy')]"
-    }
-
-        
-}
-    blockoverride "organization_custom_tabs_right" {
+        # NEW 2026-11-17 theme-rework UI-1: 军区 tab (page body in gui/shared/oe_theme_ui.gui).
         button_secondary_tab_alt = {
             using = layoutpolicy_expanding
-            visible = "[GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
-            blockoverride "tab_text" { text = "OE_COURT_TITLE" }
-            tooltip = "OE_COURT_DESC"
-            onclick = "[GetScriptedGui('oe_nf_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
-            onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_court')]"
-            down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_court')]"
+            blockoverride "tab_text" { text = "OE_PILLARS_THEMES" }
+            tooltip = "OE_PILLARS_THEMES_DESC"
+            onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_themes')]"
+            onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+            onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+            down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_themes')]"
+        }
+        # NEW 2026-11-21 v9.0 Route 2: 熵增 tab (page body in gui/shared/oe_ent_dashboard_ui.gui, gen_empire_entropy.py).
+        button_secondary_tab_alt = {
+            using = layoutpolicy_expanding
+            blockoverride "tab_text" { text = "OE_PILLARS_ENTROPY" }
+            tooltip = "OE_PILLARS_ENTROPY_DESC"
+            onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_entropy')]"
+            onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+            onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+            down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_entropy')]"
         }
     }
+    blockoverride "organization_custom_tabs_right" {}
     blockoverride "organization_custom_contents" {
         scrollarea = {
             using = layoutpolicy_expanding
@@ -811,18 +770,23 @@ widget = {
         visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_themes')]"
         using = oe_theme_ui_page
     }
-# NEW 2026-11-18 territory rework UI: 附庸 page.
-widget = {
-        using = layoutpolicy_expanding
-        visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_vassals')]"
-        using = oe_vassal_ui_page
-    }
-# NEW 2026-11-19 r7 F3: 编年史 page.
-widget = {
-        using = layoutpolicy_expanding
+# [V136_W1_CHRONICLE_PAGE_BEGIN]
+# NEW 2026-11-19 r7 F3 / v13.6 W1: 编年史 subview with Back-to-Overview bar (oe_chronicle_ui.gui untouched).
+vbox = {
+        layoutpolicy_horizontal = expanding
+        layoutpolicy_vertical = expanding
         visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_chronicle')]"
-        using = oe_chr_page
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            margin = { 16 6 }
+            using = oe_ui2_back_to_overview_bar
+        }
+        widget = {
+            using = layoutpolicy_expanding
+            using = oe_chr_page
+        }
     }
+# [V136_W1_CHRONICLE_PAGE_END]
 # NEW 2026-11-21 v9.0 Route 2: 熵增 page (O(1) visual dashboard in gui/shared/oe_ent_dashboard_ui.gui).
 widget = {
         using = layoutpolicy_expanding
@@ -852,6 +816,9 @@ widget = {
             scrollwidget = {
                 vbox = {
                     layoutpolicy_horizontal = expanding margin = { 28 24 } spacing = 14
+                    # [V136_W1_REFORMS_BACK_BEGIN]
+                    using = oe_ui2_back_to_overview_bar
+                    # [V136_W1_REFORMS_BACK_END]
                     card_common = {
         blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
         blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
@@ -1602,6 +1569,13 @@ widget = {
                 vbox = {
                     layoutpolicy_horizontal = expanding
                     margin = { 4 4 } spacing = 0
+                    # [V136_W1_COURT_BACK_BEGIN]
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        margin = { 12 4 }
+                        using = oe_ui2_back_to_overview_bar
+                    }
+                    # [V136_W1_COURT_BACK_END]
                     hbox = {
                         layoutpolicy_horizontal = expanding
                         expand = {}
@@ -1659,7 +1633,7 @@ widget = {
     blockoverride "organization_treasury_tab_visible" { visible = no }
     blockoverride "organization_treasury_content_visible" { visible = no }
     blockoverride "organization_laws_tab_visible" { visible = no }
-    blockoverride "organization_custom_tab_visible" { visible = yes }
+    blockoverride "organization_custom_tab_visible" { visible = no }
     blockoverride "organization_custom_tab_text" { text = "OE_PILLARS_TRANSFERS" }
     blockoverride "organization_custom_tab_tooltip" { tooltip = "OE_PILLARS_TRANSFERS_DESC" }
     blockoverride "organization_custom_content_visible" {
@@ -1676,6 +1650,9 @@ widget = {
                     layoutpolicy_horizontal = expanding
                     margin = { 10 8 }
                     spacing = 10
+                    # [V136_W1_CUSTOM_BACK_BEGIN]
+                    using = oe_ui2_back_to_overview_bar
+                    # [V136_W1_CUSTOM_BACK_END]
                     text_single = { text = "OE_PILLARS_TRANSFERS_DESC" fontsize = 17 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
                     card_common = {
         blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
@@ -1739,7 +1716,6 @@ card_common = {
     # Painting-only header. Resources, laws and history are in the overview below.
     blockoverride "organization_art_header" {
         widget = {
-            visible = "[Not(And(InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_court'), GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)))]"
             layoutpolicy_horizontal = expanding
             size = { -1 220 }
             allow_outside = yes
@@ -1890,6 +1866,105 @@ card_common = {
 #                 }
 
             }
+            # [V136_W1_CHRONICLE_BANNER_BEGIN]
+            # NEW 2026-11-22 v13.6 W1: Prominent Imperial Chronicle banner + 3 compact subview entry buttons.
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                margin = { 10 0 }
+                spacing = 6
+                button = {
+                    layoutpolicy_horizontal = expanding
+                    size = { -1 54 }
+                    using = bg_paper_card
+                    using = oe_header_imperial_purple
+                    tooltip = "OE_UI2_CHR_BANNER_TT"
+                    onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_chronicle')]"
+                    onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                    onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                    hbox = {
+                        size = { 100% 100% }
+                        margin = { 12 6 }
+                        spacing = 10
+                        icon = {
+                            size = { 34 34 }
+                            texture = "gfx/interface/icons/international_organizations/oe_ui2_chronicle_banner.dds"
+                            alwaystransparent = yes
+                        }
+                        vbox = {
+                            layoutpolicy_horizontal = expanding
+                            spacing = 1
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                autoresize = no
+                                size = { -1 22 }
+                                elide = right
+                                fontsize = 17
+                                default_format = "#bold #color_gold"
+                                text = "OE_UI2_CHR_BANNER_TITLE"
+                            }
+                            text_single = {
+                                layoutpolicy_horizontal = expanding
+                                autoresize = no
+                                size = { -1 18 }
+                                elide = right
+                                fontsize = 13
+                                default_format = "#weak"
+                                text = "OE_UI2_CHR_BANNER_SUB"
+                            }
+                        }
+                        widget = {
+                            size = { 148 34 }
+                            using = bg_dark_paper_card
+                            using = bg_header_golden_frame
+                            alwaystransparent = yes
+                            text_single = {
+                                size = { 100% 100% }
+                                autoresize = no
+                                align = center|nobaseline
+                                fontsize = 13
+                                text = "OE_UI2_CHR_BANNER_BADGE"
+                            }
+                        }
+                    }
+                }
+                hbox = {
+                    layoutpolicy_horizontal = expanding
+                    spacing = 6
+                    button_regular_paper_card_hre = {
+                        layoutpolicy_horizontal = expanding
+                        layoutstretchfactor_horizontal = 1
+                        size = { -1 38 }
+                        tooltip = "OE_PILLARS_REFORMS_DESC"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_reforms')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        text_single = { parentanchor = center text = "OE_CHR_TAB_REFORMS" fontsize = 15 }
+                    }
+                    button_regular_paper_card_hre = {
+                        layoutpolicy_horizontal = expanding
+                        layoutstretchfactor_horizontal = 1
+                        size = { -1 38 }
+                        tooltip = "OE_PILLARS_TRANSFERS_DESC"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'custom')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        text_single = { parentanchor = center text = "OE_PILLARS_TRANSFERS" fontsize = 15 }
+                    }
+                    button_regular_paper_card_hre = {
+                        layoutpolicy_horizontal = expanding
+                        layoutstretchfactor_horizontal = 1
+                        size = { -1 38 }
+                        visible = "[GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        tooltip = "OE_COURT_DESC"
+                        onclick = "[GetScriptedGui('oe_nf_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_court')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        text_single = { parentanchor = center text = "OE_COURT_TITLE" fontsize = 15 }
+                    }
+                }
+            }
+            # [V136_W1_CHRONICLE_BANNER_END]
             hbox = {
                 layoutpolicy_horizontal = expanding
                 spacing = 12
@@ -1953,21 +2028,25 @@ card_common = {
         texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds"
     }
     blockoverride "organization_overview_special_members" {
+        # NEW 2026-11-22 v13.6 W1: Red box moved to Themes tab, yellow box & redundant rosters removed, scroll-free Vassals embedded here.
         vbox = {
             layoutpolicy_horizontal = expanding
-            using = oe_pillars_force_targets_panel
-            vbox = {
-                layoutpolicy_horizontal = expanding
-                datamodel = "[InternationalOrganizationsView.GetSpecialMemberItems]"
-                item = {
-                    vbox = {
-                        layoutpolicy_horizontal = expanding
-                        visible = "[And(Not(IsDataModelEmpty(MemberTypeItem.GetCountries)), Not(Or(EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_naval_theme'), Or(EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_administrative_theme'), Or(EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_frontier_theme'), Or(EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_italian_theme'), EqualTo_string(MemberTypeItem.GetSpecialStatus.GetKey, 'oe_pillars_latin_theme')))))))]"
-                        using = oe_pillars_member_cards
-                    }
+            spacing = 8
+            card_common = {
+                blockoverride "header_decor_templates" {
+                    using = bg_card_header_01_hre
+                    using = bg_cabinet_card_frame
+                }
+                blockoverride "common_header_icon_texture" {
+                    texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds"
+                }
+                blockoverride "common_header_text_full" {
+                    text_single = { text = "OE_PILLARS_VASSALS" fontsize = 18 }
+                }
+                blockoverride "common_bottom_content" {
+                    using = oe_vassal_ui_body
                 }
             }
-            using = oe_pillars_special_theme_rosters
         }
     }
     blockoverride "organization_members_list_item" {
@@ -2384,3 +2463,53 @@ size = { 152 132 }
                             }
                         }
 }
+
+# [V136_W1_BACK_BAR_TPL_BEGIN]
+# NEW 2026-11-22 v13.6 W1: Shared Back-to-Overview navigation bar for subviews (oe_chronicle, oe_reforms, oe_court, custom).
+template oe_ui2_back_to_overview_bar {
+    widget = {
+        layoutpolicy_horizontal = expanding
+        size = { -1 40 }
+        using = bg_paper_card
+        using = bg_cabinet_card_frame
+        hbox = {
+            size = { 100% 100% }
+            margin = { 8 4 }
+            spacing = 8
+            button_regular_paper_card_hre = {
+                size = { 148 32 }
+                tooltip = "OE_UI2_BACK_OVERVIEW_TT"
+                onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'overview')]"
+                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                text_single = { parentanchor = center text = "OE_UI2_BACK_OVERVIEW" fontsize = 15 }
+            }
+            expand = {}
+            text_single = {
+                visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_chronicle')]"
+                text = "OE_CHR_TITLE"
+                fontsize = 16
+                default_format = "#color_gold"
+            }
+            text_single = {
+                visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_reforms')]"
+                text = "OE_CHR_TAB_REFORMS"
+                fontsize = 16
+                default_format = "#color_gold"
+            }
+            text_single = {
+                visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_court')]"
+                text = "OE_COURT_TITLE"
+                fontsize = 16
+                default_format = "#color_gold"
+            }
+            text_single = {
+                visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'custom')]"
+                text = "OE_PILLARS_TRANSFERS"
+                fontsize = 16
+                default_format = "#color_gold"
+            }
+        }
+    }
+}
+# [V136_W1_BACK_BAR_TPL_END]

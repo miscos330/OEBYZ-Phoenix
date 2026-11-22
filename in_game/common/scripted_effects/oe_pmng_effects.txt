@@ -60,6 +60,34 @@ oe_pmng_host_tick = {
 	# Sync silver fiscal health gently in January (O(1) once per year)
 	if = {
 		limit = { current_month = 1 }
+		# v14.5 Annual safety net: ensure independent MNG is never ruled by a Mongol/Borjigin monarch
+		if = {
+			limit = {
+				tag = MNG
+				is_subject = no
+				OR = {
+					has_ruler = no
+					ruler ?= {
+						OR = {
+							culture = { has_culture_group = culture_group:mongolian_group }
+							AND = { has_dynasty = yes dynasty ?= dynasty:borjigin_dynasty }
+						}
+					}
+				}
+			}
+			create_character = {
+				dynasty = dynasty:rtr_ming_zhu_dynasty
+				age = 26
+				culture = culture:jianghuai_culture
+				religion = religion:sanjiao
+				estate = estate_type:nobles_estate
+				adm = 75
+				dip = 70
+				mil = 75
+				save_scope_as = oe_pmng_zhu_restorer
+			}
+			set_new_ruler = scope:oe_pmng_zhu_restorer
+		}
 		if = {
 			limit = {
 				has_variable = oe_pmng_haijin_axis
@@ -82,11 +110,14 @@ oe_pmng_host_tick = {
 	# Only dispatch one story event every 18 months so events pace naturally across 1355-1800
 	if = {
 		limit = { NOT = { has_variable = oe_pmng_ev_cd } }
-		# Act I (1355-1480)
+		# Act I (1355-1480) — v14.5: delay oe_pmng.1 until Red Turban Rebellions end or >= 1368
 		if = {
 			limit = {
 				NOT = { has_variable = oe_pmng_ev_1 }
-				current_year >= 1355
+				OR = {
+					NOT = { is_situation_active = situation:red_turban_rebellions }
+					current_year >= 1368
+				}
 				current_year <= 1395
 				oe_pmng_holds_china_core = yes
 			}

@@ -3,8 +3,23 @@
 oe_cel_ci_enfeoff_fanwang = {
 	type = diplomacy
 	category = CATEGORY_CHINA_ACTIONS
-	ai_tick = never
+	ai_tick = daily
+	ai_tick_frequency = 720
 	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_cel_ai_enabled = yes
+		oe_cel_is_celestial_emperor = yes
+		at_war = no
+		stability >= 10
+		oe_cel_revocation_heat_value < 2
+		NOT = {
+			any_subject = {
+				is_subject_type = oe_cel_fanwang
+				count >= 3
+			}
+		}
+	}
 
 	potential = {
 		exists = international_organization:middle_kingdom
@@ -71,15 +86,72 @@ oe_cel_ci_enfeoff_fanwang = {
 	}
 
 	ai_will_do = {
-		add = -100
+		add = -10
+		if = {
+			limit = { scope:actor = { NOT = { oe_cel_ai_enabled = yes } } }
+			add = -1000
+		}
+		if = {
+			limit = { scope:recipient = { capital ?= { oe_cel_is_chinese_heartland = yes } } }
+			add = -200
+		}
+		if = {
+			limit = { scope:actor = { oe_cel_is_yuan_track = yes } }
+			add = -50
+		}
+		else_if = {
+			limit = {
+				scope:actor = { oe_cel_is_han_ming_track = yes }
+				scope:recipient = {
+					capital ?= {
+						OR = {
+							region = region:mongolia_region
+							region = region:manchuria_region
+							region = region:korea_region
+							region = region:xinjiang_region
+							region = region:tibet_region
+							region = region:west_china_region
+						}
+					}
+				}
+			}
+			add = 35
+		}
+		else_if = {
+			limit = {
+				scope:actor = { oe_cel_is_manchu_qing_track = yes }
+				scope:recipient = {
+					capital ?= {
+						OR = {
+							region = region:mongolia_region
+							region = region:manchuria_region
+							region = region:xinjiang_region
+							region = region:tibet_region
+						}
+					}
+				}
+			}
+			add = 25
+		}
 	}
 }
 
 oe_cel_ci_revoke_fanwang = {
 	type = diplomacy
 	category = CATEGORY_CHINA_ACTIONS
-	ai_tick = never
+	ai_tick = daily
+	ai_tick_frequency = 720
 	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_cel_ai_enabled = yes
+		oe_cel_is_celestial_emperor = yes
+		at_war = no
+		stability >= 25
+		gold >= 200
+		NOT = { has_variable = oe_cel_crisis_active }
+		oe_cel_revocation_heat_value < 2
+	}
 
 	potential = {
 		exists = international_organization:middle_kingdom
@@ -141,15 +213,49 @@ oe_cel_ci_revoke_fanwang = {
 	}
 
 	ai_will_do = {
-		add = -100
+		add = -10
+		if = {
+			limit = { scope:actor = { NOT = { oe_cel_ai_enabled = yes } } }
+			add = -1000
+		}
+		if = {
+			limit = { current_year < 1430 }
+			add = -100
+		}
+		else_if = {
+			limit = { scope:recipient = { subject_loyalty >= 50 } }
+			add = 25
+		}
+		else_if = {
+			limit = {
+				scope:recipient = { subject_loyalty < 20 }
+				scope:actor = { relative_strength = { target = scope:recipient value >= 0.75 } }
+			}
+			add = 25
+		}
 	}
 }
 
 oe_cel_ci_charter_grand_duhu = {
 	type = diplomacy
 	category = CATEGORY_CHINA_ACTIONS
-	ai_tick = never
+	ai_tick = daily
+	ai_tick_frequency = 720
 	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_cel_ai_enabled = yes
+		oe_cel_is_celestial_emperor = yes
+		at_war = no
+		gold >= 300
+		num_loans < 1
+		NOT = {
+			any_subject = {
+				is_subject_type = oe_cel_grand_duhu
+				count >= 5
+			}
+		}
+	}
 
 	potential = {
 		exists = international_organization:middle_kingdom
@@ -236,15 +342,82 @@ oe_cel_ci_charter_grand_duhu = {
 	}
 
 	ai_will_do = {
-		add = -100
+		add = -5
+		if = {
+			limit = { scope:actor = { NOT = { oe_cel_ai_enabled = yes } } }
+			add = -1000
+		}
+		if = {
+			limit = {
+				scope:recipient = {
+					capital ?= {
+						NOT = { sub_continent = scope:actor.capital.sub_continent }
+					}
+				}
+			}
+			add = 45
+		}
+		if = {
+			limit = {
+				scope:actor = { oe_cel_is_han_ming_track = yes }
+				scope:recipient = {
+					capital ?= {
+						OR = {
+							region = region:indonesia_region
+							region = region:indochina_region
+							region = region:manchuria_region
+						}
+					}
+				}
+			}
+			add = 15
+		}
+		else_if = {
+			limit = {
+				scope:actor = { oe_cel_is_manchu_qing_track = yes }
+				scope:recipient = {
+					capital ?= {
+						OR = {
+							region = region:xinjiang_region
+							region = region:mongolia_region
+							region = region:tibet_region
+						}
+					}
+				}
+			}
+			add = 15
+		}
+		else_if = {
+			limit = {
+				scope:actor = { oe_cel_is_yuan_track = yes }
+				scope:recipient = {
+					capital ?= {
+						OR = {
+							region = region:mongolia_region
+							region = region:steppes_region
+							region = region:korea_region
+						}
+					}
+				}
+			}
+			add = 15
+		}
 	}
 }
 
 oe_cel_ci_grant_xuanweisi = {
 	type = diplomacy
 	category = CATEGORY_CHINA_ACTIONS
-	ai_tick = never
+	ai_tick = daily
+	ai_tick_frequency = 540
 	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_cel_ai_enabled = yes
+		oe_cel_is_celestial_emperor = yes
+		at_war = no
+		stability >= 0
+	}
 
 	potential = {
 		exists = international_organization:middle_kingdom
@@ -297,15 +470,66 @@ oe_cel_ci_grant_xuanweisi = {
 	}
 
 	ai_will_do = {
-		add = -100
+		add = -10
+		if = {
+			limit = { scope:actor = { NOT = { oe_cel_ai_enabled = yes } } }
+			add = -1000
+		}
+		if = {
+			limit = {
+				scope:recipient = {
+					OR = {
+						is_subject_type = tusi
+						AND = {
+							is_subject_type = tributary
+							num_locations <= 15
+						}
+					}
+				}
+			}
+			add = 40
+		}
+		if = {
+			limit = {
+				scope:recipient = {
+					is_subject_type = tributary
+					num_locations > 15
+				}
+			}
+			add = -100
+		}
+		if = {
+			limit = {
+				scope:actor = {
+					OR = {
+						oe_cel_is_han_ming_track = yes
+						oe_cel_is_manchu_qing_track = yes
+					}
+				}
+				scope:recipient = { capital ?= { oe_cel_is_gtgl_core_region = yes } }
+			}
+			add = 15
+		}
 	}
 }
 
 oe_cel_ci_enact_gaituguiliu = {
 	type = diplomacy
 	category = CATEGORY_CHINA_ACTIONS
-	ai_tick = never
+	ai_tick = daily
+	ai_tick_frequency = 720
 	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_cel_ai_enabled = yes
+		oe_cel_is_celestial_emperor = yes
+		at_war = no
+		stability >= 20
+		gold >= 260
+		num_loans < 1
+		current_year >= 1480
+		NOT = { has_country_modifier = oe_cel_gtgl_unrest_mod }
+	}
 
 	potential = {
 		exists = international_organization:middle_kingdom
@@ -398,15 +622,65 @@ oe_cel_ci_enact_gaituguiliu = {
 	}
 
 	ai_will_do = {
-		add = -100
+		add = -15
+		if = {
+			limit = { scope:actor = { NOT = { oe_cel_ai_enabled = yes } } }
+			add = -1000
+		}
+		if = {
+			limit = {
+				scope:recipient = {
+					OR = {
+						subject_loyalty < 50
+						num_locations > 15
+					}
+				}
+			}
+			add = -100
+		}
+		if = {
+			limit = { scope:actor = { oe_cel_is_yuan_track = yes } }
+			add = -50
+		}
+		else_if = {
+			limit = {
+				scope:actor = { oe_cel_is_manchu_qing_track = yes }
+				scope:recipient = {
+					subject_loyalty >= 50
+					num_locations <= 15
+					capital ?= { oe_cel_is_gtgl_core_region = yes }
+				}
+			}
+			add = 50
+		}
+		else_if = {
+			limit = {
+				scope:actor = { oe_cel_is_han_ming_track = yes }
+				current_year >= 1550
+				scope:recipient = {
+					subject_loyalty >= 50
+					num_locations <= 15
+					capital ?= { oe_cel_is_gtgl_core_region = yes }
+				}
+			}
+			add = 25
+		}
 	}
 }
 
 oe_cel_ci_touxia_bridge = {
 	type = diplomacy
 	category = CATEGORY_CHINA_ACTIONS
-	ai_tick = never
+	ai_tick = daily
+	ai_tick_frequency = 720
 	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_cel_ai_enabled = yes
+		oe_cel_is_yuan_track = yes
+		at_war = no
+		stability >= 10
+	}
 
 	potential = {
 		exists = international_organization:middle_kingdom
@@ -452,15 +726,41 @@ oe_cel_ci_touxia_bridge = {
 	}
 
 	ai_will_do = {
-		add = -100
+		add = -10
+		if = {
+			limit = { scope:actor = { NOT = { oe_cel_ai_enabled = yes } } }
+			add = -1000
+		}
+		if = {
+			limit = {
+				scope:recipient = {
+					subject_loyalty >= 60
+					capital ?= {
+						OR = {
+							region = region:mongolia_region
+							region = region:manchuria_region
+						}
+					}
+				}
+			}
+			add = 30
+		}
 	}
 }
 
 oe_cel_ci_kanhe_audit = {
 	type = diplomacy
 	category = CATEGORY_CHINA_ACTIONS
-	ai_tick = never
+	ai_tick = daily
+	ai_tick_frequency = 540
 	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_cel_ai_enabled = yes
+		oe_cel_is_celestial_emperor = yes
+		at_war = no
+		gold < 400
+	}
 
 	potential = {
 		exists = international_organization:middle_kingdom
@@ -515,15 +815,35 @@ oe_cel_ci_kanhe_audit = {
 	}
 
 	ai_will_do = {
-		add = -100
+		add = -10
+		if = {
+			limit = { scope:actor = { NOT = { oe_cel_ai_enabled = yes } } }
+			add = -1000
+		}
+		if = {
+			limit = { scope:recipient = { subject_loyalty >= 55 } }
+			add = 30
+		}
+		if = {
+			limit = { scope:recipient = { subject_loyalty < 45 } }
+			add = -100
+		}
 	}
 }
 
 oe_cel_ci_levy_duhu_fleet = {
 	type = diplomacy
 	category = CATEGORY_CHINA_ACTIONS
-	ai_tick = never
+	block_when_at_war = no
+	ai_tick = daily
+	ai_tick_frequency = 360
 	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_cel_ai_enabled = yes
+		oe_cel_is_celestial_emperor = yes
+		at_war = yes
+	}
 
 	potential = {
 		exists = international_organization:middle_kingdom
@@ -566,6 +886,108 @@ oe_cel_ci_levy_duhu_fleet = {
 	}
 
 	ai_will_do = {
-		add = -100
+		add = -10
+		if = {
+			limit = { scope:actor = { NOT = { oe_cel_ai_enabled = yes } } }
+			add = -1000
+		}
+		if = {
+			limit = {
+				scope:actor = { at_war = yes }
+				scope:recipient = { subject_loyalty >= 45 }
+			}
+			add = 50
+		}
+		if = {
+			limit = { scope:actor = { at_war = no } }
+			add = -100
+		}
+	}
+}
+
+oe_cel_ci_touxia_provincialize = {
+	type = diplomacy
+	category = CATEGORY_CHINA_ACTIONS
+	ai_tick = daily
+	ai_tick_frequency = 720
+	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_cel_ai_enabled = yes
+		oe_cel_is_yuan_track = yes
+		at_war = no
+		current_year >= 1385
+		stability >= 10
+		current_celestial_authority = { value = 60 }
+	}
+
+	potential = {
+		exists = international_organization:middle_kingdom
+		scope:actor = {
+			oe_cel_is_celestial_emperor = yes
+			oe_cel_is_yuan_track = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			oe_cel_is_yuan_track = yes
+			at_war = no
+			current_year >= 1385
+			current_celestial_authority = { value = 60 }
+		}
+	}
+
+	cooldown = {
+		type = oe_cel_ci_touxia_prov_cd
+		years = 5
+	}
+
+	select_trigger = {
+		looking_for_a = country
+		target_flag = recipient
+		name = "choose_country"
+		default_sort = will
+		column = { data = country_diplomacy_info_subject }
+		visible = {
+			is_subject_of = scope:actor
+			is_subject_type = oe_yw_touxia
+			NOT = { has_variable = oe_cel_touxia_commuted }
+		}
+		enabled = {
+			custom_tooltip = {
+				text = oe_cel_ci_touxia_prov_loyal_tt
+				subject_loyalty >= 40
+			}
+		}
+	}
+
+	effect = {
+		if = {
+			limit = { exists = scope:recipient exists = scope:actor }
+			custom_tooltip = oe_cel_ci_touxia_prov_tt
+			scope:actor = {
+				set_variable = { name = oe_cel_touxia_prov_target value = scope:recipient }
+				trigger_event_non_silently = oe_cel.25
+			}
+		}
+	}
+
+	ai_will_do = {
+		add = -10
+		if = {
+			limit = { scope:actor = { NOT = { oe_cel_ai_enabled = yes } } }
+			add = -1000
+		}
+		if = {
+			limit = {
+				scope:actor = {
+					oe_cel_is_yuan_track = yes
+					current_year >= 1390
+				}
+				scope:recipient = { subject_loyalty >= 50 }
+			}
+			add = 35
+		}
 	}
 }

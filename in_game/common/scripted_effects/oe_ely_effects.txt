@@ -83,6 +83,12 @@ oe_ely_reset_state = {
 	if = { limit = { has_variable = oe_ely_reprovision_cd } remove_variable = oe_ely_reprovision_cd }
 	if = { limit = { has_variable = oe_ely_is_elysia } remove_variable = oe_ely_is_elysia }
 	if = { limit = { has_variable = oe_ely_is_nova_elysia } remove_variable = oe_ely_is_nova_elysia }
+	if = { limit = { has_variable = oe_ely_landfall_v2_done } remove_variable = oe_ely_landfall_v2_done }
+	if = { limit = { has_variable = oe_ely_forces_spawned } remove_variable = oe_ely_forces_spawned }
+	if = { limit = { has_variable = oe_ely_shell_swapped } remove_variable = oe_ely_shell_swapped }
+	if = { limit = { has_variable = oe_ely_food_seeded } remove_variable = oe_ely_food_seeded }
+	if = { limit = { has_variable = oe_ely_origin_tag } remove_variable = oe_ely_origin_tag }
+	if = { limit = { has_variable = oe_ely_had_bermuda } remove_variable = oe_ely_had_bermuda }
 	if = { limit = { has_variable = oe_ely_ev_1_done } remove_variable = oe_ely_ev_1_done }
 	if = { limit = { has_variable = oe_ely_ev_2_done } remove_variable = oe_ely_ev_2_done }
 	if = { limit = { has_variable = oe_ely_ev_3_done } remove_variable = oe_ely_ev_3_done }
@@ -108,6 +114,7 @@ oe_ely_reset_state = {
 	if = { limit = { has_global_variable = oe_ely_bermuda_beacon } remove_global_variable = oe_ely_bermuda_beacon }
 	if = { limit = { has_country_modifier = oe_ely_exodus_fleet_mod } remove_country_modifier = oe_ely_exodus_fleet_mod }
 	if = { limit = { has_country_modifier = oe_ely_nova_elysia_founded_mod } remove_country_modifier = oe_ely_nova_elysia_founded_mod }
+	if = { limit = { has_country_modifier = oe_ely_instant_embrace_mod } remove_country_modifier = oe_ely_instant_embrace_mod }
 	if = { limit = { has_country_modifier = oe_ely_maize_adaptation_mod } remove_country_modifier = oe_ely_maize_adaptation_mod }
 	if = { limit = { has_country_modifier = oe_ely_winter_rationing_mod } remove_country_modifier = oe_ely_winter_rationing_mod }
 	if = { limit = { has_country_modifier = oe_ely_relic_golden_legacy_mod } remove_country_modifier = oe_ely_relic_golden_legacy_mod }
@@ -228,6 +235,26 @@ oe_ely_discover_mid_atlantic = {
 	discover_area = area:atlantic_north_equatorial_area
 	discover_area = area:atlantic_gulf_stream_area
 	discover_area = area:bermuda_area
+	area:bermuda_area = {
+		every_location_in_area = {
+			discover_location = scope:oe_ely_chart_host
+		}
+	}
+	location:bermuda = {
+		discover_location = scope:oe_ely_chart_host
+	}
+}
+
+# Country scope. Reveal Bermuda & Gulf Stream ONLY (never touches Old World areas; used on shell-swapped ELR).
+oe_ely_discover_bermuda_only = {
+	save_temporary_scope_as = oe_ely_chart_host
+	discover_area = area:atlantic_gulf_stream_area
+	discover_area = area:bermuda_area
+	area:bermuda_area = {
+		every_location_in_area = {
+			discover_location = scope:oe_ely_chart_host
+		}
+	}
 	location:bermuda = {
 		discover_location = scope:oe_ely_chart_host
 	}
@@ -240,7 +267,30 @@ oe_ely_discover_chesapeake_coast = {
 	discover_area = area:maryland_area
 	discover_area = area:north_carolina_area
 	discover_area = area:south_carolina_area
+	discover_area = area:georgia_us_area
+	discover_area = area:florida_area
+	discover_area = area:new_jersey_area
+	discover_area = area:pennsylvania_area
 	discover_area = area:hudson_area
+	discover_area = area:southern_new_england_area
+	discover_area = area:massachusetts_area
+	discover_area = area:west_virginia_area
+	discover_area = area:haudenosaunee_area
+	# EU5 1.4.9 uncolonized land areas require explicit per-location discovery (mirrors vanilla flavor_usa / flavor_VEN).
+	area:east_coast_sea_zones_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:virginia_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:maryland_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:north_carolina_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:south_carolina_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:georgia_us_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:florida_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:new_jersey_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:pennsylvania_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:hudson_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:southern_new_england_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:massachusetts_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:west_virginia_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
+	area:haudenosaunee_area = { every_location_in_area = { discover_location = scope:oe_ely_chart_host } }
 	location:lower_chesapeake_bay = {
 		discover_location = scope:oe_ely_chart_host
 	}
@@ -328,7 +378,7 @@ oe_ely_deduct_old_world_pops = {
 	}
 }
 
-# Location scope helper: seed 5-estate Greek pops (expects scope:oe_ely_host).
+# Location scope helper: seed 6-estate Greek pops incl. laborers for lumber_mill / granary (expects scope:oe_ely_host).
 oe_ely_seed_loc_5_estates = {
 	if = {
 		limit = { scope:oe_ely_host = { exists = religion } }
@@ -336,6 +386,7 @@ oe_ely_seed_loc_5_estates = {
 		add_pop = { culture = culture:greek_culture religion = scope:oe_ely_host.religion type = pop_type:clergy size = $clg$ }
 		add_pop = { culture = culture:greek_culture religion = scope:oe_ely_host.religion type = pop_type:burghers size = $brg$ }
 		add_pop = { culture = culture:greek_culture religion = scope:oe_ely_host.religion type = pop_type:soldiers size = $sld$ }
+		add_pop = { culture = culture:greek_culture religion = scope:oe_ely_host.religion type = pop_type:laborers size = $lab$ }
 		add_pop = { culture = culture:greek_culture religion = scope:oe_ely_host.religion type = pop_type:peasants size = $psn$ }
 	}
 	else = {
@@ -343,75 +394,76 @@ oe_ely_seed_loc_5_estates = {
 		add_pop = { culture = culture:greek_culture religion = religion:orthodox type = pop_type:clergy size = $clg$ }
 		add_pop = { culture = culture:greek_culture religion = religion:orthodox type = pop_type:burghers size = $brg$ }
 		add_pop = { culture = culture:greek_culture religion = religion:orthodox type = pop_type:soldiers size = $sld$ }
+		add_pop = { culture = culture:greek_culture religion = religion:orthodox type = pop_type:laborers size = $lab$ }
 		add_pop = { culture = culture:greek_culture religion = religion:orthodox type = pop_type:peasants size = $psn$ }
 	}
 }
 
-# Country scope. Seed Greek 5-estate pops across Chesapeake bridgehead scaled by oe_ely_ark_tier (1.8k / 3.2k / 5.0k).
+# Country scope. Seed Greek 6-estate refugee pops across Chesapeake bridgehead scaled by oe_ely_ark_tier (12k / 20k / 30k).
 oe_ely_seed_chesapeake_pops = {
 	save_temporary_scope_as = oe_ely_host
 	if = {
 		limit = { var:oe_ely_ark_tier ?= 3 }
-		# Tier 3 (~5.00k total across chesapeake 2.60k, nansemond 1.30k, kiskiack 1.10k)
+		# Tier 3 (~30.0k total: chesapeake 15.0k, nansemond 8.0k, kiskiack 7.0k)
 		location:chesapeake = {
 			if = {
 				limit = { has_owner = yes owner = scope:oe_ely_host }
-				oe_ely_seed_loc_5_estates = { nob = 0.25 clg = 0.25 brg = 0.80 sld = 0.45 psn = 0.85 }
+				oe_ely_seed_loc_5_estates = { nob = 0.70 clg = 0.70 brg = 3.20 sld = 1.60 lab = 3.20 psn = 5.60 }
 			}
 		}
 		location:nansemond = {
 			if = {
 				limit = { has_owner = yes owner = scope:oe_ely_host }
-				oe_ely_seed_loc_5_estates = { nob = 0.10 clg = 0.10 brg = 0.45 sld = 0.25 psn = 0.40 }
+				oe_ely_seed_loc_5_estates = { nob = 0.30 clg = 0.30 brg = 1.50 sld = 0.90 lab = 1.80 psn = 3.20 }
 			}
 		}
 		location:kiskiack = {
 			if = {
 				limit = { has_owner = yes owner = scope:oe_ely_host }
-				oe_ely_seed_loc_5_estates = { nob = 0.08 clg = 0.07 brg = 0.25 sld = 0.25 psn = 0.45 }
+				oe_ely_seed_loc_5_estates = { nob = 0.25 clg = 0.25 brg = 1.20 sld = 0.80 lab = 1.70 psn = 2.80 }
 			}
 		}
 	}
 	else_if = {
 		limit = { var:oe_ely_ark_tier ?= 1 }
-		# Tier 1 (~1.80k total across chesapeake 0.95k, nansemond 0.45k, kiskiack 0.40k)
+		# Tier 1 (~12.0k total: chesapeake 6.0k, nansemond 3.2k, kiskiack 2.8k)
 		location:chesapeake = {
 			if = {
 				limit = { has_owner = yes owner = scope:oe_ely_host }
-				oe_ely_seed_loc_5_estates = { nob = 0.10 clg = 0.10 brg = 0.30 sld = 0.20 psn = 0.25 }
+				oe_ely_seed_loc_5_estates = { nob = 0.30 clg = 0.30 brg = 1.30 sld = 0.70 lab = 1.30 psn = 2.10 }
 			}
 		}
 		location:nansemond = {
 			if = {
 				limit = { has_owner = yes owner = scope:oe_ely_host }
-				oe_ely_seed_loc_5_estates = { nob = 0.04 clg = 0.04 brg = 0.15 sld = 0.10 psn = 0.12 }
+				oe_ely_seed_loc_5_estates = { nob = 0.14 clg = 0.14 brg = 0.62 sld = 0.40 lab = 0.70 psn = 1.20 }
 			}
 		}
 		location:kiskiack = {
 			if = {
 				limit = { has_owner = yes owner = scope:oe_ely_host }
-				oe_ely_seed_loc_5_estates = { nob = 0.03 clg = 0.03 brg = 0.10 sld = 0.10 psn = 0.14 }
+				oe_ely_seed_loc_5_estates = { nob = 0.12 clg = 0.12 brg = 0.50 sld = 0.36 lab = 0.65 psn = 1.05 }
 			}
 		}
 	}
 	else = {
-		# Tier 2 (~3.20k total across chesapeake 1.65k, nansemond 0.85k, kiskiack 0.70k)
+		# Tier 2 (~20.0k total: chesapeake 10.0k, nansemond 5.5k, kiskiack 4.5k)
 		location:chesapeake = {
 			if = {
 				limit = { has_owner = yes owner = scope:oe_ely_host }
-				oe_ely_seed_loc_5_estates = { nob = 0.16 clg = 0.16 brg = 0.50 sld = 0.33 psn = 0.50 }
+				oe_ely_seed_loc_5_estates = { nob = 0.50 clg = 0.50 brg = 2.20 sld = 1.10 lab = 2.10 psn = 3.60 }
 			}
 		}
 		location:nansemond = {
 			if = {
 				limit = { has_owner = yes owner = scope:oe_ely_host }
-				oe_ely_seed_loc_5_estates = { nob = 0.07 clg = 0.07 brg = 0.28 sld = 0.18 psn = 0.25 }
+				oe_ely_seed_loc_5_estates = { nob = 0.22 clg = 0.22 brg = 1.06 sld = 0.60 lab = 1.20 psn = 2.20 }
 			}
 		}
 		location:kiskiack = {
 			if = {
 				limit = { has_owner = yes owner = scope:oe_ely_host }
-				oe_ely_seed_loc_5_estates = { nob = 0.05 clg = 0.05 brg = 0.18 sld = 0.16 psn = 0.26 }
+				oe_ely_seed_loc_5_estates = { nob = 0.18 clg = 0.18 brg = 0.84 sld = 0.50 lab = 1.05 psn = 1.75 }
 			}
 		}
 	}
@@ -423,9 +475,202 @@ oe_ely_seed_chesapeake_pops = {
 			exists = capital
 		}
 		capital = {
-			oe_ely_seed_loc_5_estates = { nob = 0.05 clg = 0.08 brg = 0.15 sld = 0.12 psn = 0.10 }
+			oe_ely_seed_loc_5_estates = { nob = 0.15 clg = 0.25 brg = 0.55 sld = 0.35 lab = 0.35 psn = 0.35 }
 		}
 	}
+}
+
+# Country scope. Cleanly disband all Old World armies & navies stranded outside America/Bermuda,
+# stop obsolete Old World cabinet missions, clear Old World loans, and stop Phoenix bandit spawns.
+oe_ely_cleanup_old_world_units = {
+	every_unit = {
+		limit = {
+			exists = unit_location
+			unit_location = {
+				NOT = { continent = continent:america }
+				NOT = { area = area:bermuda_area }
+			}
+		}
+		destroy_unit = yes
+	}
+	every_cabinet = {
+		stop_cabinet_action = {}
+	}
+	pay_off_loans = { fraction = 1 }
+	oe_phoenix_auto_bandit_stop = yes
+}
+
+# Country scope. Spawn an affordable Nova Elysia Founding Fleet & Imperial Guard right in the American capital.
+# Gated on oe_ely_forces_spawned (NOT navy_size/army_size, because destroy_unit processes deferred).
+oe_ely_spawn_founding_forces = {
+	if = {
+		limit = {
+			NOT = { has_variable = oe_ely_forces_spawned }
+			exists = capital
+			capital = {
+				continent = continent:america
+				has_owner = yes
+				is_port = yes
+			}
+		}
+		set_variable = { name = oe_ely_forces_spawned value = 1 }
+		capital = {
+			create_num_sub_unit_of_category = {
+				count = 3
+				category = sub_unit_category:navy_transport
+			}
+			create_num_sub_unit_of_category = {
+				count = 2
+				category = sub_unit_category:navy_galley
+			}
+			create_num_sub_unit_of_category = {
+				count = 2
+				category = sub_unit_category:army_light_infantry
+			}
+		}
+	}
+}
+
+# Country scope. Bootstrap Age 1 Chesapeake capital & bridgehead buildings + food reserve so the new market works on Day 1.
+oe_ely_build_founding_infra = {
+	save_temporary_scope_as = oe_ely_host
+	if = {
+		limit = {
+			exists = capital
+			capital = {
+				continent = continent:america
+				has_owner = yes
+				owner = scope:oe_ely_host
+			}
+		}
+		capital = {
+			if = {
+				limit = { is_port = yes NOT = { has_building = building_type:dock } }
+				construct_building = { building_type = building_type:dock cost_multiplier = 0 cost_multiplier_reason = "oe_ely_founding_infra_reason" instant = yes }
+			}
+			if = {
+				limit = { NOT = { raw_material = goods:lumber } NOT = { has_building = building_type:lumber_mill } }
+				construct_building = { building_type = building_type:lumber_mill cost_multiplier = 0 cost_multiplier_reason = "oe_ely_founding_infra_reason" instant = yes }
+			}
+			if = {
+				limit = { NOT = { has_building = building_type:tools_guild } }
+				construct_building = { building_type = building_type:tools_guild cost_multiplier = 0 cost_multiplier_reason = "oe_ely_founding_infra_reason" instant = yes }
+			}
+			if = {
+				limit = { NOT = { has_building = building_type:marketplace } }
+				construct_building = { building_type = building_type:marketplace cost_multiplier = 0 cost_multiplier_reason = "oe_ely_founding_infra_reason" instant = yes }
+			}
+			if = {
+				limit = { is_market_center = yes NOT = { has_building = building_type:market_warehouse } }
+				construct_building = { building_type = building_type:market_warehouse cost_multiplier = 0 cost_multiplier_reason = "oe_ely_founding_infra_reason" instant = yes }
+			}
+			if = {
+				limit = { NOT = { has_building = building_type:granary } }
+				construct_building = { building_type = building_type:granary cost_multiplier = 0 cost_multiplier_reason = "oe_ely_founding_infra_reason" instant = yes }
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_ely_food_seeded } }
+			set_variable = { name = oe_ely_food_seeded value = 1 }
+			capital.province = {
+				change_province_food = 500
+			}
+		}
+	}
+	location:nansemond = {
+		if = {
+			limit = {
+				has_owner = yes
+				owner = scope:oe_ely_host
+				NOT = { has_variable = oe_ely_fish_rgo_boosted }
+			}
+			set_variable = { name = oe_ely_fish_rgo_boosted value = 1 }
+			change_max_raw_material_workers = 2
+		}
+	}
+	every_owned_location = {
+		limit = {
+			continent = continent:america
+			location_rank = location_rank:rural_settlement
+		}
+		if = {
+			limit = {
+				OR = {
+					vegetation = woods
+					vegetation = forest
+					vegetation = farmland
+					vegetation = jungle
+				}
+				NOT = { raw_material = goods:lumber }
+				NOT = { has_building = building_type:lumber_mill }
+			}
+			construct_building = { building_type = building_type:lumber_mill cost_multiplier = 0 cost_multiplier_reason = "oe_ely_founding_infra_reason" instant = yes }
+		}
+		if = {
+			limit = {
+				OR = { is_coastal = yes has_river = yes }
+				NOT = { has_building = building_type:fishing_village }
+			}
+			construct_building = { building_type = building_type:fishing_village cost_multiplier = 0 cost_multiplier_reason = "oe_ely_founding_infra_reason" instant = yes }
+		}
+	}
+}
+
+# Country scope. Grant founding treasury, stability, manpower, sailors & 35-year Colonization/Assimilation/Economy buff.
+oe_ely_grant_founding_package = {
+	if = {
+		limit = { var:oe_ely_ark_tier ?= 3 }
+		add_gold = 700
+	}
+	else_if = {
+		limit = { var:oe_ely_ark_tier ?= 1 }
+		add_gold = 350
+	}
+	else = {
+		add_gold = 500
+	}
+	if = {
+		limit = { stability < 25 }
+		add_stability = 25
+	}
+	add_yearly_manpower = 2
+	add_yearly_sailors = 2
+	add_country_modifier = {
+		modifier = oe_ely_nova_elysia_founded_mod
+		years = 35
+		mode = replace
+	}
+}
+
+# Country scope. One-time automatic save-healing catch-up for existing pre-hotfix Nova Elysia saves.
+oe_ely_apply_landfall_v2_catchup = {
+	save_temporary_scope_as = oe_ely_host
+	set_variable = { name = oe_ely_landfall_v2_done value = 1 }
+	oe_ely_discover_mid_atlantic = yes
+	oe_ely_discover_chesapeake_coast = yes
+	oe_ely_cleanup_old_world_units = yes
+	oe_ely_spawn_founding_forces = yes
+	oe_ely_build_founding_infra = yes
+	# Top up missing refugee pops (incl. laborers) if this save landed before the v11.8.1 pop scale fix.
+	location:chesapeake = {
+		if = {
+			limit = { has_owner = yes owner = scope:oe_ely_host }
+			oe_ely_seed_loc_5_estates = { nob = 0.34 clg = 0.34 brg = 1.60 sld = 0.72 lab = 1.90 psn = 3.10 }
+		}
+	}
+	location:nansemond = {
+		if = {
+			limit = { has_owner = yes owner = scope:oe_ely_host }
+			oe_ely_seed_loc_5_estates = { nob = 0.14 clg = 0.14 brg = 0.72 sld = 0.40 lab = 1.05 psn = 1.85 }
+		}
+	}
+	location:kiskiack = {
+		if = {
+			limit = { has_owner = yes owner = scope:oe_ely_host }
+			oe_ely_seed_loc_5_estates = { nob = 0.12 clg = 0.12 brg = 0.60 sld = 0.34 lab = 0.92 psn = 1.50 }
+		}
+	}
+	oe_ely_grant_founding_package = yes
 }
 
 # Country scope. Safely detach Old World holdings AFTER capital is verified in America.
@@ -570,8 +815,8 @@ oe_ely_abandon_old_world = {
 	}
 }
 
-# Country scope. Atomic Safe Exodus sequence (called from oe_ely.13 options A & B).
-oe_ely_complete_landfall = {
+# Country scope. Fallback in-place Safe Exodus sequence (only used if no Old-World-blind American seed exists).
+oe_ely_complete_landfall_in_place = {
 	save_temporary_scope_as = oe_ely_host
 	# 1. Reveal Chesapeake & East Coast waters.
 	oe_ely_discover_chesapeake_coast = yes
@@ -595,6 +840,7 @@ oe_ely_complete_landfall = {
 		if = {
 			limit = { has_owner = yes owner = scope:oe_ely_host }
 			add_core = scope:oe_ely_host
+			change_integration_level = core
 			rename_location = oe_loc_nea_konstantinoupolis
 		}
 	}
@@ -615,6 +861,7 @@ oe_ely_complete_landfall = {
 		if = {
 			limit = { has_owner = yes owner = scope:oe_ely_host }
 			add_core = scope:oe_ely_host
+			change_integration_level = core
 			rename_location = oe_loc_chrysokeras_hesperias
 		}
 	}
@@ -635,6 +882,7 @@ oe_ely_complete_landfall = {
 		if = {
 			limit = { has_owner = yes owner = scope:oe_ely_host }
 			add_core = scope:oe_ely_host
+			change_integration_level = core
 			rename_location = oe_loc_chalybopolis
 		}
 	}
@@ -697,7 +945,7 @@ oe_ely_complete_landfall = {
 		}
 		set_capital = location:kiskiack
 	}
-	# 5. Seed Greek 5-estate pops & found native New Constantinople market center.
+	# 5. Seed Greek 6-estate pops & found native New Constantinople market center.
 	oe_ely_seed_chesapeake_pops = yes
 	if = {
 		limit = {
@@ -720,8 +968,12 @@ oe_ely_complete_landfall = {
 	}
 	# 6. Activate v9.9 Colonization 2.0 Nova Elysia Foederati hook.
 	oe_col2_activate_elysia_hook = yes
-	# 7. Safely detach Old World holdings (strictly gated on capital in America).
+	# 7. Safely detach Old World holdings, disband stranded Old World armies/navies & clear stale Old World cabinet/loans.
 	oe_ely_abandon_old_world = yes
+	oe_ely_cleanup_old_world_units = yes
+	# 7b. Bootstrap Age 1 Chesapeake market infrastructure & spawn Nova Elysia Founding Fleet + Imperial Guard in Chesapeake.
+	oe_ely_build_founding_infra = yes
+	oe_ely_spawn_founding_forces = yes
 	# 8. Dynamic Country Name & Act I -> Act II State Transition.
 	change_country_name = OE_NOVA_ELYSIA
 	change_country_adjective = OE_NOVA_ELYSIA_ADJ
@@ -730,6 +982,7 @@ oe_ely_complete_landfall = {
 	set_global_variable = { name = oe_ely_settled_month value = oe_ml_month_now }
 	set_variable = { name = oe_ely_is_elysia value = 1 }
 	set_variable = { name = oe_ely_is_nova_elysia value = 1 }
+	set_variable = { name = oe_ely_landfall_v2_done value = 1 }
 	set_variable = { name = oe_ely_voyage_stage value = 6 }
 	# Cleanly close Old World oe_l7 siege & Aegean exile guerrilla chains on this host after settling in America.
 	set_variable = { name = oe_l7_off value = 1 }
@@ -742,14 +995,747 @@ oe_ely_complete_landfall = {
 		limit = { has_country_modifier = oe_ely_exodus_fleet_mod }
 		remove_country_modifier = oe_ely_exodus_fleet_mod
 	}
-	add_country_modifier = {
-		modifier = oe_ely_nova_elysia_founded_mod
-		years = 15
-		mode = replace
-	}
+	oe_ely_grant_founding_package = yes
 	# 9. Schedule post-landfall Act I closing milestones (First Winter +6m, Elysian Charter +12m).
 	trigger_event_non_silently = { id = oe_ely.14 days = 180 }
 	trigger_event_non_silently = { id = oe_ely.15 days = 365 }
+}
+
+# Country scope. v11.8.2 P3 Shell-Swap Setup (called from oe_ely.130 BEFORE change_player).
+# Spawns tag = ELR from an Old-World-blind Eastern North American seed so Europe/Asia/Africa are 100% black fog,
+# copies all researched advances, institutions & state vars, builds Chesapeake infra & fleet/guard, and saves
+# scope:oe_ely_new_realm so oe_ely.130 executes change_player + oe_ely_dissolve_old_host (which transfers the dynasty once old host is AI).
+oe_ely_complete_landfall_setup = {
+	save_temporary_scope_as = oe_ely_old_host
+	# 1. Record Bermuda ownership & deduct departing Greek emigrants from Old World cities.
+	if = {
+		limit = { owns = location:bermuda }
+		set_variable = { name = oe_ely_had_bermuda value = 1 }
+	}
+	oe_ely_deduct_old_world_pops = yes
+	# 2. Find an Old-World-blind Eastern North American landed AI seed (Priority 1: Northeast East Coast; Priority 2: any America).
+	if = {
+		limit = {
+			country_exists = c:ONO
+			c:ONO = {
+				is_ai = yes
+				country_type = location
+				NOT = { has_discovered = location:constantinople }
+				NOT = { has_discovered = location:paris }
+			}
+		}
+		c:ONO = { save_temporary_scope_as = oe_ely_amer_seed }
+	}
+	else_if = {
+		limit = {
+			country_exists = c:KKA
+			c:KKA = {
+				is_ai = yes
+				country_type = location
+				NOT = { has_discovered = location:constantinople }
+				NOT = { has_discovered = location:paris }
+			}
+		}
+		c:KKA = { save_temporary_scope_as = oe_ely_amer_seed }
+	}
+	else_if = {
+		limit = {
+			country_exists = c:ONY
+			c:ONY = {
+				is_ai = yes
+				country_type = location
+				NOT = { has_discovered = location:constantinople }
+				NOT = { has_discovered = location:paris }
+			}
+		}
+		c:ONY = { save_temporary_scope_as = oe_ely_amer_seed }
+	}
+	else_if = {
+		limit = {
+			country_exists = c:ONN
+			c:ONN = {
+				is_ai = yes
+				country_type = location
+				NOT = { has_discovered = location:constantinople }
+				NOT = { has_discovered = location:paris }
+			}
+		}
+		c:ONN = { save_temporary_scope_as = oe_ely_amer_seed }
+	}
+	else_if = {
+		limit = {
+			country_exists = c:GYO
+			c:GYO = {
+				is_ai = yes
+				country_type = location
+				NOT = { has_discovered = location:constantinople }
+				NOT = { has_discovered = location:paris }
+			}
+		}
+		c:GYO = { save_temporary_scope_as = oe_ely_amer_seed }
+	}
+	else_if = {
+		limit = {
+			country_exists = c:CHK
+			c:CHK = {
+				is_ai = yes
+				country_type = location
+				NOT = { has_discovered = location:constantinople }
+				NOT = { has_discovered = location:paris }
+			}
+		}
+		c:CHK = { save_temporary_scope_as = oe_ely_amer_seed }
+	}
+	else_if = {
+		limit = {
+			any_country = {
+				country_type = location
+				is_ai = yes
+				exists = capital
+				capital = { continent = continent:america }
+				NOT = { has_discovered = location:constantinople }
+				NOT = { has_discovered = location:paris }
+			}
+		}
+		random_country = {
+			limit = {
+				country_type = location
+				is_ai = yes
+				exists = capital
+				capital = { continent = continent:america }
+				NOT = { has_discovered = location:constantinople }
+				NOT = { has_discovered = location:paris }
+			}
+			save_temporary_scope_as = oe_ely_amer_seed
+		}
+	}
+	# 3. Pick the claimable founding capital tile (nansemond if choice 2, else chesapeake).
+	if = {
+		limit = {
+			var:oe_ely_capital_choice ?= 2
+			location:nansemond = {
+				is_ownable = yes
+				OR = {
+					has_owner = no
+					AND = { has_owner = yes owner = { is_ai = yes } }
+				}
+			}
+		}
+		location:nansemond = { save_temporary_scope_as = oe_ely_cap_tile }
+	}
+	else_if = {
+		limit = {
+			location:chesapeake = {
+				is_ownable = yes
+				OR = {
+					has_owner = no
+					AND = { has_owner = yes owner = { is_ai = yes } }
+				}
+			}
+		}
+		location:chesapeake = { save_temporary_scope_as = oe_ely_cap_tile }
+	}
+	else_if = {
+		limit = {
+			location:nansemond = {
+				is_ownable = yes
+				OR = {
+					has_owner = no
+					AND = { has_owner = yes owner = { is_ai = yes } }
+				}
+			}
+		}
+		location:nansemond = { save_temporary_scope_as = oe_ely_cap_tile }
+	}
+	else_if = {
+		limit = {
+			location:kiskiack = {
+				is_ownable = yes
+				OR = {
+					has_owner = no
+					AND = { has_owner = yes owner = { is_ai = yes } }
+				}
+			}
+		}
+		location:kiskiack = { save_temporary_scope_as = oe_ely_cap_tile }
+	}
+	# 4. Temporarily hand ONLY the founding capital tile to oe_ely_amer_seed and spawn oe_ely_new_realm (ELR).
+	if = {
+		limit = {
+			exists = scope:oe_ely_amer_seed
+			exists = scope:oe_ely_cap_tile
+		}
+		scope:oe_ely_cap_tile = {
+			change_location_owner = scope:oe_ely_amer_seed
+			create_country_from_location = {
+				save_scope_as = oe_ely_new_realm
+			}
+		}
+	}
+	# 5. Configure oe_ely_new_realm OUTSIDE create_country_from_location (vanilla wokou_events.txt rule).
+	if = {
+		limit = { exists = scope:oe_ely_new_realm }
+		scope:oe_ely_new_realm = {
+			define_unique_country_tag = ELR
+			change_culture = scope:oe_ely_old_host.culture
+			if = {
+				limit = { scope:oe_ely_old_host = { exists = religion } }
+				change_religion = scope:oe_ely_old_host.religion
+			}
+			else = {
+				change_religion = religion:orthodox
+			}
+			change_government_type = government_type:monarchy
+			change_heir_selection = heir_selection:cognatic_primogeniture
+			set_country_rank = country_rank:rank_empire
+			change_country_name = OE_NOVA_ELYSIA
+			change_country_adjective = OE_NOVA_ELYSIA_ADJ
+			change_country_color = map_BYZ
+			change_country_flag = ELR
+			# Copy all researched advances from old host (vanilla-verified has_advance + research_advance).
+			oe_ely_copy_advances = yes
+			# Carry forward Act I voyage & narrative state variables.
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_capital_choice } }
+				set_variable = { name = oe_ely_capital_choice value = scope:oe_ely_old_host.var:oe_ely_capital_choice }
+			}
+			else = {
+				set_variable = { name = oe_ely_capital_choice value = 1 }
+			}
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_ark_tier } }
+				set_variable = { name = oe_ely_ark_tier value = scope:oe_ely_old_host.var:oe_ely_ark_tier }
+			}
+			else = {
+				set_variable = { name = oe_ely_ark_tier value = 2 }
+			}
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_relic_score } }
+				set_variable = { name = oe_ely_relic_score value = scope:oe_ely_old_host.var:oe_ely_relic_score }
+			}
+			else = {
+				set_variable = { name = oe_ely_relic_score value = 1 }
+			}
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_relic_focus } }
+				set_variable = { name = oe_ely_relic_focus value = scope:oe_ely_old_host.var:oe_ely_relic_focus }
+			}
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_first_contact } }
+				set_variable = { name = oe_ely_first_contact value = scope:oe_ely_old_host.var:oe_ely_first_contact }
+			}
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_native_goodwill } }
+				set_variable = { name = oe_ely_native_goodwill value = scope:oe_ely_old_host.var:oe_ely_native_goodwill }
+			}
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_senate_oath } }
+				set_variable = { name = oe_ely_senate_oath value = scope:oe_ely_old_host.var:oe_ely_senate_oath }
+			}
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_fleet_morale } }
+				set_variable = { name = oe_ely_fleet_morale value = scope:oe_ely_old_host.var:oe_ely_fleet_morale }
+			}
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_provisions } }
+				set_variable = { name = oe_ely_provisions value = scope:oe_ely_old_host.var:oe_ely_provisions }
+			}
+			if = {
+				limit = { scope:oe_ely_old_host = { tag = BYZ } }
+				set_variable = { name = oe_ely_origin_tag value = 1 }
+			}
+			else_if = {
+				limit = { scope:oe_ely_old_host = { tag = TRE } }
+				set_variable = { name = oe_ely_origin_tag value = 2 }
+			}
+			else_if = {
+				limit = { scope:oe_ely_old_host = { tag = FEO } }
+				set_variable = { name = oe_ely_origin_tag value = 3 }
+			}
+			set_variable = { name = oe_ely_ev_1_done value = 1 }
+			set_variable = { name = oe_ely_ev_2_done value = 1 }
+			set_variable = { name = oe_ely_ev_3_done value = 1 }
+			set_variable = { name = oe_ely_ev_4_done value = 1 }
+			set_variable = { name = oe_ely_ev_5_done value = 1 }
+			set_variable = { name = oe_ely_ev_6_done value = 1 }
+			set_variable = { name = oe_ely_ev_7_done value = 1 }
+			set_variable = { name = oe_ely_ev_8_done value = 1 }
+			set_variable = { name = oe_ely_ev_9_done value = 1 }
+			set_variable = { name = oe_ely_ev_10_done value = 1 }
+			set_variable = { name = oe_ely_ev_11_done value = 1 }
+			set_variable = { name = oe_ely_ev_12_done value = 1 }
+			set_variable = { name = oe_ely_ev_13_done value = 1 }
+			set_variable = { name = oe_ely_is_elysia value = 1 }
+			set_variable = { name = oe_ely_is_nova_elysia value = 1 }
+			set_variable = { name = oe_ely_landfall_v2_done value = 1 }
+			set_variable = { name = oe_ely_voyage_stage value = 6 }
+			set_variable = { name = oe_ely_shell_swapped value = 1 }
+			set_variable = { name = oe_ely_old_world_code value = 1 }
+			set_variable = { name = oe_ely_old_world_ceded_n value = 0 }
+			set_variable = { name = oe_l7_off value = 1 }
+			set_variable = { name = oe_l7_ex_reborn value = 1 }
+			set_variable = { name = oe_scn_day1_dispatched value = 1 }
+			# Claim all 3 Chesapeake bridgehead locations + classical Greek-Roman renames + cores.
+			location:chesapeake = {
+				if = {
+					limit = {
+						is_ownable = yes
+						OR = {
+							has_owner = no
+							AND = {
+								has_owner = yes
+								owner = {
+									is_ai = yes
+									NOT = { this = scope:oe_ely_new_realm }
+								}
+							}
+						}
+					}
+					change_location_owner = scope:oe_ely_new_realm
+				}
+				if = {
+					limit = { has_owner = yes owner = scope:oe_ely_new_realm }
+					add_core = scope:oe_ely_new_realm
+					change_integration_level = core
+					rename_location = oe_loc_nea_konstantinoupolis
+				}
+			}
+			location:nansemond = {
+				if = {
+					limit = {
+						is_ownable = yes
+						OR = {
+							has_owner = no
+							AND = {
+								has_owner = yes
+								owner = {
+									is_ai = yes
+									NOT = { this = scope:oe_ely_new_realm }
+								}
+							}
+						}
+					}
+					change_location_owner = scope:oe_ely_new_realm
+				}
+				if = {
+					limit = { has_owner = yes owner = scope:oe_ely_new_realm }
+					add_core = scope:oe_ely_new_realm
+					change_integration_level = core
+					rename_location = oe_loc_chrysokeras_hesperias
+				}
+			}
+			location:kiskiack = {
+				if = {
+					limit = {
+						is_ownable = yes
+						OR = {
+							has_owner = no
+							AND = {
+								has_owner = yes
+								owner = {
+									is_ai = yes
+									NOT = { this = scope:oe_ely_new_realm }
+								}
+							}
+						}
+					}
+					change_location_owner = scope:oe_ely_new_realm
+				}
+				if = {
+					limit = { has_owner = yes owner = scope:oe_ely_new_realm }
+					add_core = scope:oe_ely_new_realm
+					change_integration_level = core
+					rename_location = oe_loc_chalybopolis
+				}
+			}
+			# Carry Bermuda beacon outpost if old host claimed it in oe_ely.10 Option A.
+			if = {
+				limit = { scope:oe_ely_old_host = { has_variable = oe_ely_had_bermuda } }
+				location:bermuda = {
+					change_location_owner = scope:oe_ely_new_realm
+					add_core = scope:oe_ely_new_realm
+					change_integration_level = core
+				}
+			}
+			# Promote founding capital to city, attach permanent harbor/food modifier, and set capital.
+			if = {
+				limit = {
+					var:oe_ely_capital_choice ?= 2
+					owns = location:nansemond
+				}
+				location:nansemond = {
+					if = {
+						limit = { NOT = { is_city = yes } }
+						change_location_rank = location_rank:city
+					}
+					add_location_modifier = {
+						modifier = oe_ely_natural_anchorage_mod
+						years = -1
+						mode = replace
+					}
+				}
+				set_capital = location:nansemond
+			}
+			else_if = {
+				limit = { owns = location:chesapeake }
+				location:chesapeake = {
+					if = {
+						limit = { NOT = { is_city = yes } }
+						change_location_rank = location_rank:city
+					}
+					add_location_modifier = {
+						modifier = oe_ely_breakwater_mod
+						years = -1
+						mode = replace
+					}
+				}
+				set_capital = location:chesapeake
+			}
+			else_if = {
+				limit = { owns = location:nansemond }
+				location:nansemond = {
+					if = {
+						limit = { NOT = { is_city = yes } }
+						change_location_rank = location_rank:city
+					}
+					add_location_modifier = {
+						modifier = oe_ely_natural_anchorage_mod
+						years = -1
+						mode = replace
+					}
+				}
+				set_capital = location:nansemond
+			}
+			else_if = {
+				limit = { owns = location:kiskiack }
+				location:kiskiack = {
+					if = {
+						limit = { NOT = { is_city = yes } }
+						change_location_rank = location_rank:city
+					}
+				}
+				set_capital = location:kiskiack
+			}
+			# Seed 6-estate Greek pops (scaled by carried oe_ely_ark_tier & oe_ely_relic_score) & create native market.
+			oe_ely_seed_chesapeake_pops = yes
+			if = {
+				limit = {
+					exists = capital
+					capital = {
+						continent = continent:america
+						has_owner = yes
+						owner = scope:oe_ely_new_realm
+						NOT = { is_market_center = yes }
+					}
+				}
+				capital = { save_temporary_scope_as = oe_ely_mkt_loc }
+				create_market = {
+					builder = scope:oe_ely_new_realm
+					location = scope:oe_ely_mkt_loc
+					price = price:oe_ely_free_market_price
+					instant = yes
+					price_modifier = 0
+				}
+			}
+			# Copy 100% progress of all embraced institutions from old host to every owned location of ELR,
+			# and grant 6-month zero-cost embrace charter so player can embrace on Day 1 without waiting.
+			scope:oe_ely_old_host = {
+				every_institutions_embraced = {
+					save_temporary_scope_as = oe_ely_inst
+					scope:oe_ely_new_realm = {
+						every_owned_location = {
+							change_institution_progress = {
+								type = scope:oe_ely_inst
+								value = 100
+							}
+						}
+					}
+				}
+			}
+			add_country_modifier = {
+				modifier = oe_ely_instant_embrace_mod
+				months = 6
+				mode = replace
+			}
+			# Discover Bermuda + all 14 East Coast areas ONLY (Europe/Asia/Africa stay 100% black fog!).
+			oe_ely_discover_bermuda_only = yes
+			oe_ely_discover_chesapeake_coast = yes
+			# Activate Colonization 2.0 hook & replay first-contact opinion with Nansemond (NSM).
+			oe_col2_activate_elysia_hook = yes
+			if = {
+				limit = {
+					var:oe_ely_first_contact ?= 1
+					country_exists = c:NSM
+					c:NSM = { country_type = pop }
+				}
+				c:NSM = {
+					add_opinion = {
+						modifier = opinion_diplomatic_gifts
+						target = scope:oe_ely_new_realm
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:oe_ely_first_contact ?= 2
+					country_exists = c:NSM
+					c:NSM = { country_type = pop }
+				}
+				c:NSM = {
+					add_opinion = {
+						modifier = opinion_insulted
+						target = scope:oe_ely_new_realm
+					}
+				}
+			}
+			# Bootstrap Age 1 Chesapeake infra (+500 province food, nansemond fish RGO +2), founding fleet/guard, & package.
+			oe_ely_build_founding_infra = yes
+			oe_ely_spawn_founding_forces = yes
+			oe_ely_grant_founding_package = yes
+			if = {
+				limit = { legitimacy < 60 }
+				add_legitimacy = 40
+			}
+			# Schedule post-landfall Act I closing milestones (First Winter +6m, Elysian Charter +12m) on ELR.
+			trigger_event_non_silently = { id = oe_ely.14 days = 180 }
+			trigger_event_non_silently = { id = oe_ely.15 days = 365 }
+		}
+		# 6. Mark global settlement & disarm Old World oe_l7 hooks on old host BEFORE player switch & dissolution.
+		#    (Ruler/heir/court transfer + republic switch run at the top of oe_ely_dissolve_old_host AFTER change_player,
+		#     so old BYZ/TRE/FEO is already AI and produces 0 PU toasts and 0 republic/caretaker-regency popups.)
+		set_global_variable = { name = oe_ely_settled value = 1 }
+		set_global_variable = { name = oe_ely_settled_year value = current_year }
+		set_global_variable = { name = oe_ely_settled_month value = oe_ml_month_now }
+		set_variable = { name = oe_l7_off value = 1 }
+		set_variable = { name = oe_l7_ex_reborn value = 1 }
+		if = {
+			limit = { has_variable = oe_ely_had_bermuda }
+			remove_variable = oe_ely_had_bermuda
+		}
+	}
+	else = {
+		# Ultra-late fallback when no Old-World-blind American country exists.
+		if = {
+			limit = { has_variable = oe_ely_had_bermuda }
+			remove_variable = oe_ely_had_bermuda
+		}
+		oe_ely_complete_landfall_in_place = yes
+	}
+}
+
+# Country scope (old host, now AI). Called from oe_ely.130 IMMEDIATELY AFTER change_player = scope:oe_ely_new_realm.
+# Transfers imperial ruler/heir/court while old host is ALREADY AI (0 republic/regency popups & 0 PU toasts),
+# then cleanly severs subjects/wars, destroys all old units, stops cabinets, and cedes EVERY Old World location so old BYZ/TRE/FEO vanishes (0 locations).
+oe_ely_dissolve_old_host = {
+	save_temporary_scope_as = oe_ely_old_host
+	if = {
+		limit = {
+			exists = scope:oe_ely_new_realm
+			NOT = { this = scope:oe_ely_new_realm }
+			scope:oe_ely_new_realm = {
+				has_variable = oe_ely_shell_swapped
+				any_owned_location = { continent = continent:america }
+			}
+		}
+		# 0. Clean Ruler, Heir & Court Transfer (old host is ALREADY AI -> 0 republic/regency popups & 0 Personal Union toasts!).
+		if = {
+			limit = { has_ruler = yes }
+			ruler = { save_temporary_scope_as = oe_ely_exile_ruler }
+		}
+		if = {
+			limit = { has_heir = yes }
+			heir = { save_temporary_scope_as = oe_ely_exile_heir }
+		}
+		# Convert the soon-to-be-dissolved AI old host to republic BEFORE transferring heir/ruler so EU5 never forms/weakens/dissolves a Personal Union!
+		if = {
+			limit = { NOT = { government_type = government_type:republic } }
+			change_government_type = government_type:republic
+		}
+		ordered_character = {
+			limit = {
+				is_alive = yes
+				is_adult = yes
+				is_ruler = no
+			}
+			order_by = age_in_days
+			max = 6
+			check_range_bounds = no
+			move_country = scope:oe_ely_new_realm
+		}
+		if = {
+			limit = { exists = scope:oe_ely_exile_ruler }
+			scope:oe_ely_exile_ruler = {
+				every_child = {
+					limit = {
+						is_alive = yes
+						is_ruler = no
+					}
+					move_country = scope:oe_ely_new_realm
+				}
+			}
+		}
+		if = {
+			limit = { exists = scope:oe_ely_exile_heir }
+			scope:oe_ely_exile_heir = {
+				every_ruling_countries = {
+					scope:oe_ely_exile_heir = { remove_ruler = prev }
+				}
+				if = {
+					limit = { is_alive = yes }
+					move_country = scope:oe_ely_new_realm
+				}
+			}
+		}
+		if = {
+			limit = { exists = scope:oe_ely_exile_ruler }
+			scope:oe_ely_exile_ruler = {
+				every_ruling_countries = {
+					scope:oe_ely_exile_ruler = { remove_ruler = prev }
+				}
+				move_country = scope:oe_ely_new_realm
+			}
+			scope:oe_ely_new_realm = {
+				set_new_ruler = scope:oe_ely_exile_ruler
+				if = {
+					limit = { exists = religion }
+					change_religion_for_ruler_and_family = {
+						country = scope:oe_ely_new_realm
+						religion = scope:oe_ely_new_realm.religion
+					}
+				}
+			}
+		}
+		# 1. Sever Old World subjects cleanly.
+		every_subject = {
+			save_temporary_scope_as = oe_ely_old_sub
+			scope:oe_ely_old_host = {
+				cancel_subject = scope:oe_ely_old_sub
+			}
+		}
+		# 2. White-peace or leave all active Old World wars.
+		every_current_war = {
+			if = {
+				limit = {
+					OR = {
+						attacker_leader = scope:oe_ely_old_host
+						defender_leader = scope:oe_ely_old_host
+					}
+				}
+				white_peace = this
+			}
+			else = {
+				save_temporary_scope_as = oe_ely_w
+				scope:oe_ely_old_host = {
+					leave_war = {
+						war = scope:oe_ely_w
+						actor = scope:oe_ely_old_host
+					}
+				}
+			}
+		}
+		# 3. Destroy all remaining units, stop cabinet actions & stop Phoenix bandit spawns.
+		every_unit = {
+			destroy_unit = yes
+		}
+		every_cabinet = {
+			stop_cabinet_action = {}
+		}
+		oe_phoenix_auto_bandit_stop = yes
+		# 4. Cede EVERY remaining Old World location (NO num_locations > 1 brake!) so old host drops to 0 locations and ceases to exist.
+		every_owned_location = {
+			if = {
+				limit = {
+					country_exists = c:TUR
+					c:TUR = { is_ai = yes }
+					OR = {
+						region = region:balkan_region
+						region = region:anatolia_region
+					}
+				}
+				change_location_owner = c:TUR
+				scope:oe_ely_new_realm = { change_variable = { name = oe_ely_old_world_ceded_n add = 1 } }
+			}
+			else_if = {
+				limit = {
+					any_neighbor_location = {
+						has_owner = yes
+						owner = {
+							is_ai = yes
+							country_type = location
+							NOT = { this = scope:oe_ely_old_host }
+							NOT = { this = scope:oe_ely_new_realm }
+						}
+					}
+				}
+				random_neighbor_location = {
+					limit = {
+						has_owner = yes
+						owner = {
+							is_ai = yes
+							country_type = location
+							NOT = { this = scope:oe_ely_old_host }
+							NOT = { this = scope:oe_ely_new_realm }
+						}
+					}
+					owner = { save_temporary_scope_as = oe_ely_heir }
+				}
+				if = {
+					limit = { exists = scope:oe_ely_heir }
+					change_location_owner = scope:oe_ely_heir
+					scope:oe_ely_new_realm = { change_variable = { name = oe_ely_old_world_ceded_n add = 1 } }
+				}
+			}
+			else_if = {
+				limit = {
+					country_exists = c:TUR
+					c:TUR = { is_ai = yes }
+				}
+				change_location_owner = c:TUR
+				scope:oe_ely_new_realm = { change_variable = { name = oe_ely_old_world_ceded_n add = 1 } }
+			}
+			else_if = {
+				limit = {
+					any_country = {
+						is_ai = yes
+						country_type = location
+						exists = capital
+						capital = { NOT = { continent = continent:america } }
+						NOT = { this = scope:oe_ely_old_host }
+						NOT = { this = scope:oe_ely_new_realm }
+					}
+				}
+				random_country = {
+					limit = {
+						is_ai = yes
+						country_type = location
+						exists = capital
+						capital = { NOT = { continent = continent:america } }
+						NOT = { this = scope:oe_ely_old_host }
+						NOT = { this = scope:oe_ely_new_realm }
+					}
+					save_temporary_scope_as = oe_ely_ow_fallback
+				}
+				if = {
+					limit = { exists = scope:oe_ely_ow_fallback }
+					change_location_owner = scope:oe_ely_ow_fallback
+					scope:oe_ely_new_realm = { change_variable = { name = oe_ely_old_world_ceded_n add = 1 } }
+				}
+			}
+			else = {
+				scope:oe_ely_old_host = {
+					abandon_location = prev
+				}
+				scope:oe_ely_new_realm = {
+					change_variable = { name = oe_ely_old_world_ceded_n add = 1 }
+					set_variable = { name = oe_ely_old_world_code value = 2 }
+				}
+			}
+		}
+	}
+	if = {
+		limit = { exists = scope:oe_ely_new_realm }
+		clear_saved_scope = oe_ely_new_realm
+	}
 }
 
 # ==============================================================================
@@ -899,15 +1885,19 @@ oe_ely_monthly = {
 			}
 		}
 
-		# Phase C: Post-Settlement Backup Safety Net (in case delayed events were disrupted across reload)
+		# Phase C: Post-Settlement Backup Safety Net & One-Time v11.8.1 Save-Healing Catch-Up
 		else_if = {
 			limit = {
 				has_global_variable = oe_ely_settled
 				oe_ely_is_elysian_host = yes
-				NOT = { has_variable = oe_ely_charter_proclaimed }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_ely_landfall_v2_done } }
+				oe_ely_apply_landfall_v2_catchup = yes
 			}
 			if = {
 				limit = {
+					NOT = { has_variable = oe_ely_charter_proclaimed }
 					NOT = { has_variable = oe_ely_ev_14_done }
 					oe_ely_months_since_settled >= 7
 				}
@@ -916,6 +1906,7 @@ oe_ely_monthly = {
 			}
 			else_if = {
 				limit = {
+					NOT = { has_variable = oe_ely_charter_proclaimed }
 					has_variable = oe_ely_ev_14_done
 					NOT = { has_variable = oe_ely_ev_15_done }
 					oe_ely_months_since_settled >= 13

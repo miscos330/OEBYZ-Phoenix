@@ -106,7 +106,54 @@ oe_yw_wpay = {
     }
     if = { limit = { country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes } } add = 1 }
 }
-# Any scope. This year's grant total: unit x weights as paid x (2 in a year of a generous grant).
+# Any scope (v14.5 Princes 2.0). Held count (0..8) of the 8 Five-Household Silk appanage cities and resulting cash discount (up to 40% off).
+oe_yw_wuhusi_held_count = {
+    value = 0
+    if = { limit = { location:zichuan = { oe_yw_loc_ours = yes } NOT = { AND = { country_exists = c:QAS c:QAS = { has_variable = oe_yw_fy_test } } } } add = 1 }
+    if = { limit = { location:licheng = { oe_yw_loc_ours = yes } NOT = { AND = { country_exists = c:HCN c:HCN = { has_variable = oe_yw_fy_test } } } } add = 1 }
+    if = { limit = { location:yidu_qingzhou = { oe_yw_loc_ours = yes } NOT = { AND = { country_exists = c:OTC c:OTC = { has_variable = oe_yw_fy_test } } } } add = 1 }
+    if = { limit = { location:enzhou = { oe_yw_loc_ours = yes } NOT = { AND = { country_exists = c:BGT c:BGT = { has_variable = oe_yw_fy_test } } } } add = 1 }
+    if = { limit = { location:yangdi = { oe_yw_loc_ours = yes } NOT = { AND = { country_exists = c:OGE c:OGE = { has_variable = oe_yw_fy_test } } } } add = 1 }
+    if = { limit = { location:fuan = { oe_yw_loc_ours = yes } NOT = { AND = { country_exists = c:LNG c:LNG = { has_variable = oe_yw_fy_test } } } } add = 1 }
+    if = { limit = { OR = { location:juye = { oe_yw_loc_ours = yes } location:rencheng = { oe_yw_loc_ours = yes } } NOT = { AND = { country_exists = c:YLU c:YLU = { has_variable = oe_yw_fy_test } } } } add = 1 }
+    if = { limit = { location:gaotang = { oe_yw_loc_ours = yes } NOT = { AND = { country_exists = c:YZW c:YZW = { has_variable = oe_yw_fy_test } } } } add = 1 }
+}
+oe_yw_wuhusi_discount = {
+    value = 1
+    subtract = { value = oe_yw_wuhusi_held_count multiply = 0.05 }
+    min = 0.6
+    max = 1
+}
+oe_yw_wuhusi_pct = {
+    value = oe_yw_wuhusi_held_count
+    multiply = 5
+}
+# Any scope (v14.5 Princes 2.0). Loyal active princes (tier 3, loyalty >= 70), clamped 0..10 for oe_yw_overlord_loyal_host stacks.
+oe_yw_loyal_count = {
+    value = 0
+    if = { limit = { country_exists = c:QAS c:QAS = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    if = { limit = { country_exists = c:HCN c:HCN = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    if = { limit = { country_exists = c:OTC c:OTC = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    if = { limit = { country_exists = c:BGT c:BGT = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    if = { limit = { country_exists = c:OGE c:OGE = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    if = { limit = { country_exists = c:LNG c:LNG = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    if = { limit = { country_exists = c:SYG c:SYG = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    if = { limit = { country_exists = c:YLU c:YLU = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    if = { limit = { country_exists = c:YZW c:YZW = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    if = { limit = { country_exists = c:YBN c:YBN = { oe_yw_prince_active = yes var:oe_yw_tier ?= 3 } } add = 1 }
+    min = 0
+    max = 10
+}
+# Any scope (v14.5 Princes 2.0). Next eligible year for 10-year Kurultai and next month for low-shi crisis oe_yw.21.
+oe_yw_kurultai_next_y = {
+    value = 1340
+    if = { limit = { has_global_variable = oe_yw_kurultai_y } value = global_var:oe_yw_kurultai_y add = 10 }
+}
+oe_yw_crisis21_next = {
+    value = 0
+    if = { limit = { has_global_variable = oe_yw_crisis21_m } value = global_var:oe_yw_crisis21_m add = 60 }
+}
+# Any scope. This year's grant total: unit x weights as paid x (2 in a year of a generous grant) x Wuhusi cash offset (0.60..1.00).
 oe_yw_grant_total_value = {
     value = 0
     if = {
@@ -114,6 +161,7 @@ oe_yw_grant_total_value = {
         value = global_var:oe_yw_grant_unit
         multiply = oe_yw_wpay
         if = { limit = { global_var:oe_yw_grant_mult ?= 2 } multiply = 2 }
+        multiply = oe_yw_wuhusi_discount
     }
 }
 # CHI scope. Gold the Yuan must hold to pay: the total (twice the total for an AI Yuan).
@@ -160,8 +208,12 @@ oe_yw_loy_target_value = {
     if = { limit = { has_global_variable = oe_yw_restore_until global_var:oe_yw_restore_until >= global_var:oe_yw_m } add = 5 }
     if = { limit = { situation:red_turban_rebellions = { situation_is_active = yes } } add = -10 }
     if = { limit = { has_variable = oe_yw_ev has_variable = oe_yw_ev_until var:oe_yw_ev_until >= global_var:oe_yw_m } add = var:oe_yw_ev }
-    # phase 3 (M2): the appanage lost and the grant halved -5, stopped -10 (a far prince -15), as long as it stays lost
+    # phase 3 (M2) + v14.5 Wuhusi: +5 while the prince's appanage is held by the Yuan side; when lost, halved -5, stopped -10 (far -15)
     if = {
+        limit = { oe_yw_has_fief = yes NOT = { has_variable = oe_yw_fy_lost } }
+        add = 5
+    }
+    else_if = {
         limit = { has_variable = oe_yw_fy_lost }
         if = { limit = { var:oe_yw_fy ?= 2 } add = -5 }
         else_if = { limit = { var:oe_yw_fy ?= 3 oe_yw_far = yes } add = -15 }
@@ -172,12 +224,11 @@ oe_yw_loy_target_value = {
     min = 0
     max = 100
 }
-# Prince scope. Tier from loyalty: 3 loyal (>= 70), 2 normal, 1 aloof (< 40), 0 estranged (< 20).
+# Prince scope. Tier from loyalty (v14.5 Princes 2.0): 3 loyal (>= 70), 2 aloof (40-69), 0 estranged (< 40).
 oe_yw_tier_value = {
     value = 2
     if = { limit = { var:oe_yw_loy >= 70 } value = 3 }
-    else_if = { limit = { var:oe_yw_loy < 20 } value = 0 }
-    else_if = { limit = { var:oe_yw_loy < 40 } value = 1 }
+    else_if = { limit = { var:oe_yw_loy < 40 } value = 0 }
 }
 # Prince scope. Chance to come to the Shangdu assembly: loyalty -10, far princes -20 more, 10-90%.
 oe_yw_att_chance = {
@@ -633,6 +684,10 @@ oe_yw_dev_lcut = { value = 0 if = { limit = { country_exists = c:LNG c:LNG = { h
 oe_yw_dev_st9 = { value = 0 if = { limit = { has_global_variable = oe_yw_st_9 } value = global_var:oe_yw_st_9 } }
 oe_yw_dev_st10 = { value = 0 if = { limit = { has_global_variable = oe_yw_st_10 } value = global_var:oe_yw_st_10 } }
 oe_yw_dev_duan = { value = 0 if = { limit = { has_global_variable = oe_yw_duan_choice } value = global_var:oe_yw_duan_choice } }
+oe_yw_dev_wuhusi = { value = 0 if = { limit = { always = yes } value = oe_yw_wuhusi_held_count } }
+oe_yw_dev_loyal3 = { value = 0 if = { limit = { always = yes } value = oe_yw_loyal_count } }
+oe_yw_dev_kury = { value = 0 if = { limit = { has_global_variable = oe_yw_kurultai_y } value = global_var:oe_yw_kurultai_y } }
+oe_yw_dev_kurc = { value = 0 if = { limit = { has_global_variable = oe_yw_kurultai_choice } value = global_var:oe_yw_kurultai_choice } }
 oe_yw_dev_ex1 = { value = -1 if = { limit = { country_exists = c:QAS } value = oe_yw_dev_exv_QAS } }
 oe_yw_dev_ty1 = { value = -1 if = { limit = { always = yes } value = oe_yw_dev_tyv_QAS } }
 oe_yw_dev_fy1 = { value = -1 if = { limit = { always = yes } value = oe_yw_dev_fyv_QAS } }

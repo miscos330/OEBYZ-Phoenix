@@ -58,9 +58,10 @@ oe_y7_sent_chi_this_month = {
 # before this line; Y1's pick counts only if its counter oe_dbg_n_y1 moved since our last round, as in y5b) or from another
 # Yuan line (the shared global var oe_yuan_ev_m, written by the princes' line id 20 and by this one).
 oe_y7_yuan_busy = {
+    has_global_variable = oe_y7_m
     OR = {
         AND = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_pick var:oe_yv_pick > 0 has_variable = oe_yv_m var:oe_yv_m = global_var:oe_y7_m } }
-        AND = { has_global_variable = oe_y1_m global_var:oe_y1_m = global_var:oe_y7_m has_global_variable = oe_y1_pick OR = { global_var:oe_y1_pick = 1 global_var:oe_y1_pick = 4 global_var:oe_y1_pick = 5 } has_global_variable = oe_dbg_n_y1 global_var:oe_dbg_n_y1 > oe_y7_y1n_seen }
+        AND = { has_global_variable = oe_y1_m global_var:oe_y1_m = global_var:oe_y7_m has_global_variable = oe_y1_pick OR = { global_var:oe_y1_pick = 1 global_var:oe_y1_pick = 4 global_var:oe_y1_pick = 5 global_var:oe_y1_pick = 10 global_var:oe_y1_pick = 12 global_var:oe_y1_pick = 13 } has_global_variable = oe_dbg_n_y1 global_var:oe_dbg_n_y1 > oe_y7_y1n_seen }
         AND = { has_global_variable = oe_yuan_ev_m global_var:oe_yuan_ev_m = global_var:oe_y7_m }
     }
 }
@@ -127,7 +128,7 @@ oe_y7_can_11 = {
 
 # Any scope. Event 12 can fire now (its event trigger).
 oe_y7_can_12 = {
-    oe_y7_yuan_ok = yes global_var:oe_y7_phase ?= 1 oe_y7_toqto_in_charge = yes
+    OR = { has_global_variable = oe_y7_dev_force_12 AND = { oe_y7_yuan_ok = yes global_var:oe_y7_phase ?= 1 oe_y7_toqto_in_charge = yes } }
 }
 
 # Any scope. Event 13 can fire now (its event trigger).
@@ -205,6 +206,21 @@ oe_y7_can_32 = {
     oe_y7_yuan_ok = yes OR = { global_var:oe_y7_phase ?= 2 global_var:oe_y7_phase ?= 3 has_global_variable = oe_y7_epi } global_var:oe_y7_st_31 ?= 1 OR = { global_var:oe_y7_dadu ?= 1 global_var:oe_y7_dadu ?= 2 } oe_y7_dadu_decided = yes
 }
 
+# Any scope. Event 33 can fire now (its event trigger).
+oe_y7_can_33 = {
+    oe_y7_yuan_ok = yes
+}
+
+# Any scope. Event 34 can fire now (its event trigger).
+oe_y7_can_34 = {
+    oe_y7_yuan_ok = yes
+}
+
+# Any scope. Event 35 can fire now (its event trigger).
+oe_y7_can_35 = {
+    oe_y7_yuan_ok = yes
+}
+
 # Any scope. Event 1 is due (fires before any roll).
 oe_y7_due_1 = {
     oe_y7_s_known = yes
@@ -236,7 +252,7 @@ oe_y7_due_8 = {
 # Any scope. Event 12 is due (fires before any roll).
 oe_y7_due_12 = {
     oe_y7_s_known = yes
-    oe_y7_yuan_ok = yes global_var:oe_y7_phase ?= 1 oe_y7_toqto_in_charge = yes
+    OR = { has_global_variable = oe_y7_dev_force_12 AND = { oe_y7_yuan_ok = yes global_var:oe_y7_phase ?= 1 oe_y7_toqto_in_charge = yes } }
     NOT = { has_global_variable = oe_y7_st_12 } has_global_variable = oe_y7_d_12 global_var:oe_y7_m >= global_var:oe_y7_d_12
 }
 
@@ -553,6 +569,111 @@ oe_y7_lapse_18 = {
     }
 }
 
+# Any scope. Event 33 (v14.5 inland garrison prince office 1): open/due/lapse once .1 fired and prince alive.
+oe_y7_open_33 = {
+    oe_y7_s_known = yes
+    global_var:oe_y7_st_1 ?= 1
+    NOT = { has_global_variable = oe_y7_st_33 }
+    NOT = { has_global_variable = oe_y7_pr_role_1 }
+    global_var:oe_y7_m >= oe_y7_lo_33
+    global_var:oe_y7_m < oe_y7_hi_33
+    oe_y7_can_33 = yes
+    character:oe_y7_zhennan ?= { is_alive = yes owner ?= c:CHI }
+}
+oe_y7_due_33 = {
+    oe_y7_s_known = yes
+    global_var:oe_y7_st_1 ?= 1
+    NOT = { has_global_variable = oe_y7_st_33 }
+    NOT = { has_global_variable = oe_y7_pr_role_1 }
+    global_var:oe_y7_m >= oe_y7_hi_33
+    oe_y7_can_33 = yes
+    character:oe_y7_zhennan ?= { is_alive = yes owner ?= c:CHI }
+}
+oe_y7_lapse_33 = {
+    oe_y7_s_known = yes
+    NOT = { has_global_variable = oe_y7_st_33 }
+    OR = {
+        has_global_variable = oe_y7_pr_role_1
+        AND = {
+            global_var:oe_y7_m >= oe_y7_hi_33
+            OR = {
+                NOT = { character:oe_y7_zhennan ?= { is_alive = yes owner ?= c:CHI } }
+                global_var:oe_y7_m > oe_y7_cut_33
+            }
+        }
+    }
+}
+
+# Any scope. Event 34 (v14.5 inland garrison prince office 2): open/due/lapse once .1 fired and prince alive.
+oe_y7_open_34 = {
+    oe_y7_s_known = yes
+    global_var:oe_y7_st_1 ?= 1
+    NOT = { has_global_variable = oe_y7_st_34 }
+    NOT = { has_global_variable = oe_y7_pr_role_2 }
+    global_var:oe_y7_m >= oe_y7_lo_34
+    global_var:oe_y7_m < oe_y7_hi_34
+    oe_y7_can_34 = yes
+    character:oe_y7_weishun ?= { is_alive = yes owner ?= c:CHI }
+}
+oe_y7_due_34 = {
+    oe_y7_s_known = yes
+    global_var:oe_y7_st_1 ?= 1
+    NOT = { has_global_variable = oe_y7_st_34 }
+    NOT = { has_global_variable = oe_y7_pr_role_2 }
+    global_var:oe_y7_m >= oe_y7_hi_34
+    oe_y7_can_34 = yes
+    character:oe_y7_weishun ?= { is_alive = yes owner ?= c:CHI }
+}
+oe_y7_lapse_34 = {
+    oe_y7_s_known = yes
+    NOT = { has_global_variable = oe_y7_st_34 }
+    OR = {
+        has_global_variable = oe_y7_pr_role_2
+        AND = {
+            global_var:oe_y7_m >= oe_y7_hi_34
+            OR = {
+                NOT = { character:oe_y7_weishun ?= { is_alive = yes owner ?= c:CHI } }
+                global_var:oe_y7_m > oe_y7_cut_34
+            }
+        }
+    }
+}
+
+# Any scope. Event 35 (v14.5 inland garrison prince office 3): open/due/lapse once .1 fired and prince alive.
+oe_y7_open_35 = {
+    oe_y7_s_known = yes
+    global_var:oe_y7_st_1 ?= 1
+    NOT = { has_global_variable = oe_y7_st_35 }
+    NOT = { has_global_variable = oe_y7_pr_role_3 }
+    global_var:oe_y7_m >= oe_y7_lo_35
+    global_var:oe_y7_m < oe_y7_hi_35
+    oe_y7_can_35 = yes
+    character:oe_y7_xuanrang ?= { is_alive = yes owner ?= c:CHI }
+}
+oe_y7_due_35 = {
+    oe_y7_s_known = yes
+    global_var:oe_y7_st_1 ?= 1
+    NOT = { has_global_variable = oe_y7_st_35 }
+    NOT = { has_global_variable = oe_y7_pr_role_3 }
+    global_var:oe_y7_m >= oe_y7_hi_35
+    oe_y7_can_35 = yes
+    character:oe_y7_xuanrang ?= { is_alive = yes owner ?= c:CHI }
+}
+oe_y7_lapse_35 = {
+    oe_y7_s_known = yes
+    NOT = { has_global_variable = oe_y7_st_35 }
+    OR = {
+        has_global_variable = oe_y7_pr_role_3
+        AND = {
+            global_var:oe_y7_m >= oe_y7_hi_35
+            OR = {
+                NOT = { character:oe_y7_xuanrang ?= { is_alive = yes owner ?= c:CHI } }
+                global_var:oe_y7_m > oe_y7_cut_35
+            }
+        }
+    }
+}
+
 # Any scope. Amnesty (.9) may come this month: phases 1-3, from S+18, at most 2 in a phase, 12 months apart.
 oe_y7_open_9 = {
     oe_y7_s_known = yes
@@ -589,6 +710,9 @@ oe_y7_any_due = {
         oe_y7_due_5 = yes
         oe_y7_due_10 = yes
         oe_y7_due_11 = yes
+        oe_y7_due_33 = yes
+        oe_y7_due_34 = yes
+        oe_y7_due_35 = yes
         oe_y7_due_16 = yes
         oe_y7_due_18 = yes
         oe_y7_due_25 = yes
@@ -697,6 +821,7 @@ oe_y7_siqi_any = {
 # Any scope. The month of .28 has come: oe_y7_d_28 (set by the first batch) is reached; or, without it, month 343
 # (1365.11) once the first batch has closed (W-1 never came, or Bolod Temür died, left or could not be made).
 oe_y7_28_ready = {
+    has_global_variable = oe_y7_m
     OR = {
         AND = { has_global_variable = oe_y7_d_28 global_var:oe_y7_m >= global_var:oe_y7_d_28 }
         AND = {
@@ -791,7 +916,7 @@ oe_y7_w3_can = {
     global_var:oe_y7_m >= 364
     character:oe_y7_xuanrang ?= { is_alive = yes owner ?= c:CHI }
 }
-# Any scope (interface, design 4.2). The epilogue runs (after the line closed at 1368.1.1; oe_y7_running is no then).
+# Any scope (interface, design 4.2). The epilogue runs (after the line closed at 1385.1.1; oe_y7_running is no then).
 oe_y7_epilogue = {
     has_global_variable = oe_y7_epi
 }

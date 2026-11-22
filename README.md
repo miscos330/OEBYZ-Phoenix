@@ -1,8 +1,8 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v11.8
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v14.5
 
 欧陆风云 5 的东罗马（拜占庭）与欧亚全时代重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
-> **v11.8 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。这一版的候选包在 2026-11-22 做过两轮实机测试。第一轮：一局 1337 拜占庭局，用控制台逐项跑了四大新战区、御用工场、特色征召、军阵、天朝四海、近世疫病与后期霸权的读数和部分事件，并切到札剌亦儿、毗奢耶那伽罗、织田氏、高丽、葡萄牙看了新法律、阶层特权、决议和学派；随后一局纯观察者长局跑了 14 年，查出一批问题（两个外交模块的电脑前置条件写错导致日志每分钟刷几千条报错、三个读数事件显示成错误文本、14 个工场配方利润超出游戏自检范围等），全部修正后重新打包。第二轮：一局纯观察者长局 `1337→1410`（73 年），零崩溃、无卡死，结束时内存约 12 GB；模组自己的文件只报了 1 处脚本错误（一座建筑落成时变量没有初始化，已修），其余报错都出自原版文件。发版包的前一次构建还做过加载检查和一局 9 年的观察者短跑（`1337→1346`，模组文件脚本报错 0 条）；之后只再改了 3 个决议的分类名和 3 座建筑的数值。**没有逐项实测的内容见“已知问题”**；整体仍按“实验性测试版”发布。
+> **v14.5 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。上一个候选包在 2026-11-22 至 23 日做过实机测试：一局 1337 拜占庭局和两局大元局，用控制台逐项跑了上一轮查出的问题和大元 3.0 的界面与事件；四局纯观察者 `1337→1380/1390`（合计约 190 年），零崩溃、无卡死。查出的问题（四局里大明都在 1364–1372 年间被大元整个吞并、可选子模组的标题显示成原始键等）随后做了修正，就是现在这一版。**这些修正没有再进游戏复测（修后未实机复测）**，只过了离线检查，发版包另做过一次加载检查（到主菜单并以拜占庭进局）。更早的 v14.0 候选跑过一局观察者 `1337→1463`。整体仍按“实验性测试版”发布。
 
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
@@ -37,6 +37,21 @@
 - **宫廷与豪族：** “琼筵序次”里有 7 个宫廷官职。豪族名册上的家族会扩张势力，可以拉拢、打压、抄家；放任不管会引发“拜占庭式的阴谋”。
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
+
+## v14.5 主要内容（整合 v11.8.2 / v12.0 / v12.2 / v13.0 / v13.5 / v13.6 / v13.8 / v14.0 / v14.5）
+
+对比 v11.8：事件 `2,377 → 2,641`（`+264`），原生 `.dds` 美术与图标 `1,106 → 1,265`（`+159`），开局游戏规则 `17 → 18` 条，主线调度槽位 `93 → 98`（已排满），中英词条各增约 3,600 条。
+
+- **大元帝国 3.0（v14.5）：** 原版红巾军局势面板里加入“至正平乱枢机仪”（平乱之势、朝议清浊、钞法与国库、京仓漕粮）和 9 项局势动作；红巾事件的免费兵团与大明起事重新标定；宗王 2.0（10 位投下宗王、五户丝抵扣岁赐、每王三项交互、三处亲王行府、上都库里台）；十一行省 2.0（外交容量占用 `3.00 → 0.45`、云南与征东并入、每省四项交互、12 个行省事件）。
+- **极乐洲新罗马脱壳与 2.0（v11.8.2、v13.6）：** 西渡后改用独立国家标签 `ELR`，旧大陆视野清空，带走已研究的科技、君主与继承人，开国舰队 5 艘；6 个美洲与 4 个故土总督区、文兰与斯巴达尼亚两个可选风味国、两座御用工场、“双头大帝”迁都。
+- **欧亚世界协调会、AI 性格与情境音乐（v12.0，开局规则 #18）：** 一个 1648 年以后的多边组织与 12 项国际组织决议；天朝 2.0 的 6 个事件与两项交互；6 套 AI 战略性格；按 14 个节点切换原版曲目的音乐调度和点播台。
+- **帝国驿道署与殖民 3.0（v12.2）：** 只给玩家用的自动修路（真实扣款与工期，三种路由模式）；两座海外建筑、特许商社法、12 个殖民事件。
+- **启蒙科学、非洲三轴与美洲三帝国（v13.0）：** 印刷与科学院（4 座地标、13 个事件）；埃塞俄比亚、马里与桑海、基尔瓦与大津巴布韦；阿兹特克、印加、易洛魁；8 个跨大洲事件。主线槽位排满 98/98。
+- **大师与名作、16 项和约条款、制度细化与 12 国开局（v13.5）：** 8 类大师与 12 件名作、16 项和约条款、8 项部队技能、16 项名城宪章、8 套摄政、神道四派；12 个主角国家的开局剧本与开幕导览卡。
+- **帝国柱石界面、天朝 3.0 与新任务（v13.6）：** 帝国柱石由 9 个页签并为 4 个，另有两部只读编年史；10 个大都护府与随朝代变化的国名；`ELR`、埃塞俄比亚、特诺奇蒂特兰、印加四套任务树（共 46 项）。
+- **49 幅事件插画重绘（v13.8）：** v11.0 以后的 41 张程序占位图和 8 张新图换成了 1080×440 的历史题材油画风插画（AI 生成，经人工筛选和修整）。
+- **终局与编年史（v14.0）：** 编年史里程碑扩到 22 项，新增 1836 年封卷事件；附属国忠诚度相关数值统一为 0–100 整数。
+- 可选子模组 `OEBYZ-Phoenix-Bookmarks`（开新游戏时先显示十二主角画廊）只放在 GitHub Release 的附件里，没有上创意工坊；启用时要排在主模组之后。它的标题与旗帜修正同样没有复测；从画廊进局会带出原版教程的提示，关掉即可。
 
 ## v11.8 主要内容（整合 v10.0 / v10.5 / v11.0 / v11.2 / v11.5 / v11.8，并提前并入原定 v12.5 的内容）
 
@@ -98,32 +113,30 @@
 
 计划会根据测试和玩家反馈调整，以实际更新为准。
 
-- **先补测与修正：** 把这一版没有逐项实测的内容（见“已知问题”）逐项走一遍并修正；长局跑到 1836 年。
-- **换掉占位图：** v11.0 以后新增的 120 张程序占位图换成正式美术。
-- **v12.0：** 欧亚世界协调会与情境音乐调度。
-- **v13.0：** 非洲三轴与美洲本土现代化抗衡线。
+- **先补测与修正：** 把这一版没有复测的修正（尤其是大元与大明的平衡）和没有逐项实测的内容（见“已知问题”）走一遍并修正；观察者长局跑到 1836 年。
 - **持续：** 跟进欧陆风云 5 的版本更新，维护 1337 开局。
 
 ## 已知问题
 
 - 旧存档不支持，请新开一局；只适配 EU5 `1.4.9`。
-- **观察者长局只跑到 1410 年。** 更晚才出现的内容——四大新战区 1500 年以后的事件、通行证制度 / 海盟 / 东行使团 / 渡海大战按年份自动出现、近世疫病（1460 年起）、终局大战（1750 年起）——没有在长局里出现过。
-- **只经过加载和观察者长局、没有以玩家身份逐项走过的内容：** v10.0 的六条主角线与 25 国任务、v10.5 极乐洲四幕、谍报 / 海权 / 佣兵 / 小冰期与白银革命、终局大战和编年史的实际流程、天朝四海的分封与削藩。
-- **四大新战区、工场、征召、军阵里没实地看过的：** 新政府改革要到对应时代才出现；四座地标建筑没有实地建造过；特色征召没有实际征召出来看兵种；军阵与练兵法没在军队界面里选用过；区域产业与用工制度没在界面里选用过。
-- v11.0 以后新增的 120 张贴图（事件图与图标）是程序画的占位图，不是正式美术。
+- **这一版的修正没有再进游戏复测（修后未实机复测）。** 其中最大的一项是大元与大明的平衡：上一个候选包的四局观察者里，大明都在 1364–1372 年间被大元整个吞并、大元一直存续；这一版为此改了红巾期间大元的征召与军费修正、给电脑控制的大元加了“朝纲尚振 / 派系崩解”分叉、加强了大明起事，改后的实际结局分布还没有看过。
+- **观察者长局最远只到 1463 年**（v14.0 候选的一局）；v14.5 的四局只到 1380–1390 年。更晚才出现的内容——1500 年以后的各战区事件、近世疫病（1460 年起）、终局大战（1750 年起）、1836 年封卷——没有在长局里出现过。
+- **只用控制台触发或抽看过、没有以玩家身份完整走过的内容：** 协调会 12 项决议逐项提案、天朝 2.0 事件、6 套 AI 性格；驿道署三种路由模式和地图上的实际铺路、殖民 3.0 事件；v13.0 的大部分事件；大师与名作、16 项和约条款、名城宪章、部队技能、摄政；天朝 3.0 的明、清两轨称号，四套新任务树；上都库里台、高邮罢相等大元事件的各个选项。
+- 没有在不装官方拓展包的环境里测过（设计上不依赖拓展包；本机 5 个拓展包都装着）。
+- 情境音乐：脚本已不再报错，但实际有没有切曲没有人验证过。
+- 49 幅重绘插画是 AI 生成后人工筛选修整的。
+- 打开帝国柱石面板、或切换到别的国家时，日志会一次多出几千条界面报错（旧问题，不影响使用）。大元开局第一个月会连弹三十多个“独占贸易权”首相报告（原版月结行为）。
+- 年度观察者数据导出（规则 #16）默认关闭，需要的话在开局规则里打开。
 - 印度教国家没有学派选择界面，两个新的印度教学派通过事件“斯里兰甘的大祭”采用；撒马尔罕星表学派可在事件“星表告成”里采用。
-- v9.9 遗留问题的复看结果：新决议的标题与说明已正常显示；军区开局选项 A 会建两个军区；进局时游戏的报错计数约 4,200 条（rc1 约 4.8 万行）。罗马多神教神殿面板“只显示 6 尊活跃神”这一项这次没有复看。
-- 日志里仍有的提示：新外交交互没有消息类型（“Failed to find message type”）、天朝附属的纳贡价格没有修饰符类型，都不影响使用；原版自带的若干脚本报错（割让人口的和约、若干风味事件、圣战相关的内置钩子等）不是本模组带来的。
-- 大元中兴局势节奏可能偏慢（v9.9-rc1 实机里 6 年进度 29/100），这一版没有调整。
+- 日志里仍有的提示：部分新外交交互没有消息类型（“Failed to find message type”）、部分价格没有修饰符类型，都不影响使用；原版自带的若干脚本报错不是本模组带来的。
 - 军区（建筑型国家）不能自行招募正规军：这是原版引擎规则（与汉萨同盟相同）。
-- 1337 开局头 20 天东正教农民减少约 6.1 万、大元建筑式行省偶尔加入原版独立运动，属于原版底层结算机制，仍在跟踪。
 
 ## 安装
 
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v11.8` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v14.5` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
@@ -148,11 +161,11 @@
 
 ---
 
-# Phoenix Beta (OEBYZ) v11.8 — English
+# Phoenix Beta (OEBYZ) v14.5 — English
 
 The beta of an Eastern Roman (Byzantine) and Pan-Eurasian overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
-> **v11.8: Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.** The candidate of this version went through two rounds of live testing on 2026-11-22. Round one: a 1337 Byzantium game in which the readouts and some events of the four new theatres, the imperial manufactories, the special levies, the formations, the Celestial subjects, the early modern epidemics and the late hegemony were run from the console, and the new laws, estate privileges, decisions and schools were looked at as the Jalayirids, Vijayanagar, the Oda, Goryeo and Portugal; then a pure observer run of 14 years, which turned up a batch of problems (a wrong AI precondition in two diplomacy modules flooding the log with thousands of errors a minute, three readout events printing error text, 14 manufactory recipes outside the game's own profit check, and others). All were fixed and the package rebuilt. Round two: a pure observer run `1337→1410` (73 years) with no crash or freeze, about 12 GB of memory at the end, and a single script error from the mod's own files (a building that changed a variable before setting it, since fixed); the remaining errors come from vanilla files. The previous build of the release package was also load-checked and run as an observer for 9 years (`1337→1346`, no script error from the mod's files); after that only the category of 3 decisions and 3 building values were changed. **What was not checked item by item is listed under Known issues**; this remains an experimental beta.
+> **v14.5: Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.** The previous candidate was tested live on 22-23 November 2026: a 1337 Byzantium game and two Yuan games in which the problems of the earlier round and the screens and events of Yuan 3.0 were run from the console, and four pure observer runs `1337→1380/1390` (about 190 years in all) with no crash or freeze. The problems found (in all four runs the Ming was annexed whole by the Yuan between 1364 and 1372; the optional submod showed raw keys as titles; and others) were then fixed, and that is this version. **These fixes were not re-tested in game**; they passed the offline checks only, and the release package was load-checked once (main menu, then a game as Byzantium). An earlier v14.0 candidate ran one observer game `1337→1463`. It is still released as an experimental beta.
 
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
@@ -173,6 +186,21 @@ The beta of an Eastern Roman (Byzantine) and Pan-Eurasian overhaul for Europa Un
 - **Three rings of territory:** provinces with five statuses and a senate; a ladder of subjects from tributary to province; the Family of Kings, dignities and buying peace.
 - **Imperial campaigns and the Roman Reconquest:** win the Balkans and Anatolia, then campaign towards Egypt, Italy, Iberia and beyond; restore 10 regions to complete the Reconquest.
 - **Court, great houses and finance:** seven court offices, great houses to court or curb, and separate treasury and privy purse.
+
+## Highlights of v14.5 (v11.8.2, v12.0, v12.2, v13.0, v13.5, v13.6, v13.8, v14.0, v14.5)
+
+Against v11.8: events `2,377 → 2,641` (`+264`), native `.dds` art and icons `1,106 → 1,265` (`+159`), Game Rules `17 → 18`, main-line slots `93 → 98` (all used), about 3,600 more text entries in each language.
+
+- **Great Yuan 3.0 (v14.5):** a pacification gauge (momentum, court opinion, paper money and treasury, capital granary) and 9 situation actions inside the vanilla Red Turban situation panel; the free regiments of the Red Turban events and the rise of the Ming re-tuned; Princes 2.0 (10 appanage princes, silk-household income set against the yearly grants, three interactions per prince, three garrison princely offices, the Shangdu kurultai); Eleven Provinces 2.0 (diplomatic capacity use `3.00 → 0.45`, Yunnan and Zhengdong added, four interactions per province, 12 province events).
+- **Nova Elysia: a country of its own, and 2.0 (v11.8.2, v13.6):** after the crossing the realm becomes the new tag `ELR`, the Old World map knowledge is cleared, researched advances, ruler and heir come along and the founding fleet has 5 ships; 6 American and 4 homeland exarchates, the optional flavour countries Vinland and Spartania, two imperial manufactories, the two-headed emperor's move of the capital.
+- **Eurasian Concert, AI characters and situational music (v12.0, Game Rule #18):** a multilateral organisation after 1648 and 12 international-organisation resolutions; 6 events and two interactions of Celestial 2.0; 6 AI strategic characters; a music director that switches vanilla tracks at 14 moments, with a jukebox.
+- **Imperial Road Office and Colonisation 3.0 (v12.2):** automatic road building for the player only (real cost and build time, three routing modes); two overseas buildings, a chartered-company law, 12 colonial events.
+- **Enlightenment science, three African axes and three American empires (v13.0):** printing and academies (4 landmarks, 13 events); Ethiopia, Mali and Songhai, Kilwa and Great Zimbabwe; the Aztecs, the Inca, the Iroquois; 8 cross-continent events. All 98 main-line slots are now used.
+- **Masters and masterpieces, 16 treaty clauses, institutions and 12 starts (v13.5):** 8 kinds of masters and 12 masterpieces, 16 peace-treaty clauses, 8 unit abilities, 16 city charters, 8 regencies, four Shinto schools; start scenarios and day-one briefing cards for 12 protagonist countries.
+- **Pillars of Empire screen, Celestial 3.0 and new missions (v13.6):** the Pillars panel goes from 9 tabs to 4, with two read-only chronicles; 10 grand protectorates with names that follow the dynasty; four mission trees (46 missions) for `ELR`, Ethiopia, Tenochtitlan and the Inca.
+- **49 event pictures redone (v13.8):** the 41 procedurally drawn placeholders added since v11.0 and 8 new pictures are now 1080×440 history paintings (AI-generated, selected and retouched by hand).
+- **Endgame and chronicle (v14.0):** 22 chronicle milestones and a closing event in 1836; subject-loyalty values unified to whole numbers 0-100.
+- The optional submod `OEBYZ-Phoenix-Bookmarks` (a gallery of the twelve protagonists when starting a new game) is only attached to the GitHub release, not on the Workshop; load it after the main mod. Its title and flag fixes were not re-tested either; starting from the gallery brings up the vanilla tutorial prompts, which can be closed.
 
 ## Highlights of v11.8 (v10.0, v10.5, v11.0, v11.2, v11.5, v11.8, and the content planned as v12.5)
 
@@ -223,23 +251,22 @@ Events grow from 1229 to 1372, and three new looks arrive for the Byzantine and 
 
 Plans will change with testing and player feedback.
 
-- **First, test and fix:** walk through everything in this version that was not checked item by item (see Known issues) and run an observer game to 1836.
-- **Replace the placeholders:** finished art for the 120 procedurally drawn images added since v11.0.
-- **v12.0:** a Eurasian concert of powers and situational music.
-- **v13.0:** three African axes and the modernisation of the native Americas.
+- **First, test and fix:** re-test the fixes of this version (above all the Yuan and Ming balance), walk through what was not checked item by item (see Known issues) and run an observer game to 1836.
 - **Ongoing:** keep pace with Europa Universalis V patches and maintain the 1337 start.
 
 ## Known issues
 
 - Old saves are not supported; start a new game. Game version 1.4.9 only.
-- **The observer run only reached 1410.** Content that appears later (the events of the four new theatres after 1500, the pass system, the league, the mission to Asia and the war across the strait arriving on their dates, the early modern epidemics from 1460, the final war from 1750) never came up in it.
-- **Loaded and run by the AI only, never walked through as a player:** the six protagonist lines and the 25 mission packs of v10.0, the four acts of Nova Elysia, espionage, sea power, mercenaries, the Little Ice Age and the price revolution, the actual course of the final war and the chronicle, and Celestial enfeoffment.
-- **Not seen in place in the new theatres, manufactories, levies and formations:** the new government reforms only appear in their ages; the four landmark buildings were never built in their cities; the special levies were never actually raised; formations, recruitment methods, regional industries and employment systems were never chosen in their screens.
-- The 120 images added since v11.0 (event pictures and icons) are procedurally drawn placeholders, not finished art.
+- **The fixes of this version were not re-tested in game.** The largest is the balance between the Yuan and the Ming: in the four observer runs of the previous candidate the Ming was annexed whole by the Yuan between 1364 and 1372 and the Yuan always survived. This version changes the Yuan's levy and upkeep modifiers during the Red Turban years, gives the AI-controlled Yuan a fork between a firm court and factional decay, and strengthens the rise of the Ming; how games now turn out has not been looked at.
+- **The longest observer run reached 1463** (one run of the v14.0 candidate); the four runs of v14.5 reached 1380-1390. Content that appears later (theatre events after 1500, the early modern epidemics from 1460, the final war from 1750, the closing of the chronicle in 1836) never came up in a long run.
+- **Only fired from the console or spot-checked, never walked through as a player:** the 12 Concert resolutions one by one, the Celestial 2.0 events, the 6 AI characters; the three routing modes of the Road Office and the roads actually laid on the map, the Colonisation 3.0 events; most events of v13.0; masters and masterpieces, the 16 treaty clauses, city charters, unit abilities, regencies; the Ming and Qing titles of Celestial 3.0 and the four new mission trees; the options of the Yuan events such as the Shangdu kurultai and the dismissal at Gaoyou.
+- Never tested without the official expansions (the mod is designed not to need them; all five are installed on the test machine).
+- Situational music: the script no longer logs errors, but nobody has checked that tracks really switch.
+- The 49 redone pictures are AI-generated, then selected and retouched by hand.
+- Opening the Pillars of Empire panel, or switching to another country, adds a few thousand interface errors to the log at once (an old problem; play is not affected). A Yuan game shows some thirty exclusive-trade reports in its first month (vanilla month-end behaviour).
+- The yearly observer data export (Game Rule #16) is off by default.
 - Hindu countries have no school picker, so the two new Hindu schools are adopted in the event The Great Festival at Srirangam; the school of the Samarkand tables can be adopted in the event The Star Tables Completed.
-- Re-check of the v9.9 leftovers: the new decisions now show their titles and descriptions; opening option A creates two themes; the log at game start is about 4,200 lines (about 48,000 in rc1). The Religio Romana temple panel (six active gods only) was not looked at again.
-- Still in the log: new diplomatic interactions have no message type ("Failed to find message type") and the tribute prices of the Celestial subjects have no modifier type; neither affects play. Several script errors come from vanilla files, not from this mod.
-- The Great Yuan Restoration may be slow (29/100 after 6 years in v9.9-rc1); it was not retuned in this version.
+- Still in the log: some new diplomatic interactions have no message type and some prices have no modifier type; neither affects play. Several script errors come from vanilla files, not from this mod.
 - Themes (building-type countries) cannot recruit regulars themselves: an engine rule, as for the Hansa.
 
 ## Install

@@ -11,8 +11,16 @@ oe_byz_co_emperor_filled = {
     }
 }
 oe_byz_refresh_co_emperor_display = {
-    scope = country
-    is_shown = { tag = BYZ oe_byz_imperial_honors_allowed = yes }
-    is_valid = { tag = BYZ oe_byz_imperial_honors_allowed = yes }
-    effect = { oe_byz_refresh_co_emperor_display = yes }
+    effect = {
+        if = {
+            limit = {
+                country_exists = c:BYZ
+                c:BYZ = {
+                    is_ai = no
+                    oe_byz_imperial_honors_allowed = yes
+                }
+            }
+            c:BYZ = { oe_byz_refresh_co_emperor_display = yes }
+        }
+    }
 }
