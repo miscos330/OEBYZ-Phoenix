@@ -1,0 +1,321 @@
+﻿# Project Phoenix v15.0: targeted REPLACE overrides for vanilla laws.
+# Generated from EU5 1.4.9 vanilla definitions; do not edit by hand.
+
+# --- From in_game/common/laws/00_religious.txt (1 block) ---
+REPLACE:patriarchate_law = {
+	law_category = religious
+	law_religion_group = {
+		orthodox
+		strigolniki
+		miaphysite
+	} 
+
+	potential = {
+		OR = {
+			religion = religion:orthodox
+			religion = religion:strigolniki
+			religion = religion:miaphysite
+		}
+		NOT = { has_policy = separate_clergy_from_state_policy }
+	}
+	separated_patriarchate_policy = {
+        potential = { NOT = { tag = BYZ } }
+		country_modifier = {
+			join_autocephalous_patriarchate_cost_modifier = 0.2
+			create_autocephalous_patriarchate_cost_modifier = 0.2
+			third_rome_cost_modifier = 0.2
+			clergy_estate_max_tax = 0.5
+		}
+		estate_preferences = {
+			clergy_estate
+		}
+		years = 2
+	}
+	state_patriarchate_policy = {
+		country_modifier = {
+			monthly_religious_influence = 0.1
+		}
+		estate_preferences = {
+			nobles_estate
+		}
+		years = 2
+	}
+	combined_patriarchate_policy = {
+		country_modifier = {
+			monthly_religious_influence = 0.15
+			join_autocephalous_patriarchate_cost_modifier = -0.2
+			create_autocephalous_patriarchate_cost_modifier = -0.2
+			third_rome_cost_modifier = -0.2
+			global_clergy_estate_power = 0.5
+		}
+		estate_preferences = {
+			crown_estate
+		}
+		years = 2
+	}
+	most_holy_synod_policy = {
+		unique = yes
+		potential = {
+			culture = { has_culture_group = culture_group:russian_group }
+			country_rank_level > 2
+		}
+		country_modifier = {
+			monthly_religious_influence = 0.2
+			third_rome_cost_modifier = -0.33
+			global_clergy_estate_power = -0.1
+		}
+		estate_preferences = {
+			nobles_estate
+			crown_estate
+		}
+		years = 2
+	}
+    oe_byz_ecumenical_patriarch_policy = {
+        unique = yes
+        potential = { tag = BYZ }
+        country_modifier = {
+            monthly_religious_influence = 0.1
+            tolerance_own = 1
+        }
+        estate_preferences = { clergy_estate }
+        years = 2
+    }
+}
+
+# --- From in_game/common/laws/10_italian_wars_laws.txt (1 block) ---
+REPLACE:administration_of_italian_lands_law = {
+	unique = yes
+	law_category = administrative
+
+	potential = {
+		OR = {
+			has_unlocked_law_trigger = { type = administration_of_italian_lands_law }
+			AND = {
+				tag = BYZ
+				OR = {
+					has_variable = oe_theme_latin_unlocked
+					has_variable = oe_theme_italian_unlocked
+				}
+			}
+		}
+	}
+
+	italian_direct_rule_policy = {
+		years = 2
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = locations_in_italy_gain_tt
+					region = region:italy_region
+				}
+			}
+			local_max_control = 0.1
+		}
+	}
+
+	italian_local_autonomy_policy = {
+		years = 2
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = locations_in_italy_gain_tt
+					region = region:italy_region
+				}
+			}
+			local_monthly_development_modifier = 0.2
+			local_monthly_prosperity = 0.001
+		}
+	}
+
+	italian_tribute_system_policy = {
+		years = 2
+		country_modifier = {
+		}
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = locations_in_italy_gain_tt
+					region = region:italy_region
+				}
+			}
+			local_production_efficiency = 0.05
+			local_manpower_modifier = 0.1
+		}
+	}
+
+	italian_ordonnances_royales_policy = {
+		unique = yes
+		years = 2
+		potential = {
+			OR = {
+				capital = { region = region:france_region }
+				culture = { has_culture_group = culture_group:french_group }
+			}
+		}
+		country_modifier = {
+			government_size = 1
+		}
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = locations_in_italy_gain_tt
+					region = region:italy_region
+				}
+			}
+			local_crown_estate_power = 0.5
+		}
+	}
+
+	italian_adelantamiento_policy = {
+		unique = yes
+		years = 2
+		potential = {
+			OR = {
+				capital = { region = region:iberia_region }
+				culture = { has_culture_group = culture_group:iberian_group }
+			}
+		}
+		country_modifier = {
+			trade_income = 0.1
+		}
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = locations_in_italy_gain_tt
+					region = region:italy_region
+				}
+			}
+			local_distance_from_capital_speed_propagation = 0.2
+		}
+	}
+
+	italian_catepanate_policy = {
+		unique = yes
+		years = 2
+		potential = {
+			OR = {
+				capital = { region = region:balkan_region }
+				culture = { has_culture_group = culture_group:greek_group }
+				culture = { has_culture_group = culture_group:south_slavic_group }
+				has_or_had_tag = BYZ
+			}
+		}
+		country_modifier = {
+			global_crown_estate_power = 0.33
+		}
+		country_modifier = {
+			display_trigger = {
+				has_dlc = "d008_fate_of_the_phoenix"
+				has_or_had_tag = BYZ
+			}
+			num_of_legionaries_modifier = 1
+		}
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = locations_in_italy_gain_tt
+					region = region:italy_region
+				}
+			}
+			local_pop_assimilation_speed_modifier = 0.5
+		}
+	}
+
+	italian_imperial_fiefs_policy = {
+		unique = yes
+		years = 2
+		potential = {
+			OR = {
+				is_leader_of_international_organization = international_organization:hre
+				culture = { has_culture_group = culture_group:german_group }
+			}
+		}
+		country_modifier = {
+			global_manpower_modifier = 0.1
+		}
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = locations_in_italy_gain_tt
+					region = region:italy_region
+				}
+			}
+			local_unrest = -0.25
+		}
+	}
+
+	oe_italian_catepanate_policy = {
+		unique = yes
+		years = 2
+		potential = {
+			tag = BYZ
+			custom_tooltip = {
+				text = OE_ITALIAN_LATIN_POLICY_REQUIRED
+				has_variable = oe_theme_latin_unlocked
+			}
+		}
+		country_modifier = {
+			num_italian_administrations = 1
+		}
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = locations_in_italy_gain_tt
+					region = region:italy_region
+				}
+			}
+			local_crown_estate_power = 0.5
+			local_max_control = 0.1
+		}
+	}
+
+	oe_italian_autonomy_policy = {
+		unique = yes
+		years = 2
+		potential = {
+			tag = BYZ
+			custom_tooltip = {
+				text = OE_ITALIAN_AUTONOMY_POLICY_REQUIRED
+				has_variable = oe_theme_italian_unlocked
+			}
+		}
+		country_modifier = {
+			government_size = 1
+		}
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = locations_in_italy_gain_tt
+					region = region:italy_region
+				}
+			}
+			local_production_efficiency = 0.05
+			local_max_rgo_size_modifier = 0.2
+		}
+
+		location_modifier = {
+			potential_trigger = {
+				custom_tooltip = {
+					text = OE_ITALIAN_URBAN_PORTS_GAIN_TT
+					region = region:italy_region
+					is_coastal = yes
+					is_port = yes
+					OR = {
+						location_rank = location_rank:city
+						location_rank = location_rank:megalopolis
+					}
+				}
+			}
+			local_port_cost_distance_impact = -0.5
+		}
+	}
+}

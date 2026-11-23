@@ -1,8 +1,8 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v14.5
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v20.0
 
 欧陆风云 5 的东罗马（拜占庭）与欧亚全时代重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
-> **v14.5 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。上一个候选包在 2026-11-22 至 23 日做过实机测试：一局 1337 拜占庭局和两局大元局，用控制台逐项跑了上一轮查出的问题和大元 3.0 的界面与事件；四局纯观察者 `1337→1380/1390`（合计约 190 年），零崩溃、无卡死。查出的问题（四局里大明都在 1364–1372 年间被大元整个吞并、可选子模组的标题显示成原始键等）随后做了修正，就是现在这一版。**这些修正没有再进游戏复测（修后未实机复测）**，只过了离线检查，发版包另做过一次加载检查（到主菜单并以拜占庭进局）。更早的 v14.0 候选跑过一局观察者 `1337→1463`。整体仍按“实验性测试版”发布。
+> **v20.0 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。2026-11-23 用 v20.0 候选做了实机测试：加载检查（相对 v14.5 发版包逐条比对新增报错）、九组引擎探针一键跑通（P1–P9 读数全部为通过值），以及观察者长局 1337→1812（475 年，约 260 分钟）零崩溃、无卡死。首轮查出的 11 类问题（5 种新商品缺修正类型与 50 张修正图标、4 种不进人口需求、一份开局外交文件解析失败、两处高频运行期报错、4 个决议分类无效、12 个生产方式利润超出引擎区间、20 个消息类型和 66 条词条缺失等）已在 rc2 修掉并复测清零加载期与早期高频报错。发版文件夹本身另做了加载检查：进主菜单和开局画廊，以拜占庭开局后转观察者推进到 1340 年，没有崩溃，本模组脚本的运行期报错为 0，50 条修正缺图标提示已消失。rc3 修的那 5 类报错要 1362 年以后才会出现，修好后没有再跑长局复核。
 
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
@@ -37,6 +37,25 @@
 - **宫廷与豪族：** “琼筵序次”里有 7 个宫廷官职。豪族名册上的家族会扩张势力，可以拉拢、打压、抄家；放任不管会引发“拜占庭式的阴谋”。
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
+
+## v20.0 主要内容（整合 v15.0 / v15.5 / v16.0 / v16.5 / v17.0 / v17.5 / v18.0 / v18.5 / v19.0 / v19.5 / v20.0）
+
+对比 v14.5：事件 `2,641 → 3,365`（`+724`），原生 `.dds` 美术与图标 `1,265 → 1,393`（`+128`），中英词条各 `46,623 → 56,797`（约 `+10,170`），开局游戏规则 18 条、主线调度槽位 98/98 不变。
+
+- **全球内核与军区 2.0 续作（v15.0）：** 全局年度/月度调度内核与性能计数、5 个文明议会、10 项顶栏提醒、军区 2.0 第一阶段、1337 开局飞地整编（费拉德尔菲亚自由城等）、原版覆写从 74 个减到 40 个。
+- **东亚群星（v15.5）：** 日本、大明 2、清 2、朝鲜、北元与东南亚四国的任务树与事件；大元 84 幅插图收口。
+- **欧陆风云与星月铁骑（v16.0）：** 奥斯曼、西欧五强、中北欧的任务树与兵种；4 个原版国际组织与管区大督军区。
+- **蒸汽、金融与帝国黄昏（v16.5）：** 蒸汽机商品与 9 级铁道、泡沫与金融危机灾难、独立浪潮、22 项成就、500 年遥测 3.0。
+- **跨纪元与交响乐（v17.0）：** 非洲与美洲 5 条任务树、拜占庭 5 路强线与约翰七世尾声。
+- **草原风暴与响应式世界（v17.5）：** 金帐、察合台、大元的飞地清理；察合台、格鲁吉亚、札剌亦儿、马拉塔任务树；16 个原生事件钩子驱动的响应式事件。
+- **活阶层与小冰期（v18.0）：** 12 项多国国际组织表决、7 个文明议会；阶层私兵、阶层银行借贷、银行家族与日本建筑国的防断粮护栏；33 个游牧军队国的冬牧护栏；小冰期延冬与常平仓跨市买粮；王朝声望、摄政与太子教育。
+- **双世纪剧本与战法和约（v18.5）：** 法国、波希米亚、云南梁王的大封建收拢；6 个原版国际组织深化；文化征召战法与 10 项和约条款。
+- **战略商品、运河与 AI 3.0（v19.0）：** 精炼钢、外销瓷茶、工业化学品、航海天文钟 4 种商品与生产链；苏伊士、巴拿马、基尔、伏尔加—顿河、京杭大运河 5 项工程；6 个地图模式与 15 列国家账本；可选的后期减负助手；AI 3.0。
+- **欧亚遗珠（v19.5）：** 立陶宛、诺夫哥罗德、苏格兰、阿拉贡、佛罗伦萨、瑞士、摩洛哥、吐蕃 8 国任务树，全模组合计 55 条任务树。
+- **终极典藏版（v20.0）：** 政体动态国旗、12 项顶栏提醒、6 个决议分类、24 国开局简介卡、4 套可在百科里随时打开的新手教程、1836 编年史大结局；专属附庸保护锁（大元行省、都护府、宗王不能被改成普通附庸）；全模组兵种、刷兵与殖民内容按时代和科技加锁（离线审计 98 处 → 0）；书签子模组 3.0（24 国，见下）。
+- **实机修正（v20.0-rc2 / rc3 / rc4）：** rc2 修掉首轮实机 11 类问题，并补齐 50 张商品修正图标；rc3 修掉 475 年长局里 1362 年以后才出现的 5 类空引用比较报错（改为 `?=`），给 3 处外交/宫廷脚本加了前置条件，并补齐开局精选页 3.0 的 24 条悬停提示；rc4 修好开局画廊第 2 页的翻页按钮（原来点了没反应），以及金帐汗国、奥地利、察合台、佛罗伦萨、摩洛哥 5 张卡片的空白国旗。
+
+可选子模组：**开局精选页 3.0**（24 国，两页 3×4 画廊）在创意工坊条目 3844347953 更新，GitHub 附 ZIP；实机核对过两页 24 张卡片的国旗、悬停提示和翻页按钮，选卡后能以拜占庭开局。1453、1648、1776 三个剧本子模组还在制作，本版不发布。原声带子模组本版也不发布（没有编译好的音频库，游戏里放不出声）。
 
 ## v14.5 主要内容（整合 v11.8.2 / v12.0 / v12.2 / v13.0 / v13.5 / v13.6 / v13.8 / v14.0 / v14.5）
 
@@ -118,25 +137,19 @@
 
 ## 已知问题
 
-- 旧存档不支持，请新开一局；只适配 EU5 `1.4.9`。
-- **这一版的修正没有再进游戏复测（修后未实机复测）。** 其中最大的一项是大元与大明的平衡：上一个候选包的四局观察者里，大明都在 1364–1372 年间被大元整个吞并、大元一直存续；这一版为此改了红巾期间大元的征召与军费修正、给电脑控制的大元加了“朝纲尚振 / 派系崩解”分叉、加强了大明起事，改后的实际结局分布还没有看过。
-- **观察者长局最远只到 1463 年**（v14.0 候选的一局）；v14.5 的四局只到 1380–1390 年。更晚才出现的内容——1500 年以后的各战区事件、近世疫病（1460 年起）、终局大战（1750 年起）、1836 年封卷——没有在长局里出现过。
-- **只用控制台触发或抽看过、没有以玩家身份完整走过的内容：** 协调会 12 项决议逐项提案、天朝 2.0 事件、6 套 AI 性格；驿道署三种路由模式和地图上的实际铺路、殖民 3.0 事件；v13.0 的大部分事件；大师与名作、16 项和约条款、名城宪章、部队技能、摄政；天朝 3.0 的明、清两轨称号，四套新任务树；上都库里台、高邮罢相等大元事件的各个选项。
-- 没有在不装官方拓展包的环境里测过（设计上不依赖拓展包；本机 5 个拓展包都装着）。
-- 情境音乐：脚本已不再报错，但实际有没有切曲没有人验证过。
-- 49 幅重绘插画是 AI 生成后人工筛选修整的。
-- 打开帝国柱石面板、或切换到别的国家时，日志会一次多出几千条界面报错（旧问题，不影响使用）。大元开局第一个月会连弹三十多个“独占贸易权”首相报告（原版月结行为）。
-- 年度观察者数据导出（规则 #16）默认关闭，需要的话在开局规则里打开。
-- 印度教国家没有学派选择界面，两个新的印度教学派通过事件“斯里兰甘的大祭”采用；撒马尔罕星表学派可在事件“星表告成”里采用。
-- 日志里仍有的提示：部分新外交交互没有消息类型（“Failed to find message type”）、部分价格没有修饰符类型，都不影响使用；原版自带的若干脚本报错不是本模组带来的。
-- 军区（建筑型国家）不能自行招募正规军：这是原版引擎规则（与汉萨同盟相同）。
+- 观察者长局最远跑到 1812 年；更晚的内容（终局大战、1836 封卷等）没有在长局里出现过。
+- 金帐汗国在观察者局里 1345 年前后先崩后复、1355 年后再崩（v14.5 的四局走势相同，原因未查明）。
+- 雇佣兵在中亚、朝鲜等地刷“重步兵”时，加载日志有“找不到可用兵种”的引擎提示（未证实与本模组有关）。
+- 发版包里有几十张 v14.5 留下的旧改革、特权图标，对应条目已经不存在，加载日志会提示“图标没有对应对象”，不影响游戏。
+- 13 幅新事件插画暂时借用现有油画，之后补画。
+- 没有逐项实测的：决议栏里每条决议的可见性（只有离线时代锁审计为 0 作证据）、各国专属任务树与 v15–v20 新增事件的逐个触发、以及 rc3 修正在 1362 年以后的长局表现。
 
 ## 安装
 
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v14.5` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v20.0` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
@@ -161,16 +174,44 @@
 
 ---
 
-# Phoenix Beta (OEBYZ) v14.5 — English
+# Phoenix Beta (OEBYZ) v20.0 — English
 
 The beta of an Eastern Roman (Byzantine) and Pan-Eurasian overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
-> **v14.5: Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.** The previous candidate was tested live on 22-23 November 2026: a 1337 Byzantium game and two Yuan games in which the problems of the earlier round and the screens and events of Yuan 3.0 were run from the console, and four pure observer runs `1337→1380/1390` (about 190 years in all) with no crash or freeze. The problems found (in all four runs the Ming was annexed whole by the Yuan between 1364 and 1372; the optional submod showed raw keys as titles; and others) were then fixed, and that is this version. **These fixes were not re-tested in game**; they passed the offline checks only, and the release package was load-checked once (main menu, then a game as Byzantium). An earlier v14.0 candidate ran one observer game `1337→1463`. It is still released as an experimental beta.
+> **v20.0: Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.** Tested live on 23 November 2026 with the v20.0 candidate: a load check (every new error compared with the v14.5 release), the nine one-click engine probes (P1–P9 all returned passing values), and an observer game 1337→1812 (475 years, about 260 minutes) with no crash or hang. Eleven kinds of initial issues (5 new goods missing modifier types and 50 modifier icons, 4 missing from pop demand, a start-date diplomacy file that failed to parse, two frequent runtime errors, 4 decisions in an invalid category, 12 production methods outside the engine's profit band, 20 message types and 66 text keys missing) were fixed in rc2 and re-tested with load and early high-frequency errors cleared. The release folder itself was load-checked: main menu, the start gallery, then a game as Byzantium run as an observer to 1340 with no crash, no runtime script errors from this mod, and the 50 missing-icon notes gone. The 5 kinds of errors fixed in rc3 only appear after 1362; no long game was run again after the fix.
 
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
 
 ⭐ **If you enjoy the mod, please star this repository.** Stars help other players find it and are the most direct encouragement for us. Bug reports are welcome in Issues.
+
+## New in v20.0 (v15.0 to v20.0)
+
+Against v14.5: events `2,641 → 3,365` (`+724`), native `.dds` art and icons `1,265 → 1,393` (`+128`), text entries per language `46,623 → 56,797` (about `+10,170`); Game Rules (18) and main-line slots (98/98) unchanged.
+
+- **Global kernel and Theme System 2.0 continued (v15.0):** a global yearly/monthly scheduler with performance counters, 5 civilisation parliaments, 10 top-bar alerts, Theme 2.0 phase 1, 1337 exclave clean-up (Free City of Philadelphia and others); vanilla overrides cut from 74 to 40.
+- **East Asian stars (v15.5):** mission trees and events for Japan, Ming 2, Qing 2, Korea, Northern Yuan and four Southeast Asian states; the last of the 84 Yuan pictures.
+- **Europe and the Crescent (v16.0):** mission trees and units for the Ottomans, the five great Western European powers and Central/Northern Europe; 4 vanilla international organisations and diocese super-themes.
+- **Steam, finance and imperial twilight (v16.5):** steam engines as a good and a 9-tier railway, bubble and financial crisis disasters, independence waves, 22 achievements, 500-year telemetry 3.0.
+- **Across eras and the symphony (v17.0):** 5 African and American mission trees, five Byzantine strong lines and a John VII epilogue.
+- **Steppe storm and a reactive world (v17.5):** exclave clean-up for the Golden Horde, Chagatai and Yuan; Chagatai, Georgia, Jalayirid and Maratha mission trees; reactive events driven by 16 native event hooks.
+- **Living estates and the Little Ice Age (v18.0):** 12 multinational resolutions and 7 parliaments; estate private regiments, estate bank loans, guard rails for banking houses and Japanese building states; winter-camp rails for 33 nomad army states; extended winters and cross-market grain purchases; dynasty prestige, regencies and heir education.
+- **Two century scenarios, war doctrine and peace terms (v18.5):** great-fief consolidation for France, Bohemia and the Prince of Liang; 6 vanilla international organisations deepened; cultural levies and 10 peace terms.
+- **Strategic goods, canals and AI 3.0 (v19.0):** refined steel, export porcelain and tea, industrial chemicals and marine chronometers with their production chains; Suez, Panama, Kiel, Volga-Don and Grand Canal projects; 6 map modes and 15 ledger columns; optional late-game helpers; AI 3.0.
+- **Hidden gems of Eurasia (v19.5):** mission trees for Lithuania, Novgorod, Scotland, Aragon, Florence, Switzerland, Morocco and Tibet: 55 mission trees in the mod.
+- **Definitive edition (v20.0):** dynamic government flags, 12 top-bar alerts, 6 decision categories, 24 start-country cards, 4 tutorial chains you can open from the encyclopedia at any time, an 1836 chronicle finale; a protection lock for special subjects (Yuan provinces, protectorates and princes cannot be turned into ordinary subjects); era and technology locks on units, spawned armies and colonial content across the mod (offline audit 98 → 0); Bookmarks submod 3.0 (24 countries, see below).
+- **Live fixes (v20.0-rc2 / rc3 / rc4):** rc2 fixed the 11 initial live issues and added 50 goods modifier icons; rc3 fixed 5 kinds of empty-scope comparison errors that only appeared after 1362 in the 475-year game (now `?=`), added conditions to 3 diplomacy/intrigue scripts, and added the 24 Bookmarks 3.0 hover texts; rc4 fixed the gallery's page 2 button (clicks did nothing) and the blank flags on 5 cards (Golden Horde, Austria, Chagatai, Florence, Morocco).
+
+Optional submods: **Bookmarks 3.0** (24 countries on two 3 x 4 pages) is updated on Workshop item 3844347953 and attached to the GitHub release; both pages were checked live: all 24 flags, the hover texts and the page buttons work, and picking a card starts a game (tested with Byzantium). The 1453, 1648 and 1776 scenario submods are still in progress and are not part of this release. The soundtrack submod is not released either (it has no compiled sound bank, so nothing plays in game).
+
+**Known issues:**
+
+- The longest observer game reached 1812; later content (the final war, the 1836 chronicle) has not appeared in a long game.
+- In observer games the Golden Horde collapses around 1345, recovers, and collapses again after 1355 (the same in the four v14.5 games; cause unknown).
+- When mercenaries are raised in Central Asia or Korea the log shows an engine note that no heavy infantry unit is available (not shown to come from this mod).
+- The package still carries a few dozen old reform and privilege icons from v14.5 whose entries no longer exist; the load log notes that these icons have no matching object. This does not affect play.
+- 13 new event pictures temporarily reuse existing paintings; new ones will follow.
+- Not tested item by item: the visibility of every decision (only the offline era-lock audit, 0 findings, backs it), each country's mission tree and each v15–v20 event, and how the rc3 fixes behave after 1362 in a long game.
 
 ## What this mod is
 

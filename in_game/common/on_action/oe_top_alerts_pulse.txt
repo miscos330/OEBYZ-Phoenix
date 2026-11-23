@@ -130,5 +130,96 @@ oe_top_alerts_monthly_pulse = {
         else = {
             set_variable = { name = oe_alert_cache_far_ready value = 0 }
         }
+
+        # Cache 6 (v15.0): Great Yuan Zhizheng Crisis Active (CHI, unresolved)
+        if = {
+            limit = {
+                tag = CHI
+                has_global_variable = oe_y7_on
+                NOT = { has_global_variable = oe_y7_end }
+            }
+            set_variable = { name = oe_alert_cache_yuan_zhizheng value = 1 }
+        }
+        else = {
+            set_variable = { name = oe_alert_cache_yuan_zhizheng value = 0 }
+        }
+
+        # Cache 7 (v15.0): Celestial Mandate / Tributary Charter Ready (Emperor of China / CHI / MNG)
+        if = {
+            limit = {
+                OR = {
+                    oe_cel_is_celestial_emperor = yes
+                    AND = {
+                        OR = { tag = CHI tag = MNG }
+                        exists = international_organization:middle_kingdom
+                        is_member_of_international_organization = international_organization:middle_kingdom
+                    }
+                }
+            }
+            set_variable = { name = oe_alert_cache_celestial value = 1 }
+        }
+        else = {
+            set_variable = { name = oe_alert_cache_celestial value = 0 }
+        }
+
+        # Cache 8 (v15.0): Imperial Road Network Upgrade Ready (high-tier road tech or active road office)
+        if = {
+            limit = {
+                NOT = { oe_road_ogas_active = yes }
+                gold >= 150
+                OR = {
+                    var:oe_road_auto_enabled ?= 1
+                    road_type:paved_road = { is_available_for = root }
+                    road_type:oe_via_imperialis = { is_available_for = root }
+                    road_type:oe_yam_post_road = { is_available_for = root }
+                    road_type:oe_amr_qhapaq_nan_road = { is_available_for = root }
+                    road_type:modern_road = { is_available_for = root }
+                    road_type:oe_siberian_trakt = { is_available_for = root }
+                    road_type:railroad = { is_available_for = root }
+                }
+            }
+            set_variable = { name = oe_alert_cache_road_ready value = 1 }
+        }
+        else = {
+            set_variable = { name = oe_alert_cache_road_ready value = 0 }
+        }
+
+        # Cache 9 (v15.0): Nova Elysia Frontier / Settlement Ready (ELR / settled Elysia / BYZ exodus active)
+        if = {
+            limit = {
+                OR = {
+                    oe_ely_is_elysian_host = yes
+                    oe_el2_is_settled_elysia = yes
+                    AND = {
+                        tag = BYZ is_rebel_country = no
+                        OR = {
+                            has_global_variable = oe_ely_settled
+                            oe_ely_is_voyaging = yes
+                            has_country_modifier = oe_v150_preset_elysia_fast
+                        }
+                    }
+                }
+            }
+            set_variable = { name = oe_alert_cache_elysia_ready value = 1 }
+        }
+        else = {
+            set_variable = { name = oe_alert_cache_elysia_ready value = 0 }
+        }
+
+        # Cache 10 (v15.0): Theme Expansion / Consolidation Ready (BYZ unlocked expansion zone or <=15-loc theme pair)
+        if = {
+            limit = {
+                tag = BYZ is_rebel_country = no
+                exists = international_organization:oe_byz_empire_pillars
+                OR = {
+                    oe_v150_any_expansion_theme_creatable = yes
+                    oe_v150_any_consolidatable_theme_pair = yes
+                }
+            }
+            set_variable = { name = oe_alert_cache_theme_exp value = 1 }
+        }
+        else = {
+            set_variable = { name = oe_alert_cache_theme_exp value = 0 }
+        }
     }
 }

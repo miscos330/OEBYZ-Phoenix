@@ -32,7 +32,7 @@ oe_t2_consolidate_theme = {
             oe_t2_can_be_consolidated_recipient = yes
         }
         enabled = {
-            custom_tooltip = { text = oe_t2_small_jurisdiction_tt oe_theme_jurisdiction_size <= 7 }
+            custom_tooltip = { text = oe_t2_small_jurisdiction_tt oe_theme_jurisdiction_size <= 15 }
             at_war = no
         }
     }
@@ -48,12 +48,14 @@ oe_t2_consolidate_theme = {
         visible = {
             oe_theme_convertible_trigger = yes
             NOT = { this = scope:recipient }
-            NOT = { has_variable = oe_t2_absorbed_region }
+            NOT = { is_subject_type = oe_empire_theme_naval }
+            oe_t2_receiver_under_region_cap = yes
             NOT = { has_variable = oe_theme_revolt_now }
             oe_t2_adjacent_distance_band = yes
         }
         enabled = {
             custom_tooltip = { text = oe_t2_receiver_loyal_tt OR = { var:oe_theme_loyalty_band ?= 2 var:oe_theme_loyalty_band ?= 3 } }
+            custom_tooltip = { text = oe_t2_combined_cap_tt oe_t2_combined_jurisdiction_size <= 45 }
             at_war = no
         }
     }
@@ -102,7 +104,7 @@ oe_t2_split_theme = {
         enabled = {
             at_war = no
             NOT = { has_variable = oe_theme_revolt_now }
-            custom_tooltip = { text = oe_t2_split_seat_owned_tt var:oe_t2_absorbed_seat ?= { has_owner = yes owner ?= c:BYZ } }
+            custom_tooltip = { text = oe_t2_split_seat_owned_tt oe_t2_can_split_theme = yes }
         }
     }
     effect = {

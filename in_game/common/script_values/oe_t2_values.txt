@@ -54,3 +54,18 @@ oe_t2_restless_theme_count = {
         add = 1
     }
 }
+
+# Theme scope (receiving theme); scope:recipient is the theme being consolidated.
+# Combined jurisdiction size after consolidation (v15.0 safety ceiling <= 45 locations).
+oe_t2_combined_jurisdiction_size = {
+    value = oe_theme_jurisdiction_size
+    if = {
+        limit = { exists = scope:recipient }
+        scope:recipient = {
+            every_owned_foreign_building_location = {
+                limit = { owner ?= c:BYZ }
+                add = 1
+            }
+        }
+    }
+}

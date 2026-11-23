@@ -52,7 +52,7 @@ oe_tw_rank_apply = {
             if = { limit = { has_country_modifier = oe_tw_rank_son_mod } remove_country_modifier = oe_tw_rank_son_mod } if = { limit = { has_country_modifier = oe_tw_rank_brother_mod } remove_country_modifier = oe_tw_rank_brother_mod } if = { limit = { has_country_modifier = oe_tw_rank_friend_mod } remove_country_modifier = oe_tw_rank_friend_mod }
         }
         oe_tw_title_sync = yes
-        if = { limit = { has_variable = oe_tw_titled } add_opinion = { modifier = oe_tw_titled_op target = scope:oe_tw_byz } }
+        if = { limit = { has_variable = oe_tw_titled } add_opinion = { modifier = oe_tw_titled_op target = scope:oe_tw_byz } scope:oe_tw_byz = { set_variable = oe_tw_any_titled } }
     }
 }
 
@@ -128,6 +128,7 @@ oe_tw_grant_despotes = {
             if = { limit = { NOT = { has_opinion = { modifier = oe_tw_titled_op target = c:BYZ } } } add_opinion = { modifier = oe_tw_titled_op target = c:BYZ } }
             trigger_event_non_silently = oe_tw.3
         }
+        set_variable = oe_tw_any_titled
     }
 }
 # BYZ scope; var:oe_tw_grant_target = the country. Pays 15 prestige and 6 authority and confers Sebastokrator on its ruler.
@@ -150,6 +151,7 @@ oe_tw_grant_sebastokrator = {
             if = { limit = { NOT = { has_opinion = { modifier = oe_tw_titled_op target = c:BYZ } } } add_opinion = { modifier = oe_tw_titled_op target = c:BYZ } }
             trigger_event_non_silently = oe_tw.3
         }
+        set_variable = oe_tw_any_titled
     }
 }
 # BYZ scope; var:oe_tw_grant_target = the country. Pays 15 prestige and 10 authority and confers Kaisar on its ruler.
@@ -172,6 +174,7 @@ oe_tw_grant_kaisar = {
             if = { limit = { NOT = { has_opinion = { modifier = oe_tw_titled_op target = c:BYZ } } } add_opinion = { modifier = oe_tw_titled_op target = c:BYZ } }
             trigger_event_non_silently = oe_tw.3
         }
+        set_variable = oe_tw_any_titled
     }
 }
 # BYZ scope; var:oe_tw_grant_target = the country. Pays 10 prestige and 4 authority and confers Protosebastos on its ruler.
@@ -194,6 +197,7 @@ oe_tw_grant_protosebastos = {
             if = { limit = { NOT = { has_opinion = { modifier = oe_tw_titled_op target = c:BYZ } } } add_opinion = { modifier = oe_tw_titled_op target = c:BYZ } }
             trigger_event_non_silently = oe_tw.3
         }
+        set_variable = oe_tw_any_titled
     }
 }
 # BYZ scope, AI only (yearly). 30 % a year with prestige >= 40 and authority >= 40: honour one
@@ -257,7 +261,7 @@ oe_tw_former_yearly = {
     set_variable = { name = oe_tw_hope_year value = 0 }
     set_variable = { name = oe_tw_ret_n value = 0 }
     # Safety net for on_location_changed_owner: land still held by the theme rebel state has been lost.
-    var:oe_theme_revolt_country ?= { every_owned_location = { limit = { has_variable = oe_tw_former_province } set_variable = oe_tw_former_lost } }
+    var:oe_theme_revolt_country ?= { every_owned_location = { limit = { has_variable = oe_tw_former_province } set_variable = oe_tw_former_lost scope:oe_tw_byz = { if = { limit = { NOT = { has_variable = oe_tcb_open } } set_variable = oe_tcb_open } } } }
     every_owned_location = {
         limit = { has_variable = oe_tw_former_province }
         if = {

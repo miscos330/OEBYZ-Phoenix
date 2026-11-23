@@ -53,6 +53,7 @@
 
 phoenix_nirvana.2 = {#添加开局地区修正
 	type = country_event
+	orphan = yes
 	category = situation_event
 	image = "gfx/interface/illustrations/disaster/byzantine_succession_crisis.dds"
 	title = phoenix_nirvana.2.title
@@ -119,6 +120,7 @@ phoenix_nirvana.103 = {#消灭保加利亚
 }
 phoenix_nirvana.200 = {#吞并伊庇鲁斯
 	type = country_event
+	orphan = yes
 	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
 	category = situation_event
 	image = "gfx/interface/illustrations/disaster/hook_and_cod_wars.dds"
@@ -136,6 +138,7 @@ phoenix_nirvana.200 = {#吞并伊庇鲁斯
 }
 phoenix_nirvana.300 = {#贵族改革事件链(合格)
 	type = country_event
+	orphan = yes
 	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
 	category = situation_event
 	image = "gfx/interface/illustrations/disaster/curse_of_stefan_uros_iii.dds"
@@ -333,6 +336,7 @@ phoenix_nirvana.305 = {#乡村权威6
 }
 phoenix_nirvana.400 = {#普罗尼亚分支选择
 	type = country_event
+	orphan = yes
 	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
 	category = situation_event
 	image = "gfx/interface/illustrations/institutions/feudalism.dds"
@@ -352,7 +356,10 @@ phoenix_nirvana.400 = {#普罗尼亚分支选择
 		add_stability = 10
 		hidden_effect = {
 		set_variable = unlock_pronia_noble_building_on
-		remove_policy = policy:oe_byz_administrative_system_I
+		if = {
+			limit = { has_policy = oe_administrative_rome_system }
+			remove_policy = policy:oe_administrative_rome_system
+		}
 		add_policy = policy:reformed_pronoia_system
 		set_variable = unlocked_oe_peasants_own_theme_II
 		revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_I
@@ -372,17 +379,15 @@ phoenix_nirvana.400 = {#普罗尼亚分支选择
 		}
 		hidden_effect = {
 		set_variable = unlock_pronia_gov_building_on
-		remove_policy = policy:oe_byz_administrative_system_I
-		add_policy = policy:oe_byz_administrative_system_II
+		if = {
+			limit = { has_policy = pronoia_system }
+			remove_policy = policy:pronoia_system
+		}
+		add_policy = policy:oe_administrative_rome_system
 		set_variable = unlocked_oe_peasants_own_theme_III
 		revoke_estate_privilege = estate_privilege:oe_peasants_own_theme_I
 		grant_estate_privilege = estate_privilege:oe_peasants_own_theme_III
-		every_owned_location = {
-			limit = {
-				has_building = building_type:oe_byz_pronia_house
-			}
-			destroy_building = "building(building_type:oe_byz_pronia_house|c:BYZ)"
-		}
+		# PAUSED: building_type:oe_byz_pronia_house retired.
 		}
 	}
 }
@@ -414,6 +419,7 @@ phoenix_nirvana.501 = {#中央军重建进度添加事件-1
 }
 phoenix_nirvana.502 = {#中央军重建进度添加事件+3
 	type = country_event
+	orphan = yes
 	category = situation_event
 	image = "gfx/interface/illustrations/institutions/feudalism.dds"
 	title = phoenix_nirvana.500.t
@@ -428,6 +434,7 @@ phoenix_nirvana.502 = {#中央军重建进度添加事件+3
 }
 phoenix_nirvana.503 = {#中央军重建进度添加事件-5
 	type = country_event
+	orphan = yes
 	category = situation_event
 	image = "gfx/interface/illustrations/institutions/feudalism.dds"
 	title = phoenix_nirvana.500.t
@@ -561,6 +568,7 @@ phoenix_nirvana.506 = {#投资军队
 
 phoenix_nirvana.600 = {#皇权独尊
 	type = country_event
+	orphan = yes
 	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
 	category = situation_event
 	image = "gfx/interface/illustrations/situation/phoenix_nirvana.dds"
@@ -659,6 +667,7 @@ phoenix_nirvana.600 = {#皇权独尊
 }
 phoenix_nirvana.1000 = {#杜尚袭扰事件
 	type = country_event
+	orphan = yes
 	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
 	category = situation_event
 	image = "gfx/interface/illustrations/disaster/dusan.dds"
@@ -669,7 +678,7 @@ phoenix_nirvana.1000 = {#杜尚袭扰事件
 		every_owned_location = {
 			limit = { has_location_modifier = oe_byz_loc_thief_ser
 					NOT = {
-				has_building = building_type:oe_byz_defend_wall_I
+				has_building = building_type:castle
 			}
 		Not = { has_location_modifier  = has_been_attack_by_ser }
 		}
@@ -695,6 +704,7 @@ phoenix_nirvana.1000 = {#杜尚袭扰事件
 }
 phoenix_nirvana.1001 = {#杜尚袭扰事件2
 	type = country_event
+	orphan = yes
 	outcome = neutral # FIX 2026-11-17 P2：补 outcome（默认）
 	category = situation_event
 	image = "gfx/interface/illustrations/disaster/dusan.dds"
@@ -705,7 +715,7 @@ phoenix_nirvana.1001 = {#杜尚袭扰事件2
 		every_owned_location = {
 			limit = { has_location_modifier = oe_byz_loc_thief_ser
 			NOT = {
-				has_building = building_type:oe_byz_defend_wall_I
+				has_building = building_type:castle
 			}
 			Not = { has_location_modifier  = has_been_attack_by_ser }
 		}

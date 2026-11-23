@@ -16,7 +16,7 @@ oe_exchange_territory = {
     select_trigger = {
         looking_for_a = country
         source = world
-        target_flag = recipient
+        target_flag = tx_partner
         name = OE_TX_CHOOSE_PARTNER
         none_available_msg_key = OE_TX_NO_PARTNERS
         column = { data = name }
@@ -32,14 +32,14 @@ oe_exchange_territory = {
         if = {
             limit = {
                 scope:actor = { oe_tx_actor_unlocked = yes num_of_diplomats >= 1 NOT = { has_cooldown = oe_territory_exchange_cooldown } }
-                exists = scope:recipient
-                scope:recipient = { oe_tx_partner_allowed = yes }
+                exists = scope:tx_partner
+                scope:tx_partner = { oe_tx_partner_allowed = yes }
             }
             scope:actor = {
                 if = {
                     limit = { NOT = { oe_tx_session = yes } }
                     oe_tx_clear = yes
-                    set_variable = { name = oe_tx_partner value = scope:recipient }
+                    set_variable = { name = oe_tx_partner value = scope:tx_partner }
                     oe_tx_refresh = yes
                 }
                 custom_tooltip = OE_TX_DRAFT_OPENED
@@ -60,7 +60,7 @@ oe_tx_add_give = {
     select_trigger = {
         looking_for_a = country
         source = world
-        target_flag = recipient
+        target_flag = tx_partner
         name = choose_country
         column = { data = name }
         visible = { this = c:BYZ.var:oe_tx_partner oe_tx_partner_allowed = yes }
@@ -89,8 +89,8 @@ oe_tx_add_give = {
         if = {
             limit = {
                 scope:actor = { oe_tx_session = yes }
-                exists = scope:recipient
-                scope:recipient = { this = c:BYZ.var:oe_tx_partner }
+                exists = scope:tx_partner
+                scope:tx_partner = { this = c:BYZ.var:oe_tx_partner }
             }
             scope:actor = { oe_tx_add_give_effect = yes }
         }
@@ -109,7 +109,7 @@ oe_tx_add_take = {
     select_trigger = {
         looking_for_a = country
         source = world
-        target_flag = recipient
+        target_flag = tx_partner
         name = choose_country
         column = { data = name }
         visible = { this = c:BYZ.var:oe_tx_partner oe_tx_partner_allowed = yes }
@@ -120,7 +120,7 @@ oe_tx_add_take = {
         name = OE_TX_CHOOSE_TAKE
         none_available_msg_key = OE_TX_NO_TAKE_LOCATIONS
         interaction_source_list = {
-            scope:recipient = {
+            scope:tx_partner = {
                 every_owned_location = { add_to_list = source }
                 every_subject = {
                     every_owned_location = { add_to_list = source }
@@ -138,8 +138,8 @@ oe_tx_add_take = {
         if = {
             limit = {
                 scope:actor = { oe_tx_session = yes }
-                exists = scope:recipient
-                scope:recipient = { this = c:BYZ.var:oe_tx_partner }
+                exists = scope:tx_partner
+                scope:tx_partner = { this = c:BYZ.var:oe_tx_partner }
             }
             scope:actor = { oe_tx_add_take_effect = yes }
         }
@@ -158,7 +158,7 @@ oe_tx_confirm = {
     select_trigger = {
         looking_for_a = country
         source = world
-        target_flag = recipient
+        target_flag = tx_partner
         name = choose_country
         column = { data = name }
         visible = { this = c:BYZ.var:oe_tx_partner oe_tx_partner_allowed = yes }
@@ -168,8 +168,8 @@ oe_tx_confirm = {
         if = {
             limit = {
                 scope:actor = { oe_tx_session = yes }
-                exists = scope:recipient
-                scope:recipient = { this = c:BYZ.var:oe_tx_partner }
+                exists = scope:tx_partner
+                scope:tx_partner = { this = c:BYZ.var:oe_tx_partner }
             }
             scope:actor = { oe_tx_commit_effect = yes }
         }

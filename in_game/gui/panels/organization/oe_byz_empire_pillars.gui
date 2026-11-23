@@ -2102,9 +2102,8 @@ types oe_pillars_finance_widgets {
         # The list lives in a child container, and each row sizes from its content.
         vbox = {
             layoutpolicy_horizontal = expanding
-            # Edit the player's payment maintenance, which the purse settlement reads.
-            datacontext = "[GetEconomyView]"
-            datamodel = "[EconomyView.GetMaintenanceSettings]"
+            # Edit the player's IO payment maintenance directly on InternationalOrganizationsView (mutable IO context; avoids const GetEconomyView error).
+            datamodel = "[InternationalOrganizationsView.GetIOMaintenanceSettings]"
             item = {
                 vbox = {
                     layoutpolicy_horizontal = expanding
@@ -2176,9 +2175,8 @@ types oe_egypt_finance_widgets {
         # The list lives in a child container, and each row sizes from its content.
         vbox = {
             layoutpolicy_horizontal = expanding
-            # Edit the player's payment maintenance, which the purse settlement reads.
-            datacontext = "[GetEconomyView]"
-            datamodel = "[EconomyView.GetMaintenanceSettings]"
+            # Edit the player's IO payment maintenance directly on InternationalOrganizationsView (mutable IO context; avoids const GetEconomyView error).
+            datamodel = "[InternationalOrganizationsView.GetIOMaintenanceSettings]"
             item = {
                 vbox = {
                     layoutpolicy_horizontal = expanding
@@ -2244,95 +2242,38 @@ types oe_egypt_finance_widgets {
 }
 
 
-# The original native court maintenance setting; no scripted price or benefit.
+# Native court & bureaucracy maintenance live in the mutable EconomyView; offer a clean 1-click jump from Pillars Finance with zero non-const EconomyView errors.
 types oe_pillars_finance_pages {
     type oe_pillars_native_court = vbox {
         layoutpolicy_horizontal = expanding
         visible = "[GetScriptedGui('oe_pillars_uses_moved_court').IsShown(GuiScope.SetRoot(Player.MakeScope).End)]"
-        datacontext = "[GetEconomyView]"
-        datamodel = "[EconomyView.GetMaintenanceSettings]"
-        item = {
-            widget = {
+        widget = {
+            layoutpolicy_horizontal = expanding
+            size = { -1 108 }
+            using = bg_paper_card
+            using = bg_cabinet_card_frame
+            vbox = {
+                size = { 100% 100% }
                 layoutpolicy_horizontal = expanding
-                size = { -1 182 }
-                visible = "[EqualTo_string(MaintenanceSetting.GetNameWithNoTooltip,Localize('CourtMaintenance_eco_view_no_tt'))]"
-                using = bg_paper_card
-                using = bg_cabinet_card_frame
-                vbox = {
-                    size = { 100% 100% }
+                margin = { 12 8 }
+                spacing = 6
+                hbox = {
                     layoutpolicy_horizontal = expanding
-                    margin = { 12 8 }
                     spacing = 8
-                    hbox = {
-                        layoutpolicy_horizontal = expanding
-                        spacing = 8
-                        icon = { size = { 24 24 } texture = "[MaintenanceSetting.GetIcon]" }
-                        text_single = { text = "[MaintenanceSetting.GetName]" fontsize = 17 }
-                        expand = {}
-                        text_single = { raw_text = "[MaintenanceSetting.GetExpenseWithCurrency]" }
-                        tooltipwidget = { using = ExpenseSettingTooltip }
+                    text_single = { text = "CourtMaintenance_eco_view_no_tt" fontsize = 17 }
+                    expand = {}
+                    button_regular = {
+                        size = { 160 32 }
+                        text = "ECONOMY_TAB"
+                        onclick = "[OpenLateralView('economy')]"
                     }
-                    economy_slider = {
-                        size = { 350 10 }
-                        min = 0
-                        max = 1
-                        value = "[MaintenanceSetting.GetDefault]"
-                        mincap = "[MaintenanceSetting.GetMin]"
-                        maxcap = "[MaintenanceSetting.GetMax]"
-                        onvaluechanged = "[MaintenanceSetting.OnChanged]"
-                        onchangefinish = "[MaintenanceSetting.Post]"
-                        enabled = "[And(MaintenanceSetting.IsEnabled,Not(IsPlayerAIEnabled('finances')))]"
-                        blockoverride "economy_slider_inc_button_config" { enabled = "[MaintenanceSetting.IsIncEnabled]" }
-                        blockoverride "economy_slider_dec_button_config" { enabled = "[MaintenanceSetting.IsDecEnabled]" }
-                    }
-                    text_single = { text = "[MaintenanceSetting.GetExpenseBenefit]" fontsize = 16 }
-                    text_single = { text = "OE_PILLARS_NATIVE_COURT_HINT" fontsize = 16 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
                 }
+                text_single = { text = "OE_PILLARS_NATIVE_COURT_HINT" fontsize = 15 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding }
             }
         }
     }
     type oe_pillars_native_bureaucracy = vbox {
-        layoutpolicy_horizontal = expanding
-        visible = "[GetScriptedGui('oe_pillars_uses_moved_court').IsShown(GuiScope.SetRoot(Player.MakeScope).End)]"
-        datacontext = "[GetEconomyView]"
-        datamodel = "[EconomyView.GetMaintenanceSettings]"
-        item = {
-            widget = {
-                layoutpolicy_horizontal = expanding
-                size = { -1 92 }
-                visible = "[MaintenanceSetting.IsBureaucracy]"
-                using = bg_paper_card
-                using = bg_cabinet_card_frame
-                vbox = {
-                    size = { 100% 100% }
-                    layoutpolicy_horizontal = expanding
-                    margin = { 12 8 }
-                    spacing = 8
-                    hbox = {
-                        layoutpolicy_horizontal = expanding
-                        spacing = 8
-                        icon = { size = { 24 24 } texture = "[MaintenanceSetting.GetIcon]" }
-                        text_single = { text = "[MaintenanceSetting.GetName]" fontsize = 17 }
-                        expand = {}
-                        text_single = { raw_text = "[MaintenanceSetting.GetExpenseWithCurrency]" }
-                        tooltipwidget = { using = ExpenseSettingTooltip }
-                    }
-                    economy_slider = {
-                        size = { 350 10 }
-                        min = 0
-                        max = 1
-                        value = "[MaintenanceSetting.GetDefault]"
-                        mincap = "[MaintenanceSetting.GetMin]"
-                        maxcap = "[MaintenanceSetting.GetMax]"
-                        onvaluechanged = "[MaintenanceSetting.OnChanged]"
-                        onchangefinish = "[MaintenanceSetting.Post]"
-                        enabled = "[And(MaintenanceSetting.IsEnabled,Not(IsPlayerAIEnabled('finances')))]"
-                        blockoverride "economy_slider_inc_button_config" { enabled = "[MaintenanceSetting.IsIncEnabled]" }
-                        blockoverride "economy_slider_dec_button_config" { enabled = "[MaintenanceSetting.IsDecEnabled]" }
-                    }
-                }
-            }
-        }
+        visible = no
     }
 
     type oe_pillars_transfer_sliders = vbox {

@@ -1,0 +1,434 @@
+﻿# Project Phoenix v15.0: targeted REPLACE overrides for vanilla disasters.
+# Generated from EU5 1.4.9 vanilla definitions; do not edit by hand.
+
+# --- From in_game/common/disasters/D008_fate_of_the_phoenix.txt (1 block) ---
+REPLACE:fate_of_the_phoenix = {
+	content_priority = 1000
+	is_content_highlighted = yes
+	image = "gfx/interface/illustrations/disaster/fate_of_the_phoenix.dds"
+	
+	monthly_spawn_chance = 0 # OEBYZ: replaced by the mod's own oe_fate_of_the_phoenix; this one never starts
+
+	can_start = {
+		tag = BYZ
+		current_age = age_1_traditions
+		has_dlc = "d008_fate_of_the_phoenix"
+		current_year > 1800 # OEBYZ: never starts (vanilla: current_year < 1338)
+	}
+	
+	can_end = {
+		fate_of_the_phoenix_end_trigger = yes
+	}
+
+	modifier = {
+		hire_mercenary_premium_cost_modifier = 0.5
+		global_bureaucracy_maintenance_efficiency = 0.2
+		casus_belli_creation_speed_modifier = 0.2
+	}
+	
+	on_start = {
+
+		set_variable = {
+			name = strongest_belik_variable
+			value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+		}
+		
+
+		trigger_event_non_silently = fate_of_the_phoenix.1
+
+		c:SER = { trigger_event_non_silently = fate_of_the_phoenix.1 }
+		c:BUL = { trigger_event_non_silently = fate_of_the_phoenix.1 }
+		c:TUR = { trigger_event_non_silently = fate_of_the_phoenix.1 }
+
+		hidden_effect = {
+			trigger_event_non_silently = {
+				id = fate_of_the_phoenix.13
+				days = { 30 120 }
+			}
+		}
+	}
+
+	on_end = {
+		remove_variable = strongest_belik_variable
+
+		if = {
+			limit = {
+				NOT = { is_situation_active = situation:rise_of_the_ottomans }
+				num_locations_owned_or_owned_by_subjects_or_below > 145
+			}
+			trigger_event_non_silently = fate_of_the_phoenix.14
+		}
+		else = { trigger_event_non_silently = fate_of_the_phoenix.15 }
+
+		remove_variable = reform_infantry_variable
+		remove_variable = reform_cavalry_variable
+		remove_variable = reform_thema_headquarters_variable
+		remove_variable = reform_galley_variable
+		remove_variable = reform_merchant_fleet_variable
+		remove_variable = reform_school_of_admirals_variable
+	}
+	
+	on_monthly = {
+
+		set_variable = {
+			name = strongest_belik_variable
+			value = situation:rise_of_the_ottomans.var:strongest_beylik_variable.ruler_or_regent
+		}
+		
+		random_list = {
+			5 = { custom_tooltip = an_event_occurs_tt }
+			95 = { custom_tooltip = no_event_occurs_tt }
+		}
+		hidden_effect = {
+			random_list = {
+				95 = {}
+				1 = { trigger_event_silently = fate_of_the_phoenix.6 }		#Far-Away Province Declines our Authority // Release or Crush ? // 
+				1 = { trigger_event_silently = fate_of_the_phoenix.9 }		#Desertion from Standing Army
+				2 = { trigger_event_silently = fate_of_the_phoenix.10 }	#Emergence of a Loyal Strategos
+			}
+
+			random_list = {
+				90 = { }
+				10 = { 
+					random_neighbor_country = {
+						limit = { 
+							NOT = { has_casus_belli_on = root }
+							can_declare_war_on = root 
+							OR = {
+								is_rival_of = root
+								is_enemy_of = root
+								is_at_war_with = root
+							}
+						}
+						trigger_event_silently = fate_of_the_phoenix.7	#Neighbor Notified of our Poor Condition (they get claims?) 
+					}
+				}
+			}
+		}
+	}
+}
+
+# --- From in_game/common/disasters/byzantine_succession_crisis.txt (1 block) ---
+REPLACE:byzantine_succession_crisis = {
+	content_priority = 800
+	image = "gfx/interface/illustrations/disaster/byzantine_succession_crisis.dds"
+	
+	monthly_spawn_chance = monthly_spawn_chance_very_high
+
+	fire_only_once = yes
+
+	can_start = {
+		tag = BYZ
+		num_provinces > 2
+		OR = {
+			has_any_active_disaster = no
+			any_active_disaster = { disaster_type = disaster_type:fate_of_the_phoenix }
+		}
+		government_type = government_type:monarchy
+		trigger_if = {
+			limit = {
+				tag = BYZ
+				OR = {
+					has_heir = no
+					has_regent = yes
+					heir ?= { total_abilities < 150 }
+				}
+			}
+			custom_tooltip = no_heir_or_regent_or_bad_heir_tt
+			stability < -100
+			legitimacy < -100
+		}
+		trigger_else = {
+			stability < -100
+			legitimacy < -100
+		}
+	}
+	
+	can_end = {
+		byzantine_succession_crisis_end_trigger = yes
+	}
+	modifier = {
+		monthly_pretender_rebel_growth = 0.01
+		global_crown_estate_power = -0.2
+		global_estate_target_satisfaction = great_permanent_target_satisfaction_penalty
+		global_estate_satisfaction_decay = 0.02
+		blocked_from_creating_subjects = yes
+	}
+	
+	on_start = {
+		set_variable = succession_crisis_disaster_counter
+		trigger_event_non_silently = succession_crisis.1
+	}
+	on_end = {
+		every_character = {
+			limit = { has_character_modifier = plotting_rebellion_modifier }
+			remove_character_modifier = plotting_rebellion_modifier
+		}
+		set_variable = had_disaster_byzantine_succession_crisis_variable
+		remove_variable = pretender_rebel_character
+		clear_gui_variable = { type = pretender_rebel_character }
+		add_legitimacy = legitimacy_extreme_bonus
+		if = {
+			limit = { exists = var:succession_crisis_pretender_variable }
+			destroy_rebel = var:succession_crisis_pretender_variable
+		}
+		trigger_event_non_silently = succession_crisis.100
+	}
+	
+	on_monthly = {
+		random_list = {
+			29 = { custom_tooltip = an_event_occurs_tt }
+			71 = { custom_tooltip = no_event_occurs_tt }
+		}
+		hidden_effect = {
+			random_list = {
+				80 = {}
+				2 = { trigger_event_silently = succession_crisis.2 }
+				2 = { trigger_event_silently = succession_crisis.3 }
+				2 = { trigger_event_silently = succession_crisis.4 }
+				2 = { trigger = { NOT = { has_variable = recently_demanded_aid_variable } } trigger_event_silently = succession_crisis.5  }
+				2 = { trigger_event_silently = byzantine_succ_crisis.1 }
+				2 = { trigger = { NOT = { has_variable = byz_nobles_refused_paying_taxes } } trigger_event_silently = byzantine_succ_crisis.2  }
+				2 = { trigger = { NOT = { has_variable = byz_nobles_supports_pretender_variable } } trigger_event_silently = byzantine_succ_crisis.3  }
+				2 = { trigger = { NOT = { has_variable = byz_mariners_guild_rose_up } } trigger_event_silently = byzantine_succ_crisis.4  }
+				2 = { trigger_event_silently = byzantine_succ_crisis.5 }
+				2 = { trigger_event_silently = byzantine_succ_crisis.6 }
+				2 = { trigger = { NOT = { has_variable = had_parliament_event_variable } } trigger_event_silently = byzantine_succ_crisis.7  }
+				2 = { trigger_event_silently = byzantine_succ_crisis.8 }
+				2 = { trigger_event_silently = byzantine_succ_crisis.9 }
+				2 = { trigger_event_silently = byzantine_succ_crisis.10 }
+				2 = { trigger_event_silently = byzantine_succ_crisis.11  }
+				2 = { c:TUR = { trigger_event_silently = byzantine_succ_crisis.14 } }
+			}
+		}
+	}
+}
+
+# --- From in_game/common/disasters/court_and_country.txt (1 block) ---
+REPLACE:court_and_country = {
+
+	image = "gfx/interface/illustrations/disaster/court_and_country.dds"
+	
+	monthly_spawn_chance = monthly_spawn_chance_low
+
+	can_start = {
+		NOT = { tag = BYZ } # Phoenix Plan: replaced by Bells of Revolution for BYZ only.
+		hidden_trigger = { is_ai = no }
+		in_civil_war = no
+		OR = {
+			current_age = age_5_absolutism
+			current_age = age_6_revolutions
+		}
+		has_any_active_disaster = no
+		OR = {
+			"estate_power(estate_type:crown_estate)" >= 0.25
+			societal_value:absolutism_vs_liberalism < -50
+		}
+		custom_tooltip = {
+			text = had_csd_disaster_variable_tt
+			NOT = { has_variable = had_court_and_country_disaster_variable }
+		}
+	}
+	
+
+	can_end = {
+		court_and_country_end_trigger = yes
+	}
+	modifier = {
+		global_estate_target_satisfaction = large_permanent_target_satisfaction_penalty
+		pop_join_rebel_threshold = 0.1
+	}
+	
+	on_start = {
+		if = {
+			limit = { num_privileges > 4 }
+			set_variable = {
+				name = final_privilege_number_variable
+				value = {
+					add = num_privileges
+					divide = 2
+					ceiling = yes
+				}
+			}
+		}
+		else = {
+			set_variable = {
+				name = final_privilege_number_variable
+				value = 0
+			}
+		}
+		set_variable = {
+			name = final_crown_power_value_variable
+			value = {
+				add = {
+					value = 1
+					subtract = "estate_power(estate_type:crown_estate)"
+					multiply = 0.1
+				}
+				add = "estate_power(estate_type:crown_estate)"
+				min = 0.33
+				max = 0.75
+			}
+		}
+		trigger_event_non_silently = court_and_country.1
+	}
+	on_end = { 
+		trigger_event_non_silently = court_and_country.2 
+		set_variable = had_court_and_country_disaster_variable
+	}
+	
+	on_monthly = {
+		random_list = {
+			1100 = {}
+			20 = { 
+				custom_tooltip = {
+					text = court_and_country_7_tt
+					trigger_event_silently = court_and_country.7 
+				}
+			}
+			10 = {
+				custom_tooltip = {
+					text = court_and_country_8_tt
+					trigger_event_silently = court_and_country.8
+				}
+			}
+			20 = {
+				custom_tooltip = {
+					text = court_and_country_9_tt
+					trigger_event_silently = court_and_country.9
+				}
+			}
+			20 = {
+				custom_tooltip = {
+					text = court_and_country_10_tt
+					trigger_event_silently = court_and_country.10
+				}
+			}
+			20 = {
+				custom_tooltip = {
+					text = court_and_country_11_tt
+					trigger_event_silently = court_and_country.11
+				}
+			}
+			20 = {
+				custom_tooltip = {
+					text = court_and_country_12_tt
+					trigger_event_silently = court_and_country.12
+				}
+			}
+		}
+	}
+}
+
+# --- From in_game/common/disasters/succession_crisis.txt (1 block) ---
+REPLACE:succession_crisis = {
+
+	image = "gfx/interface/illustrations/disaster/succession_crisis.dds"
+	
+	monthly_spawn_chance = monthly_spawn_chance_very_low
+	can_start = {
+		has_any_active_disaster = no
+		government_type = government_type:monarchy
+		num_provinces > 2
+		trigger_if = {
+			limit = {
+				OR = {
+					has_heir = no
+					has_regent = yes
+					heir ?= { total_abilities < 150 }
+				}
+			}
+			custom_tooltip = no_heir_or_regent_or_bad_heir_tt
+			stability < 10
+			legitimacy < 50
+		}
+		trigger_else = {
+			stability < 0
+			legitimacy < 40
+		}
+		in_civil_war = no
+		trigger_if = {
+			limit = {
+				tag = HOL
+				NOT = { has_variable = hol_trigger_sc_instead_of_hacw }
+				current_later_age_3_discovery_trigger = no
+			}
+			OR = {
+				NOT = { tag = HOL }
+				custom_tooltip = {
+					text = hol_trigger_sc_instead_of_hacw_tt
+					has_variable = hol_trigger_sc_instead_of_hacw
+				}
+				current_later_age_3_discovery_trigger = yes
+			}
+		}
+		trigger_if = {
+			limit = { tag = BYZ }
+			current_year > 1350
+			oe_start_is_1337 = no # OEBYZ vanilla-clash: the mod's civil wars (1341, 1352) and its intrigue disaster tell this in a 1337 game
+		}
+		trigger_if = {
+			limit = { tag = CHI }
+			current_year > 1350
+		}
+	}
+	
+	can_end = {
+		succession_crisis_end_trigger = yes
+	}
+	modifier = {
+		monthly_pretender_rebel_growth = 0.01
+		global_crown_estate_power = -0.2
+		global_estate_target_satisfaction = larger_permanent_target_satisfaction_penalty
+		blocked_from_creating_subjects = yes
+	}
+	
+	on_start = { 
+		add_country_modifier = {
+			modifier = ai_succession_disaster_targets
+			years = -1
+			mode = add_and_extend
+		}
+
+		trigger_event_non_silently = succession_crisis.1 
+	}
+	
+	on_end = {
+		every_character = {
+			limit = { has_character_modifier = plotting_rebellion_modifier }
+			remove_character_modifier = plotting_rebellion_modifier
+		}
+		remove_country_modifier = ai_succession_disaster_targets
+		remove_variable = pretender_rebel_character
+		clear_gui_variable = { type = pretender_rebel_character }
+		add_legitimacy = legitimacy_extreme_bonus
+		if = {
+			limit = { exists = var:succession_crisis_pretender_variable }
+			destroy_rebel = var:succession_crisis_pretender_variable
+		}
+		if = {
+			limit = { has_variable = ccw_active }
+			remove_variable = ccw_active
+			trigger_event_non_silently = castilian_civil_war.100
+		}
+		else = {
+			trigger_event_non_silently = succession_crisis.100
+		}
+	}
+	
+	on_monthly = {
+		random_list = {
+			14 = { custom_tooltip = an_event_occurs_tt }
+			86 = { custom_tooltip = no_event_occurs_tt }
+		}
+		hidden_effect = {
+			random_list = {
+				250 = {}
+				10 = { trigger_event_silently = succession_crisis.2 }
+				8 = { trigger_event_silently = succession_crisis.3 }
+				8 = { trigger_event_silently = succession_crisis.4 }
+				10 = { trigger_event_silently = succession_crisis.5 }
+			}
+		}
+	}
+}

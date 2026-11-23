@@ -240,7 +240,16 @@ oe_dip2.7 = {
 		add_prestige = 10
 		add_country_modifier = { modifier = oe_dip2_dynastic_rift years = 5 mode = replace }
 		if = {
-			limit = { exists = scope:oe_dip2_claimant_power }
+			limit = {
+				exists = scope:oe_dip2_claimant_power
+				is_subject = no
+				government_type = government_type:monarchy
+				scope:oe_dip2_claimant_power = {
+					is_subject = no
+					government_type = government_type:monarchy
+					NOT = { is_allied_with = { target = root } }
+				}
+			}
 			scope:oe_dip2_claimant_power = {
 				add_casus_belli = {
 					target = root
@@ -346,6 +355,7 @@ oe_dip2.9 = {
 # Event 10: W1 Read-Only Audit Telemetry (Dev Panel Page 75)
 oe_dip2.10 = {
 	type = country_event
+	orphan = yes
 	title = oe_dip2.10.title
 	desc = oe_dip2.10.desc
 	outcome = neutral

@@ -51,6 +51,13 @@ oe_tw_ruler_death = {
 }
 # BYZ, monthly (r10). r10 found a title kept after its holder died; every titled country follows its current ruler again.
 oe_tw_title_sweep = {
-    trigger = { tag = BYZ is_rebel_country = no }
-    effect = { every_country = { limit = { has_variable = oe_tw_titled } oe_tw_on_new_ruler = yes } }
+    trigger = { tag = BYZ is_rebel_country = no has_variable = oe_tw_any_titled }
+    effect = {
+        remove_variable = oe_tw_any_titled
+        every_country = {
+            limit = { has_variable = oe_tw_titled }
+            oe_tw_on_new_ruler = yes
+            if = { limit = { has_variable = oe_tw_titled } c:BYZ = { set_variable = oe_tw_any_titled } }
+        }
+    }
 }

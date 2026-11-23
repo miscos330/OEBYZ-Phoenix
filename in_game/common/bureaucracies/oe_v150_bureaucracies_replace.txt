@@ -1,0 +1,1744 @@
+﻿# Project Phoenix v15.0: targeted REPLACE overrides for vanilla bureaucracies (oe_settings_bureaucracy_enabled switch).
+# Generated from EU5 1.4.9 vanilla definitions; do not edit by hand.
+
+# --- From in_game/common/bureaucracies/generic.txt (10 blocks) ---
+REPLACE:board_of_revenue_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_like = {
+		burghers_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		monthly_towards_capital_economy = societal_value_monthly_move
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		estate_enrichment = -0.1
+		creditworthiness_bonus = 0.05
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		estate_enrichment = 0.1
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:privy_council_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_dislike = {
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		country_cabinet_efficiency = 0.1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		parliament_base_support = 0.2
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		pop_join_rebel_threshold = 0.1
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:audit_bureau_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_like = {
+		burghers_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		revoke_privilege_cost_modifier = -0.25
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		global_crown_estate_power = 0.1
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		global_estate_target_satisfaction = medium_permanent_target_satisfaction_penalty
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:colonial_office_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_like = {
+		burghers_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		colonial_range_modifier = 0.25
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		colonial_migration_size_modifier = 0.2
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		global_migration_attraction = -0.2
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:admiralty_board_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		monthly_navy_tradition = 0.1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		naval_morale_modifier = 0.2
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		navy_maintenance_efficiency = -0.2
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:foreign_ministry_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_dislike = {
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		max_diplomats = 1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		diplomatic_capacity = 1
+		
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		diplomatic_reputation = diplomatic_reputation_severe_penalty
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:trade_commission_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_like = {
+		burghers_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		trade_range_modifier = 0.2
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		global_merchant_power = 0.2
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		burghers_estate_target_satisfaction = -0.2
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:war_council_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_like = {
+		nobles_estate
+	}
+	estates_that_dislike = {
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		army_tradition_from_battle = 1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		military_tactics = 0.1
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		land_morale_modifier = -0.1
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:ordnance_board_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		artillery_bonus_vs_fort = 1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		army_artillery_power = 0.1
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		army_artillery_maintenance_cost_modifier = 0.2
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:commissariat_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		max_bureaucracy_slots > 0
+	}
+
+	estates_that_dislike = {
+		peasants_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		supply_depot_capacity = 500
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		army_logistics_distance_modifier = 0.25
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		army_movement_speed = -0.1
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+# --- From in_game/common/bureaucracies/china.txt (4 blocks) ---
+REPLACE:central_secretariat_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_or_had_tag = CHI
+	}
+
+	estates_that_like = {
+		crown_estate
+		burghers_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		government_size = 1
+	}
+
+	#positive - zhongshu_sheng advance raises scale by 50%
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+			if = {
+				limit = { root ?= { has_advance = zhongshu_sheng } }
+				multiply = {
+					desc = "[ShowAdvanceName('zhongshu_sheng')]"
+					value = 1.5
+				}
+			}
+		}
+		monthly_legitimacy = 0.2
+		monthly_celestial_authority = 0.02
+	}
+
+	#negative - administrative chaos from an underfunded secretariat raises the cost of political decisions
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		stability_cost_efficiency = -0.1
+		monthly_celestial_authority = -0.04
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:imperial_censorate_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_or_had_tag = CHI
+	}
+
+	estates_that_like = {
+		crown_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		stability_cost_efficiency = 0.05
+	}
+
+	#positive - the_censorate advance raises scale by 50%
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+			if = {
+				limit = { root ?= { has_advance = the_censorate } }
+				multiply = {
+					desc = "[ShowAdvanceName('the_censorate')]"
+					value = 1.5
+				}
+			}
+		}
+		tax_income_efficiency = 0.08
+		monthly_celestial_authority = 0.02
+	}
+
+	#negative - without active inspectors, estates exploit the oversight vacuum and accumulate unchecked power
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		global_estate_power = 0.2
+		monthly_celestial_authority = -0.04
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:six_boards_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_or_had_tag = CHI
+	}
+
+	estates_that_like = {
+		crown_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	on_deactivate = {
+		if = { limit = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch: the callback only runs when bureaucracy is on
+		if = {
+			limit = {
+				has_law = six_ministries_overseer_law
+			}
+			custom_tooltip = six_boards_deactivate_disables_oversight_law_tt
+		}
+		}
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		government_size = 2
+	}
+
+	#positive - three_departments_system reform raises scale by 50%; chi_grand_secretariat adds 20%; chi_direct_report adds 10%
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+			if = {
+				limit = { root ?= { has_reform = government_reform:three_departments_system } }
+				multiply = {
+					desc = "[ShowGovernmentReformName('three_departments_system')]"
+					value = 1.5
+				}
+			}
+			if = {
+				limit = { root ?= { has_policy = chi_grand_secretariat } }
+				multiply = {
+					desc = "[ShowPolicyName('chi_grand_secretariat')]"
+					value = 1.2
+				}
+			}
+			if = {
+				limit = { root ?= { has_policy = chi_direct_report } }
+				multiply = {
+					desc = "[ShowPolicyName('chi_direct_report')]"
+					value = 1.1
+				}
+			}
+		}
+		global_manpower_modifier = 0.1
+		monthly_celestial_authority = 0.02
+	}
+
+	#negative - six entrenched ministries without funding become fiefdoms of powerful officials
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		global_estate_power = 0.25
+		monthly_celestial_authority = -0.03
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:grand_secretariat_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.004
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_or_had_tag = CHI
+	}
+
+	estates_that_like = {
+		crown_estate
+	}
+	estates_that_dislike = {
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		monthly_legitimacy = 0.1
+	}
+
+	#positive - reform_the_grand_secretariat advance raises scale by 50%
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+			if = {
+				limit = { root ?= { has_advance = reform_the_grand_secretariat } }
+				multiply = {
+					desc = "[ShowAdvanceName('reform_the_grand_secretariat')]"
+					value = 1.5
+				}
+			}
+		}
+		monthly_prestige = 0.3
+		monthly_celestial_authority = 0.02
+	}
+
+	#negative - a Secretariat that loses influence undermines the very legitimacy it was meant to sustain
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		monthly_legitimacy = -0.2
+		monthly_celestial_authority = -0.04
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+# --- From in_game/common/bureaucracies/byz.txt (11 blocks) ---
+REPLACE:nomos_empsychos_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			AND = {
+				has_or_had_tag = TRE
+				has_variable = tre_unlocked_byz_bureaucracies
+			}
+		}
+	}
+
+	allow = {
+		uses_government_power = legitimacy
+	}
+
+	estates_that_like = {
+		crown_estate
+	}
+	estates_that_dislike = {
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		global_estate_satisfaction_from_legitimacy = 0.05
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		
+		global_crown_estate_power = 0.15
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		global_estate_satisfaction_decay = 0.025		
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:honorary_titles_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	estates_that_like = {
+		nobles_estate
+		crown_estate
+	}
+	estates_that_dislike = {
+		burghers_estate
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			AND = {
+				has_or_had_tag = TRE
+				has_variable = tre_unlocked_byz_bureaucracies
+			}
+		}
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		country_cabinet_efficiency = 0.1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		global_estate_target_satisfaction = small_permanent_target_satisfaction
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		global_crown_estate_power = -0.3
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:court_eunuchs_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	estates_that_like = {
+		crown_estate
+		clergy_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			AND = {
+				has_or_had_tag = TRE
+				has_variable = tre_unlocked_byz_bureaucracies
+			}
+		}
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		may_hire_eunuch_advisors = yes
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		country_child_education = 0.1
+		global_monthly_literacy = 0.01
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		stability_decay = 0.0025
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:ritualistic_court_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			AND = {
+				has_or_had_tag = TRE
+				has_variable = tre_unlocked_byz_bureaucracies
+			}
+		}
+	}
+
+	estates_that_like = {
+		crown_estate
+		clergy_estate
+	}
+	estates_that_dislike = {
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		monthly_legitimacy = 0.1
+		monthly_republican_tradition = 0.1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		diplomatic_reputation = 1
+		annexation_speed_modifier = 0.10
+		cultural_influence_modifier = 0.15
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		global_estate_target_satisfaction = medium_permanent_target_satisfaction_penalty
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:sixty_books_of_the_basilika_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	estates_that_like = {
+		crown_estate
+		burghers_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			AND = {
+				has_or_had_tag = TRE
+				has_variable = tre_unlocked_byz_bureaucracies
+			}
+		}
+	}
+
+	on_fully_activated = {
+		if = { limit = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch: the callback only runs when bureaucracy is on
+		set_variable = {
+			name = sixty_books_basilika_maintenance
+			value = 1
+		}
+		}
+	}
+	on_maintenance_changed = {
+		if = { limit = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch: the callback only runs when bureaucracy is on
+		set_variable = {
+			name = sixty_books_basilika_maintenance
+			value = scope:new_maintenance
+		}
+		}
+	}
+	on_deactivate = {
+		if = { limit = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch: the callback only runs when bureaucracy is on
+		remove_variable = sixty_books_basilika_maintenance
+		}
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		tax_income_efficiency = 0.05
+		monthly_legitimacy = 0.05
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = { 
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+			if = {
+				limit = { 
+					has_or_had_tag = BYZ
+					has_variable = reformed_imperial_code_flag
+				}
+				multiply = {
+					value = 2
+					desc = variable_tt_reformed_imperial_code_flag_via_flavor_byz_52
+				}
+			}
+		}
+		global_estate_power = -0.5
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		pop_join_rebel_threshold = 0.05
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:romanitas_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			AND = {
+				has_or_had_tag = TRE
+				has_variable = tre_unlocked_byz_bureaucracies
+			}
+		}
+	}
+
+	allow = {
+		OR = {
+			AND = {
+				has_societal_value = societal_value_type:latinization_vs_hellenization
+				societal_value:latinization_vs_hellenization < -50
+			}
+			owns = location:rome
+		}
+	}
+
+	estates_that_like = {
+		crown_estate
+		clergy_estate
+	}
+	estates_that_dislike = {
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		monthly_prestige = 0.2
+		cultural_influence_modifier = 0.1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		global_integration_speed_modifier = 0.25
+		monthly_legitimacy = 0.1
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		diplomatic_reputation = -1
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:imperial_senate_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			AND = {
+				has_or_had_tag = TRE
+				has_variable = tre_unlocked_byz_bureaucracies
+			}
+		}
+	}
+
+	estates_that_like = {
+		nobles_estate
+	}
+	estates_that_dislike = {
+		crown_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		parliament_duration_modifier = 0.3
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		parliament_base_support = 0.075
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		monthly_legitimacy = -0.2
+		monthly_republican_tradition = -0.2
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:kephalai_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			AND = {
+				has_or_had_tag = TRE
+				has_variable = tre_unlocked_byz_bureaucracies
+			}
+		}
+	}
+
+	allow = {
+		OR = {
+			custom_tooltip = {
+				text = won_fate_of_the_phoenix_disaster_tt
+				has_variable = won_fate_of_the_phoenix_disaster_variable
+			}
+
+			AND = {
+				has_or_had_tag = TRE
+				owns = location:constantinople
+			}
+		}
+	}
+
+	estates_that_like = {
+		crown_estate
+		burghers_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		government_size = 1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		num_local_governors = 1
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		estate_enrichment = 0.3
+		global_non_rural_monthly_prosperity = -0.003
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:magister_militum_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			AND = {
+				has_or_had_tag = TRE
+				has_variable = tre_unlocked_byz_bureaucracies
+			}
+		}
+	}
+
+	allow = {
+		custom_tooltip = {
+			text = has_unlocked_bureaucracy_via_flavor_byz_31_tt
+			has_reform = government_reform:modern_imperial_army
+		}
+	}
+
+	estates_that_like = {
+		crown_estate
+		burghers_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		monthly_army_tradition = 0.2
+		monthly_navy_tradition = 0.2
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+
+		train_general_ability = 25
+		train_admiral_ability = 25
+		military_tactics = 0.2
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		monthly_legitimacy = -0.2
+		global_nobles_estate_power = 0.5
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:themata_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			has_or_had_tag = TRE
+		}
+	}
+
+	allow = {
+		OR = {
+			NOT = {
+				any_current_bureaucracy = {
+					bureaucracy_type = bureaucracy_type:magister_militum_bureaucracy
+				}
+			}
+			has_reform = government_reform:theme_system
+		}
+	}
+
+	estates_that_like = {
+		nobles_estate
+	}
+	estates_that_dislike = {
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		global_manpower_modifier = 0.075
+		global_levy_size_modifier = 0.075
+		monthly_army_tradition = 0.1
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		global_defensive = 0.2
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		levy_recovery_modifier = -0.2
+		global_nobles_estate_power = 0.5
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}
+
+REPLACE:allelengyon_bureaucracy = {
+	implementation_price = price:implement_bureaucracy_price
+	maintenance_price = price:maintain_bureaucracy_price
+	removal_price = price:remove_bureaucracy_price
+	maintenance_price_modifier = {
+		value = country_economical_base
+		multiply = 0.003
+		if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } # OEBYZ switch: no upkeep when bureaucracy is off
+	}
+
+	potential = {
+		oe_settings_bureaucracy_enabled = yes # OEBYZ switch
+		has_dlc = "d008_fate_of_the_phoenix"
+		OR = {
+			has_or_had_tag = BYZ
+			has_or_had_tag = TRE
+		}
+	}
+
+	allow = {
+		OR = {
+			custom_tooltip = {
+				text = won_fate_of_the_phoenix_disaster_tt
+				has_variable = won_fate_of_the_phoenix_disaster_variable
+			}
+
+			AND = {
+				has_or_had_tag = TRE
+				owns = location:constantinople
+			}
+		}
+	}
+
+	estates_that_like = {
+		peasants_estate
+	}
+	estates_that_dislike = {
+		nobles_estate
+		burghers_estate
+	}
+
+	#neutral
+	neutral_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		estate_enrichment = -0.1
+		global_peasant_enfranchisment = 0.05
+	}
+
+	#positive
+	positive_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+			}
+		}
+		global_monthly_prosperity = 0.001
+	}
+
+	#negative
+	negative_modifier = {
+		potential_trigger = { oe_settings_bureaucracy_enabled = yes } # OEBYZ switch
+		scale = {
+			value = {
+				add = 1
+				desc = script_value_base
+			}
+			subtract = {
+				value = scope:maintenance
+				desc = "[bureaucracy_maintenance|e]"
+				format = "TWO_DP_ENTRY_FORMAT_PERCENT_NEG"
+			}
+		}
+		global_monthly_development = -0.0025
+	}
+	implementation_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+	removal_price_modifier = { value = 1 if = { limit = { NOT = { oe_settings_bureaucracy_enabled = yes } } value = 0 } } # OEBYZ switch
+}

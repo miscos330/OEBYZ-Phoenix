@@ -719,7 +719,7 @@ oe_yp_setup_countries = {
                 oe_yp_apply_tier = yes
             }
             if = {
-                limit = { is_ai = yes NOT = { has_variable = oe_road_auto_enabled } }
+                limit = { is_ai = yes at_war = no gold >= 150 NOT = { has_variable = oe_road_auto_enabled } }
                 set_variable = { name = oe_road_auto_enabled value = 1 }
                 set_variable = { name = oe_road_mode value = 1 }
             }
@@ -749,7 +749,7 @@ oe_yp_setup_countries = {
                 oe_yp_apply_tier = yes
             }
             if = {
-                limit = { is_ai = yes NOT = { has_variable = oe_road_auto_enabled } }
+                limit = { is_ai = yes at_war = no gold >= 150 NOT = { has_variable = oe_road_auto_enabled } }
                 set_variable = { name = oe_road_auto_enabled value = 1 }
                 set_variable = { name = oe_road_mode value = 1 }
             }
@@ -779,7 +779,7 @@ oe_yp_setup_countries = {
                 oe_yp_apply_tier = yes
             }
             if = {
-                limit = { is_ai = yes NOT = { has_variable = oe_road_auto_enabled } }
+                limit = { is_ai = yes at_war = no gold >= 150 NOT = { has_variable = oe_road_auto_enabled } }
                 set_variable = { name = oe_road_auto_enabled value = 1 }
                 set_variable = { name = oe_road_mode value = 1 }
             }
@@ -836,9 +836,16 @@ oe_yp_monthly = {
     }
     oe_yp_sync_warlordism_effects = yes
     if = {
-        limit = { is_subject_type = oe_yp_frontier is_ai = yes NOT = { has_variable = oe_road_auto_enabled } }
-        set_variable = { name = oe_road_auto_enabled value = 1 }
-        set_variable = { name = oe_road_mode value = 1 }
+        limit = { is_subject_type = oe_yp_frontier is_ai = yes }
+        if = {
+            limit = { OR = { at_war = yes gold < 80 } var:oe_road_auto_enabled ?= 1 }
+            set_variable = { name = oe_road_auto_enabled value = 0 }
+        }
+        else_if = {
+            limit = { at_war = no gold >= 150 NOT = { var:oe_road_auto_enabled ?= 1 } }
+            set_variable = { name = oe_road_auto_enabled value = 1 }
+            set_variable = { name = oe_road_mode value = 1 }
+        }
     }
 }
 
@@ -1191,6 +1198,7 @@ oe_yp_gui_shumiyuan_effect = {
             oe_yp_change_warlordism_self = { amount = 18 }
             if = {
                 limit = { is_subject_type = oe_yp_xingsheng has_variable = oe_yp_unit }
+                add_country_modifier = { modifier = oe_yp_shumiyuan_country_mod years = 5 mode = replace }
                 c:CHI = {
                     every_owned_location = {
                         limit = { has_variable = oe_yp_unit var:oe_yp_unit = scope:target_country.var:oe_yp_unit }
@@ -1205,6 +1213,71 @@ oe_yp_gui_shumiyuan_effect = {
                     add_location_modifier = { modifier = oe_yp_shumiyuan_empowered_mod years = 5 mode = replace }
                 }
                 if = { limit = { exists = capital } capital = { change_control = 0.10 } }
+            }
+            oe_yp_sync_warlordism_effects = yes
+        }
+    }
+}
+
+# CHI scope + scope:target_country (CMDLOG=0). GUI button 5 (v15.0-rc2): 协饷屯 (Imperial Garrison Stipend & Frontier Tuntian).
+# Costs 50 gold (35 net if Southern Grain Requisition/Granary active), 4y cooldown.
+# Target receives +100 gold, +0.5 manpower, +10 loyalty, -6 warlordism, 5y oe_yp_stipend_supply_mod, and (+180 capital province food if landed).
+# For Frontier Branch Secretariats (YLB/YLY/YGU), advances 2-stage Permanent Frontier Tuntian (oe_yp_frontier_tuntian_mod + CHI oe_yp_tuntian_overlord_mod).
+oe_yp_gui_stipend_effect = {
+    if = {
+        limit = {
+            tag = CHI
+            gold >= 50
+            exists = scope:target_country
+            scope:target_country = {
+                oe_yp_is_managed_province = yes
+                NOT = { has_variable = oe_yp_cd_stipend }
+            }
+        }
+        add_gold = -50
+        if = {
+            limit = {
+                OR = {
+                    AND = { country_exists = c:YJZ c:YJZ = { has_variable = oe_yp_cd_requisition } }
+                    AND = { country_exists = c:YJX c:YJX = { has_variable = oe_yp_cd_requisition } }
+                }
+            }
+            add_gold = 15
+        }
+        scope:target_country = {
+            set_variable = { name = oe_yp_cd_stipend years = 4 }
+            add_gold = 100
+            add_manpower = 0.5
+            if = { limit = { NOT = { has_variable = oe_yp_loyalty } } set_variable = { name = oe_yp_loyalty value = 50 } }
+            change_variable = { name = oe_yp_loyalty add = 10 }
+            clamp_variable = { name = oe_yp_loyalty min = 0 max = 100 }
+            oe_yp_change_warlordism_self = { amount = -6 }
+            add_country_modifier = { modifier = oe_yp_stipend_supply_mod years = 5 mode = replace }
+            if = {
+                limit = {
+                    NOT = { is_subject_type = oe_yp_xingsheng }
+                    exists = capital
+                }
+                capital = { province = { change_province_food = 180 } }
+            }
+            if = {
+                limit = {
+                    is_subject_type = oe_yp_frontier
+                    NOT = { has_variable = oe_yp_tuntian_done }
+                }
+                if = {
+                    limit = { NOT = { has_variable = oe_yp_tuntian_stage } }
+                    set_variable = { name = oe_yp_tuntian_stage value = 1 }
+                }
+                else = {
+                    change_variable = { name = oe_yp_tuntian_stage add = 1 }
+                }
+                if = {
+                    limit = { var:oe_yp_tuntian_stage >= 2 }
+                    set_variable = { name = oe_yp_tuntian_done value = 1 }
+                    add_country_modifier = { modifier = oe_yp_frontier_tuntian_mod years = -1 mode = replace }
+                    c:CHI ?= { add_country_modifier = { modifier = oe_yp_tuntian_overlord_mod years = -1 mode = replace } }
+                }
             }
             oe_yp_sync_warlordism_effects = yes
         }

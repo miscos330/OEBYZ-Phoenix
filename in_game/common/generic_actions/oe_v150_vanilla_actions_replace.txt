@@ -1,0 +1,737 @@
+﻿# Project Phoenix v15.0: targeted REPLACE overrides for vanilla generic_actions (tatar_yoke.txt retired with 0 functional diff).
+# Generated from EU5 1.4.9 vanilla definitions; do not edit by hand.
+
+# --- From in_game/common/generic_actions/bureaucracy_actions.txt (2 blocks) ---
+REPLACE:add_bureaucracy_action = {
+	type = owncountry
+	
+	ai_tick = never
+
+	potential = {
+		scope:actor = { oe_settings_bureaucracy_enabled = yes }
+		scope:actor = {
+			any_current_bureaucracy = { count < scope:actor.max_bureaucracy_slots }
+		}
+	}
+
+	allow = {
+		scope:actor = { oe_settings_bureaucracy_enabled = yes }
+	}
+
+	price = {
+		if = {
+			limit = {
+				exists = scope:target_bureaucracy
+			}
+			scope:target_bureaucracy = {
+				value = "implementation_price(scope:actor)"
+			}
+		}
+	}
+	price_modifier = {
+		add = {
+			value = 1
+			desc = BASE_VALUE
+		}
+		if = {
+			limit = { exists = scope:target_bureaucracy }
+			divide = {
+				desc = "MODIFIER_TYPE_NAME_global_bureaucracy_implementation_efficiency"
+				value = 1
+				add = scope:actor.modifier:global_bureaucracy_implementation_efficiency
+				min = 0.5
+			}
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = bureaucracy_type
+		source = actor
+		target_flag = target_bureaucracy
+		name = "select_bureaucracy"
+		none_available_msg_key = "no_bureaucracies_available"
+		default_sort = name
+		column = { data = name }
+		column = { data = negative_modifiers }
+		column = { data = constant_modifiers }
+		column = { data = positive_modifiers }
+		visible = {
+			scope:actor = {
+				not = { 
+					has_bureaucracy_of_type = root
+				}
+				bureaucracy_type_is_visible = root
+			}
+		}
+		enabled = {
+			scope:actor = {
+				bureaucracy_type_is_enabled = root
+			}
+		}
+	}
+
+	effect = {
+		if = {
+			limit = { exists = scope:target_bureaucracy }
+			scope:actor = { add_bureaucracy = scope:target_bureaucracy }
+		}
+	}
+	
+	ai_will_do = {
+		value = -1 #handled in code
+	}
+}
+
+REPLACE:remove_bureaucracy_action = {
+	allow = { scope:actor = { oe_settings_bureaucracy_enabled = yes } }
+
+	type = owncountry
+	
+	ai_tick = never
+
+	potential = {
+		scope:actor = { oe_settings_bureaucracy_enabled = yes }
+		scope:actor = {
+			any_current_bureaucracy = { count > 0 }
+		}
+	}
+
+	price = {
+		if = {
+			limit = {
+				exists = scope:target_bureaucracy
+			}
+			scope:target_bureaucracy = {
+				value = "removal_price(scope:actor)"
+			}
+		}
+	}
+	price_modifier = {
+		if = {
+			limit = { exists = scope:target_bureaucracy }
+			add = {
+				value = scope:target_bureaucracy.removal_price_modifier
+				desc = "[target_bureaucracy.GetName]"
+			}
+		}
+		else = {
+			add = {
+				value = 1
+				desc = BASE_VALUE
+			}
+			divide = {
+				desc = "MODIFIER_TYPE_NAME_global_bureaucracy_removal_efficiency"
+				value = 1
+				add = scope:actor.modifier:global_bureaucracy_removal_efficiency
+				min = 0.5
+			}
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = bureaucracy
+		interaction_source_list = {
+			scope:actor = {
+				every_current_bureaucracy = { 
+					add_to_list = source 
+				}
+			}
+		}
+		target_flag = target_bureaucracy
+		name = "select_bureaucracy"
+		none_available_msg_key = "no_bureaucracies_available"
+		column = { data = name }
+	}
+
+	effect = {
+		if = {
+			limit = { exists = scope:target_bureaucracy }
+			scope:actor = {
+				every_current_bureaucracy = {
+					limit = { bureaucracy_type = scope:target_bureaucracy.bureaucracy_type }
+					scope:actor = { remove_bureaucracy = prev }
+				}
+			}
+		}
+		else = { scope:actor = { add_prestige = 5 }}
+	}
+	
+	ai_will_do = {
+		value = -1 #handled in code
+	}
+}
+
+# --- From in_game/common/generic_actions/culture.txt (3 blocks) ---
+REPLACE:add_accepted_culture = {
+	type = owncountry
+
+	potential = {
+	}
+
+	allow = {
+		scope:actor = {
+			in_civil_war = no
+		}
+		trigger_if = {
+			limit = {
+				exists = scope:target
+				exists = scope:actor
+			}
+			scope:actor = {
+				culture_population_in_country = {
+					culture = scope:target
+					value > 0
+				}
+			}
+		}
+	}
+
+	ai_tick = never
+	ai_tick_frequency = 12
+
+	automation_tick = monthly
+	automation_tick_frequency = 1
+	player_automated_category = cultureacceptance
+
+	price = price:add_accepted_culture
+
+	select_trigger = {
+		looking_for_a = culture
+		target_flag = target
+		source = actor
+		source_flags = only_tolerated
+
+		name = "add_accepted_culture_select_culture"
+		none_available_msg_key = "add_accepted_culture_no_cultures"
+		column = {
+			data = name
+		}
+		visible = {
+			not = { is_accepted_in = scope:actor }
+		}
+		enabled = {
+			is_tolerated_in = scope:actor
+			NOT = {
+				scope:actor.culture = this
+			}
+			# Full acceptance has no minimum population/percentage requirement in Project Phoenix.
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			if = {
+				limit = {
+					exists = scope:target
+				}
+				add_accepted_culture = scope:target
+				grant_culture_bonus_advances = scope:target
+			}
+		}
+	}
+
+	ai_will_do = {
+		# handled in code
+	}
+}
+
+REPLACE:change_primary_culture = {
+	type = owncountry
+
+	potential = {
+	}
+
+	allow = {
+		scope:actor = {
+            custom_tooltip = {
+                text = OE_PRIMARY_CULTURE_CHANGE_PERMITTED
+                modifier:oe_block_primary_culture_change = no
+            }
+			is_colonial_subject = no
+			in_civil_war = no
+		}
+	}
+
+	ai_tick = monthly
+	ai_tick_frequency = 12
+
+	automation_tick = monthly
+	automation_tick_frequency = 1
+
+	price = price:change_primary_culture
+
+	cooldown = {
+		type = convert_culture
+		years = 10
+	}
+
+	select_trigger = {
+		looking_for_a = culture
+		source = actor
+		target_flag = target
+		name = "change_culture_select_culture"
+		none_available_msg_key = "change_primary_culture_no_cultures"
+
+		ai_interaction_source_list = {
+			scope:actor = {
+				if = {
+					limit = { exists = dominant_culture }
+					dominant_culture = {
+						add_to_list = source
+					}
+				}
+				else = {
+					culture = {
+						add_to_list = source
+					}
+				}
+			}
+		}
+
+		column = {
+			data = name
+		}
+		visible = {
+			trigger_if = {
+				limit = {
+					has_game_rule = dynamic_culture
+				}
+				always = yes
+			}
+			trigger_else_if = {
+				limit = {
+					has_game_rule = culture_group_only
+				}
+				scope:actor = {
+					culture = {
+						any_culture_group = {
+							root = {
+								has_culture_group = prev
+							}
+						}
+					}
+				}
+			}
+			trigger_else_if = {
+				limit = {
+					has_game_rule = culture_present_in_country
+				}
+				scope:actor = {
+					culture_population_in_country = {
+						culture = root
+						value > 0
+					}
+				}
+			}
+			trigger_else = {
+				always = yes
+			}
+		}
+		enabled = {
+            scope:actor = {
+                custom_tooltip = {
+                    text = OE_PRIMARY_CULTURE_CHANGE_PERMITTED
+                    modifier:oe_block_primary_culture_change = no
+                }
+            }
+			trigger_if = {
+				limit = {
+					has_game_rule = dynamic_culture
+				}
+				scope:actor = {
+					has_accepted_culture = root
+					not = { culture = root }
+					OR = {
+						dominant_culture ?= root
+						ruler ?= { culture = root }
+						dominant_upper_class_culture ?= root
+					}
+				}
+			}
+			can_change_primary_culture = {
+				country = scope:actor
+				culture = root
+			}
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			if = {
+				limit = {
+                    modifier:oe_block_primary_culture_change = no
+					exists = scope:target
+				}
+				culture = {
+					save_scope_as = old_culture
+				}
+				change_culture = scope:target
+				add_accepted_culture = scope:old_culture
+				grant_culture_bonus_advances = scope:target
+			}
+		}
+	}
+	
+	ai_will_do = {
+		if = {
+			limit = {
+				scope:actor = {
+					at_war = yes
+				}
+			}
+			multiply = 0
+		}
+
+		# change our primiary culture if it is 10% bigger than our current one and we are at peace
+		if = {
+			limit = {
+				scope:actor = {
+					"culture_percentage_in_country(scope:target)" > { value = "culture_percentage_in_country(scope:actor.culture)" add = 0.1 }
+				}
+			}
+			add = 1000
+		}
+
+		subtract = {
+			desc = "less accepted pops"
+			scope:actor = {
+				value = 100
+				multiply = "culture_percentage_in_country(scope:target)"
+			}
+		}
+		
+		
+		if = {
+			limit = {
+				scope:actor = {
+					ruler ?= { culture = scope:actor.culture }
+				}
+			}
+			multiply = 0
+		}
+
+		if = {
+			limit = { 
+				has_game_rule = historical_ai_choices
+				scope:actor = {
+					has_or_had_tag = TUR
+				}
+			}
+
+			add = {
+				desc = "historical ottomans"
+				value = -10000
+			}
+		}
+		
+		add = {
+			desc = "inertia"
+			value = -1
+		}
+
+	}
+}
+
+REPLACE:add_tolerated_culture = {
+	type = owncountry
+
+	potential = {
+	}
+
+	allow = {
+		scope:actor = {
+			in_civil_war = no
+		}
+		trigger_if = {
+			limit = {
+				exists = scope:target
+				exists = scope:actor
+			}
+			scope:actor = {
+				culture_population_in_country = {
+					culture = scope:target
+					value > 0
+				}
+			}
+		}
+	}
+
+	ai_tick = never
+	ai_tick_frequency = 12
+
+	automation_tick = monthly
+	automation_tick_frequency = 1
+	player_automated_category = cultureacceptance
+	
+	price = price:add_tolerated_culture
+
+	select_trigger = {
+		looking_for_a = culture
+		#for the AI we have an optimisation to only look through cultures that are present. Human can look at all...but will have some disabled
+		source_ai_override = actor
+		target_flag = target
+		source_flags_ai_override = include_any_present
+		name = "add_tolerated_culture_select_culture"
+		none_available_msg_key = "add_tolerated_culture_no_cultures"
+		column = {
+			data = name
+		}
+		enabled = {
+			NOR = {
+				scope:actor.culture = this
+				is_tolerated_in = scope:actor
+				is_accepted_in = scope:actor
+			}
+			scope:actor = {
+				OR = {
+					culture_percentage_in_country = {
+						culture = root
+						value >= 0.001
+					}
+
+
+					culture_population_in_country = {
+						culture = root
+						value >= 10
+					}
+					any_estate = {
+						dominant_culture ?= { this = root }
+					}
+				}
+			}
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			if = {
+				limit = {
+					exists = scope:target
+				}
+				add_tolerated_culture = scope:target
+			}
+		}
+	}
+	
+	ai_will_do = {
+		# handled in code
+	}
+}
+
+# --- From in_game/common/generic_actions/hussite_wars_actions.txt (2 blocks) ---
+REPLACE:align_with_moderates_help_hw_action = {
+	type = situation
+	show_message = no
+	
+	ai_tick = monthly
+	ai_tick_frequency = 6
+
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = {
+		scope:actor = {
+			NOT = { religion = religion:catholic }	#Only Hussites, Catholics and Bohemia see the situation, so it is fine
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			any_neighbor_country = {
+				NOT = { religion = prev.religion }
+				NOR = {
+					is_at_war_with = prev
+					is_rival_of = prev
+					is_enemy_of = prev
+					AND = {
+						country_exists = international_organization:hre.leader_country
+						OR = {
+							has_mutual_scripted_relation = {
+								type = relation_type:alliance
+								target = international_organization:hre.leader_country
+							}
+							is_subject_of = international_organization:hre.leader_country
+						}
+					}
+				}
+			}
+		}
+	}
+	price = price:hussite_wars_actions_price
+
+	cooldown = {
+		type = align_with_moderates_help_hw_action
+		years = 3
+	}
+
+	select_trigger = {
+		looking_for_a = situation
+		target_flag = recipient
+		name = "choose_situation"
+		column = {
+			data = name
+		}
+		visible = {
+			situation:hussite_wars = this
+			situation_is_active = yes
+		}
+	}
+
+	effect = { 
+		scope:actor = {
+			if = {
+				limit = { 
+					has_country_modifier = promoted_radicals_modifier
+				}
+				remove_country_modifier = promoted_radicals_modifier
+			}
+			ordered_neighbor_country = {
+				limit = {
+					NOT = { religion = prev.religion }
+					NOR = {
+						is_at_war_with = prev
+						is_rival_of = prev
+						is_enemy_of = prev
+						AND = {
+							country_exists = international_organization:hre.leader_country
+							OR = {
+								has_mutual_scripted_relation = {
+									type = relation_type:alliance
+									target = international_organization:hre.leader_country
+								}
+								is_subject_of = international_organization:hre.leader_country
+							}
+						}
+						has_mutual_scripted_relation = {
+							type = relation_type:alliance
+							target = prev
+						}
+						is_subject_of = prev
+					}
+				}
+				order_by = total_population
+				max = 3
+				check_range_bounds = no
+				add_opinion = {
+					target = scope:actor
+					modifier = opinion_religious_outreach_during_the_hussite_wars_modifier
+				}
+			}
+			add_country_modifier = {
+				modifier = promoted_moderates_modifier
+				years = modifier_duration_years_very_short
+				mode = replace
+			}
+		}
+		custom_tooltip = countries_less_likely_to_join_against_us_tt
+	}
+
+	ai_will_do = {
+		add = -1
+		if = {
+			limit = { 
+				scope:actor ?= { at_war = no }
+			}
+			add = 5
+		}
+		else = { add = -100 }
+	}
+}
+
+REPLACE:align_with_radicals_help_hw_action = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			NOT = { religion = religion:catholic }	#Only Hussites, Catholics and Bohemia see the situation, so it is fine
+		}
+	}
+
+	allow = {
+		
+	}
+	ai_tick = monthly
+	ai_tick_frequency = 4
+
+	automation_tick = never
+	automation_tick_frequency = 12
+	price = price:hussite_wars_actions_price
+
+	cooldown = {
+		type = demand_noble_donations_hw_action
+		years = 3
+	}
+
+	select_trigger = {
+		looking_for_a = situation
+		target_flag = recipient
+		name = "choose_situation"
+		column = {
+			data = name
+		}
+		visible = {
+			situation:hussite_wars = this
+			situation_is_active = yes
+		}
+	}
+
+	effect = { 
+		scope:actor = {
+			if = {
+				limit = { 
+					has_country_modifier = promoted_moderates_modifier
+				}
+				remove_country_modifier = promoted_moderates_modifier
+			}
+			ordered_neighbor_country = {
+				limit = {
+					NOT = { religion = prev.religion }
+					NOR = {
+						is_at_war_with = prev
+						is_rival_of = prev
+						is_enemy_of = prev
+						AND = {
+							country_exists = international_organization:hre.leader_country
+							OR = {
+								has_mutual_scripted_relation = {
+									type = relation_type:alliance
+									target = international_organization:hre.leader_country
+								}
+								is_subject_of = international_organization:hre.leader_country
+							}
+						}
+						has_mutual_scripted_relation = {
+							type = relation_type:alliance
+							target = prev
+						}
+						is_subject_of = prev
+					}
+				}
+				order_by = total_population
+				max = 5
+				check_range_bounds = no
+				add_opinion = {
+					target = scope:actor
+					modifier = opinion_religious_radicalism_during_the_hussite_wars
+				}
+			}
+			add_country_modifier = {
+				modifier = promoted_radicals_modifier
+				years = modifier_duration_years_very_short
+				mode = replace
+			}
+		}
+		custom_tooltip = countries_more_likely_to_join_against_us_tt
+	}
+
+	ai_will_do = {
+		add = -1
+		if = {
+			limit = { 
+				scope:actor ?= { at_war = yes }
+			}
+			add = 5
+		}
+		else = { add = -100 }
+	}
+}

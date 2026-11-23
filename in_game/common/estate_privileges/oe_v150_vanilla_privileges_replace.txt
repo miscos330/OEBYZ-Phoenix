@@ -1,0 +1,5278 @@
+﻿# Project Phoenix v15.0: targeted REPLACE overrides for base vanilla estate_privileges (BYZ exclusion; skips 4 consolidated_corruption keys owned by oe_byz_*).
+# Generated from EU5 1.4.9 vanilla definitions; do not edit by hand.
+
+# --- From in_game/common/estate_privileges/nobles_estate.txt (96 blocks) ---
+REPLACE:nobles_offensive_military_doctrine = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+
+	country_modifier = {
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_nobles_estate_power = 0.4
+		land_morale_modifier = 0.05
+		monthly_towards_offensive = societal_value_monthly_move
+	}
+}
+
+REPLACE:nobles_land_rights = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+
+	country_modifier = {
+		allow_noble_villa = yes
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.75
+
+		global_peasant_enfranchisment = -0.10
+
+		nobles_estate_allowed_to_build_rgo = yes
+
+		monthly_towards_land = societal_value_minor_monthly_move
+		monthly_towards_serfdom = societal_value_monthly_move
+		monthly_towards_aristocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:auxilium_et_consilium = {
+
+	estate = nobles_estate
+	
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:monarchy
+	}
+	allow = {
+		has_advance = noble_knights
+		NOT = {	has_estate_privilege =  estate_privilege:monetary_fiefs }
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		allow_nobles_recruitment_center = yes
+		global_nobles_estate_power = 0.5
+		monthly_political_influence_gain_modifier = -0.10
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		levy_combat_efficiency_modifier = 0.10
+		global_army_levy_size_modifier = 0.1
+		nobles_estate_levy_size = 0.20
+
+		monthly_towards_serfdom = societal_value_monthly_move
+		monthly_towards_aristocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:noble_serfdom_rights = {
+
+	estate = nobles_estate
+	
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		monthly_towards_serfdom = societal_value_monthly_move
+		global_nobles_estate_power = 0.4
+		global_peasants_food_consumption = -0.1
+		global_laborers_food_consumption = -0.1
+		global_peasant_enfranchisment = -0.05
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:noble_fortification_licenses = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+	}
+	allow = {
+		has_advance = castle_advance
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		allow_nobility_fortifications = yes
+		global_nobles_estate_power = 0.75
+		fort_limit_modifier = 0.1
+		fort_maintenance_efficiency = 0.50
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_decentralization = societal_value_monthly_move
+		monthly_towards_land = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:noble_marriage_rights = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			government_type = government_type:monarchy
+			government_type = government_type:tribe
+		}
+	}
+	allow = {
+		
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		global_nobles_estate_power = 0.5
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		country_cabinet_efficiency = 0.05
+	}
+}
+
+REPLACE:banal_lordship = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+		
+	
+	country_modifier = {
+		global_nobles_estate_power = 0.5
+		monthly_political_influence_gain_modifier = -0.10
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_serfdom = societal_value_monthly_move
+		global_max_control = -0.05
+		global_peasant_enfranchisment = -0.05
+		pop_join_rebel_threshold = 0.05
+	}
+}
+
+REPLACE:primacy_of_nobility = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+	country_modifier = {
+		global_nobles_estate_power = 1.0
+		monthly_political_influence_gain_modifier = -0.15
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+		monthly_towards_aristocracy = societal_value_monthly_move
+		discipline = 0.05
+	}
+}
+
+REPLACE:noble_leaders_only = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+	country_modifier = {
+		no_lowborn_leaders = yes
+		peasants_estate_blocked_from_leading_military = yes
+		tribes_estate_blocked_from_leading_military = yes
+		burghers_estate_blocked_from_leading_military = yes
+		dhimmi_estate_blocked_from_leading_military = yes
+		cossacks_estate_blocked_from_leading_military = yes
+		clergy_estate_blocked_from_leading_military = yes
+		peasants_estate_blocked_from_leading_military = yes
+		tribes_estate_blocked_from_leading_military = yes
+		global_nobles_estate_power = 0.5
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		peasants_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		cossacks_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		tribes_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		dhimmi_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+	}
+}
+
+REPLACE:elaborate_court_ceremonies = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		NOT = { government_type = government_type:tribe }
+		NOT = { government_type = government_type:steppe_horde }
+	}
+	allow = {
+
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		allow_local_noble_delegation = yes
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.2
+		court_spending_efficiency = -0.05
+		cultural_influence_modifier = 0.2
+		monthly_towards_individualism = societal_value_monthly_move
+	}
+}
+
+REPLACE:nobles_protected_faith = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+	allow = { 
+		religious_unity < 0.66
+	}
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		global_nobles_conversion_blocked = yes
+	}
+	can_revoke = {}
+}
+
+REPLACE:nobility_council = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+
+	country_modifier = {
+		allow_local_noble_delegation = yes
+		monthly_towards_aristocracy = societal_value_minor_monthly_move
+		monthly_political_influence_gain_modifier = -0.10
+		stability_decay = -0.00025
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		nobles_estate_agenda_impact = 0.25
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:manorial_courts = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:monarchy
+	}
+
+	
+	country_modifier = {
+		monthly_towards_decentralization = societal_value_monthly_move
+		monthly_political_influence_gain_modifier = -0.10
+		country_cabinet_efficiency = -0.05
+		global_distance_from_capital_speed_propagation = 0.05
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:increased_civic_engagement = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:republic
+	}
+
+	
+	country_modifier = {
+		replace_cabinet_member_cost_modifier = -0.1
+		monthly_republican_tradition = 0.1
+		global_nobles_estate_power = 0.5
+		monthly_towards_innovative = societal_value_monthly_move
+	}
+}
+
+REPLACE:inherited_offices = {
+	estate = nobles_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:republic
+	}
+
+	
+	country_modifier = {
+		monthly_republican_tradition = -0.02
+		monthly_political_influence_gain_modifier = -0.10
+		replace_cabinet_member_cost_modifier = 0.5	#WAD, decision by johan
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_nobles_estate_power = 1.0
+	}
+}
+
+REPLACE:recognized_communes = {
+	estate = nobles_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:republic
+	}
+
+	
+	country_modifier = {
+		monthly_towards_decentralization = societal_value_monthly_move
+		global_max_control = -0.05
+		global_monthly_prosperity = 0.001
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:appoint_ecclesiastical_offices = {
+	estate = nobles_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:theocracy
+	}
+
+	
+	country_modifier = {
+		global_nobles_max_literacy = 5
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_nobles_estate_power = 1.0
+	}
+}
+
+REPLACE:control_of_the_borderlands = {
+	estate = nobles_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:theocracy
+	}
+
+	
+	country_modifier = {
+
+		land_cost_on_distance_from_capital_speed_propagation = 0.1
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_nobles_estate_power = 1.0
+	}
+}
+
+REPLACE:feudal_mercenary_contracts = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_embraced_institution = institution:feudalism
+	}
+	
+	country_modifier = {
+		global_nobles_estate_power = 1.0
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		mercenary_maintenance_efficiency = 0.1
+		hire_mercenary_premium_cost_modifier = -0.2
+	}
+}
+
+REPLACE:liberum_veto = {
+	content_priority = 900
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = POL
+			has_or_had_tag = PLC
+		}
+		has_variable = unlock_liberum_veto_variable
+	}
+	can_revoke = {
+		trigger_if = {
+			limit = {
+				NOT = { has_country_modifier = plc_strive_for_reform }
+			}
+			"estate_power(estate_type:crown_estate)" >= 0.7
+		}
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 5.0
+		monthly_political_influence_gain_modifier = -0.20
+		nobles_estate_agenda_impact = 0.25
+		parliament_request_issue_support_needed = 0.2
+		monthly_towards_aristocracy = societal_value_large_monthly_move
+	}
+
+	on_activate = {
+		if = {
+			limit = {
+				has_country_modifier = plc_blackmail_of_the_nobles
+			}
+			remove_country_modifier = plc_blackmail_of_the_nobles
+		}
+	}
+}
+
+REPLACE:visconti_city_states = {
+	content_priority = 800
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = MLO
+	}
+	
+	can_revoke = {
+		average_control_in_home_region >= 0.5
+		
+	}
+	
+	country_modifier = {
+		monthly_legitimacy = -0.05
+		global_max_control = -0.05
+		monthly_towards_decentralization = societal_value_minor_monthly_move
+		global_nobles_estate_power = 0.50
+	}
+
+	
+}
+
+REPLACE:general_privilege = {
+	content_priority = 400
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = ARA
+	}
+	
+	allow = {
+		
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		monthly_legitimacy = 0.05
+		global_nobles_estate_power = 0.2
+		monthly_towards_aristocracy = societal_value_minor_monthly_move
+		monthly_towards_free_trade = societal_value_minor_monthly_move
+	}
+
+}
+
+REPLACE:union_privilege = { 
+	estate = nobles_estate
+
+	potential = { 
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		#This privilege can only be accessed trhought the war_of_the_aragonese_union_disaster.2 event
+		has_variable = union_privilege_flag
+	}
+	
+	allow = {
+		
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		monthly_towards_aristocracy = societal_value_minor_monthly_move
+		monthly_towards_traditionalist = societal_value_minor_monthly_move
+		nobles_estate_max_tax	= -0.05
+		global_nobles_estate_power = 1.0
+	}
+
+}
+
+REPLACE:signoria_council = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = FLO
+	}
+
+	allow = {
+		has_reform = government_reform:signoria_reform
+	}
+	
+	can_revoke = {
+		average_control_in_home_region >= 0.5
+		estate_satisfaction:nobles_estate > 0.75
+	}
+	
+	country_modifier = {
+		stability_decay = -0.00025
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		nobles_estate_max_tax = -0.1
+	}
+}
+
+REPLACE:tysiatskii_privilege = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = NOV
+	}
+	allow = {}
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		monthly_army_tradition = 0.1
+	}
+	country_modifier = {
+		potential_trigger = {
+			custom_tooltip = {
+				text = nov_influential_tysiatskii_requirement
+				has_variable = nov_influential_tysiatskii
+			}
+		}
+		global_nobles_estate_power = 0.25
+		army_heavy_infantry_power = 0.15
+	}
+	country_modifier = {
+		potential_trigger = {
+			custom_tooltip = {
+				text = nov_tysiatskii_influence_weakened_requirement
+				has_variable = nov_tysiatskii_influence_weakened
+			}
+		}
+		stability_investment = large_stability_investment
+		global_nobles_estate_power = -0.25
+	}	
+	can_revoke = {}
+
+}
+
+REPLACE:the_ryad_privilege = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		culture ?= { has_culture_group = culture_group:russian_group }
+	}
+	allow = {}
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		country_cabinet_efficiency = 0.05
+		stability_decay = -0.00025
+	}
+	can_revoke = {}
+
+}
+
+REPLACE:kbo_kaigama = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = KBO
+	}
+	
+	can_revoke = {
+		stability > 50
+	}
+	
+	country_modifier = {
+		monthly_army_tradition = 0.05
+		monthly_legitimacy = -0.02
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:kbo_yerima = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = KBO
+	}
+	
+	can_revoke = {
+		stability > 50
+	}
+	
+	country_modifier = {
+		global_levy_size_modifier = 0.1
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:kbo_cima = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = KBO
+	}
+	
+	can_revoke = {
+		
+	}
+	
+	country_modifier = {
+		global_distance_from_capital_speed_propagation = 0.1
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:office_of_the_farima_soura_privilege = {
+	content_priority = 300
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = MAL 
+	}
+	allow = {
+		has_unlocked_estate_privilege_trigger = {
+			type = office_of_the_farima_soura_privilege
+		}
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		build_gravel_road_cost_modifier = -0.25
+		build_paved_road_cost_modifier = -0.25
+		build_modern_road_cost_modifier = -0.25
+		selling_efficiency = tiny_selling_efficiency_bonus
+		global_nobles_estate_power = 0.5
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_aristocracy = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:office_of_the_sankar_zouma_privilege = {
+	content_priority = 200
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = MAL 
+	}
+	allow = {
+		has_unlocked_estate_privilege_trigger = {
+			type = office_of_the_sankar_zouma_privilege
+		}
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		monthly_rebel_growth = -0.001
+		global_trade_center_power = 0.05
+		global_nobles_estate_power = 0.5
+		monthly_towards_aristocracy = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:golden_liberty = {
+	content_priority = 800
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = POL
+			has_or_had_tag = PLC
+		}
+		OR = {
+			has_variable = rise_of_szlachta_szlachta_outcome_variable
+			any_active_disaster = { disaster_type = disaster_type:rise_of_the_szlachta }
+		}
+	}
+
+	can_revoke = {
+		trigger_if = {
+			limit = {
+				NOT = { has_country_modifier = plc_strive_for_reform }
+			}
+			"estate_power(estate_type:crown_estate)" >= 0.5
+		}
+	}
+
+	country_modifier = {
+		monthly_towards_aristocracy = societal_value_large_monthly_move
+		monthly_political_influence_gain_modifier = -0.15
+		nobles_estate_max_tax = -0.1
+		nobles_estate_levy_size = 0.1
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_nobles_estate_power = 2
+		parliament_request_issue_support_needed = 0.1
+	}
+}
+
+REPLACE:nieszawa_privileges = {
+	content_priority = 500
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = POL
+			has_or_had_tag = PLC
+			has_variable = rise_of_szlachta_szlachta_outcome_variable
+		}
+	}
+
+	can_revoke = {
+		trigger_if = {
+			limit = {
+				NOT = { has_country_modifier = plc_strive_for_reform }
+			}
+			"estate_power(estate_type:crown_estate)" >= 0.5
+		}
+	}
+
+	country_modifier = {
+		
+		nobles_estate_max_tax = -0.1
+		stability_investment = tiny_stability_investment
+		nobles_estate_agenda_impact = 0.2
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		parliament_request_issue_support_needed = 0.1
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:pacta_conventa = {
+	content_priority = 400
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = POL
+			has_or_had_tag = PLC
+			has_variable = rise_of_szlachta_szlachta_outcome_variable
+		}
+	}
+
+	can_revoke = {
+		trigger_if = {
+			limit = {
+				NOT = { has_country_modifier = plc_strive_for_reform }
+			}
+			"estate_power(estate_type:crown_estate)" >= 0.5
+		}
+	}
+
+	country_modifier = {
+
+		monthly_towards_decentralization = societal_value_minor_monthly_move
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		parliament_request_issue_support_needed = 0.1
+		global_nobles_estate_power = 0.5
+		global_crown_estate_power = -0.1
+	}
+}
+
+REPLACE:noble_armies = { 
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = FRA
+			has_or_had_tag = KOR
+		}
+	}
+
+	country_modifier = {
+		nobles_estate_levy_size = 0.5
+		monthly_political_influence_gain_modifier = -0.10
+		monthly_towards_aristocracy = societal_value_minor_monthly_move
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.50
+
+		nobles_estate_satisfaction_decay = 0.02
+
+	}
+}
+
+REPLACE:chancellor_nobles = { 
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = FRA
+	}
+
+	country_modifier = {
+		country_cabinet_efficiency = 0.1
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.50
+	}
+}
+
+REPLACE:great_offices_of_the_crown_of_france = {
+	estate = nobles_estate
+	content_priority = 100
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = FRA
+	}
+
+	country_modifier = {
+		
+		government_size = 1
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		global_peasant_enfranchisment = -0.1
+	}
+}
+
+REPLACE:residence_in_versailles = { 
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = FRA
+		NOT = { has_estate_privilege = estate_privilege:permanent_residence_in_versailles }
+		has_variable = enable_residence_in_versailles
+	}
+
+	country_modifier = {
+		monthly_towards_centralization = societal_value_minor_monthly_move
+		monthly_prestige = 0.10
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = -0.05
+	}
+}
+
+REPLACE:permanent_residence_in_versailles = {
+	estate = nobles_estate
+	content_priority = 600
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = FRA
+		NOT = { has_estate_privilege = estate_privilege:residence_in_versailles }
+		has_variable = enable_permanent_residence_in_versailles
+	}
+
+	country_modifier = {
+		monthly_towards_centralization = societal_value_minor_monthly_move
+		monthly_prestige = 0.10
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_nobles_estate_power = -0.20
+	}
+}
+
+REPLACE:right_to_inherit = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			#All Germans
+			culture ?= { has_culture_group = culture_group:german_group }
+			succession_law ?= heir_selection:partition_inheritance
+		}
+	}
+	
+	country_modifier = {
+		stability_cost_efficiency = 0.4
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		
+		monthly_towards_aristocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:inaugural_diplomas = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = BOH
+	}
+	
+	country_modifier = {
+		nobles_estate_max_tax = -0.1
+		nobles_estate_levy_size = -0.1
+		global_nobles_estate_power = 1.0
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+	}
+}
+
+REPLACE:district_paving_privilege = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = district_paving_taxes_variable
+	}
+	
+	country_modifier = {
+		build_gravel_road_cost_modifier = -0.2
+		build_paved_road_cost_modifier = -0.2
+		build_modern_road_cost_modifier = -0.2
+		monthly_towards_decentralization = societal_value_monthly_move
+		global_nobles_estate_power = 0.4
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:joint_assembly_decrees = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = joint_assembly_decrees_variable
+		international_organization:hre = {
+			international_organization_has_leader = yes
+			leader_country ?= root
+		}
+	}
+	
+	country_modifier = {
+		monthly_towards_aristocracy = societal_value_minor_monthly_move
+		wrong_culture_levy_size = 0.1
+		cultures_capacity = 1
+		global_nobles_estate_power = 1.0
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:kormlenije = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		culture ?= { has_culture_group = culture_group:russian_group }
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+		nobles_estate_max_tax = -0.05
+		monthly_towards_centralization = societal_value_monthly_move
+		global_nobles_estate_power = 0.2
+	}
+}		
+
+REPLACE:ordinance_of_laborers = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = ENG
+		has_variable = eng_ordinance_of_laborers_flag
+	}
+	allow = {
+		NOT = {	has_estate_privilege =  estate_privilege:peasants_free_peasantry }
+	}
+	can_revoke = {
+		"estate_power(estate_type:nobles_estate)" <= 0.2
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.2
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		monthly_towards_serfdom = societal_value_monthly_move
+	}
+}
+
+REPLACE:autonomous_local_commanders = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = KNI
+		government_type = government_type:theocracy
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		monthly_army_tradition = 0.05
+		monthly_towards_decentralization = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:bashtinas_and_pronijas_grants = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = SER
+	}
+	
+	country_modifier = {
+		monthly_towards_decentralization = societal_value_monthly_move
+		nobles_estate_max_tax = -0.1
+		global_nobles_estate_power = 0.2
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+	}
+}
+
+REPLACE:zupa_districts = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = SER
+	}
+	
+	country_modifier = {
+		monthly_towards_defensive = societal_value_monthly_move
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.4
+	}
+}
+
+REPLACE:vlastele_krayishnik = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = SER
+	}
+	
+	country_modifier = {
+		global_max_control = -0.05
+		global_defensive = 0.15
+		global_nobles_estate_power = 0.2
+	}
+}
+
+REPLACE:golden_bull_of_1222 = {
+	content_priority = 800
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = HUN
+	}
+	country_modifier = {
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+		nobles_estate_max_tax = -0.1
+		global_nobles_estate_power = 0.5
+		nobles_estate_levy_size = -0.15
+	}
+}
+
+REPLACE:monetary_fiefs = { #https://en.wikipedia.org/wiki/Bastard_feudalism https://en.wikipedia.org/wiki/English_feudal_barony
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+
+	allow = {
+		NOT = {	has_estate_privilege =  estate_privilege:auxilium_et_consilium }
+	}
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		nobles_estate_max_tax = -0.05
+		nobles_estate_levy_size = -0.1
+		global_nobles_estate_power = 0.2
+		monthly_towards_centralization = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:scholar_officials = { #https://en.wikipedia.org/wiki/Scholar-official
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			culture ?= { has_culture_group = culture_group:confucian_group }
+			any_international_organizations_member_of = {
+				international_organization_type = international_organization_type:sect
+				international_organization_has_policy = policy:confucianism_policy
+			}
+			has_variable = has_neo_confucianism
+			is_member_of_international_organization = international_organization:middle_kingdom
+		}
+	}
+	allow = {
+		has_imperial_examinations = yes
+	}
+
+	can_revoke = {
+		not = { has_imperial_examinations = yes }
+	}
+
+	country_modifier = {
+		nobles_estate_max_tax = -0.05
+		global_nobles_estate_power = 0.33
+		
+		global_nobles_max_literacy = 5
+		research_speed_modifier = 0.1
+
+		monthly_towards_innovative = societal_value_large_monthly_move
+	}
+}
+
+REPLACE:ghazi_privilege = {
+	
+	estate = nobles_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= { group ?= religion_group:muslim }
+		culture ?= { has_culture_group = culture_group:turkic_group }
+	}
+	can_revoke = {
+		OR = {
+			societal_value:centralization_vs_decentralization > 0
+			societal_value:spiritualist_vs_humanist > 25
+		}
+	}
+	
+	country_modifier = {
+		land_morale_modifier = 0.05
+		global_levy_size_modifier = 0.05
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 1
+		monthly_towards_decentralization = societal_value_minor_monthly_move
+		monthly_towards_quality = societal_value_minor_monthly_move
+
+		#This is a privilege you will want early on but eventually it will become a hinderance
+		#when you want to centralize
+	}
+}
+
+REPLACE:share_of_the_spoils = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_tribal_government = yes
+	}
+	
+	country_modifier = {
+		court_spending_efficiency = -0.05
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.2
+	}
+}
+
+REPLACE:tribal_host = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_tribal_government = yes
+	}
+
+	allow = {
+		has_advance = ranching
+	}
+	
+	country_modifier = {
+		monthly_tribal_cohesion = 0.02
+		global_horses_output_modifier = 0.1
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:tribal_autonomy = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_tribal_government = yes
+	}
+	
+	country_modifier = {
+		monthly_tribal_cohesion = 0.02
+		monthly_towards_unsinicized = societal_value_minor_monthly_move
+		global_max_rural_control = -0.05
+		global_nobles_estate_power = 0.3
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+	}
+}
+
+REPLACE:powerful_italian_families = {
+	estate = nobles_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		tag = PAP
+	}
+		
+	can_revoke = {
+		custom_tooltip = {
+			text = powerful_italian_families.tt
+			capital.region = region:italy_region
+		}
+	}
+	location_modifier = {
+		
+		potential_trigger = {
+			region = region:italy_region
+		}
+		local_crown_estate_power = -0.5
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.1
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_decentralization = societal_value_large_monthly_move
+	}
+}
+
+REPLACE:plc_empower_orthodox_nobility = {
+	estate = nobles_estate
+
+	country_modifier = {
+		scale = {
+			value = "religion_percentage_in_country(religion:orthodox)"
+		}
+		global_pop_conversion_speed_modifier = -0.5
+		global_nobles_estate_power = 1.0
+	}
+
+	country_modifier = {
+		global_nobles_estate_power = 0.1
+	}
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = plc_empower_orthodox_nobility
+		}
+	}
+}
+
+REPLACE:scottish_clans = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		culture ?= {
+			has_culture_group = culture_group:scottish_group
+		}
+		NOT = {	has_estate_privilege = estate_privilege:sco_statutes_of_iona }
+		NOT = { has_variable = preserved_clan_autonomy}
+	}
+	allow = {
+		NOT = {	has_estate_privilege = estate_privilege:sco_statutes_of_iona }
+	}
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" > 0.33		
+	}
+	country_modifier = {
+		allow_dun_fort = yes
+		global_nobles_estate_power = 0.2
+		nobles_estate_levy_size = 0.3
+		nobles_estate_max_tax = 0.05
+		monthly_towards_traditionalist = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:autonomous_scottish_clans = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		culture ?= {
+			has_culture_group = culture_group:scottish_group
+		}
+		NOT = {	has_estate_privilege = estate_privilege:sco_statutes_of_iona }
+		has_variable = preserved_clan_autonomy
+	}
+	allow = {
+		NOT = {	has_estate_privilege = estate_privilege:sco_statutes_of_iona }
+	}
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" > 0.33		
+	}
+	country_modifier = {
+		allow_dun_fort = yes
+		global_nobles_estate_power = -0.05
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		nobles_estate_max_tax = 0.05
+	}
+}
+
+REPLACE:sco_statutes_of_iona = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = sco_statutes_of_iona
+		}		
+	}
+	allow = {
+	}
+	can_revoke = {
+		always = no		
+	}
+	country_modifier = {
+		global_nobles_estate_power = -0.2
+		nobles_estate_levy_size = 0.10
+		nobles_estate_max_tax = 0.10
+		monthly_towards_centralization = 0.03
+	}
+}
+
+REPLACE:coign_and_livery_privilege = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			culture ?= { has_culture_group = culture_group:hibernian_group }
+			has_reform = government_reform:celtic_traditions_reform
+		}
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		nobles_estate_max_tax = 0.1
+		global_nobles_estate_power = 0.1
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		army_maintenance_efficiency = 0.15
+	}
+}
+
+REPLACE:libro_d_oro = { #https://en.wikipedia.org/wiki/Libro_d%27Oro
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = VEN			
+			any_overlord_or_above = {
+				has_or_had_tag = VEN
+			}
+		}
+	}
+	
+	on_activate = {
+		if = {
+			limit = {
+				NOT = { has_variable = year_of_start_of_libro_d_oro }
+			}
+			set_variable = {
+				name = year_of_start_of_libro_d_oro
+				value = current_year
+			}
+		}
+	}
+
+	on_deactivate = {
+		#Deactivating the privilege does not remove the varible "year_of_start_of_joint_rule"
+		#to avoid the player reseting it at will
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.1
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_pop_promotion_speed_modifier = -0.20
+		monthly_towards_aristocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:avogadoria_de_comun = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = VEN			
+			any_overlord_or_above = {
+				has_or_had_tag = VEN
+			}
+		}
+	}
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" >= 0.75
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.5
+		legislative_efficiency = 0.1
+		country_cabinet_efficiency = 0.1
+	}
+}
+
+REPLACE:zontas = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = VEN			
+			any_overlord_or_above = {
+				has_or_had_tag = VEN
+			}
+		}
+	}
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" >= "estate_power(estate_type:nobles_estate)"
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.2
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_crown_estate_power = -0.1
+		country_cabinet_efficiency = 0.1
+		diplomatic_reputation = diplomatic_reputation_weak_bonus
+	}
+}
+
+REPLACE:rajput_society = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		culture ?= { NOT = { language ?= language:rajasthani_language } }
+		OR = {
+			religion ?= { group = religion_group:dharmic }
+			religion ?= { group = religion_group:muslim }
+		}
+		capital ?= {
+			sub_continent = sub_continent:south_asia
+		}
+		any_present_culture_in_country = {
+			language ?= language:rajasthani_language
+		}
+	}
+	country_modifier = {
+		discipline = 0.05
+		scale = {
+			add = {
+				desc = "relevant_culture_percentage_in_country"
+				value = "culture_percentage_in_country(culture:mewari)"
+				add = "culture_percentage_in_country(culture:harauti)"
+				add = "culture_percentage_in_country(culture:dhundhari)"
+				add = "culture_percentage_in_country(culture:shekhawati)"
+				add = "culture_percentage_in_country(culture:mewati)"
+				add = 1
+			}
+		}
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:zamindar_tax_privilege = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_advance = mug_zamindar_system
+	}
+	country_modifier = {
+		potential_trigger = {
+			at_war = yes
+		}
+		global_estate_max_tax = 0.3
+		global_estate_min_tax = 0.3
+		global_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_war_exhaustion = 0.1
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.5
+		country_cabinet_efficiency = 0.05
+	}
+}
+
+REPLACE:privilege_of_koszyce = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = unlock_privilege_of_koszyce
+	}
+	can_revoke = {
+		trigger_if = {
+			limit = {
+				NOT = { has_country_modifier = plc_strive_for_reform }
+			}
+			estate_satisfaction:nobles_estate > 0.8
+		}
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.25
+		cultural_influence_modifier = 0.1
+		monthly_towards_aristocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:nihil_novi = {
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = unlock_nihil_novi
+	}
+	allow = {
+		
+	}
+	can_revoke = {
+		trigger_if = {
+			limit = {
+				NOT = { has_country_modifier = plc_strive_for_reform }
+			}
+			estate_satisfaction:nobles_estate > 0.8
+		}
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.25
+		change_policy_cost_modifier = 1
+		global_peasants_migration_allowed = no
+		global_burghers_estate_power = -0.25
+		nobles_estate_levy_size = 1 
+	}
+}
+
+REPLACE:noble_sponsored_navy = {
+	estate = nobles_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_ports = yes
+	}
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.33
+		monthly_towards_naval = societal_value_minor_monthly_move
+		navy_galley_maintenance_cost_modifier = -0.1
+	}
+}
+
+REPLACE:charter_of_the_nobility = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = RUS
+		has_variable = rus_pugachev_uprising
+	}
+	
+	country_modifier = {
+		global_nobles_estate_power = 0.15
+		global_estate_target_satisfaction = small_privilege_target_satisfaction
+		monthly_towards_serfdom = societal_value_monthly_move
+	}
+}
+
+REPLACE:reduced_responsibilities_for_the_nobles = { #Privilege of Koszyce
+	
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = granted_privileges_to_secure_throne
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_nobles_estate_power = 0.2
+		fort_maintenance_efficiency = -0.2
+		global_nobles_food_consumption = 0.1
+	}
+}
+
+REPLACE:reduced_taxation_for_the_nobles = { #Privilege of Buda
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = granted_privileges_to_secure_throne
+	}
+	
+	country_modifier = {
+		monthly_towards_aristocracy = societal_value_monthly_move
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.33
+		nobles_estate_max_tax = -0.1
+	}
+}
+
+REPLACE:heritable_iqta = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = heritable_iqta
+		}
+		has_law = iqta_law
+	}
+
+	country_modifier = {
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_nobles_estate_power = 0.33
+		global_max_control = -0.05
+	}
+}
+
+REPLACE:manifesto_of_freedom = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = RUS
+		ruler ?= {
+			has_variable = rus_manifesto_of_freedom
+		}
+	}
+
+	can_revoke = {
+		custom_tooltip = {
+			text = revoke_manifesto_of_freedom
+			NOT = {
+				ruler ?= {
+					has_variable = rus_manifesto_of_freedom
+				}
+			}
+		}
+		OR = {
+			AND = {
+				ruler ?= {
+					adm > 75
+				}
+				has_policy = equal_power_relation_policy
+			}
+			has_policy = absolute_rule_policy
+		}
+		"estate_power(estate_type:crown_estate)" >= 0.5
+	}
+
+	country_modifier = {
+		
+		nobles_estate_levy_size = -0.5
+		monthly_towards_decentralization = societal_value_minor_monthly_move
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:bavarian_share_of_land = { #Bavarian Inheritance 
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = bavarian_inheritance_split
+	}
+
+	country_modifier = {
+		monthly_towards_decentralization = societal_value_monthly_move
+		global_max_control = -0.1
+		global_nobles_estate_power = 0.5
+	}
+}
+
+REPLACE:cas_fuero_viejo = {
+	estate = nobles_estate
+
+	potential = { 
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = CAS 
+		has_unlocked_estate_privilege_trigger = {
+			type = cas_fuero_viejo
+		}
+	}
+	
+	allow = {
+	}
+
+	country_modifier = {
+		monthly_towards_aristocracy = societal_value_monthly_move
+		monthly_legitimacy = 0.05
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.4
+	}
+}
+
+REPLACE:justicia_de_aragon = {
+	estate = nobles_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = ARA
+	}
+	
+	allow = {
+		has_unlocked_estate_privilege_trigger = {
+			type = justicia_de_aragon
+		}
+	}
+	
+	can_revoke = {
+		legitimacy > 95
+		"estate_power(estate_type:crown_estate)" > 0.5
+	}
+	
+	location_modifier = {
+        potential_trigger = {
+            area = area:aragon_area
+        }
+        local_crown_estate_power = -0.25
+    }
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+        global_nobles_estate_power = 0.2
+        parliament_base_support = 0.2
+        global_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:formalized_oath = {
+	estate = nobles_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = ARA
+	}
+	
+	allow = {
+		has_unlocked_estate_privilege_trigger = {
+			type = formalized_oath
+		}
+	}
+	
+	can_revoke = {
+		legitimacy > 95
+		"estate_power(estate_type:crown_estate)" > 0.8
+	}
+	
+	location_modifier = {
+        potential_trigger = {
+            area = area:aragon_area
+        }
+        local_nobles_estate_power = 0.25
+    }
+	
+	country_modifier = {
+        monthly_towards_decentralization = societal_value_monthly_move
+		monthly_towards_aristocracy = societal_value_monthly_move
+		global_nobles_estate_power = 0.1
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:ayans_privilege = {
+	
+	estate = nobles_estate
+	
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = TUR
+	}
+	allow = {
+		#Unlocked by the Ayans Advance
+	}
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" >= 0.5
+	}
+	
+	country_modifier = {
+		global_levy_size_modifier = 0.05
+		tax_income_efficiency = tiny_tax_income_efficiency_bonus
+		global_nobles_estate_power = 0.33
+		monthly_towards_decentralization = societal_value_monthly_move
+	}
+}
+
+REPLACE:lit_integrated_ruthenian_laws = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = lit_integrated_ruthenian_laws
+		}
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		legislative_efficiency = 0.05
+		country_cabinet_efficiency = 0.05
+	}
+}
+
+REPLACE:lit_equal_status_of_orthodox_nobility = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = lit_equal_status_of_orthodox_nobility
+		}
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.25
+		global_pop_conversion_speed_modifier = -0.1
+		monthly_towards_humanist = societal_value_monthly_move
+	}
+}
+
+REPLACE:mam_refined_furusiyya = {
+	content_priority = 700
+	estate = nobles_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = MAM
+		has_unlocked_estate_privilege_trigger = {
+			type = mam_refined_furusiyya
+		}
+	}
+	
+	country_modifier = {
+		global_nobles_estate_power = 0.5
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_army_tradition = 0.05
+		monthly_towards_quality = societal_value_monthly_move
+	}
+}
+
+REPLACE:tur_banned_weaponry_for_peasants = {
+	estate = nobles_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = tur_banned_weaponry_for_peasants
+		}
+	}
+	allow = {
+		NOT = {	has_estate_privilege =  estate_privilege:peasants_allowed_weapons_privilege }
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_nobles_estate_power = 0.2
+		peasants_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		monthly_rebel_growth = -0.0002
+		monthly_towards_serfdom = societal_value_monthly_move
+	}
+}
+
+REPLACE:lat_latin_crusader_elite = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		is_frankokratia_state = yes
+		NOT = { culture = culture:greek_culture }
+	}
+	allow = {
+		"culture_percentage_in_country(root.culture)" < 0.33
+		is_frankokratia_state = yes
+		NOT = { culture = culture:greek_culture }
+	}
+
+	country_modifier = {
+		land_morale_modifier = 0.1
+		change_primary_culture_cost_modifier = 0.75
+		global_nobles_estate_power = 0.75
+		accepted_culture_maintenance_cost_modifier = -0.15
+		tolerated_culture_maintenance_cost_modifier = -0.15
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_quality = societal_value_monthly_move
+	}
+}
+
+REPLACE:noble_patronage_of_the_arts = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+
+	country_modifier = {
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+		monthly_towards_innovative = societal_value_monthly_move
+		artist_salary_modifier = -0.1
+		global_nobles_estate_power = 0.5
+
+	}
+}
+
+REPLACE:statutes_of_piotrkow = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = statutes_of_piotrkow
+		}
+	}
+
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		monthly_towards_serfdom = societal_value_monthly_move
+		monthly_towards_aristocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:noble_private_armies_privilege = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = nobles_estate
+
+	allow = {
+	}
+
+	country_modifier = {
+		nobles_estate_allowed_private_army = yes
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 1.0
+	}
+}
+
+REPLACE:jewish_letters_of_protection = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= { group ?= religion_group:christian }
+		religion_percentage_in_country = {
+			religion = religion:judaism
+			value > 0
+		}
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.25
+	}
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		diplomatic_reputation = diplomatic_reputation_mild_penalty
+		trade_income = 0.05
+		scale = {
+			value = "religion_percentage_in_country(religion:judaism)"
+			add = 1
+		}
+	}
+}
+
+REPLACE:jewish_court_financier_charter = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= {
+			OR = {
+				group ?= religion_group:christian
+				group ?= religion_group:muslim
+			}
+		}
+		religion_percentage_in_country = {
+			religion = religion:judaism
+			value > 0
+		}
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.25
+	}
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		diplomatic_reputation = diplomatic_reputation_mild_penalty
+		global_merchant_capacity_modifier = 0.10
+		scale = {
+			value = "religion_percentage_in_country(religion:judaism)"
+			add = 1
+		}
+	}
+}
+
+REPLACE:jewish_physician_exemption = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= {
+			OR = {
+				group ?= religion_group:christian
+				group ?= religion_group:muslim
+			}
+		}
+		religion_percentage_in_country = {
+			religion = religion:judaism
+			value > 0
+		}
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.25
+	}
+	country_modifier = {
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		research_speed_modifier = 0.05
+		scale = {
+			value = "religion_percentage_in_country(religion:judaism)"
+			add = 1
+		}
+	}
+}
+
+REPLACE:jewish_aliyah_principle = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= religion:judaism
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.25
+		improve_relation_impact = -0.10
+		monthly_prestige = 0.05
+		monthly_towards_decentralization = societal_value_minor_monthly_move
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+		non_rural_migration_attraction = 0.25
+	}
+}
+
+REPLACE:cas_mercedes_enriquenas = {
+	estate = nobles_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = CAS
+			has_or_had_tag = SPA
+		}
+		has_unlocked_estate_privilege_trigger = {
+			type = cas_mercedes_enriquenas
+		}
+	}
+	allow = {
+	}
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" > 0.33		
+	}
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		nobles_estate_max_tax = -0.2
+		monthly_legitimacy = 0.05
+	}
+}
+
+REPLACE:lon_principado_de_asturias = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = LON
+			has_or_had_tag = CAS
+			is_leonese_spain = yes
+			is_castilian_spain = yes
+		}
+		has_unlocked_estate_privilege_trigger = { type = lon_principado_de_asturias }
+	}
+
+	allow = {
+		has_heir = yes
+	}
+
+	on_activate = {
+		province_definition:east_asturias_province = {
+			every_location_in_province_definition = {
+				limit = {
+					owner = root
+				}
+				change_control = control_mild_bonus
+			}
+		}
+		province_definition:west_asturias_province = {
+			every_location_in_province_definition = {
+				limit = {
+					owner = root
+				}
+				change_control = control_mild_bonus
+			}
+		}
+	}
+
+	country_modifier = {
+		blocked_from_changing_heir_selection = yes
+		global_estate_satisfaction_from_legitimacy = 0.05
+		global_nobles_estate_power = 0.25
+		monthly_legitimacy = 0.05
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:ara_protection_from_common_language_influence = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = ara_protection_from_common_language_influence
+		}
+	}
+	country_modifier = {
+		global_nobles_estate_power = 1
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+		cultural_tradition_modifier = 0.1
+		monthly_prestige = 0.1
+	}
+}
+
+REPLACE:ara_ius_maletractandi = {
+	estate = nobles_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = ara_ius_maletractandi
+		}
+	}
+	country_modifier = {
+		global_nobles_estate_power = 0.5
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		global_peasant_enfranchisment = -0.2
+		monthly_towards_serfdom = societal_value_monthly_move
+		monthly_towards_aristocracy = societal_value_monthly_move
+		nobles_estate_levy_size = 0.33
+	}
+}
+
+# --- From in_game/common/estate_privileges/burghers_estate.txt (66 blocks) ---
+REPLACE:formal_guilds = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+
+	country_modifier = {
+		allow_guild_hall = yes
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.50
+		global_building_establishment_speed = -0.33
+		monthly_towards_plutocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:trade_monopolies = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+	
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_trades_per_burgher = 1.0
+		global_merchant_capacity_modifier = -0.25
+		global_building_establishment_speed = -0.1
+		global_burghers_estate_power = 0.20
+	}
+}
+
+REPLACE:control_over_monetary_policy = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+	
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		burghers_estate_max_tax = -0.1
+		monthly_inflation = -0.0005
+		monthly_towards_innovative = societal_value_monthly_move
+		global_burghers_estate_power = 0.20
+
+	}
+}
+
+REPLACE:building_rights = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+	
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_build_buildings_efficiency = 0.1
+		global_burghers_estate_power = 0.20
+		monthly_towards_plutocracy = societal_value_minor_monthly_move
+
+	}
+}
+
+REPLACE:burghers_royal_burgh_commissioners = {
+	content_priority = 400
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = SCO
+			has_or_had_tag = SBL
+		}
+	}
+
+	allow = {
+		num_of_non_rural >= 1
+	}
+	
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.20
+		monthly_towards_plutocracy = societal_value_monthly_move
+		global_max_urban_control = 0.05
+		global_max_rural_control = -0.05
+	}
+}
+
+REPLACE:burghers_land_rights = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+	
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.20
+		global_max_rgo_size_modifier_in_non_rural = -0.20
+		monthly_towards_individualism = societal_value_monthly_move
+	}
+}
+
+REPLACE:commercial_advisory_council = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+	
+	country_modifier = {
+		global_burghers_estate_power = 0.25
+		monthly_political_influence_gain_modifier = -0.10
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_capital_economy = societal_value_minor_monthly_move
+		global_merchant_capacity_modifier = 0.1
+	}
+}
+
+REPLACE:milanese_cloth_guilds_privileges = {
+	content_priority = 700
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = MLO
+	}
+
+	allow = {
+		custom_tooltip = {
+			text = produce_any_fine_cloth_or_silk_tt
+			has_variable = produces_fine_cloth_or_silk_variable
+		}
+	}
+
+	country_modifier = {
+		global_burghers_estate_power = 0.25
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_fine_cloth_output_modifier = 0.1
+		global_silk_output_modifier = 0.1
+		monthly_towards_capital_economy = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:florence_guilds = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = FLO
+	}
+
+	country_modifier = {
+		allow_guilds_of_florence_law = yes
+		global_burghers_estate_power = 0.25
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		bank_interest = -0.01
+		monthly_inflation = -0.00025
+		monthly_towards_plutocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:arte_della_lana = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = FLO
+	}
+
+	allow = {
+		custom_tooltip = {
+			text = produce_any_fine_cloth_or_silk_tt
+			has_variable = produces_fine_cloth_or_silk_variable
+		}
+	}
+
+	can_revoke = {
+	}
+
+	country_modifier = {
+		global_fine_cloth_output_modifier = 0.15
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.15
+		trade_land_efficiency = tiny_trade_land_efficiency_bonus
+	}
+}
+
+REPLACE:novgorod_ivans_hundred = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_or_had_tag = NOV
+	}
+	allow = {}
+	country_modifier = {
+		merchant_maintenance_efficiency = 0.50
+		global_burghers_estate_power = 0.25
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_republican_tradition = 0.2
+		global_crown_estate_power = -0.10
+	}
+	country_modifier = {
+		potential_trigger = {
+			custom_tooltip = {
+				text = ivan_hundred_strengthened_requirement
+				has_variable = ivan_hundred_strengthened
+			}
+		}
+		global_crown_estate_power = -0.05
+		global_merchant_capacity_modifier = 0.2
+	}
+	country_modifier = {
+		potential_trigger = {
+			custom_tooltip = {
+				text = ivan_hundred_beeswax_increase_requirement
+				has_variable = ivan_hundred_beeswax
+			}
+		}
+		export_efficiency = small_trade_efficiency_bonus
+		global_beeswax_output_modifier = 0.25
+	}	
+	can_revoke = {}
+}
+
+REPLACE:kbo_lake_chad_trade_privilege = {
+	estate = burghers_estate
+	potential = { 
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = KBO
+	}
+	allow = {
+		owns = location:gambaru
+		owns = location:yo
+		owns = location:bodou_sailay
+		owns = location:nguigmi
+	}
+	country_modifier = {
+		global_burghers_estate_power = 0.25
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		export_efficiency = tiny_trade_efficiency_bonus
+		global_merchant_capacity_modifier = 0.1
+	}
+}
+
+REPLACE:kbo_serfdom_economy = {
+	estate = burghers_estate
+	potential = { 
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = KBO
+		custom_tooltip = {
+			text = gained_access_to_this_privilege_tt
+			has_variable = serfdom_improved_goods_variable 
+		}
+	}
+	country_modifier = {
+		global_burghers_estate_power = 0.1
+		monthly_towards_serfdom = societal_value_large_monthly_move
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		slave_raid_efficiency = 0.1
+		global_max_rgo_size_modifier = 0.1
+		global_monthly_food_modifier = monthly_food_productivity_mild_bonus
+	}
+}
+
+REPLACE:amenokal_salt_traders = {
+	estate = burghers_estate
+	potential = { 
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = KBO
+	}
+	allow = {
+		custom_tooltip = {
+			text = gained_access_to_this_privilege_tt
+			has_variable = amenokal_salt_traders_variable
+		}
+	}
+	country_modifier = {
+		global_burghers_estate_power = 0.25
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_salt_output_modifier = 0.1
+		tax_income_efficiency = medium_tax_income_efficiency_bonus
+	}
+}
+
+REPLACE:burghers_protected_faith = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+	allow = { 
+		religious_unity < 0.66
+	}
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		global_burghers_conversion_blocked = yes
+	}
+
+	can_revoke = {}
+}
+
+REPLACE:land_of_commerce = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+
+	country_modifier = {
+		allow_apprenticeships_education = yes
+		global_production_efficiency = small_production_efficiency_bonus
+		monthly_towards_capital_economy = societal_value_minor_monthly_move
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.33
+	}
+}
+
+REPLACE:treasury_rights = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+	
+	country_modifier = {
+		bank_interest = -0.01
+		tax_income_efficiency = small_tax_income_efficiency_bonus
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.5
+		monthly_towards_innovative = societal_value_monthly_move
+	}
+}
+
+REPLACE:urban_development_grants = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+	
+	country_modifier = {
+		monthly_towards_innovative = societal_value_monthly_move
+		global_monthly_development = 0.001
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.5
+	}
+}
+
+REPLACE:sponsor_maritime_contracts = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		num_of_ports > 0
+	}
+	
+	country_modifier = {
+		global_maritime_presence_modifier = 0.05
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.33
+	}
+}
+
+REPLACE:control_over_the_coinage = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+
+	allow = {
+		trigger_if = {
+			limit = { has_or_had_tag = ZAN }
+			NOT = { has_reform = government_reform:control_of_the_mahdali_coinage_reform }
+		}
+	}
+	country_modifier = {
+		minting_inflation_threshold = 0.01
+		monthly_political_influence_gain_modifier = -0.10
+		global_goods_gold_output_modifier = 0.05
+		global_silver_output_modifier = 0.05
+		global_copper_output_modifier = 0.05
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.5
+	}
+}
+
+REPLACE:allow_trade_center_sponsorship = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+
+	
+	country_modifier = {
+		global_trade_center_power = 0.05
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.33
+	}
+}
+
+REPLACE:shipwright_contracts = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+
+	allow = {
+		OR = {
+			num_of_ports > 0
+			any_owned_foreign_building_location = {
+				modifier:can_build_ships_in_this_location = yes
+			}
+		}
+	}
+
+	
+	country_modifier = {
+		ship_build_speed = 0.2
+		navy_maintenance_efficiency = 0.1
+		monthly_towards_naval = societal_value_minor_monthly_move 
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.33
+	}
+}
+
+REPLACE:market_fairs = { 
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+
+	country_modifier = {
+		monthly_towards_decentralization = societal_value_monthly_move
+		global_monthly_prosperity = 0.0025
+		global_building_establishment_speed = -0.1
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+	}
+}
+
+REPLACE:fund_karimi = { 
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			produced_in_country:pepper > 0
+		}
+		religion ?= {
+			group ?= religion_group:muslim
+		}
+	}
+
+	country_modifier = {
+		burghers_estate_max_tax = 0.1
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_burghers_estate_power = 0.33
+	}
+}
+
+REPLACE:toll_and_tariff_exemptions = {
+	estate = burghers_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:republic
+	}
+
+	
+	country_modifier = {
+		burghers_estate_max_tax = -0.1
+		trade_land_efficiency = small_trade_land_efficiency_bonus
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.2
+		monthly_towards_individualism = societal_value_monthly_move
+	}
+}
+
+REPLACE:dedicated_merchant_courts = {
+	estate = burghers_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:republic
+	}
+
+	
+	country_modifier = {
+		monthly_towards_plutocracy = societal_value_minor_monthly_move
+		burghers_estate_satisfaction_decay = 0.05
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.33
+	}
+}
+
+REPLACE:noble_patronage = {
+	estate = burghers_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:republic
+	}
+
+	
+	country_modifier = {
+		monthly_towards_plutocracy = societal_value_minor_monthly_move
+		export_efficiency = tiny_trade_efficiency_bonus
+		max_trade_subventions = 0.1
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		burghers_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_burghers_estate_power = 0.5
+	}
+}
+
+REPLACE:polish_merchant_seal = { 
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = POL
+			has_or_had_tag = PLC
+		}
+	}
+
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" >= 0.5
+	}
+
+	country_modifier = {
+		burghers_estate_max_tax = 0.05
+		export_efficiency = tiny_trade_efficiency_bonus
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.33
+	}
+}
+
+REPLACE:privateer_contracts = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		num_of_ports > 0
+		modifier:can_hire_privateers = yes
+	}
+
+	country_modifier = {
+		hire_privateer_cost_modifier = -0.2
+		privateer_maintenance_cost_modifier = -0.1
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+	}
+}
+
+REPLACE:ceremonial_tax_exemptions = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion = religion:nahuatl
+		has_advance = taxation_advance
+	}
+
+	country_modifier = {
+		monthly_doom = -0.03
+		burghers_estate_max_tax = -0.1
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.33
+	}
+}
+
+REPLACE:kulm_law = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			culture ?= culture:prussian
+			culture ?= { has_culture_group = culture_group:german_group }
+		}
+		capital ?= {
+			region = region:baltic_region
+		}
+	}
+
+	country_modifier = {
+		allow_kulm_town_rights = yes
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.4
+		monthly_towards_mercantilism = societal_value_monthly_move
+	}
+
+	country_modifier = { #when changing, adjust teu_impact_on_kulm_law tooltip as well.
+		potential_trigger = {
+			custom_tooltip = {
+				text = kulm_law_revised_tooltip
+				has_variable = kulm_law_revised
+			}
+		}
+		rural_migration_attraction = 0.1
+		burghers_estate_max_tax = -0.1
+	}
+
+	country_modifier = { #when changing, adjust teu_impact_on_kulm_law_not_revised tooltip as well.
+		potential_trigger = {
+			custom_tooltip = {
+				text = kulm_law_not_revised_tooltip
+				has_variable = did_not_revise_kulm_law
+			}
+		}
+		german_migration_attraction_modifier = -0.5
+		global_pop_assimilation_speed_modifier = 0.1
+	}
+}
+
+REPLACE:villes_franches = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = FRA
+	}
+
+	country_modifier = {
+		allow_ville_franche_town_rights = yes
+		monthly_towards_centralization = societal_value_monthly_move
+		global_migration_speed_modifier = 0.05
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.33
+	}
+}
+
+REPLACE:fra_leadership_of_marcel = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = FRA
+		character:etienne_marcel ?= {
+			is_alive = yes
+		}
+	}
+
+	country_modifier = {
+		global_burghers_estate_power = 0.50
+		parliament_base_support = -0.20
+		global_max_control = -0.03
+		import_efficiency = small_trade_efficiency_bonus
+		global_trades_per_burgher = 0.10
+	}
+	can_revoke = {
+		always = no
+	}
+}
+
+REPLACE:fra_marcel_great_ordinance = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = allowed_marcel_ordinance
+		has_or_had_tag = FRA
+	}
+
+	country_modifier = {
+		minting_income_factor = 0.05
+		burghers_estate_max_tax = 0.2
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 1
+		global_crown_estate_power = -0.15
+	}
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" >= 0.33
+	}	
+}
+
+REPLACE:fra_marcel_compromise_ordinance = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = compromise_marcel_ordinance
+		has_or_had_tag = FRA
+	}
+
+	country_modifier = {
+		minting_income_factor = 0.05
+		burghers_estate_max_tax = 0.1
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		global_crown_estate_power = -0.05
+	}
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" >= 0.33
+	}
+}
+
+REPLACE:petty_bureaucracy = { #https://en.wikipedia.org/wiki/Jungin
+	estate = burghers_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			culture ?= { has_culture_group = culture_group:confucian_group }
+			any_international_organizations_member_of = {
+				international_organization_type = international_organization_type:sect
+				international_organization_has_policy = policy:confucianism_policy
+			}
+			has_variable = has_neo_confucianism
+			is_member_of_international_organization = international_organization:middle_kingdom
+		}
+	}
+	allow = {
+		has_imperial_examinations = yes
+	}
+
+	can_revoke = {
+		not = { has_imperial_examinations = yes }
+	}
+
+	country_modifier = {
+		burghers_estate_max_tax = -0.05
+		global_burghers_estate_power = 0.33
+
+		global_burghers_max_literacy = 5
+		country_cabinet_efficiency = 0.1
+		monthly_towards_centralization = societal_value_large_monthly_move
+	}
+}
+
+REPLACE:cardinal_lead_guilds = {
+	estate = burghers_estate
+
+	potential = { 
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:theocracy
+		religion = religion:catholic
+	}
+
+	country_modifier = {
+		global_burghers_estate_power = 0.2
+		global_clergy_estate_power = 0.2
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_pop_promotion_speed_modifier = -0.10
+		monthly_towards_plutocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:libro_d_argento = { #https://it.wikipedia.org/wiki/Cittadini_(Venezia)
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = VEN			
+			any_overlord_or_above = {
+				has_or_had_tag = VEN
+			}
+		}
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_pop_promotion_speed_modifier = -0.10
+		global_burghers_estate_power = 0.05
+		legislative_efficiency = 0.05
+		global_migration_speed_modifier = -0.1
+		
+		monthly_towards_quality = societal_value_monthly_move
+	}
+}
+
+REPLACE:bra_kreditwerk = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = bra_kreditwerk
+	}
+	country_modifier = {
+		global_burghers_estate_power = 0.33
+		tax_income_efficiency = medium_tax_income_efficiency_penalty
+		minting_income_factor = 0.25
+	}
+}
+
+REPLACE:bra_kreditwerk_reformed = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = bra_kreditwerk_reformed
+	}
+	country_modifier = {
+		global_burghers_estate_power = 0.10
+		bank_interest = -0.01
+	}
+}
+
+REPLACE:andalusi_elite = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		culture = {
+			has_culture_group = culture_group:maghrebi_group
+		}
+		OR = {
+			culture_percentage_in_country = {
+				culture = culture:andalusi
+				value >= 0.05
+			}
+			culture_population_in_country = {
+				culture = culture:andalusi
+				value >= 10
+			}
+		}
+	}
+	country_modifier = {
+		global_burghers_estate_power = 0.2
+		country_cabinet_efficiency = 0.1
+		burghers_estate_allowed_in_cabinet = yes
+		pure_tooltip_entry = allows_recruitment_of_andalusis_tt
+	}
+}
+
+REPLACE:vij_tamil_trading_rights = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = vij_tamil_trading_rights  }
+	}
+	country_modifier = {
+		global_merchant_power = 0.2
+		global_burghers_estate_power = 0.2
+	}
+	location_modifier = {
+		potential_trigger = {
+			dominant_culture = culture:tamil
+			OR = {
+				location_rank = location_rank:town
+				location_rank = location_rank:city
+				location_rank = location_rank:megalopolis
+			}
+		}
+		local_max_control = -0.20
+		local_burghers_estate_power = 1
+	}
+}
+
+REPLACE:jain_banking_rights = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		NOT = { religion ?= religion:jain }
+		religion ?= {
+			OR = {
+				group ?= religion_group:dharmic
+				group ?= religion_group:muslim
+			}
+		}
+		capital ?= {
+			sub_continent = sub_continent:south_asia
+		}
+		
+		religion_percentage_in_country = {
+			religion = religion:jain
+			value > 0
+		}
+	}
+	country_modifier = {
+		bank_interest = -0.02
+		global_burghers_estate_power = 0.2
+		scale = {
+			value = "religion_percentage_in_country(religion:jain)"
+			add = 1
+		}
+	}
+	location_modifier = {
+		potential_trigger = {
+			dominant_religion ?= religion:jain
+		}
+		local_burghers_conversion_blocked = yes
+	}
+}
+
+REPLACE:jain_scholars = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		NOT = { religion ?= religion:jain }
+		religion ?= {
+			OR = {
+				group ?= religion_group:dharmic
+				group ?= religion_group:muslim
+			}
+		}
+		capital ?= {
+			sub_continent = sub_continent:south_asia
+		}
+		religion_percentage_in_country ?= {
+			religion = religion:jain
+			value > 0
+		}
+	}
+	country_modifier = {
+		research_speed_modifier = 0.1
+		global_clergy_estate_power = -0.10
+		clergy_estate_target_satisfaction = large_privilege_target_satisfaction_penalty
+		scale = {
+			value = "religion_percentage_in_country(religion:jain)"
+			add = 1
+		}
+	}
+	country_modifier = {
+		global_burghers_estate_power = 0.2
+	}
+	location_modifier = {
+		potential_trigger = {
+			dominant_religion ?= religion:jain
+		}
+		local_clergy_conversion_blocked = yes
+	}
+}
+
+REPLACE:magdeburg_rights = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		capital ?= {
+			OR = {
+				area ?= area:baltic_area
+				region ?= region:north_german_region
+				region ?= region:south_german_region
+				area ?= area:alsace_area
+				area ?= area:franche_comte_area
+				area ?= area:lorraine_area
+				area ?= area:picardy_area
+				area ?= area:slovenia_area
+				area ?= area:silesia_area
+			}
+		}
+		is_member_of_international_organization = international_organization:hre
+	}
+	
+	country_modifier = {
+		allow_magdeburg_rights_town_rights = yes
+		allow_nuremberg_rights_town_rights = yes
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.4
+		monthly_towards_free_trade = societal_value_monthly_move
+	}
+}
+
+REPLACE:novi_fori = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		capital ?= {
+			OR = {
+				region ?= region:carpathia_region
+				region ?= region:baltic_region
+				region ?= region:ruthenia_region
+			}
+		}
+	}
+	
+	country_modifier = {
+		allow_novi_fori_town_rights = yes
+		monthly_towards_free_subjects = societal_value_monthly_move
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.2
+	}
+}
+
+REPLACE:shooting_societies = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_variable = unlock_shooting_societies_variable
+	}
+
+	country_modifier = {
+		global_burghers_estate_power = 0.3
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_defensive = 0.1
+	}
+}
+
+REPLACE:building_roads_rights = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+
+	country_modifier = {
+		global_burghers_estate_power = 0.33
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		burghers_estate_allowed_to_build_roads = yes
+		monthly_towards_centralization = societal_value_monthly_move
+		monthly_towards_land = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:kannada_literature_aid = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = kannada_literature_aid }
+	}
+	
+	country_modifier = {
+		global_burghers_estate_power = 0.3
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_max_literacy = 5
+		cultural_tradition = 0.1
+		global_monthly_art_start_chance = 0.05
+	}
+}
+
+REPLACE:vij_allowance_of_religious_practices = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = vij_allowance_of_religious_practices }
+	}
+	
+	country_modifier = {
+		tolerance_heretic = 1
+		tolerance_heathen = 1
+		global_pop_conversion_speed_modifier = -0.5
+		global_burghers_estate_power = 0.2
+	}
+}
+
+REPLACE:mam_muhtasibs = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = mam_muhtasibs  }
+	}
+	country_modifier = {
+		global_merchant_power = 0.1
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		selling_efficiency = tiny_selling_efficiency_bonus
+		global_burghers_estate_power = 0.3
+		pure_tooltip_entry = reduces_hisba_bureaucracy_negative_tt
+	}
+}
+
+REPLACE:trunk_road_to_erzurum_privilege = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		has_reform = government_reform:anatolian_beylik
+	}
+	allow = {
+		OR = {
+			owns = location:konya
+			owns = location:sivas
+			owns = location:erzurum
+			owns = location:tabriz
+		}
+	}
+
+	country_modifier = {
+		monthly_towards_free_trade = societal_value_monthly_move
+		trade_land_efficiency = tiny_trade_land_efficiency_bonus
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		scale = {
+			value = 0
+			if = {
+				limit = { owns = location:konya }
+				add = 1
+			}
+			if = {
+				limit = { owns = location:sivas }
+				add = 1
+			}
+			if = {
+				limit = { owns = location:erzurum }
+				add = 1
+			}
+			if = {
+				limit = { owns = location:tabriz }
+				add = 1
+			}
+		}
+	}
+}
+
+REPLACE:cas_mita_system = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = cas_mita_system }
+	}
+
+	country_modifier = {
+		global_max_rgo_size_modifier = 0.1
+		global_burghers_estate_power = 0.2
+		global_production_efficiency = small_production_efficiency_bonus
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+	}
+}
+
+REPLACE:cas_caballeros_villanos = {
+	estate = burghers_estate
+	content_priority = 100
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = CAS
+		NOT = {
+			has_unlocked_estate_privilege_trigger = { type = cas_regimiento }
+		}
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.2
+		global_pop_promotion_speed_modifier = 0.1
+		monthly_towards_free_subjects = societal_value_monthly_move
+	}
+}
+
+REPLACE:cas_regimiento = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = CAS
+			has_or_had_tag = SPA
+		}
+		has_unlocked_estate_privilege_trigger = {
+			type = cas_regimiento
+		}
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+
+	on_activate = {
+		if = {
+			limit = { has_dlc = "d009_across_the_pillars" }
+			custom_tooltip = cas_regimiento_unlocks_cuantia_tt
+		}
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.2
+		town_upgrade_cost_modifier = -0.05
+		stability_decay = -0.0001
+		monthly_towards_aristocracy = societal_value_monthly_move
+	}
+}
+
+REPLACE:royal_factories_privilege = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = royal_factories_privilege }
+	}
+	
+	country_modifier = {
+		global_burghers_estate_power = 0.1
+		global_crown_estate_power = -0.1
+		monthly_towards_capital_economy = societal_value_monthly_move
+		global_production_efficiency = small_production_efficiency_bonus
+	}
+}
+
+REPLACE:ira_iranian_art_patronage = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = ira_iranian_art_patronage
+		}
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.3
+		hire_artist_cost_modifier = -0.15
+		skill_of_new_artists = 0.1
+	}
+}
+
+REPLACE:guild_investments = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = burghers_estate
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction
+		monthly_towards_innovative = societal_value_monthly_move
+		monthly_towards_capital_economy = societal_value_minor_monthly_move
+		global_burghers_estate_power = 0.5
+	}
+}
+
+REPLACE:al_caid = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			culture = { has_culture_group = culture_group:maghrebi_group }
+			culture = { has_culture_group = culture_group:amazigh_group }
+		}
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_trades_per_burgher = 0.2
+		global_burghers_estate_power = 0.25
+		tax_income_efficiency = small_tax_income_efficiency_bonus
+	}
+}
+
+REPLACE:jewish_moneylending_toleration = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= { group ?= religion_group:christian }
+		religion_percentage_in_country = {
+			religion = religion:judaism
+			value > 0
+		}
+	}
+	country_modifier = {
+		global_burghers_estate_power = 0.25
+	}
+	country_modifier = {
+		bank_interest = -0.02
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		scale = {
+			value = "religion_percentage_in_country(religion:judaism)"
+			add = 1
+		}
+	}
+}
+
+REPLACE:jewish_tax_farming_grant = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= {
+			OR = {
+				group ?= religion_group:christian
+				group ?= religion_group:muslim
+			}
+		}
+		religion_percentage_in_country = {
+			religion = religion:judaism
+			value > 0
+		}
+	}
+	country_modifier = {
+		global_burghers_estate_power = 0.25
+	}
+	country_modifier = {
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		tax_income_efficiency = medium_tax_income_efficiency_bonus
+		scale = {
+			value = {
+				desc = jewish_tax_farming_grant_scale_desc
+				value = "religion_percentage_in_country(religion:judaism)"
+				add = 1
+			}
+		}
+	}
+}
+
+REPLACE:jewish_diaspora_trade_network = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= religion:judaism
+	}
+	country_modifier = {
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		global_merchant_capacity_modifier = 0.10
+		global_merchant_power = 0.20
+		monthly_towards_capital_economy = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:jewish_bet_din_commercial_courts = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= religion:judaism
+	}
+	country_modifier = {
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		monthly_towards_plutocracy = societal_value_minor_monthly_move
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		trade_income = 0.05
+	}
+}
+
+REPLACE:jewish_kahal_self_governance = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= religion:judaism
+	}
+	country_modifier = {
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		monthly_towards_communalism = societal_value_minor_monthly_move
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		stability_cost_efficiency = 0.10
+	}
+}
+
+REPLACE:manila_galleon_privilege = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = manila_galleon_privilege }
+	}
+	
+	country_modifier = {
+		global_burghers_estate_power = 0.1
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		trade_sea_efficiency = medium_trade_sea_efficiency_bonus
+		monthly_towards_free_trade = societal_value_minor_monthly_move
+		merchant_power_from_maritime = 0.025
+	}
+}
+
+REPLACE:ara_catalan_lingua_franca = {
+	estate = burghers_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = ara_catalan_lingua_franca
+		}
+	}
+
+	allow = {
+		court_dialect = dialect:catalan_dialect
+	}
+	
+	country_modifier = {
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_burghers_estate_power = 1
+		selling_efficiency = tiny_selling_efficiency_bonus
+		global_trades_per_burgher = 0.25
+	}
+}
+
+# --- From in_game/common/estate_privileges/clergy_estate.txt (46 blocks) ---
+REPLACE:clergy_literacy_rights = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_advance = written_alphabet
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		allow_clerical_archives = yes
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_max_literacy = 5
+		global_clergy_estate_power = 0.25
+
+		monthly_towards_traditionalist = societal_value_monthly_move
+	}
+}
+
+REPLACE:clergy_strengthen_faith = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		block_forums_of_thought = yes
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		tolerance_heretic = -0.2
+		tolerance_heathen = -0.2
+		global_clergy_estate_power = 0.20
+		monthly_towards_communalism = societal_value_large_monthly_move
+
+	}
+}
+
+REPLACE:clergy_enforced_unity = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		global_clergy_estate_power = 0.25
+		global_pop_conversion_speed_modifier = 0.10
+
+		monthly_towards_communalism = societal_value_monthly_move
+
+	}
+
+	months = 3
+}
+
+REPLACE:clergy_military_orders = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion = religion:catholic
+		OR = {
+			has_reform = government_reform:military_order_reform
+			any_neighbor_country = { NOT = { religion.group = root.religion.group } }
+			culture = { has_culture_group = culture_group:iberian_group }
+		}
+	}
+	allow = {
+		has_advance = castle_advance
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		allow_warrior_monks_training_grounds = yes
+		can_recruit_crusader_regiments = yes
+		global_clergy_estate_power = 0.25
+	}
+
+	country_modifier = {
+		potential_trigger = { NOT = { has_reform = government_reform:military_order_reform } }
+		clergy_estate_allowed_leading_military = yes
+		discipline = 0.025
+	}
+
+	country_modifier = {
+		potential_trigger = { has_reform = government_reform:military_order_reform }
+		discipline = 0.05
+	}
+
+	country_modifier = {
+		potential_trigger = {
+			giving_scripted_relation_of_type = relation_type:military_sponsorship
+		}
+		land_morale_modifier = 0.1
+	}
+
+	country_modifier = {
+		potential_trigger = {
+			receiving_scripted_relation_of_type = relation_type:military_sponsorship
+		}
+		army_maintenance_efficiency = 0.25
+	}
+}
+
+REPLACE:clergy_lecture_oaths = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		total_effective_building_levels:university > 0
+	}
+
+	allow = {
+		total_effective_building_levels:university > 0
+	}
+	
+	
+	country_modifier = {
+		global_pop_promotion_speed_modifier = -0.1
+		country_cabinet_efficiency = 0.1
+		stability_cost_efficiency = 0.2
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		university_construction_blocked = yes
+		global_clergy_estate_power = 0.1
+	}
+	
+}
+
+REPLACE:clergy_land_rights = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= {
+			NOT = { group = religion_group:christian }	#Covered with the Powerful Dioceses
+		}
+	}
+	country_modifier = {
+		global_clergy_city_desired_pop = 0.1
+		global_clergy_estate_power = 0.1
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:clerical_advisory_council = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = clergy_estate
+	
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_political_influence_gain_modifier = -0.10
+		country_cabinet_efficiency = 0.05
+		global_clergy_estate_power = 0.25
+		monthly_towards_spiritualist = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:clergy_powerful_dioceses = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= {
+			group ?= religion_group:christian
+		}
+	}
+	country_modifier = {
+		religious_icon_power_modifier = 0.1
+		global_clergy_city_desired_pop = 0.10
+		global_clergy_estate_power = 0.1
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:clergy_protected_faith = {	
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = clergy_estate
+	allow = { 
+		religious_unity < 0.66
+	}
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.33
+		global_clergy_conversion_blocked = yes
+	}
+	can_revoke = {}
+}
+
+REPLACE:clergy_religious_state = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = clergy_estate
+
+	country_modifier = {
+		allow_theocratic_education = yes
+		stability_investment = tiny_stability_investment
+		monthly_political_influence_gain_modifier = -0.15
+		monthly_towards_communalism = societal_value_monthly_move
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.33
+	}
+}
+
+REPLACE:expansionist_zealotry = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = clergy_estate
+	country_modifier = {
+		monthly_towards_belligerent = societal_value_monthly_move
+		war_score_vs_other_religion_efficiency = 0.10
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.20
+	}
+}
+
+REPLACE:religious_diplomats = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = clergy_estate
+	country_modifier = {
+		monthly_towards_conciliatory = societal_value_monthly_move
+		max_diplomats = 1
+		global_clergy_estate_power = 0.1
+	}
+}
+
+REPLACE:promote_cultural_unity = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = clergy_estate
+	country_modifier = {
+		cultures_capacity_modifier = -0.2	#WAD, decision by johan
+		global_pop_assimilation_speed_modifier = 0.25
+		global_clergy_estate_power = 0.2
+	}
+}
+
+REPLACE:embellish_great_works_of_faith = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = clergy_estate
+	country_modifier = {
+		monthly_towards_centralization = societal_value_minor_monthly_move
+		tolerance_own = 0.1
+		global_clergy_estate_power = 0.33
+	}
+}
+
+REPLACE:clergy_papal_emissary = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion = religion:catholic
+		NOT = { tag = PAP }
+	}
+	country_modifier = {
+		monthly_religious_influence = 0.2
+		propose_curia_action_cost_modifier = -0.25
+		change_curia_vote_cost_modifier = -0.25
+		global_clergy_estate_power = 0.33
+	}
+}
+
+REPLACE:freedom_of_interpretation = {
+	estate = clergy_estate
+	potential = { 
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= {
+			group ?= religion_group:muslim
+		}
+	}
+	country_modifier = {
+		monthly_towards_mysticism = societal_value_monthly_move
+		global_max_literacy = 5
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.25
+	}
+}
+
+REPLACE:waqf_payments = {  
+	estate = clergy_estate
+	potential = { 
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= {
+			group ?= religion_group:muslim
+		}
+	}
+	country_modifier = {
+		tax_income_efficiency = tiny_tax_income_efficiency_penalty
+		monthly_towards_spiritualist = societal_value_monthly_move
+		global_estate_target_satisfaction = tiny_privilege_target_satisfaction
+		global_clergy_estate_power = 0.2
+	}
+}
+
+REPLACE:maintain_clerical_proceedings = {
+	estate = clergy_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:republic
+	}
+
+	
+	country_modifier = {
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		clergy_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_clergy_estate_power = 0.2
+	}
+}
+
+REPLACE:state_official_oaths = {
+	estate = clergy_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:republic
+	}
+
+	
+	allow = {
+		has_estate_privilege = estate_privilege:maintain_clerical_proceedings
+	}
+
+	
+	country_modifier = {
+		set_cabinet_member_cost_modifier = -0.10
+		global_clergy_estate_power = 0.2
+	}
+}
+
+REPLACE:mandatory_clerical_donations = {
+	estate = clergy_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:republic
+	}
+
+	
+	allow = {
+		has_estate_privilege = estate_privilege:maintain_clerical_proceedings
+	}
+
+	
+	country_modifier = {
+		tax_income_efficiency = large_tax_income_efficiency_bonus
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		clergy_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_clergy_estate_power = 1
+	}
+}
+
+REPLACE:sponsor_printing_of_religious_texts = {
+	estate = clergy_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:theocracy
+		has_advance = printing_of_religious_texts
+	}
+
+	
+	country_modifier = {
+		global_monthly_literacy = 0.01
+		global_institution_growth_modifier = 0.1
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.5
+	}
+}
+
+REPLACE:liturgical_mural_art = {
+	estate = clergy_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		government_type = government_type:theocracy
+	}
+
+	allow = { num_artists > 0 }
+
+	country_modifier = {
+		cultural_tradition = 0.2
+		global_monthly_art_start_chance = 0.1
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_clergy_estate_power = 0.33
+	}
+}
+
+REPLACE:apostolic_tax_privilege = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion = religion:catholic
+		NOT = { tag = PAP }
+	}
+
+	on_activate = {
+		add_opinion = { 
+			target = c:PAP 
+			modifier = opinion_accepted_apostolic_tax 
+		}
+		reverse_add_opinion = { 
+			target = c:PAP 
+			modifier = opinion_accepted_apostolic_tax 
+		}
+	}
+	on_deactivate = {
+		remove_opinion = { 
+			target = c:PAP 
+			modifier = opinion_accepted_apostolic_tax 
+		}
+		c:PAP = { 
+			remove_opinion = { 
+				target = prev 
+				modifier = opinion_accepted_apostolic_tax 
+			}
+		}
+	}
+	
+	country_modifier = {
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_clergy_estate_power = 0.1
+	}
+}
+
+REPLACE:tax_exemption = {
+	estate = clergy_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		NOT = { religion = religion:catholic }
+	}
+
+	country_modifier = {
+		clergy_estate_max_tax = -1
+		clergy_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_clergy_estate_power = 1.0
+		
+		monthly_towards_spiritualist = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:clergy_in_administration = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+		
+	}
+	allow = {}
+	country_modifier = {
+		clergy_estate_agenda_impact = 0.2
+		global_clergy_estate_power = 0.25
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_spiritualist = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:commons_petition = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = commons_petition
+	}
+	allow = {
+		NOT = { religion = religion:catholic }
+	}
+	can_revoke = {
+		"estate_power(estate_type:peasants_estate)" <= 0.2
+	}
+	
+	country_modifier = {
+		tolerance_heretic = 1
+		global_clergy_estate_power = 0.10
+		monthly_towards_traditionalist = societal_value_monthly_move
+		global_peasants_conversion_blocked = yes
+		global_laborers_conversion_blocked = yes
+		global_soldiers_conversion_blocked = yes
+		global_clergy_conversion_blocked = yes
+	}
+}
+
+REPLACE:austere_monastic_life = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = austere_monastic_life
+	}
+	allow = {
+		NOT = { religion = religion:catholic }
+		total_effective_building_levels:monastery > 1 
+	}
+	can_revoke = {
+		total_effective_building_levels:monastery = 0 
+	}
+	
+	country_modifier = {
+		can_have_monasteries = yes
+		global_clergy_estate_power = 0.1
+		monthly_towards_spiritualist = societal_value_monthly_move
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction
+	}
+}
+
+REPLACE:unity_brethren_privilege = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion = religion:hussite
+		has_variable = enable_unity_brethren_privilege_variable
+	}
+	
+	country_modifier = {
+		monthly_towards_traditionalist = societal_value_monthly_move
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_religious_influence = 0.1
+		global_clergy_estate_power = 0.2
+	}
+}
+
+REPLACE:warrior_tribunal = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion = religion:nahuatl
+	}
+	
+	country_modifier = {
+		monthly_towards_spiritualist = societal_value_minor_monthly_move
+		pop_join_rebel_threshold = -0.03
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_clergy_estate_power = 0.25
+	}
+}
+
+REPLACE:hurin_qusqu_privilege = { # "Hurin Qusqu High Priesthood"
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion = religion:inti
+		has_variable = enable_hurin_qusqu_privilege_variable
+	}
+	
+	country_modifier = {
+		tolerance_own = 0.1
+		monthly_towards_decentralization = societal_value_monthly_move
+		clergy_estate_target_satisfaction = large_privilege_target_satisfaction
+		global_clergy_estate_power = 0.3
+	}
+}
+
+REPLACE:reduced_from_military_obligations = {
+	estate = clergy_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		NOT = { has_reform = government_reform:military_order_reform }
+	}
+	
+	country_modifier = {
+		clergy_estate_levy_size = -0.25
+		global_army_levy_size_modifier = -0.05
+		global_clergy_estate_power = 0.5
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_conciliatory = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:fra_papacy_pragmatic_sanctions = {
+	estate = clergy_estate	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = fra_papacy_pragmatic_sanctions }
+	}
+	allow = {
+		c:PAP ?= {
+			opinion = {
+				target = ROOT
+				value < 50
+			}
+		}
+	}
+	country_modifier = {
+		clergy_estate_max_tax = 0.10
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		cultural_tradition = 0.15
+		global_clergy_estate_power = 0.1
+		monthly_religious_influence = -0.1
+	}
+}
+
+REPLACE:french_cardinals = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		tag = PAP
+		has_estate_privilege = estate_privilege:french_cardinals
+	}
+		
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		cannot_move_capital = yes
+		global_clergy_estate_power = 0.3
+		monthly_towards_decentralization = societal_value_monthly_move
+	}
+}
+
+REPLACE:dharmic_dhimmi_communities = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= {
+			group ?= religion_group:muslim
+		}
+	}
+	allow = {
+		"religion_group_percentage_in_country(religion_group:dharmic)" > 0.05
+	}
+	country_modifier = {
+		tolerance_heathen = 1
+		global_clergy_estate_power = 0.3
+	}
+}
+
+REPLACE:austrian_monastery_reform_melk = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = grant_austrian_monastery_reform_melk
+		religion = religion:catholic
+	}
+
+	country_modifier = {
+		global_clergy_estate_power = 0.2
+		global_clergy_max_literacy = 10
+		clergy_estate_target_satisfaction = large_privilege_target_satisfaction
+	}
+}
+
+REPLACE:vienna_concordat_privilege = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = vienna_concordat_accepted
+		religion = religion:catholic
+	}
+
+	on_activate = {
+		add_opinion = {
+			target = c:PAP
+			modifier = opinion_accepted_vienna_concordat
+		}
+		reverse_add_opinion = {
+			target = c:PAP
+			modifier = opinion_accepted_vienna_concordat
+		}
+	}
+	on_deactivate = {
+		remove_opinion = {
+			target = c:PAP
+			modifier = opinion_accepted_vienna_concordat
+		}
+		c:PAP = {
+			remove_opinion = {
+				target = prev
+				modifier = opinion_accepted_vienna_concordat
+			}
+		}
+	}
+	
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_religious_influence = 0.1
+		global_clergy_estate_power = 0.3
+	}
+}
+
+REPLACE:vij_patronization_of_local_gods = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = vij_patronization_of_local_gods }
+		religion = religion:hindu
+	}
+
+	country_modifier = {
+		number_of_allowed_avatars = 1
+		global_clergy_estate_power = 0.1
+		war_on_same_religion_cb_cost_modifier = 0.1
+	}
+}
+
+REPLACE:promotion_of_muslim_scholars = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = promotion_of_muslim_scholars }
+	}
+	
+	country_modifier = {
+		global_clergy_estate_power = 0.2
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		invite_religious_figure_different_school_cost_modifier = -0.15
+		invite_religious_figure_same_school_cost_modifier = -0.15
+		invite_artist_cost_modifier = -0.2
+		research_speed_modifier = 0.05
+	}
+}
+
+REPLACE:autonomous_kadiluks = {
+	estate = clergy_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = TUR
+		OR = {
+			current_age = age_4_reformation
+			current_age = age_5_absolutism
+			current_age = age_6_revolutions
+		}
+	}
+	allow = {
+		OR = {
+			has_advance = ottoman_tax_farming
+			custom_tooltip = {
+				text = has_enabled_kadiluks_privilege
+				has_variable = autonomous_kadiluks_flag
+			}
+		}
+	}
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" > 0.5
+	}
+	
+	country_modifier = {
+		monthly_towards_jurisprudence = societal_value_monthly_move
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_decentralization = societal_value_monthly_move
+		global_clergy_estate_power = 0.2
+	}
+}
+
+REPLACE:ira_clerical_aristocracy = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = ira_clerical_aristocracy
+		}
+		religion ?= {
+			group ?= religion_group:muslim
+		}
+	}
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.2
+		global_burghers_estate_power = 0.2
+		global_burghers_city_desired_pop = 0.1
+		global_clergy_city_desired_pop =  0.15
+		stability_investment = tiny_stability_investment
+	}
+}
+
+REPLACE:lat_protector_of_the_constantinople_patriarchate = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion = religion:catholic
+		owns = location:constantinople
+		location:constantinople = {
+			is_location_holy_site_for = religion:catholic
+		}
+		has_unlocked_estate_privilege_trigger = {
+			type = lat_protector_of_the_constantinople_patriarchate
+		}
+	}
+	allow = {
+		religion = religion:catholic
+		owns = location:constantinople
+		location:constantinople = {
+			is_location_holy_site_for = religion:catholic
+		}
+	}
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = large_privilege_target_satisfaction
+		monthly_religious_influence = 0.2
+		global_clergy_estate_power = 0.25
+		propose_curia_action_cost_modifier = -0.10
+		tolerance_own = 1
+		diplomatic_reputation = diplomatic_reputation_mild_bonus
+	}
+}
+
+REPLACE:jewish_ghetto_ordinance = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= { group ?= religion_group:christian }
+		religion_percentage_in_country = {
+			religion = religion:judaism
+			value > 0
+		}
+	}
+	on_activate = {
+		custom_tooltip = {
+			text = jewish_ghetto_ordinance_pop_satisfaction_tt
+			every_pop = {
+				limit = {
+					culture ?= { has_culture_group = culture_group:jewish_group }
+				}
+				add_pop_satisfaction = pop_satisfaction_extreme_penalty
+			}
+		}
+	}
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.25
+		monthly_towards_communalism = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:jewish_torah_as_state_law = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= religion:judaism
+	}
+	country_modifier = {
+		change_policy_cost_modifier = -0.25
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction
+		diplomatic_reputation = diplomatic_reputation_mild_penalty
+		global_clergy_estate_power = 0.25
+		monthly_towards_traditionalist = societal_value_minor_monthly_move
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		stability_cost_efficiency = 0.20
+	}
+}
+
+REPLACE:jewish_yeshiva_network = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= religion:judaism
+	}
+	country_modifier = {
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_clergy_estate_power = 0.25
+		global_clergy_max_literacy = 10
+		monthly_towards_innovative = societal_value_minor_monthly_move
+		research_speed_modifier = 0.05
+	}
+}
+
+REPLACE:jewish_sabbath_economy = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= religion:judaism
+	}
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.25
+		global_pop_assimilation_speed_modifier = -0.15
+		monthly_prestige = 0.05
+		monthly_towards_communalism = societal_value_minor_monthly_move
+		trade_income = -0.05	#WAD, decision by johan
+	}
+}
+
+REPLACE:jewish_kohen_restrictions = {
+	estate = clergy_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= religion:judaism
+	}
+	country_modifier = {
+		clergy_estate_target_satisfaction = small_privilege_target_satisfaction
+		cultural_influence_modifier = 0.15
+		diplomatic_reputation = diplomatic_reputation_mild_penalty
+		global_clergy_estate_power = 0.25
+		monthly_religious_influence = 0.20
+		monthly_towards_traditionalist = societal_value_minor_monthly_move
+	}
+}
+
+# --- From in_game/common/estate_privileges/peasants_estate.txt (31 blocks) ---
+REPLACE:peasants_free_peasantry = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+	}
+	allow = {
+		trigger_if = {
+			limit = { has_estate_privilege = estate_privilege:statutes_of_piotrkow }
+			NOT = { has_estate_privilege = estate_privilege:statutes_of_piotrkow }
+		}
+		NOT = {	has_estate_privilege = estate_privilege:ordinance_of_laborers }
+	}
+	
+	can_revoke = {
+		NOT = { has_estate_privilege = estate_privilege:land_owning_farmers }
+	}
+
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		global_peasants_migration_allowed = yes
+		global_laborers_migration_allowed = yes
+		global_peasants_estate_power = 0.5
+		global_peasant_enfranchisment = 0.1
+		peasants_estate_allowed_to_build_rgo = yes
+		monthly_towards_free_subjects = societal_value_monthly_move
+	}
+}
+
+REPLACE:peasants_represented_in_parliament = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		modifier:has_a_parliamentary_system = yes
+	}
+	allow = {
+		OR = {
+			parliament_type = parliament_type:estate_parliament
+			parliament_type = parliament_type:autocratic_parliament
+			parliament_type = parliament_type:constitutional_parliament
+		}
+	}
+	
+	can_revoke = {
+		NOT = { has_estate_privilege = estate_privilege:land_owning_farmers }
+	}
+	
+	country_modifier = {
+		peasants_estate_can_participate_in_parliament = yes
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.5
+		global_peasant_enfranchisment = 0.05
+		monthly_towards_free_subjects = societal_value_monthly_move
+	}
+}
+
+REPLACE:peasant_owns_their_food = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_production_efficiency = medium_production_efficiency_penalty
+		global_peasants_estate_power = 0.2
+		global_peasant_enfranchisment = 0.05
+		monthly_towards_traditional_economy = societal_value_monthly_move
+	}
+}
+
+REPLACE:peasants_fewer_levies = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		peasants_estate_levy_size = -0.2
+		global_peasants_estate_power = 0.33
+		monthly_towards_free_subjects = societal_value_monthly_move
+	}
+	
+}
+
+REPLACE:peasants_yeomanry = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		# blocked by yeomanry_advance
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		peasants_estate_levy_size = 0.20
+		global_peasants_estate_power = 0.2
+		monthly_towards_free_subjects = societal_value_monthly_move
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:peasants_allowed_weapons_privilege = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+	}
+	allow = {
+		NOT = {	has_estate_privilege =  estate_privilege:tur_banned_weaponry_for_peasants }
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		allow_peasants_training_grounds = yes
+		peasants_estate_levy_size = 0.2
+		levy_combat_efficiency_modifier = 0.10
+		levy_recovery_modifier = 0.1
+		monthly_towards_quantity = societal_value_minor_monthly_move
+		global_peasants_estate_power = 0.5
+		global_peasant_enfranchisment = 0.05
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:peasants_protected_faith = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = peasants_estate
+	allow = { 
+		religious_unity < 0.66
+	}
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.2
+		global_peasants_conversion_blocked = yes
+		global_laborers_conversion_blocked = yes
+		global_soldiers_conversion_blocked = yes
+
+	}
+	can_revoke = {}
+}
+
+REPLACE:allow_hunting = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = peasants_estate
+
+	country_modifier = {
+		allow_peasants_hunting_grounds = yes
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction_penalty
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.25
+		global_wild_game_output_modifier = 0.2
+		monthly_towards_free_subjects = societal_value_minor_monthly_move
+	}
+}
+
+REPLACE:no_labor_sunday = {
+	estate = peasants_estate 
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		religion ?= { group = religion_group:christian }
+	}
+
+	country_modifier = {
+		global_raw_material_output = -0.05	#WAD, decision by johan
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.33
+	}
+}
+
+REPLACE:communal_lands = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = peasants_estate
+
+	country_modifier = {
+		monthly_towards_decentralization = societal_value_large_monthly_move
+		global_nobles_estate_power = -0.05
+		global_peasant_enfranchisment = 0.05
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.33
+	}
+}
+
+REPLACE:partial_yield = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = peasants_estate
+
+	country_modifier = {
+		global_peasants_food_consumption = -0.1
+		global_laborers_food_consumption = -0.1
+		monthly_towards_free_subjects = societal_value_monthly_move
+		global_max_rgo_size_modifier_in_rural = -0.1
+		global_peasants_estate_power = 0.33
+	}
+
+}
+
+REPLACE:access_to_royal_and_ecclesiastical_courts = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = peasants_estate
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		monthly_towards_communalism = societal_value_monthly_move
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.33
+	}
+}
+
+REPLACE:peasants_in_administration = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = peasants_estate
+	
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.5
+		peasants_estate_allowed_in_cabinet = yes
+		global_peasant_enfranchisment = 0.05
+		monthly_towards_decentralization = societal_value_monthly_move
+	}
+}
+
+REPLACE:peasants_autonomous_villages = {
+	potential = { NOT = { has_or_had_tag = BYZ } } # Project Phoenix uses its own privileges.
+
+	estate = peasants_estate
+
+	country_modifier = {
+		monthly_towards_decentralization = societal_value_large_monthly_move
+		monthly_towards_free_subjects = societal_value_monthly_move
+		global_peasants_estate_power = 0.5
+		rural_migration_attraction = 0.1
+		global_peasant_enfranchisment = 0.05
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:peasants_no_poll_tax_privilege = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = ENG
+	}
+	allow = {
+	}
+	can_revoke = {
+		societal_value:serfdom_vs_free_subjects <= -20
+		estate_satisfaction:peasants_estate >= 0.5
+	}
+
+	country_modifier = {
+		peasants_estate_max_tax	= -0.25
+		global_peasants_estate_power = 0.2
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_free_subjects = societal_value_monthly_move
+	}
+}
+
+REPLACE:ara_sindicat_remenca = {
+	estate = peasants_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = ara_sindicat_remenca_flag
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.2
+		monthly_towards_free_subjects = societal_value_monthly_move
+		global_monthly_food_modifier = monthly_food_productivity_mild_bonus
+	}
+}
+
+REPLACE:creaghts_privilege = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			culture ?= { has_culture_group = culture_group:hibernian_group }
+			has_reform = government_reform:celtic_traditions_reform
+		}
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+
+	country_modifier = {
+		global_peasants_estate_power = -0.5
+		global_peasants_migration_allowed = yes
+		global_migration_speed_modifier = 1.0
+		global_livestock_output_modifier = 1.0
+		monthly_towards_free_subjects = societal_value_large_monthly_move
+		monthly_towards_traditional_economy = societal_value_large_monthly_move
+	}
+}
+
+REPLACE:masaniellos_fight = {
+	estate = peasants_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = masaniellos_fight_flag
+	}
+	allow = {
+	}
+	can_revoke = {
+		"estate_power(estate_type:peasants_estate)" <= 0.08
+	}
+	
+	country_modifier = {
+		peasants_estate_max_tax	= -0.2
+		global_peasants_estate_power = 0.1
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction_penalty
+		peasants_estate_target_satisfaction = large_privilege_target_satisfaction
+		monthly_towards_free_subjects = societal_value_large_monthly_move
+	}
+}
+
+REPLACE:double_sabbath = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		#This privilege can only be accessed through events (flavor_eth.200, flavor_eth.201)
+		has_variable = can_have_double_sabbath_flag
+		religion = religion:miaphysite
+	}
+	allow = {
+	}
+	can_revoke = {
+		custom_tooltip = {
+			text = can_revoke_double_sabbath_tt
+			OR = {
+				#The clergy is twice as powerfull as the peasants
+				"estate_power(estate_type:clergy_estate)" >= {
+					value = "estate_power(estate_type:peasants_estate)" 
+					multiply = 2
+				}
+				"estate_power(estate_type:peasants_estate)" <= 0.1
+			}
+		}
+	}
+	
+	country_modifier = {
+		global_raw_material_output = -0.05
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.33
+	}
+}
+
+REPLACE:ius_teutonicum = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		culture ?= { has_culture_group = culture_group:bohemian_group }
+	}
+
+	allow = {
+	}
+
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.2
+		peasants_estate_max_tax = -0.1
+		wrong_culture_levy_size = 0.2
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction_penalty
+	}
+}
+
+REPLACE:invite_german_settlers = { #Encourage German Migration
+	estate = peasants_estate
+
+	potential = { #The culture of the country is German, but the main culture is not
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		
+		religion = religion:catholic 
+		capital ?= {
+			OR = {
+				region = region:baltic_region
+				region = region:carpathia_region
+				area = area:baltic_area
+				area = area:bohemia_area
+				area = area:moravia_area
+			}
+		}
+	}
+	allow = {
+		NOT = {has_policy = closed_borders_law} #Incompatible
+	}
+
+	can_revoke = {
+	}
+
+	
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.2
+		peasants_estate_max_tax = -0.1
+		enables_german_migration = yes
+	}
+	on_activate = {
+		custom_tooltip = invite_german_settlers.tt
+	}
+}
+
+REPLACE:haudenosaunee_labor_division = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		culture ?= { has_culture_group = culture_group:haudenosaunee_group }
+	}
+
+	allow = {
+	}
+
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.33
+		global_production_efficiency = medium_production_efficiency_bonus
+		monthly_towards_traditional_economy = societal_value_monthly_move
+		monthly_towards_communalism = societal_value_monthly_move
+	}
+}
+
+REPLACE:mita_system = {
+	estate = peasants_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		culture  ?= { has_culture_group = culture_group:andean_group }
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+	country_modifier = {
+		global_peasants_migration_allowed = yes
+		global_peasants_estate_power = 0.2
+		global_build_buildings_efficiency = 0.2
+		global_pop_assimilation_speed_modifier = 0.25
+		monthly_towards_serfdom = societal_value_monthly_move
+	}
+}
+
+REPLACE:gradozadanje_and_gradobljudenlje_rights = {
+	estate = peasants_estate
+		
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = SER
+	}
+	
+	country_modifier = {
+		fort_maintenance_efficiency = 0.2
+		global_garrison_size_modifier = 0.1
+		global_peasants_estate_power = 0.2
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:salt_tax_exemption = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = mos_salt_tax_exemption_flag
+	}
+	allow = {
+		custom_tooltip = {
+			text = gained_access_to_this_privilege_tt
+			has_variable = mos_salt_tax_exemption_flag
+		}
+	}
+	can_revoke = {
+		exists = root.capital.market
+		goods:salt = {
+			price_in_market = {
+				market = root.capital.market
+				value <= 1.50
+			}
+		}
+	}
+	
+	country_modifier = {
+		peasants_estate_max_tax = -0.1
+		global_peasants_estate_power = 0.2
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		monthly_towards_mercantilism = societal_value_monthly_move
+
+	}
+}
+
+REPLACE:hab_tractatus_incorporalibus = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_variable = hab_tractatus_incorporalibus_granted
+	}
+	allow = {
+		custom_tooltip = {
+			text = gained_access_to_this_privilege_tt
+			has_variable = hab_tractatus_incorporalibus_granted
+		}
+	}
+	
+	country_modifier = {
+		expand_rgo_farming_cost_modifier = 0.2	#WAD, decision by johan
+		global_peasants_estate_power = 0.1
+		monthly_towards_free_subjects = societal_value_monthly_move
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+REPLACE:ayuntamientos = {
+	estate = peasants_estate
+	content_priority = 200
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_or_had_tag = SPA
+			has_or_had_tag = CAS
+		}
+	}
+
+	country_modifier = {
+		pop_join_rebel_threshold = -0.05
+		monthly_towards_decentralization = societal_value_monthly_move
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.5
+	}
+}
+
+REPLACE:tun_ungovernable_agriculturalists = {
+	estate = peasants_estate
+	content_priority = 100
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		OR = {
+			has_estate_privilege = estate_privilege:tun_ungovernable_agriculturalists
+			is_hafsid_governor_trigger = yes
+		}
+	}
+	can_revoke = {
+		societal_value:centralization_vs_decentralization < 25
+	}
+	
+	country_modifier = {
+		global_peasants_estate_power = 0.25
+		monthly_towards_free_subjects = societal_value_monthly_move
+		peasants_estate_max_tax = -0.25
+		pure_tooltip_entry = enables_tax_raids_action
+	}
+
+	on_deactivate = {
+		add_country_modifier = {
+			mode = add
+			modifier = tun_control_over_countryside_restored
+			years = modifier_duration_years_extended
+		}
+	}
+}
+
+REPLACE:ukr_kholop_protection = {
+	estate = peasants_estate
+	
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = {
+			type = ukr_kholop_protection
+		}
+	}
+	allow = {
+	}
+	can_revoke = {
+	}
+	
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_peasants_estate_power = 0.25
+		peasants_estate_max_tax = -0.05
+		global_pop_promotion_speed_modifier = 0.1
+		monthly_towards_free_subjects = societal_value_monthly_move
+	}
+}
+
+REPLACE:land_owning_farmers = {
+	estate = peasants_estate
+	content_priority = 200
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_or_had_tag = SWE
+	}
+	allow = {
+	}	
+
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" > 0.66
+	}
+	
+	country_modifier = {
+		levy_combat_efficiency_modifier = 0.05
+		global_monthly_food_modifier = monthly_food_productivity_mild_bonus
+		global_peasants_estate_power = 0.5
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		
+		monthly_towards_free_subjects = societal_value_monthly_move
+
+	}
+}
+
+REPLACE:lat_compromise_with_greek_populace = {
+	estate = peasants_estate
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_unlocked_estate_privilege_trigger = { type = lat_compromise_with_greek_populace }
+		NOT = { culture = culture:greek_culture }
+	}
+	allow = {
+		NOT = { culture = culture:greek_culture }
+		is_frankokratia_state = yes
+		religion = religion:catholic
+	}
+
+	can_revoke = {
+		religious_unity > 0.50
+	}
+	location_modifier = {
+		potential_trigger = {
+			dominant_religion ?= religion:orthodox
+		}
+		local_pop_conversion_speed_modifier = -1
+	}
+	location_modifier = {
+		potential_trigger = {
+			dominant_culture ?= culture:greek_culture
+		}
+		local_pop_assimilation_speed_modifier = -0.25
+		local_integration_speed = 0.10
+	}
+	country_modifier = {
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		cultures_capacity = 2
+		cultural_tradition_modifier = -0.15
+		cultural_influence_modifier = -0.15
+		global_nobles_city_desired_pop = -0.010
+		tolerance_heretic = 3
+		global_peasants_estate_power = 0.75
+	}
+}

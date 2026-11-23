@@ -44,14 +44,38 @@ oe_t2_destroy_parent_post = {
 }
 
 # Theme scope; scope:oe_t2_absorb_seat is the seat location of historical region $region_id$.
-# Co-administers historical region $region_id$ without altering the 39 region IDs.
+# Co-administers historical region $region_id$ without altering the 39 region IDs (up to 3 absorbed slots).
 oe_t2_absorb_region_into_theme = {
     save_scope_as = oe_t2_absorber
-    set_variable = { name = oe_t2_absorbed_region value = $region_id$ }
     if = {
-        limit = { exists = scope:oe_t2_absorb_seat }
-        set_variable = { name = oe_t2_absorbed_seat value = scope:oe_t2_absorb_seat }
-        scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center }
+        limit = { NOT = { has_variable = oe_t2_absorbed_region } }
+        set_variable = { name = oe_t2_absorbed_region value = $region_id$ }
+        if = {
+            limit = { exists = scope:oe_t2_absorb_seat }
+            set_variable = { name = oe_t2_absorbed_seat value = scope:oe_t2_absorb_seat }
+            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center }
+        }
+        set_variable = { name = oe_t2_absorbed_count value = 1 }
+    }
+    else_if = {
+        limit = { NOT = { has_variable = oe_t2_absorbed_region_2 } }
+        set_variable = { name = oe_t2_absorbed_region_2 value = $region_id$ }
+        if = {
+            limit = { exists = scope:oe_t2_absorb_seat }
+            set_variable = { name = oe_t2_absorbed_seat_2 value = scope:oe_t2_absorb_seat }
+            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center }
+        }
+        set_variable = { name = oe_t2_absorbed_count value = 2 }
+    }
+    else_if = {
+        limit = { NOT = { has_variable = oe_t2_absorbed_region_3 } }
+        set_variable = { name = oe_t2_absorbed_region_3 value = $region_id$ }
+        if = {
+            limit = { exists = scope:oe_t2_absorb_seat }
+            set_variable = { name = oe_t2_absorbed_seat_3 value = scope:oe_t2_absorb_seat }
+            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center }
+        }
+        set_variable = { name = oe_t2_absorbed_count value = 3 }
     }
     c:BYZ = {
         every_owned_location = {
@@ -83,13 +107,43 @@ oe_t2_do_consolidate_theme = {
         add_gold = scope:oe_t2_xfer_gold
         add_manpower = scope:oe_t2_xfer_mp
         if = {
-            limit = { scope:recipient = { has_variable = oe_theme_region_id } }
-            set_variable = { name = oe_t2_absorbed_region value = scope:recipient.var:oe_theme_region_id }
+            limit = { NOT = { has_variable = oe_t2_absorbed_region } }
+            if = {
+                limit = { scope:recipient = { has_variable = oe_theme_region_id } }
+                set_variable = { name = oe_t2_absorbed_region value = scope:recipient.var:oe_theme_region_id }
+            }
+            if = {
+                limit = { exists = scope:oe_t2_old_seat }
+                set_variable = { name = oe_t2_absorbed_seat value = scope:oe_t2_old_seat }
+                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center }
+            }
+            set_variable = { name = oe_t2_absorbed_count value = 1 }
         }
-        if = {
-            limit = { exists = scope:oe_t2_old_seat }
-            set_variable = { name = oe_t2_absorbed_seat value = scope:oe_t2_old_seat }
-            scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center }
+        else_if = {
+            limit = { NOT = { has_variable = oe_t2_absorbed_region_2 } }
+            if = {
+                limit = { scope:recipient = { has_variable = oe_theme_region_id } }
+                set_variable = { name = oe_t2_absorbed_region_2 value = scope:recipient.var:oe_theme_region_id }
+            }
+            if = {
+                limit = { exists = scope:oe_t2_old_seat }
+                set_variable = { name = oe_t2_absorbed_seat_2 value = scope:oe_t2_old_seat }
+                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center }
+            }
+            set_variable = { name = oe_t2_absorbed_count value = 2 }
+        }
+        else_if = {
+            limit = { NOT = { has_variable = oe_t2_absorbed_region_3 } }
+            if = {
+                limit = { scope:recipient = { has_variable = oe_theme_region_id } }
+                set_variable = { name = oe_t2_absorbed_region_3 value = scope:recipient.var:oe_theme_region_id }
+            }
+            if = {
+                limit = { exists = scope:oe_t2_old_seat }
+                set_variable = { name = oe_t2_absorbed_seat_3 value = scope:oe_t2_old_seat }
+                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center }
+            }
+            set_variable = { name = oe_t2_absorbed_count value = 3 }
         }
         set_variable = oe_theme_tiers_dirty
     }
@@ -105,10 +159,66 @@ oe_t2_do_consolidate_theme = {
     }
 }
 
-# Theme scope (the co-administering parent theme). Splits off its absorbed historical region as a standalone theme.
+# Theme scope (the co-administering parent theme). LIFO-splits off its most recently absorbed historical region.
 oe_t2_do_split_theme = {
     save_scope_as = oe_t2_split_parent
     if = {
+        limit = { has_variable = oe_t2_absorbed_region_3 has_variable = oe_t2_absorbed_seat_3 }
+        var:oe_t2_absorbed_seat_3 = { save_scope_as = oe_t2_split_seat }
+        every_owned_foreign_building_location = {
+            limit = {
+                has_owner = yes
+                owner ?= c:BYZ
+                var:oe_theme_region ?= scope:oe_t2_split_parent.var:oe_t2_absorbed_region_3
+            }
+            oe_t2_destroy_parent_post = yes
+        }
+        remove_variable = oe_t2_absorbed_region_3
+        remove_variable = oe_t2_absorbed_seat_3
+        set_variable = { name = oe_t2_absorbed_count value = 2 }
+        oe_ts_recent_loy = { amount = 5 }
+        set_variable = oe_theme_tiers_dirty
+        if = {
+            limit = { exists = scope:oe_t2_split_seat }
+            scope:oe_t2_split_seat = {
+                remove_variable = oe_t2_merged_center
+                if = {
+                    limit = { has_owner = yes owner ?= c:BYZ }
+                    save_scope_as = oe_theme_seat
+                    c:BYZ = { oe_theme_found_at_seat = yes }
+                }
+            }
+        }
+    }
+    else_if = {
+        limit = { has_variable = oe_t2_absorbed_region_2 has_variable = oe_t2_absorbed_seat_2 }
+        var:oe_t2_absorbed_seat_2 = { save_scope_as = oe_t2_split_seat }
+        every_owned_foreign_building_location = {
+            limit = {
+                has_owner = yes
+                owner ?= c:BYZ
+                var:oe_theme_region ?= scope:oe_t2_split_parent.var:oe_t2_absorbed_region_2
+            }
+            oe_t2_destroy_parent_post = yes
+        }
+        remove_variable = oe_t2_absorbed_region_2
+        remove_variable = oe_t2_absorbed_seat_2
+        set_variable = { name = oe_t2_absorbed_count value = 1 }
+        oe_ts_recent_loy = { amount = 5 }
+        set_variable = oe_theme_tiers_dirty
+        if = {
+            limit = { exists = scope:oe_t2_split_seat }
+            scope:oe_t2_split_seat = {
+                remove_variable = oe_t2_merged_center
+                if = {
+                    limit = { has_owner = yes owner ?= c:BYZ }
+                    save_scope_as = oe_theme_seat
+                    c:BYZ = { oe_theme_found_at_seat = yes }
+                }
+            }
+        }
+    }
+    else_if = {
         limit = { has_variable = oe_t2_absorbed_region has_variable = oe_t2_absorbed_seat }
         var:oe_t2_absorbed_seat = { save_scope_as = oe_t2_split_seat }
         every_owned_foreign_building_location = {
@@ -121,6 +231,7 @@ oe_t2_do_split_theme = {
         }
         remove_variable = oe_t2_absorbed_region
         remove_variable = oe_t2_absorbed_seat
+        if = { limit = { has_variable = oe_t2_absorbed_count } remove_variable = oe_t2_absorbed_count }
         oe_ts_recent_loy = { amount = 5 }
         set_variable = oe_theme_tiers_dirty
         if = {
