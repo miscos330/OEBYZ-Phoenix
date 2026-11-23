@@ -31,14 +31,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_01_eternal_pact_req_tt
-				OR = { owns_or_non_sovereign_subject_owns = location:schwyz owns_or_non_sovereign_subject_owns = location:altdorf owns_or_non_sovereign_subject_owns = location:lucerne owns_or_non_sovereign_subject_owns = location:bern owns_or_non_sovereign_subject_owns = location:zurich } stability >= 5
+				OR = { owns_or_non_sovereign_subject_owns = location:schwyz owns_or_non_sovereign_subject_owns = location:altdorf owns_or_non_sovereign_subject_owns = location:lucerne owns_or_non_sovereign_subject_owns = location:bern owns_or_non_sovereign_subject_owns = location:zurich } stability >= 5 OR = { NOT = { country_has_estate = estate_type:peasants_estate } estate_satisfaction:peasants_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 120
-			add_stability = stability_weak_bonus
-			add_prestige = prestige_mild_bonus
+			add_gold = 120 add_stability = stability_weak_bonus add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_swi_02_sempach_stand = {
@@ -47,13 +45,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_02_sempach_stand_req_tt
-				OR = { owns_or_non_sovereign_subject_owns = location:lucerne owns_or_non_sovereign_subject_owns = location:schwyz owns_or_non_sovereign_subject_owns = location:bern } stability >= 8
+				OR = { owns_or_non_sovereign_subject_owns = location:lucerne owns_or_non_sovereign_subject_owns = location:schwyz owns_or_non_sovereign_subject_owns = location:bern } stability >= 8 any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:weapon_guild } } army_tradition >= 12
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
-			add_prestige = prestige_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } } if = { limit = { is_subject = no country_exists = c:HAB NOT = { tag = HAB } c:HAB = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:HAB type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_swi_03_reislaufer_contracts = {
@@ -62,13 +59,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_03_reislaufer_contracts_req_tt
-				gold >= 160 stability >= 10 current_age_or_later = { age = age_2_renaissance }
+				gold >= 160 stability >= 10 current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:armory has_building = building_type:cannon_maker } } OR = { army_tradition >= 22 has_advance = professional_armies_advance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_gem3_msn_swi_m1 years = 25 mode = replace }
-			add_army_tradition = army_tradition_mild_bonus
+			add_country_modifier = { modifier = oe_gem3_msn_swi_m1 years = 25 mode = replace } add_army_tradition = army_tradition_mild_bonus add_gold = 140 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_swi_04_alpine_redoubt_bastions = {
@@ -77,13 +73,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_04_alpine_redoubt_bastions_req_tt
-				owns_or_non_sovereign_subject_owns = location:altdorf owns_or_non_sovereign_subject_owns = location:bern current_age_or_later = { age = age_3_discovery }
+				owns_or_non_sovereign_subject_owns = location:altdorf owns_or_non_sovereign_subject_owns = location:bern current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:training_fields has_building = building_type:castle } } has_advance = pike_and_shot_advance
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
-			add_gold = 160
+			add_army_tradition = army_tradition_mild_bonus add_gold = 160 if = { limit = { owns = location:bern } location:bern = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { owns = location:altdorf } location:altdorf = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_swi_05_gotthard_pass_tolls = {
@@ -92,14 +87,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_05_gotthard_pass_tolls_req_tt
-				owns_or_non_sovereign_subject_owns = location:altdorf owns_or_non_sovereign_subject_owns = location:schwyz
+				owns_or_non_sovereign_subject_owns = location:altdorf owns_or_non_sovereign_subject_owns = location:schwyz any_owned_location = { OR = { has_building = building_type:marketplace has_building = building_type:granary } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:altdorf } location:altdorf = { add_core = root } }
-			if = { limit = { owns = location:schwyz } location:schwyz = { add_core = root } }
-			add_gold = 150
+			if = { limit = { owns = location:altdorf } location:altdorf = { add_core = root } } if = { limit = { owns = location:schwyz } location:schwyz = { add_core = root } } add_gold = 150 if = { limit = { owns = location:altdorf } location:altdorf = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_swi_06_bern_zurich_guilds = {
@@ -108,15 +101,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_06_bern_zurich_guilds_req_tt
-				owns_or_non_sovereign_subject_owns = location:bern owns_or_non_sovereign_subject_owns = location:zurich
+				owns_or_non_sovereign_subject_owns = location:bern owns_or_non_sovereign_subject_owns = location:zurich any_owned_location = { OR = { has_building = building_type:guild_hall has_building = building_type:cloth_guild } } OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:bern } location:bern = { add_core = root } }
-			if = { limit = { owns = location:zurich } location:zurich = { add_core = root } }
-			add_gold = 160
-			add_stability = stability_weak_bonus
+			if = { limit = { owns = location:bern } location:bern = { add_core = root } } if = { limit = { owns = location:zurich } location:zurich = { add_core = root } } add_gold = 160 add_stability = stability_weak_bonus if = { limit = { owns = location:zurich } location:zurich = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_swi_07_aargau_vaud_rhine = {
@@ -125,15 +115,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_07_aargau_vaud_rhine_req_tt
-				owns_or_non_sovereign_subject_owns = location:lucerne OR = { owns_or_non_sovereign_subject_owns = location:basel owns_or_non_sovereign_subject_owns = location:geneve owns_or_non_sovereign_subject_owns = location:lausanne }
+				owns_or_non_sovereign_subject_owns = location:lucerne OR = { owns_or_non_sovereign_subject_owns = location:basel owns_or_non_sovereign_subject_owns = location:geneve owns_or_non_sovereign_subject_owns = location:lausanne } monthly_income_trade_and_tax >= 18
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:basel } location:basel = { add_core = root } }
-			if = { limit = { owns = location:geneve } location:geneve = { add_core = root } }
-			if = { limit = { owns = location:lausanne } location:lausanne = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:basel } location:basel = { add_core = root } } if = { limit = { owns = location:geneve } location:geneve = { add_core = root } } if = { limit = { owns = location:lausanne } location:lausanne = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:basel } location:basel = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:SAV NOT = { tag = SAV } c:SAV = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:SAV type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_swi_08_transalpine_confederacy = {
@@ -142,12 +129,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_08_transalpine_confederacy_req_tt
-				oe_gem3_controls_alpine_core = yes OR = { owns_or_non_sovereign_subject_owns = location:bellinzona owns_or_non_sovereign_subject_owns = location:chur } current_age_or_later = { age = age_3_discovery }
+				oe_gem3_controls_alpine_core = yes OR = { owns_or_non_sovereign_subject_owns = location:bellinzona owns_or_non_sovereign_subject_owns = location:chur } current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:trading_hub has_building = building_type:merchants_quarters } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_gem3_msn_swi_m2 years = 25 mode = replace }
+			add_gold = 160 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } add_country_modifier = { modifier = oe_gem3_msn_swi_m2 years = 25 mode = replace }
 		}
 	}
 	oe_msn_swi_09_tagsatzung_diet = {
@@ -156,13 +143,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_09_tagsatzung_diet_req_tt
-				stability >= 10 gold >= 160 current_age_or_later = { age = age_2_renaissance }
+				stability >= 10 gold >= 160 current_age_or_later = { age = age_2_renaissance } capital = { development >= 16 } OR = { NOT = { country_has_estate = estate_type:peasants_estate } estate_satisfaction:peasants_estate >= 0.55 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_diplomats = diplomats_mild_bonus
-			add_stability = stability_mild_bonus
+			add_diplomats = diplomats_mild_bonus add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_swi_10_alpine_reformation = {
@@ -171,13 +157,12 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_10_alpine_reformation_req_tt
-				OR = { owns_or_non_sovereign_subject_owns = location:zurich owns_or_non_sovereign_subject_owns = location:geneve } stability >= 12 current_age_or_later = { age = age_4_reformation }
+				OR = { owns_or_non_sovereign_subject_owns = location:zurich owns_or_non_sovereign_subject_owns = location:geneve } stability >= 12 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:printing_press_shop has_building = building_type:university } } has_embraced_institution = institution:confessionalism
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
-			add_country_modifier = { modifier = oe_gem3_msn_swi_m3 years = 25 mode = replace }
+			culture = { add_cultural_tradition = 10 } add_stability = stability_weak_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } } add_country_modifier = { modifier = oe_gem3_msn_swi_m3 years = 25 mode = replace }
 		}
 	}
 	oe_msn_swi_11_clockmakers_vaults = {
@@ -186,28 +171,27 @@ oe_msn_swi_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_11_clockmakers_vaults_req_tt
-				gold >= 300 stability >= 15 current_age_or_later = { age = age_4_reformation }
+				gold >= 300 stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:customs_house has_building = building_type:counting_house } } monthly_income_trade_and_tax >= 70 capital = { development >= 24 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 220
-			add_prestige = prestige_mild_bonus
+			add_gold = 220 add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_swi_12_fortress_alps_neutrality = {
 		icon = swiss_banking
 		requires = { oe_msn_swi_04_alpine_redoubt_bastions oe_msn_swi_08_transalpine_confederacy oe_msn_swi_11_clockmakers_vaults }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_swi_12_fortress_alps_neutrality_req_tt
-				oe_gem3_controls_alpine_core = yes stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				oe_gem3_controls_alpine_core = yes stability >= 18 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:star_fort has_building = building_type:bastion } } capital = { development >= 28 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 100 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_gem3_msn_swi_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_gem3_msn_swi_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.18
 		}
 	}
 }

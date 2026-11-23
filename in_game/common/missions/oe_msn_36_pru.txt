@@ -32,12 +32,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_01_eagle_of_brandenburg_prussia_req_tt
-				OR = { owns = location:berlin owns = location:malbork owns = location:konigsberg } stability >= 5
+				OR = { owns = location:berlin owns = location:malbork owns = location:konigsberg } stability >= 5 any_owned_location = { has_building = building_type:castle } OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.45 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_pru_02_ordensburg_drills = {
@@ -46,12 +46,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_02_ordensburg_drills_req_tt
-				stability >= 10
+				stability >= 10 army_tradition >= 15 any_owned_location = { has_building = building_type:weapon_guild }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { is_subject = no country_exists = c:POL NOT = { tag = POL } c:POL = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:POL type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:TEU NOT = { tag = TEU } c:TEU = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:TEU type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_pru_03_great_elector_army = {
@@ -60,12 +60,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_03_great_elector_army_req_tt
-				gold >= 240 current_age_or_later = { age = age_3_discovery }
+				gold >= 240 current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:training_fields has_building = building_type:armory } } has_advance = pike_and_shot_advance
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_pru_04_canton_potsdam_grenadiers = {
@@ -74,13 +74,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_04_canton_potsdam_grenadiers_req_tt
-				stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				stability >= 15 current_age_or_later = { age = age_5_absolutism } army_tradition >= 40 has_embraced_institution = institution:military_revolution
 			}
 		}
 		duration = 0
 		on_completion = {
-			set_variable = { name = oe_cne_grenadiers_unlocked value = 1 }
-			add_country_modifier = { modifier = oe_cne_msn_pru_m1 years = 20 mode = replace }
+			set_variable = { name = oe_cne_grenadiers_unlocked value = 1 } add_country_modifier = { modifier = oe_cne_msn_pru_m1 years = 20 mode = replace } add_army_tradition = army_tradition_mild_bonus
 		}
 	}
 	oe_msn_pru_05_unite_berlin_konigsberg = {
@@ -89,14 +88,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_05_unite_berlin_konigsberg_req_tt
-				owns = location:berlin owns = location:konigsberg
+				owns_or_non_sovereign_subject_owns = location:berlin owns_or_non_sovereign_subject_owns = location:konigsberg capital = { development >= 18 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:berlin } location:berlin = { add_core = root } }
-			if = { limit = { owns = location:konigsberg } location:konigsberg = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:berlin } location:berlin = { add_core = root } } if = { limit = { owns = location:konigsberg } location:konigsberg = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:berlin } location:berlin = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:SWE NOT = { tag = SWE } c:SWE = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:SWE type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_pru_06_pomeranian_baltic_corridor = {
@@ -105,14 +102,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_06_pomeranian_baltic_corridor_req_tt
-				owns = location:stettin owns = location:gdansk
+				owns_or_non_sovereign_subject_owns = location:stettin owns_or_non_sovereign_subject_owns = location:gdansk num_of_ports >= 4
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:stettin } location:stettin = { add_core = root } }
-			if = { limit = { owns = location:gdansk } location:gdansk = { add_core = root } }
-			add_navy_tradition = navy_tradition_mild_bonus
+			if = { limit = { owns = location:stettin } location:stettin = { add_core = root } } if = { limit = { owns = location:gdansk } location:gdansk = { add_core = root } } add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:stettin } location:stettin = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:BOH NOT = { tag = BOH } c:BOH = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BOH type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:HAB NOT = { tag = HAB } c:HAB = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:HAB type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_pru_07_conquest_of_silesia = {
@@ -121,14 +116,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_07_conquest_of_silesia_req_tt
-				owns = location:wroclaw owns = location:glogow num_locations >= 45
+				owns_or_non_sovereign_subject_owns = location:wroclaw owns_or_non_sovereign_subject_owns = location:glogow num_locations >= 45 army_tradition >= 28
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:wroclaw } location:wroclaw = { add_core = root } }
-			if = { limit = { owns = location:glogow } location:glogow = { add_core = root } }
-			add_army_tradition = army_tradition_mild_bonus
+			if = { limit = { owns = location:wroclaw } location:wroclaw = { add_core = root } } if = { limit = { owns = location:glogow } location:glogow = { add_core = root } } add_army_tradition = army_tradition_mild_bonus if = { limit = { owns = location:wroclaw } location:wroclaw = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_pru_08_magdeburg_elbian_hegemony = {
@@ -137,13 +130,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_08_magdeburg_elbian_hegemony_req_tt
-				owns = location:magdeburg owns = location:berlin owns = location:konigsberg current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:magdeburg owns_or_non_sovereign_subject_owns = location:berlin owns_or_non_sovereign_subject_owns = location:konigsberg current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:barracks has_building = building_type:bastion } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:magdeburg } location:magdeburg = { add_core = root } }
-			add_country_modifier = { modifier = oe_cne_msn_pru_m2 years = 20 mode = replace }
+			if = { limit = { owns = location:magdeburg } location:magdeburg = { add_core = root } } add_country_modifier = { modifier = oe_cne_msn_pru_m2 years = 20 mode = replace }
 		}
 	}
 	oe_msn_pru_09_konigsberg_albertina = {
@@ -152,12 +144,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_09_konigsberg_albertina_req_tt
-				OR = { owns = location:konigsberg owns = location:berlin } current_age_or_later = { age = age_2_renaissance }
+				OR = { owns = location:konigsberg owns = location:berlin } current_age_or_later = { age = age_2_renaissance } any_owned_location = { has_building = building_type:university } has_embraced_institution = institution:renaissance
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
+			culture = { add_cultural_tradition = 10 } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_pru_10_general_directory_fisc = {
@@ -166,12 +158,12 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_10_general_directory_fisc_req_tt
-				OR = { owns = location:berlin owns = location:potsdam } gold >= 300
+				OR = { owns = location:berlin owns = location:potsdam } gold >= 300 any_owned_location = { has_building = building_type:marketplace } monthly_income_trade_and_tax >= 25
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 170
+			add_gold = 170 if = { limit = { owns = location:berlin } location:berlin = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_pru_11_sanssouci_stein_hardenberg = {
@@ -180,27 +172,27 @@ oe_msn_pru_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_11_sanssouci_stein_hardenberg_req_tt
-				stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				stability >= 15 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:iron_foundry has_building = building_type:stock_exchange } } capital = { development >= 28 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_cne_msn_pru_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_cne_msn_pru_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_pru_12_iron_kingdom_north = {
 		icon = military_border
 		requires = { oe_msn_pru_04_canton_potsdam_grenadiers oe_msn_pru_08_magdeburg_elbian_hegemony oe_msn_pru_11_sanssouci_stein_hardenberg }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pru_12_iron_kingdom_north_req_tt
-				owns = location:berlin owns = location:konigsberg owns = location:wroclaw stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:berlin owns_or_non_sovereign_subject_owns = location:konigsberg owns_or_non_sovereign_subject_owns = location:wroclaw stability >= 18 current_age_or_later = { age = age_5_absolutism } any_owned_location = { has_building = building_type:star_fort } OR = { is_great_power = yes army_tradition >= 55 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_cne_msn_pru_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_cne_msn_pru_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.10
 		}
 	}
 }

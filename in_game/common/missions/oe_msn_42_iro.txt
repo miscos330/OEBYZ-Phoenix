@@ -38,13 +38,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_01_great_law_of_peace_req_tt
-				OR = { owns = location:canajoharie owns = location:tsikahiotsisto owns = location:onenioteke owns = location:canadaigua owns = location:skaniatares } stability >= 5
+				OR = { owns_or_non_sovereign_subject_owns = location:canajoharie owns_or_non_sovereign_subject_owns = location:tsikahiotsisto owns_or_non_sovereign_subject_owns = location:onenioteke owns_or_non_sovereign_subject_owns = location:canadaigua owns_or_non_sovereign_subject_owns = location:skaniatares } stability >= 5 OR = { capital = { development >= 8 } stability >= 10 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
-			add_stability = stability_mild_bonus
+			add_prestige = prestige_mild_bonus add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_iro_02_longhouse_confederacy = {
@@ -53,13 +52,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_02_longhouse_confederacy_req_tt
-				OR = { tag = IRO AND = { owns = location:tsikahiotsisto owns = location:canajoharie } }
+				OR = { tag = IRO AND = { owns_or_non_sovereign_subject_owns = location:tsikahiotsisto owns_or_non_sovereign_subject_owns = location:canajoharie } } OR = { any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:guild_hall } } stability >= 10 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { government_type = government_type:tribe } add_tribal_cohesion = tribal_cohesion_mild_bonus } else = { add_stability = stability_weak_bonus }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { government_type = government_type:tribe } add_tribal_cohesion = tribal_cohesion_mild_bonus } else = { add_stability = stability_weak_bonus } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_iro_03_flintlock_woodland_parity = {
@@ -68,13 +66,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_03_flintlock_woodland_parity_req_tt
-				gold >= 180 current_age_or_later = { age = age_3_discovery }
+				gold >= 180 current_age_or_later = { age = age_3_discovery } OR = { any_owned_location = { OR = { has_building = building_type:weapon_guild has_building = building_type:armory } } army_tradition >= 18 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			set_variable = { name = oe_aa2_rangers_unlocked value = 1 }
-			add_army_tradition = army_tradition_mild_bonus
+			set_variable = { name = oe_aa2_rangers_unlocked value = 1 } add_army_tradition = army_tradition_mild_bonus
 		}
 	}
 	oe_msn_iro_04_covenant_chain_sovereignty = {
@@ -83,12 +80,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_04_covenant_chain_sovereignty_req_tt
-				stability >= 15 current_age_or_later = { age = age_4_reformation }
+				stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:pike_and_shot has_advance = pike_and_shot_advance army_tradition >= 28 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_iro_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_iro_m1 years = 20 mode = replace } add_diplomats = diplomats_mild_bonus
 		}
 	}
 	oe_msn_iro_05_five_nations_united = {
@@ -97,14 +94,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_05_five_nations_united_req_tt
-				OR = { tag = IRO AND = { owns = location:canajoharie owns = location:onenioteke owns = location:tsikahiotsisto owns = location:skaniatares owns = location:canadaigua } }
+				OR = { tag = IRO AND = { owns_or_non_sovereign_subject_owns = location:canajoharie owns_or_non_sovereign_subject_owns = location:onenioteke owns_or_non_sovereign_subject_owns = location:tsikahiotsisto owns_or_non_sovereign_subject_owns = location:skaniatares owns_or_non_sovereign_subject_owns = location:canadaigua } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:tsikahiotsisto } location:tsikahiotsisto = { add_core = root } }
-			if = { limit = { owns = location:canadaigua } location:canadaigua = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:tsikahiotsisto } location:tsikahiotsisto = { add_core = root } } if = { limit = { owns = location:canadaigua } location:canadaigua = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:tsikahiotsisto } location:tsikahiotsisto = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:HUR NOT = { tag = HUR } c:HUR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:HUR type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_iro_06_mohawk_hudson_corridor = {
@@ -113,14 +108,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_06_mohawk_hudson_corridor_req_tt
-				OR = { AND = { owns = location:saratoga owns = location:ticonderoga } owns = location:oswego }
+				OR = { AND = { owns_or_non_sovereign_subject_owns = location:saratoga owns_or_non_sovereign_subject_owns = location:ticonderoga } owns_or_non_sovereign_subject_owns = location:oswego }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:saratoga } location:saratoga = { add_core = root } }
-			if = { limit = { owns = location:oswego } location:oswego = { add_core = root } }
-			add_gold = 140
+			if = { limit = { owns = location:saratoga } location:saratoga = { add_core = root } } if = { limit = { owns = location:oswego } location:oswego = { add_core = root } } add_gold = 140 if = { limit = { owns = location:saratoga } location:saratoga = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_iro_07_niagara_huron_beaver_realm = {
@@ -129,14 +122,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_07_niagara_huron_beaver_realm_req_tt
-				owns = location:niagara OR = { owns = location:tkaronto owns = location:ossossane } num_locations >= 30
+				owns_or_non_sovereign_subject_owns = location:niagara OR = { owns_or_non_sovereign_subject_owns = location:tkaronto owns_or_non_sovereign_subject_owns = location:ossossane } num_locations >= 30 monthly_income_trade_and_tax >= 20
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:niagara } location:niagara = { add_core = root } }
-			add_gold = 160
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:niagara } location:niagara = { add_core = root } } add_gold = 160 add_prestige = prestige_mild_bonus if = { limit = { owns = location:niagara } location:niagara = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_iro_08_great_lakes_hegemony = {
@@ -145,12 +136,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_08_great_lakes_hegemony_req_tt
-				owns = location:niagara OR = { owns = location:waawiiyaataanong owns = location:mackinac owns = location:manhattan } current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:niagara OR = { owns_or_non_sovereign_subject_owns = location:waawiiyaataanong owns_or_non_sovereign_subject_owns = location:mackinac owns_or_non_sovereign_subject_owns = location:manhattan } current_age_or_later = { age = age_4_reformation } OR = { any_owned_location = { OR = { has_building = building_type:trading_hub has_building = building_type:marketplace } } monthly_income_trade_and_tax >= 35 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_iro_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_iro_m2 years = 20 mode = replace } add_gold = 180
 		}
 	}
 	oe_msn_iro_09_wampum_council_archives = {
@@ -159,13 +150,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_09_wampum_council_archives_req_tt
-				stability >= 10 current_age_or_later = { age = age_2_renaissance }
+				stability >= 10 current_age_or_later = { age = age_2_renaissance } OR = { any_owned_location = { OR = { has_building = building_type:library has_building = building_type:scriptorium } } stability >= 15 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
-			add_diplomats = diplomats_mild_bonus
+			culture = { add_cultural_tradition = 10 } add_diplomats = diplomats_mild_bonus
 		}
 	}
 	oe_msn_iro_10_fur_trade_treasury = {
@@ -174,12 +164,12 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_10_fur_trade_treasury_req_tt
-				gold >= 260
+				gold >= 260 OR = { any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:marketplace } } monthly_income_trade_and_tax >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
+			add_gold = 160 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_iro_11_federal_republic_turtle_island = {
@@ -188,27 +178,27 @@ oe_msn_iro_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_11_federal_republic_turtle_island_req_tt
-				stability >= 15 current_age_or_later = { age = age_4_reformation }
+				stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:printing_press has_embraced_institution = institution:new_world stability >= 20 } OR = { any_owned_location = { OR = { has_building = building_type:printing_press_shop has_building = building_type:university } } capital = { development >= 18 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_iro_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_iro_m3 years = 20 mode = replace } add_stability = stability_weak_bonus
 		}
 	}
 	oe_msn_iro_12_sovereign_confederacy_turtle_island = {
 		icon = the_swiss_confederation
 		requires = { oe_msn_iro_04_covenant_chain_sovereignty oe_msn_iro_08_great_lakes_hegemony oe_msn_iro_11_federal_republic_turtle_island }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_iro_12_sovereign_confederacy_turtle_island_req_tt
-				owns = location:tsikahiotsisto owns = location:canajoharie owns = location:niagara stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:tsikahiotsisto owns_or_non_sovereign_subject_owns = location:canajoharie owns_or_non_sovereign_subject_owns = location:niagara stability >= 18 current_age_or_later = { age = age_5_absolutism } capital = { development >= 22 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 60 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_iro_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_iro_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.38
 		}
 	}
 }

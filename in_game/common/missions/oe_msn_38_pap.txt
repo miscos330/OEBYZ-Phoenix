@@ -32,13 +32,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_01_return_to_eternal_city_req_tt
-				owns = location:rome owns = location:viterbo stability >= 5
+				owns_or_non_sovereign_subject_owns = location:rome owns_or_non_sovereign_subject_owns = location:viterbo stability >= 5 any_owned_location = { OR = { has_building = building_type:cathedral has_building = building_type:temple } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_devotion = devotion_mild_bonus
-			add_stability = stability_mild_bonus
+			add_devotion = devotion_mild_bonus add_stability = stability_mild_bonus if = { limit = { owns = location:rome } location:rome = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_pap_02_heal_western_schism = {
@@ -47,13 +46,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_02_heal_western_schism_req_tt
-				owns = location:rome stability >= 10
+				owns_or_non_sovereign_subject_owns = location:rome stability >= 10 OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.55 } any_owned_location = { OR = { has_building = building_type:monastery has_building = building_type:scriptorium } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
-			add_religious_influence = religious_influence_mild_bonus
+			add_prestige = prestige_mild_bonus add_religious_influence = religious_influence_mild_bonus add_diplomats = diplomats_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_pap_03_warrior_pope_swiss_guard = {
@@ -62,12 +60,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_03_warrior_pope_swiss_guard_req_tt
-				owns = location:rome gold >= 220 current_age_or_later = { age = age_2_renaissance }
+				owns_or_non_sovereign_subject_owns = location:rome gold >= 220 current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:armory has_building = building_type:castle } } OR = { army_tradition >= 15 has_advance = professional_armies_advance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { owns = location:rome } location:rome = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:VEN NOT = { tag = VEN } c:VEN = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:VEN type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_pap_04_tridentine_church_triumphant = {
@@ -76,12 +74,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_04_tridentine_church_triumphant_req_tt
-				owns = location:rome stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:rome stability >= 15 current_age_or_later = { age = age_4_reformation } has_embraced_institution = institution:confessionalism any_owned_location = { OR = { has_building = building_type:university has_building = building_type:printing_press_shop } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_cne_msn_pap_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_cne_msn_pap_m1 years = 20 mode = replace } add_devotion = devotion_mild_bonus add_religious_influence = religious_influence_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_pap_05_umbria_marche_restored = {
@@ -90,14 +88,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_05_umbria_marche_restored_req_tt
-				owns = location:perugia owns = location:ancona
+				owns_or_non_sovereign_subject_owns = location:perugia owns_or_non_sovereign_subject_owns = location:ancona has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:perugia } location:perugia = { add_core = root } }
-			if = { limit = { owns = location:ancona } location:ancona = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:perugia } location:perugia = { add_core = root } } if = { limit = { owns = location:ancona } location:ancona = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:ancona } location:ancona = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:BLO NOT = { tag = BLO } c:BLO = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BLO type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_pap_06_romagna_bologna_ravenna = {
@@ -106,14 +102,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_06_romagna_bologna_ravenna_req_tt
-				owns = location:bologna owns = location:ravenna
+				owns_or_non_sovereign_subject_owns = location:bologna owns_or_non_sovereign_subject_owns = location:ravenna any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:bologna } location:bologna = { add_core = root } }
-			if = { limit = { owns = location:ravenna } location:ravenna = { add_core = root } }
-			add_army_tradition = army_tradition_mild_bonus
+			if = { limit = { owns = location:bologna } location:bologna = { add_core = root } } if = { limit = { owns = location:ravenna } location:ravenna = { add_core = root } } add_army_tradition = army_tradition_mild_bonus if = { limit = { owns = location:bologna } location:bologna = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:FER NOT = { tag = FER } c:FER = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:FER type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_pap_07_urbino_ferrara_fiefs = {
@@ -122,14 +116,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_07_urbino_ferrara_fiefs_req_tt
-				owns = location:urbino owns = location:ferrara num_locations >= 32
+				owns_or_non_sovereign_subject_owns = location:urbino owns_or_non_sovereign_subject_owns = location:ferrara num_locations_owned_or_owned_by_subjects >= 32 OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:urbino } location:urbino = { add_core = root } }
-			if = { limit = { owns = location:ferrara } location:ferrara = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:urbino } location:urbino = { add_core = root } } if = { limit = { owns = location:ferrara } location:ferrara = { add_core = root } } add_prestige = prestige_mild_bonus add_gold = 150 if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_pap_08_arbiter_of_italy = {
@@ -138,12 +130,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_08_arbiter_of_italy_req_tt
-				owns = location:rome owns = location:bologna owns = location:ancona current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:rome owns_or_non_sovereign_subject_owns = location:bologna owns_or_non_sovereign_subject_owns = location:ancona current_age_or_later = { age = age_4_reformation } OR = { is_great_power = yes monthly_income_trade_and_tax >= 90 } any_owned_location = { OR = { has_building = building_type:bastion has_building = building_type:barracks } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_cne_msn_pap_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_cne_msn_pap_m2 years = 20 mode = replace } add_prestige = prestige_mild_bonus add_diplomats = diplomats_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_pap_09_vatican_library_humanism = {
@@ -152,12 +144,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_09_vatican_library_humanism_req_tt
-				owns = location:rome current_age_or_later = { age = age_2_renaissance }
+				owns_or_non_sovereign_subject_owns = location:rome current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:library has_building = building_type:art_school } } has_embraced_institution = institution:renaissance
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
+			culture = { add_cultural_tradition = 10 } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_pap_10_saint_peters_basilica = {
@@ -166,13 +158,12 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_10_saint_peters_basilica_req_tt
-				owns = location:rome gold >= 320
+				owns_or_non_sovereign_subject_owns = location:rome gold >= 320 capital = { development >= 22 } any_owned_location = { has_building = building_type:cathedral }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
-			add_prestige = prestige_mild_bonus
+			add_gold = 160 add_prestige = prestige_mild_bonus add_devotion = devotion_mild_bonus if = { limit = { owns = location:rome } location:rome = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_pap_11_propaganda_fide_missions = {
@@ -181,27 +172,27 @@ oe_msn_pap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_11_propaganda_fide_missions_req_tt
-				owns = location:rome stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:rome stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:printing_press_shop has_building = building_type:port_authority } } OR = { num_of_ports >= 4 monthly_income_trade_and_tax >= 75 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_cne_msn_pap_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_cne_msn_pap_m3 years = 20 mode = replace } add_religious_influence = religious_influence_mild_bonus add_diplomats = diplomats_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_pap_12_kingdom_of_god_on_earth = {
 		icon = heirs_of_rome
 		requires = { oe_msn_pap_04_tridentine_church_triumphant oe_msn_pap_08_arbiter_of_italy oe_msn_pap_11_propaganda_fide_missions }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_pap_12_kingdom_of_god_on_earth_req_tt
-				owns = location:rome owns = location:bologna owns = location:ravenna stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:rome owns_or_non_sovereign_subject_owns = location:bologna owns_or_non_sovereign_subject_owns = location:ravenna stability >= 18 current_age_or_later = { age = age_5_absolutism } capital = { development >= 30 } OR = { is_great_power = yes num_locations_owned_or_owned_by_subjects >= 55 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_cne_msn_pap_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_cne_msn_pap_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus add_devotion = devotion_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.12
 		}
 	}
 }

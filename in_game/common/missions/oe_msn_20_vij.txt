@@ -32,12 +32,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_01_city_of_victory_req_tt
-				owns = location:vijayanagar stability >= 5
+				owns = location:vijayanagar stability >= 5 any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:temple } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus if = { limit = { owns = location:vijayanagar } location:vijayanagar = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_vij_02_nayankara_system = {
@@ -46,12 +46,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_02_nayankara_system_req_tt
-				owns = location:vijayanagar stability >= 10
+				owns = location:vijayanagar stability >= 10 OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_manpower = 4 if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_vij_03_arabian_horse_cavalry = {
@@ -60,12 +60,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_03_arabian_horse_cavalry_req_tt
-				OR = { owns = location:goa owns = location:kozhikode owns = location:vijayanagar } gold >= 250
+				OR = { owns_or_non_sovereign_subject_owns = location:goa owns_or_non_sovereign_subject_owns = location:kozhikode owns = location:vijayanagar } gold >= 250 army_tradition >= 15 any_owned_location = { OR = { has_building = building_type:weapon_guild has_building = building_type:wharf } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_manpower = 5 if = { limit = { is_subject = no country_exists = c:ORI NOT = { tag = ORI } c:ORI = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:ORI type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_vij_04_royal_code_integration = {
@@ -74,12 +74,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_04_royal_code_integration_req_tt
-				owns = location:vijayanagar stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:vijayanagar stability >= 15 capital = { development >= 30 } OR = { has_embraced_institution = institution:banking has_advance = artillery_institution_advance } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_vij_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_vij_m1 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_legitimacy = legitimacy_mild_bonus
 		}
 	}
 	oe_msn_vij_05_malabar_spice_ports = {
@@ -88,14 +88,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_05_malabar_spice_ports_req_tt
-				OR = { owns = location:goa owns = location:kozhikode }
+				OR = { owns_or_non_sovereign_subject_owns = location:goa owns_or_non_sovereign_subject_owns = location:kozhikode } has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:goa } location:goa = { add_core = root } }
-			if = { limit = { owns = location:kozhikode } location:kozhikode = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:goa } location:goa = { add_core = root } } if = { limit = { owns = location:kozhikode } location:kozhikode = { add_core = root } } if = { limit = { owns = location:goa } location:goa = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { owns = location:kozhikode } location:kozhikode = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_vij_06_tamil_coromandel = {
@@ -104,14 +102,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_06_tamil_coromandel_req_tt
-				owns = location:madurai owns = location:thanjavur
+				owns_or_non_sovereign_subject_owns = location:madurai owns_or_non_sovereign_subject_owns = location:thanjavur
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:madurai } location:madurai = { add_core = root } }
-			if = { limit = { owns = location:thanjavur } location:thanjavur = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:madurai } location:madurai = { add_core = root } } if = { limit = { owns = location:thanjavur } location:thanjavur = { add_core = root } } if = { limit = { owns = location:thanjavur } location:thanjavur = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_vij_07_deccan_triumph = {
@@ -120,14 +116,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_07_deccan_triumph_req_tt
-				OR = { owns = location:bijapur owns = location:golconda }
+				OR = { owns_or_non_sovereign_subject_owns = location:bijapur owns_or_non_sovereign_subject_owns = location:golconda } army_tradition >= 20
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:bijapur } location:bijapur = { add_core = root } }
-			if = { limit = { owns = location:golconda } location:golconda = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:bijapur } location:bijapur = { add_core = root } } if = { limit = { owns = location:golconda } location:golconda = { add_core = root } } if = { limit = { owns = location:bijapur } location:bijapur = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_vij_08_indian_ocean_throne = {
@@ -136,12 +130,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_08_indian_ocean_throne_req_tt
-				owns = location:vijayanagar owns = location:thanjavur num_locations >= 45
+				owns = location:vijayanagar owns_or_non_sovereign_subject_owns = location:thanjavur num_locations >= 45 num_of_ports >= 6
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_vij_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_vij_m2 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_vij_09_grand_irrigation_dams = {
@@ -150,13 +144,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_09_grand_irrigation_dams_req_tt
-				owns = location:vijayanagar gold >= 300
+				owns = location:vijayanagar gold >= 300 any_owned_location = { OR = { has_building = building_type:aqueduct_system has_building = building_type:granary } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 140
-			add_stability = stability_weak_bonus
+			add_gold = 140 add_stability = stability_weak_bonus if = { limit = { owns = location:vijayanagar } location:vijayanagar = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_vij_10_carnatic_temples = {
@@ -165,12 +158,12 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_10_carnatic_temples_req_tt
-				owns = location:vijayanagar current_age_or_later = { age = age_2_renaissance }
+				owns = location:vijayanagar any_owned_location = { OR = { has_building = building_type:university has_building = building_type:theater } } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 } current_age_or_later = { age = age_2_renaissance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
+			culture = { add_cultural_tradition = 10 } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_vij_11_indian_ocean_fleet = {
@@ -179,28 +172,27 @@ oe_msn_vij_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_11_indian_ocean_fleet_req_tt
-				owns = location:thanjavur current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:thanjavur num_of_ports >= 8 navy_tradition >= 20 any_owned_location = { OR = { has_building = building_type:shipyard has_building = building_type:port_authority } } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
-			add_country_modifier = { modifier = oe_msn_vij_m3 years = 20 mode = replace }
+			add_navy_tradition = navy_tradition_mild_bonus add_country_modifier = { modifier = oe_msn_vij_m3 years = 20 mode = replace } add_diplomats = diplomats_mild_bonus
 		}
 	}
 	oe_msn_vij_12_victorious_south_empire = {
 		icon = hindu_empires
 		requires = { oe_msn_vij_04_royal_code_integration oe_msn_vij_08_indian_ocean_throne oe_msn_vij_11_indian_ocean_fleet }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_vij_12_victorious_south_empire_req_tt
-				owns = location:vijayanagar owns = location:thanjavur stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns = location:vijayanagar owns_or_non_sovereign_subject_owns = location:thanjavur stability >= 15 OR = { is_great_power = yes monthly_income_trade_and_tax >= 90 } current_age_or_later = { age = age_5_absolutism }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_vij_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_vij_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.23
 		}
 	}
 }

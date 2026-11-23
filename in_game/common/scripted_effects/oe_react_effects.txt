@@ -172,16 +172,81 @@ oe_react_suppress_hostile_privateers = {
 oe_react_spawn_free_company = {
 	if = {
 		limit = { exists = capital }
-		create_mercenary = {
-			name = oe_react_frontier_free_company
-			home = capital
-			categories = {
-				army_heavy_infantry = 4
-				army_light_cavalry = 2
+		if = {
+			limit = {
+				can_build_units_of_category = sub_unit_category:army_heavy_infantry
+				can_build_units_of_category = sub_unit_category:army_light_cavalry
 			}
-			cost_multiplier = 0.25
-			save_scope_as = oe_react_free_company_band
-			months = 60
+			create_mercenary = {
+				name = oe_react_frontier_free_company
+				home = capital
+				categories = {
+					army_heavy_infantry = 4
+					army_light_cavalry = 2
+				}
+				cost_multiplier = 0.25
+				save_scope_as = oe_react_free_company_band
+				months = 60
+			}
+		}
+		else_if = {
+			limit = {
+				can_build_units_of_category = sub_unit_category:army_light_cavalry
+				can_build_units_of_category = sub_unit_category:army_heavy_cavalry
+			}
+			create_mercenary = {
+				name = oe_react_frontier_free_company
+				home = capital
+				categories = {
+					army_light_cavalry = 4
+					army_heavy_cavalry = 2
+				}
+				cost_multiplier = 0.25
+				save_scope_as = oe_react_free_company_band
+				months = 60
+			}
+		}
+		else_if = {
+			limit = { can_build_units_of_category = sub_unit_category:army_light_cavalry }
+			create_mercenary = {
+				name = oe_react_frontier_free_company
+				home = capital
+				categories = {
+					army_light_cavalry = 6
+				}
+				cost_multiplier = 0.25
+				save_scope_as = oe_react_free_company_band
+				months = 60
+			}
+		}
+		else_if = {
+			limit = { can_build_units_of_category = sub_unit_category:army_heavy_infantry }
+			create_mercenary = {
+				name = oe_react_frontier_free_company
+				home = capital
+				categories = {
+					army_heavy_infantry = 6
+				}
+				cost_multiplier = 0.25
+				save_scope_as = oe_react_free_company_band
+				months = 60
+			}
+		}
+		else_if = {
+			limit = { can_build_units_of_category = sub_unit_category:army_light_infantry }
+			create_mercenary = {
+				name = oe_react_frontier_free_company
+				home = capital
+				categories = {
+					army_light_infantry = 6
+				}
+				cost_multiplier = 0.25
+				save_scope_as = oe_react_free_company_band
+				months = 60
+			}
+		}
+		else = {
+			add_manpower = 1
 		}
 		if = {
 			limit = { exists = scope:oe_react_free_company_band }

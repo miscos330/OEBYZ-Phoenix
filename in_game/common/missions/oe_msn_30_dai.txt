@@ -32,12 +32,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_01_red_river_dykes_req_tt
-				owns = location:thang_long owns = location:van_don stability >= 5
+				owns = location:thang_long owns = location:van_don stability >= 5 any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:aqueduct_system } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { owns = location:thang_long } location:thang_long = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_dai_02_lam_son_banner = {
@@ -46,12 +46,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_02_lam_son_banner_req_tt
-				owns = location:thanh_hoa owns = location:nghe_ann
+				owns_or_non_sovereign_subject_owns = location:thanh_hoa owns_or_non_sovereign_subject_owns = location:nghe_ann any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:weapon_guild } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_manpower = 4
 		}
 	}
 	oe_msn_dai_03_giao_chi_firearms = {
@@ -60,12 +60,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_03_giao_chi_firearms_req_tt
-				owns = location:thang_long gold >= 220 current_age_or_later = { age = age_2_renaissance }
+				owns = location:thang_long gold >= 220 army_tradition >= 15 any_owned_location = { OR = { has_building = building_type:cannon_maker has_building = building_type:armory } } OR = { has_embraced_institution = institution:professional_armies has_advance = professional_armies_advance } current_age_or_later = { age = age_2_renaissance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_dai_04_northern_pass_shield = {
@@ -74,12 +74,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_04_northern_pass_shield_req_tt
-				owns = location:lang_son stability >= 15 current_age_or_later = { age = age_3_discovery }
+				owns_or_non_sovereign_subject_owns = location:lang_son stability >= 15 army_tradition >= 22 any_owned_location = { OR = { has_building = building_type:training_fields has_building = building_type:castle } } current_age_or_later = { age = age_3_discovery }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_sea2_msn_dai_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_sea2_msn_dai_m1 years = 20 mode = replace } if = { limit = { owns = location:lang_son } location:lang_son = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_dai_05_hue_coastal_march = {
@@ -88,13 +88,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_05_hue_coastal_march_req_tt
-				owns = location:amarendrapura
+				owns_or_non_sovereign_subject_owns = location:amarendrapura
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:amarendrapura } location:amarendrapura = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:amarendrapura } location:amarendrapura = { add_core = root } } if = { limit = { owns = location:amarendrapura } location:amarendrapura = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus if = { limit = { is_subject = no country_exists = c:CHA NOT = { tag = CHA } c:CHA = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:CHA type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_dai_06_vijaya_nam_tien = {
@@ -103,13 +102,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_06_vijaya_nam_tien_req_tt
-				owns = location:vijaya
+				owns_or_non_sovereign_subject_owns = location:vijaya
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:vijaya } location:vijaya = { add_core = root } }
-			add_army_tradition = army_tradition_mild_bonus
+			if = { limit = { owns = location:vijaya } location:vijaya = { add_core = root } } if = { limit = { owns = location:vijaya } location:vijaya = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_army_tradition = army_tradition_mild_bonus
 		}
 	}
 	oe_msn_dai_07_panduranga_frontier = {
@@ -118,13 +116,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_07_panduranga_frontier_req_tt
-				owns = location:panduranga num_locations >= 45
+				owns_or_non_sovereign_subject_owns = location:panduranga num_locations >= 45 num_of_ports >= 5
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
-			add_prestige = prestige_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { owns = location:panduranga } location:panduranga = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_dai_08_mekong_delta_pearl = {
@@ -133,13 +130,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_08_mekong_delta_pearl_req_tt
-				owns = location:prey_nokor current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:prey_nokor any_owned_location = { OR = { has_building = building_type:shipyard has_building = building_type:customs_house } } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:prey_nokor } location:prey_nokor = { add_core = root } }
-			add_country_modifier = { modifier = oe_sea2_msn_dai_m2 years = 20 mode = replace }
+			if = { limit = { owns = location:prey_nokor } location:prey_nokor = { add_core = root } } if = { limit = { owns = location:prey_nokor } location:prey_nokor = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_country_modifier = { modifier = oe_sea2_msn_dai_m2 years = 20 mode = replace }
 		}
 	}
 	oe_msn_dai_09_hong_duc_code = {
@@ -148,12 +144,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_09_hong_duc_code_req_tt
-				owns = location:thang_long current_age_or_later = { age = age_2_renaissance }
+				owns = location:thang_long any_owned_location = { OR = { has_building = building_type:university has_building = building_type:library } } OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 } current_age_or_later = { age = age_2_renaissance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
+			culture = { add_cultural_tradition = 10 } add_legitimacy = legitimacy_mild_bonus
 		}
 	}
 	oe_msn_dai_10_van_don_silk_port = {
@@ -162,12 +158,12 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_10_van_don_silk_port_req_tt
-				owns = location:van_don owns = location:thang_long gold >= 300
+				owns = location:van_don owns = location:thang_long gold >= 300 monthly_income_trade_and_tax >= 22 any_owned_location = { OR = { has_building = building_type:porcelain_guild has_building = building_type:wharf } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
+			add_gold = 160 if = { limit = { owns = location:van_don } location:van_don = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_dai_11_nha_nhac_civil_exam = {
@@ -176,27 +172,27 @@ oe_msn_dai_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_11_nha_nhac_civil_exam_req_tt
-				owns = location:thang_long stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:thang_long stability >= 15 capital = { development >= 30 } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_sea2_msn_dai_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_sea2_msn_dai_m3 years = 20 mode = replace } culture = { add_cultural_tradition = 8 }
 		}
 	}
 	oe_msn_dai_12_eternal_dai_viet = {
 		icon = dai_ca_tru
 		requires = { oe_msn_dai_04_northern_pass_shield oe_msn_dai_08_mekong_delta_pearl oe_msn_dai_11_nha_nhac_civil_exam }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dai_12_eternal_dai_viet_req_tt
-				owns = location:thang_long owns = location:vijaya owns = location:prey_nokor stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:thang_long owns_or_non_sovereign_subject_owns = location:vijaya owns_or_non_sovereign_subject_owns = location:prey_nokor stability >= 18 OR = { is_great_power = yes monthly_income_trade_and_tax >= 75 } current_age_or_later = { age = age_5_absolutism }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_sea2_msn_dai_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_sea2_msn_dai_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.28
 		}
 	}
 }

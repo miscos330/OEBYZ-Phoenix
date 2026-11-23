@@ -34,13 +34,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_01_gold_of_bambuk_req_tt
-				OR = { owns = location:niani owns = location:gao } OR = { owns = location:kayes owns = location:siguiri owns = location:gao } stability >= 5
+				OR = { owns_or_non_sovereign_subject_owns = location:niani owns_or_non_sovereign_subject_owns = location:gao } OR = { owns_or_non_sovereign_subject_owns = location:kayes owns_or_non_sovereign_subject_owns = location:siguiri owns_or_non_sovereign_subject_owns = location:gao } stability >= 5 capital = { development >= 12 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 140
-			add_stability = stability_mild_bonus
+			add_gold = 140 add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_mal_02_sofa_cavalry_corps = {
@@ -49,13 +48,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_02_sofa_cavalry_corps_req_tt
-				gold >= 180 stability >= 10
+				gold >= 180 stability >= 10 OR = { any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:weapon_guild } } army_tradition >= 15 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			set_variable = { name = oe_aa2_sofa_unlocked value = 1 }
-			add_army_tradition = army_tradition_mild_bonus
+			set_variable = { name = oe_aa2_sofa_unlocked value = 1 } add_army_tradition = army_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_mal_03_askia_imperial_cabinet = {
@@ -64,13 +62,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_03_askia_imperial_cabinet_req_tt
-				stability >= 12 current_age_or_later = { age = age_2_renaissance }
+				stability >= 12 current_age_or_later = { age = age_2_renaissance } OR = { any_owned_location = { OR = { has_building = building_type:counting_house has_building = building_type:guild_hall } } OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.50 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
-			add_stability = stability_weak_bonus
+			add_prestige = prestige_mild_bonus add_stability = stability_weak_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_mal_04_sahel_gunpowder_army = {
@@ -79,12 +76,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_04_sahel_gunpowder_army_req_tt
-				OR = { owns = location:timbuktu owns = location:gao } stability >= 15 current_age_or_later = { age = age_4_reformation }
+				OR = { owns_or_non_sovereign_subject_owns = location:timbuktu owns_or_non_sovereign_subject_owns = location:gao } stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { any_owned_location = { OR = { has_building = building_type:barracks has_building = building_type:armory } } army_tradition >= 30 } OR = { has_advance = pike_and_shot_advance has_embraced_institution = institution:artillery_institution army_tradition >= 35 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_mal_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_mal_m1 years = 20 mode = replace } add_army_tradition = army_tradition_mild_bonus
 		}
 	}
 	oe_msn_mal_05_djenne_inland_delta = {
@@ -93,14 +90,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_05_djenne_inland_delta_req_tt
-				owns = location:djenne owns = location:segou
+				owns_or_non_sovereign_subject_owns = location:djenne owns_or_non_sovereign_subject_owns = location:segou
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:djenne } location:djenne = { add_core = root } }
-			if = { limit = { owns = location:segou } location:segou = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:djenne } location:djenne = { add_core = root } } if = { limit = { owns = location:segou } location:segou = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:djenne } location:djenne = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:SON NOT = { tag = SON } c:SON = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:SON type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_mal_06_timbuktu_gao_axis = {
@@ -109,14 +104,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_06_timbuktu_gao_axis_req_tt
-				owns = location:timbuktu owns = location:gao
+				owns_or_non_sovereign_subject_owns = location:timbuktu owns_or_non_sovereign_subject_owns = location:gao
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:timbuktu } location:timbuktu = { add_core = root } }
-			if = { limit = { owns = location:gao } location:gao = { add_core = root } }
-			add_gold = 160
+			if = { limit = { owns = location:timbuktu } location:timbuktu = { add_core = root } } if = { limit = { owns = location:gao } location:gao = { add_core = root } } add_gold = 160 if = { limit = { owns = location:timbuktu } location:timbuktu = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:MOS NOT = { tag = MOS } c:MOS = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MOS type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_mal_07_taghaza_salt_caravans = {
@@ -125,14 +118,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_07_taghaza_salt_caravans_req_tt
-				OR = { owns = location:walata owns = location:taghaza } num_locations >= 40
+				OR = { owns_or_non_sovereign_subject_owns = location:walata owns_or_non_sovereign_subject_owns = location:taghaza } num_locations >= 40 OR = { any_owned_location = { OR = { has_building = building_type:caravanserai has_building = building_type:marketplace } } monthly_income_trade_and_tax >= 25 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:walata } location:walata = { add_core = root } }
-			if = { limit = { owns = location:taghaza } location:taghaza = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:walata } location:walata = { add_core = root } } if = { limit = { owns = location:taghaza } location:taghaza = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_mal_08_niger_river_fleet = {
@@ -141,12 +132,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_08_niger_river_fleet_req_tt
-				owns = location:timbuktu owns = location:gao owns = location:djenne current_age_or_later = { age = age_3_discovery }
+				owns_or_non_sovereign_subject_owns = location:timbuktu owns_or_non_sovereign_subject_owns = location:gao owns_or_non_sovereign_subject_owns = location:djenne current_age_or_later = { age = age_3_discovery } OR = { any_owned_location = { OR = { has_building = building_type:wharf has_building = building_type:trading_hub } } monthly_income_trade_and_tax >= 35 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_mal_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_mal_m2 years = 20 mode = replace } add_navy_tradition = navy_tradition_mild_bonus
 		}
 	}
 	oe_msn_mal_09_sankore_university = {
@@ -155,12 +146,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_09_sankore_university_req_tt
-				owns = location:timbuktu current_age_or_later = { age = age_2_renaissance }
+				owns_or_non_sovereign_subject_owns = location:timbuktu current_age_or_later = { age = age_2_renaissance } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 } OR = { any_owned_location = { OR = { has_building = building_type:madrasa has_building = building_type:university } } any_owned_location = { has_building = building_type:library } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 12 }
+			culture = { add_cultural_tradition = 12 } add_prestige = prestige_weak_bonus if = { limit = { owns = location:timbuktu } location:timbuktu = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_mal_10_gold_standard_treasury = {
@@ -169,13 +160,12 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_10_gold_standard_treasury_req_tt
-				gold >= 320 OR = { owns = location:niani owns = location:gao }
+				gold >= 320 OR = { owns_or_non_sovereign_subject_owns = location:niani owns_or_non_sovereign_subject_owns = location:gao } monthly_income_trade_and_tax >= 30
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 180
-			add_prestige = prestige_mild_bonus
+			add_gold = 180 add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_mal_11_trans_saharan_hegemony = {
@@ -184,27 +174,27 @@ oe_msn_mal_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_11_trans_saharan_hegemony_req_tt
-				owns = location:timbuktu OR = { owns = location:koumbi_saleh owns = location:kano } stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:timbuktu OR = { owns_or_non_sovereign_subject_owns = location:koumbi_saleh owns_or_non_sovereign_subject_owns = location:kano } stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:global_trade has_embraced_institution = institution:banking monthly_income_trade_and_tax >= 55 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_mal_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_mal_m3 years = 20 mode = replace } add_gold = 200
 		}
 	}
 	oe_msn_mal_12_west_african_gunpowder_empire = {
 		icon = epic_of_sundiata
 		requires = { oe_msn_mal_04_sahel_gunpowder_army oe_msn_mal_08_niger_river_fleet oe_msn_mal_11_trans_saharan_hegemony }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mal_12_west_african_gunpowder_empire_req_tt
-				owns = location:niani owns = location:timbuktu owns = location:gao stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:niani owns_or_non_sovereign_subject_owns = location:timbuktu owns_or_non_sovereign_subject_owns = location:gao stability >= 18 current_age_or_later = { age = age_5_absolutism } capital = { development >= 24 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 75 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_mal_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_mal_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.35
 		}
 	}
 }

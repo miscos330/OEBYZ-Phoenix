@@ -32,12 +32,12 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_01_paris_orleans_req_tt
-				owns = location:paris owns = location:orleans stability >= 5
+				owns = location:paris owns = location:orleans stability >= 5 capital = { development >= 18 } any_owned_location = { OR = { has_building = building_type:marketplace has_building = building_type:castle } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:ENG NOT = { tag = ENG } c:ENG = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:ENG type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_fra_02_compagnies_gendarmes = {
@@ -46,12 +46,12 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_02_compagnies_gendarmes_req_tt
-				owns = location:paris gold >= 220
+				owns = location:paris gold >= 220 OR = { army_tradition >= 15 any_owned_location = { OR = { has_building = building_type:armory has_building = building_type:castle } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_fra_03_edict_reconciliation = {
@@ -60,12 +60,12 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_03_edict_reconciliation_req_tt
-				owns = location:paris stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:paris stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.45 } OR = { has_embraced_institution = institution:confessionalism any_owned_location = { OR = { has_building = building_type:cathedral has_building = building_type:university } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_fra_04_royal_absolutism = {
@@ -74,12 +74,12 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_04_royal_absolutism_req_tt
-				owns = location:paris current_age_or_later = { age = age_4_reformation } num_locations >= 45
+				owns = location:paris current_age_or_later = { age = age_4_reformation } num_locations >= 45 monthly_income_trade_and_tax >= 40
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_fra_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_fra_m1 years = 20 mode = replace } trigger_event_non_silently = oe_m2e.11
 		}
 	}
 	oe_msn_fra_05_bordeaux_aquitaine = {
@@ -88,13 +88,12 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_05_bordeaux_aquitaine_req_tt
-				owns = location:bordeaux
+				owns = location:bordeaux OR = { num_of_ports >= 6 any_owned_location = { OR = { has_building = building_type:wharf has_building = building_type:marketplace } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:bordeaux } location:bordeaux = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:bordeaux } location:bordeaux = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus } }
 		}
 	}
 	oe_msn_fra_06_calais_channel = {
@@ -108,8 +107,7 @@ oe_msn_fra_destiny = {
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:calais } location:calais = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:calais } location:calais = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { is_subject = no country_exists = c:MLO NOT = { tag = MLO } c:MLO = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MLO type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_fra_07_italian_wars_milan = {
@@ -118,14 +116,12 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_07_italian_wars_milan_req_tt
-				OR = { owns = location:milano owns = location:naples owns = location:paris } num_locations >= 50
+				OR = { owns_or_non_sovereign_subject_owns = location:milano owns_or_non_sovereign_subject_owns = location:naples owns = location:paris } num_locations >= 50 OR = { army_tradition >= 24 num_subjects >= 2 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:milano } location:milano = { add_core = root } }
-			if = { limit = { owns = location:naples } location:naples = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:milano } location:milano = { add_core = root } } if = { limit = { owns = location:naples } location:naples = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus } }
 		}
 	}
 	oe_msn_fra_08_continental_arbiter = {
@@ -134,12 +130,12 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_08_continental_arbiter_req_tt
-				owns = location:paris owns = location:bordeaux owns = location:calais num_locations >= 55
+				owns = location:paris owns = location:bordeaux owns = location:calais num_locations >= 55 is_great_power = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_fra_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_fra_m2 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_fra_09_atlantic_privateers = {
@@ -148,12 +144,12 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_09_atlantic_privateers_req_tt
-				owns = location:bordeaux current_age_or_later = { age = age_3_discovery }
+				owns = location:bordeaux current_age_or_later = { age = age_3_discovery } num_of_ports >= 10 OR = { navy_tradition >= 18 any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:dock } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus } }
 		}
 	}
 	oe_msn_fra_10_fontainebleau_arts = {
@@ -162,12 +158,12 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_10_fontainebleau_arts_req_tt
-				owns = location:paris gold >= 400
+				owns = location:paris gold >= 400 OR = { has_embraced_institution = institution:renaissance any_owned_location = { OR = { has_building = building_type:art_school has_building = building_type:arts_academy } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
+			culture = { add_cultural_tradition = 8 } if = { limit = { owns = location:paris } location:paris = { add_location_modifier = { modifier = oe_m2e_loc_fra_royal_atelier years = 25 mode = replace } change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_fra_11_enlightenment_salons = {
@@ -176,27 +172,27 @@ oe_msn_fra_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_11_enlightenment_salons_req_tt
-				owns = location:paris stability >= 18 current_age_or_later = { age = age_4_reformation }
+				owns = location:paris stability >= 18 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:printing_press any_owned_location = { OR = { has_building = building_type:printing_press_shop has_building = building_type:university } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_fra_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_fra_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_fra_12_french_code_destiny = {
 		icon = fra_code_civil
 		requires = { oe_msn_fra_04_royal_absolutism oe_msn_fra_08_continental_arbiter oe_msn_fra_11_enlightenment_salons }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_fra_12_french_code_destiny_req_tt
-				owns = location:paris owns = location:bordeaux owns = location:calais stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns = location:paris owns = location:bordeaux owns = location:calais stability >= 18 current_age_or_later = { age = age_5_absolutism } is_great_power = yes capital = { development >= 32 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_fra_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_fra_m4 years = 50 mode = replace } trigger_event_non_silently = oe_m2e.12
 		}
 	}
 }

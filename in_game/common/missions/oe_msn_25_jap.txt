@@ -32,12 +32,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_01_kyoto_kamakura_req_tt
-				OR = { owns = location:kyoto owns = location:kamakura owns = location:toshima } stability >= 5
+				OR = { owns_or_non_sovereign_subject_owns = location:kyoto owns_or_non_sovereign_subject_owns = location:kamakura owns_or_non_sovereign_subject_owns = location:toshima } stability >= 5 any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:temple } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_jap_02_jokamachi_land_survey = {
@@ -46,12 +46,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_02_jokamachi_land_survey_req_tt
-				OR = { owns = location:kyoto owns = location:osaka owns = location:toshima } stability >= 10 gold >= 220
+				OR = { owns_or_non_sovereign_subject_owns = location:kyoto owns_or_non_sovereign_subject_owns = location:osaka owns_or_non_sovereign_subject_owns = location:toshima } stability >= 10 gold >= 220 any_owned_location = { OR = { has_building = building_type:marketplace has_building = building_type:granary } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 120
+			add_gold = 120 if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_jap_03_ashigaru_tanegashima = {
@@ -60,12 +60,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_03_ashigaru_tanegashima_req_tt
-				OR = { owns = location:kyoto owns = location:osaka owns = location:toshima } gold >= 250 current_age_or_later = { age = age_3_discovery }
+				OR = { owns_or_non_sovereign_subject_owns = location:kyoto owns_or_non_sovereign_subject_owns = location:osaka owns_or_non_sovereign_subject_owns = location:toshima } gold >= 250 army_tradition >= 20 any_owned_location = { OR = { has_building = building_type:cannon_maker has_building = building_type:training_fields } } OR = { has_embraced_institution = institution:professional_armies has_advance = pike_and_shot_advance } current_age_or_later = { age = age_3_discovery }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_manpower = 5
 		}
 	}
 	oe_msn_jap_04_bushido_central_bakufu = {
@@ -74,12 +74,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_04_bushido_central_bakufu_req_tt
-				OR = { owns = location:toshima owns = location:kyoto } stability >= 15 current_age_or_later = { age = age_4_reformation }
+				OR = { owns_or_non_sovereign_subject_owns = location:toshima owns_or_non_sovereign_subject_owns = location:kyoto } stability >= 15 army_tradition >= 28 OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 } any_owned_location = { OR = { has_building = building_type:barracks has_building = building_type:bastion } } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_jap_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_jap_m1 years = 20 mode = replace } add_legitimacy = legitimacy_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_jap_05_osaka_kinai_heart = {
@@ -88,14 +88,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_05_osaka_kinai_heart_req_tt
-				owns = location:kyoto owns = location:osaka
+				owns_or_non_sovereign_subject_owns = location:kyoto owns_or_non_sovereign_subject_owns = location:osaka
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:kyoto } location:kyoto = { add_core = root } }
-			if = { limit = { owns = location:osaka } location:osaka = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:kyoto } location:kyoto = { add_core = root } } if = { limit = { owns = location:osaka } location:osaka = { add_core = root } } if = { limit = { owns = location:osaka } location:osaka = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_jap_06_edo_kanto_capital = {
@@ -104,14 +102,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_06_edo_kanto_capital_req_tt
-				owns = location:toshima owns = location:kamakura
+				owns_or_non_sovereign_subject_owns = location:toshima owns_or_non_sovereign_subject_owns = location:kamakura
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:toshima } location:toshima = { add_core = root } }
-			if = { limit = { owns = location:kamakura } location:kamakura = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:toshima } location:toshima = { add_core = root } } if = { limit = { owns = location:kamakura } location:kamakura = { add_core = root } } if = { limit = { owns = location:toshima } location:toshima = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_jap_07_kyushu_hakata_nagasaki = {
@@ -120,14 +116,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_07_kyushu_hakata_nagasaki_req_tt
-				owns = location:hakata owns = location:nishisonogi
+				owns_or_non_sovereign_subject_owns = location:hakata owns_or_non_sovereign_subject_owns = location:nishisonogi has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:hakata } location:hakata = { add_core = root } }
-			if = { limit = { owns = location:nishisonogi } location:nishisonogi = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:hakata } location:hakata = { add_core = root } } if = { limit = { owns = location:nishisonogi } location:nishisonogi = { add_core = root } } if = { limit = { owns = location:nishisonogi } location:nishisonogi = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_jap_08_rising_sun_unity = {
@@ -136,12 +130,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_08_rising_sun_unity_req_tt
-				owns = location:kyoto owns = location:osaka owns = location:toshima owns = location:hakata
+				owns_or_non_sovereign_subject_owns = location:kyoto owns_or_non_sovereign_subject_owns = location:osaka owns_or_non_sovereign_subject_owns = location:toshima owns_or_non_sovereign_subject_owns = location:hakata num_of_ports >= 8
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_jap_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_jap_m2 years = 20 mode = replace } add_stability = stability_mild_bonus
 		}
 	}
 	oe_msn_jap_09_iwami_ginzan_silver = {
@@ -150,13 +144,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_09_iwami_ginzan_silver_req_tt
-				owns = location:nima gold >= 300
+				owns_or_non_sovereign_subject_owns = location:nima gold >= 300 monthly_income_trade_and_tax >= 25
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:nima } location:nima = { add_core = root } }
-			add_gold = 200
+			if = { limit = { owns = location:nima } location:nima = { add_core = root } } if = { limit = { owns = location:nima } location:nima = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_gold = 200
 		}
 	}
 	oe_msn_jap_10_red_seal_ships = {
@@ -165,13 +158,12 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_10_red_seal_ships_req_tt
-				OR = { owns = location:nishisonogi owns = location:hakata } current_age_or_later = { age = age_3_discovery }
+				OR = { owns_or_non_sovereign_subject_owns = location:nishisonogi owns_or_non_sovereign_subject_owns = location:hakata } navy_tradition >= 15 any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:trading_hub } } current_age_or_later = { age = age_3_discovery }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
-			add_gold = 160
+			add_navy_tradition = navy_tradition_mild_bonus add_gold = 160 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_jap_11_rangaku_open_seas = {
@@ -180,28 +172,27 @@ oe_msn_jap_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_11_rangaku_open_seas_req_tt
-				owns = location:nishisonogi stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:nishisonogi stability >= 15 capital = { development >= 32 } any_owned_location = { OR = { has_building = building_type:shipyard has_building = building_type:printing_press_shop } } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
-			add_country_modifier = { modifier = oe_msn_jap_m3 years = 20 mode = replace }
+			culture = { add_cultural_tradition = 8 } add_country_modifier = { modifier = oe_msn_jap_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_jap_12_pacific_maritime_hegemon = {
 		icon = hachiman_worship
 		requires = { oe_msn_jap_04_bushido_central_bakufu oe_msn_jap_08_rising_sun_unity oe_msn_jap_11_rangaku_open_seas }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_jap_12_pacific_maritime_hegemon_req_tt
-				owns = location:kyoto owns = location:toshima owns = location:nima stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:kyoto owns_or_non_sovereign_subject_owns = location:toshima owns_or_non_sovereign_subject_owns = location:nima stability >= 18 OR = { is_great_power = yes monthly_income_trade_and_tax >= 90 } current_age_or_later = { age = age_5_absolutism }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_jap_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_jap_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.27
 		}
 	}
 }

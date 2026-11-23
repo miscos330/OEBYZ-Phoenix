@@ -32,13 +32,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_01_buda_pest_crown_req_tt
-				owns = location:buda owns = location:pest owns = location:bratislava stability >= 5
+				owns = location:buda owns = location:pest owns_or_non_sovereign_subject_owns = location:bratislava stability >= 5 any_owned_location = { has_building = building_type:castle }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_weak_bonus
-			add_prestige = prestige_mild_bonus
+			add_stability = stability_weak_bonus add_prestige = prestige_mild_bonus if = { limit = { owns = location:buda } location:buda = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_hun_02_castle_warriors = {
@@ -47,12 +46,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_02_castle_warriors_req_tt
-				owns = location:buda stability >= 10
+				owns = location:buda stability >= 10 army_tradition >= 15 OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.45 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { is_subject = no country_exists = c:TUR NOT = { tag = TUR } c:TUR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:TUR type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:SER NOT = { tag = SER } c:SER = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:SER type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_hun_03_black_army_standing = {
@@ -61,12 +60,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_03_black_army_standing_req_tt
-				owns = location:buda gold >= 250 current_age_or_later = { age = age_2_renaissance }
+				owns = location:buda gold >= 250 current_age_or_later = { age = age_2_renaissance } any_owned_location = { has_building = building_type:armory } has_embraced_institution = institution:professional_armies
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_hun_04_danube_multi_faith = {
@@ -75,12 +74,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_04_danube_multi_faith_req_tt
-				owns = location:buda stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:buda stability >= 15 current_age_or_later = { age = age_4_reformation } has_embraced_institution = institution:confessionalism OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_hun_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_hun_m1 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_hun_05_belgrade_bulwark = {
@@ -89,13 +88,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_05_belgrade_bulwark_req_tt
-				owns = location:belgrad
+				owns_or_non_sovereign_subject_owns = location:belgrad any_owned_location = { has_building = building_type:weapon_guild }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:belgrad } location:belgrad = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:belgrad } location:belgrad = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:belgrad } location:belgrad = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:VEN NOT = { tag = VEN } c:VEN = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:VEN type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_hun_06_adriatic_zara = {
@@ -104,13 +102,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_06_adriatic_zara_req_tt
-				owns = location:zara
+				owns_or_non_sovereign_subject_owns = location:zara has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:zara } location:zara = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:zara } location:zara = { add_core = root } } add_prestige = prestige_mild_bonus add_navy_tradition = navy_tradition_mild_bonus if = { limit = { is_subject = no country_exists = c:HAB NOT = { tag = HAB } c:HAB = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:HAB type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:BOH NOT = { tag = BOH } c:BOH = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BOH type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_hun_07_vienna_or_bohemia = {
@@ -119,14 +116,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_07_vienna_or_bohemia_req_tt
-				OR = { owns = location:vienna owns = location:prague owns = location:buda } num_locations >= 35
+				OR = { owns_or_non_sovereign_subject_owns = location:vienna owns_or_non_sovereign_subject_owns = location:prague owns = location:buda } num_locations >= 35 army_tradition >= 25
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:vienna } location:vienna = { add_core = root } }
-			if = { limit = { owns = location:prague } location:prague = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:vienna } location:vienna = { add_core = root } } if = { limit = { owns = location:prague } location:prague = { add_core = root } } add_prestige = prestige_mild_bonus add_army_tradition = army_tradition_weak_bonus
 		}
 	}
 	oe_msn_hun_08_carpathian_mastery = {
@@ -135,12 +130,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_08_carpathian_mastery_req_tt
-				owns = location:buda owns = location:belgrad num_locations >= 40
+				owns = location:buda owns_or_non_sovereign_subject_owns = location:belgrad num_locations >= 40 OR = { num_subjects >= 1 capital = { development >= 22 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_hun_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_hun_m2 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_hun_09_gold_forint_coinage = {
@@ -149,12 +144,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_09_gold_forint_coinage_req_tt
-				owns = location:buda owns = location:bratislava gold >= 300
+				owns = location:buda owns_or_non_sovereign_subject_owns = location:bratislava gold >= 300 any_owned_location = { has_building = building_type:marketplace } monthly_income_trade_and_tax >= 22
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
+			add_gold = 150 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { owns = location:pest } location:pest = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_hun_10_corvinian_library = {
@@ -163,12 +158,12 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_10_corvinian_library_req_tt
-				owns = location:buda current_age_or_later = { age = age_2_renaissance }
+				owns = location:buda current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:university has_building = building_type:library } } capital = { development >= 24 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
+			culture = { add_cultural_tradition = 8 } if = { limit = { owns = location:buda } location:buda = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_hun_11_danube_river_commerce = {
@@ -177,27 +172,27 @@ oe_msn_hun_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_11_danube_river_commerce_req_tt
-				owns = location:buda stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:buda stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:customs_house has_building = building_type:cloth_workshop } } monthly_income_trade_and_tax >= 40
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_hun_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_hun_m3 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_hun_12_danubian_superpower = {
 		icon = hun_hungarian_reformation
 		requires = { oe_msn_hun_04_danube_multi_faith oe_msn_hun_08_carpathian_mastery oe_msn_hun_11_danube_river_commerce }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_hun_12_danubian_superpower_req_tt
-				owns = location:buda owns = location:belgrad stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns = location:buda owns_or_non_sovereign_subject_owns = location:belgrad stability >= 15 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:star_fort has_building = building_type:stock_exchange } } OR = { is_great_power = yes monthly_income_trade_and_tax >= 70 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_hun_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_hun_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.4
 		}
 	}
 }

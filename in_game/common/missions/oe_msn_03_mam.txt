@@ -32,13 +32,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_01_rawk_cadastre_req_tt
-				owns = location:cairo owns = location:alexandria stability >= 5
+				owns = location:cairo owns = location:alexandria stability >= 5 capital = { development >= 18 } any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 120
-			add_stability = stability_weak_bonus
+			add_gold = 120 add_stability = stability_weak_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_bonus } }
 		}
 	}
 	oe_msn_mam_02_bahri_burji_order = {
@@ -47,12 +46,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_02_bahri_burji_order_req_tt
-				owns = location:cairo stability >= 12
+				owns = location:cairo stability >= 12 OR = { army_tradition >= 15 any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:madrasa } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } } if = { limit = { is_subject = no country_exists = c:TUR NOT = { tag = TUR } c:TUR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:TUR type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_mam_03_fifth_corps_firearms = {
@@ -61,12 +60,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_03_fifth_corps_firearms_req_tt
-				owns = location:cairo gold >= 250 current_age_or_later = { age = age_3_discovery }
+				owns = location:cairo gold >= 250 current_age_or_later = { age = age_3_discovery } OR = { has_advance = gunpowder_advance has_advance = pike_and_shot_advance any_owned_location = { OR = { has_building = building_type:cannon_maker has_building = building_type:training_fields } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus } }
 		}
 	}
 	oe_msn_mam_04_abolish_iqta_farming = {
@@ -75,12 +74,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_04_abolish_iqta_farming_req_tt
-				owns = location:cairo current_age_or_later = { age = age_4_reformation } num_locations >= 35
+				owns = location:cairo current_age_or_later = { age = age_4_reformation } num_locations >= 35 OR = { any_subject = { OR = { is_subject_type = oe_mam_niyabat is_subject_type = oe_mam_sharifate } } monthly_income_trade_and_tax >= 40 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_mam_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_mam_m1 years = 20 mode = replace } trigger_event_non_silently = oe_m2e.5
 		}
 	}
 	oe_msn_mam_05_levant_citadels = {
@@ -89,14 +88,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_05_levant_citadels_req_tt
-				owns = location:damascus owns = location:aleppo
+				owns_or_non_sovereign_subject_owns = location:damascus owns_or_non_sovereign_subject_owns = location:aleppo OR = { any_subject = { is_subject_type = oe_mam_niyabat } any_owned_location = { has_building = building_type:castle } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:damascus } location:damascus = { add_core = root } }
-			if = { limit = { owns = location:aleppo } location:aleppo = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:damascus } location:damascus = { add_core = root } } if = { limit = { owns = location:aleppo } location:aleppo = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus } }
 		}
 	}
 	oe_msn_mam_06_hejaz_sanctuaries = {
@@ -105,15 +102,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_06_hejaz_sanctuaries_req_tt
-				owns = location:jeddah owns = location:mecca owns = location:medina
+				owns_or_non_sovereign_subject_owns = location:jeddah owns_or_non_sovereign_subject_owns = location:mecca owns_or_non_sovereign_subject_owns = location:medina
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:jeddah } location:jeddah = { add_core = root } }
-			if = { limit = { owns = location:mecca } location:mecca = { add_core = root } }
-			if = { limit = { owns = location:medina } location:medina = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:jeddah } location:jeddah = { add_core = root } } if = { limit = { owns = location:mecca } location:mecca = { add_core = root } } if = { limit = { owns = location:medina } location:medina = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_mam_07_aden_red_sea_gate = {
@@ -122,13 +116,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_07_aden_red_sea_gate_req_tt
-				owns = location:adan
+				owns_or_non_sovereign_subject_owns = location:adan OR = { num_of_ports >= 10 navy_tradition >= 15 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:adan } location:adan = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:adan } location:adan = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { is_subject = no country_exists = c:VEN NOT = { tag = VEN } c:VEN = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:VEN type = casus_belli:cb_trade_war_triggered years = 10 } }
 		}
 	}
 	oe_msn_mam_08_diu_indian_ocean = {
@@ -137,13 +130,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_08_diu_indian_ocean_req_tt
-				owns = location:suez owns = location:adan current_age_or_later = { age = age_3_discovery }
+				owns = location:suez owns_or_non_sovereign_subject_owns = location:adan current_age_or_later = { age = age_3_discovery } OR = { navy_tradition >= 25 any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:shipyard } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
-			add_country_modifier = { modifier = oe_msn_mam_m2 years = 20 mode = replace }
+			add_navy_tradition = navy_tradition_mild_bonus add_country_modifier = { modifier = oe_msn_mam_m2 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_mam_09_karimi_funduqs = {
@@ -152,12 +144,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_09_karimi_funduqs_req_tt
-				owns = location:cairo owns = location:alexandria gold >= 350
+				owns = location:cairo owns = location:alexandria gold >= 350 monthly_income_trade_and_tax >= 25 OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
+			add_gold = 150 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { owns = location:alexandria } location:alexandria = { add_location_modifier = { modifier = oe_m2e_loc_mam_nile_shuna years = 20 mode = replace } change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_mam_10_shuna_nile_granary = {
@@ -166,12 +158,12 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_10_shuna_nile_granary_req_tt
-				owns = location:cairo owns = location:alexandria owns = location:damietta
+				owns = location:cairo owns = location:alexandria owns = location:damietta any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:aqueduct_system } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { owns = location:cairo } location:cairo = { add_location_modifier = { modifier = oe_m2e_loc_mam_nile_shuna years = 25 mode = replace } change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_mam_11_trajan_suez_canal = {
@@ -180,27 +172,27 @@ oe_msn_mam_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_11_trajan_suez_canal_req_tt
-				owns = location:suez owns = location:cairo owns = location:alexandria current_age_or_later = { age = age_4_reformation }
+				owns = location:suez owns = location:cairo owns = location:alexandria current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:global_trade any_owned_location = { OR = { has_building = building_type:port_authority has_building = building_type:customs_house } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_mam_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_mam_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_severe_bonus } }
 		}
 	}
 	oe_msn_mam_12_dual_sea_sultanate = {
 		icon = islamic_golden_age
 		requires = { oe_msn_mam_04_abolish_iqta_farming oe_msn_mam_08_diu_indian_ocean oe_msn_mam_11_trajan_suez_canal }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mam_12_dual_sea_sultanate_req_tt
-				owns = location:cairo owns = location:alexandria owns = location:adan stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns = location:cairo owns = location:alexandria owns_or_non_sovereign_subject_owns = location:adan stability >= 15 current_age_or_later = { age = age_5_absolutism } is_great_power = yes capital = { development >= 30 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_mam_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_mam_m4 years = 50 mode = replace } trigger_event_non_silently = oe_m2e.6
 		}
 	}
 }

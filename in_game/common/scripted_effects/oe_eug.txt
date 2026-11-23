@@ -444,20 +444,15 @@ oe_eug_recall_hun_governors = {
     }
 }
 
-# Execute 1347 Chagatai East-West split using existing 1337 realm tags (0 dead tags).
+# Execute 1347 Chagatai East-West split: delegates to oe_chgu_execute_full_east_west_split (v21.0:
+# releases all 14 West Wing amirs while keeping East Wing 3 amirs DGH/QCH/BSB with CHG/Moghulistan),
+# and applies the regional oe_eug flavor names and buffs.
 oe_eug_execute_chg_split = {
     set_global_variable = { name = oe_eug_chg_split value = 1 }
+    oe_chgu_execute_full_east_west_split = yes
     if = {
         limit = { country_exists = c:CHG }
         c:CHG = {
-            if = {
-                limit = { country_exists = c:YSU c:YSU = { is_subject_of = c:CHG } }
-                cancel_subject = c:YSU
-            }
-            if = {
-                limit = { country_exists = c:BRL c:BRL = { is_subject_of = c:CHG } }
-                cancel_subject = c:BRL
-            }
             change_country_name = OE_EUG_NAME_MOGHULISTAN
             add_country_modifier = { modifier = oe_eug_moghulistan_east years = 40 mode = replace }
         }

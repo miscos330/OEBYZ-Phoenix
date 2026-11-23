@@ -4,11 +4,11 @@
 		OR = {
 			religion = religion:orthodox
 			religion = religion:catholic
-		}		
+		}
 		location:jerusalem = {
-            has_owner = yes
-            owner = { OR = { this = root is_subject_or_below_of = root } }
-        }
+			has_owner = yes
+			owner = { OR = { this = root is_subject_or_below_of = root } }
+		}
 	}
 	yelusa_allow_everyone_policy = {
 		potential = {
@@ -18,12 +18,16 @@
 			tolerance_heretic = 1
 		}
 		estate_preferences = {
-			clergy_estate
+			burghers_estate
+			peasants_estate
+		}
+		on_activate = {
+			oe_lw2_transition_burghers = yes
 		}
 		years = 2
 	}
 
-			yelusa_forbid_muslin_policy = {
+	yelusa_forbid_muslin_policy = {
 		potential = {
 		}
 		country_modifier = {
@@ -31,40 +35,52 @@
 			land_morale_modifier = 0.05
 		}
 		estate_preferences = {
+			nobles_estate
 			clergy_estate
+		}
+		on_activate = {
+			oe_lw2_transition_nobles = yes
 		}
 		years = 2
 	}
 
-			yelusa_forbid_enemy_policy = {
+	yelusa_forbid_enemy_policy = {
 		potential = {
 		}
 		country_modifier = {
 			tolerance_own = 3
 			tolerance_heathen = -1
 			tolerance_heretic = -1
-			
 		}
 		estate_preferences = {
 			clergy_estate
 		}
+		on_activate = {
+			oe_lw2_transition_clergy = yes
+		}
 		years = 2
 	}
 
-			yelusa_for_money_policy = {
+	yelusa_for_money_policy = {
 		potential = {
 		}
 		country_modifier = {
-			monthly_gold_income = 20
+			tax_income_efficiency = 0.08
+			monthly_prestige = 0.05
 			tolerance_own = -1
+			clergy_estate_target_satisfaction = small_permanent_target_satisfaction_penalty
 		}
 		estate_preferences = {
-			clergy_estate
+			burghers_estate
+			crown_estate
+		}
+		on_activate = {
+			oe_lw2_transition_burghers = yes
 		}
 		years = 2
 	}
 
-		yelusa_allow_byz_policy = {
+	yelusa_allow_byz_policy = {
 		potential = {
 			has_or_had_tag = BYZ
 		}
@@ -75,8 +91,11 @@
 		}
 		estate_preferences = {
 			clergy_estate
+			crown_estate
+		}
+		on_activate = {
+			oe_lw2_transition_clergy = yes
 		}
 		years = 2
 	}
-
 }

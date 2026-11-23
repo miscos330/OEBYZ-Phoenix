@@ -32,13 +32,12 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_01_gather_rus_req_tt
-				owns = location:moscow owns = location:novgorod stability >= 5
+				owns = location:moscow owns = location:novgorod stability >= 5 OR = { capital = { development >= 16 } any_owned_location = { OR = { has_building = building_type:marketplace has_building = building_type:castle } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:novgorod } location:novgorod = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:novgorod } location:novgorod = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:GLH NOT = { tag = GLH } c:GLH = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:GLH type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_rus_02_third_rome_patriarch = {
@@ -47,13 +46,12 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_02_third_rome_patriarch_req_tt
-				owns = location:moscow stability >= 12
+				owns = location:moscow stability >= 12 OR = { any_owned_location = { OR = { has_building = building_type:cathedral has_building = building_type:monastery } } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.55 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
-			add_stability = stability_weak_bonus
+			add_prestige = prestige_mild_bonus add_stability = stability_weak_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus } }
 		}
 	}
 	oe_msn_rus_03_artillery_yard = {
@@ -62,12 +60,12 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_03_artillery_yard_req_tt
-				owns = location:moscow gold >= 250 current_age_or_later = { age = age_3_discovery }
+				owns = location:moscow gold >= 250 current_age_or_later = { age = age_3_discovery } OR = { any_owned_location = { OR = { has_building = building_type:cannon_maker has_building = building_type:armory } } army_tradition >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { owns = location:moscow } location:moscow = { add_location_modifier = { modifier = oe_m2e_loc_rus_white_kremlin years = 25 mode = replace } change_development = development_mild_bonus } }
 		}
 	}
 	oe_msn_rus_04_new_order_guard = {
@@ -76,12 +74,12 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_04_new_order_guard_req_tt
-				owns = location:moscow current_age_or_later = { age = age_4_reformation } num_locations >= 45
+				owns = location:moscow current_age_or_later = { age = age_4_reformation } num_locations >= 45 OR = { army_tradition >= 28 any_owned_location = { OR = { has_building = building_type:barracks has_building = building_type:bastion } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_rus_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_rus_m1 years = 20 mode = replace } trigger_event_non_silently = oe_m2e.7
 		}
 	}
 	oe_msn_rus_05_volga_kazan = {
@@ -95,8 +93,7 @@ oe_msn_rus_destiny = {
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:kazan } location:kazan = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:kazan } location:kazan = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus } }
 		}
 	}
 	oe_msn_rus_06_astrakhan_caspian = {
@@ -105,13 +102,12 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_06_astrakhan_caspian_req_tt
-				owns = location:astrakhan
+				owns = location:astrakhan OR = { num_locations >= 40 monthly_income_trade_and_tax >= 25 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:astrakhan } location:astrakhan = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:astrakhan } location:astrakhan = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_rus_07_siberia_eastward = {
@@ -120,14 +116,12 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_07_siberia_eastward_req_tt
-				OR = { owns = location:tobolsk owns = location:irkutsk }
+				OR = { owns = location:tobolsk owns = location:irkutsk } OR = { num_locations >= 50 num_subjects >= 2 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:tobolsk } location:tobolsk = { add_core = root } }
-			if = { limit = { owns = location:irkutsk } location:irkutsk = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:tobolsk } location:tobolsk = { add_core = root } } if = { limit = { owns = location:irkutsk } location:irkutsk = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:cossacks_estate } add_estate_satisfaction = { type = estate_type:cossacks_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_rus_08_window_on_neva = {
@@ -136,13 +130,12 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_08_window_on_neva_req_tt
-				owns = location:neva
+				owns = location:neva OR = { num_of_ports >= 6 navy_tradition >= 15 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:neva } location:neva = { add_core = root } }
-			add_country_modifier = { modifier = oe_msn_rus_m2 years = 20 mode = replace }
+			if = { limit = { owns = location:neva } location:neva = { add_core = root } } add_country_modifier = { modifier = oe_msn_rus_m2 years = 20 mode = replace } add_navy_tradition = navy_tradition_mild_bonus if = { limit = { is_subject = no country_exists = c:POL NOT = { tag = POL } c:POL = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:POL type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_rus_09_white_stone_tax = {
@@ -151,12 +144,12 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_09_white_stone_tax_req_tt
-				owns = location:moscow gold >= 300
+				owns = location:moscow gold >= 300 monthly_income_trade_and_tax >= 22 any_owned_location = { OR = { has_building = building_type:counting_house has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
+			add_gold = 150 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_rus_10_kyakhta_fur_tea = {
@@ -165,12 +158,12 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_10_kyakhta_fur_tea_req_tt
-				OR = { owns = location:kazan owns = location:tobolsk } current_age_or_later = { age = age_3_discovery }
+				OR = { owns = location:kazan owns = location:tobolsk } current_age_or_later = { age = age_3_discovery } OR = { monthly_income_trade_and_tax >= 32 any_owned_location = { OR = { has_building = building_type:merchants_quarters has_building = building_type:trading_hub } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
+			add_gold = 160 if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_rus_11_moscow_university = {
@@ -179,27 +172,27 @@ oe_msn_rus_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_11_moscow_university_req_tt
-				owns = location:moscow stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:moscow stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:printing_press any_owned_location = { OR = { has_building = building_type:university has_building = building_type:iron_foundry } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_rus_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_rus_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_rus_12_all_russian_empire = {
 		icon = cossacks_exploration_advance
 		requires = { oe_msn_rus_04_new_order_guard oe_msn_rus_08_window_on_neva oe_msn_rus_11_moscow_university }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_rus_12_all_russian_empire_req_tt
-				owns = location:moscow owns = location:astrakhan owns = location:neva stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns = location:moscow owns = location:astrakhan owns = location:neva stability >= 15 current_age_or_later = { age = age_5_absolutism } is_great_power = yes capital = { development >= 28 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_rus_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_rus_m4 years = 50 mode = replace } trigger_event_non_silently = oe_m2e.8
 		}
 	}
 }

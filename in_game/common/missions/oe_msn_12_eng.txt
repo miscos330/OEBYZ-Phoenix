@@ -32,12 +32,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_01_london_york_req_tt
-				owns = location:london owns = location:york stability >= 5
+				owns = location:london owns = location:york stability >= 5 capital = { development >= 18 } any_owned_location = { OR = { has_building = building_type:marketplace has_building = building_type:wharf } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 120
+			add_gold = 120 if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:SCO NOT = { tag = SCO } c:SCO = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:SCO type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_eng_02_parliament_fisc = {
@@ -46,12 +46,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_02_parliament_fisc_req_tt
-				owns = location:london stability >= 10 gold >= 220
+				owns = location:london stability >= 10 gold >= 220 monthly_income_trade_and_tax >= 22 OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus } }
 		}
 	}
 	oe_msn_eng_03_royal_navy_charter = {
@@ -60,12 +60,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_03_royal_navy_charter_req_tt
-				owns = location:london current_age_or_later = { age = age_3_discovery }
+				owns = location:london current_age_or_later = { age = age_3_discovery } num_of_ports >= 12 OR = { navy_tradition >= 22 any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:dock } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:london } location:london = { add_location_modifier = { modifier = oe_m2e_loc_eng_thames_clearing years = 25 mode = replace } change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_eng_04_bill_of_rights = {
@@ -74,12 +74,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_04_bill_of_rights_req_tt
-				owns = location:london stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:london stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:banking any_owned_location = { OR = { has_building = building_type:customs_house has_building = building_type:counting_house } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_eng_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_eng_m1 years = 20 mode = replace } trigger_event_non_silently = oe_m2e.13
 		}
 	}
 	oe_msn_eng_05_dublin_ireland = {
@@ -88,13 +88,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_05_dublin_ireland_req_tt
-				owns = location:dublin
+				owns = location:dublin OR = { num_of_ports >= 10 stability >= 10 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:dublin } location:dublin = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:dublin } location:dublin = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus } }
 		}
 	}
 	oe_msn_eng_06_edinburgh_union = {
@@ -103,13 +102,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_06_edinburgh_union_req_tt
-				owns = location:edinburgh
+				owns_or_non_sovereign_subject_owns = location:edinburgh OR = { stability >= 12 is_great_power = yes }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:edinburgh } location:edinburgh = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:edinburgh } location:edinburgh = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_eng_07_atlantic_ventures = {
@@ -118,13 +116,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_07_atlantic_ventures_req_tt
-				owns = location:london owns = location:dublin current_age_or_later = { age = age_3_discovery }
+				owns = location:london owns = location:dublin current_age_or_later = { age = age_3_discovery } OR = { has_embraced_institution = institution:new_world navy_tradition >= 25 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_prestige = prestige_mild_bonus add_navy_tradition = navy_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus } }
 		}
 	}
 	oe_msn_eng_08_indian_entrepot = {
@@ -133,12 +130,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_08_indian_entrepot_req_tt
-				OR = { owns = location:surat owns = location:edinburgh } num_locations >= 40
+				OR = { owns_or_non_sovereign_subject_owns = location:surat owns = location:edinburgh } num_locations >= 40 is_great_power = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_eng_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_eng_m2 years = 20 mode = replace } if = { limit = { is_subject = no country_exists = c:FRA NOT = { tag = FRA } c:FRA = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:FRA type = casus_belli:cb_maritime_dominance years = 10 } }
 		}
 	}
 	oe_msn_eng_09_woolen_broadcloth = {
@@ -147,12 +144,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_09_woolen_broadcloth_req_tt
-				owns = location:london owns = location:york gold >= 350
+				owns = location:london owns = location:york gold >= 350 any_owned_location = { OR = { has_building = building_type:cloth_guild has_building = building_type:cloth_workshop } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
+			add_gold = 160 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_eng_10_navigation_clearing = {
@@ -161,12 +158,12 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_10_navigation_clearing_req_tt
-				owns = location:london gold >= 500
+				owns = location:london gold >= 500 monthly_income_trade_and_tax >= 38 OR = { num_of_ports >= 16 any_owned_location = { OR = { has_building = building_type:port_authority has_building = building_type:merchants_quarters } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 180
+			add_gold = 180 add_navy_tradition = navy_tradition_weak_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_eng_11_royal_society = {
@@ -175,28 +172,27 @@ oe_msn_eng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_11_royal_society_req_tt
-				owns = location:london stability >= 18 current_age_or_later = { age = age_4_reformation }
+				owns = location:london stability >= 18 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:printing_press any_owned_location = { OR = { has_building = building_type:university has_building = building_type:printing_press_shop } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
-			add_country_modifier = { modifier = oe_msn_eng_m3 years = 20 mode = replace }
+			culture = { add_cultural_tradition = 8 } add_country_modifier = { modifier = oe_msn_eng_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_eng_12_rule_britannia = {
 		icon = maritime_advance_age_4
 		requires = { oe_msn_eng_04_bill_of_rights oe_msn_eng_08_indian_entrepot oe_msn_eng_11_royal_society }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_eng_12_rule_britannia_req_tt
-				owns = location:london owns = location:edinburgh owns = location:dublin stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns = location:london owns_or_non_sovereign_subject_owns = location:edinburgh owns = location:dublin stability >= 18 current_age_or_later = { age = age_5_absolutism } is_great_power = yes capital = { development >= 32 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_eng_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_eng_m4 years = 50 mode = replace } trigger_event_non_silently = oe_m2e.14
 		}
 	}
 }

@@ -36,16 +36,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_01_liberate_edinburgh_req_tt
-				owns_or_non_sovereign_subject_owns = location:edinburgh owns_or_non_sovereign_subject_owns = location:dunfermline owns_or_non_sovereign_subject_owns = location:stirling stability >= 5
+				owns_or_non_sovereign_subject_owns = location:edinburgh owns_or_non_sovereign_subject_owns = location:dunfermline owns_or_non_sovereign_subject_owns = location:stirling stability >= 5 any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:edinburgh } location:edinburgh = { add_core = root } }
-			if = { limit = { owns = location:stirling } location:stirling = { add_core = root } }
-			add_gold = 120
-			add_prestige = prestige_mild_bonus
-			add_stability = stability_weak_bonus
+			if = { limit = { owns = location:edinburgh } location:edinburgh = { add_core = root } } if = { limit = { owns = location:stirling } location:stirling = { add_core = root } } add_gold = 120 add_prestige = prestige_mild_bonus add_stability = stability_weak_bonus if = { limit = { owns = location:edinburgh } location:edinburgh = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_sco_02_auld_alliance_guard = {
@@ -54,14 +50,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_02_auld_alliance_guard_req_tt
-				stability >= 8 OR = { AND = { country_exists = c:FRA is_allied_with = { target = c:FRA } } gold >= 180 }
+				stability >= 8 OR = { AND = { country_exists = c:FRA is_allied_with = { target = c:FRA } } gold >= 180 } OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
-			add_diplomats = diplomats_mild_bonus
-			add_prestige = prestige_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_diplomats = diplomats_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } } if = { limit = { is_subject = no country_exists = c:ENG NOT = { tag = ENG } c:ENG = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:ENG type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_sco_03_schiltron_pikemen = {
@@ -70,13 +64,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_03_schiltron_pikemen_req_tt
-				owns_or_non_sovereign_subject_owns = location:edinburgh current_age_or_later = { age = age_2_renaissance } has_advance = professional_armies_advance
+				owns_or_non_sovereign_subject_owns = location:edinburgh current_age_or_later = { age = age_2_renaissance } has_advance = professional_armies_advance any_owned_location = { OR = { has_building = building_type:armory has_building = building_type:cannon_maker } } army_tradition >= 18
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
-			add_country_modifier = { modifier = oe_gem2_msn_sco_m1 years = 25 mode = replace }
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { owns = location:stirling } location:stirling = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } add_country_modifier = { modifier = oe_gem2_msn_sco_m1 years = 25 mode = replace }
 		}
 	}
 	oe_msn_sco_04_great_michael_fleet = {
@@ -85,14 +78,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_04_great_michael_fleet_req_tt
-				owns_or_non_sovereign_subject_owns = location:edinburgh owns_or_non_sovereign_subject_owns = location:glasgow gold >= 260 current_age_or_later = { age = age_3_discovery }
+				owns_or_non_sovereign_subject_owns = location:edinburgh owns_or_non_sovereign_subject_owns = location:glasgow gold >= 260 current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:dock } } navy_tradition >= 18
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
-			add_prestige = prestige_mild_bonus
-			add_gold = 120
+			add_navy_tradition = navy_tradition_mild_bonus add_prestige = prestige_mild_bonus add_gold = 120 if = { limit = { owns = location:edinburgh } location:edinburgh = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_sco_05_lordship_of_the_isles = {
@@ -101,15 +92,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_05_lordship_of_the_isles_req_tt
-				owns_or_non_sovereign_subject_owns = location:inverness owns_or_non_sovereign_subject_owns = location:islay owns_or_non_sovereign_subject_owns = location:lewis
+				owns_or_non_sovereign_subject_owns = location:inverness owns_or_non_sovereign_subject_owns = location:islay owns_or_non_sovereign_subject_owns = location:lewis num_of_ports >= 4
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:islay } location:islay = { add_core = root } }
-			if = { limit = { owns = location:lewis } location:lewis = { add_core = root } }
-			add_prestige = prestige_mild_bonus
-			add_stability = stability_weak_bonus
+			if = { limit = { owns = location:islay } location:islay = { add_core = root } } if = { limit = { owns = location:lewis } location:lewis = { add_core = root } } add_prestige = prestige_mild_bonus add_stability = stability_weak_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } } if = { limit = { is_subject = no country_exists = c:NOR NOT = { tag = NOR } c:NOR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:NOR type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_sco_06_northern_isles_marches = {
@@ -118,15 +106,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_06_northern_isles_marches_req_tt
-				owns_or_non_sovereign_subject_owns = location:orkney owns_or_non_sovereign_subject_owns = location:berwick OR = { owns_or_non_sovereign_subject_owns = location:shetland owns_or_non_sovereign_subject_owns = location:dumfries }
+				owns_or_non_sovereign_subject_owns = location:orkney owns_or_non_sovereign_subject_owns = location:berwick OR = { owns_or_non_sovereign_subject_owns = location:shetland owns_or_non_sovereign_subject_owns = location:dumfries } any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:wharf } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:orkney } location:orkney = { add_core = root } }
-			if = { limit = { owns = location:berwick } location:berwick = { add_core = root } }
-			add_gold = 140
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:orkney } location:orkney = { add_core = root } } if = { limit = { owns = location:berwick } location:berwick = { add_core = root } } add_gold = 140 add_prestige = prestige_mild_bonus if = { limit = { owns = location:berwick } location:berwick = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_sco_07_celtic_sea_bastion = {
@@ -135,15 +120,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_07_celtic_sea_bastion_req_tt
-				OR = { owns_or_non_sovereign_subject_owns = location:carrickfergus owns_or_non_sovereign_subject_owns = location:newcastle owns_or_non_sovereign_subject_owns = location:carlisle } num_locations_owned_or_owned_by_subjects >= 45
+				OR = { owns_or_non_sovereign_subject_owns = location:carrickfergus owns_or_non_sovereign_subject_owns = location:newcastle owns_or_non_sovereign_subject_owns = location:carlisle } num_locations_owned_or_owned_by_subjects >= 45 army_tradition >= 15
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:carrickfergus } location:carrickfergus = { add_core = root } }
-			if = { limit = { owns = location:newcastle } location:newcastle = { add_core = root } }
-			add_army_tradition = army_tradition_mild_bonus
-			add_country_modifier = { modifier = oe_gem2_msn_sco_m2 years = 25 mode = replace }
+			if = { limit = { owns = location:carrickfergus } location:carrickfergus = { add_core = root } } if = { limit = { owns = location:newcastle } location:newcastle = { add_core = root } } add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { owns = location:glasgow } location:glasgow = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } add_country_modifier = { modifier = oe_gem2_msn_sco_m2 years = 25 mode = replace }
 		}
 	}
 	oe_msn_sco_08_caledonian_atlantic = {
@@ -152,13 +134,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_08_caledonian_atlantic_req_tt
-				owns_or_non_sovereign_subject_owns = location:glasgow owns_or_non_sovereign_subject_owns = location:edinburgh current_age_or_later = { age = age_3_discovery } stability >= 12
+				owns_or_non_sovereign_subject_owns = location:glasgow owns_or_non_sovereign_subject_owns = location:edinburgh current_age_or_later = { age = age_3_discovery } stability >= 12 any_owned_location = { OR = { has_building = building_type:trading_hub has_building = building_type:dry_dock } } has_embraced_institution = institution:new_world
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
-			add_gold = 180
+			add_navy_tradition = navy_tradition_mild_bonus add_gold = 180 if = { limit = { owns = location:glasgow } location:glasgow = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_sco_09_north_sea_herring_wool = {
@@ -167,13 +148,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_09_north_sea_herring_wool_req_tt
-				owns_or_non_sovereign_subject_owns = location:aberdeen owns_or_non_sovereign_subject_owns = location:dundee gold >= 200
+				owns_or_non_sovereign_subject_owns = location:aberdeen owns_or_non_sovereign_subject_owns = location:dundee gold >= 200 any_owned_location = { OR = { has_building = building_type:fishing_village has_building = building_type:cloth_guild } } monthly_income_trade_and_tax >= 18
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
-			add_stability = stability_weak_bonus
+			add_gold = 150 add_stability = stability_weak_bonus if = { limit = { owns = location:aberdeen } location:aberdeen = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_sco_10_st_andrews_renaissance = {
@@ -182,13 +162,12 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_10_st_andrews_renaissance_req_tt
-				owns_or_non_sovereign_subject_owns = location:st_andrews stability >= 10 current_age_or_later = { age = age_2_renaissance }
+				owns_or_non_sovereign_subject_owns = location:st_andrews stability >= 10 current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:university has_building = building_type:library } } capital = { development >= 16 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
-			add_prestige = prestige_mild_bonus
+			culture = { add_cultural_tradition = 10 } add_prestige = prestige_mild_bonus if = { limit = { owns = location:st_andrews } location:st_andrews = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_sco_11_scottish_enlightenment = {
@@ -197,28 +176,27 @@ oe_msn_sco_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_11_scottish_enlightenment_req_tt
-				owns_or_non_sovereign_subject_owns = location:edinburgh owns_or_non_sovereign_subject_owns = location:glasgow stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:edinburgh owns_or_non_sovereign_subject_owns = location:glasgow stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:printing_press_shop has_building = building_type:arts_academy } } has_embraced_institution = institution:printing_press
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 12 }
-			add_country_modifier = { modifier = oe_gem2_msn_sco_m3 years = 25 mode = replace }
+			culture = { add_cultural_tradition = 12 } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } add_country_modifier = { modifier = oe_gem2_msn_sco_m3 years = 25 mode = replace }
 		}
 	}
 	oe_msn_sco_12_sovereign_crown_north = {
 		icon = royal_revenue
 		requires = { oe_msn_sco_04_great_michael_fleet oe_msn_sco_08_caledonian_atlantic oe_msn_sco_11_scottish_enlightenment }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_sco_12_sovereign_crown_north_req_tt
-				owns_or_non_sovereign_subject_owns = location:edinburgh owns_or_non_sovereign_subject_owns = location:glasgow owns_or_non_sovereign_subject_owns = location:st_andrews owns_or_non_sovereign_subject_owns = location:islay stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:edinburgh owns_or_non_sovereign_subject_owns = location:glasgow owns_or_non_sovereign_subject_owns = location:st_andrews owns_or_non_sovereign_subject_owns = location:islay stability >= 18 current_age_or_later = { age = age_5_absolutism } capital = { development >= 26 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 110 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_gem2_msn_sco_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_gem2_msn_sco_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.15
 		}
 	}
 }

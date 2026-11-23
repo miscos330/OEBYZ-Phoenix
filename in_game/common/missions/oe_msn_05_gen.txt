@@ -32,12 +32,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_01_ligurian_superba_req_tt
-				owns = location:genoa stability >= 5
+				owns = location:genoa stability >= 5 has_ports = yes any_owned_location = { has_building = building_type:wharf }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 120
+			add_gold = 120 if = { limit = { owns = location:genoa } location:genoa = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_gen_02_casa_san_giorgio = {
@@ -46,12 +46,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_02_casa_san_giorgio_req_tt
-				owns = location:genoa gold >= 250 current_age_or_later = { age = age_2_renaissance }
+				owns = location:genoa gold >= 250 current_age_or_later = { age = age_2_renaissance } any_owned_location = { has_building = building_type:counting_house } has_embraced_institution = institution:banking
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { owns = location:genoa } location:genoa = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_gen_03_pavise_mercenary_guard = {
@@ -60,12 +60,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_03_pavise_mercenary_guard_req_tt
-				owns = location:genoa current_age_or_later = { age = age_3_discovery }
+				owns = location:genoa current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:armory } } navy_tradition >= 22
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus add_army_tradition = army_tradition_weak_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_gen_04_andrea_doria_charter = {
@@ -74,12 +74,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_04_andrea_doria_charter_req_tt
-				owns = location:genoa stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:genoa stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 } OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.55 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_gen_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_gen_m1 years = 20 mode = replace } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_gen_05_chios_maona = {
@@ -88,14 +88,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_05_chios_maona_req_tt
-				OR = { owns = location:chios owns = location:kaffa }
+				OR = { owns_or_non_sovereign_subject_owns = location:chios owns_or_non_sovereign_subject_owns = location:kaffa } num_of_ports >= 3
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:chios } location:chios = { add_core = root } }
-			if = { limit = { owns = location:kaffa } location:kaffa = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:chios } location:chios = { add_core = root } } if = { limit = { owns = location:kaffa } location:kaffa = { add_core = root } } add_prestige = prestige_mild_bonus add_gold = 100 if = { limit = { is_subject = no country_exists = c:BYZ NOT = { tag = BYZ } c:BYZ = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BYZ type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_gen_06_gazaria_kaffa = {
@@ -104,13 +102,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_06_gazaria_kaffa_req_tt
-				owns = location:kaffa
+				owns_or_non_sovereign_subject_owns = location:kaffa any_owned_location = { has_building = building_type:castle }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:kaffa } location:kaffa = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:kaffa } location:kaffa = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:kaffa } location:kaffa = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:VEN NOT = { tag = VEN } c:VEN = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:VEN type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_gen_07_western_med_nodes = {
@@ -119,12 +116,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_07_western_med_nodes_req_tt
-				owns = location:genoa num_locations >= 15
+				owns = location:genoa num_locations >= 15 num_of_ports >= 6
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus add_navy_tradition = navy_tradition_mild_bonus if = { limit = { is_subject = no country_exists = c:MLO NOT = { tag = MLO } c:MLO = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MLO type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:ARA NOT = { tag = ARA } c:ARA = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:ARA type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_gen_08_italian_balance = {
@@ -133,12 +130,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_08_italian_balance_req_tt
-				OR = { owns = location:milano owns = location:genoa } num_locations >= 22
+				OR = { owns_or_non_sovereign_subject_owns = location:milano owns = location:genoa } num_locations >= 22 capital = { development >= 24 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_gen_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_gen_m2 years = 20 mode = replace } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_gen_09_black_sea_grain_bills = {
@@ -147,12 +144,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_09_black_sea_grain_bills_req_tt
-				owns = location:genoa gold >= 350
+				owns = location:genoa gold >= 350 any_owned_location = { has_building = building_type:marketplace } monthly_income_trade_and_tax >= 22
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 140
+			add_gold = 140 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { owns = location:genoa } location:genoa = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_gen_10_piacenza_asientos = {
@@ -161,12 +158,12 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_10_piacenza_asientos_req_tt
-				owns = location:genoa gold >= 500 current_age_or_later = { age = age_4_reformation }
+				owns = location:genoa gold >= 500 current_age_or_later = { age = age_4_reformation } any_owned_location = { has_building = building_type:customs_house } monthly_income_trade_and_tax >= 40
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 200
+			add_gold = 200 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_gen_11_sovereign_clearing_crown = {
@@ -175,27 +172,27 @@ oe_msn_gen_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_11_sovereign_clearing_crown_req_tt
-				owns = location:genoa stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:genoa stability >= 15 current_age_or_later = { age = age_4_reformation } has_embraced_institution = institution:global_trade capital = { development >= 30 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_gen_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_gen_m3 years = 20 mode = replace } if = { limit = { owns = location:genoa } location:genoa = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_gen_12_maritime_credit_republic = {
 		icon = federal_constitution
 		requires = { oe_msn_gen_04_andrea_doria_charter oe_msn_gen_08_italian_balance oe_msn_gen_11_sovereign_clearing_crown }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_gen_12_maritime_credit_republic_req_tt
-				owns = location:genoa stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns = location:genoa stability >= 18 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:stock_exchange has_building = building_type:shipyard } } OR = { is_great_power = yes monthly_income_trade_and_tax >= 70 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_gen_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_gen_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.2
 		}
 	}
 }

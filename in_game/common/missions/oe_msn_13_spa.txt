@@ -32,12 +32,12 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_01_castile_aragon_core_req_tt
-				OR = { owns = location:valladolid owns = location:toledo owns = location:barcelona } stability >= 5
+				OR = { owns = location:valladolid owns = location:toledo owns = location:barcelona } stability >= 5 OR = { capital = { development >= 16 } any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:marketplace } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:GRA NOT = { tag = GRA } c:GRA = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:GRA type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_spa_02_tercio_pike_shot = {
@@ -46,12 +46,12 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_02_tercio_pike_shot_req_tt
-				OR = { owns = location:toledo owns = location:barcelona owns = location:sevilla } gold >= 220 current_age_or_later = { age = age_3_discovery }
+				OR = { owns = location:toledo owns = location:barcelona owns = location:sevilla } gold >= 220 current_age_or_later = { age = age_3_discovery } OR = { has_advance = pike_and_shot_advance army_tradition >= 22 any_owned_location = { has_building = building_type:training_fields } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_spa_03_marine_infantry = {
@@ -60,12 +60,12 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_03_marine_infantry_req_tt
-				OR = { owns = location:sevilla owns = location:barcelona } current_age_or_later = { age = age_3_discovery }
+				OR = { owns = location:sevilla owns = location:barcelona } current_age_or_later = { age = age_3_discovery } num_of_ports >= 12 OR = { navy_tradition >= 20 any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:dock } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus } }
 		}
 	}
 	oe_msn_spa_04_viceroyalty_council = {
@@ -74,12 +74,12 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_04_viceroyalty_council_req_tt
-				OR = { owns = location:toledo owns = location:sevilla owns = location:barcelona } current_age_or_later = { age = age_4_reformation } num_locations >= 40
+				OR = { owns = location:toledo owns = location:sevilla owns = location:barcelona } current_age_or_later = { age = age_4_reformation } num_locations >= 40 OR = { any_subject = { is_subject_type = oe_cas_adelantado } num_subjects >= 2 monthly_income_trade_and_tax >= 38 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_spa_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_spa_m1 years = 20 mode = replace } trigger_event_non_silently = oe_m2e.15
 		}
 	}
 	oe_msn_spa_05_reconquista_granada = {
@@ -93,8 +93,7 @@ oe_msn_spa_destiny = {
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:granada } location:granada = { add_core = root } }
-			add_prestige = prestige_severe_bonus
+			if = { limit = { owns = location:granada } location:granada = { add_core = root } } add_prestige = prestige_severe_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_spa_06_iberian_union = {
@@ -103,14 +102,12 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_06_iberian_union_req_tt
-				owns = location:sevilla owns = location:barcelona
+				owns = location:sevilla owns = location:barcelona OR = { num_of_ports >= 10 stability >= 10 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:sevilla } location:sevilla = { add_core = root } }
-			if = { limit = { owns = location:barcelona } location:barcelona = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:sevilla } location:sevilla = { add_core = root } } if = { limit = { owns = location:barcelona } location:barcelona = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:NAP NOT = { tag = NAP } c:NAP = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:NAP type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_spa_07_potosi_silver_mountain = {
@@ -119,12 +116,12 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_07_potosi_silver_mountain_req_tt
-				OR = { owns = location:ccantumarcani owns = location:sevilla } num_locations >= 50
+				OR = { owns_or_non_sovereign_subject_owns = location:ccantumarcani owns = location:sevilla } num_locations >= 50 OR = { has_embraced_institution = institution:new_world monthly_income_trade_and_tax >= 38 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 220
+			add_gold = 220 if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_weak_bonus } }
 		}
 	}
 	oe_msn_spa_08_manila_galleon_port = {
@@ -133,12 +130,12 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_08_manila_galleon_port_req_tt
-				OR = { owns = location:maynila owns = location:sevilla } current_age_or_later = { age = age_4_reformation }
+				OR = { owns_or_non_sovereign_subject_owns = location:maynila owns = location:sevilla } current_age_or_later = { age = age_4_reformation } is_great_power = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_spa_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_spa_m2 years = 20 mode = replace } add_navy_tradition = navy_tradition_weak_bonus
 		}
 	}
 	oe_msn_spa_09_seville_contratacion = {
@@ -147,12 +144,12 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_09_seville_contratacion_req_tt
-				owns = location:sevilla gold >= 350
+				owns = location:sevilla gold >= 350 monthly_income_trade_and_tax >= 26 any_owned_location = { OR = { has_building = building_type:counting_house has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
+			add_gold = 160 if = { limit = { owns = location:sevilla } location:sevilla = { add_location_modifier = { modifier = oe_m2e_loc_spa_casa_seville years = 25 mode = replace } change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_spa_10_school_salamanca = {
@@ -161,12 +158,12 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_10_school_salamanca_req_tt
-				OR = { owns = location:valladolid owns = location:toledo owns = location:sevilla } stability >= 12 current_age_or_later = { age = age_3_discovery }
+				OR = { owns = location:valladolid owns = location:toledo owns = location:sevilla } stability >= 12 current_age_or_later = { age = age_3_discovery } OR = { has_embraced_institution = institution:banking any_owned_location = { OR = { has_building = building_type:university has_building = building_type:printing_press_shop } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
+			culture = { add_cultural_tradition = 8 } if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_spa_11_siglo_de_oro = {
@@ -175,27 +172,27 @@ oe_msn_spa_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_11_siglo_de_oro_req_tt
-				OR = { owns = location:toledo owns = location:sevilla owns = location:barcelona } stability >= 15 current_age_or_later = { age = age_4_reformation }
+				OR = { owns = location:toledo owns = location:sevilla owns = location:barcelona } stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { any_owned_location = { OR = { has_building = building_type:arts_academy has_building = building_type:university } } has_embraced_institution = institution:printing_press }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_spa_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_spa_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_spa_12_plus_ultra_destiny = {
 		icon = spa_spanish_enlightenment
 		requires = { oe_msn_spa_04_viceroyalty_council oe_msn_spa_08_manila_galleon_port oe_msn_spa_11_siglo_de_oro }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_spa_12_plus_ultra_destiny_req_tt
-				owns = location:sevilla owns = location:granada stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns = location:sevilla owns = location:granada stability >= 15 current_age_or_later = { age = age_5_absolutism } is_great_power = yes capital = { development >= 30 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_spa_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_spa_m4 years = 50 mode = replace } trigger_event_non_silently = oe_m2e.16
 		}
 	}
 }

@@ -32,12 +32,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_01_dusan_code_req_tt
-				owns = location:prizren owns = location:skopje stability >= 5
+				owns = location:prizren owns = location:skopje stability >= 5 any_owned_location = { has_building = building_type:castle } OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.45 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { owns = location:prizren } location:prizren = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:HUN NOT = { tag = HUN } c:HUN = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:HUN type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ser_02_patriarchate_pec = {
@@ -46,12 +46,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_02_patriarchate_pec_req_tt
-				owns = location:prizren stability >= 10
+				owns = location:prizren stability >= 10 any_owned_location = { OR = { has_building = building_type:monastery has_building = building_type:cathedral } } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ser_03_hajduk_firearms = {
@@ -60,12 +60,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_03_hajduk_firearms_req_tt
-				OR = { owns = location:prizren owns = location:skopje owns = location:belgrad } gold >= 200 current_age_or_later = { age = age_3_discovery }
+				OR = { owns = location:prizren owns = location:skopje owns = location:belgrad } gold >= 200 current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:training_fields has_building = building_type:armory } } army_tradition >= 22
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_ser_04_orthodox_league = {
@@ -74,12 +74,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_04_orthodox_league_req_tt
-				OR = { owns = location:belgrad owns = location:skopje owns = location:prizren } stability >= 15 current_age_or_later = { age = age_4_reformation }
+				OR = { owns = location:belgrad owns = location:skopje owns = location:prizren } stability >= 15 current_age_or_later = { age = age_4_reformation } has_embraced_institution = institution:confessionalism OR = { num_subjects >= 1 army_tradition >= 32 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ser_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ser_m1 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ser_05_danube_belgrade = {
@@ -88,13 +88,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_05_danube_belgrade_req_tt
-				owns = location:belgrad
+				owns_or_non_sovereign_subject_owns = location:belgrad army_tradition >= 12
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:belgrad } location:belgrad = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:belgrad } location:belgrad = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:belgrad } location:belgrad = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:RAG NOT = { tag = RAG } c:RAG = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:RAG type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:BOS NOT = { tag = BOS } c:BOS = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BOS type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ser_06_adriatic_outlet = {
@@ -103,14 +102,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_06_adriatic_outlet_req_tt
-				OR = { owns = location:dubrovnik owns = location:zara owns = location:belgrad } num_locations >= 22
+				OR = { owns_or_non_sovereign_subject_owns = location:dubrovnik owns_or_non_sovereign_subject_owns = location:zara owns_or_non_sovereign_subject_owns = location:belgrad } num_locations >= 22 has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:dubrovnik } location:dubrovnik = { add_core = root } }
-			if = { limit = { owns = location:zara } location:zara = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:dubrovnik } location:dubrovnik = { add_core = root } } if = { limit = { owns = location:zara } location:zara = { add_core = root } } add_prestige = prestige_mild_bonus add_navy_tradition = navy_tradition_mild_bonus if = { limit = { is_subject = no country_exists = c:BYZ NOT = { tag = BYZ } c:BYZ = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BYZ type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:BUL NOT = { tag = BUL } c:BUL = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BUL type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:TUR NOT = { tag = TUR } c:TUR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:TUR type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ser_07_aegean_thessaloniki = {
@@ -119,14 +116,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_07_aegean_thessaloniki_req_tt
-				OR = { owns = location:thessaloniki owns = location:sredets }
+				OR = { owns_or_non_sovereign_subject_owns = location:thessaloniki owns_or_non_sovereign_subject_owns = location:sredets } any_owned_location = { has_building = building_type:weapon_guild }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:thessaloniki } location:thessaloniki = { add_core = root } }
-			if = { limit = { owns = location:sredets } location:sredets = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:thessaloniki } location:thessaloniki = { add_core = root } } if = { limit = { owns = location:sredets } location:sredets = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:skopje } location:skopje = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ser_08_balkan_hegemon = {
@@ -135,12 +130,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_08_balkan_hegemon_req_tt
-				owns = location:belgrad owns = location:skopje num_locations >= 32
+				owns_or_non_sovereign_subject_owns = location:belgrad owns_or_non_sovereign_subject_owns = location:skopje num_locations >= 32 capital = { development >= 20 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ser_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ser_m2 years = 20 mode = replace } add_army_tradition = army_tradition_mild_bonus
 		}
 	}
 	oe_msn_ser_09_balkan_silver_mines = {
@@ -149,12 +144,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_09_balkan_silver_mines_req_tt
-				OR = { owns = location:prizren owns = location:skopje } gold >= 250
+				OR = { owns = location:prizren owns = location:skopje } gold >= 250 any_owned_location = { has_building = building_type:marketplace } monthly_income_trade_and_tax >= 18
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
+			add_gold = 150 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ser_10_monastery_frescoes = {
@@ -163,12 +158,12 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_10_monastery_frescoes_req_tt
-				OR = { owns = location:prizren owns = location:belgrad } stability >= 10 current_age_or_later = { age = age_2_renaissance }
+				OR = { owns = location:prizren owns = location:belgrad } stability >= 10 current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:scriptorium has_building = building_type:art_school } } has_embraced_institution = institution:renaissance
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
+			culture = { add_cultural_tradition = 8 } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ser_11_serbian_enlightenment = {
@@ -177,27 +172,27 @@ oe_msn_ser_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_11_serbian_enlightenment_req_tt
-				owns = location:belgrad stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:belgrad stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:printing_press_shop has_building = building_type:university } } capital = { development >= 25 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ser_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ser_m3 years = 20 mode = replace } culture = { add_cultural_tradition = 6 }
 		}
 	}
 	oe_msn_ser_12_balkan_orthodox_empire = {
 		icon = serbian_the_icon_of_saint_sava
 		requires = { oe_msn_ser_04_orthodox_league oe_msn_ser_08_balkan_hegemon oe_msn_ser_11_serbian_enlightenment }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ser_12_balkan_orthodox_empire_req_tt
-				owns = location:belgrad owns = location:skopje stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:belgrad owns_or_non_sovereign_subject_owns = location:skopje stability >= 15 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:star_fort has_building = building_type:iron_foundry } } OR = { is_great_power = yes monthly_income_trade_and_tax >= 60 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ser_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ser_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.5
 		}
 	}
 }

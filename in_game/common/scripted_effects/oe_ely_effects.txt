@@ -616,7 +616,7 @@ oe_ely_build_founding_infra = {
 	}
 }
 
-# Country scope. Grant founding treasury, stability, manpower, sailors & 35-year Colonization/Assimilation/Economy buff.
+# Country scope. Grant founding treasury, stability, manpower, sailors & Stage 1 (Years 1-25) of the 75-year 3-Tier Founding Curve.
 oe_ely_grant_founding_package = {
 	if = {
 		limit = { var:oe_ely_ark_tier ?= 3 }
@@ -637,9 +637,136 @@ oe_ely_grant_founding_package = {
 	add_yearly_sailors = 2
 	add_country_modifier = {
 		modifier = oe_ely_nova_elysia_founded_mod
-		years = 35
+		years = 25
 		mode = replace
 	}
+}
+
+# Country scope. v21.0 Module 0: Complete Roman-Elysian constitutional setup — binds oe_elysian_senate
+# to capital, strips every inherited haudenosaunee_tribe reform/privilege/law/value residue, installs
+# Senatus Novae Elysiae + balanced 4-estate privileges, and stabilizes starting estate satisfaction.
+oe_ely_configure_roman_monarchy_and_senate = {
+	set_parliament_type = parliament_type:oe_elysian_senate
+	if = {
+		limit = { exists = capital }
+		set_parliament_location = capital
+	}
+	# 1. Strip inherited tribal reforms & native-seed privileges cleanly.
+	if = {
+		limit = { has_reform = government_reform:haudenosaunee_clan_mothers }
+		remove_reform = government_reform:haudenosaunee_clan_mothers
+	}
+	if = {
+		limit = { has_estate_privilege = estate_privilege:tribes_tribal_levies }
+		revoke_estate_privilege = estate_privilege:tribes_tribal_levies
+	}
+	if = {
+		limit = { has_estate_privilege = estate_privilege:tribes_allow_gatherings }
+		revoke_estate_privilege = estate_privilege:tribes_allow_gatherings
+	}
+	if = {
+		limit = { has_estate_privilege = estate_privilege:haudenosaunee_labor_division }
+		revoke_estate_privilege = estate_privilege:haudenosaunee_labor_division
+	}
+	if = {
+		limit = { has_estate_privilege = estate_privilege:peasants_autonomous_villages }
+		revoke_estate_privilege = estate_privilege:peasants_autonomous_villages
+	}
+	if = {
+		limit = { has_estate_privilege = estate_privilege:communal_lands }
+		revoke_estate_privilege = estate_privilege:communal_lands
+	}
+	if = {
+		limit = { has_estate_privilege = estate_privilege:allow_hunting }
+		revoke_estate_privilege = estate_privilege:allow_hunting
+	}
+	if = {
+		limit = { has_estate_privilege = estate_privilege:partial_yield }
+		revoke_estate_privilege = estate_privilege:partial_yield
+	}
+	if = {
+		limit = { has_estate_privilege = estate_privilege:peasants_free_peasantry }
+		revoke_estate_privilege = estate_privilege:peasants_free_peasantry
+	}
+	# 2. Enforce Roman monarchy laws & baseline Elysian policies.
+	add_policy = policy:monogamous_marriage
+	add_policy = policy:heir_same_religion
+	add_policy = policy:oe_eln_pol_foederati_civitas
+	add_policy = policy:oe_eln_pol_merchant_convoys
+	# 3. Reset extreme haudenosaunee_tribe societal values to maritime Roman monarchy baseline.
+	set_societal_value = { type = centralization_vs_decentralization value = -10 }
+	set_societal_value = { type = traditionalist_vs_innovative value = 10 }
+	set_societal_value = { type = spiritualist_vs_humanist value = 0 }
+	set_societal_value = { type = aristocracy_vs_plutocracy value = 10 }
+	set_societal_value = { type = serfdom_vs_free_subjects value = 40 }
+	set_societal_value = { type = belligerent_vs_conciliatory value = 15 }
+	set_societal_value = { type = quality_vs_quantity value = -20 }
+	set_societal_value = { type = land_vs_naval value = 35 }
+	set_societal_value = { type = capital_economy_vs_traditional_economy value = -15 }
+	set_societal_value = { type = individualism_vs_communalism value = 10 }
+	set_societal_value = { type = outward_vs_inward value = -20 }
+	# 4. Grant founding Senate reform & balanced 4-estate baseline privileges.
+	if = {
+		limit = { NOT = { has_reform = government_reform:oe_eln_ref_senatus_novae_elysiae } }
+		add_reform = government_reform:oe_eln_ref_senatus_novae_elysiae
+	}
+	if = {
+		limit = {
+			country_has_estate = estate_type:nobles_estate
+			NOT = { has_estate_privilege = estate_privilege:oe_eln_priv_exiled_senators }
+		}
+		grant_estate_privilege = estate_privilege:oe_eln_priv_exiled_senators
+	}
+	if = {
+		limit = {
+			country_has_estate = estate_type:burghers_estate
+			NOT = { has_estate_privilege = estate_privilege:oe_eln_priv_maritime_guilds }
+		}
+		grant_estate_privilege = estate_privilege:oe_eln_priv_maritime_guilds
+	}
+	if = {
+		limit = {
+			country_has_estate = estate_type:peasants_estate
+			NOT = { has_estate_privilege = estate_privilege:oe_eln_priv_frontier_freeholders }
+		}
+		grant_estate_privilege = estate_privilege:oe_eln_priv_frontier_freeholders
+	}
+	if = {
+		limit = { country_has_estate = estate_type:clergy_estate }
+		if = {
+			limit = {
+				has_advance = written_alphabet
+				NOT = { has_estate_privilege = estate_privilege:clergy_literacy_rights }
+			}
+			grant_estate_privilege = estate_privilege:clergy_literacy_rights
+		}
+		else_if = {
+			limit = { NOT = { has_estate_privilege = estate_privilege:clergy_enforced_unity } }
+			grant_estate_privilege = estate_privilege:clergy_enforced_unity
+		}
+	}
+	# 5. Lift starting estate satisfaction into healthy 55-65% range across all active orders.
+	if = {
+		limit = { country_has_estate = estate_type:nobles_estate }
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = 0.20 }
+	}
+	if = {
+		limit = { country_has_estate = estate_type:clergy_estate }
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = 0.20 }
+	}
+	if = {
+		limit = { country_has_estate = estate_type:burghers_estate }
+		add_estate_satisfaction = { type = estate_type:burghers_estate value = 0.20 }
+	}
+	if = {
+		limit = { country_has_estate = estate_type:peasants_estate }
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = 0.20 }
+	}
+	if = {
+		limit = { country_has_estate = estate_type:tribes_estate }
+		add_estate_satisfaction = { type = estate_type:tribes_estate value = 0.25 }
+	}
+	set_variable = { name = oe_el4_senate_healed value = 1 }
 }
 
 # Country scope. One-time automatic save-healing catch-up for existing pre-hotfix Nova Elysia saves.
@@ -995,6 +1122,7 @@ oe_ely_complete_landfall_in_place = {
 		limit = { has_country_modifier = oe_ely_exodus_fleet_mod }
 		remove_country_modifier = oe_ely_exodus_fleet_mod
 	}
+	oe_ely_configure_roman_monarchy_and_senate = yes
 	oe_ely_grant_founding_package = yes
 	# 9. Schedule post-landfall Act I closing milestones (First Winter +6m, Elysian Charter +12m).
 	trigger_event_non_silently = { id = oe_ely.14 days = 180 }
@@ -1489,8 +1617,13 @@ oe_ely_complete_landfall_setup = {
 				}
 			}
 			# Bootstrap Age 1 Chesapeake infra (+500 province food, nansemond fish RGO +2), founding fleet/guard, & package.
+			# Mark global settlement BEFORE Roman-Senate constitutional setup so oe_eln_is_elysia = yes holds for laws/privileges/reforms.
+			set_global_variable = { name = oe_ely_settled value = 1 }
+			set_global_variable = { name = oe_ely_settled_year value = current_year }
+			set_global_variable = { name = oe_ely_settled_month value = oe_ml_month_now }
 			oe_ely_build_founding_infra = yes
 			oe_ely_spawn_founding_forces = yes
+			oe_ely_configure_roman_monarchy_and_senate = yes
 			oe_ely_grant_founding_package = yes
 			if = {
 				limit = { legitimacy < 60 }
@@ -1500,12 +1633,9 @@ oe_ely_complete_landfall_setup = {
 			trigger_event_non_silently = { id = oe_ely.14 days = 180 }
 			trigger_event_non_silently = { id = oe_ely.15 days = 365 }
 		}
-		# 6. Mark global settlement & disarm Old World oe_l7 hooks on old host BEFORE player switch & dissolution.
+		# 6. Disarm Old World oe_l7 hooks on old host BEFORE player switch & dissolution.
 		#    (Ruler/heir/court transfer + republic switch run at the top of oe_ely_dissolve_old_host AFTER change_player,
 		#     so old BYZ/TRE/FEO is already AI and produces 0 PU toasts and 0 republic/caretaker-regency popups.)
-		set_global_variable = { name = oe_ely_settled value = 1 }
-		set_global_variable = { name = oe_ely_settled_year value = current_year }
-		set_global_variable = { name = oe_ely_settled_month value = oe_ml_month_now }
 		set_variable = { name = oe_l7_off value = 1 }
 		set_variable = { name = oe_l7_ex_reborn value = 1 }
 		if = {

@@ -31,13 +31,12 @@ oe_msn_csu_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_01_sacred_valley_qusqu_req_tt
-				owns = location:qusqu owns = location:quillarumiyoc stability >= 5
+				owns_or_non_sovereign_subject_owns = location:qusqu owns_or_non_sovereign_subject_owns = location:quillarumiyoc stability >= 5 capital = { development >= 12 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
-			add_stability = stability_weak_bonus
+			add_prestige = prestige_mild_bonus add_stability = stability_weak_bonus if = { limit = { owns = location:qusqu } location:qusqu = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_csu_02_qhapaq_nan_roads = {
@@ -46,13 +45,12 @@ oe_msn_csu_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_02_qhapaq_nan_roads_req_tt
-				owns = location:qusqu OR = { any_owned_location = { has_road_of_type_to = { target = location:qusqu type = road_type:oe_amr_qhapaq_nan_road } } any_owned_location = { has_building_with_at_least_one_level = oe_amr_quipu_tambo_archive } num_locations >= 12 }
+				owns_or_non_sovereign_subject_owns = location:qusqu OR = { any_owned_location = { has_road_of_type_to = { target = location:qusqu type = road_type:oe_amr_qhapaq_nan_road } } any_owned_location = { has_building_with_at_least_one_level = oe_amr_quipu_tambo_archive } num_locations >= 12 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
-			add_stability = stability_weak_bonus
+			add_gold = 150 add_stability = stability_weak_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_csu_03_vertical_terraces_mita = {
@@ -61,13 +59,12 @@ oe_msn_csu_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_03_vertical_terraces_mita_req_tt
-				owns = location:qusqu stability >= 12 gold >= 200
+				owns_or_non_sovereign_subject_owns = location:qusqu stability >= 12 gold >= 200 OR = { NOT = { country_has_estate = estate_type:peasants_estate } estate_satisfaction:peasants_estate >= 0.50 } OR = { any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:aqueduct_system } } capital = { development >= 16 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 180
-			add_stability = stability_weak_bonus
+			add_gold = 180 add_stability = stability_weak_bonus if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } } if = { limit = { owns = location:qusqu } location:qusqu = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_csu_04_quipu_coricancha_sun = {
@@ -76,13 +73,12 @@ oe_msn_csu_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_04_quipu_coricancha_sun_req_tt
-				owns = location:qusqu stability >= 15
+				owns_or_non_sovereign_subject_owns = location:qusqu stability >= 15 OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 } OR = { any_owned_location = { OR = { has_building = building_type:temple has_building = building_type:scriptorium } } capital = { development >= 18 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
-			add_country_modifier = { modifier = oe_msn2_csu_m1 years = 20 mode = replace }
+			culture = { add_cultural_tradition = 8 } add_country_modifier = { modifier = oe_msn2_csu_m1 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_csu_05_north_quito_chimu = {
@@ -91,14 +87,12 @@ oe_msn_csu_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_05_north_quito_chimu_req_tt
-				OR = { owns = location:quito any_subject = { owns = location:quito } } OR = { owns = location:chan_chan any_subject = { owns = location:chan_chan } }
+				owns_or_non_sovereign_subject_owns = location:quito owns_or_non_sovereign_subject_owns = location:chan_chan
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:quito } location:quito = { add_core = root } }
-			if = { limit = { owns = location:chan_chan } location:chan_chan = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:quito } location:quito = { add_core = root } } if = { limit = { owns = location:chan_chan } location:chan_chan = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:chan_chan } location:chan_chan = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_csu_06_south_arequipa_coast = {
@@ -107,13 +101,12 @@ oe_msn_csu_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_06_south_arequipa_coast_req_tt
-				OR = { owns = location:arequipa any_subject = { owns = location:arequipa } }
+				owns_or_non_sovereign_subject_owns = location:arequipa has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:arequipa } location:arequipa = { add_core = root } }
-			add_gold = 160
+			if = { limit = { owns = location:arequipa } location:arequipa = { add_core = root } } add_gold = 160 if = { limit = { owns = location:arequipa } location:arequipa = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_csu_07_pacific_ports_silver = {
@@ -122,13 +115,12 @@ oe_msn_csu_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_07_pacific_ports_silver_req_tt
-				gold >= 400 num_locations >= 25
+				gold >= 400 num_locations >= 25 monthly_income_trade_and_tax >= 25 OR = { any_owned_location = { OR = { has_building = building_type:marketplace has_building = building_type:wharf } } num_of_ports >= 4 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 240
-			add_country_modifier = { modifier = oe_msn2_csu_m2 years = 20 mode = replace }
+			add_gold = 240 add_country_modifier = { modifier = oe_msn2_csu_m2 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_csu_08_andean_mountain_forts = {
@@ -137,13 +129,12 @@ oe_msn_csu_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_08_andean_mountain_forts_req_tt
-				num_locations >= 18 stability >= 10
+				num_locations >= 18 stability >= 10 OR = { any_owned_location = { has_building = building_type:castle } army_tradition >= 18 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
-			add_stability = stability_weak_bonus
+			add_army_tradition = army_tradition_mild_bonus add_stability = stability_weak_bonus if = { limit = { is_subject = no country_exists = c:CHM NOT = { tag = CHM } c:CHM = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:CHM type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_csu_09_oceanic_breakthrough = {
@@ -152,28 +143,27 @@ oe_msn_csu_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_09_oceanic_breakthrough_req_tt
-				OR = { current_age_or_later = { age = age_3_discovery } navy_tradition >= 15 }
+				OR = { current_age_or_later = { age = age_3_discovery } navy_tradition >= 15 } OR = { has_embraced_institution = institution:feudalism has_embraced_institution = institution:new_world has_advance = professional_armies_advance navy_tradition >= 20 } OR = { any_owned_location = { OR = { has_building = building_type:wharf has_building = building_type:dock } } num_of_ports >= 4 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = 10
-			add_country_modifier = { modifier = oe_msn2_csu_m3 years = 20 mode = replace }
+			add_navy_tradition = 10 add_country_modifier = { modifier = oe_msn2_csu_m3 years = 20 mode = replace } add_prestige = prestige_weak_bonus
 		}
 	}
 	oe_msn_csu_10_lord_of_four_quarters = {
 		icon = tears_of_the_sun
 		requires = { oe_msn_csu_04_quipu_coricancha_sun oe_msn_csu_07_pacific_ports_silver oe_msn_csu_09_oceanic_breakthrough }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_csu_10_lord_of_four_quarters_req_tt
-				owns = location:qusqu stability >= 20 num_locations >= 35
+				owns_or_non_sovereign_subject_owns = location:qusqu stability >= 20 num_locations >= 35 capital = { development >= 22 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 55 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn2_csu_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn2_csu_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.34
 		}
 	}
 }

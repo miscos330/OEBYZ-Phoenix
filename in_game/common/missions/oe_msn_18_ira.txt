@@ -32,12 +32,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_01_end_ilkhan_strife_req_tt
-				OR = { owns = location:tabriz owns = location:shiraz owns = location:isfahan owns = location:ardabil owns = location:baghdad } stability >= 5
+				OR = { owns_or_non_sovereign_subject_owns = location:tabriz owns_or_non_sovereign_subject_owns = location:shiraz owns_or_non_sovereign_subject_owns = location:isfahan owns_or_non_sovereign_subject_owns = location:ardabil owns_or_non_sovereign_subject_owns = location:baghdad } stability >= 5 any_owned_location = { OR = { has_building = building_type:caravanserai has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus add_stability = stability_weak_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_ira_02_tabriz_awakening = {
@@ -46,13 +46,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_02_tabriz_awakening_req_tt
-				owns = location:tabriz stability >= 10
+				owns_or_non_sovereign_subject_owns = location:tabriz stability >= 10 any_owned_location = { OR = { has_building = building_type:madrasa has_building = building_type:temple } } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:tabriz } location:tabriz = { add_core = root } }
-			add_stability = stability_mild_bonus
+			if = { limit = { owns = location:tabriz } location:tabriz = { add_core = root } } add_stability = stability_mild_bonus if = { limit = { owns = location:tabriz } location:tabriz = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } } if = { limit = { is_subject = no country_exists = c:QAR NOT = { tag = QAR } c:QAR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:QAR type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ira_03_abbas_ghulam_corps = {
@@ -61,12 +60,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_03_abbas_ghulam_corps_req_tt
-				OR = { owns = location:tabriz owns = location:isfahan owns = location:shiraz } gold >= 240 current_age_or_later = { age = age_3_discovery }
+				OR = { owns_or_non_sovereign_subject_owns = location:tabriz owns_or_non_sovereign_subject_owns = location:isfahan owns_or_non_sovereign_subject_owns = location:shiraz } gold >= 240 current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:training_fields has_building = building_type:cannon_maker } } OR = { army_tradition >= 20 has_advance = pike_and_shot_advance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { is_subject = no country_exists = c:TUR NOT = { tag = TUR } c:TUR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:TUR type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ira_04_nazir_central_court = {
@@ -75,12 +74,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_04_nazir_central_court_req_tt
-				OR = { owns = location:isfahan owns = location:tabriz } current_age_or_later = { age = age_4_reformation } num_locations >= 35
+				OR = { owns_or_non_sovereign_subject_owns = location:isfahan owns_or_non_sovereign_subject_owns = location:tabriz } current_age_or_later = { age = age_4_reformation } num_locations_owned_or_owned_by_subjects >= 35 any_owned_location = { OR = { has_building = building_type:customs_house has_building = building_type:barracks } } has_embraced_institution = institution:global_trade
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ira_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ira_m1 years = 20 mode = replace } add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ira_05_fars_shiraz_isfahan = {
@@ -89,14 +88,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_05_fars_shiraz_isfahan_req_tt
-				owns = location:shiraz owns = location:isfahan
+				owns_or_non_sovereign_subject_owns = location:shiraz owns_or_non_sovereign_subject_owns = location:isfahan OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:shiraz } location:shiraz = { add_core = root } }
-			if = { limit = { owns = location:isfahan } location:isfahan = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:shiraz } location:shiraz = { add_core = root } } if = { limit = { owns = location:isfahan } location:isfahan = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:isfahan } location:isfahan = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { owns = location:shiraz } location:shiraz = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:TIM NOT = { tag = TIM } c:TIM = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:TIM type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ira_06_khorasan_shield = {
@@ -105,13 +102,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_06_khorasan_shield_req_tt
-				owns = location:herat
+				owns_or_non_sovereign_subject_owns = location:herat any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:caravanserai } } army_tradition >= 14
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:herat } location:herat = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:herat } location:herat = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:herat } location:herat = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:JAL NOT = { tag = JAL } c:JAL = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:JAL type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ira_07_baghdad_tigris = {
@@ -120,13 +116,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_07_baghdad_tigris_req_tt
-				owns = location:baghdad
+				owns_or_non_sovereign_subject_owns = location:baghdad OR = { army_tradition >= 18 num_locations_owned_or_owned_by_subjects >= 30 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:baghdad } location:baghdad = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:baghdad } location:baghdad = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:baghdad } location:baghdad = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:ORM NOT = { tag = ORM } c:ORM = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:ORM type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ira_08_hormuz_gulf_gate = {
@@ -135,13 +130,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_08_hormuz_gulf_gate_req_tt
-				owns = location:hormuz
+				owns_or_non_sovereign_subject_owns = location:hormuz has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:hormuz } location:hormuz = { add_core = root } }
-			add_country_modifier = { modifier = oe_msn_ira_m2 years = 20 mode = replace }
+			if = { limit = { owns = location:hormuz } location:hormuz = { add_core = root } } add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:hormuz } location:hormuz = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } add_country_modifier = { modifier = oe_msn_ira_m2 years = 20 mode = replace }
 		}
 	}
 	oe_msn_ira_09_qanat_irrigation = {
@@ -150,12 +144,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_09_qanat_irrigation_req_tt
-				OR = { owns = location:isfahan owns = location:tabriz } gold >= 280
+				OR = { owns_or_non_sovereign_subject_owns = location:isfahan owns_or_non_sovereign_subject_owns = location:tabriz } gold >= 280 any_owned_location = { OR = { has_building = building_type:aqueduct_system has_building = building_type:granary } } OR = { NOT = { country_has_estate = estate_type:peasants_estate } estate_satisfaction:peasants_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 140
+			add_gold = 140 if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_ira_10_isfahan_silk_carpets = {
@@ -164,12 +158,12 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_10_isfahan_silk_carpets_req_tt
-				owns = location:isfahan current_age_or_later = { age = age_3_discovery }
+				owns_or_non_sovereign_subject_owns = location:isfahan current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:silk_production_guild has_building = building_type:trading_hub } } capital = { development >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
+			culture = { add_cultural_tradition = 8 } add_gold = 180 if = { limit = { owns = location:isfahan } location:isfahan = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_ira_11_improved_silk_road = {
@@ -178,27 +172,27 @@ oe_msn_ira_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_11_improved_silk_road_req_tt
-				owns = location:isfahan owns = location:hormuz current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:isfahan owns_or_non_sovereign_subject_owns = location:hormuz current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:port_authority has_building = building_type:customs_house } } monthly_income_trade_and_tax >= 85
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ira_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ira_m3 years = 20 mode = replace } add_gold = 220 add_diplomats = diplomats_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_ira_12_immortal_iran = {
 		icon = ira_encouraged_art
 		requires = { oe_msn_ira_04_nazir_central_court oe_msn_ira_08_hormuz_gulf_gate oe_msn_ira_11_improved_silk_road }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ira_12_immortal_iran_req_tt
-				owns = location:isfahan owns = location:tabriz owns = location:hormuz stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:isfahan owns_or_non_sovereign_subject_owns = location:tabriz owns_or_non_sovereign_subject_owns = location:hormuz stability >= 15 current_age_or_later = { age = age_5_absolutism } capital = { development >= 30 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 115 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ira_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ira_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.20
 		}
 	}
 }

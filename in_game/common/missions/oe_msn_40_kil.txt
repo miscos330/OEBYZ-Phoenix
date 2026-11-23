@@ -38,13 +38,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_01_swahili_coral_cities_req_tt
-				OR = { AND = { owns = location:kilwa_kisiwani owns = location:songo_mnara } AND = { owns = location:mombasa owns = location:zanzibar } } stability >= 5
+				OR = { AND = { owns_or_non_sovereign_subject_owns = location:kilwa_kisiwani owns_or_non_sovereign_subject_owns = location:songo_mnara } AND = { owns_or_non_sovereign_subject_owns = location:mombasa owns_or_non_sovereign_subject_owns = location:zanzibar } } stability >= 5 capital = { development >= 12 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 140
-			add_stability = stability_mild_bonus
+			add_gold = 140 add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kil_02_monsoon_dhow_shipyards = {
@@ -53,13 +52,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_02_monsoon_dhow_shipyards_req_tt
-				has_ports = yes gold >= 180
+				has_ports = yes gold >= 180 OR = { any_owned_location = { has_building = building_type:wharf } num_of_ports >= 3 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			set_variable = { name = oe_aa2_dhow_unlocked value = 1 }
-			add_navy_tradition = navy_tradition_mild_bonus
+			set_variable = { name = oe_aa2_dhow_unlocked value = 1 } add_navy_tradition = navy_tradition_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_kil_03_coastal_cannon_batteries = {
@@ -68,13 +66,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_03_coastal_cannon_batteries_req_tt
-				stability >= 12 current_age_or_later = { age = age_3_discovery }
+				stability >= 12 current_age_or_later = { age = age_3_discovery } OR = { any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:cannon_maker } } navy_tradition >= 20 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_navy_tradition = navy_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kil_04_defy_portuguese_armadas = {
@@ -83,12 +80,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_04_defy_portuguese_armadas_req_tt
-				owns = location:kilwa_kisiwani stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:kilwa_kisiwani stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { any_owned_location = { OR = { has_building = building_type:shipyard has_building = building_type:bastion } } navy_tradition >= 30 } OR = { has_embraced_institution = institution:artillery_institution has_advance = pike_and_shot_advance navy_tradition >= 35 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_kil_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_kil_m1 years = 20 mode = replace } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_kil_05_zanzibar_pemba_straits = {
@@ -97,14 +94,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_05_zanzibar_pemba_straits_req_tt
-				owns = location:zanzibar owns = location:bagamoyo
+				owns_or_non_sovereign_subject_owns = location:zanzibar owns_or_non_sovereign_subject_owns = location:bagamoyo
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:zanzibar } location:zanzibar = { add_core = root } }
-			if = { limit = { owns = location:bagamoyo } location:bagamoyo = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:zanzibar } location:zanzibar = { add_core = root } } if = { limit = { owns = location:bagamoyo } location:bagamoyo = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:zanzibar } location:zanzibar = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:MBA NOT = { tag = MBA } c:MBA = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MBA type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_kil_06_mombasa_malindi_league = {
@@ -113,14 +108,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_06_mombasa_malindi_league_req_tt
-				owns = location:mombasa owns = location:malindi
+				owns_or_non_sovereign_subject_owns = location:mombasa owns_or_non_sovereign_subject_owns = location:malindi
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:mombasa } location:mombasa = { add_core = root } }
-			if = { limit = { owns = location:malindi } location:malindi = { add_core = root } }
-			add_navy_tradition = navy_tradition_mild_bonus
+			if = { limit = { owns = location:mombasa } location:mombasa = { add_core = root } } if = { limit = { owns = location:malindi } location:malindi = { add_core = root } } add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:mombasa } location:mombasa = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:AJU NOT = { tag = AJU } c:AJU = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:AJU type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_kil_07_sofala_gold_ivory = {
@@ -129,14 +122,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_07_sofala_gold_ivory_req_tt
-				owns = location:sofala OR = { owns = location:mozambique owns = location:quelimane } num_locations >= 28
+				owns_or_non_sovereign_subject_owns = location:sofala OR = { owns_or_non_sovereign_subject_owns = location:mozambique owns_or_non_sovereign_subject_owns = location:quelimane } num_locations >= 28 monthly_income_trade_and_tax >= 25
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:sofala } location:sofala = { add_core = root } }
-			if = { limit = { owns = location:mozambique } location:mozambique = { add_core = root } }
-			add_gold = 180
+			if = { limit = { owns = location:sofala } location:sofala = { add_core = root } } if = { limit = { owns = location:mozambique } location:mozambique = { add_core = root } } add_gold = 180 if = { limit = { owns = location:sofala } location:sofala = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_kil_08_zimbabwe_gold_corridor = {
@@ -145,12 +136,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_08_zimbabwe_gold_corridor_req_tt
-				owns = location:sofala OR = { owns = location:great_zimbabwe owns = location:lamu } current_age_or_later = { age = age_3_discovery }
+				owns_or_non_sovereign_subject_owns = location:sofala OR = { owns_or_non_sovereign_subject_owns = location:great_zimbabwe owns_or_non_sovereign_subject_owns = location:lamu } current_age_or_later = { age = age_3_discovery } OR = { any_owned_location = { OR = { has_building = building_type:trading_hub has_building = building_type:marketplace } } monthly_income_trade_and_tax >= 35 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_kil_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_kil_m2 years = 20 mode = replace } add_gold = 160
 		}
 	}
 	oe_msn_kil_09_husuni_kubwa_emporium = {
@@ -159,13 +150,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_09_husuni_kubwa_emporium_req_tt
-				owns = location:kilwa_kisiwani gold >= 240
+				owns_or_non_sovereign_subject_owns = location:kilwa_kisiwani gold >= 240 OR = { any_owned_location = { OR = { has_building = building_type:marketplace has_building = building_type:guild_hall } } OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.55 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
-			add_prestige = prestige_mild_bonus
+			add_gold = 160 add_prestige = prestige_mild_bonus if = { limit = { owns = location:kilwa_kisiwani } location:kilwa_kisiwani = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kil_10_swahili_chronicle_letters = {
@@ -174,12 +164,12 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_10_swahili_chronicle_letters_req_tt
-				owns = location:kilwa_kisiwani current_age_or_later = { age = age_2_renaissance }
+				owns_or_non_sovereign_subject_owns = location:kilwa_kisiwani current_age_or_later = { age = age_2_renaissance } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 } OR = { any_owned_location = { OR = { has_building = building_type:madrasa has_building = building_type:library } } any_owned_location = { has_building = building_type:university } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 12 }
+			culture = { add_cultural_tradition = 12 } add_prestige = prestige_weak_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kil_11_monsoon_trade_network = {
@@ -188,27 +178,27 @@ oe_msn_kil_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_11_monsoon_trade_network_req_tt
-				owns = location:kilwa_kisiwani owns = location:mombasa stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:kilwa_kisiwani owns_or_non_sovereign_subject_owns = location:mombasa stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:global_trade has_embraced_institution = institution:banking monthly_income_trade_and_tax >= 55 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_kil_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_kil_m3 years = 20 mode = replace } add_gold = 220
 		}
 	}
 	oe_msn_kil_12_lord_indian_ocean_rim = {
 		icon = global_trade_advance
 		requires = { oe_msn_kil_04_defy_portuguese_armadas oe_msn_kil_08_zimbabwe_gold_corridor oe_msn_kil_11_monsoon_trade_network }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kil_12_lord_indian_ocean_rim_req_tt
-				owns = location:kilwa_kisiwani owns = location:mombasa owns = location:zanzibar owns = location:sofala stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:kilwa_kisiwani owns_or_non_sovereign_subject_owns = location:mombasa owns_or_non_sovereign_subject_owns = location:zanzibar owns_or_non_sovereign_subject_owns = location:sofala stability >= 18 current_age_or_later = { age = age_5_absolutism } capital = { development >= 24 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 75 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_kil_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_kil_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.36
 		}
 	}
 }

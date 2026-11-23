@@ -1,8 +1,8 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v20.0
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v21.0
 
 欧陆风云 5 的东罗马（拜占庭）与欧亚全时代重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
-> **v20.0 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。2026-11-23 用 v20.0 候选做了实机测试：加载检查（相对 v14.5 发版包逐条比对新增报错）、九组引擎探针一键跑通（P1–P9 读数全部为通过值），以及观察者长局 1337→1812（475 年，约 260 分钟）零崩溃、无卡死。首轮查出的 11 类问题（5 种新商品缺修正类型与 50 张修正图标、4 种不进人口需求、一份开局外交文件解析失败、两处高频运行期报错、4 个决议分类无效、12 个生产方式利润超出引擎区间、20 个消息类型和 66 条词条缺失等）已在 rc2 修掉并复测清零加载期与早期高频报错。发版文件夹本身另做了加载检查：进主菜单和开局画廊，以拜占庭开局后转观察者推进到 1340 年，没有崩溃，本模组脚本的运行期报错为 0，50 条修正缺图标提示已消失。rc3 修的那 5 类报错要 1362 年以后才会出现，修好后没有再跑长局复核。
+> **v21.0 不支持旧存档：v20.0 及以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。2026-11-23 在 EU5 1.4.9 上分三轮实机测试（rc1→rc2→rc3）：1337 开局 13 组新探针（P10–P22）全部达到预期读数；观察者局 1337→1361（24 年，约 9 分钟）没有崩溃，本模组脚本运行期报错为 0（rc1 同一段约 17,000 行，来自法律 2.0）；金帐汗国 1337–1361 年拥有地块稳定在 409–414 块（rc1、rc2 都在 1343–1349 年崩到不足 100 块）。极乐洲新罗马（`ELR`）建国后，议会类型为“极乐新罗马元老院”，冷却结束后实际走通了“新君士坦丁堡 → 选择极乐议题 → 议会已召集”；投票结果没有等到。首轮查出的加载期与运行期问题（法律 `has_estate`、征讨败战回调、内阁行动语法与缺词条、总督区同色与人力效率等）已在 rc2/rc3 复测为 0。发版文件夹本身另做了加载检查：进主菜单，以拜占庭开局并推进数月，没有崩溃，本模组脚本运行期报错为 0。
 
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
@@ -37,6 +37,28 @@
 - **宫廷与豪族：** “琼筵序次”里有 7 个宫廷官职。豪族名册上的家族会扩张势力，可以拉拢、打压、抄家；放任不管会引发“拜占庭式的阴谋”。
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
+
+## v21.0 主要内容《帝国经纬·全量深化版》
+
+对比 v20.0：事件 `3,365 → 3,559`（`+194`），决议 `359 → 404`（`+45`），原生 `.dds` 美术与图标 `1,393 → 1,406`（`+13` 幅 1080×440 专属油画，另重绘 `44` 枚 512×512 成就双态图标），双语本地化各增 `+3,086` 条（中文 `55,024 → 58,110`，英文 `56,738 → 59,824`，增量 100% 对齐）；开局游戏规则 18 条、主线调度槽位 98/98 不变（所有 v21.0 周期逻辑均挂载于全局年度内核，零新增槽位）。
+
+- **全局数值平衡审计与中度策略校准（模块 A）：** 新增全模组离线预算审计门禁（Rule 1–4 零违规），统一收口跨体系修正上限、特殊兵种限额与 44 项工场生产利润率（`<= 30%`）。
+- **法律体系 2.0（模块 B）：** 新增 6 部通用帝国法典与 16 部区域文明专属法律，配套皇权/市民/教士阶层过渡联动与冷却机制，所有政策均带明确取舍而非单向堆数值。
+- **拜占庭征讨与战区战役 2.0（模块 C）：** 围绕巴尔干、安纳托利亚、意大利、埃及与北非重写多阶段战役联动、胜利/受挫回调与补给统筹，衔接军区 2.0 与帝国权威。
+- **人口同化与文化整合 2.0（模块 D）：** 深化四速有机同化与文化融合弧，补充城邦特许、边疆屯垦与多元容忍政策分支，平衡同化效率与阶层满意。
+- **41 条 T2/T3 任务树、6 场中后期灾难与竞争性 AI（模块 E）：** 补齐 41 个二三线历史国家的专属任务树与 41 个高潮收官事件；新增 6 场中后期结构性灾难与防滚雪球竞争性 AI 联动。
+- **6 套文明议会、24 项议程与 10 项内阁行动（模块 F）：** 面向欧亚主要文明新增 6 套特色议会与 24 项专属议题、10 项高价值内阁行动，并将专属附庸保护锁扩展至 27 类特殊附庸。
+- **第四罗马《极乐洲新罗马》（`ELR`）核心修复与全量深化：** 修复脱壳建国后残余部落改革/特权与元老院无法召开问题，落实新大陆 75 年三段式经济成长曲线与极乐元老院专属议题。
+- **金帐汗国防早崩与察合台三翼 17 埃米尔重制：** 修复金帐汗国 1337–1356 年因君主早逝触发原版 `-50` 团结度导致的反复崩盘（1357 年起撤去护盾，交还原版大混乱机制）；察合台汗国重构为东西三翼（新增 `FRG`、`OTR`、`BSB`）共 17 个埃米尔附庸体系。
+- **12 个建筑型总督区与 4 大专门附庸体系：** 为德里苏丹国（5 伊克塔）、马穆鲁克（3 副王府 + 谢里夫国）、匈牙利（特兰西瓦尼亚沃伊沃德）、卡斯蒂利亚（2 骑士团/前沿督军区）与埃塞俄比亚（提格雷海王）实装原生建筑型总督区；深化札剌亦儿、格鲁吉亚、吐蕃、马里与高棉曼陀罗（`PHM`）专门附庸。
+- **战略商品闭环、6 套局势 GUI、14 旗舰任务升级与美术抛光：** 打通精炼钢/外销瓷茶/工业化学品/航海天文钟与 5 大运河跨体系闭环，实装 6 套原生局势界面；升级 14 个 T1 旗舰国任务与 28 项高潮事件；补齐 13 幅 1080×440 专属油画与 44 枚重绘 512×512 双态成就图标。
+
+### 可选子模组
+
+可选子模组（均需排在主模组 `OEBYZ-Phoenix-v21.0` 之后加载）：
+- **开局精选页 3.0**（24 国双页画廊）：沿用 v20.0 版，创意工坊 `3844347953`；没有和 v21.0 一起重新实测。
+- **1453 / 1648 / 1776 三套独立剧本**还在修，本版不发布：实测时 1648、1776 的多位君主序号显示错误（如路易十四显示为路易十一），修好并复测后再单独发布。
+- 原声带子模组仍不发布（无编译音频库）。
 
 ## v20.0 主要内容（整合 v15.0 / v15.5 / v16.0 / v16.5 / v17.0 / v17.5 / v18.0 / v18.5 / v19.0 / v19.5 / v20.0）
 
@@ -137,19 +159,18 @@
 
 ## 已知问题
 
-- 观察者长局最远跑到 1812 年；更晚的内容（终局大战、1836 封卷等）没有在长局里出现过。
-- 金帐汗国在观察者局里 1345 年前后先崩后复、1355 年后再崩（v14.5 的四局走势相同，原因未查明）。
-- 雇佣兵在中亚、朝鲜等地刷“重步兵”时，加载日志有“找不到可用兵种”的引擎提示（未证实与本模组有关）。
-- 发版包里有几十张 v14.5 留下的旧改革、特权图标，对应条目已经不存在，加载日志会提示“图标没有对应对象”，不影响游戏。
-- 13 幅新事件插画暂时借用现有油画，之后补画。
-- 没有逐项实测的：决议栏里每条决议的可见性（只有离线时代锁审计为 0 作证据）、各国专属任务树与 v15–v20 新增事件的逐个触发、以及 rc3 修正在 1362 年以后的长局表现。
+- 本版不支持 v20.0 及更早版本的旧存档，请新开一局；只适配 EU5 `1.4.9`。
+- 1337–1361 的观察者局里，金帐汗国在 1357 年撤去护盾后到 1361 年仍未出现原版大混乱；更晚的走向没有测。
+- 主模组仍保留少量历史遗留加载提示（43 个后期融合文化开局无人口、若干早期版本的旧改革/特权图标提示等），均不影响正常游玩。
+- 极乐洲新罗马建国事件（`oe_ely.13`）若玩家一直不选且取消暂停，超时后会自动留在旧大陆残余国家；正常手动点击“率众西渡”即可无缝切换至 `ELR`。
+- 没有逐项实测的：6 套新局势界面视觉、13 张新油画与 44 张重绘成就图逐张核对、极乐新罗马议会投票结果与 75 年三段经济曲线、察合台 14 对 3 东西分裂细节、41 条 T2/T3 任务树与 6 场中后期灾难的逐个触发，以及开局精选页 3.0 与 v21.0 同时使用。
 
 ## 安装
 
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v20.0` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v21.0` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
@@ -174,16 +195,46 @@
 
 ---
 
-# Phoenix Beta (OEBYZ) v20.0 — English
+# Phoenix Beta (OEBYZ) v21.0 — English
 
 The beta of an Eastern Roman (Byzantine) and Pan-Eurasian overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
-> **v20.0: Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.** Tested live on 23 November 2026 with the v20.0 candidate: a load check (every new error compared with the v14.5 release), the nine one-click engine probes (P1–P9 all returned passing values), and an observer game 1337→1812 (475 years, about 260 minutes) with no crash or hang. Eleven kinds of initial issues (5 new goods missing modifier types and 50 modifier icons, 4 missing from pop demand, a start-date diplomacy file that failed to parse, two frequent runtime errors, 4 decisions in an invalid category, 12 production methods outside the engine's profit band, 20 message types and 66 text keys missing) were fixed in rc2 and re-tested with load and early high-frequency errors cleared. The release folder itself was load-checked: main menu, the start gallery, then a game as Byzantium run as an observer to 1340 with no crash, no runtime script errors from this mod, and the 50 missing-icon notes gone. The 5 kinds of errors fixed in rc3 only appear after 1362; no long game was run again after the fix.
+> **v21.0: Old saves are not supported: saves from v20.0 or earlier will not work with this version. Start a new game.** Tested live on EU5 1.4.9 on 23 November 2026 in three rounds (rc1→rc2→rc3): all 13 new 1337 probes (P10–P22) returned their expected values; an observer game 1337→1361 (24 years, about 9 minutes) ran with no crash and 0 runtime script errors from this mod (rc1 logged about 17,000 lines there, from Laws 2.0); the Golden Horde held 409–414 locations from 1337 to 1361 (in rc1 and rc2 it fell below 100 between 1343 and 1349). After founding Nova Elysia (`ELR`) the parliament type is the Elysian Senate, and once its cooldown ended a session was actually called at New Constantinople on an Elysian issue; the vote result was not awaited. The load-time and runtime issues found in the first round (Laws 2.0 `has_estate`, campaign defeat hook, cabinet action syntax and missing texts, viceroyalty colours and manpower efficiency, etc.) were re-tested at 0 in rc2/rc3. The release folder itself was load-checked: main menu, then a game as Byzantium run for some months with no crash and 0 runtime script errors from this mod.
 
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
 
 ⭐ **If you enjoy the mod, please star this repository.** Stars help other players find it and are the most direct encouragement for us. Bug reports are welcome in Issues.
+
+## New in v21.0 (Empire Meridian)
+
+Against v20.0: events `3,365 → 3,559` (`+194`), decisions `359 → 404` (`+45`), native `.dds` assets `1,393 → 1,406` (`+13` new 1080x440 bespoke event paintings, plus `44` redrawn 512x512 achievement icons), bilingual text `+3,086` keys per language (Chinese `55,024 → 58,110`, English `56,738 → 59,824`, 100% delta parity); 18 Game Rules and 98/98 mainline slots unchanged (all v21.0 periodic logic runs inside the global yearly kernel).
+
+- **Global Balance Budget Pass (Module A):** added a full-mod balance auditor (Rules 1–4, 0 violations) enforcing moderate-strategy caps on modifiers, special unit limits and all 44 manufactory production methods (`<= 30%` markup).
+- **Laws 2.0 Overhaul (Module B):** added 6 universal imperial codes and 16 regional civilization laws with crown/burgher/clergy transition effects and clear trade-offs.
+- **Byzantine Reconquest & Campaigns 2.0 (Module C):** multi-stage campaign hooks across the Balkans, Anatolia, Italy, Egypt and North Africa with victory/setback effects linked to Theme System 2.0 and Imperial Authority.
+- **Population Assimilation & Cultural Integration 2.0 (Module D):** deepened 4-speed organic assimilation and hybridization arcs with urban charter, frontier settlement and pluralism branches.
+- **41 T2/T3 Mission Trees, 6 Mid/Late Disasters & Competitive AI (Module E):** added 41 regional mission trees with 41 climax events, plus 6 mid/late structural disasters and competitive anti-snowball AI hooks.
+- **6 Civilization Parliaments, 24 Agendas & 10 Cabinet Actions (Module F):** added 6 distinct civilization parliaments with 24 agendas and 10 cabinet actions, and expanded the special-subject protection lock to 27 subject types.
+- **Fourth Rome (`ELR`) Critical Fix & Deepening:** fixed residual tribal reforms/privileges and senate convocation after exodus, and added a 75-year 3-tier New World economic curve with bespoke Elysian Senate issues.
+- **Golden Horde Early-Collapse Fix & Chagatai 3-Wing 17-Amir Overhaul:** fixed the repeated 1337–1356 Golden Horde collapse triggered by an early ruler death (`-50` unity hit); the shield is removed from 1357, handing back to the vanilla Great Troubles; rebuilt Chagatai into a 3-wing (`FRG`/`OTR`/`BSB`) 17-amir structure.
+- **12 Building-Type Viceroyalties & 4 Specialized Vassal Systems:** implemented native building-type viceroyalties for Delhi (5 iqtas), Mamluks (3 niyabats + Sharifate), Hungary, Castile and Ethiopia, plus specialized vassals for Jalayirids, Georgia, Tibet, Mali and Khmer (`PHM`).
+- **Strategic Goods Loop, 6 Situation GUIs, Flagship Missions & Art Polish:** closed the strategic goods and 5-canal loop with 6 situation GUIs, upgraded 14 T1 flagship mission trees with 28 climax events, added 13 bespoke 1080x440 event paintings and redrew all 44 512x512 achievement icons.
+
+### Optional Submods
+
+Optional submods (load strictly **after** `OEBYZ-Phoenix-v21.0`):
+- **Bookmarks 3.0** (24-nation 2-page gallery): the v20.0 version, Workshop `3844347953`; not re-tested together with v21.0.
+- The **1453 / 1648 / 1776 standalone scenarios** are still being fixed and are not part of this release: in testing, several rulers in 1648 and 1776 showed the wrong regnal number (Louis XIV appeared as Louis XI). They will be released separately once fixed and re-tested.
+- The soundtrack submod remains unreleased (no compiled sound bank).
+
+**Known issues:**
+
+- Saves from v20.0 or earlier are not supported; start a new game. Built for EU5 `1.4.9` only.
+- In the 1337–1361 observer game the Golden Horde had not entered the vanilla Great Troubles by 1361 after the shield was removed in 1357; later years were not tested.
+- A few pre-existing load notes remain in the main mod (43 late-era hybrid cultures with no 1337 pops, legacy reform/privilege icon notes); none affect gameplay.
+- In the Nova Elysia founding event (`oe_ely.13`), letting the event auto-timeout while unpaused keeps the player in the Old World remnant; clicking the exodus option switches cleanly to `ELR`.
+- Not tested item by item: the look of the 6 new situation GUIs, each of the 13 new paintings and 44 redrawn achievement icons, the Nova Elysia parliament vote result and 75-year 3-tier curve, Chagatai 14-vs-3 split details, individual triggers of the 41 T2/T3 mission trees and 6 mid/late disasters, and Bookmarks 3.0 together with v21.0.
 
 ## New in v20.0 (v15.0 to v20.0)
 

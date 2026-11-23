@@ -41,13 +41,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_01_mbanza_benin_guilds_req_tt
-				OR = { owns = location:mbanza_kongo owns = location:benin owns = location:oyo_ile } stability >= 5
+				OR = { owns_or_non_sovereign_subject_owns = location:mbanza_kongo owns_or_non_sovereign_subject_owns = location:benin owns_or_non_sovereign_subject_owns = location:oyo_ile } stability >= 5 capital = { development >= 12 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 140
-			add_stability = stability_mild_bonus
+			add_gold = 140 add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kon_02_bronze_wall_defenses = {
@@ -56,12 +55,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_02_bronze_wall_defenses_req_tt
-				gold >= 180 stability >= 10
+				gold >= 180 stability >= 10 OR = { any_owned_location = { has_building = building_type:castle } army_tradition >= 15 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kon_03_royal_flintlock_guards = {
@@ -70,13 +69,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_03_royal_flintlock_guards_req_tt
-				stability >= 12 current_age_or_later = { age = age_3_discovery }
+				stability >= 12 current_age_or_later = { age = age_3_discovery } OR = { any_owned_location = { OR = { has_building = building_type:armory has_building = building_type:weapon_guild } } army_tradition >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
-			add_prestige = prestige_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_kon_04_anti_slave_trade_edict = {
@@ -85,12 +83,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_04_anti_slave_trade_edict_req_tt
-				stability >= 15 current_age_or_later = { age = age_4_reformation }
+				stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { NOT = { country_has_estate = estate_type:peasants_estate } estate_satisfaction:peasants_estate >= 0.50 } OR = { has_embraced_institution = institution:global_trade has_advance = pike_and_shot_advance army_tradition >= 32 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_kon_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_kon_m1 years = 20 mode = replace } add_stability = stability_weak_bonus if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kon_05_congo_niger_heartland = {
@@ -99,15 +97,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_05_congo_niger_heartland_req_tt
-				OR = { AND = { owns = location:mbanza_kongo owns = location:mbanza_mbata } AND = { owns = location:benin owns = location:ughoton } AND = { owns = location:oyo_ile owns = location:ife } }
+				OR = { AND = { owns_or_non_sovereign_subject_owns = location:mbanza_kongo owns_or_non_sovereign_subject_owns = location:mbanza_mbata } AND = { owns_or_non_sovereign_subject_owns = location:benin owns_or_non_sovereign_subject_owns = location:ughoton } AND = { owns_or_non_sovereign_subject_owns = location:oyo_ile owns_or_non_sovereign_subject_owns = location:ife } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:mbanza_mbata } location:mbanza_mbata = { add_core = root } }
-			if = { limit = { owns = location:ughoton } location:ughoton = { add_core = root } }
-			if = { limit = { owns = location:ife } location:ife = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:mbanza_mbata } location:mbanza_mbata = { add_core = root } } if = { limit = { owns = location:ughoton } location:ughoton = { add_core = root } } if = { limit = { owns = location:ife } location:ife = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_kon_06_atlantic_river_ports = {
@@ -116,15 +111,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_06_atlantic_river_ports_req_tt
-				OR = { owns = location:soyo owns = location:loango owns = location:eko owns = location:warri }
+				OR = { owns_or_non_sovereign_subject_owns = location:soyo owns_or_non_sovereign_subject_owns = location:loango owns_or_non_sovereign_subject_owns = location:eko owns_or_non_sovereign_subject_owns = location:warri } has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:soyo } location:soyo = { add_core = root } }
-			if = { limit = { owns = location:loango } location:loango = { add_core = root } }
-			if = { limit = { owns = location:eko } location:eko = { add_core = root } }
-			add_navy_tradition = navy_tradition_mild_bonus
+			if = { limit = { owns = location:soyo } location:soyo = { add_core = root } } if = { limit = { owns = location:loango } location:loango = { add_core = root } } if = { limit = { owns = location:eko } location:eko = { add_core = root } } add_navy_tradition = navy_tradition_mild_bonus
 		}
 	}
 	oe_msn_kon_07_equatorial_basin_dominion = {
@@ -133,13 +125,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_07_equatorial_basin_dominion_req_tt
-				num_locations >= 24 OR = { owns = location:luanda owns = location:mbanza_soyo owns = location:idah owns = location:calabar }
+				num_locations >= 24 monthly_income_trade_and_tax >= 22 OR = { owns_or_non_sovereign_subject_owns = location:luanda owns_or_non_sovereign_subject_owns = location:mbanza_soyo owns_or_non_sovereign_subject_owns = location:idah owns_or_non_sovereign_subject_owns = location:calabar }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
-			add_prestige = prestige_mild_bonus
+			add_gold = 160 add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kon_08_congo_basin_hegemon = {
@@ -148,12 +139,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_08_congo_basin_hegemon_req_tt
-				num_locations >= 36 current_age_or_later = { age = age_3_discovery }
+				num_locations >= 36 current_age_or_later = { age = age_3_discovery } OR = { any_owned_location = { OR = { has_building = building_type:wharf has_building = building_type:trading_hub } } num_of_ports >= 4 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_kon_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_kon_m2 years = 20 mode = replace } add_gold = 180
 		}
 	}
 	oe_msn_kon_09_atlantic_sovereign_diplomacy = {
@@ -162,13 +153,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_09_atlantic_sovereign_diplomacy_req_tt
-				stability >= 10 current_age_or_later = { age = age_2_renaissance }
+				stability >= 10 current_age_or_later = { age = age_2_renaissance } OR = { has_embraced_institution = institution:feudalism has_embraced_institution = institution:renaissance stability >= 16 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_diplomats = diplomats_mild_bonus
-			add_prestige = prestige_mild_bonus
+			add_diplomats = diplomats_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_kon_10_brass_ivory_commerce = {
@@ -177,13 +167,12 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_10_brass_ivory_commerce_req_tt
-				gold >= 280
+				gold >= 280 OR = { any_owned_location = { OR = { has_building = building_type:marketplace has_building = building_type:guild_hall } } monthly_income_trade_and_tax >= 28 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
-			culture = { add_cultural_tradition = 10 }
+			add_gold = 160 culture = { add_cultural_tradition = 10 } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_kon_11_equatorial_printing_courts = {
@@ -192,27 +181,27 @@ oe_msn_kon_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_11_equatorial_printing_courts_req_tt
-				stability >= 15 current_age_or_later = { age = age_4_reformation }
+				stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { any_owned_location = { OR = { has_building = building_type:printing_press_shop has_building = building_type:university } } any_owned_location = { has_building = building_type:library } capital = { development >= 20 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_kon_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_kon_m3 years = 20 mode = replace } culture = { add_cultural_tradition = 8 }
 		}
 	}
 	oe_msn_kon_12_central_west_african_renaissance = {
 		icon = artisan_migration
 		requires = { oe_msn_kon_04_anti_slave_trade_edict oe_msn_kon_08_congo_basin_hegemon oe_msn_kon_11_equatorial_printing_courts }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kon_12_central_west_african_renaissance_req_tt
-				num_locations >= 45 stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				num_locations >= 45 stability >= 18 current_age_or_later = { age = age_5_absolutism } capital = { development >= 24 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 70 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_kon_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_kon_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.37
 		}
 	}
 }

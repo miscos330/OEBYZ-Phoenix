@@ -46,13 +46,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_01_brilliant_recovery_req_tt
-				OR = { owns = location:tbilisi owns = location:kutaisi owns = location:akhaltsikhe owns = location:yerevan owns = location:baku } stability >= 5
+				OR = { owns_or_non_sovereign_subject_owns = location:tbilisi owns_or_non_sovereign_subject_owns = location:kutaisi owns_or_non_sovereign_subject_owns = location:akhaltsikhe owns_or_non_sovereign_subject_owns = location:yerevan owns_or_non_sovereign_subject_owns = location:baku } stability >= 5 any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 140
-			add_stability = stability_mild_bonus
+			add_gold = 140 add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_geo_02_khevsur_sadrosho = {
@@ -61,13 +60,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_02_khevsur_sadrosho_req_tt
-				gold >= 180 stability >= 8
+				gold >= 180 stability >= 8 any_owned_location = { OR = { has_building = building_type:weapon_guild has_building = building_type:castle } } OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			set_variable = { name = oe_pi2_khevsur_unlocked value = 1 }
-			add_army_tradition = army_tradition_mild_bonus
+			set_variable = { name = oe_pi2_khevsur_unlocked value = 1 } add_army_tradition = army_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } } if = { limit = { is_subject = no country_exists = c:QAR NOT = { tag = QAR } c:QAR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:QAR type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_geo_03_darial_fortresses = {
@@ -76,13 +74,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_03_darial_fortresses_req_tt
-				stability >= 12 current_age_or_later = { age = age_2_renaissance }
+				stability >= 12 current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:armory has_building = building_type:castle } } OR = { army_tradition >= 18 has_advance = professional_armies_advance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
-			add_prestige = prestige_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { owns = location:tbilisi } location:tbilisi = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:TRE NOT = { tag = TRE } c:TRE = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:TRE type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_geo_04_defy_the_empires = {
@@ -91,12 +88,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_04_defy_the_empires_req_tt
-				owns = location:tbilisi owns = location:akhaltsikhe stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:tbilisi owns_or_non_sovereign_subject_owns = location:akhaltsikhe stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:bastion has_building = building_type:barracks } } army_tradition >= 25
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_pi2_msn_geo_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_pi2_msn_geo_m1 years = 20 mode = replace } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_geo_05_kartli_imereti_samtskhe = {
@@ -105,14 +102,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_05_kartli_imereti_samtskhe_req_tt
-				owns = location:tbilisi owns = location:kutaisi owns = location:akhaltsikhe
+				owns_or_non_sovereign_subject_owns = location:tbilisi owns_or_non_sovereign_subject_owns = location:kutaisi owns_or_non_sovereign_subject_owns = location:akhaltsikhe OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:kutaisi } location:kutaisi = { add_core = root } }
-			if = { limit = { owns = location:akhaltsikhe } location:akhaltsikhe = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:kutaisi } location:kutaisi = { add_core = root } } if = { limit = { owns = location:akhaltsikhe } location:akhaltsikhe = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:kutaisi } location:kutaisi = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:ARM NOT = { tag = ARM } c:ARM = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:ARM type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_geo_06_armenian_highlands = {
@@ -121,14 +116,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_06_armenian_highlands_req_tt
-				owns = location:yerevan OR = { owns = location:ani owns = location:kars }
+				owns_or_non_sovereign_subject_owns = location:yerevan OR = { owns_or_non_sovereign_subject_owns = location:ani owns_or_non_sovereign_subject_owns = location:kars } army_tradition >= 14
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:yerevan } location:yerevan = { add_core = root } }
-			if = { limit = { owns = location:ani } location:ani = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:yerevan } location:yerevan = { add_core = root } } if = { limit = { owns = location:ani } location:ani = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:yerevan } location:yerevan = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:SRV NOT = { tag = SRV } c:SRV = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:SRV type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_geo_07_shirvan_caspian_gates = {
@@ -137,14 +130,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_07_shirvan_caspian_gates_req_tt
-				owns = location:baku OR = { owns = location:derbent owns = location:shamakhi } num_locations >= 22
+				owns_or_non_sovereign_subject_owns = location:baku OR = { owns_or_non_sovereign_subject_owns = location:derbent owns_or_non_sovereign_subject_owns = location:shamakhi } num_locations_owned_or_owned_by_subjects >= 22 any_owned_location = { OR = { has_building = building_type:caravanserai has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:baku } location:baku = { add_core = root } }
-			if = { limit = { owns = location:derbent } location:derbent = { add_core = root } }
-			add_gold = 160
+			if = { limit = { owns = location:baku } location:baku = { add_core = root } } if = { limit = { owns = location:derbent } location:derbent = { add_core = root } } add_gold = 160 if = { limit = { owns = location:baku } location:baku = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_geo_08_two_seas_caucasus = {
@@ -153,12 +144,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_08_two_seas_caucasus_req_tt
-				owns = location:batumi owns = location:tbilisi owns = location:baku current_age_or_later = { age = age_3_discovery }
+				owns_or_non_sovereign_subject_owns = location:batumi owns_or_non_sovereign_subject_owns = location:tbilisi owns_or_non_sovereign_subject_owns = location:baku current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:trading_hub has_building = building_type:dry_dock } } has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_pi2_msn_geo_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_pi2_msn_geo_m2 years = 20 mode = replace } add_gold = 180 add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:batumi } location:batumi = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_geo_09_fortress_monasteries = {
@@ -167,13 +158,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_09_fortress_monasteries_req_tt
-				OR = { owns = location:tbilisi owns = location:yerevan } current_age_or_later = { age = age_2_renaissance }
+				OR = { owns_or_non_sovereign_subject_owns = location:tbilisi owns_or_non_sovereign_subject_owns = location:yerevan } current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:monastery has_building = building_type:university } } capital = { development >= 16 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
-			add_stability = stability_weak_bonus
+			culture = { add_cultural_tradition = 10 } add_stability = stability_weak_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_geo_10_silk_wine_caravans = {
@@ -182,13 +172,12 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_10_silk_wine_caravans_req_tt
-				gold >= 260
+				gold >= 260 any_owned_location = { OR = { has_building = building_type:silk_production_guild has_building = building_type:caravanserai } } monthly_income_trade_and_tax >= 25
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 160
-			add_diplomats = diplomats_mild_bonus
+			add_gold = 160 add_diplomats = diplomats_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_geo_11_dasturlamali_renaissance = {
@@ -197,27 +186,27 @@ oe_msn_geo_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_11_dasturlamali_renaissance_req_tt
-				stability >= 15 current_age_or_later = { age = age_4_reformation }
+				stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:printing_press_shop has_building = building_type:library } } has_embraced_institution = institution:printing_press capital = { development >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_pi2_msn_geo_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_pi2_msn_geo_m3 years = 20 mode = replace } culture = { add_cultural_tradition = 12 } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_geo_12_crown_of_queen_tamar = {
 		icon = geo_georgian_golden_age
 		requires = { oe_msn_geo_04_defy_the_empires oe_msn_geo_08_two_seas_caucasus oe_msn_geo_11_dasturlamali_renaissance }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_geo_12_crown_of_queen_tamar_req_tt
-				owns = location:tbilisi owns = location:yerevan owns = location:baku stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:tbilisi owns_or_non_sovereign_subject_owns = location:yerevan owns_or_non_sovereign_subject_owns = location:baku stability >= 18 current_age_or_later = { age = age_5_absolutism } capital = { development >= 26 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 95 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_pi2_msn_geo_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_pi2_msn_geo_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.21
 		}
 	}
 }

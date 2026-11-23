@@ -38,13 +38,13 @@ oe_glh_world = {
     # W2
     if = {
         limit = { NOT = { has_global_variable = oe_glh_w2 } var:oe_glh_m >= 58 }
-        if = { limit = { var:oe_glh_m <= 59 oe_glh_w2_ok = yes } random = { chance = oe_glh_w2_ch kill_character = character:glh_giyas_al_din_mohammed_oz_beg_borjigin set_global_variable = { name = oe_glh_w2 value = 1 } } }
+        if = { limit = { var:oe_glh_m <= 59 oe_glh_w2_ok = yes } random = { chance = oe_glh_w2_ch oe_glh_w2_do = yes set_global_variable = { name = oe_glh_w2 value = 1 } } }
         if = { limit = { NOT = { has_global_variable = oe_glh_w2 } var:oe_glh_m >= 59 } set_global_variable = { name = oe_glh_w2 value = 2 } }
     }
     # W3: once Özbeg no longer reigns. 2 = Jani Beg succeeded without a coup; 1 = the coup; 3 = neither by the end.
     if = {
         limit = { NOT = { has_global_variable = oe_glh_w3 } country_exists = c:GLH NOT = { country_exists = c:GLH character:glh_giyas_al_din_mohammed_oz_beg_borjigin ?= { is_alive = yes is_ruler_of = c:GLH } } }
-        if = { limit = { country_exists = c:GLH character:glh_jani_beg_borjigin ?= { is_alive = yes is_ruler_of = c:GLH } } set_global_variable = { name = oe_glh_w3 value = 2 } }
+        if = { limit = { country_exists = c:GLH character:glh_jani_beg_borjigin ?= { is_alive = yes is_ruler_of = c:GLH } } oe_glh_w3_direct_do = yes set_global_variable = { name = oe_glh_w3 value = 2 } }
         else_if = { limit = { var:oe_glh_m <= 96 oe_glh_w3_ok = yes } oe_glh_w3_do = yes set_global_variable = { name = oe_glh_w3 value = 1 } }
     }
     if = { limit = { NOT = { has_global_variable = oe_glh_w3 } var:oe_glh_m > 96 } set_global_variable = { name = oe_glh_w3 value = 3 } }
@@ -62,7 +62,7 @@ oe_glh_world = {
     # W5
     if = {
         limit = { NOT = { has_global_variable = oe_glh_w5 } var:oe_glh_m >= 247 }
-        if = { limit = { var:oe_glh_m <= 258 oe_glh_w5_ok = yes } random = { chance = oe_glh_w5_ch kill_character = character:glh_jani_beg_borjigin set_global_variable = { name = oe_glh_w5 value = 1 } } }
+        if = { limit = { var:oe_glh_m <= 258 oe_glh_w5_ok = yes } random = { chance = oe_glh_w5_ch oe_glh_w5_do = yes set_global_variable = { name = oe_glh_w5 value = 1 } } }
         if = { limit = { NOT = { has_global_variable = oe_glh_w5 } var:oe_glh_m >= 258 } set_global_variable = { name = oe_glh_w5 value = 2 } }
     }
     # W6
@@ -104,10 +104,41 @@ oe_glh_w1_do = {
     else = { kill_character = { target = character:tve_aleksandr_mikhailovich_rurikovich reason = execution } }
     c:TVE ?= { if = { limit = { is_ai = yes country_exists = c:MOS } add_opinion = { modifier = oe_glh_bw_tver_grief target = c:MOS } } }
 }
-# BYZ scope. W3: Jani Beg takes the throne and Tini Beg is killed.
+# BYZ scope. W2: Özbeg dies; compensate scripted succession unity & stability hit so Jani Beg's reign stays strong (v21.0-rc2).
+oe_glh_w2_do = {
+    kill_character = character:glh_giyas_al_din_mohammed_oz_beg_borjigin
+    if = {
+        limit = { country_exists = c:GLH }
+        c:GLH = {
+            add_horde_unity = 40
+            add_stability = 15
+            add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 16 mode = replace }
+        }
+    }
+}
+# BYZ scope. W3 direct succession fallback: if Jani Beg took the throne before W2 ran, grant Pax of Jani Beg once.
+oe_glh_w3_direct_do = {
+    if = {
+        limit = { country_exists = c:GLH }
+        c:GLH = {
+            if = {
+                limit = { current_date < 1356.1.1 NOT = { has_country_modifier = oe_ghh_janibeg_pax } }
+                add_horde_unity = 40
+                add_stability = 10
+                add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 16 mode = replace }
+            }
+        }
+    }
+}
+# BYZ scope. W3: Jani Beg takes the throne and Tini Beg is killed; compensate scripted succession unity & stability hit (v21.0-rc2).
 oe_glh_w3_do = {
     c:GLH = { set_new_ruler = character:glh_jani_beg_borjigin }
     if = { limit = { character:glh_tini_beg_borjigin ?= { is_alive = yes } } kill_character = { target = character:glh_tini_beg_borjigin reason = assassination } }
+    c:GLH = {
+        add_horde_unity = 40
+        add_stability = 15
+        add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 16 mode = replace }
+    }
 }
 # BYZ scope. W4: the bloodshed at Tana; the Italians are expelled and Venice and Genoa declare an embargo.
 oe_glh_w4_do = {
@@ -120,8 +151,24 @@ oe_glh_w4_do = {
 oe_glh_unity_to_30 = {
     if = { limit = { horde_unity > 30 } add_horde_unity = { value = horde_unity multiply = -1 add = 30 } }
 }
+# BYZ scope. W5: Jani Beg dies; Pax of Jani Beg ends so the authentic 1357-1359 Great Troubles crisis proceeds (v21.0).
+oe_glh_w5_do = {
+    if = {
+        limit = { country_exists = c:GLH }
+        c:GLH = {
+            if = { limit = { has_country_modifier = oe_ghh_janibeg_pax } remove_country_modifier = oe_ghh_janibeg_pax }
+        }
+    }
+    kill_character = character:glh_jani_beg_borjigin
+}
 # BYZ scope. W6: Berdi Beg dies; the line of Batu ends and the Horde falls apart.
 oe_glh_w6_do = {
+    if = {
+        limit = { country_exists = c:GLH }
+        c:GLH = {
+            if = { limit = { has_country_modifier = oe_ghh_janibeg_pax } remove_country_modifier = oe_ghh_janibeg_pax }
+        }
+    }
     if = { limit = { country_exists = c:GLH character:glh_berdi_beg_borjigin ?= { is_alive = yes is_ruler_of = c:GLH } } kill_character = character:glh_berdi_beg_borjigin }
     c:GLH ?= { oe_glh_unity_to_30 = yes }
 }

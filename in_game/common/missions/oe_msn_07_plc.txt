@@ -32,12 +32,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_01_krewo_crown_req_tt
-				OR = { owns = location:krakow owns = location:vilnius } stability >= 5
+				OR = { owns = location:krakow owns = location:vilnius } stability >= 5 any_owned_location = { has_building = building_type:castle } OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.45 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:TEU NOT = { tag = TEU } c:TEU = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:TEU type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_plc_02_warsaw_confederation = {
@@ -46,12 +46,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_02_warsaw_confederation_req_tt
-				OR = { owns = location:warsaw owns = location:krakow } stability >= 10
+				OR = { owns_or_non_sovereign_subject_owns = location:warsaw owns_or_non_sovereign_subject_owns = location:krakow } stability >= 10 OR = { num_subjects >= 1 num_locations >= 25 } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.45 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_plc_03_executionist_cossacks = {
@@ -60,13 +60,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_03_executionist_cossacks_req_tt
-				OR = { owns = location:krakow owns = location:warsaw owns = location:vilnius } gold >= 200 current_age_or_later = { age = age_3_discovery }
+				OR = { owns = location:krakow owns = location:warsaw owns = location:vilnius } gold >= 200 current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:training_fields has_building = building_type:armory } } army_tradition >= 22
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 120
-			add_army_tradition = army_tradition_mild_bonus
+			add_gold = 120 add_army_tradition = army_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_plc_04_great_sejm_reforms = {
@@ -75,12 +74,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_04_great_sejm_reforms_req_tt
-				OR = { owns = location:warsaw owns = location:krakow owns = location:vilnius } stability >= 15 current_age_or_later = { age = age_4_reformation }
+				OR = { owns = location:warsaw owns = location:krakow owns = location:vilnius } stability >= 15 current_age_or_later = { age = age_4_reformation } has_embraced_institution = institution:confessionalism OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_plc_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_plc_m1 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_plc_05_grunwald_malbork = {
@@ -89,14 +88,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_05_grunwald_malbork_req_tt
-				owns = location:malbork owns = location:gdansk
+				owns_or_non_sovereign_subject_owns = location:malbork owns_or_non_sovereign_subject_owns = location:gdansk army_tradition >= 15
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:malbork } location:malbork = { add_core = root } }
-			if = { limit = { owns = location:gdansk } location:gdansk = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:malbork } location:malbork = { add_core = root } } if = { limit = { owns = location:gdansk } location:gdansk = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:gdansk } location:gdansk = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:LIV NOT = { tag = LIV } c:LIV = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:LIV type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_plc_06_ruthenian_heartland = {
@@ -105,14 +102,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_06_ruthenian_heartland_req_tt
-				owns = location:kyiv owns = location:lviv
+				owns_or_non_sovereign_subject_owns = location:kyiv owns_or_non_sovereign_subject_owns = location:lviv any_owned_location = { has_building = building_type:granary }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:kyiv } location:kyiv = { add_core = root } }
-			if = { limit = { owns = location:lviv } location:lviv = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:kyiv } location:kyiv = { add_core = root } } if = { limit = { owns = location:lviv } location:lviv = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:kyiv } location:kyiv = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:MOS NOT = { tag = MOS } c:MOS = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MOS type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_plc_07_winged_hussaria = {
@@ -121,12 +116,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_07_winged_hussaria_req_tt
-				OR = { owns = location:krakow owns = location:warsaw owns = location:vilnius } current_age_or_later = { age = age_4_reformation } num_locations >= 30
+				OR = { owns = location:krakow owns = location:warsaw owns = location:vilnius } current_age_or_later = { age = age_4_reformation } num_locations >= 30 any_owned_location = { has_building = building_type:barracks } army_tradition >= 35
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_plc_08_intermarium_corridor = {
@@ -135,14 +130,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_08_intermarium_corridor_req_tt
-				OR = { owns = location:riga owns = location:cetatea_alba }
+				OR = { owns_or_non_sovereign_subject_owns = location:riga owns_or_non_sovereign_subject_owns = location:cetatea_alba } num_of_ports >= 3
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:riga } location:riga = { add_core = root } }
-			if = { limit = { owns = location:cetatea_alba } location:cetatea_alba = { add_core = root } }
-			add_country_modifier = { modifier = oe_msn_plc_m2 years = 20 mode = replace }
+			if = { limit = { owns = location:riga } location:riga = { add_core = root } } if = { limit = { owns = location:cetatea_alba } location:cetatea_alba = { add_core = root } } add_country_modifier = { modifier = oe_msn_plc_m2 years = 20 mode = replace } add_navy_tradition = navy_tradition_mild_bonus
 		}
 	}
 	oe_msn_plc_09_vistula_granary = {
@@ -151,12 +144,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_09_vistula_granary_req_tt
-				owns = location:gdansk gold >= 300
+				owns_or_non_sovereign_subject_owns = location:gdansk gold >= 300 any_owned_location = { has_building = building_type:marketplace } monthly_income_trade_and_tax >= 25
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
+			add_gold = 150 if = { limit = { owns = location:gdansk } location:gdansk = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_plc_10_polish_renaissance = {
@@ -165,12 +158,12 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_10_polish_renaissance_req_tt
-				OR = { owns = location:krakow owns = location:vilnius } current_age_or_later = { age = age_2_renaissance }
+				OR = { owns = location:krakow owns = location:vilnius } current_age_or_later = { age = age_2_renaissance } any_owned_location = { has_building = building_type:university } has_embraced_institution = institution:renaissance
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
+			culture = { add_cultural_tradition = 8 } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_plc_11_national_education = {
@@ -179,27 +172,27 @@ oe_msn_plc_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_11_national_education_req_tt
-				OR = { owns = location:warsaw owns = location:krakow owns = location:vilnius } stability >= 18 current_age_or_later = { age = age_4_reformation }
+				OR = { owns = location:warsaw owns = location:krakow owns = location:vilnius } stability >= 18 current_age_or_later = { age = age_4_reformation } any_owned_location = { has_building = building_type:printing_press_shop } capital = { development >= 26 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_plc_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_plc_m3 years = 20 mode = replace } culture = { add_cultural_tradition = 6 }
 		}
 	}
 	oe_msn_plc_12_may_third_constitution = {
 		icon = the_constitution
 		requires = { oe_msn_plc_04_great_sejm_reforms oe_msn_plc_08_intermarium_corridor oe_msn_plc_11_national_education }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_plc_12_may_third_constitution_req_tt
-				owns = location:gdansk owns = location:kyiv stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:gdansk owns_or_non_sovereign_subject_owns = location:kyiv stability >= 18 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:stock_exchange has_building = building_type:star_fort } } OR = { is_great_power = yes monthly_income_trade_and_tax >= 75 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_plc_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_plc_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.3
 		}
 	}
 }

@@ -1,0 +1,88 @@
+﻿# NEW 2026-11-23 v21.0 Batch 2 True Building-Type Viceroyalties (oe_vic_, gen_v210_building_viceroys.py) — Scripted Triggers (0 bare if/else, null-safe ?=). Edit gen_v210_building_viceroys.py, not this file.
+
+# Country scope. True for any of the 12 building-type viceroyalty subjects.
+oe_vic_is_viceroyalty_subject = {
+	country_type = building
+	OR = {
+		is_subject_type = oe_dlh_iqta
+		is_subject_type = oe_mam_niyabat
+		is_subject_type = oe_hun_voivodate
+		is_subject_type = oe_cas_adelantado
+		is_subject_type = oe_eth_bahr_negash
+	}
+}
+
+# Country scope. True for one of the 5 overlord realms managing building-type viceroyalties.
+oe_vic_is_overlord_realm = {
+	is_rebel_country = no
+	num_locations > 0
+	OR = {
+		tag = DLH
+		tag = MAM
+		tag = HUN
+		tag = CAS
+		tag = ETH
+	}
+}
+
+# Country scope. True when this overlord currently commands at least one active building-type viceroyalty.
+oe_vic_has_any_active_viceroy = {
+	any_subject = {
+		oe_vic_is_viceroyalty_subject = yes
+	}
+}
+
+# Country scope (DLH). True when Delhi faces acute imperial instability or the Fall of Delhi.
+oe_vic_dlh_in_crisis = {
+	OR = {
+		is_situation_active = situation:fall_of_delhi
+		has_active_disaster = disaster_type:dissolution_of_delhi
+		stability < 0
+		in_civil_war = yes
+		NOT = { owns = location:delhi }
+	}
+}
+
+# Country scope (MAM). True when Cairo suffers succession turmoil, coup, or loss of Cairo.
+oe_vic_mam_in_crisis = {
+	OR = {
+		has_active_disaster = disaster_type:coup_attempt
+		has_active_disaster = disaster_type:decline_of_empire
+		stability < 0
+		legitimacy < 50
+		in_civil_war = yes
+		NOT = { owns = location:cairo }
+	}
+}
+
+# Country scope (HUN). True when Hungary suffers succession crisis, regency, low legitimacy, or loss of Buda.
+oe_vic_hun_in_crisis = {
+	OR = {
+		has_active_disaster = disaster_type:succession_crisis
+		stability < 0
+		legitimacy < 55
+		has_regent = yes
+		in_civil_war = yes
+		NOT = { owns = location:buda }
+	}
+}
+
+# Country scope (CAS). True when Castile is engulfed in the Trastamara civil war or severe royal weakness.
+oe_vic_cas_in_crisis = {
+	OR = {
+		has_active_disaster = disaster_type:castilian_civil_war
+		stability < 0
+		legitimacy < 55
+		in_civil_war = yes
+	}
+}
+
+# Country scope (ETH). True when Solomonic Ethiopia suffers dynastic instability or loses Aksum.
+oe_vic_eth_in_crisis = {
+	OR = {
+		stability < 0
+		legitimacy < 55
+		in_civil_war = yes
+		NOT = { owns = location:axum }
+	}
+}

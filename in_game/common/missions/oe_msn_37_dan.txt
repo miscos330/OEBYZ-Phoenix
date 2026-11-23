@@ -32,12 +32,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_01_crown_of_the_straits_req_tt
-				OR = { owns = location:kobenhavn owns = location:roskilde owns = location:oslo } stability >= 5
+				OR = { owns = location:kobenhavn owns = location:roskilde owns = location:oslo } stability >= 5 has_ports = yes any_owned_location = { has_building = building_type:wharf }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_dan_02_helsingor_sound_dues = {
@@ -46,13 +46,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_02_helsingor_sound_dues_req_tt
-				owns = location:helsingor owns = location:kobenhavn stability >= 10
+				owns = location:helsingor owns = location:kobenhavn stability >= 10 any_owned_location = { has_building = building_type:castle } monthly_income_trade_and_tax >= 18
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 120
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_gold = 120 add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:helsingor } location:helsingor = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_dan_03_royal_danish_admiralty = {
@@ -61,12 +60,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_03_royal_danish_admiralty_req_tt
-				gold >= 220 current_age_or_later = { age = age_2_renaissance }
+				gold >= 220 current_age_or_later = { age = age_2_renaissance } any_owned_location = { has_building = building_type:dock } navy_tradition >= 20
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_dan_04_kongeloven_royal_guard = {
@@ -75,12 +74,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_04_kongeloven_royal_guard_req_tt
-				stability >= 15 current_age_or_later = { age = age_4_reformation }
+				stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:barracks has_building = building_type:shipyard } } has_embraced_institution = institution:confessionalism
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_cne_msn_dan_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_cne_msn_dan_m1 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_dan_05_scanian_shore_lund = {
@@ -89,14 +88,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_05_scanian_shore_lund_req_tt
-				owns = location:lund owns = location:malmo
+				owns_or_non_sovereign_subject_owns = location:lund owns_or_non_sovereign_subject_owns = location:malmo num_of_ports >= 6
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:lund } location:lund = { add_core = root } }
-			if = { limit = { owns = location:malmo } location:malmo = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:lund } location:lund = { add_core = root } } if = { limit = { owns = location:malmo } location:malmo = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:lund } location:lund = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:SWE NOT = { tag = SWE } c:SWE = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:SWE type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_dan_06_norwegian_fjords_bergen = {
@@ -105,14 +102,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_06_norwegian_fjords_bergen_req_tt
-				owns = location:oslo owns = location:bergen
+				owns_or_non_sovereign_subject_owns = location:oslo owns_or_non_sovereign_subject_owns = location:bergen any_owned_location = { has_building = building_type:fishing_village }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:oslo } location:oslo = { add_core = root } }
-			if = { limit = { owns = location:bergen } location:bergen = { add_core = root } }
-			add_navy_tradition = navy_tradition_mild_bonus
+			if = { limit = { owns = location:oslo } location:oslo = { add_core = root } } if = { limit = { owns = location:bergen } location:bergen = { add_core = root } } add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:bergen } location:bergen = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_dan_07_schleswig_lubeck_gate = {
@@ -121,13 +116,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_07_schleswig_lubeck_gate_req_tt
-				owns = location:slesvig owns = location:flensburg num_locations >= 65
+				owns_or_non_sovereign_subject_owns = location:slesvig owns_or_non_sovereign_subject_owns = location:flensburg num_locations >= 65 OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:slesvig } location:slesvig = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:slesvig } location:slesvig = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:slesvig } location:slesvig = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:BRA NOT = { tag = BRA } c:BRA = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BRA type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_dan_08_kalmar_baltic_sovereign = {
@@ -136,13 +130,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_08_kalmar_baltic_sovereign_req_tt
-				owns = location:visby owns = location:kobenhavn owns = location:oslo current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:visby owns = location:kobenhavn owns_or_non_sovereign_subject_owns = location:oslo current_age_or_later = { age = age_4_reformation } navy_tradition >= 32
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:visby } location:visby = { add_core = root } }
-			add_country_modifier = { modifier = oe_cne_msn_dan_m2 years = 20 mode = replace }
+			if = { limit = { owns = location:visby } location:visby = { add_core = root } } add_country_modifier = { modifier = oe_cne_msn_dan_m2 years = 20 mode = replace }
 		}
 	}
 	oe_msn_dan_09_north_atlantic_fisheries = {
@@ -151,12 +144,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_09_north_atlantic_fisheries_req_tt
-				OR = { owns = location:bergen owns = location:nidaros owns = location:aarhus } current_age_or_later = { age = age_2_renaissance }
+				OR = { owns_or_non_sovereign_subject_owns = location:bergen owns_or_non_sovereign_subject_owns = location:nidaros owns_or_non_sovereign_subject_owns = location:aarhus } current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:counting_house has_building = building_type:university } } has_embraced_institution = institution:renaissance
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
+			culture = { add_cultural_tradition = 10 } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_dan_10_sound_customs_treasury = {
@@ -165,12 +158,12 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_10_sound_customs_treasury_req_tt
-				owns = location:kobenhavn gold >= 300
+				owns = location:kobenhavn gold >= 300 any_owned_location = { has_building = building_type:marketplace } capital = { development >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 180
+			add_gold = 180 if = { limit = { owns = location:kobenhavn } location:kobenhavn = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_dan_11_nordic_armed_neutrality = {
@@ -179,27 +172,27 @@ oe_msn_dan_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_11_nordic_armed_neutrality_req_tt
-				stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				stability >= 15 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:stock_exchange has_building = building_type:shipyard } } monthly_income_trade_and_tax >= 55
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_cne_msn_dan_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_cne_msn_dan_m3 years = 20 mode = replace } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_dan_12_eternal_lord_two_seas = {
 		icon = nor_shipbuilding
 		requires = { oe_msn_dan_04_kongeloven_royal_guard oe_msn_dan_08_kalmar_baltic_sovereign oe_msn_dan_11_nordic_armed_neutrality }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_dan_12_eternal_lord_two_seas_req_tt
-				owns = location:kobenhavn owns = location:oslo owns = location:lund stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns = location:kobenhavn owns_or_non_sovereign_subject_owns = location:oslo owns_or_non_sovereign_subject_owns = location:lund stability >= 18 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:star_fort has_building = building_type:shipyard } } OR = { is_great_power = yes monthly_income_trade_and_tax >= 70 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_cne_msn_dan_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_cne_msn_dan_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.11
 		}
 	}
 }

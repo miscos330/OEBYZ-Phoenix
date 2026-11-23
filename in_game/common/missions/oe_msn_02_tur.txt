@@ -32,12 +32,12 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_01_bursa_ghazi_req_tt
-				owns = location:bursa stability >= 5
+				owns = location:bursa stability >= 5 OR = { army_tradition >= 12 any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:marketplace } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:BYZ NOT = { tag = BYZ } c:BYZ = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BYZ type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_tur_02_timar_order = {
@@ -46,12 +46,12 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_02_timar_order_req_tt
-				owns = location:bursa stability >= 10 num_locations >= 18
+				owns = location:bursa stability >= 10 num_locations >= 18 OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.45 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_manpower = 4
+			add_manpower = 4 if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus } }
 		}
 	}
 	oe_msn_tur_03_imperial_divan = {
@@ -60,12 +60,12 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_03_imperial_divan_req_tt
-				owns = location:bursa gold >= 250 current_age_or_later = { age = age_2_renaissance }
+				owns = location:bursa gold >= 250 current_age_or_later = { age = age_2_renaissance } OR = { any_owned_location = { OR = { has_building = building_type:madrasa has_building = building_type:counting_house } } monthly_income_trade_and_tax >= 25 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_weak_bonus } }
 		}
 	}
 	oe_msn_tur_04_tophane_foundry = {
@@ -74,12 +74,12 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_04_tophane_foundry_req_tt
-				owns = location:constantinople current_age_or_later = { age = age_3_discovery }
+				owns = location:constantinople current_age_or_later = { age = age_3_discovery } OR = { any_owned_location = { OR = { has_building = building_type:cannon_maker has_building = building_type:training_fields } } army_tradition >= 25 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_tur_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_tur_m1 years = 20 mode = replace } if = { limit = { owns = location:constantinople } location:constantinople = { add_location_modifier = { modifier = oe_m2e_loc_tur_tophane_port years = 25 mode = replace } change_development = development_mild_bonus } }
 		}
 	}
 	oe_msn_tur_05_city_worlds_desire = {
@@ -93,8 +93,7 @@ oe_msn_tur_destiny = {
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:constantinople } location:constantinople = { add_core = root } }
-			add_prestige = prestige_severe_bonus
+			if = { limit = { owns = location:constantinople } location:constantinople = { add_core = root } } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m2e.3
 		}
 	}
 	oe_msn_tur_06_rumelia_danube = {
@@ -103,14 +102,12 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_06_rumelia_danube_req_tt
-				owns = location:sredets owns = location:belgrad
+				owns = location:sredets owns = location:belgrad OR = { army_tradition >= 20 num_locations >= 35 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:sredets } location:sredets = { add_core = root } }
-			if = { limit = { owns = location:belgrad } location:belgrad = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:sredets } location:sredets = { add_core = root } } if = { limit = { owns = location:belgrad } location:belgrad = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { is_subject = no country_exists = c:HUN NOT = { tag = HUN } c:HUN = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:HUN type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_tur_07_anatolia_unity = {
@@ -119,14 +116,12 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_07_anatolia_unity_req_tt
-				owns = location:ankara owns = location:konya
+				owns = location:ankara owns = location:konya OR = { stability >= 10 any_owned_location = { has_building = building_type:caravanserai } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:ankara } location:ankara = { add_core = root } }
-			if = { limit = { owns = location:konya } location:konya = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:ankara } location:ankara = { add_core = root } } if = { limit = { owns = location:konya } location:konya = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:tribes_estate } add_estate_satisfaction = { type = estate_type:tribes_estate value = estate_satisfaction_mild_bonus } } if = { limit = { is_subject = no country_exists = c:MAM NOT = { tag = MAM } c:MAM = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MAM type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_tur_08_cairo_sanctuaries = {
@@ -135,15 +130,12 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_08_cairo_sanctuaries_req_tt
-				owns = location:cairo owns = location:mecca owns = location:medina
+				owns = location:cairo owns_or_non_sovereign_subject_owns = location:mecca owns_or_non_sovereign_subject_owns = location:medina is_great_power = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:cairo } location:cairo = { add_core = root } }
-			if = { limit = { owns = location:mecca } location:mecca = { add_core = root } }
-			if = { limit = { owns = location:medina } location:medina = { add_core = root } }
-			add_country_modifier = { modifier = oe_msn_tur_m2 years = 20 mode = replace }
+			if = { limit = { owns = location:cairo } location:cairo = { add_core = root } } if = { limit = { owns = location:mecca } location:mecca = { add_core = root } } if = { limit = { owns = location:medina } location:medina = { add_core = root } } add_country_modifier = { modifier = oe_msn_tur_m2 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_severe_bonus } }
 		}
 	}
 	oe_msn_tur_09_strait_caravanserais = {
@@ -152,12 +144,12 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_09_strait_caravanserais_req_tt
-				owns = location:constantinople gold >= 350
+				owns = location:constantinople gold >= 350 monthly_income_trade_and_tax >= 25 any_owned_location = { OR = { has_building = building_type:caravanserai has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
+			add_gold = 150 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_tur_10_mediterranean_navy = {
@@ -166,12 +158,12 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_10_mediterranean_navy_req_tt
-				OR = { owns = location:smyrna owns = location:alexandria } current_age_or_later = { age = age_3_discovery }
+				OR = { owns = location:smyrna owns = location:alexandria } current_age_or_later = { age = age_3_discovery } num_of_ports >= 14 OR = { navy_tradition >= 20 any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:dock } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus } }
 		}
 	}
 	oe_msn_tur_11_late_porte_reform = {
@@ -180,27 +172,27 @@ oe_msn_tur_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_11_late_porte_reform_req_tt
-				owns = location:constantinople stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:constantinople stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:global_trade any_owned_location = { OR = { has_building = building_type:customs_house has_building = building_type:university } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_tur_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_tur_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_tur_12_three_continents = {
 		icon = ottoman_tax_farming
 		requires = { oe_msn_tur_04_tophane_foundry oe_msn_tur_08_cairo_sanctuaries oe_msn_tur_11_late_porte_reform }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_tur_12_three_continents_req_tt
-				owns = location:constantinople owns = location:cairo stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns = location:constantinople owns = location:cairo stability >= 15 current_age_or_later = { age = age_5_absolutism } is_great_power = yes capital = { development >= 30 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_tur_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_tur_m4 years = 50 mode = replace } trigger_event_non_silently = oe_m2e.4
 		}
 	}
 }

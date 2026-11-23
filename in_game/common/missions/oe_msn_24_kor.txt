@@ -32,12 +32,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_01_kaesong_namgyeong_req_tt
-				owns = location:kaesong owns = location:namgyeong stability >= 5
+				owns = location:kaesong owns = location:namgyeong stability >= 5 any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { owns = location:namgyeong } location:namgyeong = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kor_02_hopae_border_council = {
@@ -46,12 +46,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_02_hopae_border_council_req_tt
-				owns = location:namgyeong stability >= 10
+				owns = location:namgyeong stability >= 10 OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_manpower = 4 if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kor_03_hwacha_gunpowder = {
@@ -60,12 +60,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_03_hwacha_gunpowder_req_tt
-				owns = location:namgyeong gold >= 220 current_age_or_later = { age = age_2_renaissance }
+				owns = location:namgyeong gold >= 220 army_tradition >= 15 any_owned_location = { OR = { has_building = building_type:cannon_maker has_building = building_type:armory } } OR = { has_embraced_institution = institution:professional_armies has_advance = professional_armies_advance } current_age_or_later = { age = age_2_renaissance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_kor_04_modern_korean_cannon = {
@@ -74,12 +74,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_04_modern_korean_cannon_req_tt
-				owns = location:namgyeong stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:namgyeong stability >= 15 army_tradition >= 25 any_owned_location = { OR = { has_building = building_type:barracks has_building = building_type:bastion } } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_kor_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_kor_m1 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_manpower = 5
 		}
 	}
 	oe_msn_kor_05_gyeongju_dongnae = {
@@ -88,14 +88,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_05_gyeongju_dongnae_req_tt
-				owns = location:gyeongju owns = location:dongnae
+				owns_or_non_sovereign_subject_owns = location:gyeongju owns_or_non_sovereign_subject_owns = location:dongnae has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:gyeongju } location:gyeongju = { add_core = root } }
-			if = { limit = { owns = location:dongnae } location:dongnae = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:gyeongju } location:gyeongju = { add_core = root } } if = { limit = { owns = location:dongnae } location:dongnae = { add_core = root } } if = { limit = { owns = location:dongnae } location:dongnae = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_kor_06_turtle_ship_armada = {
@@ -104,13 +102,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_06_turtle_ship_armada_req_tt
-				owns = location:dongnae current_age_or_later = { age = age_3_discovery }
+				owns_or_non_sovereign_subject_owns = location:dongnae navy_tradition >= 18 any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:dock } } current_age_or_later = { age = age_3_discovery }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
-			add_prestige = prestige_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { owns = location:dongnae } location:dongnae = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_kor_07_northern_forts = {
@@ -119,12 +116,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_07_northern_forts_req_tt
-				owns = location:kaesong owns = location:namgyeong num_locations >= 28
+				owns = location:kaesong owns = location:namgyeong num_locations >= 28 any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:weapon_guild } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus add_army_tradition = army_tradition_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_kor_08_northeast_asian_shield = {
@@ -133,12 +130,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_08_northeast_asian_shield_req_tt
-				owns = location:kaesong owns = location:namgyeong owns = location:gyeongju owns = location:dongnae current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:kaesong owns_or_non_sovereign_subject_owns = location:namgyeong owns_or_non_sovereign_subject_owns = location:gyeongju owns_or_non_sovereign_subject_owns = location:dongnae num_of_ports >= 6 any_owned_location = { OR = { has_building = building_type:shipyard has_building = building_type:port_authority } } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_kor_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_kor_m2 years = 20 mode = replace } add_navy_tradition = navy_tradition_mild_bonus
 		}
 	}
 	oe_msn_kor_09_hangul_hall_worthies = {
@@ -147,12 +144,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_09_hangul_hall_worthies_req_tt
-				owns = location:namgyeong current_age_or_later = { age = age_2_renaissance }
+				owns = location:namgyeong any_owned_location = { OR = { has_building = building_type:university has_building = building_type:library } } capital = { development >= 22 } current_age_or_later = { age = age_2_renaissance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
+			culture = { add_cultural_tradition = 10 } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kor_10_korean_artisanry = {
@@ -161,12 +158,12 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_10_korean_artisanry_req_tt
-				owns = location:namgyeong owns = location:kaesong gold >= 300
+				owns = location:namgyeong owns = location:kaesong gold >= 300 any_owned_location = { OR = { has_building = building_type:porcelain_guild has_building = building_type:paper_guild } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
+			add_gold = 150 if = { limit = { owns = location:kaesong } location:kaesong = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kor_11_daedongbeop_reform = {
@@ -175,27 +172,27 @@ oe_msn_kor_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_11_daedongbeop_reform_req_tt
-				owns = location:namgyeong stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:namgyeong stability >= 15 monthly_income_trade_and_tax >= 30 OR = { NOT = { country_has_estate = estate_type:peasants_estate } estate_satisfaction:peasants_estate >= 0.50 } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_kor_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_kor_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_kor_12_enlightened_gunpowder_korea = {
 		icon = kor_court_poetry
 		requires = { oe_msn_kor_04_modern_korean_cannon oe_msn_kor_08_northeast_asian_shield oe_msn_kor_11_daedongbeop_reform }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_kor_12_enlightened_gunpowder_korea_req_tt
-				owns = location:kaesong owns = location:namgyeong owns = location:dongnae stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:kaesong owns_or_non_sovereign_subject_owns = location:namgyeong owns_or_non_sovereign_subject_owns = location:dongnae stability >= 18 OR = { is_great_power = yes monthly_income_trade_and_tax >= 75 } current_age_or_later = { age = age_5_absolutism }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_kor_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_kor_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.26
 		}
 	}
 }

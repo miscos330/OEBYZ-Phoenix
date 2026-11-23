@@ -1,0 +1,537 @@
+﻿# NEW 2026-11-23 v21.0 Batch 1, Chagatai 3 Landed Ulus TAGs & 1347 Split (gen_v210_chg_ulus.py). Generated; edit gen_v210_chg_ulus.py, not this file.
+
+# Exported O(1) zero-slot yearly dispatcher (self-deduplicates via global_var:oe_chgu_ran_y ?= current_year).
+oe_chgu_kernel_yearly = {
+	if = {
+		limit = { NOT = { global_var:oe_chgu_ran_y ?= current_year } }
+		set_global_variable = { name = oe_chgu_ran_y value = current_year }
+		oe_chgu_init = yes
+		oe_chgu_yearly_ulus_guard = yes
+		oe_chgu_dispatch_events = yes
+	}
+}
+
+# Day-1 / first-year idempotent initializer: ensures all 17 starting Chagatai amirs are oe_chg_amir
+# and equips FRG, OTR, BSB with ulus names, treasury cushion, and frontier winter stores.
+oe_chgu_init = {
+	if = {
+		limit = { NOT = { has_global_variable = oe_chgu_init } }
+		set_global_variable = { name = oe_chgu_init value = 1 }
+		if = {
+			limit = { NOT = { has_global_variable = oe_chgu_split } }
+			set_global_variable = { name = oe_chgu_split value = 0 }
+		}
+		if = {
+			limit = { country_exists = c:CHG }
+			if = {
+				limit = {
+					country_exists = c:APD
+					c:APD = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:APD = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:ART
+					c:ART = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:ART = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:BKH
+					c:BKH = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:BKH = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:BRL
+					c:BRL = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:BRL = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:BSD
+					c:BSD = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:BSD = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:DGH
+					c:DGH = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:DGH = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:JLY
+					c:JLY = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:JLY = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:KRG
+					c:KRG = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:KRG = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:KTT
+					c:KTT = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:KTT = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:NGD
+					c:NGD = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:NGD = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:QCH
+					c:QCH = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:QCH = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:QUN
+					c:QUN = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:QUN = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:SLD
+					c:SLD = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:SLD = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:YSU
+					c:YSU = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:YSU = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:FRG
+					c:FRG = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:FRG = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:OTR
+					c:OTR = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:OTR = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:BSB
+					c:BSB = { is_subject_of = c:CHG NOT = { is_subject_type = oe_chg_amir } }
+				}
+				c:BSB = { change_subject_type = subject_type:oe_chg_amir }
+			}
+			if = {
+				limit = {
+					country_exists = c:FRG
+					c:FRG = { is_subject_of = c:CHG }
+				}
+				c:FRG = {
+					change_country_name = OE_CHGU_NAME_FRG_ULUS
+					if = { limit = { gold < 150 } add_gold = 120 }
+					add_country_modifier = { modifier = oe_chgu_mod_ulus_frontier_garrison years = 15 mode = replace }
+				}
+			}
+			if = {
+				limit = {
+					country_exists = c:OTR
+					c:OTR = { is_subject_of = c:CHG }
+				}
+				c:OTR = {
+					change_country_name = OE_CHGU_NAME_OTR_ULUS
+					if = { limit = { gold < 150 } add_gold = 120 }
+					add_country_modifier = { modifier = oe_chgu_mod_ulus_frontier_garrison years = 15 mode = replace }
+				}
+			}
+			if = {
+				limit = {
+					country_exists = c:BSB
+					c:BSB = { is_subject_of = c:CHG }
+				}
+				c:BSB = {
+					change_country_name = OE_CHGU_NAME_BSB_ULUS
+					if = { limit = { gold < 150 } add_gold = 120 }
+					add_country_modifier = { modifier = oe_chgu_mod_ulus_frontier_garrison years = 15 mode = replace }
+				}
+			}
+		}
+	}
+}
+
+# Authentic 1347 Chagatai East-West Split (idempotent; delegated to by oe_eug_execute_chg_split and oe_chgu.4).
+# Releases all 14 West Wing amirs (revealing distinct map colors & West Chagatai federation dynamics),
+# while East Wing 3 amirs (DGH, QCH, BSB) stay loyal under CHG renamed East Chagatai (Moghulistan).
+oe_chgu_execute_full_east_west_split = {
+	if = {
+		limit = { NOT = { has_global_variable = oe_chgu_split_done } }
+		set_global_variable = { name = oe_chgu_split_done value = 1 }
+		set_global_variable = { name = oe_chgu_split value = 1 }
+		set_global_variable = { name = oe_eug_chg_split value = 1 }
+		# 1. Release all 14 West Wing amirs from CHG overlordship
+		if = {
+			limit = { country_exists = c:CHG }
+			c:CHG = {
+				if = {
+					limit = { country_exists = c:QUN c:QUN = { is_subject_of = c:CHG } }
+					cancel_subject = c:QUN
+				}
+				if = {
+					limit = { country_exists = c:YSU c:YSU = { is_subject_of = c:CHG } }
+					cancel_subject = c:YSU
+				}
+				if = {
+					limit = { country_exists = c:BRL c:BRL = { is_subject_of = c:CHG } }
+					cancel_subject = c:BRL
+				}
+				if = {
+					limit = { country_exists = c:FRG c:FRG = { is_subject_of = c:CHG } }
+					cancel_subject = c:FRG
+				}
+				if = {
+					limit = { country_exists = c:OTR c:OTR = { is_subject_of = c:CHG } }
+					cancel_subject = c:OTR
+				}
+				if = {
+					limit = { country_exists = c:SLD c:SLD = { is_subject_of = c:CHG } }
+					cancel_subject = c:SLD
+				}
+				if = {
+					limit = { country_exists = c:JLY c:JLY = { is_subject_of = c:CHG } }
+					cancel_subject = c:JLY
+				}
+				if = {
+					limit = { country_exists = c:BKH c:BKH = { is_subject_of = c:CHG } }
+					cancel_subject = c:BKH
+				}
+				if = {
+					limit = { country_exists = c:NGD c:NGD = { is_subject_of = c:CHG } }
+					cancel_subject = c:NGD
+				}
+				if = {
+					limit = { country_exists = c:APD c:APD = { is_subject_of = c:CHG } }
+					cancel_subject = c:APD
+				}
+				if = {
+					limit = { country_exists = c:ART c:ART = { is_subject_of = c:CHG } }
+					cancel_subject = c:ART
+				}
+				if = {
+					limit = { country_exists = c:BSD c:BSD = { is_subject_of = c:CHG } }
+					cancel_subject = c:BSD
+				}
+				if = {
+					limit = { country_exists = c:KRG c:KRG = { is_subject_of = c:CHG } }
+					cancel_subject = c:KRG
+				}
+				if = {
+					limit = { country_exists = c:KTT c:KTT = { is_subject_of = c:CHG } }
+					cancel_subject = c:KTT
+				}
+				change_country_name = OE_CHGU_NAME_MOGHULISTAN
+				add_country_modifier = { modifier = oe_chgu_mod_moghulistan_khanate years = 35 mode = replace }
+				if = { limit = { government_type = government_type:steppe_horde } add_horde_unity = 20 }
+			}
+			oe_chg2_shift_authority = { amount = -20 }
+		}
+		# 2. Grant West Chagatai confederation dynamics & restore independent ulus names
+			if = {
+				limit = { country_exists = c:QUN c:QUN = { is_rebel_country = no } }
+				c:QUN = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:YSU c:YSU = { is_rebel_country = no } }
+				c:YSU = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:BRL c:BRL = { is_rebel_country = no } }
+				c:BRL = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:FRG c:FRG = { is_rebel_country = no } }
+				c:FRG = {
+					change_country_name = FRG
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:OTR c:OTR = { is_rebel_country = no } }
+				c:OTR = {
+					change_country_name = OTR
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:SLD c:SLD = { is_rebel_country = no } }
+				c:SLD = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:JLY c:JLY = { is_rebel_country = no } }
+				c:JLY = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:BKH c:BKH = { is_rebel_country = no } }
+				c:BKH = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:NGD c:NGD = { is_rebel_country = no } }
+				c:NGD = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:APD c:APD = { is_rebel_country = no } }
+				c:APD = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:ART c:ART = { is_rebel_country = no } }
+				c:ART = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:BSD c:BSD = { is_rebel_country = no } }
+				c:BSD = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:KRG c:KRG = { is_rebel_country = no } }
+				c:KRG = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+			if = {
+				limit = { country_exists = c:KTT c:KTT = { is_rebel_country = no } }
+				c:KTT = {
+					add_country_modifier = { modifier = oe_chgu_mod_west_amir_confed years = 30 mode = replace }
+				}
+			}
+		if = {
+			limit = { country_exists = c:QUN c:QUN = { is_rebel_country = no } }
+			c:QUN = {
+				add_country_modifier = { modifier = oe_chgu_mod_qazaghan_hegemony years = 25 mode = replace }
+			}
+		}
+		if = {
+			limit = {
+				country_exists = c:QUN
+				country_exists = c:YSU
+				c:QUN = { is_subject = no is_rebel_country = no NOT = { is_at_war_with = c:YSU } NOT = { is_allied_with = { target = c:YSU } } }
+				c:YSU = { is_subject = no is_rebel_country = no }
+			}
+			create_relation = { first = c:QUN second = c:YSU type = relation_type:alliance }
+		}
+		# 3. Stabilize East Wing 3 amirs (DGH, QCH, BSB) under East Chagatai / Moghulistan
+		if = {
+			limit = { country_exists = c:DGH c:DGH = { is_rebel_country = no } }
+			c:DGH = {
+				add_country_modifier = { modifier = oe_chgu_mod_east_moghul_wing years = 30 mode = replace }
+				if = { limit = { country_exists = c:CHG is_subject_of = c:CHG } add_liberty_desire = -20 }
+			}
+		}
+		if = {
+			limit = { country_exists = c:QCH c:QCH = { is_rebel_country = no } }
+			c:QCH = {
+				add_country_modifier = { modifier = oe_chgu_mod_east_moghul_wing years = 30 mode = replace }
+				if = { limit = { country_exists = c:CHG is_subject_of = c:CHG } add_liberty_desire = -20 }
+			}
+		}
+		if = {
+			limit = { country_exists = c:BSB c:BSB = { is_rebel_country = no } }
+			c:BSB = {
+				add_country_modifier = { modifier = oe_chgu_mod_east_moghul_wing years = 30 mode = replace }
+				if = { limit = { country_exists = c:CHG is_subject_of = c:CHG } add_liberty_desire = -20 }
+			}
+		}
+	}
+}
+
+# Yearly O(1) forage/treasury guard & organic independence name sync for FRG, OTR, BSB.
+oe_chgu_yearly_ulus_guard = {
+	if = {
+		limit = { country_exists = c:FRG c:FRG = { is_rebel_country = no } }
+		if = {
+			limit = { country_exists = c:CHG c:FRG = { is_subject_of = c:CHG is_subject_type = oe_chg_amir } }
+			c:FRG = {
+				if = { limit = { is_ai = yes gold < 60 } add_gold = 45 }
+				if = {
+					limit = { NOT = { has_country_modifier = oe_chgu_mod_ulus_frontier_garrison } OR = { gold < 80 at_war = yes } }
+					add_country_modifier = { modifier = oe_chgu_mod_ulus_frontier_garrison years = 2 mode = replace }
+				}
+			}
+		}
+		else_if = {
+			limit = { c:FRG = { is_subject = no } NOT = { has_global_variable = oe_chgu_ind_FRG } }
+			set_global_variable = { name = oe_chgu_ind_FRG value = 1 }
+			c:FRG = { change_country_name = FRG }
+		}
+	}
+	if = {
+		limit = { country_exists = c:OTR c:OTR = { is_rebel_country = no } }
+		if = {
+			limit = { country_exists = c:CHG c:OTR = { is_subject_of = c:CHG is_subject_type = oe_chg_amir } }
+			c:OTR = {
+				if = { limit = { is_ai = yes gold < 60 } add_gold = 45 }
+				if = {
+					limit = { NOT = { has_country_modifier = oe_chgu_mod_ulus_frontier_garrison } OR = { gold < 80 at_war = yes } }
+					add_country_modifier = { modifier = oe_chgu_mod_ulus_frontier_garrison years = 2 mode = replace }
+				}
+			}
+		}
+		else_if = {
+			limit = { c:OTR = { is_subject = no } NOT = { has_global_variable = oe_chgu_ind_OTR } }
+			set_global_variable = { name = oe_chgu_ind_OTR value = 1 }
+			c:OTR = { change_country_name = OTR }
+		}
+	}
+	if = {
+		limit = { country_exists = c:BSB c:BSB = { is_rebel_country = no } }
+		if = {
+			limit = { country_exists = c:CHG c:BSB = { is_subject_of = c:CHG is_subject_type = oe_chg_amir } }
+			c:BSB = {
+				if = { limit = { is_ai = yes gold < 60 } add_gold = 45 }
+				if = {
+					limit = { NOT = { has_country_modifier = oe_chgu_mod_ulus_frontier_garrison } OR = { gold < 80 at_war = yes } }
+					add_country_modifier = { modifier = oe_chgu_mod_ulus_frontier_garrison years = 2 mode = replace }
+				}
+			}
+		}
+		else_if = {
+			limit = { c:BSB = { is_subject = no } NOT = { has_global_variable = oe_chgu_ind_BSB } }
+			set_global_variable = { name = oe_chgu_ind_BSB value = 1 }
+			c:BSB = { change_country_name = BSB }
+		}
+	}
+}
+
+# Yearly chronological dispatcher for the 8 oe_chgu events (max 1 per year).
+oe_chgu_dispatch_events = {
+	# .1 Fergana Silk-Road Tax (1338+)
+	if = {
+		limit = { current_year >= 1338 NOT = { has_global_variable = oe_chgu_ev_1_done } OR = { country_exists = c:CHG country_exists = c:FRG } }
+		set_global_variable = { name = oe_chgu_ev_1_done value = 1 }
+		if = { limit = { country_exists = c:FRG c:FRG = { is_ai = no is_rebel_country = no } } c:FRG = { trigger_event_non_silently = oe_chgu.1 } }
+		else_if = { limit = { country_exists = c:CHG c:CHG = { is_rebel_country = no } } c:CHG = { trigger_event_non_silently = oe_chgu.1 } }
+		else_if = { limit = { country_exists = c:FRG c:FRG = { is_rebel_country = no } } c:FRG = { trigger_event_non_silently = oe_chgu.1 } }
+	}
+	# .2 Otrar-White Horde Syr Darya Clash (1340+)
+	else_if = {
+		limit = { current_year >= 1340 NOT = { has_global_variable = oe_chgu_ev_2_done } OR = { country_exists = c:CHG country_exists = c:OTR } }
+		set_global_variable = { name = oe_chgu_ev_2_done value = 1 }
+		if = { limit = { country_exists = c:OTR c:OTR = { is_ai = no is_rebel_country = no } } c:OTR = { trigger_event_non_silently = oe_chgu.2 } }
+		else_if = { limit = { country_exists = c:CHG c:CHG = { is_rebel_country = no } } c:CHG = { trigger_event_non_silently = oe_chgu.2 } }
+		else_if = { limit = { country_exists = c:OTR c:OTR = { is_rebel_country = no } } c:OTR = { trigger_event_non_silently = oe_chgu.2 } }
+	}
+	# .3 Beshbalik-Emil Frontier Diplomacy (1342+)
+	else_if = {
+		limit = { current_year >= 1342 NOT = { has_global_variable = oe_chgu_ev_3_done } OR = { country_exists = c:CHG country_exists = c:BSB } }
+		set_global_variable = { name = oe_chgu_ev_3_done value = 1 }
+		if = { limit = { country_exists = c:BSB c:BSB = { is_ai = no is_rebel_country = no } } c:BSB = { trigger_event_non_silently = oe_chgu.3 } }
+		else_if = { limit = { country_exists = c:CHG c:CHG = { is_rebel_country = no } } c:CHG = { trigger_event_non_silently = oe_chgu.3 } }
+		else_if = { limit = { country_exists = c:BSB c:BSB = { is_rebel_country = no } } c:BSB = { trigger_event_non_silently = oe_chgu.3 } }
+	}
+	# .4 1347 Qazaghan Coup & True 14-West vs 3-East Split (1347+)
+	else_if = {
+		limit = {
+			current_year >= 1347
+			country_exists = c:CHG
+			c:CHG = { is_rebel_country = no }
+			NOT = { has_global_variable = oe_chgu_ev_4_done }
+			NOT = { global_var:oe_eug_chg_split ?= 2 }
+		}
+		set_global_variable = { name = oe_chgu_ev_4_done value = 1 }
+		c:CHG = { trigger_event_non_silently = oe_chgu.4 }
+	}
+	# .5 West Chagatai Federation of the Fourteen Amirs (1350+)
+	else_if = {
+		limit = {
+			current_year >= 1350
+			oe_chgu_is_split_active = yes
+			NOT = { has_global_variable = oe_chgu_ev_5_done }
+			OR = { country_exists = c:QUN country_exists = c:YSU country_exists = c:FRG country_exists = c:OTR }
+		}
+		set_global_variable = { name = oe_chgu_ev_5_done value = 1 }
+		if = { limit = { country_exists = c:QUN c:QUN = { is_ai = no is_rebel_country = no } } c:QUN = { trigger_event_non_silently = oe_chgu.5 } }
+		else_if = { limit = { country_exists = c:YSU c:YSU = { is_ai = no is_rebel_country = no } } c:YSU = { trigger_event_non_silently = oe_chgu.5 } }
+		else_if = { limit = { country_exists = c:FRG c:FRG = { is_ai = no is_rebel_country = no } } c:FRG = { trigger_event_non_silently = oe_chgu.5 } }
+		else_if = { limit = { country_exists = c:OTR c:OTR = { is_ai = no is_rebel_country = no } } c:OTR = { trigger_event_non_silently = oe_chgu.5 } }
+		else_if = { limit = { country_exists = c:QUN c:QUN = { is_rebel_country = no } } c:QUN = { trigger_event_non_silently = oe_chgu.5 } }
+		else_if = { limit = { country_exists = c:YSU c:YSU = { is_rebel_country = no } } c:YSU = { trigger_event_non_silently = oe_chgu.5 } }
+		else_if = { limit = { country_exists = c:FRG c:FRG = { is_rebel_country = no } } c:FRG = { trigger_event_non_silently = oe_chgu.5 } }
+		else_if = { limit = { country_exists = c:OTR c:OTR = { is_rebel_country = no } } c:OTR = { trigger_event_non_silently = oe_chgu.5 } }
+	}
+	# .6 Tughlugh Timur Islamization of East Chagatai (1354+)
+	else_if = {
+		limit = { current_year >= 1354 NOT = { has_global_variable = oe_chgu_ev_6_done } OR = { country_exists = c:CHG country_exists = c:BSB country_exists = c:DGH } }
+		set_global_variable = { name = oe_chgu_ev_6_done value = 1 }
+		if = { limit = { country_exists = c:CHG c:CHG = { is_rebel_country = no } } c:CHG = { trigger_event_non_silently = oe_chgu.6 } }
+		else_if = { limit = { country_exists = c:BSB c:BSB = { is_rebel_country = no } } c:BSB = { trigger_event_non_silently = oe_chgu.6 } }
+		else_if = { limit = { country_exists = c:DGH c:DGH = { is_rebel_country = no } } c:DGH = { trigger_event_non_silently = oe_chgu.6 } }
+	}
+	# .7 Tughlugh Timur Western Campaign (1360+)
+	else_if = {
+		limit = {
+			current_year >= 1360
+			oe_chgu_is_split_active = yes
+			country_exists = c:CHG
+			c:CHG = { is_rebel_country = no }
+			NOT = { has_global_variable = oe_chgu_ev_7_done }
+		}
+		set_global_variable = { name = oe_chgu_ev_7_done value = 1 }
+		c:CHG = { trigger_event_non_silently = oe_chgu.7 }
+	}
+	# .8 Chagatai Centralization Victory (1365+, when unified axis held or centralized)
+	else_if = {
+		limit = {
+			current_year >= 1365
+			country_exists = c:CHG
+			c:CHG = {
+				is_rebel_country = no
+				is_subject = no
+				OR = {
+					global_var:oe_chg2_centralized ?= 1
+					global_var:oe_chgu_split ?= 2
+					oe_chgu_holds_unified_axis = yes
+				}
+			}
+			NOT = { has_global_variable = oe_chgu_ev_8_done }
+		}
+		set_global_variable = { name = oe_chgu_ev_8_done value = 1 }
+		c:CHG = { trigger_event_non_silently = oe_chgu.8 }
+	}
+}

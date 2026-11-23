@@ -1,0 +1,129 @@
+﻿# NEW 2026-11-23 v21.0 Batch 1, Chagatai 3 Landed Ulus TAGs & 1347 Split (gen_v210_chg_ulus.py). Generated; edit gen_v210_chg_ulus.py, not this file.
+
+# 1. Summon the Transoxiana and Syr Darya Amirs (repeatable 5-year cooldown, oe_cat_imperial_governance).
+oe_chgu_dec_summon_transoxiana_amirs = {
+	decision_category = oe_cat_imperial_governance
+	hide_repeatable_tag = yes
+	potential = {
+		tag = CHG
+		has_global_variable = oe_chgu_init
+		any_subject = { is_subject_type = oe_chg_amir }
+	}
+	allow = {
+		is_subject = no
+		gold >= 120
+		prestige >= 10
+		NOT = { has_variable = oe_chgu_summon_cd }
+	}
+	ai_will_do = { value = 0 }
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:nobles background = pop_type:soldiers } }
+	option = {
+		name = oe_chgu_dec_summon_transoxiana_amirs.a
+		effect = {
+			add_gold = -120
+			set_variable = { name = oe_chgu_summon_cd months = 60 }
+			oe_chg2_shift_authority = { amount = 10 }
+			add_country_modifier = { modifier = oe_chgu_mod_dec_amir_summons years = 5 mode = replace }
+			every_subject = {
+				limit = { is_subject_type = oe_chg_amir }
+				add_liberty_desire = -15
+				if = {
+					limit = { is_ai = yes gold < 80 }
+					add_gold = 50
+				}
+			}
+		}
+	}
+}
+
+# 2. Integrate the Fergana-Otrar Corridor (one-time, oe_cat_imperial_governance).
+oe_chgu_dec_integrate_fergana_otrar = {
+	decision_category = oe_cat_imperial_governance
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		tag = CHG
+		has_global_variable = oe_chgu_init
+		OR = {
+			AND = { country_exists = c:FRG c:FRG = { is_subject_of = c:CHG } }
+			AND = { country_exists = c:OTR c:OTR = { is_subject_of = c:CHG } }
+		}
+	}
+	allow = {
+		is_subject = no
+		in_civil_war = no
+		stability >= 15
+		prestige >= 25
+		gold >= 200
+		owns_or_non_sovereign_subject_owns = location:andijan
+		owns_or_non_sovereign_subject_owns = location:chach
+	}
+	ai_will_do = { value = 0 }
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:nobles background = pop_type:burghers } }
+	option = {
+		name = oe_chgu_dec_integrate_fergana_otrar.a
+		effect = {
+			add_gold = -200
+			oe_chg2_shift_authority = { amount = 10 }
+			add_country_modifier = { modifier = oe_chgu_mod_dec_fergana_otrar_corridor years = 25 mode = replace }
+			if = {
+				limit = { country_exists = c:FRG c:FRG = { is_subject_of = c:CHG is_subject_type = oe_chg_amir } }
+				c:FRG = {
+					change_subject_type = subject_type:vassal
+					add_liberty_desire = -15
+				}
+			}
+			if = {
+				limit = { country_exists = c:OTR c:OTR = { is_subject_of = c:CHG is_subject_type = oe_chg_amir } }
+				c:OTR = {
+					change_subject_type = subject_type:vassal
+					add_liberty_desire = -15
+				}
+			}
+		}
+	}
+}
+
+# 3. Proclaim the Moghulistan Revival (one-time, oe_cat_military_reforms).
+oe_chgu_dec_proclaim_moghulistan_revival = {
+	decision_category = oe_cat_military_reforms
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_chgu_is_chg_or_east = yes
+		has_global_variable = oe_chgu_init
+		OR = {
+			oe_chgu_is_split_active = yes
+			current_year >= 1350
+		}
+	}
+	allow = {
+		is_subject = no
+		in_civil_war = no
+		stability >= 12
+		prestige >= 20
+		gold >= 160
+		owns_or_non_sovereign_subject_owns = location:almaliq
+		owns_or_non_sovereign_subject_owns = location:yangjibaliq
+	}
+	ai_will_do = { value = 0 }
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_chgu_dec_proclaim_moghulistan_revival.a
+		effect = {
+			add_gold = -160
+			add_prestige = prestige_mild_bonus
+			if = {
+				limit = { government_type = government_type:steppe_horde }
+				add_horde_unity = 20
+			}
+			add_country_modifier = { modifier = oe_chgu_mod_dec_moghulistan_revival years = 35 mode = replace }
+			if = { limit = { country_exists = c:DGH c:DGH = { is_subject_of = root } } c:DGH = { add_liberty_desire = -20 } }
+			if = { limit = { country_exists = c:QCH c:QCH = { is_subject_of = root } } c:QCH = { add_liberty_desire = -20 } }
+			if = { limit = { country_exists = c:BSB c:BSB = { is_subject_of = root } } c:BSB = { add_liberty_desire = -20 } }
+		}
+	}
+}

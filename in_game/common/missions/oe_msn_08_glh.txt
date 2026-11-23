@@ -32,12 +32,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_01_sarai_qarachi_req_tt
-				OR = { owns = location:sarai_al_jadid owns = location:astrakhan owns = location:qirq_yer } stability >= 5
+				OR = { owns = location:sarai_al_jadid owns = location:astrakhan owns = location:qirq_yer } stability >= 5 OR = { any_subject = { is_subject_type = oe_glh_ulus } num_subjects >= 2 any_owned_location = { OR = { has_building = building_type:kurultai has_building = building_type:caravanserai } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:tribes_estate } add_estate_satisfaction = { type = estate_type:tribes_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_glh_02_yarliq_tribute = {
@@ -46,12 +46,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_02_yarliq_tribute_req_tt
-				OR = { owns = location:sarai_al_jadid owns = location:astrakhan owns = location:qirq_yer } stability >= 10 num_locations >= 25
+				OR = { owns = location:sarai_al_jadid owns = location:astrakhan owns = location:qirq_yer } stability >= 10 num_locations >= 25 OR = { any_subject = { is_subject_type = oe_glh_ulus } num_subjects >= 2 monthly_income_trade_and_tax >= 20 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 120
+			add_gold = 120 if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus } } if = { limit = { is_subject = no country_exists = c:MOS NOT = { tag = MOS } c:MOS = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MOS type = casus_belli:cb_make_tributary years = 10 } }
 		}
 	}
 	oe_msn_glh_03_steppe_tabur_guns = {
@@ -60,12 +60,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_03_steppe_tabur_guns_req_tt
-				OR = { owns = location:sarai_al_jadid owns = location:astrakhan owns = location:qirq_yer } gold >= 220 current_age_or_later = { age = age_3_discovery }
+				OR = { owns = location:sarai_al_jadid owns = location:astrakhan owns = location:qirq_yer } gold >= 220 current_age_or_later = { age = age_3_discovery } OR = { has_advance = gunpowder_advance any_owned_location = { OR = { has_building = building_type:cannon_maker has_building = building_type:hand_cannon_guild } } army_tradition >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus } }
 		}
 	}
 	oe_msn_glh_04_new_yassa_settlement = {
@@ -74,12 +74,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_04_new_yassa_settlement_req_tt
-				OR = { owns = location:sarai_al_jadid owns = location:astrakhan owns = location:qirq_yer } stability >= 15 current_age_or_later = { age = age_4_reformation }
+				OR = { owns = location:sarai_al_jadid owns = location:astrakhan owns = location:qirq_yer } stability >= 15 current_age_or_later = { age = age_4_reformation } capital = { development >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_glh_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_glh_m1 years = 20 mode = replace } trigger_event_non_silently = oe_m2e.9
 		}
 	}
 	oe_msn_glh_05_crimea_tana_coast = {
@@ -88,14 +88,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_05_crimea_tana_coast_req_tt
-				owns = location:tana owns = location:qirq_yer
+				owns = location:tana owns = location:qirq_yer OR = { num_of_ports >= 4 any_owned_location = { OR = { has_building = building_type:wharf has_building = building_type:marketplace } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:tana } location:tana = { add_core = root } }
-			if = { limit = { owns = location:qirq_yer } location:qirq_yer = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:tana } location:tana = { add_core = root } } if = { limit = { owns = location:qirq_yer } location:qirq_yer = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus } }
 		}
 	}
 	oe_msn_glh_06_kazan_upper_volga = {
@@ -104,13 +102,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_06_kazan_upper_volga_req_tt
-				owns = location:kazan
+				owns = location:kazan OR = { army_tradition >= 18 any_owned_location = { has_building = building_type:castle } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:kazan } location:kazan = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:kazan } location:kazan = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus } }
 		}
 	}
 	oe_msn_glh_07_caspian_astrakhan = {
@@ -119,14 +116,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_07_caspian_astrakhan_req_tt
-				owns = location:sarai_al_jadid owns = location:astrakhan
+				owns = location:sarai_al_jadid owns = location:astrakhan any_owned_location = { OR = { has_building = building_type:caravanserai has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:sarai_al_jadid } location:sarai_al_jadid = { add_core = root } }
-			if = { limit = { owns = location:astrakhan } location:astrakhan = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:sarai_al_jadid } location:sarai_al_jadid = { add_core = root } } if = { limit = { owns = location:astrakhan } location:astrakhan = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:sarai_al_jadid } location:sarai_al_jadid = { add_location_modifier = { modifier = oe_m2e_loc_glh_sarai_emporium years = 25 mode = replace } change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_glh_08_rus_or_transoxiana = {
@@ -135,12 +130,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_08_rus_or_transoxiana_req_tt
-				OR = { owns = location:moscow owns = location:samarkand owns = location:sarai_al_jadid } num_locations >= 55
+				OR = { owns_or_non_sovereign_subject_owns = location:moscow owns_or_non_sovereign_subject_owns = location:samarkand owns = location:sarai_al_jadid } num_locations >= 55 is_great_power = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_glh_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_glh_m2 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:tribes_estate } add_estate_satisfaction = { type = estate_type:tribes_estate value = estate_satisfaction_mild_bonus } } if = { limit = { is_subject = no country_exists = c:LIT NOT = { tag = LIT } c:LIT = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:LIT type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_glh_09_fur_silk_customs = {
@@ -149,12 +144,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_09_fur_silk_customs_req_tt
-				OR = { owns = location:astrakhan owns = location:tana } gold >= 300
+				OR = { owns = location:astrakhan owns = location:tana } gold >= 300 monthly_income_trade_and_tax >= 24 any_owned_location = { OR = { has_building = building_type:counting_house has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 150
+			add_gold = 150 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_glh_10_volga_don_canal = {
@@ -163,13 +158,12 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_10_volga_don_canal_req_tt
-				owns = location:astrakhan owns = location:tana current_age_or_later = { age = age_3_discovery }
+				owns = location:astrakhan owns = location:tana current_age_or_later = { age = age_3_discovery } OR = { monthly_income_trade_and_tax >= 35 any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:trading_hub } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 180
-			add_prestige = prestige_mild_bonus
+			add_gold = 180 add_prestige = prestige_mild_bonus add_navy_tradition = navy_tradition_weak_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_glh_11_sarai_polyglot_academy = {
@@ -178,28 +172,27 @@ oe_msn_glh_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_11_sarai_polyglot_academy_req_tt
-				OR = { owns = location:sarai_al_jadid owns = location:astrakhan } stability >= 15 current_age_or_later = { age = age_4_reformation }
+				OR = { owns = location:sarai_al_jadid owns = location:astrakhan } stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:printing_press any_owned_location = { OR = { has_building = building_type:university has_building = building_type:madrasa } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 6 }
-			add_country_modifier = { modifier = oe_msn_glh_m3 years = 20 mode = replace }
+			culture = { add_cultural_tradition = 6 } add_country_modifier = { modifier = oe_msn_glh_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_glh_12_gunpowder_khaganate = {
 		icon = mandate_of_the_khan
 		requires = { oe_msn_glh_04_new_yassa_settlement oe_msn_glh_08_rus_or_transoxiana oe_msn_glh_11_sarai_polyglot_academy }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_glh_12_gunpowder_khaganate_req_tt
-				owns = location:sarai_al_jadid owns = location:astrakhan stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns = location:sarai_al_jadid owns = location:astrakhan stability >= 15 current_age_or_later = { age = age_5_absolutism } is_great_power = yes capital = { development >= 28 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_glh_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_glh_m4 years = 50 mode = replace } trigger_event_non_silently = oe_m2e.10
 		}
 	}
 }

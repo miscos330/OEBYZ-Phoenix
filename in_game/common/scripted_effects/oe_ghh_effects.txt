@@ -32,6 +32,12 @@ oe_ghh_init = {
 			limit = { country_exists = c:CRI c:CRI = { is_subject_of = c:GLH } }
 			c:CRI = { change_country_name = OE_GHH_NAME_CRI_ULUS }
 		}
+		if = {
+			limit = { current_date < 1356.1.1 }
+			c:GLH = {
+				add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 20 mode = replace }
+			}
+		}
 		oe_ghh_sync_modifiers = yes
 	}
 }
@@ -296,6 +302,30 @@ oe_ghh_yearly_cohesion = {
 				limit = { is_ai = yes current_date >= 1395.1.1 has_global_variable = oe_ghh_phase global_var:oe_ghh_phase = 3 }
 				oe_ghh_shift_cohesion = { amount = -3 }
 			}
+			# v21.0-rc3 Jani Beg Pax guard: clear oe_ghh_janibeg_pax strictly when 1357 arrives (W5/W6 also remove it cleanly)
+			if = {
+				limit = {
+					has_country_modifier = oe_ghh_janibeg_pax
+					current_date >= 1357.1.1
+				}
+				remove_country_modifier = oe_ghh_janibeg_pax
+			}
+			# v21.0-rc2 Lightweight AI army-country safety check before 1356: prevents early famine/bankruptcy/rebel collapse before 1357 Great Troubles
+			if = {
+				limit = {
+					is_ai = yes
+					current_date < 1356.1.1
+					OR = {
+						stability < -5
+						horde_unity < 65
+					}
+				}
+				if = { limit = { stability < 5 } add_stability = 12 }
+				if = { limit = { horde_unity < 70 } add_horde_unity = 15 }
+				if = { limit = { gold < 150 } add_gold = 120 }
+				capital ?= { province ?= { change_province_food = 250 } }
+				add_country_modifier = { modifier = oe_ghh_glh_emergency_forage years = 2 mode = replace }
+			}
 		}
 		oe_ghh_sync_modifiers = yes
 	}
@@ -342,6 +372,27 @@ oe_ghh_monthly = {
 			oe_ghh_sync_modifiers = yes
 		}
 		else = {
+			# 0. v21.0-rc3 Pre-1356 monthly horde-unity & stability floor (blocks premature vanilla horde_civil_war on early ruler deaths)
+			if = {
+				limit = {
+					current_date < 1356.1.1
+					NOT = { has_global_variable = oe_glh_w5 }
+				}
+				c:GLH = {
+					if = {
+						limit = { NOT = { has_country_modifier = oe_ghh_janibeg_pax } }
+						add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 20 mode = replace }
+					}
+					if = {
+						limit = { is_ai = yes horde_unity < 80 }
+						add_horde_unity = 20
+					}
+					if = {
+						limit = { is_ai = yes stability < 5 }
+						add_stability = 10
+					}
+				}
+			}
 			# 1. Human GLH 1337 intro event (.1)
 			if = {
 				limit = {

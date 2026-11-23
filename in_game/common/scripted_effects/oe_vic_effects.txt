@@ -1,0 +1,1574 @@
+﻿# NEW 2026-11-23 v21.0 Batch 2 True Building-Type Viceroyalties (oe_vic_, gen_v210_building_viceroys.py) — Yearly Kernel Entry, Loyalty/Tier Sync, Day-1 Sharifate Upgrade, F6 Cleanup & Event Dispatch. Edit gen_v210_building_viceroys.py, not this file.
+
+
+# Location scope. Removes all oe_vic_* seat loyalty tier modifiers cleanly.
+oe_vic_clear_seat_modifiers = {
+	if = { limit = { has_location_modifier = oe_vic_seat_loyal_mod } remove_location_modifier = oe_vic_seat_loyal_mod }
+	if = { limit = { has_location_modifier = oe_vic_seat_restive_mod } remove_location_modifier = oe_vic_seat_restive_mod }
+	if = { limit = { has_location_modifier = oe_vic_seat_defiant_mod } remove_location_modifier = oe_vic_seat_defiant_mod }
+}
+
+# Viceroyalty country scope. Removes all oe_vic_subj_* tier modifiers cleanly.
+oe_vic_clear_subj_modifiers = {
+	if = { limit = { has_country_modifier = oe_vic_subj_compliant_mod } remove_country_modifier = oe_vic_subj_compliant_mod }
+	if = { limit = { has_country_modifier = oe_vic_subj_restive_mod } remove_country_modifier = oe_vic_subj_restive_mod }
+	if = { limit = { has_country_modifier = oe_vic_subj_defiant_mod } remove_country_modifier = oe_vic_subj_defiant_mod }
+}
+
+# Viceroyalty country scope. Adjusts oe_vic_loyalty by $amount$ (clamped 0..100).
+oe_vic_shift_loyalty = {
+	if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 55 } }
+	change_variable = { name = oe_vic_loyalty add = $amount$ }
+	clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+}
+
+# Viceroyalty country scope. Syncs oe_vic_tier (3>=70, 2=40..69, 1=20..39, 0<20) and country tier modifiers.
+oe_vic_sync_self_tier = {
+	if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 55 } }
+	if = {
+		limit = { has_variable = oe_vic_loyalty var:oe_vic_loyalty >= 70 }
+		set_variable = { name = oe_vic_tier value = 3 }
+		oe_vic_clear_subj_modifiers = yes
+		add_country_modifier = { modifier = oe_vic_subj_compliant_mod months = 14 mode = replace }
+	}
+	else_if = {
+		limit = { has_variable = oe_vic_loyalty var:oe_vic_loyalty >= 40 }
+		set_variable = { name = oe_vic_tier value = 2 }
+		oe_vic_clear_subj_modifiers = yes
+	}
+	else_if = {
+		limit = { has_variable = oe_vic_loyalty var:oe_vic_loyalty >= 20 }
+		set_variable = { name = oe_vic_tier value = 1 }
+		oe_vic_clear_subj_modifiers = yes
+		add_country_modifier = { modifier = oe_vic_subj_restive_mod months = 14 mode = replace }
+	}
+	else = {
+		set_variable = { name = oe_vic_tier value = 0 }
+		oe_vic_clear_subj_modifiers = yes
+		add_country_modifier = { modifier = oe_vic_subj_defiant_mod months = 14 mode = replace }
+	}
+}
+
+# Any scope. F6-style clean dissolution of DLD (Deccan Iqta Viceroyalty): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_DLD = {
+	set_global_variable = { name = oe_vic_ended_dld value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_DLD } clear_saved_scope = oe_vic_end_lord_DLD }
+	if = {
+		limit = { country_exists = c:DLD }
+		c:DLD = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_DLD } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_DLD }
+			scope:oe_vic_end_lord_DLD = { annex_country = { country = c:DLD reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:DLD
+		}
+	}
+	location:daulatabad = {
+		if = { limit = { has_building = building_type:oe_vic_seat_dld } destroy_all_buildings_of_type = building_type:oe_vic_seat_dld }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of DLG (Gujarat Iqta Viceroyalty): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_DLG = {
+	set_global_variable = { name = oe_vic_ended_dlg value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_DLG } clear_saved_scope = oe_vic_end_lord_DLG }
+	if = {
+		limit = { country_exists = c:DLG }
+		c:DLG = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_DLG } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_DLG }
+			scope:oe_vic_end_lord_DLG = { annex_country = { country = c:DLG reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:DLG
+		}
+	}
+	location:khambat = {
+		if = { limit = { has_building = building_type:oe_vic_seat_dlg } destroy_all_buildings_of_type = building_type:oe_vic_seat_dlg }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of DLM (Malwa Iqta Viceroyalty): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_DLM = {
+	set_global_variable = { name = oe_vic_ended_dlm value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_DLM } clear_saved_scope = oe_vic_end_lord_DLM }
+	if = {
+		limit = { country_exists = c:DLM }
+		c:DLM = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_DLM } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_DLM }
+			scope:oe_vic_end_lord_DLM = { annex_country = { country = c:DLM reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:DLM
+		}
+	}
+	location:dhar = {
+		if = { limit = { has_building = building_type:oe_vic_seat_dlm } destroy_all_buildings_of_type = building_type:oe_vic_seat_dlm }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of DLJ (Jaunpur-Awadh Iqta Viceroyalty): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_DLJ = {
+	set_global_variable = { name = oe_vic_ended_dlj value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_DLJ } clear_saved_scope = oe_vic_end_lord_DLJ }
+	if = {
+		limit = { country_exists = c:DLJ }
+		c:DLJ = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_DLJ } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_DLJ }
+			scope:oe_vic_end_lord_DLJ = { annex_country = { country = c:DLJ reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:DLJ
+		}
+	}
+	location:jaunpur = {
+		if = { limit = { has_building = building_type:oe_vic_seat_dlj } destroy_all_buildings_of_type = building_type:oe_vic_seat_dlj }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of DLP (Punjab-Multan Frontier Iqta): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_DLP = {
+	set_global_variable = { name = oe_vic_ended_dlp value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_DLP } clear_saved_scope = oe_vic_end_lord_DLP }
+	if = {
+		limit = { country_exists = c:DLP }
+		c:DLP = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_DLP } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_DLP }
+			scope:oe_vic_end_lord_DLP = { annex_country = { country = c:DLP reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:DLP
+		}
+	}
+	location:multan = {
+		if = { limit = { has_building = building_type:oe_vic_seat_dlp } destroy_all_buildings_of_type = building_type:oe_vic_seat_dlp }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of MMD (Niyabat of Damascus): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_MMD = {
+	set_global_variable = { name = oe_vic_ended_mmd value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_MMD } clear_saved_scope = oe_vic_end_lord_MMD }
+	if = {
+		limit = { country_exists = c:MMD }
+		c:MMD = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_MMD } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_MMD }
+			scope:oe_vic_end_lord_MMD = { annex_country = { country = c:MMD reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:MMD
+		}
+	}
+	location:damascus = {
+		if = { limit = { has_building = building_type:oe_vic_seat_mmd } destroy_all_buildings_of_type = building_type:oe_vic_seat_mmd }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of MMH (Niyabat of Aleppo): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_MMH = {
+	set_global_variable = { name = oe_vic_ended_mmh value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_MMH } clear_saved_scope = oe_vic_end_lord_MMH }
+	if = {
+		limit = { country_exists = c:MMH }
+		c:MMH = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_MMH } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_MMH }
+			scope:oe_vic_end_lord_MMH = { annex_country = { country = c:MMH reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:MMH
+		}
+	}
+	location:aleppo = {
+		if = { limit = { has_building = building_type:oe_vic_seat_mmh } destroy_all_buildings_of_type = building_type:oe_vic_seat_mmh }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of MMK (Niyabat of Kerak): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_MMK = {
+	set_global_variable = { name = oe_vic_ended_mmk value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_MMK } clear_saved_scope = oe_vic_end_lord_MMK }
+	if = {
+		limit = { country_exists = c:MMK }
+		c:MMK = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_MMK } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_MMK }
+			scope:oe_vic_end_lord_MMK = { annex_country = { country = c:MMK reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:MMK
+		}
+	}
+	location:karak = {
+		if = { limit = { has_building = building_type:oe_vic_seat_mmk } destroy_all_buildings_of_type = building_type:oe_vic_seat_mmk }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of HNT (Voivodate of Transylvania): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_HNT = {
+	set_global_variable = { name = oe_vic_ended_hnt value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_HNT } clear_saved_scope = oe_vic_end_lord_HNT }
+	if = {
+		limit = { country_exists = c:HNT }
+		c:HNT = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_HNT } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_HNT }
+			scope:oe_vic_end_lord_HNT = { annex_country = { country = c:HNT reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:HNT
+		}
+	}
+	location:alba_iulia = {
+		if = { limit = { has_building = building_type:oe_vic_seat_hnt } destroy_all_buildings_of_type = building_type:oe_vic_seat_hnt }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of CST (Order of Santiago & Calatrava): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_CST = {
+	set_global_variable = { name = oe_vic_ended_cst value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_CST } clear_saved_scope = oe_vic_end_lord_CST }
+	if = {
+		limit = { country_exists = c:CST }
+		c:CST = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_CST } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_CST }
+			scope:oe_vic_end_lord_CST = { annex_country = { country = c:CST reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:CST
+		}
+	}
+	location:calatrava = {
+		if = { limit = { has_building = building_type:oe_vic_seat_cst } destroy_all_buildings_of_type = building_type:oe_vic_seat_cst }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of CSG (Adelantamiento de la Frontera): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_CSG = {
+	set_global_variable = { name = oe_vic_ended_csg value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_CSG } clear_saved_scope = oe_vic_end_lord_CSG }
+	if = {
+		limit = { country_exists = c:CSG }
+		c:CSG = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_CSG } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_CSG }
+			scope:oe_vic_end_lord_CSG = { annex_country = { country = c:CSG reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:CSG
+		}
+	}
+	location:cordoba = {
+		if = { limit = { has_building = building_type:oe_vic_seat_csg } destroy_all_buildings_of_type = building_type:oe_vic_seat_csg }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of TIG (Bahr Negash of Tigray): annex via overlord or destroy_building_country, then clear seat.
+oe_vic_end_TIG = {
+	set_global_variable = { name = oe_vic_ended_tig value = 1 }
+	if = { limit = { exists = scope:oe_vic_end_lord_TIG } clear_saved_scope = oe_vic_end_lord_TIG }
+	if = {
+		limit = { country_exists = c:TIG }
+		c:TIG = {
+			set_variable = { name = oe_vic_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_vic_end_lord_TIG } }
+		}
+		if = {
+			limit = { exists = scope:oe_vic_end_lord_TIG }
+			scope:oe_vic_end_lord_TIG = { annex_country = { country = c:TIG reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:TIG
+		}
+	}
+	location:axum = {
+		if = { limit = { has_building = building_type:oe_vic_seat_tig } destroy_all_buildings_of_type = building_type:oe_vic_seat_tig }
+		oe_vic_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. Cleanly dissolves all building-type viceroyalties belonging to DLH.
+oe_vic_recall_all_dlh = {
+	set_global_variable = { name = oe_vic_recalled_dlh value = 1 }
+	oe_vic_end_DLD = yes
+	oe_vic_end_DLG = yes
+	oe_vic_end_DLM = yes
+	oe_vic_end_DLJ = yes
+	oe_vic_end_DLP = yes
+}
+
+# Any scope. Cleanly dissolves all building-type viceroyalties belonging to MAM.
+oe_vic_recall_all_mam = {
+	set_global_variable = { name = oe_vic_recalled_mam value = 1 }
+	oe_vic_end_MMD = yes
+	oe_vic_end_MMH = yes
+	oe_vic_end_MMK = yes
+}
+
+# Any scope. Cleanly dissolves all building-type viceroyalties belonging to HUN.
+oe_vic_recall_all_hun = {
+	set_global_variable = { name = oe_vic_recalled_hun value = 1 }
+	oe_vic_end_HNT = yes
+}
+
+# Any scope. Cleanly dissolves all building-type viceroyalties belonging to CAS.
+oe_vic_recall_all_cas = {
+	set_global_variable = { name = oe_vic_recalled_cas value = 1 }
+	oe_vic_end_CST = yes
+	oe_vic_end_CSG = yes
+}
+
+# Any scope. Cleanly dissolves all building-type viceroyalties belonging to ETH.
+oe_vic_recall_all_eth = {
+	set_global_variable = { name = oe_vic_recalled_eth value = 1 }
+	oe_vic_end_TIG = yes
+}
+
+# Any scope. Runs once at start to ensure all 12 building-type viceroyalties have seats, rulers, and initial loyalty.
+oe_vic_init_once = {
+	if = { # DLD: 德干伊克塔总督府
+		limit = { country_exists = c:DLD country_exists = c:DLH NOT = { has_global_variable = oe_vic_ended_dld } }
+		c:DLD = {
+			if = {
+				limit = { NOT = { is_subject_of = c:DLH } }
+				make_subject_of = { target = c:DLH type = subject_type:oe_dlh_iqta }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 48 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_DLD
+		}
+		if = {
+			limit = { exists = character:oe_vic_qutlugh_khan character:oe_vic_qutlugh_khan = { is_alive = yes } }
+			character:oe_vic_qutlugh_khan = { if = { limit = { NOT = { owner ?= c:DLD } } move_country = c:DLD } }
+			c:DLD = { if = { limit = { NOT = { ruler ?= character:oe_vic_qutlugh_khan } } set_new_ruler = character:oe_vic_qutlugh_khan } }
+		}
+		location:daulatabad = {
+			if = {
+				limit = { owner ?= c:DLH NOT = { has_building = building_type:oe_vic_seat_dld } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_dld
+					owner = scope:oe_vic_init_DLD
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # DLG: 古吉拉特伊克塔总督府
+		limit = { country_exists = c:DLG country_exists = c:DLH NOT = { has_global_variable = oe_vic_ended_dlg } }
+		c:DLG = {
+			if = {
+				limit = { NOT = { is_subject_of = c:DLH } }
+				make_subject_of = { target = c:DLH type = subject_type:oe_dlh_iqta }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 52 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_DLG
+		}
+		if = {
+			limit = { exists = character:oe_vic_muqbil_gujarat character:oe_vic_muqbil_gujarat = { is_alive = yes } }
+			character:oe_vic_muqbil_gujarat = { if = { limit = { NOT = { owner ?= c:DLG } } move_country = c:DLG } }
+			c:DLG = { if = { limit = { NOT = { ruler ?= character:oe_vic_muqbil_gujarat } } set_new_ruler = character:oe_vic_muqbil_gujarat } }
+		}
+		location:khambat = {
+			if = {
+				limit = { owner ?= c:DLH NOT = { has_building = building_type:oe_vic_seat_dlg } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_dlg
+					owner = scope:oe_vic_init_DLG
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # DLM: 摩腊婆伊克塔总督府
+		limit = { country_exists = c:DLM country_exists = c:DLH NOT = { has_global_variable = oe_vic_ended_dlm } }
+		c:DLM = {
+			if = {
+				limit = { NOT = { is_subject_of = c:DLH } }
+				make_subject_of = { target = c:DLH type = subject_type:oe_dlh_iqta }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 52 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_DLM
+		}
+		if = {
+			limit = { exists = character:oe_vic_aziz_khammar character:oe_vic_aziz_khammar = { is_alive = yes } }
+			character:oe_vic_aziz_khammar = { if = { limit = { NOT = { owner ?= c:DLM } } move_country = c:DLM } }
+			c:DLM = { if = { limit = { NOT = { ruler ?= character:oe_vic_aziz_khammar } } set_new_ruler = character:oe_vic_aziz_khammar } }
+		}
+		location:dhar = {
+			if = {
+				limit = { owner ?= c:DLH NOT = { has_building = building_type:oe_vic_seat_dlm } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_dlm
+					owner = scope:oe_vic_init_DLM
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # DLJ: 东方—章普尔伊克塔总督府
+		limit = { country_exists = c:DLJ country_exists = c:DLH NOT = { has_global_variable = oe_vic_ended_dlj } }
+		c:DLJ = {
+			if = {
+				limit = { NOT = { is_subject_of = c:DLH } }
+				make_subject_of = { target = c:DLH type = subject_type:oe_dlh_iqta }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 54 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_DLJ
+		}
+		if = {
+			limit = { exists = character:oe_vic_ain_ul_mulk character:oe_vic_ain_ul_mulk = { is_alive = yes } }
+			character:oe_vic_ain_ul_mulk = { if = { limit = { NOT = { owner ?= c:DLJ } } move_country = c:DLJ } }
+			c:DLJ = { if = { limit = { NOT = { ruler ?= character:oe_vic_ain_ul_mulk } } set_new_ruler = character:oe_vic_ain_ul_mulk } }
+		}
+		location:jaunpur = {
+			if = {
+				limit = { owner ?= c:DLH NOT = { has_building = building_type:oe_vic_seat_dlj } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_dlj
+					owner = scope:oe_vic_init_DLJ
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # DLP: 旁遮普—木尔坦边疆总督府
+		limit = { country_exists = c:DLP country_exists = c:DLH NOT = { has_global_variable = oe_vic_ended_dlp } }
+		c:DLP = {
+			if = {
+				limit = { NOT = { is_subject_of = c:DLH } }
+				make_subject_of = { target = c:DLH type = subject_type:oe_dlh_iqta }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 56 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_DLP
+		}
+		if = {
+			limit = { exists = character:oe_vic_imad_ul_mulk character:oe_vic_imad_ul_mulk = { is_alive = yes } }
+			character:oe_vic_imad_ul_mulk = { if = { limit = { NOT = { owner ?= c:DLP } } move_country = c:DLP } }
+			c:DLP = { if = { limit = { NOT = { ruler ?= character:oe_vic_imad_ul_mulk } } set_new_ruler = character:oe_vic_imad_ul_mulk } }
+		}
+		location:multan = {
+			if = {
+				limit = { owner ?= c:DLH NOT = { has_building = building_type:oe_vic_seat_dlp } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_dlp
+					owner = scope:oe_vic_init_DLP
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # MMD: 大马士革副王府
+		limit = { country_exists = c:MMD country_exists = c:MAM NOT = { has_global_variable = oe_vic_ended_mmd } }
+		c:MMD = {
+			if = {
+				limit = { NOT = { is_subject_of = c:MAM } }
+				make_subject_of = { target = c:MAM type = subject_type:oe_mam_niyabat }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 62 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_MMD
+		}
+		if = {
+			limit = { exists = character:oe_vic_tankiz character:oe_vic_tankiz = { is_alive = yes } }
+			character:oe_vic_tankiz = { if = { limit = { NOT = { owner ?= c:MMD } } move_country = c:MMD } }
+			c:MMD = { if = { limit = { NOT = { ruler ?= character:oe_vic_tankiz } } set_new_ruler = character:oe_vic_tankiz } }
+		}
+		location:damascus = {
+			if = {
+				limit = { owner ?= c:MAM NOT = { has_building = building_type:oe_vic_seat_mmd } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_mmd
+					owner = scope:oe_vic_init_MMD
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # MMH: 阿勒颇副王府
+		limit = { country_exists = c:MMH country_exists = c:MAM NOT = { has_global_variable = oe_vic_ended_mmh } }
+		c:MMH = {
+			if = {
+				limit = { NOT = { is_subject_of = c:MAM } }
+				make_subject_of = { target = c:MAM type = subject_type:oe_mam_niyabat }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 58 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_MMH
+		}
+		if = {
+			limit = { exists = character:oe_vic_altunbugha_aleppo character:oe_vic_altunbugha_aleppo = { is_alive = yes } }
+			character:oe_vic_altunbugha_aleppo = { if = { limit = { NOT = { owner ?= c:MMH } } move_country = c:MMH } }
+			c:MMH = { if = { limit = { NOT = { ruler ?= character:oe_vic_altunbugha_aleppo } } set_new_ruler = character:oe_vic_altunbugha_aleppo } }
+		}
+		location:aleppo = {
+			if = {
+				limit = { owner ?= c:MAM NOT = { has_building = building_type:oe_vic_seat_mmh } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_mmh
+					owner = scope:oe_vic_init_MMH
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # MMK: 卡拉克—南叙利亚副王府
+		limit = { country_exists = c:MMK country_exists = c:MAM NOT = { has_global_variable = oe_vic_ended_mmk } }
+		c:MMK = {
+			if = {
+				limit = { NOT = { is_subject_of = c:MAM } }
+				make_subject_of = { target = c:MAM type = subject_type:oe_mam_niyabat }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 56 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_MMK
+		}
+		if = {
+			limit = { exists = character:oe_vic_ahmad_kerak character:oe_vic_ahmad_kerak = { is_alive = yes } }
+			character:oe_vic_ahmad_kerak = { if = { limit = { NOT = { owner ?= c:MMK } } move_country = c:MMK } }
+			c:MMK = { if = { limit = { NOT = { ruler ?= character:oe_vic_ahmad_kerak } } set_new_ruler = character:oe_vic_ahmad_kerak } }
+		}
+		location:karak = {
+			if = {
+				limit = { owner ?= c:MAM NOT = { has_building = building_type:oe_vic_seat_mmk } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_mmk
+					owner = scope:oe_vic_init_MMK
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # HNT: 特兰西瓦尼亚沃伊沃德总督府
+		limit = { country_exists = c:HNT country_exists = c:HUN NOT = { has_global_variable = oe_vic_ended_hnt } }
+		c:HNT = {
+			if = {
+				limit = { NOT = { is_subject_of = c:HUN } }
+				make_subject_of = { target = c:HUN type = subject_type:oe_hun_voivodate }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 62 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_HNT
+		}
+		if = {
+			limit = { exists = character:oe_vic_tamas_szecsenyi character:oe_vic_tamas_szecsenyi = { is_alive = yes } }
+			character:oe_vic_tamas_szecsenyi = { if = { limit = { NOT = { owner ?= c:HNT } } move_country = c:HNT } }
+			c:HNT = { if = { limit = { NOT = { ruler ?= character:oe_vic_tamas_szecsenyi } } set_new_ruler = character:oe_vic_tamas_szecsenyi } }
+		}
+		location:alba_iulia = {
+			if = {
+				limit = { owner ?= c:HUN NOT = { has_building = building_type:oe_vic_seat_hnt } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_hnt
+					owner = scope:oe_vic_init_HNT
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # CST: 圣地亚哥—卡拉特拉瓦骑士团领
+		limit = { country_exists = c:CST country_exists = c:CAS NOT = { has_global_variable = oe_vic_ended_cst } }
+		c:CST = {
+			if = {
+				limit = { NOT = { is_subject_of = c:CAS } }
+				make_subject_of = { target = c:CAS type = subject_type:oe_cas_adelantado }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 60 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_CST
+		}
+		if = {
+			limit = { exists = character:oe_vic_juan_nunez_prado character:oe_vic_juan_nunez_prado = { is_alive = yes } }
+			character:oe_vic_juan_nunez_prado = { if = { limit = { NOT = { owner ?= c:CST } } move_country = c:CST } }
+			c:CST = { if = { limit = { NOT = { ruler ?= character:oe_vic_juan_nunez_prado } } set_new_ruler = character:oe_vic_juan_nunez_prado } }
+		}
+		location:calatrava = {
+			if = {
+				limit = { owner ?= c:CAS NOT = { has_building = building_type:oe_vic_seat_cst } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_cst
+					owner = scope:oe_vic_init_CST
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # CSG: 安达卢西亚前沿督军区
+		limit = { country_exists = c:CSG country_exists = c:CAS NOT = { has_global_variable = oe_vic_ended_csg } }
+		c:CSG = {
+			if = {
+				limit = { NOT = { is_subject_of = c:CAS } }
+				make_subject_of = { target = c:CAS type = subject_type:oe_cas_adelantado }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 58 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_CSG
+		}
+		if = {
+			limit = { exists = character:oe_vic_gonzalo_martinez character:oe_vic_gonzalo_martinez = { is_alive = yes } }
+			character:oe_vic_gonzalo_martinez = { if = { limit = { NOT = { owner ?= c:CSG } } move_country = c:CSG } }
+			c:CSG = { if = { limit = { NOT = { ruler ?= character:oe_vic_gonzalo_martinez } } set_new_ruler = character:oe_vic_gonzalo_martinez } }
+		}
+		location:cordoba = {
+			if = {
+				limit = { owner ?= c:CAS NOT = { has_building = building_type:oe_vic_seat_csg } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_csg
+					owner = scope:oe_vic_init_CSG
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # TIG: 提格雷海王总督府
+		limit = { country_exists = c:TIG country_exists = c:ETH NOT = { has_global_variable = oe_vic_ended_tig } }
+		c:TIG = {
+			if = {
+				limit = { NOT = { is_subject_of = c:ETH } }
+				make_subject_of = { target = c:ETH type = subject_type:oe_eth_bahr_negash }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_vic_loyalty } }
+				set_variable = { name = oe_vic_loyalty value = 60 }
+			}
+			oe_vic_sync_self_tier = yes
+			save_scope_as = oe_vic_init_TIG
+		}
+		if = {
+			limit = { exists = character:oe_vic_yaibika_egzi character:oe_vic_yaibika_egzi = { is_alive = yes } }
+			character:oe_vic_yaibika_egzi = { if = { limit = { NOT = { owner ?= c:TIG } } move_country = c:TIG } }
+			c:TIG = { if = { limit = { NOT = { ruler ?= character:oe_vic_yaibika_egzi } } set_new_ruler = character:oe_vic_yaibika_egzi } }
+		}
+		location:axum = {
+			if = {
+				limit = { owner ?= c:ETH NOT = { has_building = building_type:oe_vic_seat_tig } }
+				construct_building = {
+					building_type = building_type:oe_vic_seat_tig
+					owner = scope:oe_vic_init_TIG
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+}
+
+# Any scope. Upgrades Mecca (MEC) and Medina (MDA) to oe_mam_sharifate while subjects of MAM.
+oe_vic_sync_sharifates = {
+	if = {
+		limit = { country_exists = c:MAM c:MAM = { is_rebel_country = no } }
+		if = {
+			limit = { country_exists = c:MEC c:MEC = { is_subject_of = c:MAM NOT = { is_subject_type = oe_mam_sharifate } } }
+			c:MEC = { change_subject_type = subject_type:oe_mam_sharifate }
+		}
+		if = {
+			limit = { country_exists = c:MDA c:MDA = { is_subject_of = c:MAM NOT = { is_subject_type = oe_mam_sharifate } } }
+			c:MDA = { change_subject_type = subject_type:oe_mam_sharifate }
+		}
+	}
+}
+
+# Any scope. F6-style cleanup: dissolves any viceroyalty whose overlord fell, lost its seat, or broke subjection (0 zombie TAGs).
+oe_vic_cleanup_check = {
+	if = {
+		limit = {
+			country_exists = c:DLD
+			OR = {
+				has_global_variable = oe_vic_ended_dld
+				NOT = { country_exists = c:DLH }
+				c:DLH = { is_rebel_country = yes }
+				NOT = { location:daulatabad = { owner ?= c:DLH } }
+				c:DLD = { NOT = { is_subject_of = c:DLH } }
+			}
+		}
+		oe_vic_end_DLD = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:DLG
+			OR = {
+				has_global_variable = oe_vic_ended_dlg
+				NOT = { country_exists = c:DLH }
+				c:DLH = { is_rebel_country = yes }
+				NOT = { location:khambat = { owner ?= c:DLH } }
+				c:DLG = { NOT = { is_subject_of = c:DLH } }
+			}
+		}
+		oe_vic_end_DLG = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:DLM
+			OR = {
+				has_global_variable = oe_vic_ended_dlm
+				NOT = { country_exists = c:DLH }
+				c:DLH = { is_rebel_country = yes }
+				NOT = { location:dhar = { owner ?= c:DLH } }
+				c:DLM = { NOT = { is_subject_of = c:DLH } }
+			}
+		}
+		oe_vic_end_DLM = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:DLJ
+			OR = {
+				has_global_variable = oe_vic_ended_dlj
+				NOT = { country_exists = c:DLH }
+				c:DLH = { is_rebel_country = yes }
+				NOT = { location:jaunpur = { owner ?= c:DLH } }
+				c:DLJ = { NOT = { is_subject_of = c:DLH } }
+			}
+		}
+		oe_vic_end_DLJ = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:DLP
+			OR = {
+				has_global_variable = oe_vic_ended_dlp
+				NOT = { country_exists = c:DLH }
+				c:DLH = { is_rebel_country = yes }
+				NOT = { location:multan = { owner ?= c:DLH } }
+				c:DLP = { NOT = { is_subject_of = c:DLH } }
+			}
+		}
+		oe_vic_end_DLP = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:MMD
+			OR = {
+				has_global_variable = oe_vic_ended_mmd
+				NOT = { country_exists = c:MAM }
+				c:MAM = { is_rebel_country = yes }
+				NOT = { location:damascus = { owner ?= c:MAM } }
+				c:MMD = { NOT = { is_subject_of = c:MAM } }
+			}
+		}
+		oe_vic_end_MMD = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:MMH
+			OR = {
+				has_global_variable = oe_vic_ended_mmh
+				NOT = { country_exists = c:MAM }
+				c:MAM = { is_rebel_country = yes }
+				NOT = { location:aleppo = { owner ?= c:MAM } }
+				c:MMH = { NOT = { is_subject_of = c:MAM } }
+			}
+		}
+		oe_vic_end_MMH = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:MMK
+			OR = {
+				has_global_variable = oe_vic_ended_mmk
+				NOT = { country_exists = c:MAM }
+				c:MAM = { is_rebel_country = yes }
+				NOT = { location:karak = { owner ?= c:MAM } }
+				c:MMK = { NOT = { is_subject_of = c:MAM } }
+			}
+		}
+		oe_vic_end_MMK = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:HNT
+			OR = {
+				has_global_variable = oe_vic_ended_hnt
+				NOT = { country_exists = c:HUN }
+				c:HUN = { is_rebel_country = yes }
+				NOT = { location:alba_iulia = { owner ?= c:HUN } }
+				c:HNT = { NOT = { is_subject_of = c:HUN } }
+			}
+		}
+		oe_vic_end_HNT = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:CST
+			OR = {
+				has_global_variable = oe_vic_ended_cst
+				NOT = { country_exists = c:CAS }
+				c:CAS = { is_rebel_country = yes }
+				NOT = { location:calatrava = { owner ?= c:CAS } }
+				c:CST = { NOT = { is_subject_of = c:CAS } }
+			}
+		}
+		oe_vic_end_CST = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:CSG
+			OR = {
+				has_global_variable = oe_vic_ended_csg
+				NOT = { country_exists = c:CAS }
+				c:CAS = { is_rebel_country = yes }
+				NOT = { location:cordoba = { owner ?= c:CAS } }
+				c:CSG = { NOT = { is_subject_of = c:CAS } }
+			}
+		}
+		oe_vic_end_CSG = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:TIG
+			OR = {
+				has_global_variable = oe_vic_ended_tig
+				NOT = { country_exists = c:ETH }
+				c:ETH = { is_rebel_country = yes }
+				NOT = { location:axum = { owner ?= c:ETH } }
+				c:TIG = { NOT = { is_subject_of = c:ETH } }
+			}
+		}
+		oe_vic_end_TIG = yes
+	}
+}
+
+# Any scope. Yearly loyalty drift & seat-location modifier synchronization across all active viceroyalties.
+oe_vic_sync_all_viceroys = {
+	if = { # DLD under DLH
+		limit = { country_exists = c:DLD country_exists = c:DLH c:DLD = { is_subject_of = c:DLH is_subject_type = oe_dlh_iqta } }
+		c:DLD = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 48 } }
+			if = {
+				limit = { c:DLH = { oe_vic_dlh_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:DLH = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:daulatabad = {
+			if = {
+				limit = { owner ?= c:DLH }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:DLD = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLD = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLD = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # DLG under DLH
+		limit = { country_exists = c:DLG country_exists = c:DLH c:DLG = { is_subject_of = c:DLH is_subject_type = oe_dlh_iqta } }
+		c:DLG = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 52 } }
+			if = {
+				limit = { c:DLH = { oe_vic_dlh_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:DLH = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:khambat = {
+			if = {
+				limit = { owner ?= c:DLH }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:DLG = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLG = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLG = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # DLM under DLH
+		limit = { country_exists = c:DLM country_exists = c:DLH c:DLM = { is_subject_of = c:DLH is_subject_type = oe_dlh_iqta } }
+		c:DLM = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 52 } }
+			if = {
+				limit = { c:DLH = { oe_vic_dlh_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:DLH = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:dhar = {
+			if = {
+				limit = { owner ?= c:DLH }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:DLM = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLM = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLM = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # DLJ under DLH
+		limit = { country_exists = c:DLJ country_exists = c:DLH c:DLJ = { is_subject_of = c:DLH is_subject_type = oe_dlh_iqta } }
+		c:DLJ = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 54 } }
+			if = {
+				limit = { c:DLH = { oe_vic_dlh_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:DLH = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:jaunpur = {
+			if = {
+				limit = { owner ?= c:DLH }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:DLJ = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLJ = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLJ = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # DLP under DLH
+		limit = { country_exists = c:DLP country_exists = c:DLH c:DLP = { is_subject_of = c:DLH is_subject_type = oe_dlh_iqta } }
+		c:DLP = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 56 } }
+			if = {
+				limit = { c:DLH = { oe_vic_dlh_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:DLH = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:DLH = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:multan = {
+			if = {
+				limit = { owner ?= c:DLH }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:DLP = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLP = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:DLP = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # MMD under MAM
+		limit = { country_exists = c:MMD country_exists = c:MAM c:MMD = { is_subject_of = c:MAM is_subject_type = oe_mam_niyabat } }
+		c:MMD = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 62 } }
+			if = {
+				limit = { c:MAM = { oe_vic_mam_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:MAM = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:MAM = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:MAM = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:damascus = {
+			if = {
+				limit = { owner ?= c:MAM }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:MMD = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:MMD = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:MMD = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # MMH under MAM
+		limit = { country_exists = c:MMH country_exists = c:MAM c:MMH = { is_subject_of = c:MAM is_subject_type = oe_mam_niyabat } }
+		c:MMH = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 58 } }
+			if = {
+				limit = { c:MAM = { oe_vic_mam_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:MAM = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:MAM = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:MAM = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:aleppo = {
+			if = {
+				limit = { owner ?= c:MAM }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:MMH = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:MMH = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:MMH = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # MMK under MAM
+		limit = { country_exists = c:MMK country_exists = c:MAM c:MMK = { is_subject_of = c:MAM is_subject_type = oe_mam_niyabat } }
+		c:MMK = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 56 } }
+			if = {
+				limit = { c:MAM = { oe_vic_mam_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:MAM = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:MAM = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:MAM = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:karak = {
+			if = {
+				limit = { owner ?= c:MAM }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:MMK = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:MMK = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:MMK = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # HNT under HUN
+		limit = { country_exists = c:HNT country_exists = c:HUN c:HNT = { is_subject_of = c:HUN is_subject_type = oe_hun_voivodate } }
+		c:HNT = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 62 } }
+			if = {
+				limit = { c:HUN = { oe_vic_hun_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:HUN = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:HUN = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:HUN = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:alba_iulia = {
+			if = {
+				limit = { owner ?= c:HUN }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:HNT = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:HNT = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:HNT = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # CST under CAS
+		limit = { country_exists = c:CST country_exists = c:CAS c:CST = { is_subject_of = c:CAS is_subject_type = oe_cas_adelantado } }
+		c:CST = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 60 } }
+			if = {
+				limit = { c:CAS = { oe_vic_cas_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:CAS = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:CAS = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:CAS = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:calatrava = {
+			if = {
+				limit = { owner ?= c:CAS }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:CST = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:CST = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:CST = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # CSG under CAS
+		limit = { country_exists = c:CSG country_exists = c:CAS c:CSG = { is_subject_of = c:CAS is_subject_type = oe_cas_adelantado } }
+		c:CSG = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 58 } }
+			if = {
+				limit = { c:CAS = { oe_vic_cas_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:CAS = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:CAS = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:CAS = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:cordoba = {
+			if = {
+				limit = { owner ?= c:CAS }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:CSG = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:CSG = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:CSG = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # TIG under ETH
+		limit = { country_exists = c:TIG country_exists = c:ETH c:TIG = { is_subject_of = c:ETH is_subject_type = oe_eth_bahr_negash } }
+		c:TIG = {
+			if = { limit = { NOT = { has_variable = oe_vic_loyalty } } set_variable = { name = oe_vic_loyalty value = 60 } }
+			if = {
+				limit = { c:ETH = { oe_vic_eth_in_crisis = yes } }
+				change_variable = { name = oe_vic_loyalty add = -5 }
+			}
+			else_if = {
+				limit = { c:ETH = { stability >= 15 legitimacy >= 70 } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:ETH = { stability < -15 } }
+				change_variable = { name = oe_vic_loyalty add = -4 }
+			}
+			if = {
+				limit = { c:ETH = { has_country_modifier = oe_vic_audit_harmonized_mod } }
+				change_variable = { name = oe_vic_loyalty add = 3 }
+			}
+			clamp_variable = { name = oe_vic_loyalty min = 0 max = 100 }
+			oe_vic_sync_self_tier = yes
+		}
+		location:axum = {
+			if = {
+				limit = { owner ?= c:ETH }
+				oe_vic_clear_seat_modifiers = yes
+				if = { limit = { c:TIG = { var:oe_vic_tier ?= 3 } } add_location_modifier = { modifier = oe_vic_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:TIG = { var:oe_vic_tier ?= 1 } } add_location_modifier = { modifier = oe_vic_seat_restive_mod months = 14 mode = replace } }
+				else_if = { limit = { c:TIG = { var:oe_vic_tier ?= 0 } } add_location_modifier = { modifier = oe_vic_seat_defiant_mod months = 14 mode = replace } }
+			}
+		}
+	}
+}
+
+# Any scope. Dynamically awakens vanilla dormant TRA (Transylvania) and/or SVN (Slavonia) if Hungary critically weakens.
+oe_vic_hun_awaken_tra_svn = {
+	if = {
+		limit = {
+			country_exists = c:HUN
+			NOT = { has_global_variable = oe_vic_hun_diet_reformed }
+		}
+		if = {
+			limit = {
+				NOT = { country_exists = c:TRA }
+				c:HUN = { any_owned_location = { is_core_of = c:TRA } }
+			}
+			c:HUN = { create_country_from_cores_in_our_locations = c:TRA }
+			if = {
+				limit = { country_exists = c:TRA }
+				c:TRA = {
+					add_country_modifier = { modifier = oe_vic_hun_voivode_charter_mod years = 25 mode = replace }
+					if = {
+						limit = { c:HUN = { owns = location:buda } }
+						make_subject_of = { target = c:HUN type = subject_type:vassal }
+					}
+				}
+			}
+			oe_vic_end_HNT = yes
+		}
+		if = {
+			limit = {
+				NOT = { country_exists = c:SVN }
+				c:HUN = {
+					any_owned_location = { is_core_of = c:SVN }
+					OR = {
+						NOT = { owns = location:buda }
+						stability < -15
+						in_civil_war = yes
+					}
+				}
+			}
+			c:HUN = { create_country_from_cores_in_our_locations = c:SVN }
+			if = {
+				limit = { country_exists = c:SVN }
+				c:SVN = {
+					add_country_modifier = { modifier = oe_vic_hun_voivode_charter_mod years = 20 mode = replace }
+					if = {
+						limit = { c:HUN = { owns = location:buda } }
+						make_subject_of = { target = c:HUN type = subject_type:vassal }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Any scope. Yearly historical event dispatcher for all 12 oe_vic events (once per campaign each, zero orphans).
+oe_vic_dispatch_events = {
+	# --- Delhi Sultanate (DLH): oe_vic.1, oe_vic.2, oe_vic.3 ---
+	if = {
+		limit = { country_exists = c:DLH c:DLH = { is_rebel_country = no } }
+		if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev1_done }
+				current_year >= 1345
+				country_exists = c:DLD
+				c:DLD = { is_subject_of = c:DLH }
+			}
+			set_global_variable = { name = oe_vic_ev1_done value = 1 }
+			c:DLH = { trigger_event_non_silently = oe_vic.1 }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev2_done }
+				current_year >= 1341
+				OR = {
+					AND = { country_exists = c:DLG c:DLG = { is_subject_of = c:DLH } }
+					AND = { country_exists = c:DLM c:DLM = { is_subject_of = c:DLH } }
+				}
+			}
+			set_global_variable = { name = oe_vic_ev2_done value = 1 }
+			c:DLH = { trigger_event_non_silently = oe_vic.2 }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev3_done }
+				current_year >= 1349
+				OR = {
+					AND = { country_exists = c:DLP c:DLP = { is_subject_of = c:DLH } }
+					AND = { country_exists = c:DLJ c:DLJ = { is_subject_of = c:DLH } }
+				}
+			}
+			set_global_variable = { name = oe_vic_ev3_done value = 1 }
+			c:DLH = { trigger_event_non_silently = oe_vic.3 }
+		}
+	}
+
+	# --- Mamluk Sultanate (MAM): oe_vic.4, oe_vic.5, oe_vic.6 ---
+	if = {
+		limit = { country_exists = c:MAM c:MAM = { is_rebel_country = no } }
+		if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev4_done }
+				current_year >= 1340
+				country_exists = c:MMD
+				c:MMD = { is_subject_of = c:MAM }
+			}
+			set_global_variable = { name = oe_vic_ev4_done value = 1 }
+			c:MAM = { trigger_event_non_silently = oe_vic.4 }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev5_done }
+				current_year >= 1382
+				OR = {
+					AND = { country_exists = c:MMD c:MMD = { is_subject_of = c:MAM } }
+					AND = { country_exists = c:MMH c:MMH = { is_subject_of = c:MAM } }
+					AND = { country_exists = c:MMK c:MMK = { is_subject_of = c:MAM } }
+				}
+			}
+			set_global_variable = { name = oe_vic_ev5_done value = 1 }
+			c:MAM = { trigger_event_non_silently = oe_vic.5 }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev6_done }
+				current_year >= 1344
+				OR = {
+					AND = { country_exists = c:MEC c:MEC = { is_subject_of = c:MAM is_subject_type = oe_mam_sharifate } }
+					AND = { country_exists = c:MDA c:MDA = { is_subject_of = c:MAM is_subject_type = oe_mam_sharifate } }
+				}
+			}
+			set_global_variable = { name = oe_vic_ev6_done value = 1 }
+			c:MAM = { trigger_event_non_silently = oe_vic.6 }
+		}
+	}
+
+	# --- Kingdom of Hungary (HUN): oe_vic.8 (1339+), oe_vic.7 (1382+ crisis) ---
+	if = {
+		limit = { country_exists = c:HUN c:HUN = { is_rebel_country = no } }
+		if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev8_done }
+				current_year >= 1339
+				country_exists = c:HNT
+				c:HNT = { is_subject_of = c:HUN }
+			}
+			set_global_variable = { name = oe_vic_ev8_done value = 1 }
+			c:HUN = { trigger_event_non_silently = oe_vic.8 }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev7_done }
+				NOT = { has_global_variable = oe_vic_hun_diet_reformed }
+				current_year >= 1382
+				c:HUN = { oe_vic_hun_in_crisis = yes }
+				OR = {
+					AND = { country_exists = c:HNT c:HNT = { is_subject_of = c:HUN } }
+					c:HUN = { any_owned_location = { is_core_of = c:TRA } }
+				}
+			}
+			set_global_variable = { name = oe_vic_ev7_done value = 1 }
+			c:HUN = { trigger_event_non_silently = oe_vic.7 }
+		}
+	}
+
+	# --- Crown of Castile (CAS): oe_vic.10 (1340+), oe_vic.9 (1351+ Trastamara) ---
+	if = {
+		limit = { country_exists = c:CAS c:CAS = { is_rebel_country = no } }
+		if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev9_done }
+				current_year >= 1351
+				OR = {
+					c:CAS = { oe_vic_cas_in_crisis = yes }
+					current_year >= 1358
+				}
+				OR = {
+					AND = { country_exists = c:CST c:CST = { is_subject_of = c:CAS } }
+					AND = { country_exists = c:CSG c:CSG = { is_subject_of = c:CAS } }
+				}
+			}
+			set_global_variable = { name = oe_vic_ev9_done value = 1 }
+			c:CAS = { trigger_event_non_silently = oe_vic.9 }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev10_done }
+				current_year >= 1340
+				country_exists = c:CSG
+				c:CSG = { is_subject_of = c:CAS }
+			}
+			set_global_variable = { name = oe_vic_ev10_done value = 1 }
+			c:CAS = { trigger_event_non_silently = oe_vic.10 }
+		}
+	}
+
+	# --- Solomonic Ethiopia (ETH): oe_vic.11 (1342+), oe_vic.12 (1356+) ---
+	if = {
+		limit = { country_exists = c:ETH c:ETH = { is_rebel_country = no } }
+		if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev11_done }
+				current_year >= 1342
+				country_exists = c:TIG
+				c:TIG = { is_subject_of = c:ETH }
+			}
+			set_global_variable = { name = oe_vic_ev11_done value = 1 }
+			c:ETH = { trigger_event_non_silently = oe_vic.11 }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_vic_ev12_done }
+				current_year >= 1356
+				country_exists = c:TIG
+				c:TIG = { is_subject_of = c:ETH }
+			}
+			set_global_variable = { name = oe_vic_ev12_done value = 1 }
+			c:ETH = { trigger_event_non_silently = oe_vic.12 }
+		}
+	}
+}
+
+# Any scope. Exported zero-slot yearly dispatcher called from oe_gk_yearly_dispatch (self-deduplicating).
+oe_vic_kernel_yearly = {
+	if = {
+		limit = { NOT = { global_var:oe_vic_ran_y ?= current_year } }
+		set_global_variable = { name = oe_vic_ran_y value = current_year }
+		if = {
+			limit = { NOT = { has_global_variable = oe_vic_init_done } }
+			set_global_variable = { name = oe_vic_init_done value = 1 }
+			oe_vic_init_once = yes
+		}
+		oe_vic_sync_sharifates = yes
+		oe_vic_cleanup_check = yes
+		oe_vic_sync_all_viceroys = yes
+		oe_vic_dispatch_events = yes
+	}
+}

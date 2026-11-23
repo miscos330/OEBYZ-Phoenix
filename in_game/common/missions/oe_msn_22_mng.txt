@@ -32,12 +32,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_01_hongwu_shangyuan_req_tt
-				OR = { owns = location:shangyuan owns = location:dadu } stability >= 5
+				OR = { owns = location:shangyuan owns = location:dadu } stability >= 5 capital = { development >= 18 } any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_mng_02_yongle_two_capitals = {
@@ -46,14 +46,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_02_yongle_two_capitals_req_tt
-				owns = location:dadu owns = location:shangyuan
+				owns = location:dadu owns = location:shangyuan OR = { any_owned_location = { has_building = building_type:castle } num_locations >= 55 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:dadu } location:dadu = { add_core = root } }
-			if = { limit = { owns = location:shangyuan } location:shangyuan = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:dadu } location:dadu = { add_core = root } } if = { limit = { owns = location:shangyuan } location:shangyuan = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:CHI NOT = { tag = CHI } c:CHI = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:CHI type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_mng_03_yuanyang_folangji = {
@@ -62,12 +60,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_03_yuanyang_folangji_req_tt
-				OR = { owns = location:shangyuan owns = location:dadu } gold >= 250 current_age_or_later = { age = age_3_discovery }
+				OR = { owns = location:shangyuan owns = location:dadu } gold >= 250 current_age_or_later = { age = age_3_discovery } OR = { has_advance = gunpowder_advance army_tradition >= 22 any_owned_location = { OR = { has_building = building_type:cannon_maker has_building = building_type:training_fields } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { is_subject = no country_exists = c:JAP NOT = { tag = JAP } c:JAP = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:JAP type = casus_belli:cb_maritime_dominance years = 10 } }
 		}
 	}
 	oe_msn_mng_04_single_whip_cabinet = {
@@ -76,12 +74,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_04_single_whip_cabinet_req_tt
-				OR = { owns = location:dadu owns = location:shangyuan } stability >= 15 current_age_or_later = { age = age_4_reformation }
+				OR = { owns = location:dadu owns = location:shangyuan } stability >= 15 current_age_or_later = { age = age_4_reformation } monthly_income_trade_and_tax >= 45
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_mng_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_mng_m1 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_mng_05_southeast_ports = {
@@ -90,15 +88,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_05_southeast_ports_req_tt
-				owns = location:jinjiang owns = location:yinxian owns = location:guangzhou
+				owns = location:jinjiang owns = location:yinxian owns = location:guangzhou num_of_ports >= 12 any_owned_location = { OR = { has_building = building_type:wharf has_building = building_type:dock } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:jinjiang } location:jinjiang = { add_core = root } }
-			if = { limit = { owns = location:yinxian } location:yinxian = { add_core = root } }
-			if = { limit = { owns = location:guangzhou } location:guangzhou = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:jinjiang } location:jinjiang = { add_core = root } } if = { limit = { owns = location:yinxian } location:yinxian = { add_core = root } } if = { limit = { owns = location:guangzhou } location:guangzhou = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:shangyuan } location:shangyuan = { add_location_modifier = { modifier = oe_m2e_loc_mng_longjiang_yard years = 25 mode = replace } change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_mng_06_zheng_he_voyages = {
@@ -107,13 +102,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_06_zheng_he_voyages_req_tt
-				owns = location:shangyuan owns = location:guangzhou current_age_or_later = { age = age_2_renaissance }
+				owns = location:shangyuan owns = location:guangzhou current_age_or_later = { age = age_2_renaissance } OR = { navy_tradition >= 18 num_of_ports >= 16 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
-			add_prestige = prestige_severe_bonus
+			add_navy_tradition = navy_tradition_mild_bonus add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m2e.23
 		}
 	}
 	oe_msn_mng_07_ningyuan_guanning = {
@@ -122,14 +116,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_07_ningyuan_guanning_req_tt
-				OR = { owns = location:ningyuan_jinzhou owns = location:funing owns = location:dadu } num_locations >= 70
+				OR = { owns = location:ningyuan_jinzhou owns = location:funing owns = location:dadu } num_locations >= 70 OR = { any_owned_location = { OR = { has_building = building_type:bastion has_building = building_type:castle } } army_tradition >= 25 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:ningyuan_jinzhou } location:ningyuan_jinzhou = { add_core = root } }
-			if = { limit = { owns = location:funing } location:funing = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:ningyuan_jinzhou } location:ningyuan_jinzhou = { add_core = root } } if = { limit = { owns = location:funing } location:funing = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus } }
 		}
 	}
 	oe_msn_mng_08_pacific_ming_network = {
@@ -138,12 +130,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_08_pacific_ming_network_req_tt
-				OR = { owns = location:maynila owns = location:malacca owns = location:guangzhou } current_age_or_later = { age = age_4_reformation }
+				OR = { owns_or_non_sovereign_subject_owns = location:maynila owns_or_non_sovereign_subject_owns = location:malacca owns = location:guangzhou } current_age_or_later = { age = age_4_reformation } is_great_power = yes OR = { any_subject = { OR = { is_subject_type = oe_cel_fanwang is_subject_type = oe_cel_xuanweisi is_subject_type = oe_cel_grand_duhu } } num_of_ports >= 18 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_mng_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_mng_m2 years = 20 mode = replace } add_navy_tradition = navy_tradition_weak_bonus
 		}
 	}
 	oe_msn_mng_09_jingdezhen_kilns = {
@@ -152,12 +144,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_09_jingdezhen_kilns_req_tt
-				owns = location:shangyuan owns = location:hangzhou gold >= 350
+				owns = location:shangyuan owns = location:hangzhou gold >= 350 any_owned_location = { OR = { has_building = building_type:porcelain_guild has_building = building_type:silk_production_guild } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 180
+			add_gold = 180 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_mng_10_ever_normal_silver = {
@@ -166,12 +158,12 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_10_ever_normal_silver_req_tt
-				owns = location:dadu owns = location:shangyuan gold >= 500
+				owns = location:dadu owns = location:shangyuan gold >= 500 monthly_income_trade_and_tax >= 40 any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:counting_house } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_mng_11_tiangong_kaiwu = {
@@ -180,28 +172,27 @@ oe_msn_mng_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_11_tiangong_kaiwu_req_tt
-				OR = { owns = location:shangyuan owns = location:dadu } stability >= 18 current_age_or_later = { age = age_4_reformation }
+				OR = { owns = location:shangyuan owns = location:dadu } stability >= 18 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:printing_press any_owned_location = { OR = { has_building = building_type:printing_press_shop has_building = building_type:university } } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
-			add_country_modifier = { modifier = oe_msn_mng_m3 years = 20 mode = replace }
+			culture = { add_cultural_tradition = 10 } add_country_modifier = { modifier = oe_msn_mng_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_mng_12_oceanic_bright_ming = {
 		icon = the_tea_trade
 		requires = { oe_msn_mng_04_single_whip_cabinet oe_msn_mng_08_pacific_ming_network oe_msn_mng_11_tiangong_kaiwu }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_mng_12_oceanic_bright_ming_req_tt
-				owns = location:dadu owns = location:shangyuan owns = location:guangzhou stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns = location:dadu owns = location:shangyuan owns = location:guangzhou stability >= 18 current_age_or_later = { age = age_5_absolutism } is_great_power = yes capital = { development >= 34 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_mng_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_mng_m4 years = 50 mode = replace } trigger_event_non_silently = oe_m2e.24
 		}
 	}
 }

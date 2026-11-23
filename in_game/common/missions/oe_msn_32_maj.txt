@@ -32,12 +32,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_01_palapa_oath_req_tt
-				owns = location:trowulan owns = location:surabaya stability >= 5
+				owns = location:trowulan owns = location:surabaya stability >= 5 any_owned_location = { OR = { has_building = building_type:wharf has_building = building_type:marketplace } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { owns = location:trowulan } location:trowulan = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_maj_02_candi_sacred_shrines = {
@@ -46,12 +46,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_02_candi_sacred_shrines_req_tt
-				owns = location:trowulan stability >= 10
+				owns = location:trowulan stability >= 10 any_owned_location = { OR = { has_building = building_type:temple has_building = building_type:monastery } } OR = { NOT = { country_has_estate = estate_type:clergy_estate } estate_satisfaction:clergy_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_legitimacy = legitimacy_mild_bonus
+			add_legitimacy = legitimacy_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_maj_03_cetbang_jong_armada = {
@@ -60,12 +60,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_03_cetbang_jong_armada_req_tt
-				owns = location:surabaya gold >= 220 current_age_or_later = { age = age_2_renaissance }
+				owns_or_non_sovereign_subject_owns = location:surabaya gold >= 220 navy_tradition >= 15 any_owned_location = { OR = { has_building = building_type:dock has_building = building_type:cannon_maker } } OR = { has_embraced_institution = institution:professional_armies has_advance = professional_armies_advance } current_age_or_later = { age = age_2_renaissance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_maj_04_mandala_tributary_web = {
@@ -74,12 +74,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_04_mandala_tributary_web_req_tt
-				num_locations >= 36 current_age_or_later = { age = age_4_reformation }
+				num_locations >= 36 OR = { num_subjects >= 1 num_of_ports >= 12 } any_owned_location = { OR = { has_building = building_type:shipyard has_building = building_type:port_authority } } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_sea2_msn_maj_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_sea2_msn_maj_m1 years = 20 mode = replace } add_diplomats = diplomats_mild_bonus
 		}
 	}
 	oe_msn_maj_05_unify_java_pasisir = {
@@ -88,14 +88,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_05_unify_java_pasisir_req_tt
-				owns = location:demak owns = location:sunda_kelapa
+				owns_or_non_sovereign_subject_owns = location:demak owns_or_non_sovereign_subject_owns = location:sunda_kelapa
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:demak } location:demak = { add_core = root } }
-			if = { limit = { owns = location:sunda_kelapa } location:sunda_kelapa = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:demak } location:demak = { add_core = root } } if = { limit = { owns = location:sunda_kelapa } location:sunda_kelapa = { add_core = root } } if = { limit = { owns = location:sunda_kelapa } location:sunda_kelapa = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_maj_06_srivijaya_palembang = {
@@ -104,13 +102,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_06_srivijaya_palembang_req_tt
-				OR = { owns = location:palembang any_subject = { owns = location:palembang } }
+				owns_or_non_sovereign_subject_owns = location:palembang has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:palembang } location:palembang = { add_core = root } }
-			add_navy_tradition = navy_tradition_mild_bonus
+			if = { limit = { owns = location:palembang } location:palembang = { add_core = root } } if = { limit = { owns = location:palembang } location:palembang = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_navy_tradition = navy_tradition_mild_bonus
 		}
 	}
 	oe_msn_maj_07_malacca_strait_reach = {
@@ -119,12 +116,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_07_malacca_strait_reach_req_tt
-				OR = { owns = location:temasek owns = location:malacca any_subject = { owns = location:malacca } }
+				OR = { owns_or_non_sovereign_subject_owns = location:temasek owns_or_non_sovereign_subject_owns = location:malacca } navy_tradition >= 15
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_mild_bonus
+			add_prestige = prestige_mild_bonus if = { limit = { owns = location:malacca } location:malacca = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_gold = 120
 		}
 	}
 	oe_msn_maj_08_moluccas_spice_crown = {
@@ -133,12 +130,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_08_moluccas_spice_crown_req_tt
-				OR = { owns = location:ternate owns = location:tidore owns = location:banda_island any_subject = { owns = location:ternate } } current_age_or_later = { age = age_4_reformation }
+				OR = { owns_or_non_sovereign_subject_owns = location:ternate owns_or_non_sovereign_subject_owns = location:tidore owns_or_non_sovereign_subject_owns = location:banda_island } num_of_ports >= 10 current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_sea2_msn_maj_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_sea2_msn_maj_m2 years = 20 mode = replace } add_gold = 180
 		}
 	}
 	oe_msn_maj_09_nagarakretagama_chronicle = {
@@ -147,12 +144,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_09_nagarakretagama_chronicle_req_tt
-				owns = location:trowulan current_age_or_later = { age = age_2_renaissance }
+				owns = location:trowulan any_owned_location = { OR = { has_building = building_type:university has_building = building_type:scriptorium } } capital = { development >= 22 } current_age_or_later = { age = age_2_renaissance }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 10 }
+			culture = { add_cultural_tradition = 10 } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_maj_10_tuban_gresik_emporia = {
@@ -161,12 +158,12 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_10_tuban_gresik_emporia_req_tt
-				owns = location:gresik owns = location:tuban_java gold >= 300
+				owns_or_non_sovereign_subject_owns = location:gresik owns_or_non_sovereign_subject_owns = location:tuban_java gold >= 300 monthly_income_trade_and_tax >= 22 any_owned_location = { OR = { has_building = building_type:guild_hall has_building = building_type:wharf } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 180
+			add_gold = 180 if = { limit = { owns = location:gresik } location:gresik = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_maj_11_archipelago_free_trade = {
@@ -175,27 +172,27 @@ oe_msn_maj_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_11_archipelago_free_trade_req_tt
-				stability >= 15 gold >= 450 current_age_or_later = { age = age_4_reformation }
+				stability >= 15 gold >= 450 any_owned_location = { OR = { has_building = building_type:customs_house has_building = building_type:trading_hub } } OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.50 } current_age_or_later = { age = age_4_reformation }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_sea2_msn_maj_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_sea2_msn_maj_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_maj_12_sovereign_of_nusantara = {
 		icon = ara_a_maritime_realm
 		requires = { oe_msn_maj_04_mandala_tributary_web oe_msn_maj_08_moluccas_spice_crown oe_msn_maj_11_archipelago_free_trade }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_maj_12_sovereign_of_nusantara_req_tt
-				owns = location:trowulan owns = location:surabaya owns = location:sunda_kelapa stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:trowulan owns_or_non_sovereign_subject_owns = location:surabaya owns_or_non_sovereign_subject_owns = location:sunda_kelapa stability >= 18 OR = { is_great_power = yes monthly_income_trade_and_tax >= 80 } current_age_or_later = { age = age_5_absolutism }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_sea2_msn_maj_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_sea2_msn_maj_m4 years = 50 mode = replace } add_prestige = prestige_severe_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } trigger_event_non_silently = oe_m3e.30
 		}
 	}
 }

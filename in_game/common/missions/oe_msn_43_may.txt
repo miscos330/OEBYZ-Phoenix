@@ -40,13 +40,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_01_league_of_mayapan_revival_req_tt
-				OR = { owns = location:mayapan owns = location:mani owns = location:noh_peten } stability >= 5
+				OR = { owns_or_non_sovereign_subject_owns = location:mayapan owns_or_non_sovereign_subject_owns = location:mani owns_or_non_sovereign_subject_owns = location:noh_peten } stability >= 5 capital = { development >= 12 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 140
-			add_stability = stability_mild_bonus
+			add_gold = 140 add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_may_02_holkan_noble_regiments = {
@@ -55,13 +54,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_02_holkan_noble_regiments_req_tt
-				gold >= 180 stability >= 10
+				gold >= 180 stability >= 10 OR = { any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:weapon_guild } } army_tradition >= 15 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			set_variable = { name = oe_aa2_holkan_unlocked value = 1 }
-			add_army_tradition = army_tradition_mild_bonus
+			set_variable = { name = oe_aa2_holkan_unlocked value = 1 } add_army_tradition = army_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_may_03_jungle_bastions_steel = {
@@ -70,13 +68,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_03_jungle_bastions_steel_req_tt
-				stability >= 12 current_age_or_later = { age = age_3_discovery }
+				stability >= 12 current_age_or_later = { age = age_3_discovery } OR = { any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:armory } } army_tradition >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
-			add_prestige = prestige_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_may_04_defy_conquistadors = {
@@ -85,12 +82,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_04_defy_conquistadors_req_tt
-				owns = location:mayapan owns = location:chichen_itza stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns_or_non_sovereign_subject_owns = location:mayapan owns_or_non_sovereign_subject_owns = location:chichen_itza stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_advance = pike_and_shot_advance has_embraced_institution = institution:pike_and_shot army_tradition >= 32 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_may_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_may_m1 years = 20 mode = replace } add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_may_05_chichen_itza_mani_union = {
@@ -99,14 +96,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_05_chichen_itza_mani_union_req_tt
-				owns = location:mayapan owns = location:chichen_itza owns = location:mani
+				owns_or_non_sovereign_subject_owns = location:mayapan owns_or_non_sovereign_subject_owns = location:chichen_itza owns_or_non_sovereign_subject_owns = location:mani
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:chichen_itza } location:chichen_itza = { add_core = root } }
-			if = { limit = { owns = location:mani } location:mani = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:chichen_itza } location:chichen_itza = { add_core = root } } if = { limit = { owns = location:mani } location:mani = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:chichen_itza } location:chichen_itza = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:ITZ NOT = { tag = ITZ } c:ITZ = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:ITZ type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_may_06_puuk_champoton_coast = {
@@ -115,14 +110,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_06_puuk_champoton_coast_req_tt
-				owns = location:kaan_peech owns = location:chakan_putum
+				owns_or_non_sovereign_subject_owns = location:kaan_peech owns_or_non_sovereign_subject_owns = location:chakan_putum has_ports = yes
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:kaan_peech } location:kaan_peech = { add_core = root } }
-			if = { limit = { owns = location:chakan_putum } location:chakan_putum = { add_core = root } }
-			add_navy_tradition = navy_tradition_mild_bonus
+			if = { limit = { owns = location:kaan_peech } location:kaan_peech = { add_core = root } } if = { limit = { owns = location:chakan_putum } location:chakan_putum = { add_core = root } } add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:kaan_peech } location:kaan_peech = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_may_07_peten_tikal_lowlands = {
@@ -131,14 +124,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_07_peten_tikal_lowlands_req_tt
-				owns = location:noh_peten owns = location:yax_mutal num_locations >= 24
+				owns_or_non_sovereign_subject_owns = location:noh_peten owns_or_non_sovereign_subject_owns = location:yax_mutal num_locations >= 24
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:noh_peten } location:noh_peten = { add_core = root } }
-			if = { limit = { owns = location:yax_mutal } location:yax_mutal = { add_core = root } }
-			add_gold = 160
+			if = { limit = { owns = location:noh_peten } location:noh_peten = { add_core = root } } if = { limit = { owns = location:yax_mutal } location:yax_mutal = { add_core = root } } add_gold = 160 if = { limit = { owns = location:noh_peten } location:noh_peten = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:KCH NOT = { tag = KCH } c:KCH = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:KCH type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_may_08_caribbean_jade_cacao_routes = {
@@ -147,12 +138,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_08_caribbean_jade_cacao_routes_req_tt
-				owns = location:ekab OR = { owns = location:chactemal owns = location:xicallanco } current_age_or_later = { age = age_3_discovery }
+				owns_or_non_sovereign_subject_owns = location:ekab OR = { owns_or_non_sovereign_subject_owns = location:chactemal owns_or_non_sovereign_subject_owns = location:xicallanco } current_age_or_later = { age = age_3_discovery } monthly_income_trade_and_tax >= 28 OR = { any_owned_location = { OR = { has_building = building_type:wharf has_building = building_type:trading_hub } } num_of_ports >= 4 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_may_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_may_m2 years = 20 mode = replace } add_gold = 180
 		}
 	}
 	oe_msn_may_09_cenote_terrace_agronomy = {
@@ -161,13 +152,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_09_cenote_terrace_agronomy_req_tt
-				OR = { owns = location:mayapan owns = location:noh_peten } current_age_or_later = { age = age_2_renaissance }
+				OR = { owns_or_non_sovereign_subject_owns = location:mayapan owns_or_non_sovereign_subject_owns = location:noh_peten } current_age_or_later = { age = age_2_renaissance } OR = { any_owned_location = { OR = { has_building = building_type:granary has_building = building_type:aqueduct_system } } OR = { NOT = { country_has_estate = estate_type:peasants_estate } estate_satisfaction:peasants_estate >= 0.55 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 130
-			add_stability = stability_weak_bonus
+			add_gold = 130 add_stability = stability_weak_bonus if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_may_10_venus_almanac_observatories = {
@@ -176,13 +166,12 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_10_venus_almanac_observatories_req_tt
-				owns = location:mayapan gold >= 260
+				owns_or_non_sovereign_subject_owns = location:mayapan gold >= 260 OR = { any_owned_location = { OR = { has_building = building_type:temple has_building = building_type:library } } capital = { development >= 16 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 12 }
-			add_prestige = prestige_mild_bonus
+			culture = { add_cultural_tradition = 12 } add_prestige = prestige_mild_bonus if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_may_11_mayan_medical_renaissance = {
@@ -191,27 +180,27 @@ oe_msn_may_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_11_mayan_medical_renaissance_req_tt
-				stability >= 15 current_age_or_later = { age = age_4_reformation }
+				stability >= 15 current_age_or_later = { age = age_4_reformation } OR = { has_embraced_institution = institution:printing_press has_embraced_institution = institution:new_world stability >= 20 } OR = { any_owned_location = { OR = { has_building = building_type:hospital has_building = building_type:printing_press_shop } } capital = { development >= 20 } }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_may_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_may_m3 years = 20 mode = replace } culture = { add_cultural_tradition = 8 }
 		}
 	}
 	oe_msn_may_12_second_mayan_golden_age = {
 		icon = beyond_the_sun
 		requires = { oe_msn_may_04_defy_conquistadors oe_msn_may_08_caribbean_jade_cacao_routes oe_msn_may_11_mayan_medical_renaissance }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_may_12_second_mayan_golden_age_req_tt
-				owns = location:mayapan owns = location:chichen_itza owns = location:noh_peten stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns_or_non_sovereign_subject_owns = location:mayapan owns_or_non_sovereign_subject_owns = location:chichen_itza owns_or_non_sovereign_subject_owns = location:noh_peten stability >= 18 current_age_or_later = { age = age_5_absolutism } capital = { development >= 24 } OR = { is_great_power = yes monthly_income_trade_and_tax >= 65 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_aa2_msn_may_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_aa2_msn_may_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.39
 		}
 	}
 }

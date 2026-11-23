@@ -1,0 +1,201 @@
+﻿# NEW 2026-11-23 v21.0 Batch 1, Chagatai 3 Landed Ulus TAGs & 1347 Split (gen_v210_chg_ulus.py). Generated; edit gen_v210_chg_ulus.py, not this file.
+namespace = oe_chgu
+
+# 1. Silk-Road Tolls of the Fergana Valley (1338+)
+oe_chgu.1 = {
+	type = country_event
+	title = oe_chgu.1.title
+	desc = oe_chgu.1.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_wnd_samarkand.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_chgu.1.a
+		ai_chance = { base = 60 }
+		add_prestige = prestige_weak_bonus
+		oe_chg2_shift_authority = { amount = 5 }
+		if = { limit = { country_exists = c:FRG c:FRG = { is_subject_of = root } } c:FRG = { add_liberty_desire = -10 add_gold = 60 add_country_modifier = { modifier = oe_chgu_mod_fergana_silk_tax years = 15 mode = replace } } }
+		add_country_modifier = { modifier = oe_chgu_mod_fergana_silk_tax years = 15 mode = replace }
+	}
+	option = {
+		name = oe_chgu.1.b
+		ai_chance = { base = 40 }
+		add_gold = 120
+		oe_chg2_shift_authority = { amount = 3 }
+		if = { limit = { country_exists = c:FRG c:FRG = { is_subject_of = root } } c:FRG = { add_liberty_desire = 10 } }
+		add_country_modifier = { modifier = oe_chgu_mod_fergana_tribute years = 15 mode = replace }
+	}
+}
+
+# 2. Border Clash on the Syr Darya: Otrar and the White Horde (1340+)
+oe_chgu.2 = {
+	type = country_event
+	title = oe_chgu.2.title
+	desc = oe_chgu.2.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_steppe_cavalry_clash.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_chgu.2.a
+		ai_chance = { base = 65 }
+		add_army_tradition = army_tradition_mild_bonus
+		if = { limit = { country_exists = c:OTR c:OTR = { is_subject_of = root } } c:OTR = { add_liberty_desire = -8 add_country_modifier = { modifier = oe_chgu_mod_otrar_border_watch years = 15 mode = replace } } }
+		add_country_modifier = { modifier = oe_chgu_mod_otrar_border_watch years = 15 mode = replace }
+	}
+	option = {
+		name = oe_chgu.2.b
+		ai_chance = { base = 35 }
+		add_gold = 80
+		add_stability = stability_weak_bonus
+		if = { limit = { country_exists = c:OTR c:OTR = { is_subject_of = root } } c:OTR = { add_country_modifier = { modifier = oe_chgu_mod_syr_darya_truce years = 15 mode = replace } } }
+		add_country_modifier = { modifier = oe_chgu_mod_syr_darya_truce years = 15 mode = replace }
+	}
+}
+
+# 3. Beshbalik-Emil and the Dzungarian Frontier (1342+)
+oe_chgu.3 = {
+	type = country_event
+	title = oe_chgu.3.title
+	desc = oe_chgu.3.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_yuan_court_envoy.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_chgu.3.a
+		ai_chance = { base = 55 }
+		add_prestige = prestige_weak_bonus
+		if = { limit = { country_exists = c:BSB c:BSB = { is_subject_of = root } } c:BSB = { add_liberty_desire = -12 add_country_modifier = { modifier = oe_chgu_mod_beshbalik_marches years = 18 mode = replace } } }
+		add_country_modifier = { modifier = oe_chgu_mod_beshbalik_marches years = 18 mode = replace }
+	}
+	option = {
+		name = oe_chgu.3.b
+		ai_chance = { base = 45 }
+		add_gold = 100
+		if = { limit = { country_exists = c:BSB c:BSB = { is_subject_of = root } } c:BSB = { add_gold = 60 add_country_modifier = { modifier = oe_chgu_mod_dzungaria_caravans years = 18 mode = replace } } }
+		add_country_modifier = { modifier = oe_chgu_mod_dzungaria_caravans years = 18 mode = replace }
+	}
+}
+
+# 4. 1347: Amir Qazaghan's Coup and the Great East-West Split (1347+)
+oe_chgu.4 = {
+	type = country_event
+	title = oe_chgu.4.title
+	desc = oe_chgu.4.desc
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v175_chagatai_tianshan.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_chgu.4.a
+		ai_chance = { base = 85 }
+		oe_chgu_execute_full_east_west_split = yes
+		add_country_modifier = { modifier = oe_chgu_mod_moghulistan_khanate years = 35 mode = replace }
+	}
+	option = {
+		name = oe_chgu.4.b
+		ai_chance = { base = 15 }
+		add_gold = -180
+		add_stability = -8
+		if = { limit = { NOT = { has_global_variable = oe_chgu_split_done } } set_global_variable = { name = oe_chgu_split value = 2 } set_global_variable = { name = oe_eug_chg_split value = 2 } }
+		oe_chg2_shift_authority = { amount = 12 }
+		add_country_modifier = { modifier = oe_chgu_mod_qazaghan_crushed years = 30 mode = replace }
+	}
+}
+
+# 5. Federation of the Fourteen Western Amirs (1350+)
+oe_chgu.5 = {
+	type = country_event
+	title = oe_chgu.5.title
+	desc = oe_chgu.5.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_timur_samarkand.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_chgu.5.a
+		ai_chance = { base = 60 }
+		add_gold = 90
+		add_prestige = prestige_weak_bonus
+		add_country_modifier = { modifier = oe_chgu_mod_west_council_pact years = 25 mode = replace }
+	}
+	option = {
+		name = oe_chgu.5.b
+		ai_chance = { base = 40 }
+		add_army_tradition = army_tradition_mild_bonus
+		add_country_modifier = { modifier = oe_chgu_mod_west_iron_emir years = 25 mode = replace }
+	}
+}
+
+# 6. Tughlugh Timur and the Faith of Moghulistan (1354+)
+oe_chgu.6 = {
+	type = country_event
+	title = oe_chgu.6.title
+	desc = oe_chgu.6.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_rel2_caliphate_silk_church.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_chgu.6.a
+		ai_chance = { base = 80 }
+		if = { limit = { NOT = { religion = religion:sunni } } change_religion = religion:sunni }
+		if = { limit = { government_type = government_type:steppe_horde } add_horde_unity = 15 }
+		if = { limit = { country_exists = c:BSB } c:BSB = { if = { limit = { NOT = { religion = religion:sunni } } change_religion = religion:sunni } add_country_modifier = { modifier = oe_chgu_mod_tughlugh_islam years = 25 mode = replace } if = { limit = { is_subject_of = root } add_liberty_desire = -15 } } }
+		if = { limit = { country_exists = c:DGH } c:DGH = { if = { limit = { NOT = { religion = religion:sunni } } change_religion = religion:sunni } add_country_modifier = { modifier = oe_chgu_mod_tughlugh_islam years = 25 mode = replace } if = { limit = { is_subject_of = root } add_liberty_desire = -15 } } }
+		add_country_modifier = { modifier = oe_chgu_mod_tughlugh_islam years = 25 mode = replace }
+	}
+	option = {
+		name = oe_chgu.6.b
+		ai_chance = { base = 20 }
+		add_gold = 100
+		if = { limit = { country_exists = c:QCH c:QCH = { is_subject_of = root } } c:QCH = { add_liberty_desire = -15 } }
+		add_country_modifier = { modifier = oe_chgu_mod_tianshan_pluralism years = 25 mode = replace }
+	}
+}
+
+# 7. Tughlugh Timur's Western Campaign into Transoxiana (1360+)
+oe_chgu.7 = {
+	type = country_event
+	title = oe_chgu.7.title
+	desc = oe_chgu.7.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v175_glh_sarai_kurultai.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_chgu.7.a
+		ai_chance = { base = 70 }
+		add_prestige = prestige_mild_bonus
+		add_army_tradition = army_tradition_mild_bonus
+		add_country_modifier = { modifier = oe_chgu_mod_moghul_west_campaign years = 20 mode = replace }
+	}
+	option = {
+		name = oe_chgu.7.b
+		ai_chance = { base = 30 }
+		add_stability = stability_weak_bonus
+		add_gold = 100
+		add_country_modifier = { modifier = oe_chgu_mod_moghul_home_bastion years = 20 mode = replace }
+	}
+}
+
+# 8. Triumph of the Centralized Chagatai Ulus (1365+)
+oe_chgu.8 = {
+	type = country_event
+	title = oe_chgu.8.title
+	desc = oe_chgu.8.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_msn_eurasian_destiny.dds"
+	trigger = { is_rebel_country = no }
+	option = {
+		name = oe_chgu.8.a
+		ai_chance = { base = 65 }
+		add_prestige = prestige_severe_bonus
+		add_stability = stability_mild_bonus
+		oe_chg2_shift_authority = { amount = 15 }
+		add_country_modifier = { modifier = oe_chgu_mod_chg_centralization_triumph years = 35 mode = replace }
+	}
+	option = {
+		name = oe_chgu.8.b
+		ai_chance = { base = 35 }
+		add_prestige = prestige_severe_bonus
+		add_army_tradition = army_tradition_mild_bonus
+		oe_chg2_shift_authority = { amount = 15 }
+		add_country_modifier = { modifier = oe_chgu_mod_chg_steppe_supremacy years = 35 mode = replace }
+	}
+}

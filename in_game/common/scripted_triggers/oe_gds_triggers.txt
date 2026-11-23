@@ -76,3 +76,46 @@ oe_gds_revolution_bridge_ready = {
 		current_year >= 1789
 	}
 }
+
+# Country scope (v21.0 P1 strategic goods <-> Great Canals economic loop).
+# Null-safe market supply checks in the country's capital market.
+oe_gds_market_has_refined_steel = {
+	capital ?= {
+		market ?= {
+			OR = {
+				is_produced_in_market = goods:oe_refined_steel
+				is_traded_in_market = goods:oe_refined_steel
+			}
+		}
+	}
+}
+
+oe_gds_market_has_chemicals = {
+	capital ?= {
+		market ?= {
+			OR = {
+				is_produced_in_market = goods:oe_industrial_chemicals
+				is_traded_in_market = goods:oe_industrial_chemicals
+			}
+		}
+	}
+}
+
+oe_gds_market_has_steam_engines = {
+	capital ?= {
+		market ?= {
+			OR = {
+				is_produced_in_market = goods:oe_steam_engines
+				is_traded_in_market = goods:oe_steam_engines
+			}
+		}
+	}
+}
+
+oe_gds_has_strategic_canal_supply = {
+	OR = {
+		oe_gds_market_has_refined_steel = yes
+		oe_gds_market_has_chemicals = yes
+		oe_gds_market_has_steam_engines = yes
+	}
+}

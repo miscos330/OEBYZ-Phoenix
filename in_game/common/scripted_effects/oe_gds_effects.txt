@@ -126,6 +126,31 @@ oe_gds_realm_urban_mobility = {
 	}
 }
 
+# Country scope (v21.0 P1). Strategic Goods market-access engineering rebates & steam-dredger canal throughput.
+oe_gds_apply_canal_supply_bonus = {
+	if = {
+		limit = { oe_gds_market_has_refined_steel = yes }
+		add_gold = 150
+		if = {
+			limit = { exists = capital }
+			capital = { change_development = 1 }
+		}
+		custom_tooltip = oe_gds_canal_steel_bonus_tt
+	}
+	if = {
+		limit = { oe_gds_market_has_chemicals = yes }
+		add_gold = 120
+		add_prestige = 5
+		custom_tooltip = oe_gds_canal_chem_bonus_tt
+	}
+	if = {
+		limit = { oe_gds_market_has_steam_engines = yes }
+		add_gold = 180
+		add_country_modifier = { modifier = oe_gds_mod_steam_canal_throughput years = -1 mode = replace }
+		custom_tooltip = oe_gds_canal_steam_bonus_tt
+	}
+}
+
 oe_gds_goods_tick = {
 	if = {
 		limit = {

@@ -32,12 +32,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_01_lagoon_adriatic_req_tt
-				owns = location:venice owns = location:zara stability >= 5
+				owns = location:venice owns_or_non_sovereign_subject_owns = location:zara stability >= 5 has_ports = yes any_owned_location = { has_building = building_type:wharf }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:venice } location:venice = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_ven_02_council_of_ten = {
@@ -46,12 +46,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_02_council_of_ten_req_tt
-				owns = location:venice stability >= 12
+				owns = location:venice stability >= 12 OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.50 } capital = { development >= 22 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_mild_bonus
+			add_stability = stability_mild_bonus if = { limit = { exists = capital } capital = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_ven_03_arsenale_galleass = {
@@ -60,12 +60,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_03_arsenale_galleass_req_tt
-				owns = location:venice gold >= 250 current_age_or_later = { age = age_3_discovery }
+				owns = location:venice gold >= 250 current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:dry_dock has_building = building_type:dock } } navy_tradition >= 25
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus add_prestige = prestige_mild_bonus if = { limit = { owns = location:venice } location:venice = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ven_04_libro_doro_reform = {
@@ -74,12 +74,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_04_libro_doro_reform_req_tt
-				owns = location:venice stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:venice stability >= 15 current_age_or_later = { age = age_4_reformation } has_embraced_institution = institution:global_trade OR = { NOT = { country_has_estate = estate_type:nobles_estate } estate_satisfaction:nobles_estate >= 0.50 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ven_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ven_m1 years = 20 mode = replace } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ven_05_ionian_corfu = {
@@ -88,13 +88,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_05_ionian_corfu_req_tt
-				owns = location:corfu
+				owns_or_non_sovereign_subject_owns = location:corfu num_of_ports >= 4
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:corfu } location:corfu = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:corfu } location:corfu = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:corfu } location:corfu = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:BYZ NOT = { tag = BYZ } c:BYZ = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:BYZ type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:TUR NOT = { tag = TUR } c:TUR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:TUR type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ven_06_candia_crete = {
@@ -103,13 +102,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_06_candia_crete_req_tt
-				owns = location:candia
+				owns_or_non_sovereign_subject_owns = location:candia any_owned_location = { has_building = building_type:castle }
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:candia } location:candia = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:candia } location:candia = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:candia } location:candia = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:CYP NOT = { tag = CYP } c:CYP = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:CYP type = casus_belli:cb_border_war years = 10 } } if = { limit = { is_subject = no country_exists = c:MAM NOT = { tag = MAM } c:MAM = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MAM type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ven_07_cyprus_sugar_isle = {
@@ -118,14 +116,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_07_cyprus_sugar_isle_req_tt
-				OR = { owns = location:nicosia_cyp owns = location:famagusta }
+				OR = { owns_or_non_sovereign_subject_owns = location:nicosia_cyp owns_or_non_sovereign_subject_owns = location:famagusta } navy_tradition >= 15
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:nicosia_cyp } location:nicosia_cyp = { add_core = root } }
-			if = { limit = { owns = location:famagusta } location:famagusta = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:nicosia_cyp } location:nicosia_cyp = { add_core = root } } if = { limit = { owns = location:famagusta } location:famagusta = { add_core = root } } add_prestige = prestige_mild_bonus add_gold = 120 if = { limit = { is_subject = no country_exists = c:MLO NOT = { tag = MLO } c:MLO = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MLO type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_ven_08_terraferma_shield = {
@@ -134,12 +130,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_08_terraferma_shield_req_tt
-				OR = { owns = location:milano owns = location:venice } num_locations >= 20
+				OR = { owns_or_non_sovereign_subject_owns = location:milano owns = location:venice } num_locations >= 20 any_owned_location = { has_building = building_type:guild_hall }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ven_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ven_m2 years = 20 mode = replace } add_army_tradition = army_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_ven_09_lazzaretto_quarantine = {
@@ -148,13 +144,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_09_lazzaretto_quarantine_req_tt
-				owns = location:venice current_age_or_later = { age = age_2_renaissance }
+				owns = location:venice current_age_or_later = { age = age_2_renaissance } any_owned_location = { has_building = building_type:hospital } capital = { development >= 25 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_stability = stability_weak_bonus
-			add_gold = 100
+			add_stability = stability_weak_bonus add_gold = 100 if = { limit = { owns = location:venice } location:venice = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ven_10_levant_spice_accord = {
@@ -163,12 +158,12 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_10_levant_spice_accord_req_tt
-				owns = location:venice owns = location:candia gold >= 400
+				owns = location:venice owns_or_non_sovereign_subject_owns = location:candia gold >= 400 any_owned_location = { has_building = building_type:marketplace } monthly_income_trade_and_tax >= 25
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 180
+			add_gold = 180 if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } } add_navy_tradition = navy_tradition_weak_bonus
 		}
 	}
 	oe_msn_ven_11_aldine_printing = {
@@ -177,28 +172,27 @@ oe_msn_ven_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_11_aldine_printing_req_tt
-				owns = location:venice stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:venice stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { has_building = building_type:printing_press_shop } has_embraced_institution = institution:printing_press
 			}
 		}
 		duration = 0
 		on_completion = {
-			culture = { add_cultural_tradition = 8 }
-			add_country_modifier = { modifier = oe_msn_ven_m3 years = 20 mode = replace }
+			culture = { add_cultural_tradition = 8 } add_country_modifier = { modifier = oe_msn_ven_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_ven_12_immortal_serenissima = {
 		icon = development_of_maritime_law
 		requires = { oe_msn_ven_04_libro_doro_reform oe_msn_ven_08_terraferma_shield oe_msn_ven_11_aldine_printing }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_ven_12_immortal_serenissima_req_tt
-				owns = location:venice owns = location:candia stability >= 18 current_age_or_later = { age = age_5_absolutism }
+				owns = location:venice owns_or_non_sovereign_subject_owns = location:candia stability >= 18 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:shipyard has_building = building_type:stock_exchange } } OR = { is_great_power = yes monthly_income_trade_and_tax >= 70 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_ven_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_ven_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.1
 		}
 	}
 }

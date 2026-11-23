@@ -32,12 +32,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_01_lisbon_porto_req_tt
-				owns = location:lisbon owns = location:porto stability >= 5
+				owns = location:lisbon owns = location:porto stability >= 5 has_ports = yes any_owned_location = { has_building = building_type:wharf }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus if = { limit = { owns = location:lisbon } location:lisbon = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { is_subject = no country_exists = c:MOR NOT = { tag = MOR } c:MOR = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:MOR type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_por_02_caravel_bombardeiros = {
@@ -46,12 +46,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_02_caravel_bombardeiros_req_tt
-				owns = location:lisbon gold >= 200 current_age_or_later = { age = age_2_renaissance }
+				owns = location:lisbon gold >= 200 current_age_or_later = { age = age_2_renaissance } any_owned_location = { OR = { has_building = building_type:dock has_building = building_type:cannon_maker } } navy_tradition >= 20
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_navy_tradition = navy_tradition_mild_bonus
+			add_navy_tradition = navy_tradition_mild_bonus add_prestige = prestige_mild_bonus
 		}
 	}
 	oe_msn_por_03_ordenancas_militia = {
@@ -60,12 +60,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_03_ordenancas_militia_req_tt
-				owns = location:lisbon current_age_or_later = { age = age_3_discovery }
+				owns = location:lisbon current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:training_fields has_building = building_type:armory } } has_embraced_institution = institution:new_world
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_army_tradition = army_tradition_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_por_04_colonial_governors = {
@@ -74,12 +74,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_04_colonial_governors_req_tt
-				owns = location:lisbon stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:lisbon stability >= 15 current_age_or_later = { age = age_4_reformation } any_owned_location = { OR = { has_building = building_type:port_authority has_building = building_type:customs_house } } has_embraced_institution = institution:global_trade
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_por_m1 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_por_m1 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_por_05_ceuta_gateway = {
@@ -88,13 +88,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_05_ceuta_gateway_req_tt
-				owns = location:ceuta
+				owns_or_non_sovereign_subject_owns = location:ceuta num_of_ports >= 4
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:ceuta } location:ceuta = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:ceuta } location:ceuta = { add_core = root } } add_prestige = prestige_mild_bonus if = { limit = { owns = location:ceuta } location:ceuta = { change_development = development_weak_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_por_06_cape_voyage = {
@@ -103,12 +102,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_06_cape_voyage_req_tt
-				owns = location:lisbon owns = location:ceuta current_age_or_later = { age = age_3_discovery }
+				owns = location:lisbon owns_or_non_sovereign_subject_owns = location:ceuta current_age_or_later = { age = age_3_discovery } navy_tradition >= 28 any_owned_location = { has_building = building_type:dry_dock }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_prestige = prestige_severe_bonus
+			add_prestige = prestige_severe_bonus add_navy_tradition = navy_tradition_mild_bonus if = { limit = { is_subject = no country_exists = c:VIJ NOT = { tag = VIJ } c:VIJ = { is_subject = no NOT = { is_allied_with = { target = root } } NOT = { is_at_war_with = root } } } add_casus_belli = { target = c:VIJ type = casus_belli:cb_border_war years = 10 } }
 		}
 	}
 	oe_msn_por_07_goa_kozhikode = {
@@ -117,14 +116,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_07_goa_kozhikode_req_tt
-				OR = { owns = location:goa owns = location:kozhikode owns = location:lisbon } num_locations >= 25
+				OR = { owns_or_non_sovereign_subject_owns = location:goa owns_or_non_sovereign_subject_owns = location:kozhikode owns = location:lisbon } num_locations >= 25 num_of_ports >= 8
 			}
 		}
 		duration = 0
 		on_completion = {
-			if = { limit = { owns = location:goa } location:goa = { add_core = root } }
-			if = { limit = { owns = location:kozhikode } location:kozhikode = { add_core = root } }
-			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:goa } location:goa = { add_core = root } } if = { limit = { owns = location:kozhikode } location:kozhikode = { add_core = root } } add_prestige = prestige_mild_bonus add_gold = 140
 		}
 	}
 	oe_msn_por_08_malacca_ternate = {
@@ -133,12 +130,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_08_malacca_ternate_req_tt
-				OR = { owns = location:malacca owns = location:ternate owns = location:goa } current_age_or_later = { age = age_4_reformation }
+				OR = { owns_or_non_sovereign_subject_owns = location:malacca owns_or_non_sovereign_subject_owns = location:ternate owns_or_non_sovereign_subject_owns = location:goa } current_age_or_later = { age = age_4_reformation } navy_tradition >= 35
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_por_m2 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_por_m2 years = 20 mode = replace } add_gold = 180
 		}
 	}
 	oe_msn_por_09_porto_wine_gold = {
@@ -147,12 +144,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_09_porto_wine_gold_req_tt
-				owns = location:lisbon owns = location:porto gold >= 300
+				owns = location:lisbon owns = location:porto gold >= 300 any_owned_location = { has_building = building_type:marketplace } monthly_income_trade_and_tax >= 20
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 140
+			add_gold = 140 if = { limit = { owns = location:porto } location:porto = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		}
 	}
 	oe_msn_por_10_casa_da_india = {
@@ -161,12 +158,12 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_10_casa_da_india_req_tt
-				owns = location:lisbon gold >= 450 current_age_or_later = { age = age_3_discovery }
+				owns = location:lisbon gold >= 450 current_age_or_later = { age = age_3_discovery } any_owned_location = { OR = { has_building = building_type:trading_hub has_building = building_type:merchants_quarters } } monthly_income_trade_and_tax >= 35
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_gold = 180
+			add_gold = 180 if = { limit = { owns = location:lisbon } location:lisbon = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_por_11_pombaline_renewal = {
@@ -175,27 +172,27 @@ oe_msn_por_destiny = {
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_11_pombaline_renewal_req_tt
-				owns = location:lisbon stability >= 15 current_age_or_later = { age = age_4_reformation }
+				owns = location:lisbon stability >= 15 current_age_or_later = { age = age_4_reformation } capital = { development >= 28 } OR = { NOT = { country_has_estate = estate_type:burghers_estate } estate_satisfaction:burghers_estate >= 0.55 }
 			}
 		}
 		duration = 0
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_por_m3 years = 20 mode = replace }
+			add_country_modifier = { modifier = oe_msn_por_m3 years = 20 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
 		}
 	}
 	oe_msn_por_12_oceanic_spice_empire = {
 		icon = por_the_bandeirantes
 		requires = { oe_msn_por_04_colonial_governors oe_msn_por_08_malacca_ternate oe_msn_por_11_pombaline_renewal }
+		final = yes
 		enabled = {
 			custom_tooltip = {
 				text = oe_msn_por_12_oceanic_spice_empire_req_tt
-				owns = location:lisbon owns = location:ceuta stability >= 15 current_age_or_later = { age = age_5_absolutism }
+				owns = location:lisbon owns_or_non_sovereign_subject_owns = location:ceuta stability >= 15 current_age_or_later = { age = age_5_absolutism } any_owned_location = { OR = { has_building = building_type:stock_exchange has_building = building_type:shipyard } } OR = { is_great_power = yes monthly_income_trade_and_tax >= 70 }
 			}
 		}
 		duration = 0
-		final = yes
 		on_completion = {
-			add_country_modifier = { modifier = oe_msn_por_m4 years = 50 mode = replace }
+			add_country_modifier = { modifier = oe_msn_por_m4 years = 50 mode = replace } if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } } add_prestige = prestige_severe_bonus trigger_event_non_silently = oe_m3e.6
 		}
 	}
 }
