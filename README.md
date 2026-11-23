@@ -1,4 +1,4 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v21.0
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v21.0.1
 
 欧陆风云 5 的东罗马（拜占庭）与欧亚全时代重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
@@ -38,6 +38,15 @@
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
 
+## v21.0.1 热更新
+
+v21.0 正式版里，所有国家的决议面板都显示成空白条加提醒铃铛、看不到标题也点不了：v21.0 把全部决议改到了自定义分类，而原版决议界面只显示 7 个原版分类。v21.0.1 把 404 条决议全部归回原版 7 类（国家特色 / 扩张 / 政府 / 宗教 / 经济 / 其他 / 基建），保留的 6 个旧分类也改成原版排序号，以免引用它们的内容再出问题。实机核对过：拜占庭开局决议面板的标题、横幅和顶部 7 个分类标签都恢复正常，本模组运行期报错为 0。
+
+同时首次发布 **1453 / 1648 / 1776 三套独立剧本子模组**（都要排在主模组之后）：1453 君士坦丁堡前夜与文艺复兴（创意工坊 3844754950）、1648 威斯特伐利亚与明清鼎革（3844755248）、1776 启蒙时代与帝国黄昏（3844755348）。实机冷启动核对过：穆罕默德二世、路易十四、顺治帝、路易十六（法兰西王国、称国王）、叶卡捷琳娜二世、约瑟夫二世等君主名与序号正确，三套剧本的开局两选事件都能弹出，上一轮日志里的无政体空壳国家、超龄角色、旧君主任期、未来日期、摄政引用与编码问题均为 0。
+
+- 三套剧本开局日志里仍有少量提示：约 8 条“随机生成君主”、3 条继承方式提示、3–5 条原版灾难引用早期角色，以及数百到数千条原版科技文件对引擎内置系统国（DUMMY/PIR/MER）的宗教比较提示；不影响开局与游玩。
+- 1776 年俄罗斯的国旗看起来像英国米字旗，尚未核实原因。
+
 ## v21.0 主要内容《帝国经纬·全量深化版》
 
 对比 v20.0：事件 `3,365 → 3,559`（`+194`），决议 `359 → 404`（`+45`），原生 `.dds` 美术与图标 `1,393 → 1,406`（`+13` 幅 1080×440 专属油画，另重绘 `44` 枚 512×512 成就双态图标），双语本地化各增 `+3,086` 条（中文 `55,024 → 58,110`，英文 `56,738 → 59,824`，增量 100% 对齐）；开局游戏规则 18 条、主线调度槽位 98/98 不变（所有 v21.0 周期逻辑均挂载于全局年度内核，零新增槽位）。
@@ -55,9 +64,9 @@
 
 ### 可选子模组
 
-可选子模组（均需排在主模组 `OEBYZ-Phoenix-v21.0` 之后加载）：
+可选子模组（均需排在主模组 `OEBYZ-Phoenix-v21.0.1` 之后加载）：
 - **开局精选页 3.0**（24 国双页画廊）：沿用 v20.0 版，创意工坊 `3844347953`；没有和 v21.0 一起重新实测。
-- **1453 / 1648 / 1776 三套独立剧本**还在修，本版不发布：实测时 1648、1776 的多位君主序号显示错误（如路易十四显示为路易十一），修好并复测后再单独发布。
+- **1453 / 1648 / 1776 三套独立剧本**：v21.0.1 起发布，创意工坊 3844754950 / 3844755248 / 3844755348，GitHub Release v21.0.1 有 ZIP。
 - 原声带子模组仍不发布（无编译音频库）。
 
 ## v20.0 主要内容（整合 v15.0 / v15.5 / v16.0 / v16.5 / v17.0 / v17.5 / v18.0 / v18.5 / v19.0 / v19.5 / v20.0）
@@ -170,7 +179,7 @@
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v21.0` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v21.0.1` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
@@ -195,7 +204,7 @@
 
 ---
 
-# Phoenix Beta (OEBYZ) v21.0 — English
+# Phoenix Beta (OEBYZ) v21.0.1 — English
 
 The beta of an Eastern Roman (Byzantine) and Pan-Eurasian overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
@@ -205,6 +214,15 @@ The beta of an Eastern Roman (Byzantine) and Pan-Eurasian overhaul for Europa Un
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
 
 ⭐ **If you enjoy the mod, please star this repository.** Stars help other players find it and are the most direct encouragement for us. Bug reports are welcome in Issues.
+
+## v21.0.1 hotfix
+
+In v21.0 every country's decision panel showed only empty bars with a reminder bell, with no titles and nothing to click: v21.0 moved all decisions into custom categories, and the vanilla decision panel only displays its 7 own categories. v21.0.1 returns all 404 decisions to the 7 vanilla categories (country specific / expansion / government / religious / economy / other / infrastructure), and gives the 6 legacy categories vanilla sort orders. Checked live: as Byzantium the decision titles, banners and the 7 category tabs are back, with 0 runtime script errors from this mod.
+
+This update also releases the **1453 / 1648 / 1776 standalone scenario submods** for the first time (load each after the main mod): 1453 Eve of Constantinople & Renaissance (Workshop 3844754950), 1648 Peace of Westphalia & Ming-Qing Transition (3844755248), 1776 Enlightenment & Twilight of Empires (3844755348). Cold starts were checked live: Mehmed II, Louis XIV, the Shunzhi Emperor, Louis XVI (Kingdom of France, styled King), Catherine II and Joseph II show the right names and regnal numbers, each scenario's opening two-choice event fires, and the shell countries, over-age characters, stale ruler terms, future dates, regent references and encoding issues from the previous round are at 0.
+
+- The scenario start logs still carry a few notes: about 8 'random ruler' lines, 3 heir-selection notes, 3–5 vanilla disaster lines about early characters, and hundreds to thousands of vanilla advance checks on the engine's built-in system countries (DUMMY/PIR/MER); none affect starting or playing.
+- In 1776 Russia's flag looks like the British Union Jack; not yet investigated.
 
 ## New in v21.0 (Empire Meridian)
 
@@ -223,9 +241,9 @@ Against v20.0: events `3,365 → 3,559` (`+194`), decisions `359 → 404` (`+45`
 
 ### Optional Submods
 
-Optional submods (load strictly **after** `OEBYZ-Phoenix-v21.0`):
+Optional submods (load strictly **after** `OEBYZ-Phoenix-v21.0.1`):
 - **Bookmarks 3.0** (24-nation 2-page gallery): the v20.0 version, Workshop `3844347953`; not re-tested together with v21.0.
-- The **1453 / 1648 / 1776 standalone scenarios** are still being fixed and are not part of this release: in testing, several rulers in 1648 and 1776 showed the wrong regnal number (Louis XIV appeared as Louis XI). They will be released separately once fixed and re-tested.
+- The **1453 / 1648 / 1776 standalone scenarios**: released from v21.0.1, Workshop 3844754950 / 3844755248 / 3844755348, ZIPs on GitHub Release v21.0.1.
 - The soundtrack submod remains unreleased (no compiled sound bank).
 
 **Known issues:**
