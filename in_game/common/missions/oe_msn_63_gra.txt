@@ -1,0 +1,158 @@
+﻿# NEW 2026-11-23 v23.0 Module B4 Global Flavor Gems Hansa-Burgundy-Granada-BlackSea (oe_hbg_, gen_v230_hansa_burgundy_blacksea.py) — Mission Pack 63 (oe_msn_gra_destiny, 8 verified DAG tasks). Edit gen_v230_hansa_burgundy_blacksea.py, not this file.
+
+oe_msn_gra_destiny = {
+	icon = generic_conquer_province
+	repeatable = no
+	chance = 4800
+	player_playstyle = military
+
+	visible = {
+		game_has_missions_enabled = yes
+		oe_hbg_is_granada_host = yes
+	}
+	enabled = {
+		is_rebel_country = no
+		OR = { owns_or_non_sovereign_subject_owns = location:granada owns_or_non_sovereign_subject_owns = location:cordoba owns_or_non_sovereign_subject_owns = location:sevilla }
+	}
+	on_start = {
+		set_variable = { name = oe_msn_active_pack value = 63 }
+	}
+	on_abort = {
+		add_prestige = prestige_weak_penalty
+	}
+	on_completion = {
+		set_variable = { name = oe_msn_completed_gra value = 1 }
+		set_global_variable = { name = oe_msn_done_gra value = 1 }
+		oe_msn_bump_completed = yes
+		oe_msn_bump_theater_med = yes
+		add_prestige = prestige_severe_bonus
+	}
+
+	oe_msn_gra_01_defend_alhambra = {
+		icon = gra_nasrid_art
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_gra_01_defend_alhambra_req_tt
+				owns_or_non_sovereign_subject_owns = location:granada owns_or_non_sovereign_subject_owns = location:malaga owns_or_non_sovereign_subject_owns = location:almeria stability >= 5 OR = { any_owned_location = { has_building = building_type:castle } gold >= 120 }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_gold = 130
+			if = { limit = { owns = location:granada } location:granada = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
+			add_country_modifier = { modifier = oe_hbg_mod_msn_alhambra_bastion years = 25 mode = replace }
+		}
+	}
+	oe_msn_gra_02_marinid_strait_alliance = {
+		icon = gra_skillful_envoys
+		requires = { oe_msn_gra_01_defend_alhambra }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_gra_02_marinid_strait_alliance_req_tt
+				OR = { owns_or_non_sovereign_subject_owns = location:gibraltar owns_or_non_sovereign_subject_owns = location:algeciras owns_or_non_sovereign_subject_owns = location:ceuta AND = { country_exists = c:MOR c:MOR = { NOT = { is_at_war_with = root } OR = { is_allied_with = { target = root } opinion = { target = root value >= 40 } } } } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_yearly_sailors = 0.8
+			add_yearly_manpower = 0.6
+			add_country_modifier = { modifier = oe_hbg_mod_msn_strait_alliance years = 25 mode = replace }
+			oe_hbg_grant_andalusia_cbs = yes
+		}
+	}
+	oe_msn_gra_03_reclaim_cordoba_sevilla = {
+		icon = crd_city_of_the_caliphs
+		requires = { oe_msn_gra_02_marinid_strait_alliance }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_gra_03_reclaim_cordoba_sevilla_req_tt
+				owns_or_non_sovereign_subject_owns = location:cordoba owns_or_non_sovereign_subject_owns = location:sevilla
+			}
+		}
+		duration = 0
+		on_completion = {
+			if = { limit = { owns = location:cordoba } location:cordoba = { add_core = root change_development = development_mild_bonus } }
+			if = { limit = { owns = location:sevilla } location:sevilla = { add_core = root change_development = development_mild_bonus } }
+			add_prestige = prestige_mild_bonus
+			if = { limit = { NOT = { has_global_variable = oe_hbg_ev8_done } } set_global_variable = { name = oe_hbg_ev8_done value = 1 } trigger_event_non_silently = oe_hbg.8 }
+		}
+	}
+	oe_msn_gra_04_toledo_heartland = {
+		icon = gra_expand_the_frontier
+		requires = { oe_msn_gra_03_reclaim_cordoba_sevilla }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_gra_04_toledo_heartland_req_tt
+				owns_or_non_sovereign_subject_owns = location:toledo OR = { owns_or_non_sovereign_subject_owns = location:jaen owns_or_non_sovereign_subject_owns = location:murcia owns_or_non_sovereign_subject_owns = location:valencia owns_or_non_sovereign_subject_owns = location:badajoz owns_or_non_sovereign_subject_owns = location:cadiz }
+			}
+		}
+		duration = 0
+		on_completion = {
+			if = { limit = { owns = location:toledo } location:toledo = { add_core = root } }
+			add_country_modifier = { modifier = oe_hbg_mod_msn_andalusi_reconquest years = 30 mode = replace }
+		}
+	}
+	oe_msn_gra_05_ghazawat_volunteers = {
+		icon = gra_ghazawat
+		requires = { oe_msn_gra_01_defend_alhambra }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_gra_05_ghazawat_volunteers_req_tt
+				OR = { has_variable = oe_hbg_dec_alhambra_jihad_done AND = { army_tradition >= 15 stability >= 6 } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_yearly_manpower = 0.85
+			add_country_modifier = { modifier = oe_hbg_mod_msn_muttawia_hosts years = 25 mode = replace }
+		}
+	}
+	oe_msn_gra_06_andalusi_golden_age = {
+		icon = gra_a_new_golden_era
+		requires = { oe_msn_gra_05_ghazawat_volunteers }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_gra_06_andalusi_golden_age_req_tt
+				current_age_or_later = { age = age_2_renaissance } stability >= 10 OR = { prestige >= 25 any_owned_location = { OR = { has_building = building_type:madrasa has_building = building_type:university has_building = building_type:library } } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_mild_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_andalusi_scholars years = 30 mode = replace }
+		}
+	}
+	oe_msn_gra_07_umayyad_caliphate = {
+		icon = caliphate
+		requires = { oe_msn_gra_06_andalusi_golden_age }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_gra_07_umayyad_caliphate_req_tt
+				OR = { has_variable = oe_hbg_dec_cordoba_caliphate_done tag = ADU AND = { owns_or_non_sovereign_subject_owns = location:granada owns_or_non_sovereign_subject_owns = location:cordoba owns_or_non_sovereign_subject_owns = location:sevilla } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_mild_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_umayyad_caliphate years = 35 mode = replace }
+		}
+	}
+	oe_msn_gra_08_avenge_tours_732 = {
+		icon = jihad_against_the_pagans
+		requires = { oe_msn_gra_04_toledo_heartland oe_msn_gra_07_umayyad_caliphate }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_gra_08_avenge_tours_732_req_tt
+				current_age_or_later = { age = age_2_renaissance } stability >= 12 owns_or_non_sovereign_subject_owns = location:cordoba owns_or_non_sovereign_subject_owns = location:toledo num_locations_owned_or_owned_by_subjects >= 35 OR = { owns_or_non_sovereign_subject_owns = location:zaragoza owns_or_non_sovereign_subject_owns = location:narbonne owns_or_non_sovereign_subject_owns = location:toulouse owns_or_non_sovereign_subject_owns = location:bordeaux owns_or_non_sovereign_subject_owns = location:poitiers owns_or_non_sovereign_subject_owns = location:tours }
+			}
+		}
+		duration = 0
+		final = yes
+		on_completion = {
+			set_country_rank_effect = { rank = country_rank:rank_empire }
+			add_prestige = prestige_severe_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_tours_avenged years = 50 mode = replace }
+			if = { limit = { NOT = { has_global_variable = oe_hbg_ev9_done } } set_global_variable = { name = oe_hbg_ev9_done value = 1 } trigger_event_non_silently = oe_hbg.9 }
+		}
+	}
+}

@@ -1,0 +1,463 @@
+﻿# NEW 2026-11-23 v23.0 Module B4 Global Flavor Gems Hansa-Burgundy-Granada-BlackSea (oe_hbg_, gen_v230_hansa_burgundy_blacksea.py) — 8 Clean Regional Flavor Decisions (strictly vanilla 7 categories, DECISIONFMT & DEC-LOC compliant). Edit gen_v230_hansa_burgundy_blacksea.py, not this file.
+
+# 1. Summon the Hansetag & Kontor Dividend (LUB/HAM/BRE, 10y cooldown)
+oe_hbg_dec_hanseatic_diet = {
+	decision_category = economy_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		oe_hbg_is_hansa_host = yes
+	}
+	allow = {
+		is_subject = no
+		has_ports = yes
+		stability >= 0
+		custom_tooltip = {
+			text = oe_hbg_cd_hanseatic_diet_tt
+			NOT = { has_variable = oe_hbg_cd_hanseatic_diet }
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { OR = { gold < 240 at_war = yes } }
+			add = 30
+		}
+	}
+	illustration_tags = { 10 = regular 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:burghers_estate
+			background = estate_type:crown_estate
+		}
+	}
+	option = {
+		name = oe_hbg_dec_hanseatic_diet.a
+		effect = {
+			custom_tooltip = oe_hbg_dec_hanseatic_diet_tt
+			set_variable = { name = oe_hbg_cd_hanseatic_diet value = 1 years = 10 }
+			set_variable = { name = oe_hbg_dec_hanseatic_diet_done value = 1 }
+			add_gold = 100
+			if = { limit = { country_exists = c:OHK1 c:OHK1 = { is_subject_of = root } } add_gold = 40 }
+			if = { limit = { country_exists = c:OHK2 c:OHK2 = { is_subject_of = root } } add_gold = 40 }
+			if = { limit = { country_exists = c:OHK3 c:OHK3 = { is_subject_of = root } } add_gold = 40 }
+			if = { limit = { country_exists = c:OHK4 c:OHK4 = { is_subject_of = root } } add_gold = 40 }
+			oe_hbg_shift_all_kontor_loyalty = { amount = 10 }
+			add_country_modifier = { modifier = oe_hbg_mod_dec_hanseatic_diet years = 10 mode = replace }
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev1_done } }
+				set_global_variable = { name = oe_hbg_ev1_done value = 1 }
+				trigger_event_non_silently = oe_hbg.1
+			}
+		}
+	}
+}
+
+# 2. Proclaim the North-Baltic Hanseatic Federation (LUB/HAM/BRE)
+oe_hbg_dec_hansa_commercial_empire = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_hbg_is_hansa_host = yes
+		NOT = { has_variable = oe_hbg_dec_hansa_empire_done }
+	}
+	allow = {
+		is_subject = no
+		in_civil_war = no
+		stability >= 10
+		prestige >= 25
+		gold >= 150
+		custom_tooltip = {
+			text = oe_hbg_hansa_federation_req_tt
+			OR = {
+				oe_hbg_has_two_kontors = yes
+				num_locations_owned_or_owned_by_subjects >= 8
+			}
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 220 stability >= 12 }
+			add = 35
+		}
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:burghers_estate
+			background = estate_type:crown_estate
+		}
+	}
+	option = {
+		name = oe_hbg_dec_hansa_commercial_empire.a
+		effect = {
+			custom_tooltip = oe_hbg_dec_hansa_commercial_empire_tt
+			add_gold = -150
+			set_variable = { name = oe_hbg_dec_hansa_empire_done value = 1 }
+			set_country_rank_effect = { rank = country_rank:rank_kingdom }
+			add_prestige = 20
+			oe_hbg_shift_all_kontor_loyalty = { amount = 15 }
+			add_country_modifier = { modifier = oe_hbg_mod_dec_hansa_empire years = -1 mode = replace }
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev2_done } }
+				set_global_variable = { name = oe_hbg_ev2_done value = 1 }
+				set_variable = { name = oe_hbg_ev2_done value = 1 }
+				trigger_event_non_silently = oe_hbg.2
+			}
+		}
+	}
+}
+
+# 3. Institute the Order of the Golden Fleece (BUR/LOT)
+oe_hbg_dec_golden_fleece_order = {
+	decision_category = government_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_hbg_is_burgundy_host = yes
+		NOT = { has_variable = oe_hbg_dec_golden_fleece_done }
+	}
+	allow = {
+		is_subject = no
+		religion = religion:catholic
+		gold >= 120
+		prestige >= 15
+		stability >= 5
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 180 prestige >= 20 }
+			add = 35
+		}
+	}
+	illustration_tags = { 10 = happy 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:nobles_estate
+			background = estate_type:crown_estate
+		}
+	}
+	option = {
+		name = oe_hbg_dec_golden_fleece_order.a
+		effect = {
+			custom_tooltip = oe_hbg_dec_golden_fleece_order_tt
+			add_gold = -120
+			set_variable = { name = oe_hbg_dec_golden_fleece_done value = 1 }
+			add_prestige = 15
+			add_army_tradition = 8
+			add_country_modifier = { modifier = oe_hbg_mod_dec_golden_fleece years = -1 mode = replace }
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev5_done } }
+				set_global_variable = { name = oe_hbg_ev5_done value = 1 }
+				trigger_event_non_silently = oe_hbg.5
+			}
+		}
+	}
+}
+
+# 4. Proclaim Kingdom of Lotharingia / Middle Francia (BUR/LOT)
+oe_hbg_dec_proclaim_lotharingia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_hbg_is_burgundy_host = yes
+		NOT = { has_variable = oe_hbg_dec_lotharingia_done }
+	}
+	allow = {
+		is_subject = no
+		in_civil_war = no
+		stability >= 10
+		prestige >= 25
+		gold >= 160
+		owns_or_non_sovereign_subject_owns = location:dijon
+		custom_tooltip = {
+			text = oe_hbg_lotharingia_pillars_tt
+			oe_hbg_holds_lotharingia_pillars = yes
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 220 }
+			add = 40
+		}
+	}
+	illustration_tags = { 10 = happy 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:crown_estate
+			background = estate_type:nobles_estate
+		}
+	}
+	option = {
+		name = oe_hbg_dec_proclaim_lotharingia.a
+		effect = {
+			custom_tooltip = oe_hbg_dec_proclaim_lotharingia_tt
+			add_gold = -160
+			set_variable = { name = oe_hbg_dec_lotharingia_done value = 1 }
+			set_country_rank_effect = { rank = country_rank:rank_kingdom }
+			add_prestige = 25
+			if = { limit = { owns = location:besancon } location:besancon = { add_core = root } }
+			if = { limit = { owns = location:bruges } location:bruges = { add_core = root } }
+			if = { limit = { owns = location:luxembourg } location:luxembourg = { add_core = root } }
+			if = { limit = { owns = location:nancy } location:nancy = { add_core = root } }
+			if = { limit = { owns = location:aachen } location:aachen = { add_core = root } }
+			add_country_modifier = { modifier = oe_hbg_mod_dec_lotharingia years = -1 mode = replace }
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev6_done } }
+				set_global_variable = { name = oe_hbg_ev6_done value = 1 }
+				trigger_event_non_silently = oe_hbg.6
+			}
+		}
+	}
+}
+
+# 5. Rally Maghrebi & Andalusi Volunteers (GRA/ADU, 10y cooldown)
+oe_hbg_dec_alhambra_jihad = {
+	decision_category = religious_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		oe_hbg_is_granada_host = yes
+		religion.group = religion_group:muslim
+	}
+	allow = {
+		stability >= -5
+		custom_tooltip = {
+			text = oe_hbg_cd_alhambra_jihad_tt
+			NOT = { has_variable = oe_hbg_cd_alhambra_jihad }
+		}
+		OR = {
+			at_war = yes
+			prestige >= 10
+			owns_or_non_sovereign_subject_owns = location:granada
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { OR = { at_war = yes stability >= 5 } }
+			add = 35
+		}
+	}
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:clergy_estate
+			background = estate_type:nobles_estate
+		}
+	}
+	option = {
+		name = oe_hbg_dec_alhambra_jihad.a
+		effect = {
+			custom_tooltip = oe_hbg_dec_alhambra_jihad_tt
+			set_variable = { name = oe_hbg_cd_alhambra_jihad value = 1 years = 10 }
+			set_variable = { name = oe_hbg_dec_alhambra_jihad_done value = 1 }
+			add_yearly_manpower = 0.85
+			add_army_tradition = 8
+			add_country_modifier = { modifier = oe_hbg_mod_dec_alhambra_jihad years = 10 mode = replace }
+			if = {
+				limit = {
+					country_exists = c:MOR
+					c:MOR = { is_rebel_country = no NOT = { is_at_war_with = root } }
+				}
+				add_gold = 60
+				add_opinion = { target = c:MOR modifier = opinion_good_relations }
+				c:MOR = { add_opinion = { target = root modifier = opinion_good_relations } }
+			}
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev7_done } }
+				set_global_variable = { name = oe_hbg_ev7_done value = 1 }
+				trigger_event_non_silently = oe_hbg.7
+			}
+		}
+	}
+}
+
+# 6. Proclaim Caliphate of Cordoba / Al-Andalus (GRA/ADU holding granada+cordoba+sevilla)
+oe_hbg_dec_restore_cordoba_caliphate = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_hbg_is_granada_host = yes
+		religion.group = religion_group:muslim
+		NOT = { has_variable = oe_hbg_dec_cordoba_caliphate_done }
+	}
+	allow = {
+		is_subject = no
+		in_civil_war = no
+		stability >= 10
+		prestige >= 25
+		owns_or_non_sovereign_subject_owns = location:granada
+		owns_or_non_sovereign_subject_owns = location:cordoba
+		owns_or_non_sovereign_subject_owns = location:sevilla
+	}
+	ai_will_do = {
+		value = 45
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:clergy_estate
+			background = estate_type:crown_estate
+		}
+	}
+	option = {
+		name = oe_hbg_dec_restore_cordoba_caliphate.a
+		effect = {
+			custom_tooltip = oe_hbg_dec_restore_cordoba_caliphate_tt
+			set_variable = { name = oe_hbg_dec_cordoba_caliphate_done value = 1 }
+			set_global_variable = { name = oe_hbg_cordoba_caliphate_restored value = 1 }
+			set_country_rank_effect = { rank = country_rank:rank_empire }
+			add_prestige = 30
+			add_stability = 8
+			if = { limit = { owns = location:cordoba } location:cordoba = { add_core = root } }
+			if = { limit = { owns = location:sevilla } location:sevilla = { add_core = root } }
+			if = { limit = { owns = location:jaen } location:jaen = { add_core = root } }
+			if = { limit = { owns = location:cadiz } location:cadiz = { add_core = root } }
+			if = { limit = { owns = location:toledo } location:toledo = { add_core = root } }
+			add_country_modifier = { modifier = oe_hbg_mod_dec_cordoba_caliphate years = -1 mode = replace }
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev9_done } }
+				set_global_variable = { name = oe_hbg_ev9_done value = 1 }
+				trigger_event_non_silently = oe_hbg.9
+			}
+		}
+	}
+}
+
+# 7. Proclaim Komnenian Restoration of Constantinople (TRE)
+oe_hbg_dec_komnenos_claim = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_hbg_is_trebizond_host = yes
+		NOT = { has_variable = oe_hbg_dec_komnenos_done }
+	}
+	allow = {
+		is_subject = no
+		stability >= 8
+		prestige >= 20
+		OR = {
+			owns_or_non_sovereign_subject_owns = location:constantinople
+			AND = {
+				owns_or_non_sovereign_subject_owns = location:trebizond
+				num_locations_owned_or_owned_by_subjects >= 8
+			}
+		}
+	}
+	ai_will_do = {
+		value = 40
+	}
+	illustration_tags = { 10 = armed 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:crown_estate
+			background = estate_type:clergy_estate
+		}
+	}
+	option = {
+		name = oe_hbg_dec_komnenos_claim.a
+		effect = {
+			custom_tooltip = oe_hbg_dec_komnenos_claim_tt
+			set_variable = { name = oe_hbg_dec_komnenos_done value = 1 }
+			add_prestige = 20
+			if = {
+				limit = { owns_or_non_sovereign_subject_owns = location:constantinople }
+				set_country_rank_effect = { rank = country_rank:rank_empire }
+				if = { limit = { owns = location:constantinople } location:constantinople = { add_core = root } }
+			}
+			else = {
+				set_country_rank_effect = { rank = country_rank:rank_kingdom }
+				if = {
+					limit = {
+						location:constantinople = {
+							has_owner = yes
+							owner = {
+								is_rebel_country = no
+								NOT = { this = root }
+								NOT = { is_subject_of = root }
+								NOT = { is_allied_with = { target = root } }
+								NOT = { is_at_war_with = root }
+							}
+						}
+					}
+					add_casus_belli = {
+						target = location:constantinople.owner
+						type = casus_belli:cb_conquer_province
+						province = location:constantinople.province
+						years = 20
+					}
+				}
+			}
+			add_country_modifier = { modifier = oe_hbg_mod_dec_komnenos_claim years = -1 mode = replace }
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev10_done } }
+				set_global_variable = { name = oe_hbg_ev10_done value = 1 }
+				trigger_event_non_silently = oe_hbg.10
+			}
+		}
+	}
+}
+
+# 8. Proclaim Greater Gothia (FEO) & Trigger Gothic-Germanic Reunion with TEU if oe_tom_pontus_established!
+oe_hbg_dec_gothia_teutonic_reunion = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_hbg_is_theodoro_host = yes
+		NOT = { has_variable = oe_hbg_dec_gothia_reunion_done }
+	}
+	allow = {
+		is_subject = no
+		stability >= 5
+		owns_or_non_sovereign_subject_owns = location:theodoro
+		custom_tooltip = {
+			text = oe_hbg_gothia_reunion_req_tt
+			OR = {
+				has_global_variable = oe_tom_pontus_established
+				owns_or_non_sovereign_subject_owns = location:kaffa
+				owns_or_non_sovereign_subject_owns = location:solkhat
+				num_locations_owned_or_owned_by_subjects >= 4
+			}
+		}
+	}
+	ai_will_do = {
+		value = 40
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:nobles_estate
+			background = estate_type:crown_estate
+		}
+	}
+	option = {
+		name = oe_hbg_dec_gothia_teutonic_reunion.a
+		effect = {
+			custom_tooltip = oe_hbg_dec_gothia_teutonic_reunion_tt
+			set_variable = { name = oe_hbg_dec_gothia_reunion_done value = 1 }
+			set_country_rank_effect = { rank = country_rank:rank_kingdom }
+			add_prestige = 20
+			if = { limit = { owns = location:kaffa } location:kaffa = { add_core = root } }
+			if = { limit = { owns = location:solkhat } location:solkhat = { add_core = root } }
+			if = { limit = { owns = location:qirq_yer } location:qirq_yer = { add_core = root } }
+			if = { limit = { owns = location:taman } location:taman = { add_core = root } }
+			add_country_modifier = { modifier = oe_hbg_mod_dec_greater_gothia years = -1 mode = replace }
+			if = {
+				limit = { oe_hbg_teu_reunion_partner_ready = yes }
+				oe_hbg_seal_gothic_teutonic_reunion = yes
+				if = {
+					limit = { NOT = { has_global_variable = oe_hbg_ev12_done } }
+					set_global_variable = { name = oe_hbg_ev12_done value = 1 }
+					trigger_event_non_silently = oe_hbg.12
+				}
+			}
+		}
+	}
+}

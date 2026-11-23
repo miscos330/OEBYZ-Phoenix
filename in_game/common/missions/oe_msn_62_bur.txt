@@ -1,0 +1,158 @@
+﻿# NEW 2026-11-23 v23.0 Module B4 Global Flavor Gems Hansa-Burgundy-Granada-BlackSea (oe_hbg_, gen_v230_hansa_burgundy_blacksea.py) — Mission Pack 62 (oe_msn_bur_destiny, 8 verified DAG tasks). Edit gen_v230_hansa_burgundy_blacksea.py, not this file.
+
+oe_msn_bur_destiny = {
+	icon = generic_conquer_province
+	repeatable = no
+	chance = 4800
+	player_playstyle = military
+
+	visible = {
+		game_has_missions_enabled = yes
+		oe_hbg_is_burgundy_host = yes
+	}
+	enabled = {
+		is_rebel_country = no
+		OR = { owns_or_non_sovereign_subject_owns = location:dijon owns_or_non_sovereign_subject_owns = location:bruges owns_or_non_sovereign_subject_owns = location:aachen }
+	}
+	on_start = {
+		set_variable = { name = oe_msn_active_pack value = 62 }
+	}
+	on_abort = {
+		add_prestige = prestige_weak_penalty
+	}
+	on_completion = {
+		set_variable = { name = oe_msn_completed_bur value = 1 }
+		set_global_variable = { name = oe_msn_done_bur value = 1 }
+		oe_msn_bump_completed = yes
+		oe_msn_bump_theater_weu = yes
+		add_prestige = prestige_severe_bonus
+	}
+
+	oe_msn_bur_01_two_burgundies = {
+		icon = bur_rich_soil_of_burgundy
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_bur_01_two_burgundies_req_tt
+				owns_or_non_sovereign_subject_owns = location:dijon stability >= 5 OR = { owns_or_non_sovereign_subject_owns = location:besancon owns_or_non_sovereign_subject_owns = location:dole num_locations_owned_or_owned_by_subjects >= 15 }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_gold = 140
+			if = { limit = { owns = location:dijon } location:dijon = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
+			if = { limit = { owns = location:besancon } location:besancon = { add_core = root } }
+			if = { limit = { owns = location:dole } location:dole = { add_core = root } }
+		}
+	}
+	oe_msn_bur_02_flanders_lowlands = {
+		icon = flemish_cloth_making
+		requires = { oe_msn_bur_01_two_burgundies }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_bur_02_flanders_lowlands_req_tt
+				OR = { AND = { owns_or_non_sovereign_subject_owns = location:bruges owns_or_non_sovereign_subject_owns = location:ghent } AND = { owns_or_non_sovereign_subject_owns = location:antwerp owns_or_non_sovereign_subject_owns = location:brussels } AND = { owns_or_non_sovereign_subject_owns = location:lille owns_or_non_sovereign_subject_owns = location:arras } AND = { country_exists = c:FLA c:FLA = { OR = { is_subject_of = root is_allied_with = { target = root } } } } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_gold = 160
+			add_country_modifier = { modifier = oe_hbg_mod_msn_flemish_looms years = 25 mode = replace }
+			if = { limit = { NOT = { has_global_variable = oe_hbg_ev4_done } } set_global_variable = { name = oe_hbg_ev4_done value = 1 } trigger_event_non_silently = oe_hbg.4 }
+		}
+	}
+	oe_msn_bur_03_rhine_maas_corridor = {
+		icon = bur_between_two_realms
+		requires = { oe_msn_bur_02_flanders_lowlands }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_bur_03_rhine_maas_corridor_req_tt
+				OR = { owns_or_non_sovereign_subject_owns = location:luxembourg owns_or_non_sovereign_subject_owns = location:nancy owns_or_non_sovereign_subject_owns = location:metz owns_or_non_sovereign_subject_owns = location:liege owns_or_non_sovereign_subject_owns = location:namur owns_or_non_sovereign_subject_owns = location:amsterdam }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_mild_bonus
+			add_army_tradition = army_tradition_mild_bonus
+			oe_hbg_grant_lotharingia_cbs = yes
+		}
+	}
+	oe_msn_bur_04_court_of_dijon = {
+		icon = bur_knightly_prowess
+		requires = { oe_msn_bur_03_rhine_maas_corridor }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_bur_04_court_of_dijon_req_tt
+				current_age_or_later = { age = age_2_renaissance } prestige >= 30 stability >= 10 num_locations_owned_or_owned_by_subjects >= 20
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_mild_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_burgundian_court years = 30 mode = replace }
+		}
+	}
+	oe_msn_bur_05_order_golden_fleece = {
+		icon = golden_fleece
+		requires = { oe_msn_bur_01_two_burgundies }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_bur_05_order_golden_fleece_req_tt
+				OR = { has_variable = oe_hbg_dec_golden_fleece_done AND = { prestige >= 25 army_tradition >= 15 stability >= 8 } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_army_tradition = army_tradition_mild_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_golden_fleece years = 30 mode = replace }
+			if = { limit = { NOT = { has_global_variable = oe_hbg_ev5_done } } set_global_variable = { name = oe_hbg_ev5_done value = 1 } trigger_event_non_silently = oe_hbg.5 }
+		}
+	}
+	oe_msn_bur_06_chivalric_ordonnance = {
+		icon = noble_officers
+		requires = { oe_msn_bur_05_order_golden_fleece }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_bur_06_chivalric_ordonnance_req_tt
+				stability >= 8 OR = { army_tradition >= 20 num_locations_owned_or_owned_by_subjects >= 18 }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_yearly_manpower = 1.0
+			add_country_modifier = { modifier = oe_hbg_mod_msn_ordonnance_companies years = 30 mode = replace }
+		}
+	}
+	oe_msn_bur_07_kingdom_of_lotharingia = {
+		icon = crown_power_advance_renaissance
+		requires = { oe_msn_bur_06_chivalric_ordonnance }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_bur_07_kingdom_of_lotharingia_req_tt
+				OR = { has_variable = oe_hbg_dec_lotharingia_done tag = LOT AND = { owns_or_non_sovereign_subject_owns = location:dijon owns_or_non_sovereign_subject_owns = location:aachen owns_or_non_sovereign_subject_owns = location:nancy } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_mild_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_lotharingia_crown years = 35 mode = replace }
+		}
+	}
+	oe_msn_bur_08_charlemagne_western_empire = {
+		icon = feudal_de_jure_law_advance
+		requires = { oe_msn_bur_04_court_of_dijon oe_msn_bur_07_kingdom_of_lotharingia }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_bur_08_charlemagne_western_empire_req_tt
+				current_age_or_later = { age = age_2_renaissance } stability >= 15 owns_or_non_sovereign_subject_owns = location:dijon owns_or_non_sovereign_subject_owns = location:aachen num_locations_owned_or_owned_by_subjects >= 35 OR = { owns_or_non_sovereign_subject_owns = location:paris owns_or_non_sovereign_subject_owns = location:cologne owns_or_non_sovereign_subject_owns = location:strasbourg owns_or_non_sovereign_subject_owns = location:reims }
+			}
+		}
+		duration = 0
+		final = yes
+		on_completion = {
+			set_country_rank_effect = { rank = country_rank:rank_empire }
+			add_prestige = prestige_severe_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_charlemagne_empire years = 50 mode = replace }
+			if = { limit = { NOT = { has_global_variable = oe_hbg_ev6_done } } set_global_variable = { name = oe_hbg_ev6_done value = 1 } trigger_event_non_silently = oe_hbg.6 }
+		}
+	}
+}

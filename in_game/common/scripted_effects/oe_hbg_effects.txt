@@ -1,0 +1,772 @@
+﻿# NEW 2026-11-23 v23.0 Module B4 Global Flavor Gems Hansa-Burgundy-Granada-BlackSea (oe_hbg_, gen_v230_hansa_burgundy_blacksea.py) — Scripted Effects: Kontor Init, Loyalty Sync, F6 Cleanup, Safe CB Helpers, Yearly Kernel & Event Dispatch. Edit gen_v230_hansa_burgundy_blacksea.py, not this file.
+
+
+# Location scope. Clears Kontor seat location modifiers cleanly.
+oe_hbg_clear_seat_modifiers = {
+	if = { limit = { has_location_modifier = oe_hbg_seat_prosperous_mod } remove_location_modifier = oe_hbg_seat_prosperous_mod }
+	if = { limit = { has_location_modifier = oe_hbg_seat_friction_mod } remove_location_modifier = oe_hbg_seat_friction_mod }
+}
+
+# Kontor country scope. Clears subject loyalty tier modifiers cleanly.
+oe_hbg_clear_kontor_modifiers = {
+	if = { limit = { has_country_modifier = oe_hbg_kontor_compliant_mod } remove_country_modifier = oe_hbg_kontor_compliant_mod }
+	if = { limit = { has_country_modifier = oe_hbg_kontor_restive_mod } remove_country_modifier = oe_hbg_kontor_restive_mod }
+}
+
+# Kontor country scope. Shifts oe_hbg_loyalty by $amount$ (clamped 0..100).
+oe_hbg_shift_loyalty = {
+	if = { limit = { NOT = { has_variable = oe_hbg_loyalty } } set_variable = { name = oe_hbg_loyalty value = 60 } }
+	change_variable = { name = oe_hbg_loyalty add = $amount$ }
+	clamp_variable = { name = oe_hbg_loyalty min = 0 max = 100 }
+}
+
+# Kontor country scope. Syncs oe_hbg_tier (3>=70, 2=40..69, 1<40) and country tier modifiers.
+oe_hbg_sync_self_tier = {
+	if = { limit = { NOT = { has_variable = oe_hbg_loyalty } } set_variable = { name = oe_hbg_loyalty value = 60 } }
+	if = {
+		limit = { has_variable = oe_hbg_loyalty var:oe_hbg_loyalty >= 70 }
+		set_variable = { name = oe_hbg_tier value = 3 }
+		oe_hbg_clear_kontor_modifiers = yes
+		add_country_modifier = { modifier = oe_hbg_kontor_compliant_mod months = 14 mode = replace }
+	}
+	else_if = {
+		limit = { has_variable = oe_hbg_loyalty var:oe_hbg_loyalty >= 40 }
+		set_variable = { name = oe_hbg_tier value = 2 }
+		oe_hbg_clear_kontor_modifiers = yes
+	}
+	else = {
+		set_variable = { name = oe_hbg_tier value = 1 }
+		oe_hbg_clear_kontor_modifiers = yes
+		add_country_modifier = { modifier = oe_hbg_kontor_restive_mod months = 14 mode = replace }
+	}
+}
+
+# Overlord country scope. Shifts loyalty of all active Kontor subjects by $amount$.
+oe_hbg_shift_all_kontor_loyalty = {
+	every_subject = {
+		limit = { oe_hbg_is_kontor_subject = yes }
+		oe_hbg_shift_loyalty = { amount = $amount$ }
+		oe_hbg_sync_self_tier = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of OHK1 (London Steelyard Kontor): annex via overlord or destroy_building_country, then clear seat.
+oe_hbg_end_OHK1 = {
+	set_global_variable = { name = oe_hbg_ended_ohk1 value = 1 }
+	if = { limit = { exists = scope:oe_hbg_end_lord_OHK1 } clear_saved_scope = oe_hbg_end_lord_OHK1 }
+	if = {
+		limit = { country_exists = c:OHK1 }
+		c:OHK1 = {
+			set_variable = { name = oe_hbg_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_hbg_end_lord_OHK1 } }
+		}
+		if = {
+			limit = { exists = scope:oe_hbg_end_lord_OHK1 }
+			scope:oe_hbg_end_lord_OHK1 = { annex_country = { country = c:OHK1 reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:OHK1
+		}
+	}
+	location:london = {
+		if = { limit = { has_building = building_type:oe_hbg_kontor_seat_1 } destroy_all_buildings_of_type = building_type:oe_hbg_kontor_seat_1 }
+		oe_hbg_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of OHK2 (Bruges Flanders Kontor): annex via overlord or destroy_building_country, then clear seat.
+oe_hbg_end_OHK2 = {
+	set_global_variable = { name = oe_hbg_ended_ohk2 value = 1 }
+	if = { limit = { exists = scope:oe_hbg_end_lord_OHK2 } clear_saved_scope = oe_hbg_end_lord_OHK2 }
+	if = {
+		limit = { country_exists = c:OHK2 }
+		c:OHK2 = {
+			set_variable = { name = oe_hbg_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_hbg_end_lord_OHK2 } }
+		}
+		if = {
+			limit = { exists = scope:oe_hbg_end_lord_OHK2 }
+			scope:oe_hbg_end_lord_OHK2 = { annex_country = { country = c:OHK2 reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:OHK2
+		}
+	}
+	location:bruges = {
+		if = { limit = { has_building = building_type:oe_hbg_kontor_seat_2 } destroy_all_buildings_of_type = building_type:oe_hbg_kontor_seat_2 }
+		oe_hbg_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of OHK3 (Bergen Bryggen Kontor): annex via overlord or destroy_building_country, then clear seat.
+oe_hbg_end_OHK3 = {
+	set_global_variable = { name = oe_hbg_ended_ohk3 value = 1 }
+	if = { limit = { exists = scope:oe_hbg_end_lord_OHK3 } clear_saved_scope = oe_hbg_end_lord_OHK3 }
+	if = {
+		limit = { country_exists = c:OHK3 }
+		c:OHK3 = {
+			set_variable = { name = oe_hbg_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_hbg_end_lord_OHK3 } }
+		}
+		if = {
+			limit = { exists = scope:oe_hbg_end_lord_OHK3 }
+			scope:oe_hbg_end_lord_OHK3 = { annex_country = { country = c:OHK3 reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:OHK3
+		}
+	}
+	location:bergen = {
+		if = { limit = { has_building = building_type:oe_hbg_kontor_seat_3 } destroy_all_buildings_of_type = building_type:oe_hbg_kontor_seat_3 }
+		oe_hbg_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of OHK4 (Novgorod Peterhof Kontor): annex via overlord or destroy_building_country, then clear seat.
+oe_hbg_end_OHK4 = {
+	set_global_variable = { name = oe_hbg_ended_ohk4 value = 1 }
+	if = { limit = { exists = scope:oe_hbg_end_lord_OHK4 } clear_saved_scope = oe_hbg_end_lord_OHK4 }
+	if = {
+		limit = { country_exists = c:OHK4 }
+		c:OHK4 = {
+			set_variable = { name = oe_hbg_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_hbg_end_lord_OHK4 } }
+		}
+		if = {
+			limit = { exists = scope:oe_hbg_end_lord_OHK4 }
+			scope:oe_hbg_end_lord_OHK4 = { annex_country = { country = c:OHK4 reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:OHK4
+		}
+	}
+	location:novgorod = {
+		if = { limit = { has_building = building_type:oe_hbg_kontor_seat_4 } destroy_all_buildings_of_type = building_type:oe_hbg_kontor_seat_4 }
+		oe_hbg_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. Runs once at start to ensure all 4 Hanseatic Kontors have seats, aldermen, and initial loyalty.
+oe_hbg_init_once = {
+	if = { # OHK1: 伦敦钢院商站 (london in ENG)
+		limit = { country_exists = c:OHK1 country_exists = c:LUB NOT = { has_global_variable = oe_hbg_ended_ohk1 } }
+		c:OHK1 = {
+			if = {
+				limit = { NOT = { is_subject_of = c:LUB } }
+				make_subject_of = { target = c:LUB type = subject_type:oe_hbg_kontor }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_hbg_loyalty } }
+				set_variable = { name = oe_hbg_loyalty value = 64 }
+			}
+			oe_hbg_sync_self_tier = yes
+			save_scope_as = oe_hbg_init_OHK1
+		}
+		if = {
+			limit = { exists = character:oe_hbg_tidemann_von_limberg character:oe_hbg_tidemann_von_limberg = { is_alive = yes } }
+			character:oe_hbg_tidemann_von_limberg = { if = { limit = { NOT = { owner ?= c:OHK1 } } move_country = c:OHK1 } }
+			c:OHK1 = { if = { limit = { NOT = { ruler ?= character:oe_hbg_tidemann_von_limberg } } set_new_ruler = character:oe_hbg_tidemann_von_limberg } }
+		}
+		location:london = {
+			if = {
+				limit = { has_owner = yes NOT = { has_building = building_type:oe_hbg_kontor_seat_1 } }
+				construct_building = {
+					building_type = building_type:oe_hbg_kontor_seat_1
+					owner = scope:oe_hbg_init_OHK1
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # OHK2: 布鲁日商站 (bruges in FLA)
+		limit = { country_exists = c:OHK2 country_exists = c:LUB NOT = { has_global_variable = oe_hbg_ended_ohk2 } }
+		c:OHK2 = {
+			if = {
+				limit = { NOT = { is_subject_of = c:LUB } }
+				make_subject_of = { target = c:LUB type = subject_type:oe_hbg_kontor }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_hbg_loyalty } }
+				set_variable = { name = oe_hbg_loyalty value = 62 }
+			}
+			oe_hbg_sync_self_tier = yes
+			save_scope_as = oe_hbg_init_OHK2
+		}
+		if = {
+			limit = { exists = character:oe_hbg_johann_wittenborg character:oe_hbg_johann_wittenborg = { is_alive = yes } }
+			character:oe_hbg_johann_wittenborg = { if = { limit = { NOT = { owner ?= c:OHK2 } } move_country = c:OHK2 } }
+			c:OHK2 = { if = { limit = { NOT = { ruler ?= character:oe_hbg_johann_wittenborg } } set_new_ruler = character:oe_hbg_johann_wittenborg } }
+		}
+		location:bruges = {
+			if = {
+				limit = { has_owner = yes NOT = { has_building = building_type:oe_hbg_kontor_seat_2 } }
+				construct_building = {
+					building_type = building_type:oe_hbg_kontor_seat_2
+					owner = scope:oe_hbg_init_OHK2
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # OHK3: 卑尔根商站 (bergen in NOR)
+		limit = { country_exists = c:OHK3 country_exists = c:LUB NOT = { has_global_variable = oe_hbg_ended_ohk3 } }
+		c:OHK3 = {
+			if = {
+				limit = { NOT = { is_subject_of = c:LUB } }
+				make_subject_of = { target = c:LUB type = subject_type:oe_hbg_kontor }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_hbg_loyalty } }
+				set_variable = { name = oe_hbg_loyalty value = 66 }
+			}
+			oe_hbg_sync_self_tier = yes
+			save_scope_as = oe_hbg_init_OHK3
+		}
+		if = {
+			limit = { exists = character:oe_hbg_hermann_warendorp character:oe_hbg_hermann_warendorp = { is_alive = yes } }
+			character:oe_hbg_hermann_warendorp = { if = { limit = { NOT = { owner ?= c:OHK3 } } move_country = c:OHK3 } }
+			c:OHK3 = { if = { limit = { NOT = { ruler ?= character:oe_hbg_hermann_warendorp } } set_new_ruler = character:oe_hbg_hermann_warendorp } }
+		}
+		location:bergen = {
+			if = {
+				limit = { has_owner = yes NOT = { has_building = building_type:oe_hbg_kontor_seat_3 } }
+				construct_building = {
+					building_type = building_type:oe_hbg_kontor_seat_3
+					owner = scope:oe_hbg_init_OHK3
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # OHK4: 诺夫哥罗德彼得霍夫商站 (novgorod in NOV)
+		limit = { country_exists = c:OHK4 country_exists = c:LUB NOT = { has_global_variable = oe_hbg_ended_ohk4 } }
+		c:OHK4 = {
+			if = {
+				limit = { NOT = { is_subject_of = c:LUB } }
+				make_subject_of = { target = c:LUB type = subject_type:oe_hbg_kontor }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_hbg_loyalty } }
+				set_variable = { name = oe_hbg_loyalty value = 60 }
+			}
+			oe_hbg_sync_self_tier = yes
+			save_scope_as = oe_hbg_init_OHK4
+		}
+		if = {
+			limit = { exists = character:oe_hbg_hinrich_pleskow character:oe_hbg_hinrich_pleskow = { is_alive = yes } }
+			character:oe_hbg_hinrich_pleskow = { if = { limit = { NOT = { owner ?= c:OHK4 } } move_country = c:OHK4 } }
+			c:OHK4 = { if = { limit = { NOT = { ruler ?= character:oe_hbg_hinrich_pleskow } } set_new_ruler = character:oe_hbg_hinrich_pleskow } }
+		}
+		location:novgorod = {
+			if = {
+				limit = { has_owner = yes NOT = { has_building = building_type:oe_hbg_kontor_seat_4 } }
+				construct_building = {
+					building_type = building_type:oe_hbg_kontor_seat_4
+					owner = scope:oe_hbg_init_OHK4
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+}
+
+# Any scope. F6 cleanup: dissolves any Hanseatic Kontor that lost its seat or whose LUB overlord fell (0 zombies).
+oe_hbg_cleanup_check = {
+	if = {
+		limit = {
+			country_exists = c:OHK1
+			OR = {
+				has_global_variable = oe_hbg_ended_ohk1
+				NOT = { country_exists = c:LUB }
+				c:LUB = { is_rebel_country = yes }
+				c:OHK1 = { NOT = { is_subject_of = c:LUB } }
+				AND = {
+					has_global_variable = oe_hbg_init_done
+					NOT = { location:london = { has_building = building_type:oe_hbg_kontor_seat_1 } }
+				}
+			}
+		}
+		oe_hbg_end_OHK1 = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:OHK2
+			OR = {
+				has_global_variable = oe_hbg_ended_ohk2
+				NOT = { country_exists = c:LUB }
+				c:LUB = { is_rebel_country = yes }
+				c:OHK2 = { NOT = { is_subject_of = c:LUB } }
+				AND = {
+					has_global_variable = oe_hbg_init_done
+					NOT = { location:bruges = { has_building = building_type:oe_hbg_kontor_seat_2 } }
+				}
+			}
+		}
+		oe_hbg_end_OHK2 = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:OHK3
+			OR = {
+				has_global_variable = oe_hbg_ended_ohk3
+				NOT = { country_exists = c:LUB }
+				c:LUB = { is_rebel_country = yes }
+				c:OHK3 = { NOT = { is_subject_of = c:LUB } }
+				AND = {
+					has_global_variable = oe_hbg_init_done
+					NOT = { location:bergen = { has_building = building_type:oe_hbg_kontor_seat_3 } }
+				}
+			}
+		}
+		oe_hbg_end_OHK3 = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:OHK4
+			OR = {
+				has_global_variable = oe_hbg_ended_ohk4
+				NOT = { country_exists = c:LUB }
+				c:LUB = { is_rebel_country = yes }
+				c:OHK4 = { NOT = { is_subject_of = c:LUB } }
+				AND = {
+					has_global_variable = oe_hbg_init_done
+					NOT = { location:novgorod = { has_building = building_type:oe_hbg_kontor_seat_4 } }
+				}
+			}
+		}
+		oe_hbg_end_OHK4 = yes
+	}
+}
+
+# Any scope. Yearly loyalty drift & seat-location modifier sync across all 4 Hanseatic Kontors.
+oe_hbg_sync_all_kontors = {
+	if = { # OHK1 (London Steelyard Kontor)
+		limit = { country_exists = c:OHK1 country_exists = c:LUB c:OHK1 = { is_subject_of = c:LUB is_subject_type = oe_hbg_kontor } }
+		c:OHK1 = {
+			if = { limit = { NOT = { has_variable = oe_hbg_loyalty } } set_variable = { name = oe_hbg_loyalty value = 64 } }
+			if = {
+				limit = { c:LUB = { has_variable = oe_hbg_dec_hansa_empire_done } }
+				change_variable = { name = oe_hbg_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:LUB = { stability >= 10 } }
+				change_variable = { name = oe_hbg_loyalty add = 2 }
+			}
+			else_if = {
+				limit = { c:LUB = { OR = { stability < -15 in_civil_war = yes } } }
+				change_variable = { name = oe_hbg_loyalty add = -4 }
+			}
+			clamp_variable = { name = oe_hbg_loyalty min = 0 max = 100 }
+			oe_hbg_sync_self_tier = yes
+		}
+		location:london = {
+			if = {
+				limit = { has_owner = yes has_building = building_type:oe_hbg_kontor_seat_1 }
+				oe_hbg_clear_seat_modifiers = yes
+				if = { limit = { c:OHK1 = { var:oe_hbg_tier ?= 3 } } add_location_modifier = { modifier = oe_hbg_seat_prosperous_mod months = 14 mode = replace } }
+				else_if = { limit = { c:OHK1 = { var:oe_hbg_tier ?= 1 } } add_location_modifier = { modifier = oe_hbg_seat_friction_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # OHK2 (Bruges Flanders Kontor)
+		limit = { country_exists = c:OHK2 country_exists = c:LUB c:OHK2 = { is_subject_of = c:LUB is_subject_type = oe_hbg_kontor } }
+		c:OHK2 = {
+			if = { limit = { NOT = { has_variable = oe_hbg_loyalty } } set_variable = { name = oe_hbg_loyalty value = 62 } }
+			if = {
+				limit = { c:LUB = { has_variable = oe_hbg_dec_hansa_empire_done } }
+				change_variable = { name = oe_hbg_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:LUB = { stability >= 10 } }
+				change_variable = { name = oe_hbg_loyalty add = 2 }
+			}
+			else_if = {
+				limit = { c:LUB = { OR = { stability < -15 in_civil_war = yes } } }
+				change_variable = { name = oe_hbg_loyalty add = -4 }
+			}
+			clamp_variable = { name = oe_hbg_loyalty min = 0 max = 100 }
+			oe_hbg_sync_self_tier = yes
+		}
+		location:bruges = {
+			if = {
+				limit = { has_owner = yes has_building = building_type:oe_hbg_kontor_seat_2 }
+				oe_hbg_clear_seat_modifiers = yes
+				if = { limit = { c:OHK2 = { var:oe_hbg_tier ?= 3 } } add_location_modifier = { modifier = oe_hbg_seat_prosperous_mod months = 14 mode = replace } }
+				else_if = { limit = { c:OHK2 = { var:oe_hbg_tier ?= 1 } } add_location_modifier = { modifier = oe_hbg_seat_friction_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # OHK3 (Bergen Bryggen Kontor)
+		limit = { country_exists = c:OHK3 country_exists = c:LUB c:OHK3 = { is_subject_of = c:LUB is_subject_type = oe_hbg_kontor } }
+		c:OHK3 = {
+			if = { limit = { NOT = { has_variable = oe_hbg_loyalty } } set_variable = { name = oe_hbg_loyalty value = 66 } }
+			if = {
+				limit = { c:LUB = { has_variable = oe_hbg_dec_hansa_empire_done } }
+				change_variable = { name = oe_hbg_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:LUB = { stability >= 10 } }
+				change_variable = { name = oe_hbg_loyalty add = 2 }
+			}
+			else_if = {
+				limit = { c:LUB = { OR = { stability < -15 in_civil_war = yes } } }
+				change_variable = { name = oe_hbg_loyalty add = -4 }
+			}
+			clamp_variable = { name = oe_hbg_loyalty min = 0 max = 100 }
+			oe_hbg_sync_self_tier = yes
+		}
+		location:bergen = {
+			if = {
+				limit = { has_owner = yes has_building = building_type:oe_hbg_kontor_seat_3 }
+				oe_hbg_clear_seat_modifiers = yes
+				if = { limit = { c:OHK3 = { var:oe_hbg_tier ?= 3 } } add_location_modifier = { modifier = oe_hbg_seat_prosperous_mod months = 14 mode = replace } }
+				else_if = { limit = { c:OHK3 = { var:oe_hbg_tier ?= 1 } } add_location_modifier = { modifier = oe_hbg_seat_friction_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # OHK4 (Novgorod Peterhof Kontor)
+		limit = { country_exists = c:OHK4 country_exists = c:LUB c:OHK4 = { is_subject_of = c:LUB is_subject_type = oe_hbg_kontor } }
+		c:OHK4 = {
+			if = { limit = { NOT = { has_variable = oe_hbg_loyalty } } set_variable = { name = oe_hbg_loyalty value = 60 } }
+			if = {
+				limit = { c:LUB = { has_variable = oe_hbg_dec_hansa_empire_done } }
+				change_variable = { name = oe_hbg_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:LUB = { stability >= 10 } }
+				change_variable = { name = oe_hbg_loyalty add = 2 }
+			}
+			else_if = {
+				limit = { c:LUB = { OR = { stability < -15 in_civil_war = yes } } }
+				change_variable = { name = oe_hbg_loyalty add = -4 }
+			}
+			clamp_variable = { name = oe_hbg_loyalty min = 0 max = 100 }
+			oe_hbg_sync_self_tier = yes
+		}
+		location:novgorod = {
+			if = {
+				limit = { has_owner = yes has_building = building_type:oe_hbg_kontor_seat_4 }
+				oe_hbg_clear_seat_modifiers = yes
+				if = { limit = { c:OHK4 = { var:oe_hbg_tier ?= 3 } } add_location_modifier = { modifier = oe_hbg_seat_prosperous_mod months = 14 mode = replace } }
+				else_if = { limit = { c:OHK4 = { var:oe_hbg_tier ?= 1 } } add_location_modifier = { modifier = oe_hbg_seat_friction_mod months = 14 mode = replace } }
+			}
+		}
+	}
+}
+
+# Country scope. Safe province CB against Denmark over Copenhagen / Scanian Sound tolls.
+oe_hbg_grant_denmark_sound_cb = {
+	if = {
+		limit = {
+			location:kobenhavn = {
+				has_owner = yes
+				owner = {
+					is_rebel_country = no
+					NOT = { this = root }
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+					NOT = { is_at_war_with = root }
+				}
+			}
+		}
+		add_casus_belli = {
+			target = location:kobenhavn.owner
+			type = casus_belli:cb_conquer_province
+			province = location:kobenhavn.province
+			years = 15
+		}
+	}
+}
+
+# Country scope. Safe province CBs along the Lorraine/Aachen Lotharingian corridor.
+oe_hbg_grant_lotharingia_cbs = {
+	if = {
+		limit = {
+			location:nancy = {
+				has_owner = yes
+				owner = {
+					is_rebel_country = no
+					NOT = { this = root }
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+					NOT = { is_at_war_with = root }
+				}
+			}
+		}
+		add_casus_belli = {
+			target = location:nancy.owner
+			type = casus_belli:cb_conquer_province
+			province = location:nancy.province
+			years = 15
+		}
+	}
+	if = {
+		limit = {
+			location:luxembourg = {
+				has_owner = yes
+				owner = {
+					is_rebel_country = no
+					NOT = { this = root }
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+					NOT = { is_at_war_with = root }
+				}
+			}
+		}
+		add_casus_belli = {
+			target = location:luxembourg.owner
+			type = casus_belli:cb_conquer_province
+			province = location:luxembourg.province
+			years = 15
+		}
+	}
+}
+
+# Country scope. Safe province CBs on Cordoba and Sevilla for Granada / Al-Andalus.
+oe_hbg_grant_andalusia_cbs = {
+	if = {
+		limit = {
+			location:cordoba = {
+				has_owner = yes
+				owner = {
+					is_rebel_country = no
+					NOT = { this = root }
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+					NOT = { is_at_war_with = root }
+				}
+			}
+		}
+		add_casus_belli = {
+			target = location:cordoba.owner
+			type = casus_belli:cb_conquer_province
+			province = location:cordoba.province
+			years = 15
+		}
+	}
+	if = {
+		limit = {
+			location:sevilla = {
+				has_owner = yes
+				owner = {
+					is_rebel_country = no
+					NOT = { this = root }
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+					NOT = { is_at_war_with = root }
+				}
+			}
+		}
+		add_casus_belli = {
+			target = location:sevilla.owner
+			type = casus_belli:cb_conquer_province
+			province = location:sevilla.province
+			years = 15
+		}
+	}
+}
+
+# Country scope. Safe province CBs for Trebizond (Sinop / Constantinople) & Theodoro (Kaffa / Solkhat).
+oe_hbg_grant_blacksea_cbs = {
+	if = {
+		limit = {
+			has_or_had_tag = TRE
+			location:sinop = {
+				has_owner = yes
+				owner = {
+					is_rebel_country = no
+					NOT = { this = root }
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+					NOT = { is_at_war_with = root }
+				}
+			}
+		}
+		add_casus_belli = {
+			target = location:sinop.owner
+			type = casus_belli:cb_conquer_province
+			province = location:sinop.province
+			years = 15
+		}
+	}
+	if = {
+		limit = {
+			has_or_had_tag = FEO
+			location:kaffa = {
+				has_owner = yes
+				owner = {
+					is_rebel_country = no
+					NOT = { this = root }
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+					NOT = { is_at_war_with = root }
+				}
+			}
+		}
+		add_casus_belli = {
+			target = location:kaffa.owner
+			type = casus_belli:cb_conquer_province
+			province = location:kaffa.province
+			years = 15
+		}
+	}
+}
+
+# Country scope (FEO). Seals Gothic-Germanic Millennial Reunion with TEU if active & at peace.
+oe_hbg_seal_gothic_teutonic_reunion = {
+	set_global_variable = { name = oe_hbg_gothic_teutonic_reunion value = 1 }
+	add_country_modifier = { modifier = oe_hbg_mod_reunion_feo years = 50 mode = replace }
+	if = {
+		limit = {
+			country_exists = c:TEU
+			c:TEU = {
+				is_rebel_country = no
+				NOT = { is_at_war_with = root }
+			}
+		}
+		add_opinion = { target = c:TEU modifier = opinion_good_relations }
+		c:TEU = {
+			add_opinion = { target = root modifier = opinion_good_relations }
+			add_prestige = 12
+			add_country_modifier = { modifier = oe_hbg_mod_reunion_teu years = 50 mode = replace }
+		}
+		if = {
+			limit = {
+				is_subject = no
+				c:TEU = { is_subject = no }
+				NOT = { is_allied_with = { target = c:TEU } }
+			}
+			create_alliance = { target = c:TEU }
+		}
+	}
+}
+
+# Any scope. Paced yearly event dispatcher for all 12 events (oe_hbg.1..12, 0 orphans).
+oe_hbg_dispatch_events = {
+	# Theater 1: Hanseatic League (oe_hbg.1..3 -> LUB, fallback HAM/BRE)
+	if = {
+		limit = { country_exists = c:LUB c:LUB = { oe_hbg_is_hansa_host = yes NOT = { has_variable = oe_hbg_ev_cd } } }
+		c:LUB = {
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev1_done } current_year >= 1340 }
+				set_global_variable = { name = oe_hbg_ev1_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.1
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev3_done } current_year >= 1346 country_exists = c:TEU }
+				set_global_variable = { name = oe_hbg_ev3_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.3
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev2_done } current_year >= 1352 }
+				set_global_variable = { name = oe_hbg_ev2_done value = 1 }
+				set_variable = { name = oe_hbg_ev2_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.2
+			}
+		}
+	}
+	# Theater 2: Burgundy & Lotharingia (oe_hbg.4..6 -> BUR)
+	if = {
+		limit = { country_exists = c:BUR c:BUR = { oe_hbg_is_burgundy_host = yes NOT = { has_variable = oe_hbg_ev_cd } } }
+		c:BUR = {
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev4_done } current_year >= 1345 }
+				set_global_variable = { name = oe_hbg_ev4_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.4
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev5_done } current_year >= 1360 }
+				set_global_variable = { name = oe_hbg_ev5_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.5
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev6_done } current_year >= 1378 OR = { has_variable = oe_hbg_dec_lotharingia_done num_locations_owned_or_owned_by_subjects >= 22 } }
+				set_global_variable = { name = oe_hbg_ev6_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.6
+			}
+		}
+	}
+	# Theater 3: Granada & Al-Andalus (oe_hbg.7..9 -> GRA, or ADU)
+	if = {
+		limit = { country_exists = c:GRA c:GRA = { oe_hbg_is_granada_host = yes NOT = { has_variable = oe_hbg_ev_cd } } }
+		c:GRA = {
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev7_done } current_year >= 1339 }
+				set_global_variable = { name = oe_hbg_ev7_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.7
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev8_done } OR = { owns_or_non_sovereign_subject_owns = location:cordoba owns_or_non_sovereign_subject_owns = location:sevilla AND = { current_year >= 1358 num_locations_owned_or_owned_by_subjects >= 18 } } }
+				set_global_variable = { name = oe_hbg_ev8_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.8
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev9_done } OR = { has_variable = oe_hbg_dec_cordoba_caliphate_done AND = { current_year >= 1375 owns_or_non_sovereign_subject_owns = location:cordoba } } }
+				set_global_variable = { name = oe_hbg_ev9_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.9
+			}
+		}
+	}
+	# Theater 4: Black Sea Trio — Trebizond (oe_hbg.10) & Theodoro (oe_hbg.11..12)
+	if = {
+		limit = { country_exists = c:TRE c:TRE = { oe_hbg_is_trebizond_host = yes NOT = { has_variable = oe_hbg_ev_cd } } }
+		c:TRE = {
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev10_done } current_year >= 1341 }
+				set_global_variable = { name = oe_hbg_ev10_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.10
+			}
+		}
+	}
+	if = {
+		limit = { country_exists = c:FEO c:FEO = { oe_hbg_is_theodoro_host = yes NOT = { has_variable = oe_hbg_ev_cd } } }
+		c:FEO = {
+			if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev11_done } current_year >= 1341 }
+				set_global_variable = { name = oe_hbg_ev11_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.11
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_hbg_ev12_done } OR = { oe_hbg_teu_reunion_partner_ready = yes AND = { current_year >= 1385 country_exists = c:TEU c:TEU = { is_rebel_country = no NOT = { is_at_war_with = c:FEO } } } } }
+				set_global_variable = { name = oe_hbg_ev12_done value = 1 }
+				set_variable = { name = oe_hbg_ev_cd value = 1 years = 4 }
+				trigger_event_non_silently = oe_hbg.12
+			}
+		}
+	}
+}
+
+# Any scope. Self-deduplicating O(1) yearly entrypoint (called via oe_hbg_on_actions and safe for global kernel).
+oe_hbg_kernel_yearly = {
+	if = {
+		limit = { NOT = { global_var:oe_hbg_ran_y ?= current_year } }
+		set_global_variable = { name = oe_hbg_ran_y value = current_year }
+		if = {
+			limit = { NOT = { has_global_variable = oe_hbg_init_done } }
+			oe_hbg_init_once = yes
+			set_global_variable = { name = oe_hbg_init_done value = 1 }
+		}
+		oe_hbg_cleanup_check = yes
+		oe_hbg_sync_all_kontors = yes
+		oe_hbg_dispatch_events = yes
+	}
+}

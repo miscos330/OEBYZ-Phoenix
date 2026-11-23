@@ -1,0 +1,46 @@
+﻿# NEW 2026-11-23 v22.0 Module 2 Teutonic HRE Statecraft & Bailiwicks (oe_thh_, gen_v220_teu_hre_statecraft.py) — On-Actions: Lobby Init, O(1) Yearly Pulse & Country-Formation F6 Bailiwick Cleanup. Edit gen_v220_teu_hre_statecraft.py, not this file.
+
+on_game_started_after_lobby = {
+	on_actions = {
+		oe_thh_after_lobby
+	}
+}
+
+yearly_country_pulse = {
+	on_actions = {
+		oe_thh_yearly_pulse
+	}
+}
+
+on_new_country_formed = {
+	on_actions = {
+		oe_thh_on_country_formed
+	}
+}
+
+oe_thh_after_lobby = {
+	effect = {
+		if = {
+			limit = { NOT = { has_global_variable = oe_thh_init_done } }
+			oe_thh_init_once = yes
+			set_global_variable = { name = oe_thh_init_done value = 1 }
+		}
+	}
+}
+
+oe_thh_yearly_pulse = {
+	trigger = {
+		is_rebel_country = no
+		num_locations > 0
+		NOT = { global_var:oe_thh_ran_y ?= current_year }
+	}
+	effect = {
+		oe_thh_kernel_yearly = yes
+	}
+}
+
+oe_thh_on_country_formed = {
+	effect = {
+		oe_thh_cleanup_check = yes
+	}
+}

@@ -1,0 +1,174 @@
+﻿# NEW 2026-11-23 v22.0 Module 2 Teutonic HRE Statecraft & Bailiwicks (oe_thh_, gen_v220_teu_hre_statecraft.py) — 3 Ostsiedlung & Baltic Frontier Cabinet Actions (oe_thh_cabinet_actions.txt). Edit gen_v220_teu_hre_statecraft.py, not this file.
+
+
+# 1. Kulm Law Ostsiedlung Settlement Charter (《库尔姆法》东向拓垦宪章)
+oe_thh_cab_kulm_settlement = {
+	ability = adm
+	icon = develop_province
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		oe_thh_is_generalkapitel_eligible = yes
+	}
+
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_thh_cab_kulm_settlement_select_province"
+		none_available_msg_key = "oe_thh_cab_kulm_settlement_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_thh_cab_kulm_settlement
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		global_pop_assimilation_speed_modifier = 0.10
+		peasants_estate_target_satisfaction = 0.04
+		tax_income_efficiency = -0.03
+	}
+
+	location_modifier = {
+		local_pop_assimilation_speed_modifier = 0.25
+		local_monthly_development = 0.002
+		local_population_growth = 0.002
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 12 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 10 }
+			}
+		}
+	}
+}
+
+# 2. Brick Ordensburg Frontier Garrison (红砖骑士城堡边防戍卫)
+oe_thh_cab_ordensburg_frontier = {
+	ability = mil
+	icon = settle_the_frontier
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		oe_thh_is_generalkapitel_eligible = yes
+	}
+
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_thh_cab_ordensburg_frontier_select_province"
+		none_available_msg_key = "oe_thh_cab_ordensburg_frontier_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+				OR = { is_border = yes has_fort = yes }
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_thh_cab_ordensburg_frontier
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		global_defensive = 0.08
+		global_garrison_growth = 0.08
+		fort_maintenance_efficiency = -0.04
+	}
+
+	location_modifier = {
+		local_defensive = 0.18
+		local_max_control = 0.08
+		local_garrison_growth = 0.15
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = yes }
+				add = { value = 16 }
+			}
+		}
+	}
+}
+
+# 3. Baltic Amber & Grain Staple Commission (波罗的海琥珀与谷物专营署)
+oe_thh_cab_amber_monopoly = {
+	ability = dip
+	icon = diplomatic_endeavors
+	allow_multiple = no
+
+	potential = {
+		oe_thh_is_generalkapitel_eligible = yes
+	}
+
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	country_modifier = {
+		trade_income = 0.08
+		tax_income_efficiency = 0.06
+		trade_sea_efficiency = 0.08
+		burghers_estate_target_satisfaction = -0.03
+	}
+
+	ai_will_do = {
+		add = { value = 12 }
+		scope:actor = {
+			if = {
+				limit = { gold < 200 }
+				add = { value = 12 }
+			}
+		}
+	}
+}

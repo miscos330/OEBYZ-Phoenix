@@ -1,0 +1,264 @@
+﻿# NEW 2026-11-23 v22.0 Module 2 Teutonic HRE Statecraft & Bailiwicks (oe_thh_, gen_v220_teu_hre_statecraft.py) — 4 Bidirectional HRE & General Chapter Decisions (strictly vanilla categories, DECISIONFMT compliant). Edit gen_v220_teu_hre_statecraft.py, not this file.
+
+# 1. Petition the HRE Emperor for an Imperial Crusade Grant during war with pagan/Orthodox/Islamic/steppe realms
+oe_thh_dec_imperial_crusade_grant = {
+	decision_category = religious_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		oe_thh_is_teutonic_host = yes
+		exists = international_organization:hre
+		international_organization:hre = { international_organization_has_leader = yes }
+	}
+	allow = {
+		is_subject = no
+		custom_tooltip = {
+			text = oe_thh_crusade_foe_tt
+			oe_thh_at_war_with_crusade_foe = yes
+		}
+		custom_tooltip = {
+			text = oe_thh_crusade_grant_cd_tt
+			NOT = { has_variable = oe_thh_crusade_grant_cd }
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { oe_thh_at_war_with_crusade_foe = yes }
+			add = 40
+		}
+	}
+	illustration_tags = { 10 = armed 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:clergy_estate
+			background = estate_type:nobles_estate
+		}
+	}
+	option = {
+		name = oe_thh_dec_imperial_crusade_grant.a
+		effect = {
+			custom_tooltip = oe_thh_dec_imperial_crusade_grant_tt
+			set_variable = { name = oe_thh_crusade_grant_cd value = 1 years = 10 }
+			change_gold_effect_bounded = { scale = 2.5 min = 75 max = 450 }
+			add_yearly_manpower = 0.75
+			add_country_modifier = {
+				modifier = oe_thh_mod_imperial_crusade_grant
+				years = 5
+				mode = replace
+			}
+			oe_thh_shift_all_ballei_loyalty = { amount = 6 }
+			if = {
+				limit = {
+					exists = international_organization:hre.leader_country
+					NOT = { international_organization:hre.leader_country = root }
+				}
+				international_organization:hre.leader_country = {
+					add_prestige = 8
+					add_country_modifier = {
+						modifier = oe_thh_mod_emperor_crusade_patron
+						years = 10
+						mode = replace
+					}
+					add_opinion = { target = root modifier = opinion_good_relations }
+				}
+				add_opinion = { target = international_organization:hre.leader_country modifier = opinion_good_relations }
+			}
+		}
+	}
+}
+
+# 2. Path I: Reichsschild (Shield of the Empire) — mutually exclusive with Path II Rimini Independence
+oe_thh_dec_reichsschild_path = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_thh_is_teutonic_host = yes
+		NOT = { has_variable = oe_thh_path_reichsschild }
+		NOT = { has_variable = oe_thh_path_rimini }
+	}
+	allow = {
+		is_subject = no
+		in_civil_war = no
+		exists = international_organization:hre
+		international_organization:hre = { international_organization_has_leader = yes }
+		stability >= 5
+		gold >= 100
+		custom_tooltip = {
+			text = oe_thh_not_rimini_path_tt
+			NOT = { has_variable = oe_thh_path_rimini }
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				current_year >= 1365
+				gold >= 150
+				stability >= 10
+			}
+			add = 20
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:crown_estate
+			background = estate_type:nobles_estate
+		}
+	}
+	option = {
+		name = oe_thh_dec_reichsschild_path.a
+		effect = {
+			custom_tooltip = oe_thh_dec_reichsschild_path_tt
+			add_gold = -100
+			set_variable = { name = oe_thh_path_reichsschild value = 1 }
+			if = {
+				limit = { NOT = { is_member_of_international_organization = international_organization:hre } }
+				international_organization:hre = {
+					add_country_to_international_organization = root
+				}
+			}
+			add_country_modifier = {
+				modifier = oe_thh_mod_reichsschild_prince
+				years = -1
+				mode = replace
+			}
+			oe_thh_shift_all_ballei_loyalty = { amount = 15 }
+			if = {
+				limit = {
+					exists = international_organization:hre.leader_country
+					NOT = { international_organization:hre.leader_country = root }
+				}
+				international_organization:hre.leader_country = {
+					add_prestige = 10
+					add_opinion = { target = root modifier = opinion_elevated_country }
+				}
+			}
+			trigger_event_non_silently = oe_thh.9
+		}
+	}
+}
+
+# 3. Path II: Golden Bull of Rimini & Sovereign Gross-Ordensstaat — mutually exclusive with Path I Reichsschild
+oe_thh_dec_rimini_independence = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_thh_is_teutonic_host = yes
+		NOT = { has_variable = oe_thh_path_rimini }
+		NOT = { has_variable = oe_thh_path_reichsschild }
+	}
+	allow = {
+		is_subject = no
+		in_civil_war = no
+		num_locations >= 25
+		stability >= 10
+		prestige >= 25
+		gold >= 150
+		custom_tooltip = {
+			text = oe_thh_not_reichsschild_path_tt
+			NOT = { has_variable = oe_thh_path_reichsschild }
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				current_year >= 1380
+				num_locations >= 40
+				gold >= 220
+			}
+			add = 15
+		}
+	}
+	illustration_tags = { 10 = armed 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:crown_estate
+			background = estate_type:clergy_estate
+		}
+	}
+	option = {
+		name = oe_thh_dec_rimini_independence.a
+		effect = {
+			custom_tooltip = oe_thh_dec_rimini_independence_tt
+			add_gold = -150
+			set_variable = { name = oe_thh_path_rimini value = 1 }
+			if = {
+				limit = {
+					exists = international_organization:hre
+					is_member_of_international_organization = international_organization:hre
+				}
+				international_organization:hre = {
+					remove_country_from_international_organization = root
+				}
+			}
+			set_country_rank_effect = { rank = country_rank:rank_kingdom }
+			add_prestige = 20
+			add_country_modifier = {
+				modifier = oe_thh_mod_rimini_gross_ordensstaat
+				years = -1
+				mode = replace
+			}
+			trigger_event_non_silently = oe_thh.10
+		}
+	}
+}
+
+# 4. Convene & Adopt the Teutonic General Chapter (oe_teu_generalkapitel) Parliament
+oe_thh_dec_convene_generalkapitel = {
+	decision_category = government_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		oe_thh_is_generalkapitel_eligible = yes
+		NOT = { parliament_type ?= parliament_type:oe_teu_generalkapitel }
+		NOT = { has_country_modifier = supreme_authority_modifier }
+	}
+	allow = {
+		is_subject = no
+		num_locations >= 3
+		gold >= 75
+		stability >= -10
+		NOT = { parliament_type ?= parliament_type:oe_teu_generalkapitel }
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				gold >= 130
+				stability >= 0
+			}
+			add = 30
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:clergy_estate
+			background = estate_type:crown_estate
+		}
+	}
+	option = {
+		name = oe_thh_dec_convene_generalkapitel.a
+		effect = {
+			add_gold = -75
+			set_parliament_type = parliament_type:oe_teu_generalkapitel
+			if = {
+				limit = { exists = capital }
+				set_parliament_location = capital
+			}
+			add_prestige = prestige_weak_bonus
+			if = {
+				limit = { country_has_estate = estate_type:clergy_estate }
+				add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+			}
+			if = {
+				limit = { NOT = { has_global_variable = oe_thh_ev7_done } }
+				set_global_variable = { name = oe_thh_ev7_done value = 1 }
+				trigger_event_non_silently = oe_thh.7
+			}
+		}
+	}
+}

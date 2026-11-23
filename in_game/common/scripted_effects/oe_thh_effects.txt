@@ -1,0 +1,651 @@
+﻿# NEW 2026-11-23 v22.0 Module 2 Teutonic HRE Statecraft & Bailiwicks (oe_thh_, gen_v220_teu_hre_statecraft.py) — Scripted Effects: Bailiwick Init, Loyalty Sync, F6 Zombie Cleanup, Yearly Kernel & Event Dispatch. Edit gen_v220_teu_hre_statecraft.py, not this file.
+
+
+# Location scope. Clears Bailiwick seat location modifiers cleanly.
+oe_thh_clear_seat_modifiers = {
+	if = { limit = { has_location_modifier = oe_thh_seat_loyal_mod } remove_location_modifier = oe_thh_seat_loyal_mod }
+	if = { limit = { has_location_modifier = oe_thh_seat_restive_mod } remove_location_modifier = oe_thh_seat_restive_mod }
+}
+
+# Bailiwick country scope. Clears subject loyalty tier modifiers cleanly.
+oe_thh_clear_ballei_modifiers = {
+	if = { limit = { has_country_modifier = oe_thh_ballei_compliant_mod } remove_country_modifier = oe_thh_ballei_compliant_mod }
+	if = { limit = { has_country_modifier = oe_thh_ballei_restive_mod } remove_country_modifier = oe_thh_ballei_restive_mod }
+}
+
+# Bailiwick country scope. Shifts oe_thh_loyalty by $amount$ (clamped 0..100).
+oe_thh_shift_loyalty = {
+	if = { limit = { NOT = { has_variable = oe_thh_loyalty } } set_variable = { name = oe_thh_loyalty value = 60 } }
+	change_variable = { name = oe_thh_loyalty add = $amount$ }
+	clamp_variable = { name = oe_thh_loyalty min = 0 max = 100 }
+}
+
+# Bailiwick country scope. Syncs oe_thh_tier (3>=70, 2=40..69, 1<40) and country tier modifiers.
+oe_thh_sync_self_tier = {
+	if = { limit = { NOT = { has_variable = oe_thh_loyalty } } set_variable = { name = oe_thh_loyalty value = 60 } }
+	if = {
+		limit = { has_variable = oe_thh_loyalty var:oe_thh_loyalty >= 70 }
+		set_variable = { name = oe_thh_tier value = 3 }
+		oe_thh_clear_ballei_modifiers = yes
+		add_country_modifier = { modifier = oe_thh_ballei_compliant_mod months = 14 mode = replace }
+	}
+	else_if = {
+		limit = { has_variable = oe_thh_loyalty var:oe_thh_loyalty >= 40 }
+		set_variable = { name = oe_thh_tier value = 2 }
+		oe_thh_clear_ballei_modifiers = yes
+	}
+	else = {
+		set_variable = { name = oe_thh_tier value = 1 }
+		oe_thh_clear_ballei_modifiers = yes
+		add_country_modifier = { modifier = oe_thh_ballei_restive_mod months = 14 mode = replace }
+	}
+}
+
+# Any scope. F6-style clean dissolution of OTB1 (Ballei Bohmen): annex via overlord or destroy_building_country, then clear seat.
+oe_thh_end_OTB1 = {
+	set_global_variable = { name = oe_thh_ended_otb1 value = 1 }
+	if = { limit = { exists = scope:oe_thh_end_lord_OTB1 } clear_saved_scope = oe_thh_end_lord_OTB1 }
+	if = {
+		limit = { country_exists = c:OTB1 }
+		c:OTB1 = {
+			set_variable = { name = oe_thh_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_thh_end_lord_OTB1 } }
+		}
+		if = {
+			limit = { exists = scope:oe_thh_end_lord_OTB1 }
+			scope:oe_thh_end_lord_OTB1 = { annex_country = { country = c:OTB1 reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:OTB1
+		}
+	}
+	location:prague = {
+		if = { limit = { has_building = building_type:oe_thh_ballei_seat_1 } destroy_all_buildings_of_type = building_type:oe_thh_ballei_seat_1 }
+		oe_thh_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of OTB2 (Ballei Osterreich): annex via overlord or destroy_building_country, then clear seat.
+oe_thh_end_OTB2 = {
+	set_global_variable = { name = oe_thh_ended_otb2 value = 1 }
+	if = { limit = { exists = scope:oe_thh_end_lord_OTB2 } clear_saved_scope = oe_thh_end_lord_OTB2 }
+	if = {
+		limit = { country_exists = c:OTB2 }
+		c:OTB2 = {
+			set_variable = { name = oe_thh_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_thh_end_lord_OTB2 } }
+		}
+		if = {
+			limit = { exists = scope:oe_thh_end_lord_OTB2 }
+			scope:oe_thh_end_lord_OTB2 = { annex_country = { country = c:OTB2 reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:OTB2
+		}
+	}
+	location:vienna = {
+		if = { limit = { has_building = building_type:oe_thh_ballei_seat_2 } destroy_all_buildings_of_type = building_type:oe_thh_ballei_seat_2 }
+		oe_thh_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of OTB3 (Ballei Brandenburg): annex via overlord or destroy_building_country, then clear seat.
+oe_thh_end_OTB3 = {
+	set_global_variable = { name = oe_thh_ended_otb3 value = 1 }
+	if = { limit = { exists = scope:oe_thh_end_lord_OTB3 } clear_saved_scope = oe_thh_end_lord_OTB3 }
+	if = {
+		limit = { country_exists = c:OTB3 }
+		c:OTB3 = {
+			set_variable = { name = oe_thh_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_thh_end_lord_OTB3 } }
+		}
+		if = {
+			limit = { exists = scope:oe_thh_end_lord_OTB3 }
+			scope:oe_thh_end_lord_OTB3 = { annex_country = { country = c:OTB3 reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:OTB3
+		}
+	}
+	location:berlin = {
+		if = { limit = { has_building = building_type:oe_thh_ballei_seat_3 } destroy_all_buildings_of_type = building_type:oe_thh_ballei_seat_3 }
+		oe_thh_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of OTB4 (Ballei Franken-Mergentheim): annex via overlord or destroy_building_country, then clear seat.
+oe_thh_end_OTB4 = {
+	set_global_variable = { name = oe_thh_ended_otb4 value = 1 }
+	if = { limit = { exists = scope:oe_thh_end_lord_OTB4 } clear_saved_scope = oe_thh_end_lord_OTB4 }
+	if = {
+		limit = { country_exists = c:OTB4 }
+		c:OTB4 = {
+			set_variable = { name = oe_thh_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_thh_end_lord_OTB4 } }
+		}
+		if = {
+			limit = { exists = scope:oe_thh_end_lord_OTB4 }
+			scope:oe_thh_end_lord_OTB4 = { annex_country = { country = c:OTB4 reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:OTB4
+		}
+	}
+	location:mergentheim = {
+		if = { limit = { has_building = building_type:oe_thh_ballei_seat_4 } destroy_all_buildings_of_type = building_type:oe_thh_ballei_seat_4 }
+		oe_thh_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. F6-style clean dissolution of OTB5 (Ballei Koblenz-Rheinland): annex via overlord or destroy_building_country, then clear seat.
+oe_thh_end_OTB5 = {
+	set_global_variable = { name = oe_thh_ended_otb5 value = 1 }
+	if = { limit = { exists = scope:oe_thh_end_lord_OTB5 } clear_saved_scope = oe_thh_end_lord_OTB5 }
+	if = {
+		limit = { country_exists = c:OTB5 }
+		c:OTB5 = {
+			set_variable = { name = oe_thh_ended value = 1 }
+			if = { limit = { is_subject = yes } overlord = { save_scope_as = oe_thh_end_lord_OTB5 } }
+		}
+		if = {
+			limit = { exists = scope:oe_thh_end_lord_OTB5 }
+			scope:oe_thh_end_lord_OTB5 = { annex_country = { country = c:OTB5 reason = Diplomatic transfer = yes } }
+		}
+		else = {
+			destroy_building_country = c:OTB5
+		}
+	}
+	location:cologne = {
+		if = { limit = { has_building = building_type:oe_thh_ballei_seat_5 } destroy_all_buildings_of_type = building_type:oe_thh_ballei_seat_5 }
+		oe_thh_clear_seat_modifiers = yes
+	}
+}
+
+# Any scope. Runs once at start to ensure all 5 Bailiwicks have seats, governors, and initial loyalty.
+oe_thh_init_once = {
+	if = { # OTB1: 波希米亚大辖区 (prague in BOH)
+		limit = { country_exists = c:OTB1 country_exists = c:TEU c:TEU = { religion ?= religion:catholic } NOT = { has_global_variable = oe_thh_ended_otb1 } }
+		c:OTB1 = {
+			if = {
+				limit = { NOT = { is_subject_of = c:TEU } }
+				make_subject_of = { target = c:TEU type = subject_type:oe_teu_ballei }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_thh_loyalty } }
+				set_variable = { name = oe_thh_loyalty value = 60 }
+			}
+			add_opinion = { target = c:TEU modifier = opinion_good_relations }
+			c:TEU = { add_opinion = { target = c:OTB1 modifier = opinion_good_relations } }
+			oe_thh_sync_self_tier = yes
+			save_scope_as = oe_thh_init_OTB1
+		}
+		if = {
+			limit = { exists = character:oe_thh_leo_von_dischingen character:oe_thh_leo_von_dischingen = { is_alive = yes } }
+			character:oe_thh_leo_von_dischingen = { if = { limit = { NOT = { owner ?= c:OTB1 } } move_country = c:OTB1 } }
+			c:OTB1 = { if = { limit = { NOT = { ruler ?= character:oe_thh_leo_von_dischingen } } set_new_ruler = character:oe_thh_leo_von_dischingen } }
+		}
+		location:prague = {
+			if = {
+				limit = { has_owner = yes NOT = { has_building = building_type:oe_thh_ballei_seat_1 } }
+				construct_building = {
+					building_type = building_type:oe_thh_ballei_seat_1
+					owner = scope:oe_thh_init_OTB1
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # OTB2: 奥地利大辖区 (vienna in HAB)
+		limit = { country_exists = c:OTB2 country_exists = c:TEU c:TEU = { religion ?= religion:catholic } NOT = { has_global_variable = oe_thh_ended_otb2 } }
+		c:OTB2 = {
+			if = {
+				limit = { NOT = { is_subject_of = c:TEU } }
+				make_subject_of = { target = c:TEU type = subject_type:oe_teu_ballei }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_thh_loyalty } }
+				set_variable = { name = oe_thh_loyalty value = 62 }
+			}
+			add_opinion = { target = c:TEU modifier = opinion_good_relations }
+			c:TEU = { add_opinion = { target = c:OTB2 modifier = opinion_good_relations } }
+			oe_thh_sync_self_tier = yes
+			save_scope_as = oe_thh_init_OTB2
+		}
+		if = {
+			limit = { exists = character:oe_thh_ortolf_von_weisseneck character:oe_thh_ortolf_von_weisseneck = { is_alive = yes } }
+			character:oe_thh_ortolf_von_weisseneck = { if = { limit = { NOT = { owner ?= c:OTB2 } } move_country = c:OTB2 } }
+			c:OTB2 = { if = { limit = { NOT = { ruler ?= character:oe_thh_ortolf_von_weisseneck } } set_new_ruler = character:oe_thh_ortolf_von_weisseneck } }
+		}
+		location:vienna = {
+			if = {
+				limit = { has_owner = yes NOT = { has_building = building_type:oe_thh_ballei_seat_2 } }
+				construct_building = {
+					building_type = building_type:oe_thh_ballei_seat_2
+					owner = scope:oe_thh_init_OTB2
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # OTB3: 勃兰登堡大辖区 (berlin in BRA)
+		limit = { country_exists = c:OTB3 country_exists = c:TEU c:TEU = { religion ?= religion:catholic } NOT = { has_global_variable = oe_thh_ended_otb3 } }
+		c:OTB3 = {
+			if = {
+				limit = { NOT = { is_subject_of = c:TEU } }
+				make_subject_of = { target = c:TEU type = subject_type:oe_teu_ballei }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_thh_loyalty } }
+				set_variable = { name = oe_thh_loyalty value = 58 }
+			}
+			add_opinion = { target = c:TEU modifier = opinion_good_relations }
+			c:TEU = { add_opinion = { target = c:OTB3 modifier = opinion_good_relations } }
+			oe_thh_sync_self_tier = yes
+			save_scope_as = oe_thh_init_OTB3
+		}
+		if = {
+			limit = { exists = character:oe_thh_dietrich_von_witzleben character:oe_thh_dietrich_von_witzleben = { is_alive = yes } }
+			character:oe_thh_dietrich_von_witzleben = { if = { limit = { NOT = { owner ?= c:OTB3 } } move_country = c:OTB3 } }
+			c:OTB3 = { if = { limit = { NOT = { ruler ?= character:oe_thh_dietrich_von_witzleben } } set_new_ruler = character:oe_thh_dietrich_von_witzleben } }
+		}
+		location:berlin = {
+			if = {
+				limit = { has_owner = yes NOT = { has_building = building_type:oe_thh_ballei_seat_3 } }
+				construct_building = {
+					building_type = building_type:oe_thh_ballei_seat_3
+					owner = scope:oe_thh_init_OTB3
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # OTB4: 法兰克尼亚—梅尔根特海姆总辖区 (mergentheim in TEU)
+		limit = { country_exists = c:OTB4 country_exists = c:TEU c:TEU = { religion ?= religion:catholic } NOT = { has_global_variable = oe_thh_ended_otb4 } }
+		c:OTB4 = {
+			if = {
+				limit = { NOT = { is_subject_of = c:TEU } }
+				make_subject_of = { target = c:TEU type = subject_type:oe_teu_ballei }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_thh_loyalty } }
+				set_variable = { name = oe_thh_loyalty value = 68 }
+			}
+			add_opinion = { target = c:TEU modifier = opinion_good_relations }
+			c:TEU = { add_opinion = { target = c:OTB4 modifier = opinion_good_relations } }
+			oe_thh_sync_self_tier = yes
+			save_scope_as = oe_thh_init_OTB4
+		}
+		if = {
+			limit = { exists = character:oe_thh_wolfram_von_nellenburg character:oe_thh_wolfram_von_nellenburg = { is_alive = yes } }
+			character:oe_thh_wolfram_von_nellenburg = { if = { limit = { NOT = { owner ?= c:OTB4 } } move_country = c:OTB4 } }
+			c:OTB4 = { if = { limit = { NOT = { ruler ?= character:oe_thh_wolfram_von_nellenburg } } set_new_ruler = character:oe_thh_wolfram_von_nellenburg } }
+		}
+		location:mergentheim = {
+			if = {
+				limit = { has_owner = yes NOT = { has_building = building_type:oe_thh_ballei_seat_4 } }
+				construct_building = {
+					building_type = building_type:oe_thh_ballei_seat_4
+					owner = scope:oe_thh_init_OTB4
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	if = { # OTB5: 莱茵兰—科隆大辖区 (cologne in KOL)
+		limit = { country_exists = c:OTB5 country_exists = c:TEU c:TEU = { religion ?= religion:catholic } NOT = { has_global_variable = oe_thh_ended_otb5 } }
+		c:OTB5 = {
+			if = {
+				limit = { NOT = { is_subject_of = c:TEU } }
+				make_subject_of = { target = c:TEU type = subject_type:oe_teu_ballei }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_thh_loyalty } }
+				set_variable = { name = oe_thh_loyalty value = 64 }
+			}
+			add_opinion = { target = c:TEU modifier = opinion_good_relations }
+			c:TEU = { add_opinion = { target = c:OTB5 modifier = opinion_good_relations } }
+			oe_thh_sync_self_tier = yes
+			save_scope_as = oe_thh_init_OTB5
+		}
+		if = {
+			limit = { exists = character:oe_thh_heinrich_von_lonnig character:oe_thh_heinrich_von_lonnig = { is_alive = yes } }
+			character:oe_thh_heinrich_von_lonnig = { if = { limit = { NOT = { owner ?= c:OTB5 } } move_country = c:OTB5 } }
+			c:OTB5 = { if = { limit = { NOT = { ruler ?= character:oe_thh_heinrich_von_lonnig } } set_new_ruler = character:oe_thh_heinrich_von_lonnig } }
+		}
+		location:cologne = {
+			if = {
+				limit = { has_owner = yes NOT = { has_building = building_type:oe_thh_ballei_seat_5 } }
+				construct_building = {
+					building_type = building_type:oe_thh_ballei_seat_5
+					owner = scope:oe_thh_init_OTB5
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+}
+
+# Any scope. F6 cleanup: dissolves any Bailiwick that lost its seat or whose TEU overlord fell/secularized (0 zombies).
+oe_thh_cleanup_check = {
+	if = {
+		limit = {
+			country_exists = c:OTB1
+			OR = {
+				has_global_variable = oe_thh_ended_otb1
+				NOT = { country_exists = c:TEU }
+				c:TEU = { is_rebel_country = yes }
+				c:TEU = { NOT = { religion ?= religion:catholic } }
+				c:OTB1 = { NOT = { is_subject_of = c:TEU } }
+				AND = {
+					has_global_variable = oe_thh_init_done
+					NOT = { location:prague = { has_building = building_type:oe_thh_ballei_seat_1 } }
+				}
+			}
+		}
+		oe_thh_end_OTB1 = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:OTB2
+			OR = {
+				has_global_variable = oe_thh_ended_otb2
+				NOT = { country_exists = c:TEU }
+				c:TEU = { is_rebel_country = yes }
+				c:TEU = { NOT = { religion ?= religion:catholic } }
+				c:OTB2 = { NOT = { is_subject_of = c:TEU } }
+				AND = {
+					has_global_variable = oe_thh_init_done
+					NOT = { location:vienna = { has_building = building_type:oe_thh_ballei_seat_2 } }
+				}
+			}
+		}
+		oe_thh_end_OTB2 = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:OTB3
+			OR = {
+				has_global_variable = oe_thh_ended_otb3
+				NOT = { country_exists = c:TEU }
+				c:TEU = { is_rebel_country = yes }
+				c:TEU = { NOT = { religion ?= religion:catholic } }
+				c:OTB3 = { NOT = { is_subject_of = c:TEU } }
+				AND = {
+					has_global_variable = oe_thh_init_done
+					NOT = { location:berlin = { has_building = building_type:oe_thh_ballei_seat_3 } }
+				}
+			}
+		}
+		oe_thh_end_OTB3 = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:OTB4
+			OR = {
+				has_global_variable = oe_thh_ended_otb4
+				NOT = { country_exists = c:TEU }
+				c:TEU = { is_rebel_country = yes }
+				c:TEU = { NOT = { religion ?= religion:catholic } }
+				c:OTB4 = { NOT = { is_subject_of = c:TEU } }
+				AND = {
+					has_global_variable = oe_thh_init_done
+					NOT = { location:mergentheim = { has_building = building_type:oe_thh_ballei_seat_4 } }
+				}
+			}
+		}
+		oe_thh_end_OTB4 = yes
+	}
+	if = {
+		limit = {
+			country_exists = c:OTB5
+			OR = {
+				has_global_variable = oe_thh_ended_otb5
+				NOT = { country_exists = c:TEU }
+				c:TEU = { is_rebel_country = yes }
+				c:TEU = { NOT = { religion ?= religion:catholic } }
+				c:OTB5 = { NOT = { is_subject_of = c:TEU } }
+				AND = {
+					has_global_variable = oe_thh_init_done
+					NOT = { location:cologne = { has_building = building_type:oe_thh_ballei_seat_5 } }
+				}
+			}
+		}
+		oe_thh_end_OTB5 = yes
+	}
+}
+
+# Any scope. Yearly loyalty drift & seat-location modifier sync across all 5 HRE Bailiwicks.
+oe_thh_sync_all_balleien = {
+	if = { # OTB1 (Ballei Bohmen)
+		limit = { country_exists = c:OTB1 country_exists = c:TEU c:OTB1 = { is_subject_of = c:TEU is_subject_type = oe_teu_ballei } }
+		c:OTB1 = {
+			if = { limit = { NOT = { has_variable = oe_thh_loyalty } } set_variable = { name = oe_thh_loyalty value = 60 } }
+			if = {
+				limit = { c:TEU = { has_variable = oe_thh_path_reichsschild } }
+				change_variable = { name = oe_thh_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:TEU = { stability >= 15 } }
+				change_variable = { name = oe_thh_loyalty add = 2 }
+			}
+			else_if = {
+				limit = { c:TEU = { OR = { stability < -15 in_civil_war = yes } } }
+				change_variable = { name = oe_thh_loyalty add = -4 }
+			}
+			clamp_variable = { name = oe_thh_loyalty min = 0 max = 100 }
+			oe_thh_sync_self_tier = yes
+		}
+		location:prague = {
+			if = {
+				limit = { has_owner = yes has_building = building_type:oe_thh_ballei_seat_1 }
+				oe_thh_clear_seat_modifiers = yes
+				if = { limit = { c:OTB1 = { var:oe_thh_tier ?= 3 } } add_location_modifier = { modifier = oe_thh_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:OTB1 = { var:oe_thh_tier ?= 1 } } add_location_modifier = { modifier = oe_thh_seat_restive_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # OTB2 (Ballei Osterreich)
+		limit = { country_exists = c:OTB2 country_exists = c:TEU c:OTB2 = { is_subject_of = c:TEU is_subject_type = oe_teu_ballei } }
+		c:OTB2 = {
+			if = { limit = { NOT = { has_variable = oe_thh_loyalty } } set_variable = { name = oe_thh_loyalty value = 62 } }
+			if = {
+				limit = { c:TEU = { has_variable = oe_thh_path_reichsschild } }
+				change_variable = { name = oe_thh_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:TEU = { stability >= 15 } }
+				change_variable = { name = oe_thh_loyalty add = 2 }
+			}
+			else_if = {
+				limit = { c:TEU = { OR = { stability < -15 in_civil_war = yes } } }
+				change_variable = { name = oe_thh_loyalty add = -4 }
+			}
+			clamp_variable = { name = oe_thh_loyalty min = 0 max = 100 }
+			oe_thh_sync_self_tier = yes
+		}
+		location:vienna = {
+			if = {
+				limit = { has_owner = yes has_building = building_type:oe_thh_ballei_seat_2 }
+				oe_thh_clear_seat_modifiers = yes
+				if = { limit = { c:OTB2 = { var:oe_thh_tier ?= 3 } } add_location_modifier = { modifier = oe_thh_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:OTB2 = { var:oe_thh_tier ?= 1 } } add_location_modifier = { modifier = oe_thh_seat_restive_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # OTB3 (Ballei Brandenburg)
+		limit = { country_exists = c:OTB3 country_exists = c:TEU c:OTB3 = { is_subject_of = c:TEU is_subject_type = oe_teu_ballei } }
+		c:OTB3 = {
+			if = { limit = { NOT = { has_variable = oe_thh_loyalty } } set_variable = { name = oe_thh_loyalty value = 58 } }
+			if = {
+				limit = { c:TEU = { has_variable = oe_thh_path_reichsschild } }
+				change_variable = { name = oe_thh_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:TEU = { stability >= 15 } }
+				change_variable = { name = oe_thh_loyalty add = 2 }
+			}
+			else_if = {
+				limit = { c:TEU = { OR = { stability < -15 in_civil_war = yes } } }
+				change_variable = { name = oe_thh_loyalty add = -4 }
+			}
+			clamp_variable = { name = oe_thh_loyalty min = 0 max = 100 }
+			oe_thh_sync_self_tier = yes
+		}
+		location:berlin = {
+			if = {
+				limit = { has_owner = yes has_building = building_type:oe_thh_ballei_seat_3 }
+				oe_thh_clear_seat_modifiers = yes
+				if = { limit = { c:OTB3 = { var:oe_thh_tier ?= 3 } } add_location_modifier = { modifier = oe_thh_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:OTB3 = { var:oe_thh_tier ?= 1 } } add_location_modifier = { modifier = oe_thh_seat_restive_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # OTB4 (Ballei Franken-Mergentheim)
+		limit = { country_exists = c:OTB4 country_exists = c:TEU c:OTB4 = { is_subject_of = c:TEU is_subject_type = oe_teu_ballei } }
+		c:OTB4 = {
+			if = { limit = { NOT = { has_variable = oe_thh_loyalty } } set_variable = { name = oe_thh_loyalty value = 68 } }
+			if = {
+				limit = { c:TEU = { has_variable = oe_thh_path_reichsschild } }
+				change_variable = { name = oe_thh_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:TEU = { stability >= 15 } }
+				change_variable = { name = oe_thh_loyalty add = 2 }
+			}
+			else_if = {
+				limit = { c:TEU = { OR = { stability < -15 in_civil_war = yes } } }
+				change_variable = { name = oe_thh_loyalty add = -4 }
+			}
+			clamp_variable = { name = oe_thh_loyalty min = 0 max = 100 }
+			oe_thh_sync_self_tier = yes
+		}
+		location:mergentheim = {
+			if = {
+				limit = { has_owner = yes has_building = building_type:oe_thh_ballei_seat_4 }
+				oe_thh_clear_seat_modifiers = yes
+				if = { limit = { c:OTB4 = { var:oe_thh_tier ?= 3 } } add_location_modifier = { modifier = oe_thh_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:OTB4 = { var:oe_thh_tier ?= 1 } } add_location_modifier = { modifier = oe_thh_seat_restive_mod months = 14 mode = replace } }
+			}
+		}
+	}
+	if = { # OTB5 (Ballei Koblenz-Rheinland)
+		limit = { country_exists = c:OTB5 country_exists = c:TEU c:OTB5 = { is_subject_of = c:TEU is_subject_type = oe_teu_ballei } }
+		c:OTB5 = {
+			if = { limit = { NOT = { has_variable = oe_thh_loyalty } } set_variable = { name = oe_thh_loyalty value = 64 } }
+			if = {
+				limit = { c:TEU = { has_variable = oe_thh_path_reichsschild } }
+				change_variable = { name = oe_thh_loyalty add = 3 }
+			}
+			else_if = {
+				limit = { c:TEU = { stability >= 15 } }
+				change_variable = { name = oe_thh_loyalty add = 2 }
+			}
+			else_if = {
+				limit = { c:TEU = { OR = { stability < -15 in_civil_war = yes } } }
+				change_variable = { name = oe_thh_loyalty add = -4 }
+			}
+			clamp_variable = { name = oe_thh_loyalty min = 0 max = 100 }
+			oe_thh_sync_self_tier = yes
+		}
+		location:cologne = {
+			if = {
+				limit = { has_owner = yes has_building = building_type:oe_thh_ballei_seat_5 }
+				oe_thh_clear_seat_modifiers = yes
+				if = { limit = { c:OTB5 = { var:oe_thh_tier ?= 3 } } add_location_modifier = { modifier = oe_thh_seat_loyal_mod months = 14 mode = replace } }
+				else_if = { limit = { c:OTB5 = { var:oe_thh_tier ?= 1 } } add_location_modifier = { modifier = oe_thh_seat_restive_mod months = 14 mode = replace } }
+			}
+		}
+	}
+}
+
+# TEU country scope. Shifts loyalty of all active Bailiwick subjects by $amount$.
+oe_thh_shift_all_ballei_loyalty = {
+	every_subject = {
+		limit = { oe_thh_is_ballei_subject = yes }
+		oe_thh_shift_loyalty = { amount = $amount$ }
+		oe_thh_sync_self_tier = yes
+	}
+}
+
+# Any scope. Paced yearly event dispatcher for Teutonic HRE Statecraft (oe_thh.1..8; .9/.10 via decisions, 0 orphans).
+oe_thh_dispatch_events = {
+	if = {
+		limit = { country_exists = c:TEU c:TEU = { oe_thh_is_teutonic_host = yes NOT = { has_variable = oe_thh_ev_cd } } }
+		c:TEU = {
+			if = {
+				limit = { NOT = { has_global_variable = oe_thh_ev1_done } current_year >= 1340 exists = international_organization:hre international_organization:hre = { international_organization_has_leader = yes } }
+				set_global_variable = { name = oe_thh_ev1_done value = 1 }
+				set_variable = { name = oe_thh_ev_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_thh.1
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_thh_ev3_done } current_year >= 1342 country_exists = c:OTB4 c:OTB4 = { is_subject_of = c:TEU } }
+				set_global_variable = { name = oe_thh_ev3_done value = 1 }
+				set_variable = { name = oe_thh_ev_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_thh.3
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_thh_ev4_done } current_year >= 1345 OR = { AND = { country_exists = c:OTB1 c:OTB1 = { is_subject_of = c:TEU } } AND = { country_exists = c:OTB3 c:OTB3 = { is_subject_of = c:TEU } } } }
+				set_global_variable = { name = oe_thh_ev4_done value = 1 }
+				set_variable = { name = oe_thh_ev_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_thh.4
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_thh_ev2_done } current_year >= 1348 }
+				set_global_variable = { name = oe_thh_ev2_done value = 1 }
+				set_variable = { name = oe_thh_ev_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_thh.2
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_thh_ev6_done } current_year >= 1352 oe_thh_has_any_ballei = yes }
+				set_global_variable = { name = oe_thh_ev6_done value = 1 }
+				set_variable = { name = oe_thh_ev_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_thh.6
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_thh_ev5_done } current_year >= 1355 }
+				set_global_variable = { name = oe_thh_ev5_done value = 1 }
+				set_variable = { name = oe_thh_ev_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_thh.5
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_thh_ev7_done } current_year >= 1362 }
+				set_global_variable = { name = oe_thh_ev7_done value = 1 }
+				set_variable = { name = oe_thh_ev_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_thh.7
+			}
+			else_if = {
+				limit = { NOT = { has_global_variable = oe_thh_ev8_done } current_year >= 1368 OR = { AND = { country_exists = c:OTB2 c:OTB2 = { is_subject_of = c:TEU } } AND = { country_exists = c:OTB5 c:OTB5 = { is_subject_of = c:TEU } } } }
+				set_global_variable = { name = oe_thh_ev8_done value = 1 }
+				set_variable = { name = oe_thh_ev_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_thh.8
+			}
+		}
+	}
+}
+
+# Any scope. Self-deduplicating yearly entrypoint (called via oe_thh_on_actions and safe for global kernel).
+oe_thh_kernel_yearly = {
+	if = {
+		limit = { NOT = { global_var:oe_thh_ran_y ?= current_year } }
+		set_global_variable = { name = oe_thh_ran_y value = current_year }
+		if = {
+			limit = { NOT = { has_global_variable = oe_thh_init_done } }
+			oe_thh_init_once = yes
+			set_global_variable = { name = oe_thh_init_done value = 1 }
+		}
+		oe_thh_cleanup_check = yes
+		oe_thh_sync_all_balleien = yes
+		oe_thh_dispatch_events = yes
+	}
+}

@@ -1,0 +1,296 @@
+﻿# NEW 2026-11-23 v23.0 Module B4 Global Flavor Gems Hansa-Burgundy-Granada-BlackSea (oe_hbg_, gen_v230_hansa_burgundy_blacksea.py) — 12 Multi-Option Regional Flavor Events (ai_chance = { base = N }, verified 1080x440 DDS, 0 orphans). Edit gen_v230_hansa_burgundy_blacksea.py, not this file.
+
+namespace = oe_hbg
+
+# 1. Hansetag & Charter of the Four Great Kontors
+oe_hbg.1 = {
+	type = country_event
+	title = oe_hbg.1.t
+	desc = oe_hbg.1.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_hanseatic_kontor.dds"
+	option = {
+		name = oe_hbg.1.a
+		ai_chance = { base = 50 }
+		add_gold = -35
+		oe_hbg_shift_all_kontor_loyalty = { amount = 14 }
+		add_country_modifier = { modifier = oe_hbg_mod_ev1_a years = 18 mode = replace }
+	}
+	option = {
+		name = oe_hbg.1.b
+		ai_chance = { base = 25 }
+		add_gold = 110
+		oe_hbg_shift_all_kontor_loyalty = { amount = -8 }
+		add_country_modifier = { modifier = oe_hbg_mod_ev1_b years = 15 mode = replace }
+	}
+	option = {
+		name = oe_hbg.1.c
+		ai_chance = { base = 25 }
+		add_stability = 5
+		add_country_modifier = { modifier = oe_hbg_mod_ev1_c years = 18 mode = replace }
+	}
+}
+
+# 2. Sound Tolls & the Peace of Stralsund vs Denmark
+oe_hbg.2 = {
+	type = country_event
+	title = oe_hbg.2.t
+	desc = oe_hbg.2.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_hanseatic_kontor.dds"
+	option = {
+		name = oe_hbg.2.a
+		ai_chance = { base = 55 }
+		set_variable = { name = oe_hbg_ev2_done value = 1 }
+		add_navy_tradition = 8
+		add_yearly_sailors = 0.75
+		oe_hbg_grant_denmark_sound_cb = yes
+		add_country_modifier = { modifier = oe_hbg_mod_ev2_a years = 20 mode = replace }
+	}
+	option = {
+		name = oe_hbg.2.b
+		ai_chance = { base = 45 }
+		set_variable = { name = oe_hbg_ev2_done value = 1 }
+		add_gold = 80
+		add_country_modifier = { modifier = oe_hbg_mod_ev2_b years = 20 mode = replace }
+		if = {
+			limit = { country_exists = c:DAN c:DAN = { is_rebel_country = no } }
+			add_opinion = { target = c:DAN modifier = opinion_good_relations }
+			c:DAN = { add_opinion = { target = root modifier = opinion_good_relations } }
+		}
+	}
+}
+
+# 3. Teutonic-Hanseatic Baltic Compact (links with TEU!)
+oe_hbg.3 = {
+	type = country_event
+	title = oe_hbg.3.t
+	desc = oe_hbg.3.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_marienburg_crusade.dds"
+	option = {
+		name = oe_hbg.3.a
+		ai_chance = { base = 60 }
+		set_global_variable = { name = oe_hbg_baltic_compact value = 1 }
+		add_country_modifier = { modifier = oe_hbg_mod_ev3_a years = 25 mode = replace }
+		if = {
+			limit = { country_exists = c:TEU c:TEU = { is_rebel_country = no NOT = { is_at_war_with = root } } }
+			add_opinion = { target = c:TEU modifier = opinion_good_relations }
+			c:TEU = {
+				add_opinion = { target = root modifier = opinion_good_relations }
+				add_country_modifier = { modifier = oe_hbg_mod_ev3_teu years = 25 mode = replace }
+			}
+			if = {
+				limit = { is_subject = no c:TEU = { is_subject = no } NOT = { is_allied_with = { target = c:TEU } } }
+				create_alliance = { target = c:TEU }
+			}
+		}
+	}
+	option = {
+		name = oe_hbg.3.b
+		ai_chance = { base = 40 }
+		add_gold = 90
+		add_country_modifier = { modifier = oe_hbg_mod_ev3_b years = 20 mode = replace }
+	}
+}
+
+# 4. Duchy of Burgundy & the Flanders Inheritance
+oe_hbg.4 = {
+	type = country_event
+	title = oe_hbg.4.t
+	desc = oe_hbg.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_burgundy_lotharingia.dds"
+	option = {
+		name = oe_hbg.4.a
+		ai_chance = { base = 60 }
+		add_prestige = 10
+		add_country_modifier = { modifier = oe_hbg_mod_ev4_a years = 20 mode = replace }
+		if = {
+			limit = { country_exists = c:FLA c:FLA = { is_rebel_country = no NOT = { is_at_war_with = root } } }
+			add_opinion = { target = c:FLA modifier = opinion_good_relations }
+			c:FLA = { add_opinion = { target = root modifier = opinion_good_relations } }
+		}
+	}
+	option = {
+		name = oe_hbg.4.b
+		ai_chance = { base = 40 }
+		add_gold = 100
+		if = { limit = { owns = location:dijon } location:dijon = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_hbg_mod_ev4_b years = 20 mode = replace }
+	}
+}
+
+# 5. Order of the Golden Fleece Grand Chapter
+oe_hbg.5 = {
+	type = country_event
+	title = oe_hbg.5.t
+	desc = oe_hbg.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_burgundy_lotharingia.dds"
+	option = {
+		name = oe_hbg.5.a
+		ai_chance = { base = 55 }
+		add_army_tradition = 8
+		add_prestige = 12
+		add_country_modifier = { modifier = oe_hbg_mod_ev5_a years = 25 mode = replace }
+	}
+	option = {
+		name = oe_hbg.5.b
+		ai_chance = { base = 45 }
+		add_stability = 6
+		add_country_modifier = { modifier = oe_hbg_mod_ev5_b years = 25 mode = replace }
+	}
+}
+
+# 6. Crown of Lotharingia & Charlemagne's Western Empire Dream
+oe_hbg.6 = {
+	type = country_event
+	title = oe_hbg.6.t
+	desc = oe_hbg.6.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_burgundy_lotharingia.dds"
+	option = {
+		name = oe_hbg.6.a
+		ai_chance = { base = 55 }
+		add_prestige = 15
+		oe_hbg_grant_lotharingia_cbs = yes
+		add_country_modifier = { modifier = oe_hbg_mod_ev6_a years = 30 mode = replace }
+	}
+	option = {
+		name = oe_hbg.6.b
+		ai_chance = { base = 45 }
+		add_gold = 140
+		add_country_modifier = { modifier = oe_hbg_mod_ev6_b years = 30 mode = replace }
+	}
+}
+
+# 7. Last Pearl of Al-Andalus: The 1337 Alhambra Rally
+oe_hbg.7 = {
+	type = country_event
+	title = oe_hbg.7.t
+	desc = oe_hbg.7.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_granada_alhambra.dds"
+	option = {
+		name = oe_hbg.7.a
+		ai_chance = { base = 60 }
+		add_yearly_manpower = 0.75
+		add_country_modifier = { modifier = oe_hbg_mod_ev7_a years = 20 mode = replace }
+	}
+	option = {
+		name = oe_hbg.7.b
+		ai_chance = { base = 40 }
+		add_gold = 100
+		add_country_modifier = { modifier = oe_hbg_mod_ev7_b years = 20 mode = replace }
+	}
+}
+
+# 8. Fall of Cordoba & Seville Reversed
+oe_hbg.8 = {
+	type = country_event
+	title = oe_hbg.8.t
+	desc = oe_hbg.8.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_granada_alhambra.dds"
+	option = {
+		name = oe_hbg.8.a
+		ai_chance = { base = 55 }
+		add_prestige = 15
+		add_army_tradition = 8
+		add_country_modifier = { modifier = oe_hbg_mod_ev8_a years = 25 mode = replace }
+	}
+	option = {
+		name = oe_hbg.8.b
+		ai_chance = { base = 45 }
+		add_stability = 6
+		add_country_modifier = { modifier = oe_hbg_mod_ev8_b years = 25 mode = replace }
+	}
+}
+
+# 9. Caliphate of Al-Andalus & Crossing the Pyrenees
+oe_hbg.9 = {
+	type = country_event
+	title = oe_hbg.9.t
+	desc = oe_hbg.9.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_granada_alhambra.dds"
+	option = {
+		name = oe_hbg.9.a
+		ai_chance = { base = 55 }
+		add_prestige = 20
+		add_yearly_manpower = 0.85
+		add_country_modifier = { modifier = oe_hbg_mod_ev9_a years = 30 mode = replace }
+	}
+	option = {
+		name = oe_hbg.9.b
+		ai_chance = { base = 45 }
+		add_gold = 150
+		add_country_modifier = { modifier = oe_hbg_mod_ev9_b years = 30 mode = replace }
+	}
+}
+
+# 10. Komnenos Eagles of Trebizond (TRE)
+oe_hbg.10 = {
+	type = country_event
+	title = oe_hbg.10.t
+	desc = oe_hbg.10.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v170_1453_constantinople.dds"
+	option = {
+		name = oe_hbg.10.a
+		ai_chance = { base = 55 }
+		add_prestige = 12
+		oe_hbg_grant_blacksea_cbs = yes
+		add_country_modifier = { modifier = oe_hbg_mod_ev10_a years = 20 mode = replace }
+	}
+	option = {
+		name = oe_hbg.10.b
+		ai_chance = { base = 45 }
+		add_gold = 110
+		add_yearly_sailors = 0.75
+		add_country_modifier = { modifier = oe_hbg_mod_ev10_b years = 20 mode = replace }
+	}
+}
+
+# 11. Last Goths of Mangup-Theodoro (FEO)
+oe_hbg.11 = {
+	type = country_event
+	title = oe_hbg.11.t
+	desc = oe_hbg.11.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_byz_siege_walls.dds"
+	option = {
+		name = oe_hbg.11.a
+		ai_chance = { base = 55 }
+		add_yearly_manpower = 0.75
+		add_country_modifier = { modifier = oe_hbg_mod_ev11_a years = 20 mode = replace }
+	}
+	option = {
+		name = oe_hbg.11.b
+		ai_chance = { base = 45 }
+		add_gold = 95
+		add_country_modifier = { modifier = oe_hbg_mod_ev11_b years = 20 mode = replace }
+	}
+}
+
+# 12. Black Sea Gothic-Germanic Millennial Reunion (FEO x TEU!)
+oe_hbg.12 = {
+	type = country_event
+	title = oe_hbg.12.t
+	desc = oe_hbg.12.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v220_black_white_cross_byz.dds"
+	option = {
+		name = oe_hbg.12.a
+		ai_chance = { base = 65 }
+		oe_hbg_seal_gothic_teutonic_reunion = yes
+		add_country_modifier = { modifier = oe_hbg_mod_ev12_a years = 30 mode = replace }
+	}
+	option = {
+		name = oe_hbg.12.b
+		ai_chance = { base = 35 }
+		add_prestige = 15
+		add_country_modifier = { modifier = oe_hbg_mod_ev12_b years = 30 mode = replace }
+	}
+}

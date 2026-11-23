@@ -1,8 +1,8 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v21.0.1
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v23.0
 
 欧陆风云 5 的东罗马（拜占庭）与欧亚全时代重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
-> **v21.0 不支持旧存档：v20.0 及以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。2026-11-23 在 EU5 1.4.9 上分三轮实机测试（rc1→rc2→rc3）：1337 开局 13 组新探针（P10–P22）全部达到预期读数；观察者局 1337→1361（24 年，约 9 分钟）没有崩溃，本模组脚本运行期报错为 0（rc1 同一段约 17,000 行，来自法律 2.0）；金帐汗国 1337–1361 年拥有地块稳定在 409–414 块（rc1、rc2 都在 1343–1349 年崩到不足 100 块）。极乐洲新罗马（`ELR`）建国后，议会类型为“极乐新罗马元老院”，冷却结束后实际走通了“新君士坦丁堡 → 选择极乐议题 → 议会已召集”；投票结果没有等到。首轮查出的加载期与运行期问题（法律 `has_estate`、征讨败战回调、内阁行动语法与缺词条、总督区同色与人力效率等）已在 rc2/rc3 复测为 0。发版文件夹本身另做了加载检查：进主菜单，以拜占庭开局并推进数月，没有崩溃，本模组脚本运行期报错为 0。
+> **v23.0 不支持旧存档：v21.0.1 及以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。2026-11-23 至 24 日在 EU5 1.4.9 上实机测试 rc1→rc4（主模组与四合一子模组同时加载）：1337 开局 6 组新探针（P23–P28）全部读数 1111；干净观察者局 1337→1356 两轮（rc3、rc4）均无崩溃，本模组运行期报错为 0；12 张新油画逐张实机预览正常；条顿 5 大辖区与汉萨 4 商站在 1342 年前后均为忠诚附庸；1337 开局后世国家缺政体报错与飞地回退已清零。四合一书签页实机核对：4 个时代单击切换、20 张君主肖像、点击圆徽展开右侧详情卡、难度标与底栏扩展包图标条正常，界面布局报错为 0。
 
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
@@ -37,6 +37,31 @@
 - **宫廷与豪族：** “琼筵序次”里有 7 个宫廷官职。豪族名册上的家族会扩张势力，可以拉拢、打压、抄家；放任不管会引发“拜占庭式的阴谋”。
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
+
+## v23.0 主要内容《十字与鹰旗》（整合 v22.0 + v23.0，2026-11-24）
+
+对比 v21.0.1：事件 `3,559 → 3,661`（`+102`），决议 `404 → 458`（`+54`，全部严格归属原版 7 类），专属任务树 `55 → 64` 份（`+9` 树 / `+108` 项任务），原生 `.dds` 美术与图标 `1,406 → 1,418`（`+12` 幅 1080×440 专属油画），双语本地化各增 `+2,196` 条（增量 100% 对齐），新增 15 部法律、2 套文明议会、6 项内阁行动、6 支条顿跨时代兵种与 9 个零夺地建筑型附庸（专属附庸保护锁 `27 → 33` 类）；开局游戏规则 `18/18`、主线调度槽位 `98/98`、新增原版覆写 `0`、`CMDLOG=0` 不变。
+
+- **v22.0 条顿骑士团重塑与黑十字×白十字双团路线（`oe_teu_` / `oe_thh_` / `oe_tom_` / `oe_kni_`）：** 重校 1337 条顿、利沃尼亚与医院骑士团开局疆域及 4 部骑士团专属法；新增 5 个神罗零夺地建筑型大辖区（波希米亚 `OTB1`、奥地利 `OTB2`、勃兰登堡 `OTB3`、梅尔根特海姆 `OTB4`、科隆 `OTB5`）、条顿总议会（Generalkapitel）、3 项内阁行动与 6 支时代 1–6 特色兵种；实装七阶东方大封邑（Ordensmark）与北方十字军原生局势界面 + 16 项条顿任务树；新增医院骑士团 12 项罗德岛—马耳他—耶路撒冷任务树及与条顿的《黑十字×白十字圣约》联动，配套 6 幅专属 1080×440 油画。
+- **v23.0 教皇国《地上天国》与拉丁希腊帝国（`oe_pap_` / `oe_lat_`）：** 新增教皇国 16 项任务树、阿维尼翁返罗马、教皇特使团与《地上天国 / 圣彼得罗马帝国》双轨终局（含大公会议和解与东西教宗联动）；新增拉丁希腊七邦（亚该亚、雅典、纳克索斯、塞浦路斯、奇里乞亚等）重铸拉丁帝国与《分封协议（Partitio）》16 项任务树、加泰罗尼亚走廊与三方十字军剧情。
+- **v23.0 意大利共和国《罗马共和国 S.P.Q.R.》与欧陆四星风味（`oe_spqr_` / `oe_hbg_`）：** 威尼斯、热那亚、比萨、佛罗伦萨可通过 16 项任务树、罗马元老院议会与行省总督（Proconsul）重光古典罗马共和国；新增吕贝克/汉萨 4 座零夺地海外商站（伦敦钢院 `OHK1`、布鲁日 `OHK2`、卑尔根 `OHK3`、诺夫哥罗德 `OHK4`，33 类专属附庸保护锁全覆盖）及勃艮第中法兰克、格拉纳达安达卢斯、黑海哥特—日耳曼四条 8 项任务树与 6 幅专属 1080×440 油画。
+- **1337 飞地回归与历史清理：** 将 v15.0 费拉德尔菲亚（`OPH`）及 v17.5 地图整编永久合入 1337 生成管线与 G02 门禁，修复卡斯蒂利亚督军区 `spanish_language` 报错并清零全部跨时代休眠国报错。
+- **新子模组 · 四合一全时代仿 CK3 剧本合集（`OEBYZ-Phoenix-All-Eras`）：** 单包整合 `1337`（零覆写原版）+ `1453` + `1648` + `1776` 四大纪元，取代此前的单年代 1453 / 1648 / 1776 剧本子模组与开局精选页 3.0；选时代界面重制为古羊皮纸历史版图（4 幅 `1920×1080` 地图 + 20 位手绘君主圆徽 + 彩色难度标），支持顶栏四世纪单击切换、点击圆徽或名单在右侧展开君主详情卡（肖像、政体/文化/宗教/难度与 20 篇双语传记），以及底部统一状态栏与原生扩展包图标条。
+
+### 可选子模组（v23.0）
+
+可选子模组（均需排在主模组 `OEBYZ-Phoenix-v23.0` 之后加载）：
+- **四合一全时代仿 CK3 剧本合集**（`OEBYZ-Phoenix-All-Eras`，创意工坊 `3844848618`，GitHub Release 附 ZIP）：整合 `1337`/`1453`/`1648`/`1776` 四大纪元与仿 CK3 羊皮纸选时代界面；**请勿与旧单年代 1453/1648/1776 子模组或开局精选页 3.0 同载**。
+- **旧版单年代剧本 / 开局精选页 3.0**：已在创意工坊下架（设为隐藏，条目 `3844754950` / `3844755248` / `3844755348` / `3844347953`），请改用新的四合一合集。
+
+### 已知问题（v23.0）
+
+- 本版不支持 v21.0.1 及更早版本的旧存档，请新开一局；只适配 EU5 `1.4.9`。
+- 四合一子模组 `OEBYZ-Phoenix-All-Eras` 已完整包含 1453 / 1648 / 1776 三个剧本，启用时请排在主模组之后，**切勿与旧版单年代 1453 / 1648 / 1776 剧本子模组或开局精选页 3.0 同时勾选**。
+- 受 EU5 1.4.9 引擎限制，游戏规则、难度、铁人模式与成就开关在选完年代进入下一步选国大厅（Lobby）后设置，书签页底栏仅作只读提示；点击君主详情卡的「开始」将进入该时代选国大厅。
+- 四合一书签页：国旗位目前全部显示为空框（含 1776 俄国），君主详情卡的「◀ 总览」按钮点击无效（切换年代即可回到总览）；不影响选年代与开局。
+- 1453 / 1648 / 1776 开局日志里仍有一批原版科技文件的宗教比较提示（主模组 1337 专有的 18 个附加国家在后世时代缺宗教模板），不影响开局与游玩。
+- 尚未逐项实测的：各新任务树中后期全部 108 项任务的逐一触发、教皇国/拉丁帝国/罗马共和国中后期全部事件分支，以及超过 1356 年的百年长局走势。
 
 ## v21.0.1 热更新
 
@@ -179,7 +204,7 @@ v21.0 正式版里，所有国家的决议面板都显示成空白条加提醒�
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v21.0.1` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v23.0` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
@@ -204,16 +229,41 @@ v21.0 正式版里，所有国家的决议面板都显示成空白条加提醒�
 
 ---
 
-# Phoenix Beta (OEBYZ) v21.0.1 — English
+# Phoenix Beta (OEBYZ) v23.0 — English
 
 The beta of an Eastern Roman (Byzantine) and Pan-Eurasian overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
-> **v21.0: Old saves are not supported: saves from v20.0 or earlier will not work with this version. Start a new game.** Tested live on EU5 1.4.9 on 23 November 2026 in three rounds (rc1→rc2→rc3): all 13 new 1337 probes (P10–P22) returned their expected values; an observer game 1337→1361 (24 years, about 9 minutes) ran with no crash and 0 runtime script errors from this mod (rc1 logged about 17,000 lines there, from Laws 2.0); the Golden Horde held 409–414 locations from 1337 to 1361 (in rc1 and rc2 it fell below 100 between 1343 and 1349). After founding Nova Elysia (`ELR`) the parliament type is the Elysian Senate, and once its cooldown ended a session was actually called at New Constantinople on an Elysian issue; the vote result was not awaited. The load-time and runtime issues found in the first round (Laws 2.0 `has_estate`, campaign defeat hook, cabinet action syntax and missing texts, viceroyalty colours and manpower efficiency, etc.) were re-tested at 0 in rc2/rc3. The release folder itself was load-checked: main menu, then a game as Byzantium run for some months with no crash and 0 runtime script errors from this mod.
+> **v23.0: Old saves are not supported: saves from v21.0.1 or earlier will not work with this version. Start a new game.** Live-tested on EU5 1.4.9 from rc1 to rc4 (23–24 Nov 2026) with the main mod and the All-Eras submod loaded together: all 6 new 1337 probes (P23–P28) read 1111; two clean observer runs 1337→1356 (rc3, rc4) finished with no crash and 0 runtime script errors from this mod; all 12 new oil paintings were previewed live; the 5 Teutonic Bailiwicks and 4 Hanseatic Kontors are loyal subjects around 1342; the 1337 later-era country and exclave regressions are at 0. On the 4-in-1 bookmark screen, single-click era tabs, the 20 monarch portraits, click-to-open detail cards, difficulty tags and the bottom DLC strip work, with 0 GUI layout errors.
 
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
 
 ⭐ **If you enjoy the mod, please star this repository.** Stars help other players find it and are the most direct encouragement for us. Bug reports are welcome in Issues.
+
+## New in v23.0 — Cross & Eagle (consolidates v22.0 + v23.0, 2026-11-24)
+
+Against v21.0.1: events `3,559 → 3,661` (`+102`), decisions `404 → 458` (`+54`, all strictly inside the 7 vanilla categories), dedicated mission trees `55 → 64` (`+9` trees / `+108` missions), native `.dds` art assets `1,406 → 1,418` (`+12` bespoke 1080x440 oil paintings), bilingual localization `+2,196` keys per language (100% delta parity), plus 15 laws, 2 civilization parliaments, 6 cabinet actions, 6 Age 1–6 Teutonic units, and 9 zero-land-detachment building subjects (protected special-subject lock `27 → 33`); 18/18 Game Rules, 98/98 mainline slots, 0 new vanilla overrides, and `CMDLOG=0` unchanged.
+
+- **v22.0 Teutonic Order Overhaul & Black Cross × White Cross (oe_teu_ / oe_thh_ / oe_tom_ / oe_kni_):** recalibrated 1337 Baltic Order borders and 4 monastic laws; added 5 zero-land-detachment HRE building Bailiwicks (Bohemia `OTB1`, Austria `OTB2`, Brandenburg `OTB3`, Mergentheim `OTB4`, Cologne `OTB5`), the Teutonic General Chapter parliament, 3 cabinet actions, and 6 Age 1–6 order units; added the 7-tier Ordensmark & Northern Crusade situation GUI with a 16-mission Teutonic tree, plus a 12-mission Hospitaller Rhodes-Malta-Jerusalem tree and Black×White Cross Pact with 6 bespoke 1080x440 oil paintings.
+- **v23.0 Papal Kingdom of God & Latin Empire of Constantinople (oe_pap_ / oe_lat_):** added a 16-mission Papal States tree covering the Return from Avignon, Papal Legations, Ecumenical Reunion, and the dual *Regnum Dei / Imperium Sancti Petri* finale; added a 16-mission Latin Greece (*Frankokratia*) tree for Achaea, Athens, Naxos, Cyprus, and Cilicia with *Partitio* enfeoffments and the Catalan Corridor.
+- **v23.0 Roman Republic S.P.Q.R. & Hansa-Burgundy-Granada-Black Sea (oe_spqr_ / oe_hbg_):** Venice, Genoa, Pisa, and Florence can restore the classical Roman Republic via a 16-mission tree, Roman Senate parliament, and Proconsul subjects; added 4 zero-land-detachment Hanseatic Overseas Kontors (London Steelyard `OHK1`, Bruges `OHK2`, Bergen `OHK3`, Novgorod `OHK4`, expanding the special-subject lock to 33 types) plus 4x8=32 missions for Hansa, Burgundy, Granada, and Black Sea Gothic-Germanic realms with 6 bespoke 1080x440 oil paintings.
+- **1337 Exclave Restoration & Cross-Era Cleanup:** permanently locked v15.0 (`OPH`) and v17.5 map consolidations into the 1337 rebuild pipeline and CI gate G02, fixed Castilian viceroyalty `castilian_dialect`, and resolved cross-era dormant tag errors.
+- **New Submod · All-Eras 4-in-1 CK3 Bookmark Atlas (`OEBYZ-Phoenix-All-Eras`):** unifies `1337` (zero override of vanilla `00_bookmarks.txt`), `1453`, `1648` and `1776` in one package, replacing the earlier standalone 1453 / 1648 / 1776 scenario submods and Bookmarks 3.0; a CK3-style antique parchment era selector (4 `1920x1080` maps, 20 custom monarch portraits, colour-coded difficulty tags), single-click century tabs, click-to-open right-panel Monarch Detail Cards (portrait, government, culture, religion, difficulty, bilingual bio) and a bottom status bar with the native DLC strip.
+
+### Optional Submods (v23.0)
+
+Load strictly **after** `OEBYZ-Phoenix-v23.0`:
+- **All-Eras 4-in-1 CK3 Bookmarks** (`OEBYZ-Phoenix-All-Eras`, Workshop `3844848618`, ZIP on GitHub Release): unifies `1337`/`1453`/`1648`/`1776` with the CK3-style parchment bookmark selector; **do not stack** with legacy standalone 1453/1648/1776 submods or Bookmarks 3.0.
+- **Legacy standalone scenarios / Bookmarks 3.0**: unlisted on the Workshop (set to hidden; items `3844754950` / `3844755248` / `3844755348` / `3844347953`); use the unified 4-in-1 pack instead.
+
+**Known issues (v23.0):**
+
+- Saves from v21.0.1 or earlier are not supported; start a new game. Built for EU5 `1.4.9` only.
+- The 4-in-1 submod `OEBYZ-Phoenix-All-Eras` already bundles all 1453 / 1648 / 1776 scenarios: load it strictly **after** the main mod and **do not enable** the legacy standalone 1453 / 1648 / 1776 submods or Bookmarks 3.0 at the same time.
+- By EU5 1.4.9 engine design, Game Rules, Difficulty, Ironman, and Achievements are configured in the next lobby screen after picking an era; the bookmark bottom bar displays a read-only notice, and clicking Start on a Monarch Detail Card enters that era's lobby.
+- 4-in-1 bookmark screen: the flag slots currently show empty frames (1776 Russia included), and the detail card's Overview button does not respond (switching era returns to the overview); choosing an era and starting are not affected.
+- The 1453 / 1648 / 1776 start logs still carry vanilla advance religion-comparison notes (18 countries that exist only in the main mod's 1337 setup lack religion templates in later eras); starting and playing are not affected.
+- Not tested item by item: all 108 mid/late missions across the 9 new trees, late-game Papal/Latin/SPQR event branches, and multi-century observer runs past 1356.
 
 ## v21.0.1 hotfix
 

@@ -1,0 +1,157 @@
+﻿# NEW 2026-11-23 v23.0 Module B4 Global Flavor Gems Hansa-Burgundy-Granada-BlackSea (oe_hbg_, gen_v230_hansa_burgundy_blacksea.py) — Mission Pack 64 (oe_msn_blacksea_destiny, 8 verified DAG tasks). Edit gen_v230_hansa_burgundy_blacksea.py, not this file.
+
+oe_msn_blacksea_destiny = {
+	icon = generic_conquer_province
+	repeatable = no
+	chance = 4800
+	player_playstyle = military
+
+	visible = {
+		game_has_missions_enabled = yes
+		oe_hbg_is_blacksea_host = yes
+	}
+	enabled = {
+		is_rebel_country = no
+		OR = { owns_or_non_sovereign_subject_owns = location:trebizond owns_or_non_sovereign_subject_owns = location:theodoro owns_or_non_sovereign_subject_owns = location:constantinople }
+	}
+	on_start = {
+		set_variable = { name = oe_msn_active_pack value = 64 }
+	}
+	on_abort = {
+		add_prestige = prestige_weak_penalty
+	}
+	on_completion = {
+		set_variable = { name = oe_msn_completed_blacksea value = 1 }
+		set_global_variable = { name = oe_msn_done_blacksea value = 1 }
+		oe_msn_bump_completed = yes
+		oe_msn_bump_theater_med = yes
+		add_prestige = prestige_severe_bonus
+	}
+
+	oe_msn_blk_01_bastion_of_euxine = {
+		icon = tre_greek_stronghold
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_blk_01_bastion_of_euxine_req_tt
+				OR = { owns_or_non_sovereign_subject_owns = location:trebizond owns_or_non_sovereign_subject_owns = location:theodoro } stability >= 5 OR = { any_owned_location = { OR = { has_building = building_type:castle has_building = building_type:coastal_fort } } gold >= 100 }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_gold = 120
+			if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
+			add_country_modifier = { modifier = oe_hbg_mod_msn_euxine_bastion years = 25 mode = replace }
+		}
+	}
+	oe_msn_blk_02_pontic_silk_emporium = {
+		icon = riches_of_the_silk_road
+		requires = { oe_msn_blk_01_bastion_of_euxine }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_blk_02_pontic_silk_emporium_req_tt
+				has_ports = yes OR = { AND = { owns_or_non_sovereign_subject_owns = location:trebizond OR = { owns_or_non_sovereign_subject_owns = location:giresun owns_or_non_sovereign_subject_owns = location:rize owns_or_non_sovereign_subject_owns = location:taman owns_or_non_sovereign_subject_owns = location:sinop } } AND = { owns_or_non_sovereign_subject_owns = location:theodoro OR = { owns_or_non_sovereign_subject_owns = location:kaffa owns_or_non_sovereign_subject_owns = location:solkhat owns_or_non_sovereign_subject_owns = location:taman gold >= 160 } } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_yearly_sailors = 0.85
+			add_country_modifier = { modifier = oe_hbg_mod_msn_pontic_silk years = 25 mode = replace }
+		}
+	}
+	oe_msn_blk_03_komnenos_or_gothia_ascendant = {
+		icon = tre_grand_komnenoi
+		requires = { oe_msn_blk_02_pontic_silk_emporium }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_blk_03_komnenos_or_gothia_ascendant_req_tt
+				OR = { AND = { has_or_had_tag = TRE OR = { owns_or_non_sovereign_subject_owns = location:sinop owns_or_non_sovereign_subject_owns = location:samsun owns_or_non_sovereign_subject_owns = location:amasra owns_or_non_sovereign_subject_owns = location:batumi owns_or_non_sovereign_subject_owns = location:constantinople } } AND = { has_or_had_tag = FEO OR = { owns_or_non_sovereign_subject_owns = location:kaffa owns_or_non_sovereign_subject_owns = location:solkhat owns_or_non_sovereign_subject_owns = location:qirq_yer owns_or_non_sovereign_subject_owns = location:taman owns_or_non_sovereign_subject_owns = location:tana } } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_yearly_manpower = 0.85
+			add_army_tradition = army_tradition_mild_bonus
+			if = { limit = { owns = location:sinop } location:sinop = { add_core = root } }
+			if = { limit = { owns = location:kaffa } location:kaffa = { add_core = root } }
+			if = { limit = { owns = location:solkhat } location:solkhat = { add_core = root } }
+		}
+	}
+	oe_msn_blk_04_euxine_thalassocracy = {
+		icon = byz_crossroads_of_continents
+		requires = { oe_msn_blk_03_komnenos_or_gothia_ascendant }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_blk_04_euxine_thalassocracy_req_tt
+				current_age_or_later = { age = age_2_renaissance } stability >= 10 num_locations_owned_or_owned_by_subjects >= 10 OR = { navy_tradition >= 15 navy_size >= 12 }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_gold = 180
+			add_country_modifier = { modifier = oe_hbg_mod_msn_euxine_hegemony years = 30 mode = replace }
+		}
+	}
+	oe_msn_blk_05_imperial_heritage_or_mangup = {
+		icon = tre_byzantine_birthright
+		requires = { oe_msn_blk_01_bastion_of_euxine }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_blk_05_imperial_heritage_or_mangup_req_tt
+				prestige >= 15 stability >= 6 religion.group = religion_group:christian
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_mild_bonus
+			add_stability = stability_weak_bonus
+			oe_hbg_grant_blacksea_cbs = yes
+		}
+	}
+	oe_msn_blk_06_straits_or_crimean_crown = {
+		icon = byz_autokratoria_rhomaion
+		requires = { oe_msn_blk_05_imperial_heritage_or_mangup }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_blk_06_straits_or_crimean_crown_req_tt
+				OR = { owns_or_non_sovereign_subject_owns = location:constantinople has_variable = oe_hbg_dec_komnenos_done has_variable = oe_hbg_dec_gothia_reunion_done AND = { owns_or_non_sovereign_subject_owns = location:theodoro owns_or_non_sovereign_subject_owns = location:kaffa owns_or_non_sovereign_subject_owns = location:solkhat } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_mild_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_blacksea_crown years = 30 mode = replace }
+		}
+	}
+	oe_msn_blk_07_gothic_germanic_bridge = {
+		icon = teu_expanded_marches
+		requires = { oe_msn_blk_06_straits_or_crimean_crown }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_blk_07_gothic_germanic_bridge_req_tt
+				OR = { has_global_variable = oe_hbg_gothic_teutonic_reunion AND = { has_global_variable = oe_tom_pontus_established country_exists = c:TEU c:TEU = { NOT = { is_at_war_with = root } } } AND = { current_age_or_later = { age = age_2_renaissance } num_locations_owned_or_owned_by_subjects >= 16 } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_country_modifier = { modifier = oe_hbg_mod_msn_pontic_bridge years = 35 mode = replace }
+			if = { limit = { has_or_had_tag = FEO NOT = { has_global_variable = oe_hbg_ev12_done } } set_global_variable = { name = oe_hbg_ev12_done value = 1 } trigger_event_non_silently = oe_hbg.12 }
+		}
+	}
+	oe_msn_blk_08_sovereign_of_pontus_and_bosphorus = {
+		icon = glory_of_rome
+		requires = { oe_msn_blk_04_euxine_thalassocracy oe_msn_blk_07_gothic_germanic_bridge }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_blk_08_sovereign_of_pontus_and_bosphorus_req_tt
+				current_age_or_later = { age = age_2_renaissance } stability >= 15 num_locations_owned_or_owned_by_subjects >= 20 OR = { owns_or_non_sovereign_subject_owns = location:constantinople has_global_variable = oe_hbg_gothic_teutonic_reunion AND = { owns_or_non_sovereign_subject_owns = location:trebizond owns_or_non_sovereign_subject_owns = location:theodoro owns_or_non_sovereign_subject_owns = location:kaffa } }
+			}
+		}
+		duration = 0
+		final = yes
+		on_completion = {
+			set_country_rank_effect = { rank = country_rank:rank_empire }
+			add_prestige = prestige_severe_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_blacksea_empire years = 50 mode = replace }
+		}
+	}
+}

@@ -1,0 +1,159 @@
+﻿# NEW 2026-11-23 v23.0 Module B4 Global Flavor Gems Hansa-Burgundy-Granada-BlackSea (oe_hbg_, gen_v230_hansa_burgundy_blacksea.py) — Mission Pack 61 (oe_msn_hansa_destiny, 8 verified DAG tasks). Edit gen_v230_hansa_burgundy_blacksea.py, not this file.
+
+oe_msn_hansa_destiny = {
+	icon = generic_trade
+	repeatable = no
+	chance = 4800
+	player_playstyle = diplomatic
+
+	visible = {
+		game_has_missions_enabled = yes
+		oe_hbg_is_hansa_host = yes
+	}
+	enabled = {
+		is_rebel_country = no
+		OR = { owns_or_non_sovereign_subject_owns = location:lubeck owns_or_non_sovereign_subject_owns = location:hamburg owns_or_non_sovereign_subject_owns = location:bremen }
+	}
+	on_start = {
+		set_variable = { name = oe_msn_active_pack value = 61 }
+	}
+	on_abort = {
+		add_prestige = prestige_weak_penalty
+	}
+	on_completion = {
+		set_variable = { name = oe_msn_completed_hansa value = 1 }
+		set_global_variable = { name = oe_msn_done_hansa value = 1 }
+		oe_msn_bump_completed = yes
+		oe_msn_bump_theater_weu = yes
+		add_prestige = prestige_severe_bonus
+	}
+
+	oe_msn_hansa_01_queen_of_hansa = {
+		icon = hsa_seal_of_the_hansa
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_hansa_01_queen_of_hansa_req_tt
+				OR = { owns_or_non_sovereign_subject_owns = location:lubeck owns_or_non_sovereign_subject_owns = location:hamburg owns_or_non_sovereign_subject_owns = location:bremen } stability >= 5 OR = { any_owned_location = { OR = { has_building = building_type:marketplace has_building = building_type:dock has_building = building_type:customs_house } } gold >= 120 }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_gold = 120
+			add_prestige = prestige_mild_bonus
+			if = { limit = { exists = capital } capital = { change_development = development_mild_bonus change_prosperity = prosperity_mild_bonus } }
+			if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
+		}
+	}
+	oe_msn_hansa_02_four_great_kontors = {
+		icon = hsa_hanseatic_ties
+		requires = { oe_msn_hansa_01_queen_of_hansa }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_hansa_02_four_great_kontors_req_tt
+				OR = { oe_hbg_has_two_kontors = yes has_variable = oe_hbg_dec_hanseatic_diet_done AND = { has_ports = yes gold >= 180 stability >= 8 } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			oe_hbg_shift_all_kontor_loyalty = { amount = 12 }
+			add_gold = 140
+			add_country_modifier = { modifier = oe_hbg_mod_msn_four_kontors years = 25 mode = replace }
+		}
+	}
+	oe_msn_hansa_03_wendish_cog_fleet = {
+		icon = hsa_hanseatic_shipwrights
+		requires = { oe_msn_hansa_02_four_great_kontors }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_hansa_03_wendish_cog_fleet_req_tt
+				has_ports = yes OR = { navy_size >= 14 navy_tradition >= 18 any_owned_location = { OR = { has_building = building_type:shipyard has_building = building_type:dry_dock } } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_yearly_sailors = 1.0
+			add_navy_tradition = navy_tradition_mild_bonus
+			oe_hbg_grant_denmark_sound_cb = yes
+		}
+	}
+	oe_msn_hansa_04_peace_of_stralsund = {
+		icon = hsa_mastery_of_the_sea
+		requires = { oe_msn_hansa_03_wendish_cog_fleet }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_hansa_04_peace_of_stralsund_req_tt
+				OR = { owns_or_non_sovereign_subject_owns = location:stralsund owns_or_non_sovereign_subject_owns = location:kobenhavn owns_or_non_sovereign_subject_owns = location:malmo owns_or_non_sovereign_subject_owns = location:lund owns_or_non_sovereign_subject_owns = location:visby AND = { has_variable = oe_hbg_ev2_done navy_tradition >= 20 stability >= 10 } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_prestige = prestige_mild_bonus
+			add_gold = 180
+			add_country_modifier = { modifier = oe_hbg_mod_msn_stralsund_toll years = 30 mode = replace }
+		}
+	}
+	oe_msn_hansa_05_wendish_cities_compact = {
+		icon = hamburg_port_cities
+		requires = { oe_msn_hansa_01_queen_of_hansa }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_hansa_05_wendish_cities_compact_req_tt
+				OR = { num_locations_owned_or_owned_by_subjects >= 4 AND = { owns_or_non_sovereign_subject_owns = location:lubeck OR = { owns_or_non_sovereign_subject_owns = location:hamburg owns_or_non_sovereign_subject_owns = location:bremen owns_or_non_sovereign_subject_owns = location:wismar owns_or_non_sovereign_subject_owns = location:rostock owns_or_non_sovereign_subject_owns = location:stralsund } } AND = { country_exists = c:HAM c:HAM = { is_allied_with = { target = root } } } AND = { country_exists = c:LUB c:LUB = { is_allied_with = { target = root } } } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_gold = 140
+			add_prestige = prestige_mild_bonus
+			if = { limit = { owns = location:wismar } location:wismar = { add_core = root } }
+			if = { limit = { owns = location:rostock } location:rostock = { add_core = root } }
+			if = { limit = { owns = location:stralsund } location:stralsund = { add_core = root } }
+		}
+	}
+	oe_msn_hansa_06_teutonic_baltic_compact = {
+		icon = baltic_shipyard
+		requires = { oe_msn_hansa_05_wendish_cities_compact }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_hansa_06_teutonic_baltic_compact_req_tt
+				OR = { has_global_variable = oe_hbg_baltic_compact owns_or_non_sovereign_subject_owns = location:konigsberg owns_or_non_sovereign_subject_owns = location:riga owns_or_non_sovereign_subject_owns = location:tallinn AND = { country_exists = c:TEU c:TEU = { NOT = { is_at_war_with = root } OR = { is_allied_with = { target = root } opinion = { target = root value >= 40 } } } } }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_country_modifier = { modifier = oe_hbg_mod_msn_baltic_compact years = 30 mode = replace }
+			if = { limit = { NOT = { has_global_variable = oe_hbg_ev3_done } } set_global_variable = { name = oe_hbg_ev3_done value = 1 } trigger_event_non_silently = oe_hbg.3 }
+		}
+	}
+	oe_msn_hansa_07_north_sea_staple = {
+		icon = lub_hanseatic_coins
+		requires = { oe_msn_hansa_06_teutonic_baltic_compact }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_hansa_07_north_sea_staple_req_tt
+				current_age_or_later = { age = age_2_renaissance } stability >= 10 OR = { oe_hbg_has_three_kontors = yes num_locations_owned_or_owned_by_subjects >= 8 gold >= 400 }
+			}
+		}
+		duration = 0
+		on_completion = {
+			add_gold = 220
+			add_country_modifier = { modifier = oe_hbg_mod_msn_hanseatic_coinage years = 30 mode = replace }
+		}
+	}
+	oe_msn_hansa_08_commercial_empire = {
+		icon = hsa_hanseatic_treasury
+		requires = { oe_msn_hansa_04_peace_of_stralsund oe_msn_hansa_07_north_sea_staple }
+		enabled = {
+			custom_tooltip = {
+				text = oe_msn_hansa_08_commercial_empire_req_tt
+				current_age_or_later = { age = age_2_renaissance } stability >= 12 OR = { has_variable = oe_hbg_dec_hansa_empire_done AND = { num_locations_owned_or_owned_by_subjects >= 12 navy_tradition >= 25 } }
+			}
+		}
+		duration = 0
+		final = yes
+		on_completion = {
+			add_prestige = prestige_severe_bonus
+			add_country_modifier = { modifier = oe_hbg_mod_msn_hansa_empire years = 50 mode = replace }
+		}
+	}
+}

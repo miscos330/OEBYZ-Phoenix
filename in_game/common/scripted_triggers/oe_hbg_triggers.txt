@@ -1,0 +1,125 @@
+﻿# NEW 2026-11-23 v23.0 Module B4 Global Flavor Gems Hansa-Burgundy-Granada-BlackSea (oe_hbg_, gen_v230_hansa_burgundy_blacksea.py) — Scripted Triggers for Hansa Kontors, Burgundy-Lotharingia, Granada Al-Andalus & Black Sea Trio (0 bare if/else). Edit gen_v230_hansa_burgundy_blacksea.py, not this file.
+
+# Country scope. True for any of the 4 Hanseatic Overseas Kontor building-type subjects.
+oe_hbg_is_kontor_subject = {
+	country_type = building
+	is_subject_type = oe_hbg_kontor
+}
+
+# Country scope. True for landed Hanseatic core cities (LUB / HAM / BRE).
+oe_hbg_is_hansa_host = {
+	is_rebel_country = no
+	num_locations > 0
+	country_type = location
+	OR = {
+		tag = LUB
+		tag = HAM
+		tag = BRE
+		has_or_had_tag = LUB
+		has_or_had_tag = HAM
+		has_or_had_tag = BRE
+	}
+}
+
+# Country scope. True when overlord currently commands >= 2 active Hanseatic Kontors.
+oe_hbg_has_two_kontors = {
+	any_subject = {
+		oe_hbg_is_kontor_subject = yes
+		count >= 2
+	}
+}
+
+# Country scope. True when overlord currently commands >= 3 active Hanseatic Kontors.
+oe_hbg_has_three_kontors = {
+	any_subject = {
+		oe_hbg_is_kontor_subject = yes
+		count >= 3
+	}
+}
+
+# Country scope. True for Burgundy or Lotharingia formed by Burgundy.
+oe_hbg_is_burgundy_host = {
+	is_rebel_country = no
+	num_locations > 0
+	country_type = location
+	OR = {
+		tag = BUR
+		has_or_had_tag = BUR
+		tag = LOT
+	}
+}
+
+# Country scope. True for Burgundy holding at least two Lowland/Lotharingian pillar cities.
+oe_hbg_holds_lotharingia_pillars = {
+	calc_true_if = {
+		amount >= 2
+		owns_or_non_sovereign_subject_owns = location:bruges
+		owns_or_non_sovereign_subject_owns = location:ghent
+		owns_or_non_sovereign_subject_owns = location:antwerp
+		owns_or_non_sovereign_subject_owns = location:luxembourg
+		owns_or_non_sovereign_subject_owns = location:nancy
+		owns_or_non_sovereign_subject_owns = location:metz
+		owns_or_non_sovereign_subject_owns = location:aachen
+	}
+}
+
+# Country scope. True for Granada or Al-Andalus (EU5 tag ADU; never ALU which is Alupa in India).
+oe_hbg_is_granada_host = {
+	is_rebel_country = no
+	num_locations > 0
+	country_type = location
+	OR = {
+		tag = GRA
+		has_or_had_tag = GRA
+		tag = ADU
+	}
+}
+
+# Country scope. True for Empire of Trebizond.
+oe_hbg_is_trebizond_host = {
+	is_rebel_country = no
+	num_locations > 0
+	country_type = location
+	OR = {
+		tag = TRE
+		has_or_had_tag = TRE
+	}
+}
+
+# Country scope. True for Principality of Theodoro (Crimean Gothia).
+oe_hbg_is_theodoro_host = {
+	is_rebel_country = no
+	num_locations > 0
+	country_type = location
+	OR = {
+		tag = FEO
+		has_or_had_tag = FEO
+	}
+}
+
+# Country scope. True for either Trebizond or Theodoro.
+oe_hbg_is_blacksea_host = {
+	OR = {
+		oe_hbg_is_trebizond_host = yes
+		oe_hbg_is_theodoro_host = yes
+	}
+}
+
+# Country scope. True when Teutonic Order is reachable for Gothic-Germanic Reunion in the Black Sea.
+oe_hbg_teu_reunion_partner_ready = {
+	country_exists = c:TEU
+	c:TEU = {
+		is_rebel_country = no
+		NOT = { is_at_war_with = root }
+	}
+	OR = {
+		has_global_variable = oe_tom_pontus_established
+		c:TEU = {
+			OR = {
+				owns_or_non_sovereign_subject_owns = location:kaffa
+				owns_or_non_sovereign_subject_owns = location:solkhat
+				owns_or_non_sovereign_subject_owns = location:qirq_yer
+			}
+		}
+	}
+}

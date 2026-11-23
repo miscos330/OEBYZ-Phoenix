@@ -1,0 +1,81 @@
+﻿# NEW 2026-11-23 v22.0 Module 2 Teutonic HRE Statecraft & Bailiwicks (oe_thh_, gen_v220_teu_hre_statecraft.py) — Teutonic HRE Bailiwick Building-Type Subject (oe_teu_ballei). Edit gen_v220_teu_hre_statecraft.py, not this file.
+
+oe_teu_ballei = {
+	subject_pays = subject_oe_gov_tax
+	color = subject_fiefdom
+	level = 2
+	type = building
+	government = theocracy
+
+	join_offensive_wars_always = {
+		always = no
+	}
+	join_offensive_wars_can_call = {
+		custom_tooltip = {
+			text = oe_teu_ballei_call_tt
+			scope:actor ?= { NOT = { is_subject_of = scope:recipient } }
+			scope:recipient ?= {
+				var:oe_thh_tier ?= 3
+			}
+		}
+	}
+	join_defensive_wars_always = {
+		custom_tooltip = {
+			text = oe_teu_ballei_defend_tt
+			OR = {
+				scope:actor ?= { is_subject_of = scope:recipient }
+				scope:recipient ?= {
+					OR = {
+						var:oe_thh_tier ?= 3
+						var:oe_thh_tier ?= 2
+					}
+				}
+			}
+		}
+	}
+	can_be_annexed = no
+	subject_can_cancel = no
+	overlord_can_cancel = no
+
+	diplomatic_capacity_cost_scale = 0.0
+	can_change_rank = no
+	can_change_heir_selection = no
+	has_overlords_ruler = no
+
+	has_limited_diplomacy = yes
+	fleet_basing_rights = yes
+	food_access = yes
+	use_overlord_map_color = no
+	use_overlord_map_name = no
+
+	great_power_score_transfer = 0.25
+
+	institution_spread_to_overlord = monthly_institution_spread_severe
+	institution_spread_to_subject = monthly_institution_spread_severe
+
+	strength_vs_overlord = -1
+
+	overlord_modifier = {
+	}
+
+	subject_modifier = {
+		loyalty_to_overlord = 45
+	}
+	creation_visible = {
+		always = no
+	}
+	visible_through_diplomacy = {
+		always = no
+	}
+	visible_through_treaty = {
+		always = no
+	}
+	enabled_through_diplomacy = {
+		always = no
+	}
+	on_enable = {}
+	on_disable = {}
+
+	will_join_independence_wars = no
+	allow_declaring_wars = { always = no }
+}

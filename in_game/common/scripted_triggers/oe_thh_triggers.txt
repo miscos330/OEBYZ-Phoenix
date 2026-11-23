@@ -1,0 +1,68 @@
+﻿# NEW 2026-11-23 v22.0 Module 2 Teutonic HRE Statecraft & Bailiwicks (oe_thh_, gen_v220_teu_hre_statecraft.py) — Scripted Triggers for Teutonic HRE Statecraft, Bailiwicks & Military Order Chain (0 bare if/else). Edit gen_v220_teu_hre_statecraft.py, not this file.
+
+# Country scope. True for any of the 5 Teutonic HRE Bailiwick building-type subjects.
+oe_thh_is_ballei_subject = {
+	country_type = building
+	is_subject_type = oe_teu_ballei
+}
+
+# Country scope. True for the Teutonic Order (or active Catholic Teutonic successor state).
+oe_thh_is_teutonic_host = {
+	is_rebel_country = no
+	num_locations > 0
+	country_type = location
+	religion ?= religion:catholic
+	OR = {
+		tag = TEU
+		has_or_had_tag = TEU
+	}
+}
+
+# Country scope. True for Catholic Military Orders & Teutonic Eastern Marches eligible for General Chapter & Cabinet.
+oe_thh_is_generalkapitel_eligible = {
+	is_rebel_country = no
+	num_locations > 0
+	country_type = location
+	OR = {
+		tag = TEU
+		tag = LIV
+		tag = KNI
+		has_or_had_tag = TEU
+		has_or_had_tag = LIV
+		has_reform = government_reform:military_order_reform
+	}
+}
+
+# Country scope. True for TEU / LIV / KNI or Teutonic Eastern Marches eligible for Age 1-6 advances & units.
+oe_thh_is_military_order_march = {
+	is_rebel_country = no
+	num_locations > 0
+	OR = {
+		tag = TEU
+		tag = LIV
+		tag = KNI
+		has_or_had_tag = TEU
+		has_or_had_tag = LIV
+		has_or_had_tag = KNI
+		has_reform = government_reform:military_order_reform
+	}
+}
+
+# Country scope. True when TEU currently holds at least one active HRE Bailiwick subject.
+oe_thh_has_any_ballei = {
+	any_subject = {
+		oe_thh_is_ballei_subject = yes
+	}
+}
+
+# Country scope. True when at war with a pagan, Orthodox, Islamic, or steppe realm.
+oe_thh_at_war_with_crusade_foe = {
+	at_war = yes
+	any_country_at_war_with = {
+		OR = {
+			NOT = { religion.group = religion_group:christian }
+			religion ?= religion:orthodox
+			government_type = government_type:steppe_horde
+		}
+	}
+}
