@@ -1,15 +1,29 @@
 ﻿# Country scope. Roman legitimacy is the IO special status, not a religion.
 oe_danube_roman_claimant = {
-    has_special_status_in_international_organization = {
-        type = special_status:oe_byz_roman_world_byz
-        international_organization = international_organization:oe_byz_roman_world
+    trigger_if = {
+        limit = {
+            oe_start_is_1337 = yes
+            exists = international_organization:oe_byz_roman_world
+        }
+        has_special_status_in_international_organization = {
+            type = special_status:oe_byz_roman_world_byz
+            international_organization = international_organization:oe_byz_roman_world
+        }
     }
+    trigger_else = { always = no }
 }
 oe_danube_balkan_alliance_visible = {
-    country_exists = c:BUL
-    country_exists = c:SER
-    c:BUL = { is_allied_with = { target = c:SER } }
-    international_organization:oe_byz_roman_world = { NOT = { has_variable = oe_danube_balkan_alliance_broken } }
+    trigger_if = {
+        limit = {
+            oe_start_is_1337 = yes
+            exists = international_organization:oe_byz_roman_world
+        }
+        country_exists = c:BUL
+        country_exists = c:SER
+        c:BUL = { is_allied_with = { target = c:SER } }
+        international_organization:oe_byz_roman_world = { NOT = { has_variable = oe_danube_balkan_alliance_broken } }
+    }
+    trigger_else = { always = no }
 }
 oe_danube_balkan_alliance_allowed = {
     oe_danube_roman_claimant = yes
@@ -26,7 +40,11 @@ oe_danube_wallachia_owned = {
                 is_ownable = yes
                 OR = {
                     has_owner = no
-                    AND = { has_owner = yes owner = { NOT = { oe_heg_byz_bloc = yes } } }
+                    trigger_if = {
+                        limit = { has_owner = yes }
+                        owner = { NOT = { oe_heg_byz_bloc = yes } }
+                    }
+                    trigger_else = { always = no }
                 }
             }
         }
@@ -48,8 +66,13 @@ oe_danube_moldavian_source = {
     owner = { OR = { oe_heg_byz_bloc = yes oe_danube_small_moldavian_country = yes } }
 }
 oe_danube_moldavia_visible = {
+    oe_start_is_1337 = yes
     oe_danube_wallachia_owned = yes
-    international_organization:oe_byz_roman_world = { NOT = { has_variable = oe_danube_moldavia_founded } }
+    trigger_if = {
+        limit = { exists = international_organization:oe_byz_roman_world }
+        international_organization:oe_byz_roman_world = { NOT = { has_variable = oe_danube_moldavia_founded } }
+    }
+    trigger_else = { always = no }
 }
 oe_danube_moldavia_allowed = {
     oe_danube_moldavia_visible = yes

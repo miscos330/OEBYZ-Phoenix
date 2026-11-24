@@ -64,47 +64,97 @@ types OeEntDashboardTypes {
                     }
 
                     # Main 0-100 progressbar with exact tier ticks (30 / 55 / 80)
-                    oe_sit_tug_bar = {
-                        blockoverride "tug_left" {
-                            text_single = { fontsize = 12 default_format = "#G" text = "OE_ENT_UI_BAR_LEFT" }
-                        }
-                        blockoverride "tug_center" {
-                            text_single = { fontsize = 13 default_format = "#bold #color_gold" text = "OE_ENT_UI_BAR_MID" }
-                        }
-                        blockoverride "tug_right" {
-                            text_single = { fontsize = 12 default_format = "#R" text = "OE_ENT_UI_BAR_RIGHT" }
-                        }
-                        blockoverride "tug_bar_style" { using = progress_bar_red_alt }
-                        blockoverride "tug_bar_bounds" { min = 0 max = 100 }
-                        blockoverride "tug_bar_value" {
-                            value = "[FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_index').GetValue)]"
-                        }
-                        blockoverride "tug_bar_ticks" {
-                            widget = {
-                                position = { 30% 0 }
-                                size = { 2 100% }
-                                using = bg_header_golden_frame
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_index').IsSet]"
+                        oe_sit_tug_bar = {
+                            blockoverride "tug_left" {
+                                text_single = { fontsize = 12 default_format = "#G" text = "OE_ENT_UI_BAR_LEFT" }
                             }
-                            widget = {
-                                position = { 55% 0 }
-                                size = { 2 100% }
-                                using = bg_header_golden_frame
+                            blockoverride "tug_center" {
+                                text_single = { fontsize = 13 default_format = "#bold #color_gold" text = "OE_ENT_UI_BAR_MID" }
                             }
-                            widget = {
-                                position = { 80% 0 }
-                                size = { 2 100% }
-                                using = bg_header_golden_frame
+                            blockoverride "tug_right" {
+                                text_single = { fontsize = 12 default_format = "#R" text = "OE_ENT_UI_BAR_RIGHT" }
+                            }
+                            blockoverride "tug_bar_style" { using = progress_bar_red_alt }
+                            blockoverride "tug_bar_bounds" { min = 0 max = 100 }
+                            blockoverride "tug_bar_value" {
+                                value = "[FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_index').GetValue)]"
+                            }
+                            blockoverride "tug_bar_ticks" {
+                                widget = {
+                                    position = { 30% 0 }
+                                    size = { 2 100% }
+                                    using = bg_header_golden_frame
+                                }
+                                widget = {
+                                    position = { 55% 0 }
+                                    size = { 2 100% }
+                                    using = bg_header_golden_frame
+                                }
+                                widget = {
+                                    position = { 80% 0 }
+                                    size = { 2 100% }
+                                    using = bg_header_golden_frame
+                                }
+                            }
+                            blockoverride "tug_footer" {
+                                text_single = {
+                                    layoutpolicy_horizontal = expanding
+                                    multiline = yes
+                                    autoresize = yes
+                                    maximumsize = { 456 -1 }
+                                    fontsize = 12
+                                    default_format = "#weak"
+                                    text = "OE_ENT_UI_BAR_TIERS"
+                                }
                             }
                         }
-                        blockoverride "tug_footer" {
-                            text_single = {
-                                layoutpolicy_horizontal = expanding
-                                multiline = yes
-                                autoresize = yes
-                                maximumsize = { 456 -1 }
-                                fontsize = 12
-                                default_format = "#weak"
-                                text = "OE_ENT_UI_BAR_TIERS"
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_index').IsSet)]"
+                        oe_sit_tug_bar = {
+                            blockoverride "tug_left" {
+                                text_single = { fontsize = 12 default_format = "#G" text = "OE_ENT_UI_BAR_LEFT" }
+                            }
+                            blockoverride "tug_center" {
+                                text_single = { fontsize = 13 default_format = "#bold #color_gold" text = "OE_ENT_UI_BAR_MID" }
+                            }
+                            blockoverride "tug_right" {
+                                text_single = { fontsize = 12 default_format = "#R" text = "OE_ENT_UI_BAR_RIGHT" }
+                            }
+                            blockoverride "tug_bar_style" { using = progress_bar_red_alt }
+                            blockoverride "tug_bar_bounds" { min = 0 max = 100 }
+                            blockoverride "tug_bar_value" { value = 0 }
+                            blockoverride "tug_bar_ticks" {
+                                widget = {
+                                    position = { 30% 0 }
+                                    size = { 2 100% }
+                                    using = bg_header_golden_frame
+                                }
+                                widget = {
+                                    position = { 55% 0 }
+                                    size = { 2 100% }
+                                    using = bg_header_golden_frame
+                                }
+                                widget = {
+                                    position = { 80% 0 }
+                                    size = { 2 100% }
+                                    using = bg_header_golden_frame
+                                }
+                            }
+                            blockoverride "tug_footer" {
+                                text_single = {
+                                    layoutpolicy_horizontal = expanding
+                                    multiline = yes
+                                    autoresize = yes
+                                    maximumsize = { 456 -1 }
+                                    fontsize = 12
+                                    default_format = "#weak"
+                                    text = "OE_ENT_UI_BAR_TIERS"
+                                }
                             }
                         }
                     }
@@ -125,12 +175,24 @@ types OeEntDashboardTypes {
                                 }
                             }
                             blockoverride "kpi_value" {
+                                hbox = {
+                                    layoutpolicy_horizontal = expanding
+                                    visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_index').IsSet]"
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        align = hcenter|nobaseline
+                                        fontsize = 16
+                                        default_format = "#bold #color_gold"
+                                        raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_index').GetValue|0] / 100"
+                                    }
+                                }
                                 text_single = {
                                     layoutpolicy_horizontal = expanding
+                                    visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_index').IsSet)]"
                                     align = hcenter|nobaseline
                                     fontsize = 16
                                     default_format = "#bold #color_gold"
-                                    raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_index').GetValue|0] / 100"
+                                    raw_text = "0 / 100"
                                 }
                             }
                         }
@@ -146,12 +208,24 @@ types OeEntDashboardTypes {
                                 }
                             }
                             blockoverride "kpi_value" {
+                                hbox = {
+                                    layoutpolicy_horizontal = expanding
+                                    visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_delta').IsSet]"
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        align = hcenter|nobaseline
+                                        fontsize = 16
+                                        default_format = "#bold"
+                                        raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_delta').GetValue|-=2]"
+                                    }
+                                }
                                 text_single = {
                                     layoutpolicy_horizontal = expanding
+                                    visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_delta').IsSet)]"
                                     align = hcenter|nobaseline
                                     fontsize = 16
                                     default_format = "#bold"
-                                    raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_delta').GetValue|-=2]"
+                                    raw_text = "0.00"
                                 }
                             }
                         }
@@ -167,12 +241,24 @@ types OeEntDashboardTypes {
                                 }
                             }
                             blockoverride "kpi_value" {
+                                hbox = {
+                                    layoutpolicy_horizontal = expanding
+                                    visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_low_months').IsSet]"
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        align = hcenter|nobaseline
+                                        fontsize = 16
+                                        default_format = "#bold #color_gold"
+                                        raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_low_months').GetValue|0] / 120"
+                                    }
+                                }
                                 text_single = {
                                     layoutpolicy_horizontal = expanding
+                                    visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_low_months').IsSet)]"
                                     align = hcenter|nobaseline
                                     fontsize = 16
                                     default_format = "#bold #color_gold"
-                                    raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_low_months').GetValue|0] / 120"
+                                    raw_text = "0 / 120"
                                 }
                             }
                         }
@@ -207,22 +293,47 @@ types OeEntDashboardTypes {
                                 fontsize = 13
                                 text = "OE_ENT_UI_D1"
                             }
-                            oe_threshold_bar = {
+                            hbox = {
                                 layoutpolicy_horizontal = expanding
-                                size = { -1 12 }
-                                blockoverride "bar_style" { using = progress_bar_red_alt }
-                                blockoverride "bar_bounds" { min = 0 max = 25 }
-                                blockoverride "bar_value" {
-                                    value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d1_overext').GetValue), '(float)10.0')]"
+                                spacing = 8
+                                visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_d1_overext').IsSet]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_red_alt }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" {
+                                        value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d1_overext').GetValue), '(float)10.0')]"
+                                    }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d1_overext').GetValue|-=2]"
                                 }
                             }
-                            text_single = {
-                                autoresize = no
-                                size = { 62 20 }
-                                align = right|nobaseline
-                                fontsize = 13
-                                default_format = "#bold"
-                                raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d1_overext').GetValue|-=2]"
+                            hbox = {
+                                layoutpolicy_horizontal = expanding
+                                spacing = 8
+                                visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_d1_overext').IsSet)]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_red_alt }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" { value = 0 }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "0.00"
+                                }
                             }
                         }
                         hbox = {
@@ -240,22 +351,47 @@ types OeEntDashboardTypes {
                                 fontsize = 13
                                 text = "OE_ENT_UI_D2"
                             }
-                            oe_threshold_bar = {
+                            hbox = {
                                 layoutpolicy_horizontal = expanding
-                                size = { -1 12 }
-                                blockoverride "bar_style" { using = progress_bar_goldish }
-                                blockoverride "bar_bounds" { min = 0 max = 25 }
-                                blockoverride "bar_value" {
-                                    value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d2_inflation').GetValue), '(float)10.0')]"
+                                spacing = 8
+                                visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_d2_inflation').IsSet]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_goldish }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" {
+                                        value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d2_inflation').GetValue), '(float)10.0')]"
+                                    }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d2_inflation').GetValue|-=2]"
                                 }
                             }
-                            text_single = {
-                                autoresize = no
-                                size = { 62 20 }
-                                align = right|nobaseline
-                                fontsize = 13
-                                default_format = "#bold"
-                                raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d2_inflation').GetValue|-=2]"
+                            hbox = {
+                                layoutpolicy_horizontal = expanding
+                                spacing = 8
+                                visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_d2_inflation').IsSet)]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_goldish }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" { value = 0 }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "0.00"
+                                }
                             }
                         }
                         hbox = {
@@ -273,22 +409,47 @@ types OeEntDashboardTypes {
                                 fontsize = 13
                                 text = "OE_ENT_UI_D3"
                             }
-                            oe_threshold_bar = {
+                            hbox = {
                                 layoutpolicy_horizontal = expanding
-                                size = { -1 12 }
-                                blockoverride "bar_style" { using = progress_bar_red_alt }
-                                blockoverride "bar_bounds" { min = 0 max = 25 }
-                                blockoverride "bar_value" {
-                                    value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d3_satrapy').GetValue), '(float)10.0')]"
+                                spacing = 8
+                                visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_d3_satrapy').IsSet]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_red_alt }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" {
+                                        value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d3_satrapy').GetValue), '(float)10.0')]"
+                                    }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d3_satrapy').GetValue|-=2]"
                                 }
                             }
-                            text_single = {
-                                autoresize = no
-                                size = { 62 20 }
-                                align = right|nobaseline
-                                fontsize = 13
-                                default_format = "#bold"
-                                raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d3_satrapy').GetValue|-=2]"
+                            hbox = {
+                                layoutpolicy_horizontal = expanding
+                                spacing = 8
+                                visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_d3_satrapy').IsSet)]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_red_alt }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" { value = 0 }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "0.00"
+                                }
                             }
                         }
                         hbox = {
@@ -306,22 +467,47 @@ types OeEntDashboardTypes {
                                 fontsize = 13
                                 text = "OE_ENT_UI_D4"
                             }
-                            oe_threshold_bar = {
+                            hbox = {
                                 layoutpolicy_horizontal = expanding
-                                size = { -1 12 }
-                                blockoverride "bar_style" { using = progress_bar_goldish }
-                                blockoverride "bar_bounds" { min = 0 max = 25 }
-                                blockoverride "bar_value" {
-                                    value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d4_culture').GetValue), '(float)10.0')]"
+                                spacing = 8
+                                visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_d4_culture').IsSet]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_goldish }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" {
+                                        value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d4_culture').GetValue), '(float)10.0')]"
+                                    }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d4_culture').GetValue|-=2]"
                                 }
                             }
-                            text_single = {
-                                autoresize = no
-                                size = { 62 20 }
-                                align = right|nobaseline
-                                fontsize = 13
-                                default_format = "#bold"
-                                raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d4_culture').GetValue|-=2]"
+                            hbox = {
+                                layoutpolicy_horizontal = expanding
+                                spacing = 8
+                                visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_d4_culture').IsSet)]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_goldish }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" { value = 0 }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "0.00"
+                                }
                             }
                         }
                         hbox = {
@@ -339,22 +525,47 @@ types OeEntDashboardTypes {
                                 fontsize = 13
                                 text = "OE_ENT_UI_D5"
                             }
-                            oe_threshold_bar = {
+                            hbox = {
                                 layoutpolicy_horizontal = expanding
-                                size = { -1 12 }
-                                blockoverride "bar_style" { using = progress_bar_red_alt }
-                                blockoverride "bar_bounds" { min = 0 max = 25 }
-                                blockoverride "bar_value" {
-                                    value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d5_war').GetValue), '(float)10.0')]"
+                                spacing = 8
+                                visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_d5_war').IsSet]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_red_alt }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" {
+                                        value = "[Multiply_float(FixedPointToFloat(GetPlayer.MakeScope.GetVariable('oe_ent_d5_war').GetValue), '(float)10.0')]"
+                                    }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d5_war').GetValue|-=2]"
                                 }
                             }
-                            text_single = {
-                                autoresize = no
-                                size = { 62 20 }
-                                align = right|nobaseline
-                                fontsize = 13
-                                default_format = "#bold"
-                                raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_d5_war').GetValue|-=2]"
+                            hbox = {
+                                layoutpolicy_horizontal = expanding
+                                spacing = 8
+                                visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_d5_war').IsSet)]"
+                                oe_threshold_bar = {
+                                    layoutpolicy_horizontal = expanding
+                                    size = { -1 12 }
+                                    blockoverride "bar_style" { using = progress_bar_red_alt }
+                                    blockoverride "bar_bounds" { min = 0 max = 25 }
+                                    blockoverride "bar_value" { value = 0 }
+                                }
+                                text_single = {
+                                    autoresize = no
+                                    size = { 62 20 }
+                                    align = right|nobaseline
+                                    fontsize = 13
+                                    default_format = "#bold"
+                                    raw_text = "0.00"
+                                }
                             }
                         }
                 }
@@ -393,12 +604,24 @@ types OeEntDashboardTypes {
                                     }
                                 }
                                 blockoverride "kpi_value" {
+                                    hbox = {
+                                        layoutpolicy_horizontal = expanding
+                                        visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_rel').IsSet]"
+                                        text_single = {
+                                            layoutpolicy_horizontal = expanding
+                                            align = hcenter|nobaseline
+                                            fontsize = 15
+                                            default_format = "#bold"
+                                            raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_rel').GetValue|-=2]"
+                                        }
+                                    }
                                     text_single = {
                                         layoutpolicy_horizontal = expanding
+                                        visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_rel').IsSet)]"
                                         align = hcenter|nobaseline
                                         fontsize = 15
                                         default_format = "#bold"
-                                        raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_rel').GetValue|-=2]"
+                                        raw_text = "0.00"
                                     }
                                 }
                             }
@@ -415,12 +638,24 @@ types OeEntDashboardTypes {
                                     }
                                 }
                                 blockoverride "kpi_value" {
+                                    hbox = {
+                                        layoutpolicy_horizontal = expanding
+                                        visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_civ').IsSet]"
+                                        text_single = {
+                                            layoutpolicy_horizontal = expanding
+                                            align = hcenter|nobaseline
+                                            fontsize = 15
+                                            default_format = "#bold #G"
+                                            raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_civ').GetValue|0]"
+                                        }
+                                    }
                                     text_single = {
                                         layoutpolicy_horizontal = expanding
+                                        visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_civ').IsSet)]"
                                         align = hcenter|nobaseline
                                         fontsize = 15
                                         default_format = "#bold #G"
-                                        raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_civ').GetValue|0]"
+                                        raw_text = "0"
                                     }
                                 }
                             }
@@ -437,12 +672,24 @@ types OeEntDashboardTypes {
                                     }
                                 }
                                 blockoverride "kpi_value" {
+                                    hbox = {
+                                        layoutpolicy_horizontal = expanding
+                                        visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_mil').IsSet]"
+                                        text_single = {
+                                            layoutpolicy_horizontal = expanding
+                                            align = hcenter|nobaseline
+                                            fontsize = 15
+                                            default_format = "#bold #color_gold"
+                                            raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_mil').GetValue|0]"
+                                        }
+                                    }
                                     text_single = {
                                         layoutpolicy_horizontal = expanding
+                                        visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_mil').IsSet)]"
                                         align = hcenter|nobaseline
                                         fontsize = 15
                                         default_format = "#bold #color_gold"
-                                        raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_mil').GetValue|0]"
+                                        raw_text = "0"
                                     }
                                 }
                             }
@@ -459,12 +706,24 @@ types OeEntDashboardTypes {
                                     }
                                 }
                                 blockoverride "kpi_value" {
+                                    hbox = {
+                                        layoutpolicy_horizontal = expanding
+                                        visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_low_loy').IsSet]"
+                                        text_single = {
+                                            layoutpolicy_horizontal = expanding
+                                            align = hcenter|nobaseline
+                                            fontsize = 15
+                                            default_format = "#bold #R"
+                                            raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_low_loy').GetValue|0]"
+                                        }
+                                    }
                                     text_single = {
                                         layoutpolicy_horizontal = expanding
+                                        visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_cache_low_loy').IsSet)]"
                                         align = hcenter|nobaseline
                                         fontsize = 15
                                         default_format = "#bold #R"
-                                        raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_low_loy').GetValue|0]"
+                                        raw_text = "0"
                                     }
                                 }
                             }

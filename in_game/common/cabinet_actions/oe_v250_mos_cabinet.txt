@@ -1,0 +1,144 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4B 1337 Muscovy/Russia Deep Flavor & Mechanic Pack (oe_v250_mos_, gen_v250_1337_mos_yua.py) — 2 Exclusive Tag-Locked Cabinet Actions (moderate values with trade-offs). Edit gen_v250_1337_mos_yua.py, not this file.
+
+
+oe_v250_mos_cab_vykhod_census = {
+	ability = adm
+	icon = kazenny
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_mos_cab_vykhod_census_select_province"
+		none_available_msg_key = "oe_v250_mos_cab_vykhod_census_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_mos_cab_vykhod_census
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		tax_income_efficiency = 0.05
+		global_monthly_control = 0.002
+		peasants_estate_target_satisfaction = -0.04
+	}
+
+	location_modifier = {
+		local_max_control = 0.08
+		local_monthly_control = 0.005
+		local_production_efficiency = 0.05
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { gold < 180 }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+oe_v250_mos_cab_zasechnaya_abatis = {
+	ability = mil
+	icon = increase_control_province
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_mos_cab_zasechnaya_abatis_select_province"
+		none_available_msg_key = "oe_v250_mos_cab_zasechnaya_abatis_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+				OR = { is_border = yes has_fort = yes }
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_mos_cab_zasechnaya_abatis
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		global_defensive = 0.06
+		global_manpower_modifier = 0.04
+		fort_maintenance_efficiency = -0.05
+		tax_income_efficiency = -0.02
+	}
+
+	location_modifier = {
+		local_defensive = 0.15
+		local_garrison_growth = 0.12
+		local_max_control = 0.06
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = yes }
+				add = { value = 12 }
+			}
+		}
+	}
+}

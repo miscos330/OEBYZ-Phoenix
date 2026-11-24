@@ -7,7 +7,9 @@ oe_dip2_cab_national_cadastre = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations > 0
+		current_age_or_later = { age = age_2_renaissance }
+		num_locations >= 15
+		NOT = { government_type = government_type:tribe }
 	}
 
 	allow = {
@@ -23,9 +25,9 @@ oe_dip2_cab_national_cadastre = {
 	}
 
 	country_modifier = {
-		tax_income_efficiency = 0.12
+		tax_income_efficiency = 0.08
 		global_monthly_control = 0.002
-		global_crown_estate_power = 0.08
+		global_crown_estate_power = 0.06
 		nobles_estate_target_satisfaction = -0.05
 		peasants_estate_target_satisfaction = -0.03
 	}
@@ -51,8 +53,8 @@ oe_dip2_cab_coinage_anti_debasement = {
 		is_rebel_country = no
 		num_locations > 0
 		OR = {
-			inflation >= 0.03
-			current_age_or_later = { age = age_3_discovery }
+			inflation >= 0.06
+			num_loans >= 3
 		}
 	}
 
@@ -105,7 +107,9 @@ oe_dip2_cab_secret_chancellery = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations > 0
+		current_age_or_later = { age = age_3_discovery }
+		country_rank_level >= 3
+		NOT = { government_type = government_type:tribe }
 	}
 
 	allow = {
@@ -145,6 +149,17 @@ oe_dip2_cab_ever_normal_granary = {
 	potential = {
 		is_rebel_country = no
 		num_locations > 0
+		OR = {
+			is_member_of_international_organization = international_organization:middle_kingdom
+			tag = CHI
+			tag = MNG
+			tag = MCH
+			tag = KOR
+			tag = DAI
+			tag = JAP
+			culture ?= { has_culture_group = culture_group:chinese_group }
+			culture ?= { has_culture_group = culture_group:confucian_group }
+		}
 	}
 
 	allow = {
@@ -226,6 +241,9 @@ oe_dip2_cab_naval_timber_quota = {
 	potential = {
 		is_rebel_country = no
 		has_ports = yes
+		current_age_or_later = { age = age_2_renaissance }
+		num_locations >= 10
+		navy_size >= 15
 	}
 
 	allow = {
@@ -291,7 +309,21 @@ oe_dip2_cab_frontier_post_patrol = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations >= 3
+		num_locations >= 25
+		OR = {
+			government_type = government_type:steppe_horde
+			country_rank_level >= 4
+			is_member_of_international_organization = international_organization:middle_kingdom
+			tag = BYZ
+			tag = ROM
+			tag = CHI
+			tag = MNG
+			tag = MCH
+			tag = RUS
+			tag = TUR
+			tag = IRA
+			tag = MUG
+		}
 	}
 
 	allow = {

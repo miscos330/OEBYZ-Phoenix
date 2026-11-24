@@ -6,11 +6,16 @@ oe_rw_hegemony_land = {
 
 # Country scope. No requirement to hold Constantinople or to be independent.
 oe_rw_end_contest_visible = {
+    oe_start_is_1337 = yes
     oe_roman_world_territorial_country_trigger = yes
-    is_member_of_international_organization = international_organization:oe_byz_roman_world
-    international_organization:oe_byz_roman_world = {
-        NOT = { has_variable = oe_rw_contest_ended }
+    trigger_if = {
+        limit = { exists = international_organization:oe_byz_roman_world }
+        is_member_of_international_organization = international_organization:oe_byz_roman_world
+        international_organization:oe_byz_roman_world = {
+            NOT = { has_variable = oe_rw_contest_ended }
+        }
     }
+    trigger_else = { always = no }
 }
 oe_rw_end_contest_allowed = {
     oe_rw_end_contest_visible = yes

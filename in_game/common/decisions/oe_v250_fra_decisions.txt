@@ -1,0 +1,151 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4A: 1337-1460 Deep Flavor & Mechanic Packs (TUR/FRA/ENG) (oe_v250_fra_, 0 mainline slots, 0 rules, 0 vanilla overrides) — 4 Historical Decisions for Kingdom of France (1337-1460) (Vanilla Categories ONLY). Edit gen_v250_1337_tur_fra_eng.py, not this file.
+
+
+oe_v250_fra_dec_reims_coronation = {
+	decision_category = country_specific_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_variable = oe_v250_fra_dec_reims_coronation_done }
+	}
+	allow = {
+		gold >= 100
+		owns = location:reims
+		stability >= 0
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 170 owns = location:reims }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:crown_estate } }
+	option = {
+		name = oe_v250_fra_dec_reims_coronation.a
+		effect = {
+			set_variable = { name = oe_v250_fra_dec_reims_coronation_done value = 1 }
+			add_gold = -100
+			add_legitimacy = 6
+			add_prestige = 5
+			if = { limit = { owns = location:reims } location:reims = { change_prosperity = prosperity_mild_bonus } }
+			add_country_modifier = { modifier = oe_v250_fra_mod_dec_reims_sacre years = 25 mode = replace }
+		}
+	}
+}
+
+oe_v250_fra_dec_cour_des_aides = {
+	decision_category = economy_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		current_year >= 1355
+		NOT = { has_variable = oe_v250_fra_dec_cour_des_aides_done }
+	}
+	allow = {
+		gold >= 110
+		owns = location:paris
+		stability >= 0
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 180 owns = location:paris }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:burghers_estate } }
+	option = {
+		name = oe_v250_fra_dec_cour_des_aides.a
+		effect = {
+			set_variable = { name = oe_v250_fra_dec_cour_des_aides_done value = 1 }
+			add_gold = -110
+			if = { limit = { owns = location:paris } location:paris = { change_development = development_mild_bonus } }
+			add_country_modifier = { modifier = oe_v250_fra_mod_dec_cour_des_aides years = 25 mode = replace }
+		}
+	}
+}
+
+oe_v250_fra_dec_sorbonne_patronage = {
+	decision_category = government_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		current_year >= 1365
+		NOT = { has_variable = oe_v250_fra_dec_sorbonne_patronage_done }
+	}
+	allow = {
+		gold >= 120
+		owns = location:paris
+		stability >= 0
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 200 owns = location:paris }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:burghers_estate } }
+	option = {
+		name = oe_v250_fra_dec_sorbonne_patronage.a
+		effect = {
+			set_variable = { name = oe_v250_fra_dec_sorbonne_patronage_done value = 1 }
+			add_gold = -120
+			add_research_progress = research_progress_mild_bonus
+			add_country_modifier = { modifier = oe_v250_fra_mod_dec_sorbonne years = 25 mode = replace }
+		}
+	}
+}
+
+oe_v250_fra_dec_compagnies_ordonnance = {
+	decision_category = government_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		current_year >= 1438
+		NOT = { has_variable = oe_v250_fra_dec_compagnies_ordonnance_done }
+	}
+	allow = {
+		gold >= 160
+		owns = location:paris
+		stability >= 5
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 260 current_year >= 1442 }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:nobles_estate } }
+	option = {
+		name = oe_v250_fra_dec_compagnies_ordonnance.a
+		effect = {
+			set_variable = { name = oe_v250_fra_dec_compagnies_ordonnance_done value = 1 }
+			add_gold = -160
+			add_army_tradition = 6
+			add_country_modifier = { modifier = oe_v250_fra_mod_dec_ordonnance years = 25 mode = replace }
+		}
+	}
+}

@@ -1,0 +1,624 @@
+﻿# NEW 2026-11-24 v25.0 Batch 3 Pack A: 1337-1460 Western & Central European Majors (CAS/ARA/POR/HAB/BOH/POL/LIT) (oe_v250_wce_, 0 mainline slots, 0 rules, 0 vanilla overrides) — 18 Staggered 1337-1460 Historical Branching Events (CAS/ARA/POR/HAB/BOH/POL-LIT, 1337-gated, 0 orphans). Edit gen_v250_1337_west_central_eu.py, not this file.
+
+
+namespace = oe_v250_wce
+
+# 1. [CAS / 1348+] Alfonso XI & the Ordenamiento de Alcala
+oe_v250_wce.1 = {
+	type = country_event
+	title = oe_v250_wce.1.t
+	desc = oe_v250_wce.1.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v185_feudal_charter_france.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = CAS
+			has_or_had_tag = CAS
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.1.a
+		ai_chance = { base = 55 }
+		add_gold = -45
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+		if = { limit = { owns = location:alcala_de_henares } location:alcala_de_henares = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev1_alcala_supremacy years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.1.b
+		ai_chance = { base = 25 }
+		add_stability = 5
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev1_fueros_confirmed years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.1.c
+		ai_chance = { base = 20 }
+		add_gold = -35
+		if = { limit = { owns = location:salamanca } location:salamanca = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev1_salamanca_audiencia years = 18 mode = replace }
+	}
+}
+
+# 2. [CAS / 1378+] The Mesta Sheepwalks & Burgos Wool Fairs
+oe_v250_wce.2 = {
+	type = country_event
+	title = oe_v250_wce.2.t
+	desc = oe_v250_wce.2.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_ind2_guild_congress.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = CAS
+			has_or_had_tag = CAS
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.2.a
+		ai_chance = { base = 55 }
+		add_gold = 55
+		if = { limit = { owns = location:burgos } location:burgos = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev2_mesta_exports years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.2.b
+		ai_chance = { base = 45 }
+		add_gold = -35
+		if = { limit = { owns = location:toledo } location:toledo = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev2_castilian_looms years = 18 mode = replace }
+	}
+}
+
+# 3. [CAS / 1425+] The Santa Hermandad & the Granada Frontier
+oe_v250_wce.3 = {
+	type = country_event
+	title = oe_v250_wce.3.t
+	desc = oe_v250_wce.3.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_granada_alhambra.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = CAS
+			has_or_had_tag = CAS
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.3.a
+		ai_chance = { base = 60 }
+		add_gold = -60
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev3_hermandad_march years = 20 mode = replace }
+		if = { limit = { country_exists = c:GRA c:GRA = { is_rebel_country = no } } c:GRA = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v250_wce.3.b
+		ai_chance = { base = 40 }
+		add_gold = 70
+		if = { limit = { owns = location:sevilla } location:sevilla = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev3_parias_truce years = 20 mode = replace }
+		if = { limit = { country_exists = c:GRA c:GRA = { is_rebel_country = no } } add_opinion = { target = c:GRA modifier = opinion_diplomatic_move } c:GRA = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+}
+
+# 4. [ARA / 1344+] Peter IV the Ceremonious & the Union of Aragon
+oe_v250_wce.4 = {
+	type = country_event
+	title = oe_v250_wce.4.t
+	desc = oe_v250_wce.4.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v195_sco_ara_crowns.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ARA
+			has_or_had_tag = ARA
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.4.a
+		ai_chance = { base = 60 }
+		add_gold = -45
+		add_army_tradition = 5
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev4_peter_dagger years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.4.b
+		ai_chance = { base = 40 }
+		add_stability = 6
+		if = { limit = { owns = location:zaragoza } location:zaragoza = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev4_justicia_pact years = 18 mode = replace }
+	}
+}
+
+# 5. [ARA / 1375+] The Consolat de Mar & the Western Mediterranean
+oe_v250_wce.5 = {
+	type = country_event
+	title = oe_v250_wce.5.t
+	desc = oe_v250_wce.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_con_mare_liberum.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ARA
+			has_or_had_tag = ARA
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.5.a
+		ai_chance = { base = 60 }
+		add_gold = -50
+		if = { limit = { owns = location:barcelona } location:barcelona = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev5_consolat_law years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.5.b
+		ai_chance = { base = 40 }
+		add_navy_tradition = 6
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev5_almogaver_fleets years = 20 mode = replace }
+		if = { limit = { country_exists = c:GEN c:GEN = { is_rebel_country = no } } c:GEN = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+}
+
+# 6. [ARA / 1412+] The Compromiso de Caspe
+oe_v250_wce.6 = {
+	type = country_event
+	title = oe_v250_wce.6.t
+	desc = oe_v250_wce.6.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v180_io_grand_council.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ARA
+			has_or_had_tag = ARA
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.6.a
+		ai_chance = { base = 60 }
+		add_legitimacy = 6
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev6_caspe_verdict years = 20 mode = replace }
+		if = { limit = { country_exists = c:CAS c:CAS = { is_rebel_country = no } } add_opinion = { target = c:CAS modifier = opinion_pleased } c:CAS = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v250_wce.6.b
+		ai_chance = { base = 40 }
+		if = { limit = { owns = location:valencia } location:valencia = { change_prosperity = prosperity_mild_bonus } }
+		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev6_cortes_primacy years = 20 mode = replace }
+	}
+}
+
+# 7. [POR / 1342+] Afonso IV & the Order of Christ at Tomar
+oe_v250_wce.7 = {
+	type = country_event
+	title = oe_v250_wce.7.t
+	desc = oe_v250_wce.7.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_ord_sepulchre.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = POR
+			has_or_had_tag = POR
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.7.a
+		ai_chance = { base = 60 }
+		add_navy_tradition = 5
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev7_tomar_fleets years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.7.b
+		ai_chance = { base = 40 }
+		add_gold = 50
+		if = { limit = { owns = location:coimbra } location:coimbra = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev7_royal_audit years = 18 mode = replace }
+	}
+}
+
+# 8. [POR / 1385+] House of Aviz, Aljubarrota & the Treaty of Windsor
+oe_v250_wce.8 = {
+	type = country_event
+	title = oe_v250_wce.8.t
+	desc = oe_v250_wce.8.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v180_royal_coronation_dynasty.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = POR
+			has_or_had_tag = POR
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.8.a
+		ai_chance = { base = 65 }
+		add_gold = -50
+		add_army_tradition = 6
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev8_aviz_windsor years = 20 mode = replace }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } add_opinion = { target = c:ENG modifier = opinion_pleased } c:ENG = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v250_wce.8.b
+		ai_chance = { base = 35 }
+		add_stability = 6
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev8_fidalgo_reconciliation years = 20 mode = replace }
+	}
+}
+
+# 9. [POR / 1415+] The Crossing to Ceuta & the Atlantic Horizon
+oe_v250_wce.9 = {
+	type = country_event
+	title = oe_v250_wce.9.t
+	desc = oe_v250_wce.9.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v190_imperial_cartography_hall.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = POR
+			has_or_had_tag = POR
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.9.a
+		ai_chance = { base = 65 }
+		add_gold = -75
+		add_prestige = 6
+		if = { limit = { owns = location:lagos } location:lagos = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev9_atlantic_horizon years = 22 mode = replace }
+		if = { limit = { country_exists = c:MOR c:MOR = { is_rebel_country = no } } c:MOR = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v250_wce.9.b
+		ai_chance = { base = 35 }
+		add_gold = 55
+		if = { limit = { owns = location:porto } location:porto = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev9_european_convoys years = 22 mode = replace }
+	}
+}
+
+# 10. [HAB / 1358+] Rudolf IV & the Privilegium Maius
+oe_v250_wce.10 = {
+	type = country_event
+	title = oe_v250_wce.10.t
+	desc = oe_v250_wce.10.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_hre_rimini_bull.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = HAB
+			has_or_had_tag = HAB
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.10.a
+		ai_chance = { base = 60 }
+		add_prestige = 6
+		add_legitimacy = 5
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev10_archducal_claim years = 20 mode = replace }
+		if = { limit = { country_exists = c:BOH c:BOH = { is_rebel_country = no } } c:BOH = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v250_wce.10.b
+		ai_chance = { base = 40 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev10_imperial_compromise years = 20 mode = replace }
+		if = { limit = { country_exists = c:BOH c:BOH = { is_rebel_country = no } } add_opinion = { target = c:BOH modifier = opinion_diplomatic_move } c:BOH = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+}
+
+# 11. [HAB / 1379+] Alpine Passes, Styrian Iron & the Neuberg Compact
+oe_v250_wce.11 = {
+	type = country_event
+	title = oe_v250_wce.11.t
+	desc = oe_v250_wce.11.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v185_swiss_alpine_pass.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = HAB
+			has_or_had_tag = HAB
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.11.a
+		ai_chance = { base = 55 }
+		add_gold = -40
+		if = { limit = { owns = location:graz } location:graz = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev11_unified_alpine_tolls years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.11.b
+		ai_chance = { base = 45 }
+		add_yearly_manpower = 0.35
+		if = { limit = { owns = location:klagenfurt } location:klagenfurt = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev11_alpine_militias years = 20 mode = replace }
+	}
+}
+
+# 12. [HAB / 1438+] Imperial Diplomacy & the Danubian Inheritance
+oe_v250_wce.12 = {
+	type = country_event
+	title = oe_v250_wce.12.t
+	desc = oe_v250_wce.12.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_burgundy_lotharingia.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = HAB
+			has_or_had_tag = HAB
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.12.a
+		ai_chance = { base = 65 }
+		add_gold = -65
+		add_prestige = 6
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev12_danubian_diplomacy years = 22 mode = replace }
+		if = { limit = { country_exists = c:HUN c:HUN = { is_rebel_country = no } } add_opinion = { target = c:HUN modifier = opinion_pleased } c:HUN = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v250_wce.12.b
+		ai_chance = { base = 35 }
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev12_danube_knights years = 22 mode = replace }
+	}
+}
+
+# 13. [BOH / 1348+] Charles IV & the Founding of Charles University
+oe_v250_wce.13 = {
+	type = country_event
+	title = oe_v250_wce.13.t
+	desc = oe_v250_wce.13.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v200_academy_tutorial_hall.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = BOH
+			has_or_had_tag = BOH
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.13.a
+		ai_chance = { base = 65 }
+		add_gold = -60
+		add_prestige = 6
+		if = { limit = { owns = location:prague } location:prague = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev13_charles_university years = 22 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.13.b
+		ai_chance = { base = 35 }
+		add_gold = 40
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev13_bohemian_forts years = 22 mode = replace }
+	}
+}
+
+# 14. [BOH / 1356+] Kutna Hora Silver Groschen & the Golden Bull
+oe_v250_wce.14 = {
+	type = country_event
+	title = oe_v250_wce.14.t
+	desc = oe_v250_wce.14.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v180_medici_banking_hall.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = BOH
+			has_or_had_tag = BOH
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.14.a
+		ai_chance = { base = 60 }
+		add_prestige = 6
+		if = { limit = { owns = location:kutna_hora } location:kutna_hora = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev14_prague_groschen years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.14.b
+		ai_chance = { base = 40 }
+		add_gold = 85
+		if = { limit = { owns = location:kutna_hora } location:kutna_hora = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev14_silver_surge years = 20 mode = replace }
+	}
+}
+
+# 15. [BOH / 1419+] The Bohemian Estates & Wagon-Fort Warfare
+oe_v250_wce.15 = {
+	type = country_event
+	title = oe_v250_wce.15.t
+	desc = oe_v250_wce.15.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v180_estate_private_levy.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = BOH
+			has_or_had_tag = BOH
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.15.a
+		ai_chance = { base = 55 }
+		add_army_tradition = 6
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev15_wagenburg_doctrine years = 22 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v250_wce.15.b
+		ai_chance = { base = 45 }
+		add_stability = 6
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev15_compactata_peace years = 22 mode = replace }
+		if = { limit = { country_exists = c:HAB c:HAB = { is_rebel_country = no } } add_opinion = { target = c:HAB modifier = opinion_diplomatic_move } c:HAB = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+}
+
+# 16. [POL/LIT / 1347+] Statutes of Wislica & the Krakow Academy
+oe_v250_wce.16 = {
+	type = country_event
+	title = oe_v250_wce.16.t
+	desc = oe_v250_wce.16.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_pplc_lublin_sejm.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = POL
+			tag = LIT
+			has_or_had_tag = POL
+			has_or_had_tag = LIT
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.16.a
+		ai_chance = { base = 60 }
+		add_gold = -50
+		if = { limit = { owns = location:krakow } location:krakow = { change_development = development_mild_bonus } }
+		if = { limit = { owns = location:vilnius } location:vilnius = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev16_wislica_statutes years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.16.b
+		ai_chance = { base = 40 }
+		add_yearly_manpower = 0.35
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev16_voivode_banners years = 20 mode = replace }
+	}
+}
+
+# 17. [POL/LIT / 1364+] The Gediminid Eastern Reach & Trakai Watchtowers
+oe_v250_wce.17 = {
+	type = country_event
+	title = oe_v250_wce.17.t
+	desc = oe_v250_wce.17.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v195_lit_trakai_vytis.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = POL
+			tag = LIT
+			has_or_had_tag = POL
+			has_or_had_tag = LIT
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.17.a
+		ai_chance = { base = 60 }
+		if = { limit = { owns = location:trakai } location:trakai = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev17_ruthenian_charters years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_wce.17.b
+		ai_chance = { base = 40 }
+		add_gold = -55
+		add_army_tradition = 5
+		if = { limit = { owns = location:trakai } location:trakai = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev17_trakai_bastions years = 20 mode = replace }
+	}
+}
+
+# 18. [POL/LIT / 1386+] Union of Krewo & the Pact of Horodlo
+oe_v250_wce.18 = {
+	type = country_event
+	title = oe_v250_wce.18.t
+	desc = oe_v250_wce.18.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_marienburg_crusade.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = POL
+			tag = LIT
+			has_or_had_tag = POL
+			has_or_had_tag = LIT
+		}
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1475
+	}
+	option = {
+		name = oe_v250_wce.18.a
+		ai_chance = { base = 65 }
+		add_prestige = 6
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev18_horodlo_union years = 22 mode = replace }
+		if = { limit = { country_exists = c:POL c:POL = { is_rebel_country = no } } add_opinion = { target = c:POL modifier = opinion_pleased } c:POL = { add_opinion = { target = root modifier = opinion_pleased } } }
+		if = { limit = { country_exists = c:LIT c:LIT = { is_rebel_country = no } } add_opinion = { target = c:LIT modifier = opinion_pleased } c:LIT = { add_opinion = { target = root modifier = opinion_pleased } } }
+		if = { limit = { country_exists = c:TEU c:TEU = { is_rebel_country = no } } c:TEU = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v250_wce.18.b
+		ai_chance = { base = 35 }
+		add_gold = 50
+		add_country_modifier = { modifier = oe_v250_wce_mod_ev18_sovereign_chancery years = 22 mode = replace }
+	}
+}

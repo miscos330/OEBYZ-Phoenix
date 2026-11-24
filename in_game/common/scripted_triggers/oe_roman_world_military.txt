@@ -1,22 +1,43 @@
 ﻿# Country scopes. Shared by action validation and deterministic AI execution.
 oe_rw_mobilize_eligible = {
-    is_member_of_international_organization = international_organization:oe_byz_roman_world
-    has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_beylik international_organization = international_organization:oe_byz_roman_world }
-    at_war = yes
-    NOT = { has_variable = oe_rw_border_mobilization_cooldown }
-    gold >= oe_rw_one_month_income_cost
+    trigger_if = {
+        limit = {
+            oe_start_is_1337 = yes
+            exists = international_organization:oe_byz_roman_world
+        }
+        is_member_of_international_organization = international_organization:oe_byz_roman_world
+        has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_beylik international_organization = international_organization:oe_byz_roman_world }
+        at_war = yes
+        NOT = { has_variable = oe_rw_border_mobilization_cooldown }
+        gold >= oe_rw_one_month_income_cost
+    }
+    trigger_else = { always = no }
 }
 oe_rw_latin_instructors_eligible = {
-    is_member_of_international_organization = international_organization:oe_byz_roman_world
-    OR = {
-        has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_byz international_organization = international_organization:oe_byz_roman_world }
-        has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_prince international_organization = international_organization:oe_byz_roman_world }
-        has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_latin_duchy international_organization = international_organization:oe_byz_roman_world }
+    trigger_if = {
+        limit = {
+            oe_start_is_1337 = yes
+            exists = international_organization:oe_byz_roman_world
+        }
+        is_member_of_international_organization = international_organization:oe_byz_roman_world
+        OR = {
+            has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_byz international_organization = international_organization:oe_byz_roman_world }
+            has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_prince international_organization = international_organization:oe_byz_roman_world }
+            has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_latin_duchy international_organization = international_organization:oe_byz_roman_world }
+        }
     }
+    trigger_else = { always = no }
 }
 oe_rw_challenge_empire_visible = {
-    is_member_of_international_organization = international_organization:oe_byz_roman_world
-    international_organization:oe_byz_roman_world = { has_variable = oe_roman_contest_rank_1 }
-    this = international_organization:oe_byz_roman_world.var:oe_roman_contest_rank_1
-    NOT = { has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_byz international_organization = international_organization:oe_byz_roman_world } }
+    trigger_if = {
+        limit = {
+            oe_start_is_1337 = yes
+            exists = international_organization:oe_byz_roman_world
+        }
+        is_member_of_international_organization = international_organization:oe_byz_roman_world
+        international_organization:oe_byz_roman_world = { has_variable = oe_roman_contest_rank_1 }
+        this = international_organization:oe_byz_roman_world.var:oe_roman_contest_rank_1
+        NOT = { has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_byz international_organization = international_organization:oe_byz_roman_world } }
+    }
+    trigger_else = { always = no }
 }

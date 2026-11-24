@@ -1,0 +1,370 @@
+﻿# NEW 2026-11-24 v25.0 Batch 3 Pack B: 1337-1460 Med/East/North Tracks (MAM/DLH/JAP/MLO-FLO/SWE/DAN) (oe_v250_men_, 0 mainline slots, 0 rules, 0 vanilla overrides) — 6 Exclusive Tag-Locked Cabinet Actions (1 per track, ai_will_do & all 7 loc keys each). Edit gen_v250_1337_med_east_north.py, not this file.
+
+
+# Mamluk Sultanate (1337-1460)
+oe_v250_men_cab_mam_rawk_cadastre = {
+	ability = adm
+	icon = increase_control_province
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = MAM
+			has_or_had_tag = MAM
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_men_cab_mam_rawk_cadastre_select_province"
+		none_available_msg_key = "oe_v250_men_cab_mam_rawk_cadastre_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_men_cab_mam_rawk_cadastre
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		tax_income_efficiency = 0.04
+		global_monthly_food_modifier = 0.05
+		nobles_estate_target_satisfaction = -0.04
+		peasants_estate_target_satisfaction = -0.03
+	}
+
+	location_modifier = {
+		local_monthly_control = 0.004
+		local_max_control = 0.06
+		local_monthly_food_modifier = 0.08
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# Delhi Sultanate (1337-1460)
+oe_v250_men_cab_dlh_amir_i_kohi = {
+	ability = adm
+	icon = taluqdar_tax_collection
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = DLH
+			has_or_had_tag = DLH
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_men_cab_dlh_amir_i_kohi_select_province"
+		none_available_msg_key = "oe_v250_men_cab_dlh_amir_i_kohi_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_men_cab_dlh_amir_i_kohi
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		global_monthly_food_modifier = 0.06
+		global_monthly_prosperity = 0.002
+		tax_income_efficiency = -0.03
+		court_spending_efficiency = -0.04
+	}
+
+	location_modifier = {
+		local_monthly_food_modifier = 0.1
+		local_monthly_prosperity = 0.004
+		local_raw_material_output = 0.06
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# Muromachi Shogunate (1337-1460)
+oe_v250_men_cab_jap_hanzei_stewardship = {
+	ability = dip
+	icon = diplomatic_endeavors
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = JAP
+			has_or_had_tag = JAP
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	country_modifier = {
+		subject_loyalty = 8
+		diplomatic_reputation = 0.8
+		global_monthly_control = 0.001
+		tax_income_efficiency = -0.03
+		clergy_estate_target_satisfaction = -0.04
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# Renaissance Lombardy & Tuscany (1337-1460)
+oe_v250_men_cab_ita_catasto_survey = {
+	ability = adm
+	icon = mlo_restore_kingdom_lombardy
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = MLO
+			has_or_had_tag = MLO
+			tag = FLO
+			has_or_had_tag = FLO
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_men_cab_ita_catasto_survey_select_province"
+		none_available_msg_key = "oe_v250_men_cab_ita_catasto_survey_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_men_cab_ita_catasto_survey
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		tax_income_efficiency = 0.04
+		global_production_efficiency = 0.05
+		burghers_estate_target_satisfaction = -0.04
+		nobles_estate_target_satisfaction = -0.03
+	}
+
+	location_modifier = {
+		local_production_efficiency = 0.08
+		local_monthly_development = 0.002
+		local_monthly_control = 0.003
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# Kingdom of Sweden (1337-1460)
+oe_v250_men_cab_swe_bergslagen_mining = {
+	ability = adm
+	icon = develop_province
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = SWE
+			has_or_had_tag = SWE
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_men_cab_swe_bergslagen_mining_select_province"
+		none_available_msg_key = "oe_v250_men_cab_swe_bergslagen_mining_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_men_cab_swe_bergslagen_mining
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		global_raw_material_output = 0.06
+		tax_income_efficiency = 0.03
+		peasants_estate_target_satisfaction = -0.03
+		court_spending_efficiency = -0.04
+	}
+
+	location_modifier = {
+		local_raw_material_output = 0.1
+		local_production_efficiency = 0.06
+		local_monthly_development = 0.002
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# Kingdom of Denmark (1337-1460)
+oe_v250_men_cab_dan_sound_dues = {
+	ability = dip
+	icon = cab_naval_focus
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = DAN
+			has_or_had_tag = DAN
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	country_modifier = {
+		tax_income_efficiency = 0.04
+		global_maritime_presence_modifier = 0.08
+		navy_light_ship_power = 0.06
+		diplomatic_reputation = -0.6
+		navy_maintenance_efficiency = -0.04
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { has_ports = yes }
+				add = { value = 12 }
+			}
+		}
+	}
+}

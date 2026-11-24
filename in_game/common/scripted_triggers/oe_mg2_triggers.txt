@@ -9,8 +9,11 @@ oe_mg2_is_host = {
 oe_mg2_late_ming_distress = {
 	OR = {
 		is_situation_active = situation:little_ice_age
-		has_active_disaster = disaster_type:oe_cri2_little_ice_age
-		has_active_disaster = disaster_type:oe_cri2_silver_price_revolution
+		any_province = { is_starving = yes }
+		AND = {
+			has_global_variable = oe_cri2_silver_tide_active
+			inflation >= 0.06
+		}
 		stability < 12
 		war_exhaustion >= 8
 		is_during_bankruptcy = yes
@@ -55,12 +58,12 @@ oe_mg2_great_wall_anchor = {
 
 # Country scope. Clean exit trigger for oe_mg2_late_ming_uprising disaster.
 oe_mg2_disaster_pacified = {
-	is_during_bankruptcy = no
-	stability >= 25
 	OR = {
 		current_year >= 1685
 		has_country_modifier = oe_mg2_mod_uprising_pacified
 		AND = {
+			is_during_bankruptcy = no
+			stability >= 25
 			at_war = no
 			OR = {
 				has_country_modifier = oe_mg2_mod_clean_censorate

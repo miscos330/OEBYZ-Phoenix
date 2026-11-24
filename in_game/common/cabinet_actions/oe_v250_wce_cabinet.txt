@@ -1,0 +1,337 @@
+﻿# NEW 2026-11-24 v25.0 Batch 3 Pack A: 1337-1460 Western & Central European Majors (CAS/ARA/POR/HAB/BOH/POL/LIT) (oe_v250_wce_, 0 mainline slots, 0 rules, 0 vanilla overrides) — 6 Exclusive Tag-Locked Cabinet Actions (CAS/ARA/POR/HAB/BOH/POL-LIT). Edit gen_v250_1337_west_central_eu.py, not this file.
+
+
+# [Crown of Castile (1337-1460)] Santa Hermandad Road Constabulary
+oe_v250_wce_cab_cas_santa_hermandad = {
+	ability = mil
+	icon = increase_control_province
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = CAS
+			has_or_had_tag = CAS
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_wce_cab_cas_santa_hermandad_select_province"
+		none_available_msg_key = "oe_v250_wce_cab_cas_santa_hermandad_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_wce_cab_cas_santa_hermandad
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		global_monthly_control = 0.001
+		trade_land_efficiency = 0.04
+		nobles_estate_target_satisfaction = -0.04
+		army_maintenance_efficiency = -0.04
+	}
+
+	location_modifier = {
+		local_monthly_control = 0.004
+		local_max_control = 0.06
+		local_monthly_prosperity = 0.002
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# [Crown of Aragon (1337-1460)] Consolat de Mar Admiralty Courts
+oe_v250_wce_cab_ara_drassanes_consuls = {
+	ability = dip
+	icon = cab_naval_focus
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = ARA
+			has_or_had_tag = ARA
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	country_modifier = {
+		trade_sea_efficiency = 0.05
+		global_maritime_presence_modifier = 0.06
+		global_sailors_modifier = 0.06
+		navy_maintenance_efficiency = -0.05
+		nobles_estate_target_satisfaction = -0.03
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { has_ports = yes }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# [Kingdom of Portugal (1337-1460)] Lagos Caravel & Portolan Charting
+oe_v250_wce_cab_por_caravel_charts = {
+	ability = dip
+	icon = study_institutions
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = POR
+			has_or_had_tag = POR
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	country_modifier = {
+		exploration_mission_speed = 0.1
+		trade_range_modifier = 0.1
+		research_speed_modifier = 0.03
+		navy_maintenance_efficiency = -0.05
+		tax_income_efficiency = -0.02
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { has_ports = yes }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# [Archduchy of Austria (1337-1460)] Inner Austrian Alpine Toll Circuit
+oe_v250_wce_cab_hab_alpine_customs = {
+	ability = adm
+	icon = develop_province
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = HAB
+			has_or_had_tag = HAB
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_wce_cab_hab_alpine_customs_select_province"
+		none_available_msg_key = "oe_v250_wce_cab_hab_alpine_customs_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_wce_cab_hab_alpine_customs
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		tax_income_efficiency = 0.04
+		trade_land_efficiency = 0.05
+		burghers_estate_target_satisfaction = -0.04
+		stability_cost_efficiency = -0.03
+	}
+
+	location_modifier = {
+		local_monthly_prosperity = 0.003
+		local_production_efficiency = 0.05
+		local_monthly_control = 0.003
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# [Kingdom of Bohemia (1337-1460)] Kutna Hora Royal Silver Assay
+oe_v250_wce_cab_boh_kutna_assay = {
+	ability = adm
+	icon = reduce_inflation
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = BOH
+			has_or_had_tag = BOH
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_wce_cab_boh_kutna_assay_select_province"
+		none_available_msg_key = "oe_v250_wce_cab_boh_kutna_assay_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_wce_cab_boh_kutna_assay
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		minting_income_factor = 0.06
+		global_production_efficiency = 0.04
+		monthly_inflation = 0.001
+		peasants_estate_target_satisfaction = -0.04
+	}
+
+	location_modifier = {
+		local_raw_material_output = 0.08
+		local_production_efficiency = 0.06
+		local_monthly_development = 0.002
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+# [Poland-Lithuania (1337-1460)] Royal Starosts & Eastern March Wardens
+oe_v250_wce_cab_plc_frontier_starosts = {
+	ability = mil
+	icon = settle_the_frontier
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = POL
+			tag = LIT
+			has_or_had_tag = POL
+			has_or_had_tag = LIT
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	country_modifier = {
+		army_light_cavalry_power = 0.06
+		global_monthly_control = 0.002
+		global_defensive = 0.06
+		army_maintenance_efficiency = -0.05
+		nobles_estate_target_satisfaction = -0.03
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = yes }
+				add = { value = 12 }
+			}
+		}
+	}
+}

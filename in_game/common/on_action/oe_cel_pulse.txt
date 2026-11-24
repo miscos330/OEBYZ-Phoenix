@@ -74,9 +74,13 @@ oe_cel_yearly_pulse = {
 
 		# first year with the Mandate
 		if = {
-			limit = { NOT = { has_variable = oe_cel_mandate_seen } }
+			limit = {
+				NOT = { has_variable = oe_cel_mandate_seen }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
+			}
 			set_variable = { name = oe_cel_mandate_seen value = 1 }
 			set_variable = { name = oe_cel_debate_wait years = 10 }
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			if = {
 				limit = {
 					OR = {
@@ -100,7 +104,11 @@ oe_cel_yearly_pulse = {
 			save_scope_as = oe_cel_gtgl_done
 		}
 		if = {
-			limit = { exists = scope:oe_cel_gtgl_done }
+			limit = {
+				exists = scope:oe_cel_gtgl_done
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
+			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			annex_country = { country = scope:oe_cel_gtgl_done reason = Diplomatic transfer = yes }
 			trigger_event_non_silently = oe_cel.15
 		}
@@ -108,7 +116,10 @@ oe_cel_yearly_pulse = {
 		# revocation crisis: won when the rebel fief is gone or no longer a princely fief under us, lost when the
 		# ten years are over or the fief has left
 		if = {
-			limit = { has_variable = oe_cel_crisis_active }
+			limit = {
+				has_variable = oe_cel_crisis_active
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
+			}
 			if = {
 				limit = {
 					OR = {
@@ -120,6 +131,7 @@ oe_cel_yearly_pulse = {
 						}
 					}
 				}
+				set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 				trigger_event_non_silently = oe_cel.7
 			}
 			else_if = {
@@ -129,6 +141,7 @@ oe_cel_yearly_pulse = {
 						var:oe_cel_rebel_fief ?= { NOT = { is_subject_of = root } }
 					}
 				}
+				set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 				trigger_event_non_silently = oe_cel.8
 			}
 		}
@@ -138,7 +151,9 @@ oe_cel_yearly_pulse = {
 			limit = {
 				NOT = { has_variable = oe_cel_debate_done }
 				NOT = { has_variable = oe_cel_debate_wait }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
 			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.18
 		}
 		else_if = {
@@ -146,7 +161,9 @@ oe_cel_yearly_pulse = {
 				has_variable = oe_cel_debate_done
 				NOT = { has_variable = oe_cel_verdict_due }
 				NOT = { has_variable = oe_cel_verdict_done }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
 			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.19
 		}
 
@@ -154,9 +171,11 @@ oe_cel_yearly_pulse = {
 		if = {
 			limit = {
 				NOT = { has_variable = oe_cel_ev20_cd }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
 				NOT = { current_celestial_authority = { value = 20 } }
 			}
 			set_variable = { name = oe_cel_ev20_cd years = 10 }
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.20
 		}
 
@@ -164,8 +183,10 @@ oe_cel_yearly_pulse = {
 		if = {
 			limit = {
 				NOT = { has_variable = oe_cel_treasure_done }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
 				international_organization:middle_kingdom ?= { international_organization_has_policy = policy:oe_cel_pol_ocean_treasure_hegemony }
 			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.21
 		}
 
@@ -174,19 +195,23 @@ oe_cel_yearly_pulse = {
 			limit = {
 				has_variable = oe_cel_twin_phoenix_ready
 				NOT = { has_variable = oe_cel_twin_phoenix_done }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
 			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.22
 		}
 		if = {
 			limit = {
 				has_variable = oe_cel_zone_fusang
 				NOT = { has_variable = oe_cel_elysia_met_done }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
 				OR = {
-					AND = { country_exists = c:BYZ c:BYZ = { oe_ely_is_elysian_host = yes } }
-					AND = { country_exists = c:TRE c:TRE = { oe_ely_is_elysian_host = yes } }
-					AND = { country_exists = c:FEO c:FEO = { oe_ely_is_elysian_host = yes } }
+					AND = { country_exists = c:BYZ c:BYZ = { has_variable = oe_ely_is_elysia } }
+					AND = { country_exists = c:TRE c:TRE = { has_variable = oe_ely_is_elysia } }
+					AND = { country_exists = c:FEO c:FEO = { has_variable = oe_ely_is_elysia } }
 				}
 			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.23
 		}
 
@@ -194,14 +219,17 @@ oe_cel_yearly_pulse = {
 		if = {
 			limit = {
 				NOT = { has_variable = oe_cel_ev26_done }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
 				current_year >= 1400
 				oe_cel_controls_nanyang_hub = yes
 			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.26
 		}
 		if = {
 			limit = {
 				NOT = { has_variable = oe_cel_ev27_done }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
 				OR = {
 					international_organization:middle_kingdom ?= { international_organization_has_policy = policy:oe_cel_pol_ocean_treasure_hegemony }
 					has_variable = oe_cel_treasure_done
@@ -212,20 +240,27 @@ oe_cel_yearly_pulse = {
 					location:kotte = { has_owner = yes is_discovered_by = root }
 				}
 			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.27
 		}
 		if = {
 			limit = {
 				NOT = { has_variable = oe_cel_ev28_done }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
+				current_year >= 1400
 				oe_cel_controls_western_regions_hub = yes
 			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.28
 		}
 		if = {
 			limit = {
 				NOT = { has_variable = oe_cel_ev29_done }
+				NOT = { has_variable = oe_cel_yearly_ev_cd }
+				current_year >= 1405
 				oe_cel_controls_nurgan_hub = yes
 			}
+			set_variable = { name = oe_cel_yearly_ev_cd value = 1 months = 11 }
 			trigger_event_non_silently = oe_cel.29
 		}
 	}

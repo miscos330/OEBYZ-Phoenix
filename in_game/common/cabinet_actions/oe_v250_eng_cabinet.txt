@@ -1,0 +1,111 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4A: 1337-1460 Deep Flavor & Mechanic Packs (TUR/FRA/ENG) (oe_v250_eng_, 0 mainline slots, 0 rules, 0 vanilla overrides) — 2 Exclusive Cabinet Actions for Kingdom of England (1337-1460). Edit gen_v250_1337_tur_fra_eng.py, not this file.
+
+
+oe_v250_eng_cab_justices_peace = {
+	ability = adm
+	icon = strengthen_government
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_v250_eng_cab_justices_peace_select_province"
+		none_available_msg_key = "oe_v250_eng_cab_justices_peace_no_provinces"
+		column = { data = name }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_v250_eng_cab_justices_peace
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	country_modifier = {
+		global_monthly_control = 0.001
+		stability_cost_efficiency = 0.05
+		global_nobles_estate_power = 0.06
+		tax_income_efficiency = -0.02
+	}
+
+	location_modifier = {
+		local_monthly_control = 0.004
+		local_max_control = 0.06
+		local_monthly_prosperity = 0.002
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { at_war = no }
+				add = { value = 12 }
+			}
+		}
+	}
+}
+
+oe_v250_eng_cab_cinque_ports_watch = {
+	ability = dip
+	icon = cab_naval_focus
+	allow_multiple = no
+
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+	}
+	allow = {
+		OR = {
+			scope:is_active ?= yes
+			num_locations >= 3
+		}
+	}
+
+	country_modifier = {
+		naval_morale_modifier = 0.06
+		trade_sea_efficiency = 0.06
+		global_maritime_presence_modifier = 0.1
+		navy_maintenance_efficiency = -0.06
+		army_maintenance_efficiency = -0.03
+	}
+
+	ai_will_do = {
+		add = { value = 10 }
+		scope:actor = {
+			if = {
+				limit = { has_ports = yes }
+				add = { value = 12 }
+			}
+		}
+	}
+}

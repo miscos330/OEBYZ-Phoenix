@@ -1,0 +1,810 @@
+﻿# NEW 2026-11-24 v24.0 Phase 2A-2C Early-1337 Historical Opening Depth Pack Europe & Steppes (oe_v240_eu_, gen_v240_1337_europe_depth.py) — 28 Early-1337 Historical Opening Events (2A:8, 2B:9, 2C:11; strictly 1337-gated, 0 orphans, verified 1080x440 DDS). Edit gen_v240_1337_europe_depth.py, not this file.
+
+
+namespace = oe_v240_eu
+
+# 1. [2A / FLA] The English Wool Embargo on Flanders
+oe_v240_eu.1 = {
+	type = country_event
+	title = oe_v240_eu.1.t
+	desc = oe_v240_eu.1.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_hanseatic_kontor.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.1.a
+		ai_chance = { base = 55 }
+		set_global_variable = { name = oe_v240_eu_fla_concil value = 1 }
+		add_country_modifier = { modifier = oe_v240_eu_mod_fla_wool_crisis years = 12 mode = replace }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } add_opinion = { target = c:ENG modifier = opinion_diplomatic_move } c:ENG = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+		if = { limit = { country_exists = c:FRA c:FRA = { is_rebel_country = no } } c:FRA = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v240_eu.1.b
+		ai_chance = { base = 25 }
+		add_gold = 65
+		add_legitimacy = 5
+		add_country_modifier = { modifier = oe_v240_eu_mod_fla_french_loyalist years = 12 mode = replace }
+		if = { limit = { country_exists = c:FRA c:FRA = { is_rebel_country = no } } add_opinion = { target = c:FRA modifier = opinion_good_relations } c:FRA = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } c:ENG = { add_opinion = { target = root modifier = opinion_export_bad } } }
+	}
+	option = {
+		name = oe_v240_eu.1.c
+		ai_chance = { base = 20 }
+		add_gold = -55
+		add_country_modifier = { modifier = oe_v240_eu_mod_fla_alt_staple years = 12 mode = replace }
+	}
+}
+
+# 2. [2A / FLA] Captain-General Jacob van Artevelde of Ghent
+oe_v240_eu.2 = {
+	type = country_event
+	title = oe_v240_eu.2.t
+	desc = oe_v240_eu.2.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_ind2_guild_congress.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.2.a
+		ai_chance = { base = 65 }
+		set_global_variable = { name = oe_v240_eu_artevelde_active value = 1 }
+		add_country_modifier = { modifier = oe_v240_eu_mod_fla_artevelde_council years = 15 mode = replace }
+		if = { limit = { owns = location:ghent } location:ghent = { change_development = development_mild_bonus } }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:ENG modifier = opinion_export_good } c:ENG = { add_opinion = { target = root modifier = opinion_export_good } add_gold = 45 } }
+	}
+	option = {
+		name = oe_v240_eu.2.b
+		ai_chance = { base = 35 }
+		add_stability = -4
+		add_legitimacy = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_fla_comital_authority years = 15 mode = replace }
+		if = { limit = { country_exists = c:FRA c:FRA = { is_rebel_country = no } } c:FRA = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+}
+
+# 3. [2A / FLA] The Ghent Proclamation: Edward III's Quartered Arms
+oe_v240_eu.3 = {
+	type = country_event
+	title = oe_v240_eu.3.t
+	desc = oe_v240_eu.3.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v185_feudal_charter_france.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.3.a
+		ai_chance = { base = 60 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_fla_ghent_pact years = 15 mode = replace }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:ENG modifier = opinion_good_relations } c:ENG = { add_opinion = { target = root modifier = opinion_good_relations } add_prestige = 10 add_country_modifier = { modifier = oe_v240_eu_mod_eng_flemish_staple years = 12 mode = replace } } }
+		if = { limit = { country_exists = c:FRA c:FRA = { is_rebel_country = no } } c:FRA = { add_opinion = { target = root modifier = opinion_supports_dissidents } } }
+	}
+	option = {
+		name = oe_v240_eu.3.b
+		ai_chance = { base = 40 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v240_eu_mod_fla_armed_neutrality years = 15 mode = replace }
+		if = { limit = { country_exists = c:FRA c:FRA = { is_rebel_country = no } } c:FRA = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+}
+
+# 4. [2A / BUR] The Two Burgundies & Artois: Eudes IV's Capetian Bloc
+oe_v240_eu.4 = {
+	type = country_event
+	title = oe_v240_eu.4.t
+	desc = oe_v240_eu.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_burgundy_lotharingia.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.4.a
+		ai_chance = { base = 65 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_bur_elder_union years = 15 mode = replace }
+		if = { limit = { country_exists = c:FCB c:FCB = { is_rebel_country = no } } add_opinion = { target = c:FCB modifier = opinion_good_relations } c:FCB = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:ARS c:ARS = { is_rebel_country = no } } add_opinion = { target = c:ARS modifier = opinion_good_relations } c:ARS = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v240_eu.4.b
+		ai_chance = { base = 35 }
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_v240_eu_mod_bur_saone_knights years = 15 mode = replace }
+	}
+}
+
+# 5. [2A / BUR] Twilight of the Elder Capetians & the Valois Bridge
+oe_v240_eu.5 = {
+	type = country_event
+	title = oe_v240_eu.5.t
+	desc = oe_v240_eu.5.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v180_royal_coronation_dynasty.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.5.a
+		ai_chance = { base = 65 }
+		add_stability = 5
+		add_legitimacy = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_bur_valois_bridge years = 18 mode = replace }
+		if = { limit = { country_exists = c:FRA c:FRA = { is_rebel_country = no } } add_opinion = { target = c:FRA modifier = opinion_pleased } c:FRA = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v240_eu.5.b
+		ai_chance = { base = 35 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_bur_imperial_tilt years = 18 mode = replace }
+		if = { limit = { country_exists = c:FCB c:FCB = { is_rebel_country = no } } c:FCB = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+}
+
+# 6. [2A / BRI] 1341 Breton Succession Crisis: Montfort vs Blois
+oe_v240_eu.6 = {
+	type = country_event
+	title = oe_v240_eu.6.t
+	desc = oe_v240_eu.6.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v185_feudal_charter_france.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.6.a
+		ai_chance = { base = 55 }
+		set_global_variable = { name = oe_v240_eu_bri_montfort value = 1 }
+		add_country_modifier = { modifier = oe_v240_eu_mod_bri_montfort_cause years = 15 mode = replace }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_gold = 60 add_opinion = { target = c:ENG modifier = opinion_good_relations } c:ENG = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:FRA c:FRA = { is_rebel_country = no } } c:FRA = { add_opinion = { target = root modifier = opinion_supports_dissidents } } }
+	}
+	option = {
+		name = oe_v240_eu.6.b
+		ai_chance = { base = 45 }
+		set_global_variable = { name = oe_v240_eu_bri_blois value = 1 }
+		add_legitimacy = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_bri_blois_cause years = 15 mode = replace }
+		if = { limit = { country_exists = c:FRA c:FRA = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:FRA modifier = opinion_good_relations } c:FRA = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } c:ENG = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+}
+
+# 7. [2A / BRI] Hennebont's Defiance & the Truce of Malestroit
+oe_v240_eu.7 = {
+	type = country_event
+	title = oe_v240_eu.7.t
+	desc = oe_v240_eu.7.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v160_eng_armada.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.7.a
+		ai_chance = { base = 55 }
+		add_army_tradition = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_bri_hennebont_bastion years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_eu.7.b
+		ai_chance = { base = 45 }
+		add_stability = 5
+		add_gold = 55
+		add_country_modifier = { modifier = oe_v240_eu_mod_bri_malestroit_truce years = 15 mode = replace }
+	}
+}
+
+# 8. [2A / POR] 1340 Rio Salado & the Coimbra Court
+oe_v240_eu.8 = {
+	type = country_event
+	title = oe_v240_eu.8.t
+	desc = oe_v240_eu.8.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_granada_alhambra.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.8.a
+		ai_chance = { base = 60 }
+		add_prestige = 12
+		add_army_tradition = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_por_rio_salado years = 15 mode = replace }
+		if = { limit = { country_exists = c:CAS c:CAS = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:CAS modifier = opinion_good_relations } c:CAS = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v240_eu.8.b
+		ai_chance = { base = 20 }
+		add_navy_tradition = 6
+		add_gold = 60
+		add_country_modifier = { modifier = oe_v240_eu_mod_por_atlantic_watch years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_eu.8.c
+		ai_chance = { base = 20 }
+		add_stability = 4
+		add_legitimacy = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_por_coimbra_order years = 15 mode = replace }
+	}
+}
+
+# 9. [2B / UBV] The Excommunicated Emperor & the Avignon Curia
+oe_v240_eu.9 = {
+	type = country_event
+	title = oe_v240_eu.9.t
+	desc = oe_v240_eu.9.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_hre_rimini_bull.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.9.a
+		ai_chance = { base = 65 }
+		set_global_variable = { name = oe_v240_eu_ubv_defiant value = 1 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_ubv_munich_jurists years = 15 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_ghibellines_sanction_pope } } }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:ENG modifier = opinion_diplomatic_move } c:ENG = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+	option = {
+		name = oe_v240_eu.9.b
+		ai_chance = { base = 35 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v240_eu_mod_ubv_avignon_embassy years = 12 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+}
+
+# 10. [2B / UBV] Declaration of Rhense & the Law Licet iuris (1338)
+oe_v240_eu.10 = {
+	type = country_event
+	title = oe_v240_eu.10.t
+	desc = oe_v240_eu.10.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v180_io_grand_council.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.10.a
+		ai_chance = { base = 70 }
+		set_global_variable = { name = oe_v240_eu_rhense_declared value = 1 }
+		add_prestige = 15
+		add_legitimacy = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_ubv_licet_iuris years = 18 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_ghibellines_sanction_pope } } }
+		if = { limit = { country_exists = c:BRA c:BRA = { is_rebel_country = no NOT = { is_at_war_with = root } } } c:BRA = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v240_eu.10.b
+		ai_chance = { base = 30 }
+		add_stability = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_ubv_rhense_compact years = 18 mode = replace }
+	}
+}
+
+# 11. [2B / UBV] The Tyrolean Marriage Crisis (1342)
+oe_v240_eu.11 = {
+	type = country_event
+	title = oe_v240_eu.11.t
+	desc = oe_v240_eu.11.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v185_swiss_alpine_pass.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.11.a
+		ai_chance = { base = 60 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_ubv_alpine_corridor years = 15 mode = replace }
+		if = { limit = { country_exists = c:BOH c:BOH = { is_rebel_country = no } } c:BOH = { add_opinion = { target = root modifier = opinion_displeased } } }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+	option = {
+		name = oe_v240_eu.11.b
+		ai_chance = { base = 40 }
+		add_stability = 5
+		add_country_modifier = { modifier = oe_v240_eu_mod_ubv_reichsfrieden years = 15 mode = replace }
+		if = { limit = { country_exists = c:BOH c:BOH = { is_rebel_country = no } } add_opinion = { target = c:BOH modifier = opinion_good_relations } c:BOH = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+}
+
+# 12. [2B / SIC] Death of Frederick III: Trinacria Under the Interdict
+oe_v240_eu.12 = {
+	type = country_event
+	title = oe_v240_eu.12.t
+	desc = oe_v240_eu.12.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v195_sco_ara_crowns.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.12.a
+		ai_chance = { base = 65 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_sic_trinacria_defiance years = 15 mode = replace }
+		if = { limit = { country_exists = c:ARA c:ARA = { is_rebel_country = no } } add_opinion = { target = c:ARA modifier = opinion_pleased } c:ARA = { add_opinion = { target = root modifier = opinion_pleased } } }
+		if = { limit = { country_exists = c:NAP c:NAP = { is_rebel_country = no } } c:NAP = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+	option = {
+		name = oe_v240_eu.12.b
+		ai_chance = { base = 35 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v240_eu_mod_sic_papal_overture years = 12 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+}
+
+# 13. [2B / SIC] The Parzialita: Catalan vs Latin Barons of Sicily
+oe_v240_eu.13 = {
+	type = country_event
+	title = oe_v240_eu.13.t
+	desc = oe_v240_eu.13.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v180_estate_private_levy.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.13.a
+		ai_chance = { base = 40 }
+		add_country_modifier = { modifier = oe_v240_eu_mod_sic_catalan_faction years = 15 mode = replace }
+		if = { limit = { country_exists = c:ARA c:ARA = { is_rebel_country = no } } add_opinion = { target = c:ARA modifier = opinion_good_relations } c:ARA = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:NAP c:NAP = { is_rebel_country = no } } c:NAP = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+	option = {
+		name = oe_v240_eu.13.b
+		ai_chance = { base = 30 }
+		add_gold = 55
+		add_country_modifier = { modifier = oe_v240_eu_mod_sic_latin_faction years = 15 mode = replace }
+		if = { limit = { country_exists = c:NAP c:NAP = { is_rebel_country = no } } c:NAP = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+	option = {
+		name = oe_v240_eu.13.c
+		ai_chance = { base = 30 }
+		add_gold = -40
+		add_stability = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_sic_randazzo_regency years = 15 mode = replace }
+	}
+}
+
+# 14. [2B / SIC] The Peace of Catania & Trinacrian Survival (1347)
+oe_v240_eu.14 = {
+	type = country_event
+	title = oe_v240_eu.14.t
+	desc = oe_v240_eu.14.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_plat_genoa_san_giorgio.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.14.a
+		ai_chance = { base = 55 }
+		add_gold = 70
+		add_country_modifier = { modifier = oe_v240_eu_mod_sic_catania_peace years = 15 mode = replace }
+		if = { limit = { country_exists = c:NAP c:NAP = { is_rebel_country = no } } add_opinion = { target = c:NAP modifier = opinion_pleased } c:NAP = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v240_eu.14.b
+		ai_chance = { base = 45 }
+		add_navy_tradition = 6
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_sic_messina_bastion years = 15 mode = replace }
+	}
+}
+
+# 15. [2B / SWISS] The Battle of Laupen: Forest Cantons Aid Bern (1339)
+oe_v240_eu.15 = {
+	type = country_event
+	title = oe_v240_eu.15.t
+	desc = oe_v240_eu.15.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v195_swi_alpine_pikes.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.15.a
+		ai_chance = { base = 75 }
+		add_army_tradition = 6
+		add_prestige = 10
+		add_country_modifier = { modifier = oe_v240_eu_mod_swi_laupen_halberds years = 15 mode = replace }
+		if = { limit = { country_exists = c:BRN c:BRN = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:BRN modifier = opinion_good_relations } c:BRN = { add_opinion = { target = root modifier = opinion_good_relations } add_country_modifier = { modifier = oe_v240_eu_mod_swi_laupen_halberds years = 12 mode = replace } } }
+	}
+	option = {
+		name = oe_v240_eu.15.b
+		ai_chance = { base = 25 }
+		add_gold = 55
+		add_country_modifier = { modifier = oe_v240_eu_mod_swi_gotthard_tolls years = 15 mode = replace }
+	}
+}
+
+# 16. [2B / SWISS] The 1351 Pact of Zurich: Guild Republic Joins the Confederacy
+oe_v240_eu.16 = {
+	type = country_event
+	title = oe_v240_eu.16.t
+	desc = oe_v240_eu.16.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v185_swiss_alpine_pass.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.16.a
+		ai_chance = { base = 75 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_swi_zurich_pact years = 18 mode = replace }
+		if = { limit = { exists = international_organization:swiss_confederation country_exists = c:ZUR c:ZUR = { is_rebel_country = no is_subject = no NOT = { is_at_war_with = root } NOT = { is_member_of_international_organization = international_organization:swiss_confederation } } } international_organization:swiss_confederation = { add_country_to_international_organization = c:ZUR } }
+		if = { limit = { country_exists = c:ZUR c:ZUR = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:ZUR modifier = opinion_good_relations } c:ZUR = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:HAB c:HAB = { is_rebel_country = no } } c:HAB = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+	option = {
+		name = oe_v240_eu.16.b
+		ai_chance = { base = 25 }
+		add_gold = 45
+		add_country_modifier = { modifier = oe_v240_eu_mod_swi_limmat_trade years = 15 mode = replace }
+		if = { limit = { country_exists = c:ZUR c:ZUR = { is_rebel_country = no } } c:ZUR = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+}
+
+# 17. [2B / SWISS] Bern Enters the Confederacy (1353): The Eight Old Cantons
+oe_v240_eu.17 = {
+	type = country_event
+	title = oe_v240_eu.17.t
+	desc = oe_v240_eu.17.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v195_swi_alpine_pikes.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.17.a
+		ai_chance = { base = 80 }
+		add_prestige = 12
+		add_country_modifier = { modifier = oe_v240_eu_mod_swi_eight_cantons years = 20 mode = replace }
+		if = { limit = { exists = international_organization:swiss_confederation country_exists = c:BRN c:BRN = { is_rebel_country = no is_subject = no NOT = { is_at_war_with = root } NOT = { is_member_of_international_organization = international_organization:swiss_confederation } } } international_organization:swiss_confederation = { add_country_to_international_organization = c:BRN } }
+		if = { limit = { country_exists = c:BRN c:BRN = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:BRN modifier = opinion_good_relations } c:BRN = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v240_eu.17.b
+		ai_chance = { base = 20 }
+		add_stability = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_swi_forest_autonomy years = 18 mode = replace }
+	}
+}
+
+# 18. [2C / DAN] Night of Randers: Niels Ebbesen & Valdemar IV Atterdag
+oe_v240_eu.18 = {
+	type = country_event
+	title = oe_v240_eu.18.t
+	desc = oe_v240_eu.18.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_marienburg_crusade.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.18.a
+		ai_chance = { base = 75 }
+		set_global_variable = { name = oe_v240_eu_dan_restored value = 1 }
+		add_prestige = 12
+		add_legitimacy = 10
+		add_yearly_manpower = 0.5
+		add_country_modifier = { modifier = oe_v240_eu_mod_dan_atterdag_rising years = 15 mode = replace }
+		if = { limit = { country_exists = c:HTR c:HTR = { is_rebel_country = no } } c:HTR = { add_opinion = { target = root modifier = opinion_insulted } } }
+		if = { limit = { country_exists = c:UBV c:UBV = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:UBV modifier = opinion_pleased } c:UBV = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v240_eu.18.b
+		ai_chance = { base = 25 }
+		add_stability = 5
+		add_country_modifier = { modifier = oe_v240_eu_mod_dan_holstein_redemption years = 15 mode = replace }
+		if = { limit = { country_exists = c:HTR c:HTR = { is_rebel_country = no } } c:HTR = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+}
+
+# 19. [2C / DAN] Atterdag's Ledger: Redeeming the Crown & Selling Reval (1346)
+oe_v240_eu.19 = {
+	type = country_event
+	title = oe_v240_eu.19.t
+	desc = oe_v240_eu.19.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_hanseatic_kontor.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.19.a
+		ai_chance = { base = 70 }
+		add_gold = 120
+		add_stability = 5
+		add_country_modifier = { modifier = oe_v240_eu_mod_dan_crown_redemption years = 18 mode = replace }
+		if = { limit = { country_exists = c:TEU c:TEU = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:TEU modifier = opinion_good_relations } c:TEU = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v240_eu.19.b
+		ai_chance = { base = 30 }
+		add_prestige = 10
+		add_navy_tradition = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_dan_baltic_reach years = 18 mode = replace }
+	}
+}
+
+# 20. [2C / SWE] Magnus IV Eriksson's Landslag & the Scanian Debt
+oe_v240_eu.20 = {
+	type = country_event
+	title = oe_v240_eu.20.t
+	desc = oe_v240_eu.20.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_v135_grand_treaty_hall.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.20.a
+		ai_chance = { base = 60 }
+		add_legitimacy = 6
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v240_eu_mod_swe_landslag years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v240_eu.20.b
+		ai_chance = { base = 40 }
+		add_gold = 80
+		add_country_modifier = { modifier = oe_v240_eu_mod_swe_riksrad_compact years = 18 mode = replace }
+	}
+}
+
+# 21. [2C / WAL] Heirs of Posada: Voivode Basarab I's Mountain Realm
+oe_v240_eu.21 = {
+	type = country_event
+	title = oe_v240_eu.21.t
+	desc = oe_v240_eu.21.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_balkan_crossroads.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.21.a
+		ai_chance = { base = 65 }
+		add_prestige = 10
+		if = { limit = { owns = location:campulung_muscel } location:campulung_muscel = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_eu_mod_wal_posada_legacy years = 16 mode = replace }
+		if = { limit = { country_exists = c:SER c:SER = { is_rebel_country = no NOT = { is_at_war_with = root } } } c:SER = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v240_eu.21.b
+		ai_chance = { base = 35 }
+		add_gold = 55
+		add_country_modifier = { modifier = oe_v240_eu_mod_wal_danube_charter years = 16 mode = replace }
+		if = { limit = { country_exists = c:HUN c:HUN = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:HUN modifier = opinion_pleased } c:HUN = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+}
+
+# 22. [2C / WAL] The Metropolitanate of Ungro-Wallachia
+oe_v240_eu.22 = {
+	type = country_event
+	title = oe_v240_eu.22.t
+	desc = oe_v240_eu.22.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_orthodox_synod.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.22.a
+		ai_chance = { base = 75 }
+		add_prestige = 10
+		add_legitimacy = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_wal_metropolitanate years = 20 mode = replace }
+		if = { limit = { country_exists = c:BYZ c:BYZ = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:BYZ modifier = opinion_good_relations } c:BYZ = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v240_eu.22.b
+		ai_chance = { base = 25 }
+		add_stability = 5
+		add_country_modifier = { modifier = oe_v240_eu_mod_wal_carpathian_balance years = 18 mode = replace }
+		if = { limit = { country_exists = c:HUN c:HUN = { is_rebel_country = no } } c:HUN = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+}
+
+# 23. [2C / BOS] Stephen II Kotromanic & the Bosnian Church Balance
+oe_v240_eu.23 = {
+	type = country_event
+	title = oe_v240_eu.23.t
+	desc = oe_v240_eu.23.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_balkan_crossroads.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.23.a
+		ai_chance = { base = 70 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v240_eu_mod_bos_kotromanic_balance years = 16 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_pleased } } }
+		if = { limit = { country_exists = c:HUN c:HUN = { is_rebel_country = no } } c:HUN = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v240_eu.23.b
+		ai_chance = { base = 30 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_bos_krstjani_bastion years = 16 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+}
+
+# 24. [2C / BOS] Silver of Srebrenica & the Ragusan Trade Charter
+oe_v240_eu.24 = {
+	type = country_event
+	title = oe_v240_eu.24.t
+	desc = oe_v240_eu.24.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_byz_nomisma_treasury.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.24.a
+		ai_chance = { base = 65 }
+		add_gold = 75
+		if = { limit = { owns = location:srebrenica } location:srebrenica = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_eu_mod_bos_srebrenica_silver years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v240_eu.24.b
+		ai_chance = { base = 35 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_v240_eu_mod_bos_royal_citadels years = 18 mode = replace }
+	}
+}
+
+# 25. [2C / TVE] Alexander Mikhailovich Returns to Tver: Shadow of Sarai
+oe_v240_eu.25 = {
+	type = country_event
+	title = oe_v240_eu.25.t
+	desc = oe_v240_eu.25.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_rus_boyarduma.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.25.a
+		ai_chance = { base = 60 }
+		add_prestige = 10
+		add_country_modifier = { modifier = oe_v240_eu_mod_tve_rurikid_pride years = 16 mode = replace }
+		if = { limit = { country_exists = c:PSK c:PSK = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:PSK modifier = opinion_good_relations } c:PSK = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:MOS c:MOS = { is_rebel_country = no } } c:MOS = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+	option = {
+		name = oe_v240_eu.25.b
+		ai_chance = { base = 40 }
+		add_gold = -50
+		add_legitimacy = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_tve_sarai_yarlyk years = 16 mode = replace }
+		if = { limit = { country_exists = c:GLH c:GLH = { is_rebel_country = no } } c:GLH = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+}
+
+# 26. [2C / PSK] The Treaty of Bolotovo (1348): Pskov's Sovereign Republic
+oe_v240_eu.26 = {
+	type = country_event
+	title = oe_v240_eu.26.t
+	desc = oe_v240_eu.26.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v195_nov_veche_hanseatic.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.26.a
+		ai_chance = { base = 70 }
+		add_prestige = 10
+		add_stability = 5
+		add_country_modifier = { modifier = oe_v240_eu_mod_psk_bolotovo_charter years = 18 mode = replace }
+		if = { limit = { country_exists = c:NOV c:NOV = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:NOV modifier = opinion_pleased } c:NOV = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v240_eu.26.b
+		ai_chance = { base = 30 }
+		add_army_tradition = 6
+		if = { limit = { owns = location:izborsk } location:izborsk = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_eu_mod_psk_izborsk_shield years = 18 mode = replace }
+	}
+}
+
+# 27. [2C / GEO] George V the Brilliant & the Dzeglis Deda Code
+oe_v240_eu.27 = {
+	type = country_event
+	title = oe_v240_eu.27.t
+	desc = oe_v240_eu.27.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_byz_senate_consistorium.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.27.a
+		ai_chance = { base = 65 }
+		set_global_variable = { name = oe_v240_eu_geo_brilliant value = 1 }
+		add_legitimacy = 8
+		add_stability = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_geo_dzeglis_deda years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v240_eu.27.b
+		ai_chance = { base = 35 }
+		add_gold = 75
+		if = { limit = { owns = location:tbilisi } location:tbilisi = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_eu_mod_geo_giorgauli_mint years = 18 mode = replace }
+	}
+}
+
+# 28. [2C / GEO] Restoration of the Georgian Realm & the Holy Cross
+oe_v240_eu.28 = {
+	type = country_event
+	title = oe_v240_eu.28.t
+	desc = oe_v240_eu.28.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_rel_sepulchre.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_eu.28.a
+		ai_chance = { base = 60 }
+		add_prestige = 12
+		add_army_tradition = 6
+		add_country_modifier = { modifier = oe_v240_eu_mod_geo_bagratid_zenith years = 20 mode = replace }
+		if = { limit = { country_exists = c:SME c:SME = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:SME modifier = opinion_good_relations } c:SME = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v240_eu.28.b
+		ai_chance = { base = 40 }
+		add_prestige = 10
+		add_country_modifier = { modifier = oe_v240_eu_mod_geo_holy_cross years = 20 mode = replace }
+		if = { limit = { country_exists = c:MAM c:MAM = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:MAM modifier = opinion_pleased } c:MAM = { add_opinion = { target = root modifier = opinion_pleased } } }
+		if = { limit = { country_exists = c:BYZ c:BYZ = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:BYZ modifier = opinion_pleased } c:BYZ = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+}

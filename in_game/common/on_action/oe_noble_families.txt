@@ -1,12 +1,17 @@
 ﻿# Startup is dispatched before court appointments in oe_byz_on_action.
-oe_nf_startup = { effect = { c:BYZ ?= { oe_nf_initialize = yes } } }
+oe_nf_startup = { effect = { if = { limit = { oe_start_is_1337 = yes exists = international_organization:oe_byz_empire_pillars } c:BYZ ?= { oe_nf_initialize = yes } } } }
 monthly_country_pulse = { on_actions = { oe_nf_monthly } }
 on_battle_won_character = { on_actions = { oe_nf_battle_victory } }
 on_character_death = { on_actions = { oe_nf_character_death } }
 on_character_marriage = { on_actions = { oe_nf_marriage } }
 
 oe_nf_monthly = {
-    trigger = { tag = BYZ is_rebel_country = no }
+    trigger = {
+        oe_start_is_1337 = yes
+        tag = BYZ
+        is_rebel_country = no
+        exists = international_organization:oe_byz_empire_pillars
+    }
     effect = {
         oe_nf_initialize = yes
         oe_court_clear_invalid = yes
@@ -43,6 +48,7 @@ oe_nf_monthly = {
 # Native root is the victorious commander. Count each army/navy victory once.
 oe_nf_battle_victory = {
     trigger = {
+        oe_start_is_1337 = yes
         country_exists = c:BYZ
         has_dynasty = yes
         dynasty = { oe_nf_registered_family = yes }
@@ -52,12 +58,13 @@ oe_nf_battle_victory = {
 }
 # Native root is the country; scope:target is the person who dies.
 oe_nf_character_death = {
-    trigger = { country_exists = c:BYZ exists = scope:target scope:target = { oe_nf_death_tracked = yes } }
+    trigger = { oe_start_is_1337 = yes country_exists = c:BYZ exists = scope:target scope:target = { oe_nf_death_tracked = yes } }
     effect = { scope:target = { oe_nf_note_character_death = yes } }
 }
 # Native root/target are the two spouses; award per family member, including two of the same house.
 oe_nf_marriage = {
     trigger = {
+        oe_start_is_1337 = yes
         country_exists = c:BYZ
         OR = {
             AND = { has_dynasty = yes dynasty = { oe_nf_registered_family = yes } }
@@ -71,9 +78,12 @@ oe_nf_marriage = {
     }
 }
 
-oe_nf_post_court_startup = { effect = { c:BYZ ?= { oe_nf_refresh = yes } } }
+oe_nf_post_court_startup = {
+    trigger = { oe_start_is_1337 = yes country_exists = c:BYZ }
+    effect = { c:BYZ = { oe_nf_refresh = yes } }
+}
 on_character_birth = { on_actions = { oe_nf_birth } }
 oe_nf_birth = {
-    trigger = { country_exists = c:BYZ scope:character = { has_dynasty = yes dynasty = { oe_nf_registered_family = yes } } }
+    trigger = { oe_start_is_1337 = yes country_exists = c:BYZ scope:character = { has_dynasty = yes dynasty = { oe_nf_registered_family = yes } } }
     effect = { c:BYZ = { oe_nf_refresh = yes } }
 }

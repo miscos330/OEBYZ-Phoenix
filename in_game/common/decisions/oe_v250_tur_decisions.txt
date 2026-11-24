@@ -1,0 +1,151 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4A: 1337-1460 Deep Flavor & Mechanic Packs (TUR/FRA/ENG) (oe_v250_tur_, 0 mainline slots, 0 rules, 0 vanilla overrides) — 4 Historical Decisions for Ottoman Beylik (1337-1460) (Vanilla Categories ONLY). Edit gen_v250_1337_tur_fra_eng.py, not this file.
+
+
+oe_v250_tur_dec_iznik_madrasah = {
+	decision_category = economy_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_variable = oe_v250_tur_dec_iznik_madrasah_done }
+	}
+	allow = {
+		gold >= 90
+		owns = location:iznik
+		stability >= 0
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 160 owns = location:iznik }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:crown_estate } }
+	option = {
+		name = oe_v250_tur_dec_iznik_madrasah.a
+		effect = {
+			set_variable = { name = oe_v250_tur_dec_iznik_madrasah_done value = 1 }
+			add_gold = -90
+			add_prestige = 5
+			if = { limit = { owns = location:iznik } location:iznik = { change_development = development_mild_bonus } }
+			add_country_modifier = { modifier = oe_v250_tur_mod_dec_iznik_madrasah years = 25 mode = replace }
+		}
+	}
+}
+
+oe_v250_tur_dec_gelibolu_arsenal = {
+	decision_category = infrastructure_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_variable = oe_v250_tur_dec_gelibolu_arsenal_done }
+	}
+	allow = {
+		gold >= 120
+		owns = location:gallipoli
+		has_ports = yes
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 200 owns = location:gallipoli }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = exterior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:burghers_estate background = estate_type:crown_estate } }
+	option = {
+		name = oe_v250_tur_dec_gelibolu_arsenal.a
+		effect = {
+			set_variable = { name = oe_v250_tur_dec_gelibolu_arsenal_done value = 1 }
+			add_gold = -120
+			add_navy_tradition = 5
+			if = { limit = { owns = location:gallipoli } location:gallipoli = { change_development = development_mild_bonus } }
+			add_country_modifier = { modifier = oe_v250_tur_mod_dec_gelibolu_arsenal years = 25 mode = replace }
+		}
+	}
+}
+
+oe_v250_tur_dec_edirne_seat = {
+	decision_category = country_specific_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_variable = oe_v250_tur_dec_edirne_seat_done }
+	}
+	allow = {
+		gold >= 110
+		owns = location:edirne
+		stability >= 5
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 180 owns = location:edirne }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:nobles_estate } }
+	option = {
+		name = oe_v250_tur_dec_edirne_seat.a
+		effect = {
+			set_variable = { name = oe_v250_tur_dec_edirne_seat_done value = 1 }
+			add_gold = -110
+			add_prestige = 6
+			if = { limit = { owns = location:edirne } location:edirne = { change_development = development_mild_bonus } }
+			if = { limit = { owns = location:edirne } location:edirne = { change_prosperity = prosperity_mild_bonus } }
+			add_country_modifier = { modifier = oe_v250_tur_mod_dec_edirne_seat years = 25 mode = replace }
+		}
+	}
+}
+
+oe_v250_tur_dec_tophane_foundry = {
+	decision_category = government_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		current_year >= 1425
+		NOT = { has_variable = oe_v250_tur_dec_tophane_foundry_done }
+	}
+	allow = {
+		gold >= 150
+		OR = { owns = location:edirne owns = location:bursa }
+		stability >= 0
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 240 current_year >= 1430 }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = armed 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:burghers_estate } }
+	option = {
+		name = oe_v250_tur_dec_tophane_foundry.a
+		effect = {
+			set_variable = { name = oe_v250_tur_dec_tophane_foundry_done value = 1 }
+			add_gold = -150
+			add_army_tradition = 6
+			add_country_modifier = { modifier = oe_v250_tur_mod_dec_tophane_foundry years = 25 mode = replace }
+		}
+	}
+}

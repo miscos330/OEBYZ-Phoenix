@@ -2,7 +2,13 @@
 # Native root is the country in which the death occurs; target is the dying person.
 oe_osmaris_manuel_death = {
     trigger = {
-        country_exists = c:BYZ scope:target = character:tur_murad
+        oe_start_is_1337 = yes
+        country_exists = c:BYZ
+        trigger_if = {
+            limit = { exists = character:tur_murad }
+            scope:target = character:tur_murad
+        }
+        trigger_else = { always = no }
         c:BYZ = { has_variable = oe_osman_chain_active NOT = { has_variable = oe_osman_expelled } }
     }
     effect = {
@@ -14,7 +20,7 @@ oe_osmaris_manuel_death = {
 }
 monthly_country_pulse = { on_actions = { oe_osmaris_legacy_monthly } }
 oe_osmaris_legacy_monthly = {
-    trigger = { tag = BYZ is_rebel_country = no }
+    trigger = { oe_start_is_1337 = yes tag = BYZ is_rebel_country = no }
     effect = {
         if = {
             limit = {
@@ -24,8 +30,8 @@ oe_osmaris_legacy_monthly = {
             }
             set_variable = oe_osmaris_manuel_death_seen
         }
-        if = { limit = { oe_osmaris_memorial_ready = yes } trigger_event_non_silently = oe_flavor_byz.1009 }
         oe_osmaris_grant_legacy_buildings = yes
-        if = { limit = { oe_osmaris_basil_capture_ready = yes } trigger_event_non_silently = oe_flavor_byz.1008 }
+        if = { limit = { oe_osmaris_memorial_ready = yes } trigger_event_non_silently = oe_flavor_byz.1009 }
+        else_if = { limit = { oe_osmaris_basil_capture_ready = yes } trigger_event_non_silently = oe_flavor_byz.1008 }
     }
 }

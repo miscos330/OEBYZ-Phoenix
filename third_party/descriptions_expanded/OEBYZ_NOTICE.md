@@ -1,17 +1,17 @@
 # Descriptions Expanded in Phoenix (OEBYZ)
 
 This folder holds the licence, credits and source list of **Descriptions Expanded: Countries, Cultures, Dynasties & More**
-(Steam Workshop 3838927963), version 1.2.2 (see `CREDITS.md` and `LICENSE` for upstream attribution). Phoenix includes
+(Steam Workshop 3838927963), version 1.2.3 (see `CREDITS.md` and `LICENSE` for upstream attribution). Phoenix includes
 that mod's description texts and adds its own.
 
 ## What is included unchanged
 
-Byte-identical copies of version 1.2.2 (SHA-256):
+Byte-identical copies of version 1.2.3 (SHA-256):
 
 - `in_game/common/customizable_localization/lde_history_entries.txt` `8078b8b16c82e9101305446490aca7a6ff6d838709ba37a750c59f0f4e45486f`
-- `in_game/localization/simp_chinese/lde_history_entries_l_simp_chinese.yml` `ca5b75f9d4b37617c6eecd33187b17da330bb94e9b06ce436408106ebae0c7be`
-- `in_game/localization/simp_chinese/replace/lde_history_entries_replace_l_simp_chinese.yml` `1738c27c966b5fedb2589bbda8f4fef56a8de6f6c90e199c80a5db1b12b343b5`
-- `in_game/localization/english/replace/lde_history_entries_replace_l_english.yml` `2fee3ba4fb066b5162ef266623d060697a86268a4f3b991008e0086598d7dcb1`
+- `in_game/localization/simp_chinese/lde_history_entries_l_simp_chinese.yml` `ef6b9f980ac86953bb84a3a9c597b2e4aacd2438b930bddb134130283672ee5b`
+- `in_game/localization/simp_chinese/replace/lde_history_entries_replace_l_simp_chinese.yml` `ee2c2fbce3d7c5b13a0b3b80550e8588a998ea15fd4ccfda70147e6db1a33ea2`
+- `in_game/localization/english/replace/lde_history_entries_replace_l_english.yml` `bef0c846b82f1928a9c824ee96fd293dd595daec55cfb1c8ec97ef8dbebb2c03`
 - `LICENSE` `98d215b1d5affaf6e75e6e1d7b2df3b945b5dfd3479ad700d5c2807dd08609ea`
 - `LICENSES/CC-BY-SA-4.0.txt` `091d08965bb70d444daccb62c5bcc4345cd4d6a65267da1f06564c95d25d9abb`
 - `LICENSES/MIT.txt` `7789db1e9db4f7dedd32ba79638aa49f6fa1dc4d15fda491cf89923826781343`
@@ -22,9 +22,9 @@ Byte-identical copies of version 1.2.2 (SHA-256):
 
 ## What Phoenix changed or added
 
-- `in_game/localization/english/lde_history_entries_l_english.yml` (upstream SHA-256 `5adcc9421a231f3652e13978ddf9f449b20a963dd49130777c180fb15aea33f2`):
+- `in_game/localization/english/lde_history_entries_l_english.yml` (upstream SHA-256 `71f7df07dfeb0baede6419852cf1271b47d557dc4c4400f04b290d7d077e4d4b`):
   removed one stray CJK string in `lde_dyn_takou_dynasty` so the English localization file contains zero CJK characters;
-  all other lines are unchanged from version 1.2.2.
+  all other lines are unchanged from version 1.2.3.
 - `in_game/gui/zz_lde_history_tooltips.gui`: the country, culture and dynasty tooltips first show Phoenix's own text
   for the object when there is one, otherwise the Descriptions Expanded text as before. Nothing else in the file is changed.
 - `in_game/common/customizable_localization/oe_lde_overlay.txt` and `main_menu/localization/*/oe_lde_overlay_l_*.yml`:
@@ -36,7 +36,7 @@ Byte-identical copies of version 1.2.2 (SHA-256):
   Chinese text is shown with names respelled as the game and Phoenix spell them (English unchanged); and 20 descriptions are
   new, for Hellenized cultures that exist only in Phoenix.
 - `main_menu/localization/*/oe_lde_rel_l_*.yml` and `in_game/localization/*/replace/zz_oe_lde_merge_l_*.yml`:
-  for `greek_group_desc`, `miaphysite_desc`, `nestorianism_desc`, `orthodox_desc`, `safavid_school_desc`, `shia_desc`, Phoenix keeps its own first paragraph where defined,
+  for `greek_group_desc`, `hellenism_religion_desc`, `miaphysite_desc`, `nestorianism_desc`, `orthodox_desc`, `safavid_school_desc`, `shia_desc`, Phoenix keeps its own first paragraph where defined,
   preserves the paragraphs Descriptions Expanded added, and appends Phoenix's Batch 4 historical supplements for
   `miaphysite_desc`, `nestorianism_desc`, `orthodox_desc`, `safavid_school_desc`, `shia_desc`.
 

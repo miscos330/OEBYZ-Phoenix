@@ -1,0 +1,172 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4B 1337 Great Yuan/Early Ming Deep Flavor & Mechanic Pack (oe_v250_yua_, gen_v250_1337_mos_yua.py) — 4 Historical Tag-Locked Decisions (vanilla categories 0..6, DECISIONFMT & DEC-LOC compliant). Edit gen_v250_1337_mos_yua.py, not this file.
+
+
+oe_v250_yua_dec_dredge_grand_canal = {
+	decision_category = infrastructure_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		OR = {
+			tag = CHI
+			tag = YUA
+			tag = MNG
+		}
+		NOT = { has_variable = oe_v250_yua_canal_done }
+	}
+	allow = {
+		is_subject = no
+		OR = {
+			owns_or_non_sovereign_subject_owns = location:dadu
+			owns_or_non_sovereign_subject_owns = location:shangyuan
+		}
+		OR = {
+			owns_or_non_sovereign_subject_owns = location:yangzhou
+			owns_or_non_sovereign_subject_owns = location:xuzhou
+		}
+		gold >= 200
+		stability >= 5
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 280 stability >= 8 }
+			add = 40
+		}
+	}
+	illustration_tags = { 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:peasants background = pop_type:burghers } }
+	option = {
+		name = oe_v250_yua_dec_dredge_grand_canal.a
+		effect = {
+			add_gold = -200
+			set_variable = { name = oe_v250_yua_canal_done value = 1 }
+			if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty } }
+			add_prestige = prestige_mild_bonus
+			add_country_modifier = { modifier = oe_v250_yua_mod_grand_canal_artery years = -1 mode = replace }
+		}
+	}
+}
+
+oe_v250_yua_dec_imperial_censorate = {
+	decision_category = government_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		OR = {
+			tag = CHI
+			tag = YUA
+			tag = MNG
+		}
+		NOT = { has_variable = oe_v250_yua_censorate_done }
+	}
+	allow = {
+		is_subject = no
+		num_locations >= 30
+		stability >= 8
+		gold >= 160
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 240 stability >= 10 }
+			add = 40
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:nobles_estate } }
+	option = {
+		name = oe_v250_yua_dec_imperial_censorate.a
+		effect = {
+			add_gold = -160
+			set_variable = { name = oe_v250_yua_censorate_done value = 1 }
+			add_legitimacy = legitimacy_mild_bonus
+			if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty } }
+			add_country_modifier = { modifier = oe_v250_yua_mod_imperial_censorate years = -1 mode = replace }
+		}
+	}
+}
+
+oe_v250_yua_dec_shibosi_charter = {
+	decision_category = economy_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		OR = {
+			tag = CHI
+			tag = YUA
+			tag = MNG
+		}
+		NOT = { has_variable = oe_v250_yua_shibosi_done }
+	}
+	allow = {
+		is_subject = no
+		has_non_rural_port = yes
+		OR = {
+			owns_or_non_sovereign_subject_owns = location:jinjiang
+			owns_or_non_sovereign_subject_owns = location:hangzhou
+			owns_or_non_sovereign_subject_owns = location:guangzhou
+		}
+		gold >= 150
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 240 }
+			add = 30
+		}
+	}
+	illustration_tags = { 10 = exterior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:burghers_estate background = estate_type:crown_estate } }
+	option = {
+		name = oe_v250_yua_dec_shibosi_charter.a
+		effect = {
+			add_gold = -150
+			set_variable = { name = oe_v250_yua_shibosi_done value = 1 }
+			if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
+			add_country_modifier = { modifier = oe_v250_yua_mod_shibosi_bureaus years = -1 mode = replace }
+		}
+	}
+}
+
+oe_v250_yua_dec_northern_passes_watch = {
+	decision_category = country_specific_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		OR = {
+			tag = CHI
+			tag = YUA
+			tag = MNG
+		}
+		OR = {
+			owns_or_non_sovereign_subject_owns = location:dadu
+			owns_or_non_sovereign_subject_owns = location:datong_datong
+			owns_or_non_sovereign_subject_owns = location:liaoyang
+		}
+	}
+	allow = {
+		is_subject = no
+		gold >= 120
+		custom_tooltip = {
+			text = oe_v250_yua_passes_cd_tt
+			NOT = { has_variable = oe_v250_yua_passes_cd }
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { OR = { at_war = yes gold >= 240 } }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_v250_yua_dec_northern_passes_watch.a
+		effect = {
+			add_gold = -120
+			set_variable = { name = oe_v250_yua_passes_cd value = 1 years = 15 }
+			add_army_tradition = army_tradition_mild_bonus
+			add_country_modifier = { modifier = oe_v250_yua_mod_northern_passes_watch years = 12 mode = replace }
+		}
+	}
+}

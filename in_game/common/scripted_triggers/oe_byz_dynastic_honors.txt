@@ -39,24 +39,30 @@ oe_byz_co_emperor_candidate = {
 
 # Country scope. Character leadership can be stale even with the right leader country.
 oe_byz_needs_imperial_leadership = {
+    oe_start_is_1337 = yes
     tag = BYZ
     has_ruler = yes
-    exists = international_organization:oe_byz_empire_pillars
-    exists = international_organization:oe_byz_roman_world
-    OR = {
-        international_organization:oe_byz_empire_pillars = {
-            OR = {
-                NOT = { leader_country = c:BYZ }
-                NOT = { "leader_at_index(0)" = { this = c:BYZ.ruler } }
-            }
+    trigger_if = {
+        limit = {
+            exists = international_organization:oe_byz_empire_pillars
+            exists = international_organization:oe_byz_roman_world
         }
-        international_organization:oe_byz_roman_world = {
-            OR = {
-                NOT = { leader_country = c:BYZ }
-                NOT = { "leader_at_index(0)" = { this = c:BYZ.ruler } }
+        OR = {
+            international_organization:oe_byz_empire_pillars = {
+                OR = {
+                    NOT = { leader_country = c:BYZ }
+                    NOT = { "leader_at_index(0)" = { this = c:BYZ.ruler } }
+                }
+            }
+            international_organization:oe_byz_roman_world = {
+                OR = {
+                    NOT = { leader_country = c:BYZ }
+                    NOT = { "leader_at_index(0)" = { this = c:BYZ.ruler } }
+                }
             }
         }
     }
+    trigger_else = { always = no }
 }
 
 # Any estate, sex or age; existing family relationships are deliberately untouched.

@@ -870,7 +870,10 @@ oe_io3_res_hre_circle_defense = {
 		}
 		custom_tooltip = {
 			text = oe_io3_tt_res_hre_defense
-			change_imperial_authority = { value = 3 }
+			if = {
+				limit = { exists = international_organization:hre international_organization:hre = { has_variable = imperial_authority } }
+				change_imperial_authority = { value = 3 }
+			}
 			scope:recipient = {
 				every_international_organization_member = {
 					limit = { is_rebel_country = no num_locations > 0 }
@@ -889,7 +892,7 @@ oe_io3_res_hre_circle_defense = {
 		scope:recipient = {
 			set_variable = { name = oe_io3_res_hre_circle_defense_cd years = 6 }
 		}
-		change_imperial_authority = { value = -2 }
+		if = { limit = { exists = international_organization:hre international_organization:hre = { has_variable = imperial_authority } } change_imperial_authority = { value = -2 } }
 		scope:proposer ?= {
 			add_prestige = prestige_weak_penalty
 		}
@@ -1021,7 +1024,10 @@ oe_io3_res_hre_reichssteuer = {
 		}
 		custom_tooltip = {
 			text = oe_io3_tt_res_hre_tax
-			change_imperial_authority = { value = 4 }
+			if = {
+				limit = { exists = international_organization:hre international_organization:hre = { has_variable = imperial_authority } }
+				change_imperial_authority = { value = 4 }
+			}
 			scope:recipient = {
 				leader_country ?= {
 					add_country_modifier = { modifier = oe_io3_mod_hre_reichssteuer_emp years = 12 mode = replace }
@@ -1047,7 +1053,7 @@ oe_io3_res_hre_reichssteuer = {
 		scope:recipient = {
 			set_variable = { name = oe_io3_res_hre_reichssteuer_cd years = 6 }
 		}
-		change_imperial_authority = { value = -2 }
+		if = { limit = { exists = international_organization:hre international_organization:hre = { has_variable = imperial_authority } } change_imperial_authority = { value = -2 } }
 		scope:proposer ?= {
 			add_prestige = prestige_weak_penalty
 		}

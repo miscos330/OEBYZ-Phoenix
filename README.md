@@ -1,8 +1,8 @@
-# 凤凰计划测试版 Phoenix Beta（OEBYZ）v23.0
+# 凤凰计划测试版 Phoenix Beta（OEBYZ）v25.0
 
 欧陆风云 5 的东罗马（拜占庭）与欧亚全时代重制 MOD 测试版，适配游戏版本 1.4.9，界面有中文和英文。测试版更新较频繁，可能会有 bug，但可以先体验最新内容。
 
-> **v23.0 不支持旧存档：v21.0.1 及以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。2026-11-23 至 24 日在 EU5 1.4.9 上实机测试 rc1→rc4（主模组与四合一子模组同时加载）：1337 开局 6 组新探针（P23–P28）全部读数 1111；干净观察者局 1337→1356 两轮（rc3、rc4）均无崩溃，本模组运行期报错为 0；12 张新油画逐张实机预览正常；条顿 5 大辖区与汉萨 4 商站在 1342 年前后均为忠诚附庸；1337 开局后世国家缺政体报错与飞地回退已清零。四合一书签页实机核对：4 个时代单击切换、20 张君主肖像、点击圆徽展开右侧详情卡、难度标与底栏扩展包图标条正常，界面布局报错为 0。
+> **v25.0 不支持旧存档：v23.0 及以前任何版本的存档都不能用于这一版，请新开一局。** 想继续旧档的玩家请玩正式版。2026-11-24 在 EU5 1.4.9 上实机测试 rc2→rc5，共 4 轮。rc5 测了三组：只开主模组的 1337 匈牙利、主模组 + 全时代子模组的 1776 西班牙、主模组 + 1453 第四罗马子模组的 1453 拜占庭，各用观察者跑了 7–9 年，都没有崩溃；本模组运行期报错 1337 局 8 行，1776 和 1453 局各约 25–30 行，都是玩家看不到的日志提示。**本版起“第四罗马 / 新极乐世界”不在主模组里，想玩请订阅新子模组《1453 君士坦丁堡围城与第四罗马》。**
 
 - **Steam 创意工坊：** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub：** https://github.com/miscos330/OEBYZ-Phoenix
@@ -37,6 +37,53 @@
 - **宫廷与豪族：** “琼筵序次”里有 7 个宫廷官职。豪族名册上的家族会扩张势力，可以拉拢、打压、抄家；放任不管会引发“拜占庭式的阴谋”。
 - **帝国财政：** 国库与内帑分两本账；铸币、借贷、包税各有代价。加拉塔的热那亚人从开局起就截走关税。
 - **历史关口：** 1341 年两约翰之战、静修派之争、杜尚的塞尔维亚、奥斯曼人渡海、1348 年加拉塔之争。
+
+## v25.0 主要内容《殖民 4.0 与全时代》（整合 v24.0 与 v25.0，2026-11-24）
+
+- **起点：** v23.0（2026 年 11 月 24 日）。本版把“第四罗马 / 新极乐世界”从主模组拆出，单独做成新子模组；主模组只保留 1337 主线。
+- **测试状态：** 2026-11-24 在 EU5 1.4.9 上实机测试 rc2→rc5，共 4 轮。rc5 测了三组：
+  - **只开主模组：** 1337 匈牙利开局，观察到 1344 年；
+  - **主模组 + 全时代子模组：** 1776 西班牙开局，观察到 1785 年；
+  - **主模组 + 1453 第四罗马子模组：** 1453 拜占庭开局，观察到 1462 年。
+  - 三组都没有崩溃。观察期间本模组运行期报错：1337 局 8 行（道路提示），1776 局和 1453 局各约 25–30 行，都来自同一处神罗决议提示。
+  - 开局时有一批殖民内阁条件提示，三局各出现一次，玩家看不到。
+  - 以下内容逐项实机核对过：殖民 4.0 决议中文标题、海外征服移交事件、殖民地统一命名、1453 开局两个抉择事件、清与吞武里国名，以及后世时代 1337 专属内容不再误触发。
+
+### 主要内容
+
+- **殖民系统 4.0（`oe_col4_`，零原版覆写）：**
+  - **海外移交与整并：** 赢下海外战争后，若同大区已有殖民领，会弹出移交事件，可以把新占领土交给殖民领、只保留沿海要港，或全部留在本土直辖；另有《整合海外殖民飞地》决议。
+  - **统一命名：** 14 个文明家族 × 134 个地区的美洲与大洋洲殖民地名。例如 1776 年测试中，丹麦的北美殖民领叫“文兰总督领”，葡萄牙的叫“巴西总督国”；也适用于海外新建的藩属。
+  - **新内容：** 9 个新世界与大洋洲可成立国家、外围部落大瘟疫灾难与部族酋邦改革、征服者和平期转为殖民领、殖民总督文化路线。
+  - **哥伦布大交换（宗教改革时代起）：** 两项决议，加上内阁行动《跨洋农作驯化局》，严格保护金银与香料产地。
+- **1337 欧亚二梯队大国补全：** 为 18 组国家补上专属改革、特权、内阁行动、决议与错峰事件，全部只在 1337 开局生效：
+  - 奥斯曼、法兰西、英格兰、卡斯蒂利亚/阿拉贡、葡萄牙、勃艮第、奥地利、波希米亚、波兰-立陶宛、莫斯科、瑞典、丹麦、匈牙利；
+  - 威尼斯/热那亚、米兰/佛罗伦萨、马穆鲁克、后伊尔汗波斯诸国、德里、元明转换、日本。
+  - 实机看过的只有卡斯蒂利亚和匈牙利的内阁行动与决议。
+- **平衡与 AI：** 离线审计了全部自定义改革、法律、内阁行动与修正的叠加上限和代价，并补齐 AI 采用权重。条顿属国利沃尼亚开局忠诚度改为 60%；4 项通用危机内阁行动收紧了出现条件；首日决议和内阁列表减少无关条目。
+- **全时代子模组（`OEBYZ-Phoenix-All-Eras`）：**
+  - 1453、1648、1776 三套剧本的疆域、宗教、军队、战争和国号重做，含大清帝国、吞武里暹罗；
+  - 后世开局修好了大批 1337 专属内容的报错，例如安德洛尼卡三世、1337 国际组织、科技模板；
+  - 1453 开局不再弹出 1337 专属事件。
+- **新子模组 · 1453 君士坦丁堡围城与第四罗马（`OEBYZ-Phoenix-1453-Fourth-Rome`）：**
+  - 1453.4.6 剧本加完整的“第四奥德赛 / 新极乐世界”剧情、建筑、任务树与总督府；
+  - 君士坦丁十一世开局可以选择死守城墙，或立即携圣物西渡建立第四罗马。
+  - 主模组不再包含这部分内容，想玩第四罗马请订阅这个子模组。
+- **描述扩展升级到 1.2.3：** 内置的 Descriptions Expanded 升级到 1.2.3（只有文字修正）。
+
+### 子模组
+
+- **全时代剧本合集**（`OEBYZ-Phoenix-All-Eras`，创意工坊 `3844848618`）：排在主模组之后加载。
+- **1453 君士坦丁堡围城与第四罗马**（`OEBYZ-Phoenix-1453-Fourth-Rome`，创意工坊条目见主模组页面的链接）：排在主模组之后加载。
+
+### 已知问题
+
+- 本版不支持 v23.0 及更早版本的旧存档，请新开一局；只适配 EU5 `1.4.9`。
+- 两个子模组都带有 1453 剧本，**同时启用的情况没有测试过，请二选一**。
+- 已内置 Descriptions Expanded，无需另外订阅。如果同时启用 Descriptions for Every Tile 或 Every Historical Character，请把它们排在凤凰计划之上。
+- 全时代书签页里，君主详情卡的“◀ 总览”按钮仍然点不动；点顶栏的时代页签可以回到总览。
+- 1776 年测试中，AI 新建的美洲殖民领多数是“封臣”类型，而不是原版的“殖民领”类型；殖民 4.0 的移交和命名对两种都生效。
+- 尚未逐项实测：18 组 1337 新内容中，除卡斯蒂利亚和匈牙利以外的各国；9 个可成立国家；大瘟疫灾难；第四罗马西渡之后的全部剧情；以及超过 10 年的长局。
 
 ## v23.0 主要内容《十字与鹰旗》（整合 v22.0 + v23.0，2026-11-24）
 
@@ -193,23 +240,25 @@ v21.0 正式版里，所有国家的决议面板都显示成空白条加提醒�
 
 ## 已知问题
 
-- 本版不支持 v20.0 及更早版本的旧存档，请新开一局；只适配 EU5 `1.4.9`。
-- 1337–1361 的观察者局里，金帐汗国在 1357 年撤去护盾后到 1361 年仍未出现原版大混乱；更晚的走向没有测。
-- 主模组仍保留少量历史遗留加载提示（43 个后期融合文化开局无人口、若干早期版本的旧改革/特权图标提示等），均不影响正常游玩。
-- 极乐洲新罗马建国事件（`oe_ely.13`）若玩家一直不选且取消暂停，超时后会自动留在旧大陆残余国家；正常手动点击“率众西渡”即可无缝切换至 `ELR`。
-- 没有逐项实测的：6 套新局势界面视觉、13 张新油画与 44 张重绘成就图逐张核对、极乐新罗马议会投票结果与 75 年三段经济曲线、察合台 14 对 3 东西分裂细节、41 条 T2/T3 任务树与 6 场中后期灾难的逐个触发，以及开局精选页 3.0 与 v21.0 同时使用。
+- 本版不支持 v23.0 及更早版本的旧存档，请新开一局；只适配 EU5 `1.4.9`。
+- 两个子模组都带有 1453 剧本，同时启用的情况没有测试过，请二选一。
+- 全时代书签页：君主详情卡的“◀ 总览”按钮仍然点不动，点顶栏时代页签可以回到总览。
+- 1776 年测试中，AI 新建的美洲殖民领多数是“封臣”类型，而不是原版的“殖民领”；殖民 4.0 的移交和命名对两种都生效。
+- 日志里仍有少量提示（神罗决议读取帝国权威、开局时殖民内阁条件），玩家看不到，不影响游玩。
+- 尚未逐项实测：18 组 1337 新内容中，除卡斯蒂利亚和匈牙利以外的各国；9 个可成立国家；大瘟疫灾难；第四罗马西渡之后的全部剧情；超过 10 年的长局。
 
 ## 安装
 
 - **Steam 创意工坊（推荐）：** 订阅上面的链接，然后在游戏的“模组和DLC”里把它加入播放集。
 - **手动安装：**
   1. 下载 [Release](https://github.com/miscos330/OEBYZ-Phoenix/releases) 里的压缩包；
-  2. 解压出 `OEBYZ-Phoenix-v23.0` 文件夹；
+  2. 解压出 `OEBYZ-Phoenix-v25.0` 文件夹；
   3. 把整个文件夹放进 `文档\Paradox Interactive\Europa Universalis V\mod\`；
   4. 在播放集里启用。
 
 ## 兼容性
 
+- 已内置 Descriptions Expanded，无需另外订阅；如果同时启用 Descriptions for Every Tile 或 Every Historical Character，请把它们排在凤凰计划之上。
 - 只适配游戏版本 1.4.9。游戏更新后，部分覆盖原版的开局文件可能需要重新生成。
 - 不支持旧存档：以前任何版本的存档都不能用于这一版，请新开一局。
 - MOD 改写了 1337 年开局的部分原版文件（国家、建筑、外交、国际组织、地区偏好）和几份原版事件文件（拜占庭、保加利亚、热那亚、塞尔维亚、奥斯曼的崛起等）。改同一批原版文件的模组大多不兼容，不建议同时启用。
@@ -229,16 +278,47 @@ v21.0 正式版里，所有国家的决议面板都显示成空白条加提醒�
 
 ---
 
-# Phoenix Beta (OEBYZ) v23.0 — English
+# Phoenix Beta (OEBYZ) v25.0 — English
 
 The beta of an Eastern Roman (Byzantine) and Pan-Eurasian overhaul for Europa Universalis V, made for game version 1.4.9. The beta updates often and may contain bugs, but it has the newest content.
 
-> **v23.0: Old saves are not supported: saves from v21.0.1 or earlier will not work with this version. Start a new game.** Live-tested on EU5 1.4.9 from rc1 to rc4 (23–24 Nov 2026) with the main mod and the All-Eras submod loaded together: all 6 new 1337 probes (P23–P28) read 1111; two clean observer runs 1337→1356 (rc3, rc4) finished with no crash and 0 runtime script errors from this mod; all 12 new oil paintings were previewed live; the 5 Teutonic Bailiwicks and 4 Hanseatic Kontors are loyal subjects around 1342; the 1337 later-era country and exclave regressions are at 0. On the 4-in-1 bookmark screen, single-click era tabs, the 20 monarch portraits, click-to-open detail cards, difficulty tags and the bottom DLC strip work, with 0 GUI layout errors.
+> **v25.0: Old saves are not supported: saves from v23.0 or earlier will not work with this version. Start a new game.** Live-tested on EU5 1.4.9 from rc2 to rc5 (24 Nov 2026), four rounds. The rc5 round covered three setups: the main mod alone (Hungary 1337), the main mod with the All-Eras submod (Spain 1776) and the main mod with the 1453 Fourth Rome submod (Byzantium 1453), each observed for 7–9 years with no crash; runtime log lines from this mod were 8 in the 1337 game and about 25–30 in the 1776 and 1453 games, none visible in play. **From this version the Fourth Rome / Nova Elysia content is no longer in the main mod: subscribe to the new submod “1453 Siege of Constantinople & Fourth Rome” to play it.**
 
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405
 - **GitHub:** https://github.com/miscos330/OEBYZ-Phoenix
 
 ⭐ **If you enjoy the mod, please star this repository.** Stars help other players find it and are the most direct encouragement for us. Bug reports are welcome in Issues.
+
+## New in v25.0 — Colonization 4.0 & All Eras (consolidates v24.0 + v25.0, 2026-11-24)
+
+- **Starting point:** v23.0 (24 Nov 2026). The Fourth Rome / Nova Elysia content has been moved out of the main mod into a new submod; the main mod keeps the 1337 campaign.
+- **Test status:** see the note at the top. Checked item by item in game: Chinese/English titles of the Colonization 4.0 decisions, the overseas handover event, unified colonial names, both 1453 opening choices, the Great Qing and Thonburi names, and that 1337-only content no longer fires in later-era starts.
+
+### Highlights
+
+- **Colonization 4.0 (`oe_col4_`, zero vanilla overrides):**
+  - **Handover and consolidation:** after an overseas war, if you already hold a colony in that region, an event lets you hand the new land to it, keep only the coastal ports, or keep everything under direct rule; a *Consolidate Overseas Colonial Enclaves* decision as well.
+  - **Unified naming:** colonial names for 14 culture families across 134 regions of the Americas and Oceania (in the 1776 test, Denmark's North American colony became *Vinland* and Portugal's *Estado do Brasil*); they also apply to new overseas subjects.
+  - **New content:** 9 New World and Oceania formables, a frontier pestilence disaster with a tribal confederation reform, peacetime conversion of conquistadors into colonies, and colonial governor culture paths.
+  - **Columbian Exchange (Age of Reformation onward):** two decisions and the *Transoceanic Botanical Acclimatization* cabinet action, with precious metals and spices protected.
+- **1337 depth for 18 tier-2 realms:** dedicated reforms, privileges, cabinet actions, decisions and staggered events, all limited to the 1337 start:
+  - Ottomans, France, England, Castile/Aragon, Portugal, Burgundy, Austria, Bohemia, Poland-Lithuania, Muscovy, Sweden, Denmark, Hungary;
+  - Venice/Genoa, Milan/Florence, the Mamluks, post-Ilkhanate Persia, Delhi, the Yuan-Ming transition and Japan.
+  - Only Castile's and Hungary's cabinet actions and decisions were checked in game.
+- **Balance and AI:** an offline audit of stacking caps and trade-offs over all custom reforms, laws, cabinet actions and modifiers, with AI weights filled in. Livonia starts at 60% loyalty to the Teutonic Order; 4 generic crisis cabinet actions appear less readily; fewer unrelated entries in the day-1 decision and cabinet lists.
+- **All-Eras submod (`OEBYZ-Phoenix-All-Eras`):**
+  - rebuilt 1453, 1648 and 1776 setups, including Great Qing and Thonburi Siam;
+  - most 1337-only errors in later-era starts are gone (Andronikos III, 1337 international organisations, advance templates);
+  - 1337-only events no longer pop up in 1453.
+- **New submod · 1453 Siege of Constantinople & Fourth Rome (`OEBYZ-Phoenix-1453-Fourth-Rome`):** the 6 April 1453 setup with the full *Fourth Odyssey / Nova Elysia* story, buildings, mission tree and exarchates; Constantine XI can hold the walls or sail west at once to found the Fourth Rome.
+- **Descriptions Expanded 1.2.3:** the bundled Descriptions Expanded text is updated to 1.2.3 (text fixes only).
+
+### Optional Submods (v25.0)
+
+Load **after** `OEBYZ-Phoenix-v25.0`:
+- **All-Eras Historical Bookmarks** (`OEBYZ-Phoenix-All-Eras`, Workshop `3844848618`).
+- **1453 Siege of Constantinople & Fourth Rome** (`OEBYZ-Phoenix-1453-Fourth-Rome`, Workshop item linked from the main mod page).
+- Both contain a 1453 setup; **loading them together has not been tested, pick one.**
 
 ## New in v23.0 — Cross & Eagle (consolidates v22.0 + v23.0, 2026-11-24)
 
@@ -416,18 +496,12 @@ Plans will change with testing and player feedback.
 
 ## Known issues
 
-- Old saves are not supported; start a new game. Game version 1.4.9 only.
-- **The fixes of this version were not re-tested in game.** The largest is the balance between the Yuan and the Ming: in the four observer runs of the previous candidate the Ming was annexed whole by the Yuan between 1364 and 1372 and the Yuan always survived. This version changes the Yuan's levy and upkeep modifiers during the Red Turban years, gives the AI-controlled Yuan a fork between a firm court and factional decay, and strengthens the rise of the Ming; how games now turn out has not been looked at.
-- **The longest observer run reached 1463** (one run of the v14.0 candidate); the four runs of v14.5 reached 1380-1390. Content that appears later (theatre events after 1500, the early modern epidemics from 1460, the final war from 1750, the closing of the chronicle in 1836) never came up in a long run.
-- **Only fired from the console or spot-checked, never walked through as a player:** the 12 Concert resolutions one by one, the Celestial 2.0 events, the 6 AI characters; the three routing modes of the Road Office and the roads actually laid on the map, the Colonisation 3.0 events; most events of v13.0; masters and masterpieces, the 16 treaty clauses, city charters, unit abilities, regencies; the Ming and Qing titles of Celestial 3.0 and the four new mission trees; the options of the Yuan events such as the Shangdu kurultai and the dismissal at Gaoyou.
-- Never tested without the official expansions (the mod is designed not to need them; all five are installed on the test machine).
-- Situational music: the script no longer logs errors, but nobody has checked that tracks really switch.
-- The 49 redone pictures are AI-generated, then selected and retouched by hand.
-- Opening the Pillars of Empire panel, or switching to another country, adds a few thousand interface errors to the log at once (an old problem; play is not affected). A Yuan game shows some thirty exclusive-trade reports in its first month (vanilla month-end behaviour).
-- The yearly observer data export (Game Rule #16) is off by default.
-- Hindu countries have no school picker, so the two new Hindu schools are adopted in the event The Great Festival at Srirangam; the school of the Samarkand tables can be adopted in the event The Star Tables Completed.
-- Still in the log: some new diplomatic interactions have no message type and some prices have no modifier type; neither affects play. Several script errors come from vanilla files, not from this mod.
-- Themes (building-type countries) cannot recruit regulars themselves: an engine rule, as for the Hansa.
+- Saves from v23.0 or earlier are not supported; start a new game. Built for EU5 `1.4.9` only.
+- Both submods contain a 1453 setup; loading them together has not been tested, pick one.
+- All-Eras bookmark screen: the “◀ Overview” button on a monarch card still does nothing; click an era tab at the top to return to the overview.
+- In the 1776 test, most American colonies founded by the AI were fiefdoms rather than vanilla colonial nations; Colonization 4.0 handover and naming work for both.
+- A few log-only messages remain (HRE resolutions reading imperial authority, a colonial cabinet condition at game start); they are not visible in play.
+- Not tested item by item: the new 1337 content of the 18 realms other than Castile and Hungary, the 9 formables, the pestilence disaster, the Fourth Rome story after the voyage west, and games longer than ten years.
 
 ## Install
 
@@ -436,6 +510,7 @@ Plans will change with testing and player feedback.
 
 ## Compatibility
 
+- Descriptions Expanded is already included, no separate subscription needed; if you also use Descriptions for Every Tile or Every Historical Character, put them above Phoenix in the playset.
 - Game version 1.4.9 only.
 - Old saves are not supported: saves from any earlier version will not work with this one. Start a new game.
 - The mod rewrites part of the vanilla 1337 start files (countries, buildings, diplomacy, international organisations, regional preferences) and a few vanilla event files (Byzantium, Bulgaria, Genoa, Serbia, the rise of the Ottomans and others). Mods that change the same vanilla files are mostly incompatible; we advise against running them together.

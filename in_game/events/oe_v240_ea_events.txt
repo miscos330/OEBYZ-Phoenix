@@ -1,0 +1,816 @@
+﻿# NEW 2026-11-24 v24.0 Phase 2D-2E Early-1337 Historical Opening Depth Pack (oe_v240_ea_, gen_v240_1337_asia_afr_amer_depth.py) — 28 Early-1337 Opening Events (Phase 2D-2E, verified 1080x440 DDS, 0 orphans). Edit gen_v240_1337_asia_afr_amer_depth.py, not this file.
+
+namespace = oe_v240_ea
+
+# 1. Post-Ilkhanate 1/3 — SRB: 1337 Bashtin Uprising & Capture of Sabzevar
+oe_v240_ea.1 = {
+	type = country_event
+	title = oe_v240_ea.1.t
+	desc = oe_v240_ea.1.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_per_qizilbash_chaldiran.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.1.a
+		ai_chance = { base = 60 }
+		oe_v240_ea_cb_sabzevar = yes
+		add_yearly_manpower = 0.65
+		add_army_tradition = 8
+		add_country_modifier = { modifier = oe_v240_ea_srb_sabzevar_march years = 15 mode = replace }
+		if = { limit = { country_exists = c:GRG c:GRG = { is_rebel_country = no } } c:GRG = { add_opinion = { target = root modifier = opinion_irritated } } }
+	}
+	option = {
+		name = oe_v240_ea.1.b
+		ai_chance = { base = 40 }
+		add_republican_tradition = 8
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v240_ea_srb_dervish_commune years = 15 mode = replace }
+	}
+}
+
+# 2. Post-Ilkhanate 2/3 — INJ vs MZF: 1340 Fars-Yazd Struggle
+oe_v240_ea.2 = {
+	type = country_event
+	title = oe_v240_ea.2.t
+	desc = oe_v240_ea.2.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_per_isfahan_nisf_jahan.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.2.a
+		ai_chance = { base = 55 }
+		oe_v240_ea_cb_yazd = yes
+		add_prestige = 10
+		add_country_modifier = { modifier = oe_v240_ea_inj_fars_campaign years = 15 mode = replace }
+		if = { limit = { country_exists = c:MZF c:MZF = { is_rebel_country = no } } add_opinion = { target = c:MZF modifier = opinion_irritated } c:MZF = { add_opinion = { target = root modifier = opinion_irritated } } }
+	}
+	option = {
+		name = oe_v240_ea.2.b
+		ai_chance = { base = 45 }
+		add_gold = -50
+		if = { limit = { owns = location:shiraz } location:shiraz = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_ea_inj_shiraz_court years = 15 mode = replace }
+	}
+}
+
+# 3. Post-Ilkhanate 3/3 — KRT: Kartid Autonomy from Togha Temur (GRG)
+oe_v240_ea.3 = {
+	type = country_event
+	title = oe_v240_ea.3.t
+	desc = oe_v240_ea.3.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_wnd_samarkand.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.3.a
+		ai_chance = { base = 60 }
+		if = { limit = { country_exists = c:GRG is_subject_of = c:GRG } c:GRG = { cancel_subject = root add_opinion = { target = root modifier = opinion_irritated } } }
+		add_prestige = 12
+		add_yearly_manpower = 0.5
+		add_country_modifier = { modifier = oe_v240_ea_krt_herat_autonomy years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.3.b
+		ai_chance = { base = 40 }
+		add_gold = 75
+		if = { limit = { country_exists = c:GRG c:GRG = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:GRG modifier = opinion_good_relations } c:GRG = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		add_country_modifier = { modifier = oe_v240_ea_krt_silk_caravans years = 15 mode = replace }
+	}
+}
+
+# 4. Mamluks 1/3 — MAM: 1337 Cilician Ayas Settlement
+oe_v240_ea.4 = {
+	type = country_event
+	title = oe_v240_ea.4.t
+	desc = oe_v240_ea.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_anatolian_frontier.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.4.a
+		ai_chance = { base = 60 }
+		oe_v240_ea_cb_ayas = yes
+		add_gold = 80
+		if = { limit = { country_exists = c:MMH c:MMH = { is_subject_of = c:MAM } } c:MMH = { oe_vic_shift_loyalty = { amount = 8 } oe_vic_sync_self_tier = yes } }
+		add_country_modifier = { modifier = oe_v240_ea_mam_ayas_treaty years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.4.b
+		ai_chance = { base = 40 }
+		add_stability = 5
+		if = { limit = { country_exists = c:CIL c:CIL = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:CIL modifier = opinion_diplomatic_accord } c:CIL = { add_opinion = { target = root modifier = opinion_diplomatic_accord } } }
+		add_country_modifier = { modifier = oe_v240_ea_mam_levant_peace years = 15 mode = replace }
+	}
+}
+
+# 5. Mamluks 2/3 — MAM: 1337-1338 Qus Caliphate Exile
+oe_v240_ea.5 = {
+	type = country_event
+	title = oe_v240_ea.5.t
+	desc = oe_v240_ea.5.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_wnd_azhar.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.5.a
+		ai_chance = { base = 65 }
+		add_legitimacy = 10
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = -0.06 }
+		add_country_modifier = { modifier = oe_v240_ea_mam_citadel_supremacy years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.5.b
+		ai_chance = { base = 35 }
+		add_gold = -60
+		add_prestige = 10
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = 0.08 }
+		add_country_modifier = { modifier = oe_v240_ea_mam_caliphal_sanction years = 15 mode = replace }
+	}
+}
+
+# 6. Mamluks 3/3 — MAM: 1341 Post-al-Nasir Muhammad Bahri Succession Turmoil (tied to MMD/MMH/MMK)
+oe_v240_ea.6 = {
+	type = country_event
+	title = oe_v240_ea.6.t
+	desc = oe_v240_ea.6.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_pmam_karimi_spice_port.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.6.a
+		ai_chance = { base = 50 }
+		add_gold = -90
+		add_stability = -3
+		if = { limit = { country_exists = c:MMD c:MMD = { is_subject_of = c:MAM } } c:MMD = { oe_vic_shift_loyalty = { amount = 12 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:MMH c:MMH = { is_subject_of = c:MAM } } c:MMH = { oe_vic_shift_loyalty = { amount = 12 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:MMK c:MMK = { is_subject_of = c:MAM } } c:MMK = { oe_vic_shift_loyalty = { amount = 12 } oe_vic_sync_self_tier = yes } }
+		add_country_modifier = { modifier = oe_v240_ea_mam_bahri_compact years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.6.b
+		ai_chance = { base = 30 }
+		add_legitimacy = 8
+		add_stability = -6
+		if = { limit = { country_exists = c:MMD c:MMD = { is_subject_of = c:MAM } } c:MMD = { oe_vic_shift_loyalty = { amount = -10 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:MMH c:MMH = { is_subject_of = c:MAM } } c:MMH = { oe_vic_shift_loyalty = { amount = -10 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:MMK c:MMK = { is_subject_of = c:MAM } } c:MMK = { oe_vic_shift_loyalty = { amount = -10 } oe_vic_sync_self_tier = yes } }
+		add_country_modifier = { modifier = oe_v240_ea_mam_citadel_purge years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.6.c
+		ai_chance = { base = 20 }
+		add_gold = -50
+		if = { limit = { country_exists = c:MMK c:MMK = { is_subject_of = c:MAM } } c:MMK = { oe_vic_shift_loyalty = { amount = 18 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:MMD c:MMD = { is_subject_of = c:MAM } } c:MMD = { oe_vic_shift_loyalty = { amount = 8 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:MMH c:MMH = { is_subject_of = c:MAM } } c:MMH = { oe_vic_shift_loyalty = { amount = -6 } oe_vic_sync_self_tier = yes } }
+		add_country_modifier = { modifier = oe_v240_ea_mam_karak_arbitration years = 15 mode = replace }
+	}
+}
+
+# 7. South Asia 1/6 — SGN: 1338 Fakhruddin Mubarak Shah Breakaway
+oe_v240_ea.7 = {
+	type = country_event
+	title = oe_v240_ea.7.t
+	desc = oe_v240_ea.7.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_ind_deccan_calico.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.7.a
+		ai_chance = { base = 70 }
+		if = { limit = { country_exists = c:DLH is_subject_of = c:DLH } c:DLH = { cancel_subject = root add_opinion = { target = root modifier = opinion_irritated } } }
+		add_prestige = 12
+		add_yearly_manpower = 0.65
+		add_country_modifier = { modifier = oe_v240_ea_sgn_fakhruddin_revolt years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.7.b
+		ai_chance = { base = 30 }
+		add_gold = 80
+		add_stability = 5
+		if = { limit = { country_exists = c:DLH c:DLH = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:DLH modifier = opinion_good_relations } c:DLH = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		add_country_modifier = { modifier = oe_v240_ea_sgn_delta_charter years = 15 mode = replace }
+	}
+}
+
+# 8. South Asia 2/6 — STN: 1338-1342 Ilyas Shah Rise & Gaur Alauddin Ali Shah Three-Bengal Contest
+oe_v240_ea.8 = {
+	type = country_event
+	title = oe_v240_ea.8.t
+	desc = oe_v240_ea.8.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_ind_mughal_ibadat_khana.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.8.a
+		ai_chance = { base = 65 }
+		if = { limit = { country_exists = c:DLH is_subject_of = c:DLH } c:DLH = { cancel_subject = root add_opinion = { target = root modifier = opinion_irritated } } }
+		oe_v240_ea_cb_gaur = yes
+		add_prestige = 10
+		add_army_tradition = 8
+		if = { limit = { country_exists = c:GAU c:GAU = { is_rebel_country = no } } c:GAU = { add_opinion = { target = root modifier = opinion_irritated } } }
+		add_country_modifier = { modifier = oe_v240_ea_stn_ilyas_bid years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.8.b
+		ai_chance = { base = 35 }
+		add_gold = 90
+		if = { limit = { owns = location:satgaon } location:satgaon = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_ea_stn_satgaon_port years = 15 mode = replace }
+	}
+}
+
+# 9. South Asia 3/6 — KSH: 1338 Twilight of the Loharas (Kota Rani & Minister Shah Mir)
+oe_v240_ea.9 = {
+	type = country_event
+	title = oe_v240_ea.9.t
+	desc = oe_v240_ea.9.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v175_india_vijayanagara_temple.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.9.a
+		ai_chance = { base = 65 }
+		set_variable = { name = oe_v240_ea_ksh_shahmir_empowered value = 1 }
+		add_stability = 5
+		add_gold = 50
+		add_country_modifier = { modifier = oe_v240_ea_ksh_shahmir_stewardship years = 10 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.9.b
+		ai_chance = { base = 35 }
+		add_legitimacy = 10
+		add_yearly_manpower = 0.5
+		add_country_modifier = { modifier = oe_v240_ea_ksh_kota_rani_guard years = 10 mode = replace }
+	}
+}
+
+# 10. South Asia 4/6 — KSH: 1339 Shah Mir Coup & Founding of Kashmir Sultanate
+oe_v240_ea.10 = {
+	type = country_event
+	title = oe_v240_ea.10.t
+	desc = oe_v240_ea.10.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v180_royal_coronation_dynasty.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.10.a
+		ai_chance = { base = 65 }
+		if = { limit = { NOT = { religion = religion:sunni } } change_religion = religion:sunni }
+		set_religious_school = religious_school:hanafi_school
+		create_character = { culture = culture:kashmiri_culture religion = religion:sunni estate = estate_type:nobles_estate age = 48 female = no adm = 68 dip = 66 mil = 64 save_scope_as = oe_v240_ea_shah_mir }
+		set_new_ruler = scope:oe_v240_ea_shah_mir
+		if = { limit = { has_variable = oe_v240_ea_ksh_shahmir_empowered } add_stability = 5 }
+		add_prestige = 10
+		add_country_modifier = { modifier = oe_v240_ea_ksh_shah_mir_sultanate years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.10.b
+		ai_chance = { base = 35 }
+		add_stability = -4
+		add_legitimacy = 12
+		add_army_tradition = 8
+		add_country_modifier = { modifier = oe_v240_ea_ksh_lohara_restoration years = 20 mode = replace }
+	}
+}
+
+# 11. South Asia 5/6 — DLH: 1340 Doab Famine, Sargadwari Camp & Ain al-Mulk Awadh Rebellion (tied to DLJ/DLD)
+oe_v240_ea.11 = {
+	type = country_event
+	title = oe_v240_ea.11.t
+	desc = oe_v240_ea.11.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_wnd_delhi.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.11.a
+		ai_chance = { base = 55 }
+		add_gold = -110
+		add_army_tradition = 8
+		if = { limit = { country_exists = c:DLJ c:DLJ = { is_subject_of = c:DLH } } c:DLJ = { oe_vic_shift_loyalty = { amount = -12 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:DLD c:DLD = { is_subject_of = c:DLH } } c:DLD = { oe_vic_shift_loyalty = { amount = 8 } oe_vic_sync_self_tier = yes } }
+		add_country_modifier = { modifier = oe_v240_ea_dlh_sondhar_relief years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.11.b
+		ai_chance = { base = 45 }
+		add_prestige = -5
+		add_stability = 4
+		if = { limit = { country_exists = c:DLJ c:DLJ = { is_subject_of = c:DLH } } c:DLJ = { oe_vic_shift_loyalty = { amount = 18 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:DLD c:DLD = { is_subject_of = c:DLH } } c:DLD = { oe_vic_shift_loyalty = { amount = 6 } oe_vic_sync_self_tier = yes } }
+		add_country_modifier = { modifier = oe_v240_ea_dlh_awadh_granary years = 15 mode = replace }
+	}
+}
+
+# 12. South Asia 6/6 — DLH: 1344 Aziz Khammar Malwa Crisis & Amiran-i-Sada Revolt (tied to DLM/DLD/DLJ)
+oe_v240_ea.12 = {
+	type = country_event
+	title = oe_v240_ea.12.t
+	desc = oe_v240_ea.12.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_ind_vijayanagar_court.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.12.a
+		ai_chance = { base = 55 }
+		add_gold = 100
+		add_stability = -5
+		if = { limit = { country_exists = c:DLM c:DLM = { is_subject_of = c:DLH } } c:DLM = { oe_vic_shift_loyalty = { amount = -18 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:DLD c:DLD = { is_subject_of = c:DLH } } c:DLD = { oe_vic_shift_loyalty = { amount = -14 } oe_vic_sync_self_tier = yes } }
+		add_country_modifier = { modifier = oe_v240_ea_dlh_khammar_purge years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.12.b
+		ai_chance = { base = 45 }
+		add_gold = -80
+		add_stability = 5
+		if = { limit = { country_exists = c:DLM c:DLM = { is_subject_of = c:DLH } } c:DLM = { oe_vic_shift_loyalty = { amount = 16 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:DLD c:DLD = { is_subject_of = c:DLH } } c:DLD = { oe_vic_shift_loyalty = { amount = 14 } oe_vic_sync_self_tier = yes } }
+		if = { limit = { country_exists = c:DLJ c:DLJ = { is_subject_of = c:DLH } } c:DLJ = { oe_vic_shift_loyalty = { amount = 8 } oe_vic_sync_self_tier = yes } }
+		add_country_modifier = { modifier = oe_v240_ea_dlh_centurion_compact years = 15 mode = replace }
+	}
+}
+
+# 13. East Asia 1/2 — STC: 1337 Fall of Kanegasaki Castle (Tsuruga, Echizen) & Yoshino Stand
+oe_v240_ea.13 = {
+	type = country_event
+	title = oe_v240_ea.13.t
+	desc = oe_v240_ea.13.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v155_jpn_sengoku.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.13.a
+		ai_chance = { base = 60 }
+		add_yearly_manpower = 0.75
+		add_army_tradition = 10
+		add_country_modifier = { modifier = oe_v240_ea_stc_yoshino_resolve years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.13.b
+		ai_chance = { base = 40 }
+		add_legitimacy = 8
+		add_stability = 6
+		add_country_modifier = { modifier = oe_v240_ea_stc_imperial_regalia years = 15 mode = replace }
+	}
+}
+
+# 14. East Asia 2/2 — JAP: 1338 Ashikaga Takauji Shogun Investiture & Muromachi Bakufu
+oe_v240_ea.14 = {
+	type = country_event
+	title = oe_v240_ea.14.t
+	desc = oe_v240_ea.14.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_v135_shinto_grand_shrine.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.14.a
+		ai_chance = { base = 60 }
+		add_legitimacy = 10
+		add_stability = 6
+		if = { limit = { country_exists = c:NTC c:NTC = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:NTC modifier = opinion_good_relations } c:NTC = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		add_country_modifier = { modifier = oe_v240_ea_jap_kemmu_shikimoku years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.14.b
+		ai_chance = { base = 40 }
+		add_prestige = 12
+		add_yearly_manpower = 0.75
+		add_country_modifier = { modifier = oe_v240_ea_jap_shugo_network years = 15 mode = replace }
+	}
+}
+
+# 15. SE Asia 1/5 — PIN: Pinya-Sagaing Irrawaddy Sibling Rivalry
+oe_v240_ea.15 = {
+	type = country_event
+	title = oe_v240_ea.15.t
+	desc = oe_v240_ea.15.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_sea_malacca_port.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.15.a
+		ai_chance = { base = 60 }
+		oe_v240_ea_cb_sagaing = yes
+		add_prestige = 8
+		add_army_tradition = 6
+		add_country_modifier = { modifier = oe_v240_ea_pin_irrawaddy_claim years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.15.b
+		ai_chance = { base = 40 }
+		add_gold = -50
+		if = { limit = { owns = location:pinya } location:pinya = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_ea_pin_kyaukse_canals years = 15 mode = replace }
+	}
+}
+
+# 16. SE Asia 2/5 — PIN: 1340-1344 Kyawswa I (Nga-Si-Shin) Takeover & Five White Elephants
+oe_v240_ea.16 = {
+	type = country_event
+	title = oe_v240_ea.16.t
+	desc = oe_v240_ea.16.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v180_royal_coronation_dynasty.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.16.a
+		ai_chance = { base = 65 }
+		add_legitimacy = 10
+		add_prestige = 10
+		add_yearly_manpower = 0.6
+		add_country_modifier = { modifier = oe_v240_ea_pin_kyawswa_elephants years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.16.b
+		ai_chance = { base = 35 }
+		add_stability = 6
+		add_gold = 65
+		add_country_modifier = { modifier = oe_v240_ea_pin_sangha_compact years = 18 mode = replace }
+	}
+}
+
+# 17. SE Asia 3/5 — SAG: 1339-1344 Sagaing Succession Stress & Northern Shan Raids
+oe_v240_ea.17 = {
+	type = country_event
+	title = oe_v240_ea.17.t
+	desc = oe_v240_ea.17.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_steppe_cavalry_clash.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.17.a
+		ai_chance = { base = 60 }
+		add_gold = -45
+		add_yearly_manpower = 0.6
+		add_country_modifier = { modifier = oe_v240_ea_sag_shan_marches years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.17.b
+		ai_chance = { base = 40 }
+		add_gold = 70
+		add_stability = 5
+		add_country_modifier = { modifier = oe_v240_ea_sag_river_toll years = 15 mode = replace }
+	}
+}
+
+# 18. SE Asia 4/5 — DAI: Tran Minh Tong Thai Thuong Hoang Regency
+oe_v240_ea.18 = {
+	type = country_event
+	title = oe_v240_ea.18.t
+	desc = oe_v240_ea.18.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_cel_mandate_court.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.18.a
+		ai_chance = { base = 65 }
+		add_legitimacy = 8
+		add_stability = 5
+		if = { limit = { owns = location:thang_long } location:thang_long = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_ea_dai_minh_tong_regency years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.18.b
+		ai_chance = { base = 35 }
+		add_prestige = 10
+		add_yearly_manpower = 0.65
+		add_country_modifier = { modifier = oe_v240_ea_dai_tran_princes years = 15 mode = replace }
+	}
+}
+
+# 19. SE Asia 5/5 — DAI: 1342 Champa Succession Crisis (Che Mo vs Tra Hoa Bo De)
+oe_v240_ea.19 = {
+	type = country_event
+	title = oe_v240_ea.19.t
+	desc = oe_v240_ea.19.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_cel2_nanyang_malacca.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.19.a
+		ai_chance = { base = 60 }
+		oe_v240_ea_cb_vijaya = yes
+		add_prestige = 10
+		if = { limit = { country_exists = c:CHA c:CHA = { is_rebel_country = no } } c:CHA = { add_opinion = { target = root modifier = opinion_irritated } } }
+		add_country_modifier = { modifier = oe_v240_ea_dai_champa_claim years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.19.b
+		ai_chance = { base = 40 }
+		add_gold = 80
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v240_ea_dai_southern_watch years = 15 mode = replace }
+	}
+}
+
+# 20. Africa 1/4 — ETH: Amda Seyon Late Reign & Solomonic Roving Katama (tied to TIG)
+oe_v240_ea.20 = {
+	type = country_event
+	title = oe_v240_ea.20.t
+	desc = oe_v240_ea.20.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_afr_zara_yaqob_council.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.20.a
+		ai_chance = { base = 60 }
+		add_legitimacy = 10
+		add_army_tradition = 8
+		if = { limit = { country_exists = c:TIG c:TIG = { is_subject_of = c:ETH } } c:TIG = { oe_vic_shift_loyalty = { amount = 12 } oe_vic_sync_self_tier = yes } }
+		add_country_modifier = { modifier = oe_v240_ea_eth_amda_katama years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.20.b
+		ai_chance = { base = 40 }
+		add_gold = -55
+		add_stability = 6
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = 0.08 }
+		add_country_modifier = { modifier = oe_v240_ea_eth_monastic_accord years = 15 mode = replace }
+	}
+}
+
+# 21. Africa 2/4 — ETH: Ifat Frontier & Zeila Red Sea Trade Gate
+oe_v240_ea.21 = {
+	type = country_event
+	title = oe_v240_ea.21.t
+	desc = oe_v240_ea.21.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_syn_prester_john_redsea.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.21.a
+		ai_chance = { base = 60 }
+		oe_v240_ea_cb_zeila = yes
+		add_yearly_manpower = 0.65
+		add_prestige = 10
+		add_country_modifier = { modifier = oe_v240_ea_eth_ifat_march years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.21.b
+		ai_chance = { base = 40 }
+		add_gold = 85
+		if = { limit = { country_exists = c:IFA c:IFA = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:IFA modifier = opinion_diplomatic_accord } c:IFA = { add_opinion = { target = root modifier = opinion_diplomatic_accord } } }
+		add_country_modifier = { modifier = oe_v240_ea_eth_zeila_caravans years = 15 mode = replace }
+	}
+}
+
+# 22. Africa 3/4 — SON: Ali Kolon's Escape from Niani & Gao Revival Throwing Off Mali Yoke
+oe_v240_ea.22 = {
+	type = country_event
+	title = oe_v240_ea.22.t
+	desc = oe_v240_ea.22.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v170_mali_timbuktu.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.22.a
+		ai_chance = { base = 70 }
+		if = { limit = { country_exists = c:MAL is_subject_of = c:MAL } c:MAL = { cancel_subject = root add_opinion = { target = root modifier = opinion_irritated } } }
+		add_prestige = 12
+		add_yearly_manpower = 0.7
+		add_country_modifier = { modifier = oe_v240_ea_son_ali_kolon_revival years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.22.b
+		ai_chance = { base = 30 }
+		add_gold = 75
+		add_stability = 5
+		add_country_modifier = { modifier = oe_v240_ea_son_niger_armory years = 18 mode = replace }
+	}
+}
+
+# 23. Africa 4/4 — SON: Gao River Flotilla & Niger Bend Salt Roads
+oe_v240_ea.23 = {
+	type = country_event
+	title = oe_v240_ea.23.t
+	desc = oe_v240_ea.23.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_afr_sankore_timbuktu.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.23.a
+		ai_chance = { base = 60 }
+		oe_v240_ea_cb_timbuktu = yes
+		add_army_tradition = 8
+		add_prestige = 10
+		add_country_modifier = { modifier = oe_v240_ea_son_sorko_flotilla years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.23.b
+		ai_chance = { base = 40 }
+		add_gold = 80
+		if = { limit = { owns = location:gao } location:gao = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_ea_son_gao_entrepot years = 15 mode = replace }
+	}
+}
+
+# 24. Americas 1/5 — TNC: 1337 Foundation of Tlatelolco on the Northern Islet
+oe_v240_ea.24 = {
+	type = country_event
+	title = oe_v240_ea.24.t
+	desc = oe_v240_ea.24.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_amr_tenochtitlan_chinampas.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.24.a
+		ai_chance = { base = 60 }
+		add_gold = 65
+		if = { limit = { owns = location:tenochtitlan } location:tenochtitlan = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_ea_tnc_tlatelolco_market years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.24.b
+		ai_chance = { base = 40 }
+		add_legitimacy = 10
+		add_yearly_manpower = 0.5
+		add_country_modifier = { modifier = oe_v240_ea_tnc_tenoch_order years = 15 mode = replace }
+	}
+}
+
+# 25. Americas 2/5 — TNC: Early Tepanec Vassalage & Tribute to Azcapotzalco (TEP)
+oe_v240_ea.25 = {
+	type = country_event
+	title = oe_v240_ea.25.t
+	desc = oe_v240_ea.25.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_amr_teotihuacan_cholula_reform.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.25.a
+		ai_chance = { base = 65 }
+		add_army_tradition = 10
+		add_yearly_manpower = 0.6
+		if = { limit = { country_exists = c:TEP c:TEP = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:TEP modifier = opinion_good_relations } c:TEP = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		add_country_modifier = { modifier = oe_v240_ea_tnc_tepanec_auxiliaries years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.25.b
+		ai_chance = { base = 35 }
+		add_gold = 70
+		if = { limit = { country_exists = c:TTZ c:TTZ = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:TTZ modifier = opinion_good_relations } c:TTZ = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:TEP c:TEP = { is_rebel_country = no } } c:TEP = { add_opinion = { target = root modifier = opinion_irritated } } }
+		add_country_modifier = { modifier = oe_v240_ea_tnc_lake_autonomy years = 15 mode = replace }
+	}
+}
+
+# 26. Americas 3/5 — CHM: Nancenpinco's Coastal Conquests from Chan Chan
+oe_v240_ea.26 = {
+	type = country_event
+	title = oe_v240_ea.26.t
+	desc = oe_v240_ea.26.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_amr_qhapaq_nan_cusco.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.26.a
+		ai_chance = { base = 65 }
+		oe_v240_ea_cb_pakatnamu = yes
+		oe_v240_ea_cb_huacatambo = yes
+		add_prestige = 10
+		add_yearly_manpower = 0.65
+		add_country_modifier = { modifier = oe_v240_ea_chm_nancenpinco_conquest years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.26.b
+		ai_chance = { base = 35 }
+		add_gold = -45
+		if = { limit = { owns = location:chan_chan } location:chan_chan = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_ea_chm_chan_chan_canals years = 18 mode = replace }
+	}
+}
+
+# 27. Americas 4/5 — COC: Mayapan League Cocom Hegemony vs Tutul Xiu
+oe_v240_ea.27 = {
+	type = country_event
+	title = oe_v240_ea.27.t
+	desc = oe_v240_ea.27.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v170_maya_citadel.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.27.a
+		ai_chance = { base = 60 }
+		add_gold = -55
+		add_yearly_manpower = 0.65
+		if = { limit = { country_exists = c:XIU c:XIU = { is_rebel_country = no } } c:XIU = { add_opinion = { target = root modifier = opinion_irritated } } }
+		add_country_modifier = { modifier = oe_v240_ea_coc_mercenary_guard years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.27.b
+		ai_chance = { base = 40 }
+		add_stability = 6
+		if = { limit = { country_exists = c:XIU c:XIU = { is_rebel_country = no NOT = { is_at_war_with = root } } } add_opinion = { target = c:XIU modifier = opinion_good_relations } c:XIU = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		add_country_modifier = { modifier = oe_v240_ea_coc_multepal_council years = 15 mode = replace }
+	}
+}
+
+# 28. Americas 5/5 — XIU: Tutul Xiu of Mani & Defiance Against Mayapan
+oe_v240_ea.28 = {
+	type = country_event
+	title = oe_v240_ea.28.t
+	desc = oe_v240_ea.28.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v170_maya_citadel.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_date < 1375.1.1
+	}
+	option = {
+		name = oe_v240_ea.28.a
+		ai_chance = { base = 60 }
+		oe_v240_ea_cb_mayapan = yes
+		add_prestige = 10
+		add_army_tradition = 8
+		add_country_modifier = { modifier = oe_v240_ea_xiu_uxmal_revival years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v240_ea.28.b
+		ai_chance = { base = 40 }
+		add_gold = 70
+		if = { limit = { owns = location:mani } location:mani = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v240_ea_xiu_mani_prosperity years = 15 mode = replace }
+	}
+}

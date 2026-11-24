@@ -60,10 +60,17 @@ oe_v122_road_ai_yearly_hook = {
 }
 
 # Quarterly gate inside monthly_country_pulse (EU5 1.4.9 has no native quarterly_country_pulse on_action).
+# O(1) pre-filter: skip landlocked and pre-1435 non-colonial realms before scanning overseas governor palaces.
 oe_v122_col3_quarterly_hook = {
 	trigger = {
 		is_rebel_country = no
 		num_locations > 0
+		has_ports = yes
+		OR = {
+			current_year >= 1435
+			is_subject_type = colonial_nation
+			any_subject = { is_subject_type = colonial_nation }
+		}
 		OR = {
 			current_month = 1
 			current_month = 4

@@ -14,9 +14,12 @@ oe_cul2_grant_regional_beacon = {
 	if = {
 		limit = {
 			is_ai = no
+			current_year >= 1346
 			NOT = { has_variable = oe_cul2_first_beacon_notified }
+			NOT = { has_variable = oe_cul2_ev_stagger_cd }
 		}
 		set_variable = oe_cul2_first_beacon_notified
+		set_variable = { name = oe_cul2_ev_stagger_cd value = 1 years = 3 }
 		trigger_event_non_silently = oe_cul2_cap.9
 	}
 }
@@ -224,6 +227,8 @@ oe_cul2_crown_world_capital = {
 		}
 		if = {
 			limit = {
+				current_year >= 1350
+				NOT = { has_variable = oe_cul2_ev_stagger_cd }
 				OR = {
 					NOT = { has_global_variable = oe_cul2_world_leader_id }
 					AND = {
@@ -255,6 +260,7 @@ oe_cul2_crown_world_capital = {
 			if = {
 				limit = { NOT = { has_cooldown = oe_cul2_crown_ev_cd } }
 				add_cooldown = { type = oe_cul2_crown_ev_cd years = 10 }
+				set_variable = { name = oe_cul2_ev_stagger_cd value = 1 years = 3 }
 				trigger_event_non_silently = $ev$
 			}
 		}

@@ -183,25 +183,29 @@ oe_wnd_annual_check = {
             trigger_event_non_silently = oe_wnd.12
         }
     }
-    # Chivalric Order 1: Constantinian St. George (Constantinople anchor)
-    if = {
-        limit = {
-            location:constantinople = {
-                has_owner = yes
-                owner = { oe_wnd_is_stgeorge_eligible = yes }
-            }
-        }
-        location:constantinople.owner = {
-            set_variable = { name = oe_wnd_ord_stgeorge value = 1 }
-            trigger_event_non_silently = oe_wnd.20
-        }
-    }
-    # Chivalric Order 2: Varangian Brotherhood (Constantinople or Moscow anchor; staggered after St. George)
+    # Chivalric Order 1 & 2 (Constantinople anchor): strictly mutually exclusive via else_if + 10y order cooldown
     if = {
         limit = {
             location:constantinople = {
                 has_owner = yes
                 owner = {
+                    NOT = { has_variable = oe_wnd_order_cooldown }
+                    oe_wnd_is_stgeorge_eligible = yes
+                }
+            }
+        }
+        location:constantinople.owner = {
+            set_variable = { name = oe_wnd_ord_stgeorge value = 1 }
+            set_variable = { name = oe_wnd_order_cooldown value = 1 years = 10 }
+            trigger_event_non_silently = oe_wnd.20
+        }
+    }
+    else_if = {
+        limit = {
+            location:constantinople = {
+                has_owner = yes
+                owner = {
+                    NOT = { has_variable = oe_wnd_order_cooldown }
                     oe_wnd_is_varangian_eligible = yes
                     OR = {
                         has_variable = oe_wnd_ord_stgeorge
@@ -212,18 +216,24 @@ oe_wnd_annual_check = {
         }
         location:constantinople.owner = {
             set_variable = { name = oe_wnd_ord_varangian value = 1 }
+            set_variable = { name = oe_wnd_order_cooldown value = 1 years = 10 }
             trigger_event_non_silently = oe_wnd.21
         }
     }
+    # Chivalric Order 2 (Moscow anchor): country-level cooldown blocks same-tick/10y stacking
     if = {
         limit = {
             location:moscow = {
                 has_owner = yes
-                owner = { oe_wnd_is_varangian_eligible = yes }
+                owner = {
+                    NOT = { has_variable = oe_wnd_order_cooldown }
+                    oe_wnd_is_varangian_eligible = yes
+                }
             }
         }
         location:moscow.owner = {
             set_variable = { name = oe_wnd_ord_varangian value = 1 }
+            set_variable = { name = oe_wnd_order_cooldown value = 1 years = 10 }
             trigger_event_non_silently = oe_wnd.21
         }
     }
@@ -232,11 +242,15 @@ oe_wnd_annual_check = {
         limit = {
             location:jerusalem = {
                 has_owner = yes
-                owner = { oe_wnd_is_sepulchre_chiv_eligible = yes }
+                owner = {
+                    NOT = { has_variable = oe_wnd_order_cooldown }
+                    oe_wnd_is_sepulchre_chiv_eligible = yes
+                }
             }
         }
         location:jerusalem.owner = {
             set_variable = { name = oe_wnd_ord_sepulchre value = 1 }
+            set_variable = { name = oe_wnd_order_cooldown value = 1 years = 10 }
             trigger_event_non_silently = oe_wnd.22
         }
     }
@@ -245,11 +259,15 @@ oe_wnd_annual_check = {
         limit = {
             location:belgrad = {
                 has_owner = yes
-                owner = { oe_wnd_is_danube_dragon_eligible = yes }
+                owner = {
+                    NOT = { has_variable = oe_wnd_order_cooldown }
+                    oe_wnd_is_danube_dragon_eligible = yes
+                }
             }
         }
         location:belgrad.owner = {
             set_variable = { name = oe_wnd_ord_dragon value = 1 }
+            set_variable = { name = oe_wnd_order_cooldown value = 1 years = 10 }
             trigger_event_non_silently = oe_wnd.23
         }
     }
@@ -257,11 +275,15 @@ oe_wnd_annual_check = {
         limit = {
             location:buda = {
                 has_owner = yes
-                owner = { oe_wnd_is_danube_dragon_eligible = yes }
+                owner = {
+                    NOT = { has_variable = oe_wnd_order_cooldown }
+                    oe_wnd_is_danube_dragon_eligible = yes
+                }
             }
         }
         location:buda.owner = {
             set_variable = { name = oe_wnd_ord_dragon value = 1 }
+            set_variable = { name = oe_wnd_order_cooldown value = 1 years = 10 }
             trigger_event_non_silently = oe_wnd.23
         }
     }
@@ -271,11 +293,15 @@ oe_wnd_annual_check = {
             NOT = { has_global_variable = oe_wnd_ro_hesychast_founded }
             location:mount_athos = {
                 has_owner = yes
-                owner = { oe_wnd_is_hesychast_founder = yes }
+                owner = {
+                    NOT = { has_variable = oe_wnd_order_cooldown }
+                    oe_wnd_is_hesychast_founder = yes
+                }
             }
         }
         location:mount_athos.owner = {
             set_variable = { name = oe_wnd_ro_hesychast_asked value = 1 }
+            set_variable = { name = oe_wnd_order_cooldown value = 1 years = 10 }
             trigger_event_non_silently = oe_wnd.30
         }
     }
@@ -285,11 +311,15 @@ oe_wnd_annual_check = {
             NOT = { has_global_variable = oe_wnd_ro_sepulchre_founded }
             location:jerusalem = {
                 has_owner = yes
-                owner = { oe_wnd_is_sepulchre_ro_founder = yes }
+                owner = {
+                    NOT = { has_variable = oe_wnd_order_cooldown }
+                    oe_wnd_is_sepulchre_ro_founder = yes
+                }
             }
         }
         location:jerusalem.owner = {
             set_variable = { name = oe_wnd_ro_sepulchre_asked value = 1 }
+            set_variable = { name = oe_wnd_order_cooldown value = 1 years = 10 }
             trigger_event_non_silently = oe_wnd.31
         }
     }
@@ -298,11 +328,15 @@ oe_wnd_annual_check = {
             NOT = { has_global_variable = oe_wnd_ro_sepulchre_founded }
             location:antioch = {
                 has_owner = yes
-                owner = { oe_wnd_is_sepulchre_ro_founder = yes }
+                owner = {
+                    NOT = { has_variable = oe_wnd_order_cooldown }
+                    oe_wnd_is_sepulchre_ro_founder = yes
+                }
             }
         }
         location:antioch.owner = {
             set_variable = { name = oe_wnd_ro_sepulchre_asked value = 1 }
+            set_variable = { name = oe_wnd_order_cooldown value = 1 years = 10 }
             trigger_event_non_silently = oe_wnd.31
         }
     }
@@ -1031,6 +1065,7 @@ oe_wnd_test_clear = {
     remove_global_variable = oe_wnd_ro_sepulchre_founded
     remove_variable = oe_wnd_ro_hesychast_asked
     remove_variable = oe_wnd_ro_sepulchre_asked
+    remove_variable = oe_wnd_order_cooldown
     remove_global_variable = oe_wnd_w1_done
     remove_global_variable = oe_wnd_art_1_created
     remove_global_variable = oe_wnd_w2_done

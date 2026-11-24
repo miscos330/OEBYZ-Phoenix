@@ -1,4 +1,4 @@
-﻿# NEW 2026-11-23 v22.0 Module 2 Teutonic HRE Statecraft & Bailiwicks (oe_thh_, gen_v220_teu_hre_statecraft.py) — 4 Teutonic General Chapter Parliament Issues (oe_thh_parliament_issues.txt). Edit gen_v220_teu_hre_statecraft.py, not this file.
+﻿# NEW 2026-11-23 v22.0 Module 2 Teutonic HRE Statecraft & Bailiwicks (oe_thh_, gen_v220_teu_hre_statecraft.py) — 5 Teutonic General Chapter Parliament Issues (oe_thh_parliament_issues.txt). Edit gen_v220_teu_hre_statecraft.py, not this file.
 
 
 # Ostsiedlung Land Charter (《东向拓垦授田宪章》)
@@ -12,7 +12,7 @@ oe_thh_pi_ostsiedlung_charter = {
 
 	potential = {
 		OR = {
-			parliament_type ?= parliament_type:oe_teu_generalkapitel
+			parliament_type = parliament_type:oe_teu_generalkapitel
 			oe_thh_is_generalkapitel_eligible = yes
 		}
 	}
@@ -25,7 +25,7 @@ oe_thh_pi_ostsiedlung_charter = {
 		add = 8
 		add = {
 			if = {
-				limit = { parliament_type ?= parliament_type:oe_teu_generalkapitel }
+				limit = { parliament_type = parliament_type:oe_teu_generalkapitel }
 				value = 5
 			}
 		}
@@ -68,7 +68,7 @@ oe_thh_pi_baltic_fortress_tithe = {
 
 	potential = {
 		OR = {
-			parliament_type ?= parliament_type:oe_teu_generalkapitel
+			parliament_type = parliament_type:oe_teu_generalkapitel
 			oe_thh_is_generalkapitel_eligible = yes
 		}
 	}
@@ -81,7 +81,7 @@ oe_thh_pi_baltic_fortress_tithe = {
 		add = 8
 		add = {
 			if = {
-				limit = { parliament_type ?= parliament_type:oe_teu_generalkapitel }
+				limit = { parliament_type = parliament_type:oe_teu_generalkapitel }
 				value = 5
 			}
 		}
@@ -124,7 +124,7 @@ oe_thh_pi_preussenreisen_levy = {
 
 	potential = {
 		OR = {
-			parliament_type ?= parliament_type:oe_teu_generalkapitel
+			parliament_type = parliament_type:oe_teu_generalkapitel
 			oe_thh_is_generalkapitel_eligible = yes
 		}
 	}
@@ -137,7 +137,7 @@ oe_thh_pi_preussenreisen_levy = {
 		add = 8
 		add = {
 			if = {
-				limit = { parliament_type ?= parliament_type:oe_teu_generalkapitel }
+				limit = { parliament_type = parliament_type:oe_teu_generalkapitel }
 				value = 5
 			}
 		}
@@ -180,7 +180,7 @@ oe_thh_pi_hanseatic_amber_compact = {
 
 	potential = {
 		OR = {
-			parliament_type ?= parliament_type:oe_teu_generalkapitel
+			parliament_type = parliament_type:oe_teu_generalkapitel
 			oe_thh_is_generalkapitel_eligible = yes
 		}
 	}
@@ -193,7 +193,7 @@ oe_thh_pi_hanseatic_amber_compact = {
 		add = 8
 		add = {
 			if = {
-				limit = { parliament_type ?= parliament_type:oe_teu_generalkapitel }
+				limit = { parliament_type = parliament_type:oe_teu_generalkapitel }
 				value = 5
 			}
 		}
@@ -218,6 +218,62 @@ oe_thh_pi_hanseatic_amber_compact = {
 	on_debate_passed = {
 		add_country_modifier = { modifier = oe_thh_mod_pi_amber_compact years = 12 mode = replace }
 		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus }
+	}
+
+	on_debate_failed = {
+		parliament_debate_failed_effect = yes
+	}
+}
+
+# Grand Master's Ordensstaat Charter (《大团长骑士团国章程》)
+oe_thh_pi_hochmeister_ordensstaat_charter = {
+	type = country
+	estate = crown_estate
+
+	modifier_when_in_debate = {
+		global_crown_estate_power = 0.08
+	}
+
+	potential = {
+		OR = {
+			parliament_type = parliament_type:oe_teu_generalkapitel
+			oe_thh_is_generalkapitel_eligible = yes
+		}
+	}
+
+	allow = {
+		NOT = { has_country_modifier = oe_thh_mod_pi_hochmeister_charter }
+	}
+
+	chance = {
+		add = 8
+		add = {
+			if = {
+				limit = { parliament_type = parliament_type:oe_teu_generalkapitel }
+				value = 5
+			}
+		}
+		add = {
+			if = {
+				limit = { stability >= 0 }
+				value = 3
+			}
+		}
+	}
+
+	wants_this_parliament_issue_bias = {
+		add = 5
+		add = {
+			if = {
+				limit = { stability >= 0 }
+				value = 10
+			}
+		}
+	}
+
+	on_debate_passed = {
+		add_country_modifier = { modifier = oe_thh_mod_pi_hochmeister_charter years = 12 mode = replace }
+		add_prestige = prestige_weak_bonus
 	}
 
 	on_debate_failed = {

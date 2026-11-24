@@ -1,0 +1,446 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4A: 1337-1460 Deep Flavor & Mechanic Packs (TUR/FRA/ENG) (oe_v250_eng_, 0 mainline slots, 0 rules, 0 vanilla overrides) — 12 Deep 1337-1460 Historical Branching Events for Kingdom of England (1337-1460) (strictly 1337-gated, 0 orphans). Edit gen_v250_1337_tur_fra_eng.py, not this file.
+
+
+namespace = oe_v250_eng
+
+# 1. [ENG / 1338+] The Wool Staple & the Flemish Alliance
+oe_v250_eng.1 = {
+	type = country_event
+	title = oe_v250_eng.1.t
+	desc = oe_v250_eng.1.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_hanseatic_kontor.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.1.a
+		ai_chance = { base = 60 }
+		add_gold = 75
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev1_flemish_staple years = 15 mode = replace }
+		if = { limit = { country_exists = c:FLA c:FLA = { is_rebel_country = no } } add_opinion = { target = c:FLA modifier = opinion_good_relations } c:FLA = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v250_eng.1.b
+		ai_chance = { base = 40 }
+		add_gold = -35
+		if = { limit = { owns = location:london } location:london = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev1_domestic_cloth years = 15 mode = replace }
+		if = { limit = { country_exists = c:FLA c:FLA = { is_rebel_country = no } } c:FLA = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+}
+
+# 2. [ENG / 1340+] Statute of Archery & Longbow Yeomanry
+oe_v250_eng.2 = {
+	type = country_event
+	title = oe_v250_eng.2.t
+	desc = oe_v250_eng.2.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v180_estate_private_levy.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.2.a
+		ai_chance = { base = 70 }
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev2_longbow_statute years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_eng.2.b
+		ai_chance = { base = 30 }
+		add_gold = 45
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev2_yeoman_harvest years = 20 mode = replace }
+	}
+}
+
+# 3. [ENG / 1344+] Parliamentary War Subsidies & the Commons' Bargain
+oe_v250_eng.3 = {
+	type = country_event
+	title = oe_v250_eng.3.t
+	desc = oe_v250_eng.3.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v180_io_grand_council.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.3.a
+		ai_chance = { base = 65 }
+		add_gold = 90
+		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev3_commons_bargain years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_eng.3.b
+		ai_chance = { base = 35 }
+		add_gold = 60
+		add_stability = -4
+		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev3_royal_purveyance years = 18 mode = replace }
+	}
+}
+
+# 4. [ENG / 1348+] The Calais Staple Port Charter
+oe_v250_eng.4 = {
+	type = country_event
+	title = oe_v250_eng.4.t
+	desc = oe_v250_eng.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v185_grand_peace_treaty_harbor.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.4.a
+		ai_chance = { base = 65 }
+		add_gold = -65
+		if = { limit = { owns = location:calais } location:calais = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev4_calais_enclave years = 18 mode = replace }
+		if = { limit = { country_exists = c:FRA c:FRA = { is_rebel_country = no } } c:FRA = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+	option = {
+		name = oe_v250_eng.4.b
+		ai_chance = { base = 35 }
+		add_gold = 45
+		if = { limit = { owns = location:dover } location:dover = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev4_home_staples years = 18 mode = replace }
+	}
+}
+
+# 5. [ENG / 1352+] The Statute of Labourers & Post-Plague Wages
+oe_v250_eng.5 = {
+	type = country_event
+	title = oe_v250_eng.5.t
+	desc = oe_v250_eng.5.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_ind2_guild_congress.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.5.a
+		ai_chance = { base = 60 }
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev5_wage_freeze years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_eng.5.b
+		ai_chance = { base = 40 }
+		add_gold = -45
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_bonus }
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev5_free_wages years = 18 mode = replace }
+	}
+}
+
+# 6. [ENG / 1355+] The Statutes of Provisors & Praemunire
+oe_v250_eng.6 = {
+	type = country_event
+	title = oe_v250_eng.6.t
+	desc = oe_v250_eng.6.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v230_pap_kingdom_of_god.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.6.a
+		ai_chance = { base = 65 }
+		add_gold = 60
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev6_praemunire years = 20 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+	option = {
+		name = oe_v250_eng.6.b
+		ai_chance = { base = 35 }
+		add_gold = -35
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev6_curial_harmony years = 20 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } add_opinion = { target = c:PAP modifier = opinion_good_relations } c:PAP = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+}
+
+# 7. [ENG / 1376+] The Good Parliament & Royal Accountability
+oe_v250_eng.7 = {
+	type = country_event
+	title = oe_v250_eng.7.t
+	desc = oe_v250_eng.7.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_byz_senate_consistorium.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.7.a
+		ai_chance = { base = 60 }
+		add_inflation = -1
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev7_good_parliament years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_eng.7.b
+		ai_chance = { base = 40 }
+		add_stability = -4
+		add_legitimacy = 4
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev7_court_prerogative years = 18 mode = replace }
+	}
+}
+
+# 8. [ENG / 1381+] Wat Tyler & the Great Peasants' Revolt
+oe_v250_eng.8 = {
+	type = country_event
+	title = oe_v250_eng.8.t
+	desc = oe_v250_eng.8.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_gr_street_revolt.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.8.a
+		ai_chance = { base = 35 }
+		add_gold = -70
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_bonus }
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev8_smithfield_charter years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_eng.8.b
+		ai_chance = { base = 65 }
+		add_stability = 5
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev8_feudal_order years = 18 mode = replace }
+	}
+}
+
+# 9. [ENG / 1385+] John Wycliffe & the Lollard Scriptures
+oe_v250_eng.9 = {
+	type = country_event
+	title = oe_v250_eng.9.t
+	desc = oe_v250_eng.9.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_sci_royal_society.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.9.a
+		ai_chance = { base = 40 }
+		add_research_progress = research_progress_mild_bonus
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev9_oxford_vernacular years = 20 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v250_eng.9.b
+		ai_chance = { base = 60 }
+		add_stability = 4
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev9_episcopal_orthodoxy years = 20 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } add_opinion = { target = c:PAP modifier = opinion_pleased } c:PAP = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+}
+
+# 10. [ENG / 1400+] The Welsh Marches & Owain Glyndwr's Rising
+oe_v250_eng.10 = {
+	type = country_event
+	title = oe_v250_eng.10.t
+	desc = oe_v250_eng.10.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_byz_siege_walls.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.10.a
+		ai_chance = { base = 60 }
+		add_gold = -65
+		add_army_tradition = 4
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev10_marcher_castles years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_eng.10.b
+		ai_chance = { base = 40 }
+		add_stability = 4
+		add_prestige = -4
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev10_welsh_charter years = 15 mode = replace }
+	}
+}
+
+# 11. [ENG / 1415+] Royal Navy of the Cinque Ports & the Grace Dieu
+oe_v250_eng.11 = {
+	type = country_event
+	title = oe_v250_eng.11.t
+	desc = oe_v250_eng.11.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v160_eng_armada.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.11.a
+		ai_chance = { base = 65 }
+		add_gold = -85
+		add_navy_tradition = 6
+		if = { limit = { owns = location:southampton } location:southampton = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev11_grace_dieu years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_eng.11.b
+		ai_chance = { base = 35 }
+		add_gold = 40
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev11_merchant_levy years = 20 mode = replace }
+	}
+}
+
+# 12. [ENG / 1445+] Lancaster vs York: Shadow of the Roses
+oe_v250_eng.12 = {
+	type = country_event
+	title = oe_v250_eng.12.t
+	desc = oe_v250_eng.12.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v180_royal_coronation_dynasty.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = ENG
+			has_or_had_tag = ENG
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_eng.12.a
+		ai_chance = { base = 55 }
+		add_legitimacy = -6
+		add_stability = -3
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev12_curb_livery years = 25 mode = replace }
+	}
+	option = {
+		name = oe_v250_eng.12.b
+		ai_chance = { base = 45 }
+		add_stability = 6
+		add_legitimacy = 4
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_eng_mod_ev12_loveday_council years = 25 mode = replace }
+	}
+}

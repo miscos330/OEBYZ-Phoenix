@@ -11,7 +11,9 @@ oe_gov2_cab_cadastral_survey = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations > 0
+		current_age_or_later = { age = age_3_discovery }
+		country_rank_level >= 3
+		num_locations >= 20
 	}
 
 	allow = {
@@ -77,14 +79,15 @@ oe_gov2_cab_canal_goods_oversight = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations > 0
-		current_age_or_later = { age = age_3_discovery }
+		current_age_or_later = { age = age_4_reformation }
+		num_locations >= 15
+		monthly_income_trade_and_tax >= 30
 	}
 
 	allow = {
 		OR = {
 			scope:is_active ?= yes
-			current_age_or_later = { age = age_3_discovery }
+			current_age_or_later = { age = age_4_reformation }
 		}
 	}
 
@@ -152,7 +155,8 @@ oe_gov2_cab_viceroy_inspection = {
 
 	potential = {
 		is_rebel_country = no
-		num_subjects >= 1
+		num_subjects >= 3
+		country_rank_level >= 3
 	}
 
 	allow = {
@@ -198,6 +202,8 @@ oe_gov2_cab_coastal_anti_smuggling = {
 	potential = {
 		is_rebel_country = no
 		has_ports = yes
+		current_age_or_later = { age = age_3_discovery }
+		num_locations >= 10
 	}
 
 	allow = {
@@ -268,7 +274,9 @@ oe_gov2_cab_royal_academy_patronage = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations > 0
+		current_age_or_later = { age = age_4_reformation }
+		has_embraced_institution = institution:printing_press
+		country_rank_level >= 3
 		NOT = { government_type = government_type:tribe }
 	}
 
@@ -341,14 +349,19 @@ oe_gov2_cab_estate_mediation = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations > 0
+		OR = {
+			stability < -10
+			has_any_active_disaster = yes
+			any_estate = { satisfaction < 0.30 }
+		}
 	}
 
 	allow = {
 		OR = {
 			scope:is_active ?= yes
-			stability < 40
-			war_exhaustion >= 2
+			stability < 15
+			has_any_active_disaster = yes
+			any_estate = { satisfaction < 0.35 }
 		}
 	}
 
@@ -382,15 +395,19 @@ oe_gov2_cab_debt_restructuring = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations > 0
+		OR = {
+			num_loans >= 4
+			inflation >= 0.08
+			is_during_bankruptcy = yes
+		}
 	}
 
 	allow = {
 		OR = {
 			scope:is_active ?= yes
-			num_loans >= 1
-			inflation >= 0.02
-			war_exhaustion >= 2
+			num_loans >= 3
+			inflation >= 0.06
+			is_during_bankruptcy = yes
 		}
 	}
 
@@ -426,7 +443,12 @@ oe_gov2_cab_frontier_fortification = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations >= 3
+		current_age_or_later = { age = age_2_renaissance }
+		num_locations >= 12
+		OR = {
+			at_war = yes
+			country_rank_level >= 3
+		}
 	}
 
 	allow = {
@@ -501,7 +523,12 @@ oe_gov2_cab_guild_chartering = {
 
 	potential = {
 		is_rebel_country = no
+		current_age_or_later = { age = age_2_renaissance }
 		country_has_estate = estate_type:burghers_estate
+		OR = {
+			government_type = government_type:republic
+			"estate_power(estate_type:burghers_estate)" >= 0.20
+		}
 	}
 
 	allow = {
@@ -577,6 +604,8 @@ oe_gov2_cab_dynastic_chancery = {
 	potential = {
 		is_rebel_country = no
 		government_type = government_type:monarchy
+		country_rank_level >= 3
+		current_age_or_later = { age = age_2_renaissance }
 	}
 
 	allow = {

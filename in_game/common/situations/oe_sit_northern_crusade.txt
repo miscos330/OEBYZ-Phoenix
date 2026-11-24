@@ -21,7 +21,10 @@ oe_sit_northern_crusade = {
 		name = "oe_sit_northern_crusade_outcome_order"
 		desc = "oe_sit_northern_crusade_outcome_order_desc"
 		trigger = {
-			country_exists = c:TEU
+			OR = {
+				country_exists = c:TEU
+				country_exists = c:LIV
+			}
 			has_variable = oe_tom_sit_months
 			var:oe_tom_sit_months >= 24
 			OR = {
@@ -29,18 +32,31 @@ oe_sit_northern_crusade = {
 					has_variable = oe_tom_sit_momentum
 					var:oe_tom_sit_momentum >= 80
 				}
-				c:TEU = {
-					owns_or_non_sovereign_subject_owns = location:vilnius
-					owns_or_non_sovereign_subject_owns = location:warsaw
-					oe_tom_active_marches_val >= 2
+				AND = {
+					country_exists = c:TEU
+					c:TEU = {
+						owns_or_non_sovereign_subject_owns = location:vilnius
+						owns_or_non_sovereign_subject_owns = location:warsaw
+						oe_tom_active_marches_val >= 2
+					}
 				}
 			}
 		}
 		immediate = {
 			set_global_variable = { name = oe_tom_sit_ended value = 1 }
-			c:TEU = {
-				add_country_modifier = { modifier = oe_tom_mod_sit_order_victory years = 30 mode = replace }
-				trigger_event_non_silently = oe_tom.14
+			if = {
+				limit = { country_exists = c:TEU }
+				c:TEU = {
+					add_country_modifier = { modifier = oe_tom_mod_sit_order_victory years = 30 mode = replace }
+					trigger_event_non_silently = oe_tom.14
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:LIV }
+				c:LIV = {
+					add_country_modifier = { modifier = oe_tom_mod_sit_order_victory years = 30 mode = replace }
+					trigger_event_non_silently = oe_tom.14
+				}
 			}
 		}
 	}
@@ -49,7 +65,10 @@ oe_sit_northern_crusade = {
 		desc = "oe_sit_northern_crusade_outcome_plu_desc"
 		trigger = {
 			OR = {
-				NOT = { country_exists = c:TEU }
+				AND = {
+					NOT = { country_exists = c:TEU }
+					NOT = { country_exists = c:LIV }
+				}
 				AND = {
 					has_variable = oe_tom_sit_months
 					var:oe_tom_sit_months >= 24
@@ -100,6 +119,10 @@ oe_sit_northern_crusade = {
 			if = {
 				limit = { country_exists = c:TEU }
 				c:TEU = { trigger_event_non_silently = oe_tom.14 }
+			}
+			else_if = {
+				limit = { country_exists = c:LIV }
+				c:LIV = { trigger_event_non_silently = oe_tom.14 }
 			}
 		}
 	}

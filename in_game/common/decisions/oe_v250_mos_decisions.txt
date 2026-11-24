@@ -1,0 +1,158 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4B 1337 Muscovy/Russia Deep Flavor & Mechanic Pack (oe_v250_mos_, gen_v250_1337_mos_yua.py) — 4 Historical Tag-Locked Decisions (vanilla categories 0..6, DECISIONFMT & DEC-LOC compliant). Edit gen_v250_1337_mos_yua.py, not this file.
+
+
+oe_v250_mos_dec_sovereign_of_all_rus = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+		NOT = { has_variable = oe_v250_mos_gosudar_done }
+	}
+	allow = {
+		is_subject = no
+		at_war = no
+		owns_or_non_sovereign_subject_owns = location:moscow
+		owns_or_non_sovereign_subject_owns = location:vladimir
+		num_locations >= 25
+		gold >= 150
+		stability >= 8
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 220 stability >= 10 }
+			add = 45
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:nobles_estate } }
+	option = {
+		name = oe_v250_mos_dec_sovereign_of_all_rus.a
+		effect = {
+			add_gold = -150
+			set_variable = { name = oe_v250_mos_gosudar_done value = 1 }
+			add_prestige = prestige_mild_bonus
+			add_legitimacy = legitimacy_mild_bonus
+			add_country_modifier = { modifier = oe_v250_mos_mod_gosudar_all_rus years = -1 mode = replace }
+		}
+	}
+}
+
+oe_v250_mos_dec_sudebnik_code = {
+	decision_category = government_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+		NOT = { has_variable = oe_v250_mos_sudebnik_done }
+	}
+	allow = {
+		is_subject = no
+		current_year >= 1450
+		owns = location:moscow
+		stability >= 10
+		gold >= 140
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 210 stability >= 12 }
+			add = 40
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:clergy_estate } }
+	option = {
+		name = oe_v250_mos_dec_sudebnik_code.a
+		effect = {
+			add_gold = -140
+			set_variable = { name = oe_v250_mos_sudebnik_done value = 1 }
+			add_stability = stability_weak_bonus
+			add_country_modifier = { modifier = oe_v250_mos_mod_sudebnik_1497 years = -1 mode = replace }
+		}
+	}
+}
+
+oe_v250_mos_dec_expand_kremlin_arsenal = {
+	decision_category = infrastructure_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+		NOT = { has_variable = oe_v250_mos_arsenal_done }
+	}
+	allow = {
+		is_subject = no
+		current_year >= 1440
+		owns = location:moscow
+		gold >= 180
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 260 }
+			add = 35
+		}
+	}
+	illustration_tags = { 10 = armed 10 = interior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:burghers } }
+	option = {
+		name = oe_v250_mos_dec_expand_kremlin_arsenal.a
+		effect = {
+			add_gold = -180
+			set_variable = { name = oe_v250_mos_arsenal_done value = 1 }
+			add_army_tradition = army_tradition_mild_bonus
+			location:moscow = { change_development = development_weak_bonus }
+			add_country_modifier = { modifier = oe_v250_mos_mod_kremlin_cannon_yard years = -1 mode = replace }
+		}
+	}
+}
+
+oe_v250_mos_dec_northern_monastic_grants = {
+	decision_category = religious_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+		religion = religion:orthodox
+	}
+	allow = {
+		religion = religion:orthodox
+		gold >= 90
+		custom_tooltip = {
+			text = oe_v250_mos_monastic_cd_tt
+			NOT = { has_variable = oe_v250_mos_monastic_cd }
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 180 }
+			add = 20
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:peasants_estate } }
+	option = {
+		name = oe_v250_mos_dec_northern_monastic_grants.a
+		effect = {
+			add_gold = -90
+			set_variable = { name = oe_v250_mos_monastic_cd value = 1 years = 15 }
+			add_religious_influence = 10
+			if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus } }
+			add_country_modifier = { modifier = oe_v250_mos_mod_northern_monasteries years = 12 mode = replace }
+		}
+	}
+}

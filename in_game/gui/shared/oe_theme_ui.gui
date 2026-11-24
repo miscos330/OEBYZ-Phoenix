@@ -202,7 +202,7 @@ template oe_theme_ui_page {
             vbox = {
                 layoutpolicy_horizontal = expanding
                 spacing = 3
-                visible = "[GetScriptedGui('oe_theme_ui_usurp_progress').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.MakeScope).End)]"
+                visible = "[And(GetScriptedGui('oe_theme_ui_usurp_progress').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.MakeScope).End), InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope.GetVariable('oe_theme_usurp_months').IsSet)]"
                 text_single = { text = "OE_THEME_UI_USURP" fontsize = 14 layoutpolicy_horizontal = expanding }
                 progressbar = {
                     layoutpolicy_horizontal = expanding
@@ -214,7 +214,7 @@ template oe_theme_ui_page {
                     spriteborder = { 12 0 }
                     min = 0
                     max = 6
-                    value = "[FixedPointToFloat(GetCountry('BYZ').MakeScope.GetVariable('oe_theme_usurp_months').GetValue)]"
+                    value = "[FixedPointToFloat(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope.GetVariable('oe_theme_usurp_months').GetValue)]"
                     direction = horizontal
                 }
             }
@@ -281,19 +281,36 @@ template oe_theme_ui_page {
                                     }
                                 }
                                 widget = { size = { 100 44 }
-                                    text_single = { position = { 0 0 } size = { 100 24 } autoresize = no elide = right fontsize = 15 text = "[Country.GetGovernment.GetRuler.GetShortNameWithNoTooltip]" tooltip = "[Country.GetGovernment.GetRuler.GetName]" }
+                                    text_single = { position = { 0 0 } size = { 100 24 } autoresize = no elide = right fontsize = 15 visible = "[Country.GetGovernment.HasRulerOrRegent]" text = "[Country.GetGovernment.GetRulerOrRegent.GetShortNameWithNoTooltip]" tooltip = "[Country.GetGovernment.GetRulerOrRegent.GetName]" }
                                     text_single = { position = { 0 24 } size = { 100 20 } autoresize = no elide = right fontsize = 13 text = "OE_THEME_UI_TENURE" default_format = "#weak" }
                                 }
                                 widget = { size = { 88 44 }
                                     tooltip = "OE_THEME_UI_LOYALTY_TT"
-                                    text_single = { position = { 0 0 } size = { 88 24 } autoresize = no elide = right fontsize = 15 raw_text = "[Country.MakeScope.GetVariable('oe_theme_loyalty').GetValue|0]  [Country.Custom('OeThemeBand')]" }
-                                    progressbar_framed = {
-                                        position = { 0 28 }
-                                        size = { 84 10 }
-                                        using = progress_bar_green_red_alt
-                                        min = 0
-                                        max = 100
-                                        value = "[FixedPointToFloat(Country.MakeScope.GetVariable('oe_theme_loyalty').GetValue)]"
+                                    widget = {
+                                        size = { 88 44 }
+                                        visible = "[Country.MakeScope.GetVariable('oe_theme_loyalty').IsSet]"
+                                        text_single = { position = { 0 0 } size = { 88 24 } autoresize = no elide = right fontsize = 15 raw_text = "[Country.MakeScope.GetVariable('oe_theme_loyalty').GetValue|0]  [Country.Custom('OeThemeBand')]" }
+                                        progressbar_framed = {
+                                            position = { 0 28 }
+                                            size = { 84 10 }
+                                            using = progress_bar_green_red_alt
+                                            min = 0
+                                            max = 100
+                                            value = "[FixedPointToFloat(Country.MakeScope.GetVariable('oe_theme_loyalty').GetValue)]"
+                                        }
+                                    }
+                                    widget = {
+                                        size = { 88 44 }
+                                        visible = "[Not(Country.MakeScope.GetVariable('oe_theme_loyalty').IsSet)]"
+                                        text_single = { position = { 0 0 } size = { 88 24 } autoresize = no elide = right fontsize = 15 raw_text = "0  [Country.Custom('OeThemeBand')]" }
+                                        progressbar_framed = {
+                                            position = { 0 28 }
+                                            size = { 84 10 }
+                                            using = progress_bar_green_red_alt
+                                            min = 0
+                                            max = 100
+                                            value = 0
+                                        }
                                     }
                                 }
                                 widget = { size = { 66 44 }
@@ -346,7 +363,7 @@ template oe_theme_ui_page {
                                     }
                                     # Fourth round D3 (gen_round4_border.py): border pressure of a march; the tooltip lists its sources.
                                     widget = { size = { 64 20 } position = { 0 22 }
-                                        visible = "[GetScriptedGui('oe_tbd_ui_march').IsShown(GuiScope.SetRoot(Country.MakeScope).End)]"
+                                        visible = "[And(GetScriptedGui('oe_tbd_ui_march').IsShown(GuiScope.SetRoot(Country.MakeScope).End), Country.MakeScope.GetVariable('oe_tbd_pressure').IsSet)]"
                                         tooltip = "OE_TBD_CARD_TT"
                                         text_single = { position = { 0 0 } size = { 64 20 } autoresize = no elide = right align = left|nobaseline fontsize = 13 raw_text = "[Country.Custom('OeTbdBand')] [Country.MakeScope.GetVariable('oe_tbd_pressure').GetValue|0]" }
                                     }

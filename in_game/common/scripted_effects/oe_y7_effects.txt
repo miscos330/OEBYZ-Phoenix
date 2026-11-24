@@ -1071,7 +1071,10 @@ oe_y7_job_dismiss = {
         limit = { country_exists = c:CHI c:CHI = { is_ai = yes } }
         c:CHI = {
             if = { limit = { has_country_modifier = oe_y7_strife_levy_floor } remove_country_modifier = oe_y7_strife_levy_floor }
-            add_country_modifier = { modifier = oe_y7_ai_gaoyou_collapse years = 15 mode = replace }
+            if = {
+                limit = { NOT = { has_country_modifier = oe_y7_ai_factional_decay } }
+                add_country_modifier = { modifier = oe_y7_ai_gaoyou_collapse years = 15 mode = replace }
+            }
         }
         debug_log = "OE_Y7_AI_FORK: gaoyou_dismissed_collapse"
     }

@@ -3,7 +3,10 @@
 # Exported O(1) zero-slot yearly dispatcher (self-deduplicates via global_var:oe_chgu_ran_y ?= current_year).
 oe_chgu_kernel_yearly = {
 	if = {
-		limit = { NOT = { global_var:oe_chgu_ran_y ?= current_year } }
+		limit = {
+			oe_start_is_1337 = yes
+			NOT = { global_var:oe_chgu_ran_y ?= current_year }
+		}
 		set_global_variable = { name = oe_chgu_ran_y value = current_year }
 		oe_chgu_init = yes
 		oe_chgu_yearly_ulus_guard = yes
@@ -472,7 +475,10 @@ oe_chgu_dispatch_events = {
 			country_exists = c:CHG
 			c:CHG = { is_rebel_country = no }
 			NOT = { has_global_variable = oe_chgu_ev_4_done }
+			NOT = { has_global_variable = oe_chgu_split_done }
+			NOT = { global_var:oe_eug_chg_split ?= 1 }
 			NOT = { global_var:oe_eug_chg_split ?= 2 }
+			NOT = { global_var:oe_chg2_centralized ?= 1 }
 		}
 		set_global_variable = { name = oe_chgu_ev_4_done value = 1 }
 		c:CHG = { trigger_event_non_silently = oe_chgu.4 }

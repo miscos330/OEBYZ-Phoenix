@@ -358,11 +358,16 @@ on_character_death = {#@@@角色死亡扳机
 }
 oe_byz_oc_latin_death = {
     trigger = {
+        oe_start_is_1337 = yes
         country_exists = c:BYZ
         c:BYZ = { NOT = { has_variable = oe_byz_sic_succession_fired } }
         scope:target = {
             OR = {
-                this = character:sic_federico_iii_sicily
+                trigger_if = {
+                    limit = { exists = character:sic_federico_iii_sicily }
+                    this = character:sic_federico_iii_sicily
+                }
+                trigger_else = { always = no }
                 has_character_modifier = oe_sic_death
             }
         }
@@ -376,11 +381,16 @@ oe_byz_oc_latin_death = {
 }
 oe_byz_oc_latinI_death = {
     trigger = {
+        oe_start_is_1337 = yes
         country_exists = c:BYZ
         c:BYZ = { NOT = { has_variable = oe_byz_nap_succession_fired } }
         scope:target = {
             OR = {
-                this = character:nap_robert_i_anjou
+                trigger_if = {
+                    limit = { exists = character:nap_robert_i_anjou }
+                    this = character:nap_robert_i_anjou
+                }
+                trigger_else = { always = no }
                 has_character_modifier = oe_nap_death
             }
         }
@@ -1283,10 +1293,12 @@ oe_byz_migrate_john_v_education = {
 
 # Small runtime setup instead of duplicating vanilla character_db records.
 oe_byz_initialize_historical_character_patch = {
+    trigger = { oe_start_is_1337 = yes }
     effect = { oe_byz_initialize_historical_characters = yes }
 }
 oe_byz_migrate_historical_character_patch = {
     trigger = {
+        oe_start_is_1337 = yes
         tag = BYZ is_rebel_country = no
         NOT = { has_global_variable = oe_byz_historical_character_patch_applied }
     }
@@ -1296,6 +1308,7 @@ oe_byz_migrate_historical_character_patch = {
 # Run before the earlier identity migration so only already-patched saves qualify.
 oe_byz_migrate_andronikos_abilities = {
     trigger = {
+        oe_start_is_1337 = yes
         tag = BYZ is_rebel_country = no
         NOT = { has_global_variable = oe_byz_andronikos_abilities_repaired }
     }

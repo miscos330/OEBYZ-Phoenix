@@ -363,13 +363,13 @@ oe_ti_byz_monthly = {
     if = { limit = { current_month = 1 } oe_ti_byz_january = yes }
     oe_ti_dispatch = yes
 }
-# BYZ scope. Fires one queued event of each kind a month (each event picks one queued province; the rest wait).
+# BYZ scope. Fires at most one queued inner-theme event per month (the rest wait for the next month).
 oe_ti_dispatch = {
     if = { limit = { any_subject = { has_variable = oe_ti_q_front } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.1 }
-    if = { limit = { any_subject = { has_variable = oe_ti_q_quiet } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.2 }
-    if = { limit = { any_subject = { has_variable = oe_ti_q_heir } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.31 }
-    if = { limit = { any_subject = { has_variable = oe_ti_q_covet } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.32 }
-    if = { limit = { any_subject = { has_variable = oe_ti_q_pronoia } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.50 }
+    else_if = { limit = { any_subject = { has_variable = oe_ti_q_quiet } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.2 }
+    else_if = { limit = { any_subject = { has_variable = oe_ti_q_heir } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.31 }
+    else_if = { limit = { any_subject = { has_variable = oe_ti_q_covet } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.32 }
+    else_if = { limit = { any_subject = { has_variable = oe_ti_q_pronoia } } if = { limit = { NOT = { has_variable = oe_dbg_n_ti } } set_variable = { name = oe_dbg_n_ti value = 0 } } change_variable = { name = oe_dbg_n_ti add = 1 } trigger_event_non_silently = oe_ti.50 }
 }
 
 # BYZ scope, every January when Byzantium is AI.

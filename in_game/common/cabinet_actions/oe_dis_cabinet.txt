@@ -8,7 +8,18 @@ oe_dis_cab_fumigation_corps = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations > 0
+		has_ports = yes
+		any_owned_location = { has_any_disease_present = yes }
+		OR = {
+			is_situation_active = situation:black_death
+			AND = {
+				current_age_or_later = { age = age_2_renaissance }
+				any_owned_location = {
+					count >= 4
+					has_any_disease_present = yes
+				}
+			}
+		}
 	}
 
 	allow = {
@@ -84,7 +95,15 @@ oe_dis_cab_cordon_enforcement = {
 
 	potential = {
 		is_rebel_country = no
-		num_locations > 0
+		any_owned_location = { has_any_disease_present = yes }
+		OR = {
+			is_situation_active = situation:black_death
+			any_owned_location = {
+				count >= 4
+				has_any_disease_present = yes
+			}
+			has_any_active_disaster = yes
+		}
 	}
 
 	allow = {

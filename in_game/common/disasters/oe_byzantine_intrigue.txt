@@ -1,19 +1,25 @@
 ﻿oe_byzantine_intrigue = {
     content_priority = 850
-    image = "gfx/interface/illustrations/disaster/oe_byzantine_intrigue.dds"
+    image = "gfx/interface/illustrations/disaster/byzantine_succession_crisis.dds"
     monthly_spawn_chance = 0.25
     fire_only_once = no
     can_start = { oe_bi_start_ready = yes }
     can_end = { oe_bi_end_ready = yes }
     modifier = { court_spending_efficiency = -0.02 stability_cost_efficiency = -0.20 }
     on_start = {
-        international_organization:oe_byz_empire_pillars = { clear_variable_list = oe_bi_negotiated_families }
+        if = {
+            limit = { exists = international_organization:oe_byz_empire_pillars }
+            international_organization:oe_byz_empire_pillars = { clear_variable_list = oe_bi_negotiated_families }
+        }
         remove_variable = oe_bi_forced_civil_war
         remove_variable = oe_bi_capital_purged
         trigger_event_non_silently = oe_byzantine_intrigue.1
     }
     on_end = {
-        international_organization:oe_byz_empire_pillars = { clear_variable_list = oe_bi_negotiated_families }
+        if = {
+            limit = { exists = international_organization:oe_byz_empire_pillars }
+            international_organization:oe_byz_empire_pillars = { clear_variable_list = oe_bi_negotiated_families }
+        }
         remove_variable = oe_bi_forced_civil_war
         remove_variable = oe_bi_capital_purged
         trigger_event_non_silently = oe_byzantine_intrigue.3

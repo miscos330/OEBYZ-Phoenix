@@ -23,22 +23,33 @@ oe_heg_governor_candidate = {
 }
 oe_heg_three_candidates = { any_character = { count >= 3 oe_heg_governor_candidate = yes } }
 oe_heg_action_visible = {
-    custom_tooltip = {
-        text = OE_HEG_ROMAN_LEGITIMACY_REQUIRED
-        has_special_status_in_international_organization = {
-            type = special_status:oe_byz_roman_world_byz
-            international_organization = international_organization:oe_byz_roman_world
+    trigger_if = {
+        limit = {
+            oe_start_is_1337 = yes
+            tag = BYZ
+            exists = international_organization:oe_byz_roman_world
+        }
+        is_member_of_international_organization = international_organization:oe_byz_roman_world
+        custom_tooltip = {
+            text = OE_HEG_ROMAN_LEGITIMACY_REQUIRED
+            has_special_status_in_international_organization = {
+                type = special_status:oe_byz_roman_world_byz
+                international_organization = international_organization:oe_byz_roman_world
+            }
         }
     }
-    tag = BYZ
-    is_member_of_international_organization = international_organization:oe_byz_roman_world
+    trigger_else = { always = no }
 }
 oe_heg_common_allowed = {
-    custom_tooltip = { text = OE_HEG_EGYPT_PLAN_REQUIRED has_variable = oe_heg_egypt_plan_done }
     oe_heg_action_visible = yes
-    international_organization:oe_byz_roman_world = {
-        custom_tooltip = { text = OE_HEG_END_CONTEST_REQUIRED has_variable = oe_rw_contest_ended }
+    custom_tooltip = { text = OE_HEG_EGYPT_PLAN_REQUIRED has_variable = oe_heg_egypt_plan_done }
+    trigger_if = {
+        limit = { exists = international_organization:oe_byz_roman_world }
+        international_organization:oe_byz_roman_world = {
+            custom_tooltip = { text = OE_HEG_END_CONTEST_REQUIRED has_variable = oe_rw_contest_ended }
+        }
     }
+    trigger_else = { always = no }
     custom_tooltip = { text = OE_HEG_NO_PENDING_GOVERNOR NOT = { has_variable = oe_heg_pending_governorate } }
     custom_tooltip = { text = OE_HEG_THREE_CANDIDATES oe_heg_three_candidates = yes }
 }

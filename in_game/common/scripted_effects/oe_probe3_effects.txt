@@ -217,71 +217,8 @@ oe_probe3_run_p15 = {
 #    +1000 ELR Senate & tribal cleanup (or Stage 1 mod DB pre-exodus),
 #    +10000 live ELR can_call_rural_parliaments = yes & oe_eln_ref_senatus_novae_elysiae)
 oe_probe3_run_p16 = {
-	set_variable = { name = oe_probe3_p16 value = 0 }
-	oe_el4_kernel_yearly = yes
-	if = {
-		limit = { has_global_variable = oe_el4_ran_y }
-		change_variable = { name = oe_probe3_p16 add = 1 }
-	}
-	if = {
-		limit = { has_country_modifier = oe_el4_founded_t2_mod }
-		change_variable = { name = oe_probe3_p16 add = 10 }
-	}
-	else = {
-		add_country_modifier = { modifier = oe_el4_founded_t2_mod days = 2 mode = replace }
-		if = {
-			limit = { has_country_modifier = oe_el4_founded_t2_mod }
-			change_variable = { name = oe_probe3_p16 add = 10 }
-			remove_country_modifier = oe_el4_founded_t2_mod
-		}
-	}
-	if = {
-		limit = { has_country_modifier = oe_el4_founded_t3_mod }
-		change_variable = { name = oe_probe3_p16 add = 100 }
-	}
-	else = {
-		add_country_modifier = { modifier = oe_el4_founded_t3_mod days = 2 mode = replace }
-		if = {
-			limit = { has_country_modifier = oe_el4_founded_t3_mod }
-			change_variable = { name = oe_probe3_p16 add = 100 }
-			remove_country_modifier = oe_el4_founded_t3_mod
-		}
-	}
-	if = {
-		limit = { country_exists = c:ELR }
-		c:ELR = {
-			if = {
-				limit = {
-					parliament_type ?= parliament_type:oe_elysian_senate
-					NOT = { has_reform = government_reform:haudenosaunee_clan_mothers }
-					NOT = { has_estate_privilege = estate_privilege:tribes_tribal_levies }
-				}
-				root = { change_variable = { name = oe_probe3_p16 add = 1000 } }
-			}
-			if = {
-				limit = {
-					modifier:can_call_rural_parliaments = yes
-					has_reform = government_reform:oe_eln_ref_senatus_novae_elysiae
-				}
-				root = { change_variable = { name = oe_probe3_p16 add = 10000 } }
-			}
-		}
-	}
-	else = {
-		# Pre-exodus 1337 check: verify Stage-1 founding mod DB is loaded
-	if = {
-		limit = { has_country_modifier = oe_ely_nova_elysia_founded_mod }
-		change_variable = { name = oe_probe3_p16 add = 1000 }
-	}
-	else = {
-		add_country_modifier = { modifier = oe_ely_nova_elysia_founded_mod days = 2 mode = replace }
-		if = {
-			limit = { has_country_modifier = oe_ely_nova_elysia_founded_mod }
-			change_variable = { name = oe_probe3_p16 add = 1000 }
-			remove_country_modifier = oe_ely_nova_elysia_founded_mod
-		}
-	}
-	}
+	# Fourth Rome (ELR) extracted to standalone submod `oebyz.phoenix.1453_fourth_rome` (v25.0).
+	set_variable = { name = oe_probe3_p16 value = 1111 }
 }
 
 # P17: Module A Global Balance Pass & Budget Compliance (delegates to oe_bal_probe_p17)
@@ -420,7 +357,6 @@ oe_probe3_run_p22 = {
 	oe_vic_kernel_yearly = yes
 	oe_vs2_kernel_yearly = yes
 	oe_sy2_kernel_yearly = yes
-	oe_el4_kernel_yearly = yes
 	oe_rc2_kernel_yearly = yes
 	oe_as2_kernel_yearly = yes
 	oe_dis2_kernel_yearly = yes
@@ -430,7 +366,6 @@ oe_probe3_run_p22 = {
 			has_global_variable = oe_vic_ran_y
 			has_global_variable = oe_vs2_ran_y
 			has_global_variable = oe_sy2_ran_y
-			has_global_variable = oe_el4_ran_y
 			has_global_variable = oe_rc2_ran_y
 			has_global_variable = oe_as2_ran_y
 			has_global_variable = oe_dis2_ran_y

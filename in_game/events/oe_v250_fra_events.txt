@@ -1,0 +1,455 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4A: 1337-1460 Deep Flavor & Mechanic Packs (TUR/FRA/ENG) (oe_v250_fra_, 0 mainline slots, 0 rules, 0 vanilla overrides) — 12 Deep 1337-1460 Historical Branching Events for Kingdom of France (1337-1460) (strictly 1337-gated, 0 orphans). Edit gen_v250_1337_tur_fra_eng.py, not this file.
+
+
+namespace = oe_v250_fra
+
+# 1. [FRA / 1338+] Confiscation of Guyenne & the Valois Summons
+oe_v250_fra.1 = {
+	type = country_event
+	title = oe_v250_fra.1.t
+	desc = oe_v250_fra.1.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v185_feudal_charter_france.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.1.a
+		ai_chance = { base = 65 }
+		add_prestige = 6
+		add_legitimacy = 4
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev1_guyenne_confiscation years = 15 mode = replace }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } c:ENG = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+	option = {
+		name = oe_v250_fra.1.b
+		ai_chance = { base = 35 }
+		add_gold = 55
+		add_prestige = -5
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev1_parlement_arbitration years = 15 mode = replace }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } add_opinion = { target = c:ENG modifier = opinion_diplomatic_move } c:ENG = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+}
+
+# 2. [FRA / 1341+] The Gabelle Salt Tax & the Royal War Chest
+oe_v250_fra.2 = {
+	type = country_event
+	title = oe_v250_fra.2.t
+	desc = oe_v250_fra.2.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_byz_nomisma_treasury.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.2.a
+		ai_chance = { base = 60 }
+		add_gold = 95
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev2_gabelle_monopoly years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_fra.2.b
+		ai_chance = { base = 40 }
+		add_gold = 35
+		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev2_municipal_aides years = 15 mode = replace }
+	}
+}
+
+# 3. [FRA / 1346+] Chivalry vs Fabian Warfare After Crecy
+oe_v250_fra.3 = {
+	type = country_event
+	title = oe_v250_fra.3.t
+	desc = oe_v250_fra.3.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_form_grand_tactics.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.3.a
+		ai_chance = { base = 55 }
+		add_prestige = -5
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev3_fabian_doctrine years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_fra.3.b
+		ai_chance = { base = 25 }
+		add_prestige = 6
+		add_gold = -50
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev3_chivalric_shock years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_fra.3.c
+		ai_chance = { base = 20 }
+		add_gold = -65
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev3_crossbow_mercs years = 18 mode = replace }
+	}
+}
+
+# 4. [FRA / 1355+] Etienne Marcel & the Estates-General of Paris
+oe_v250_fra.4 = {
+	type = country_event
+	title = oe_v250_fra.4.t
+	desc = oe_v250_fra.4.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_ind2_guild_congress.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.4.a
+		ai_chance = { base = 40 }
+		add_gold = 55
+		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev4_estates_oversight years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_fra.4.b
+		ai_chance = { base = 60 }
+		add_stability = -5
+		add_legitimacy = 5
+		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev4_royal_defiance years = 15 mode = replace }
+	}
+}
+
+# 5. [FRA / 1358+] The Jacquerie Peasant Uprising
+oe_v250_fra.5 = {
+	type = country_event
+	title = oe_v250_fra.5.t
+	desc = oe_v250_fra.5.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_gr_street_revolt.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.5.a
+		ai_chance = { base = 60 }
+		add_stability = 4
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev5_noble_suppression years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_fra.5.b
+		ai_chance = { base = 40 }
+		add_gold = -60
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_bonus }
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev5_rural_amnesty years = 15 mode = replace }
+	}
+}
+
+# 6. [FRA / 1364+] Charles V's Grand Ordonnances & the Permanent Taille
+oe_v250_fra.6 = {
+	type = country_event
+	title = oe_v250_fra.6.t
+	desc = oe_v250_fra.6.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v180_io_grand_council.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.6.a
+		ai_chance = { base = 65 }
+		add_inflation = -1
+		add_stability = -3
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev6_permanent_taille years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_fra.6.b
+		ai_chance = { base = 35 }
+		add_stability = 5
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev6_provincial_estates years = 18 mode = replace }
+	}
+}
+
+# 7. [FRA / 1385+] The Marmousets & Crown Bureaucracy
+oe_v250_fra.7 = {
+	type = country_event
+	title = oe_v250_fra.7.t
+	desc = oe_v250_fra.7.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_byz_senate_consistorium.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.7.a
+		ai_chance = { base = 60 }
+		add_gold = 40
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev7_marmouset_ministers years = 15 mode = replace }
+		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } c:BUR = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+	option = {
+		name = oe_v250_fra.7.b
+		ai_chance = { base = 40 }
+		add_prestige = 5
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev7_princes_of_blood years = 15 mode = replace }
+		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } add_opinion = { target = c:BUR modifier = opinion_pleased } c:BUR = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+}
+
+# 8. [FRA / 1405+] The Armagnac vs Burgundian Court Feud
+oe_v250_fra.8 = {
+	type = country_event
+	title = oe_v250_fra.8.t
+	desc = oe_v250_fra.8.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v230_hbg_burgundy_lotharingia.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.8.a
+		ai_chance = { base = 45 }
+		add_gold = -55
+		add_prestige = -5
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev8_burgundian_appeasement years = 15 mode = replace }
+		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } add_opinion = { target = c:BUR modifier = opinion_good_relations } c:BUR = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v250_fra.8.b
+		ai_chance = { base = 55 }
+		add_stability = -4
+		add_army_tradition = 4
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev8_armagnac_centralization years = 15 mode = replace }
+		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } c:BUR = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+}
+
+# 9. [FRA / 1425+] The Maid of Orleans & the Royal Awakening
+oe_v250_fra.9 = {
+	type = country_event
+	title = oe_v250_fra.9.t
+	desc = oe_v250_fra.9.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_marienburg_crusade.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.9.a
+		ai_chance = { base = 70 }
+		add_prestige = 8
+		add_yearly_manpower = 0.40
+		if = { limit = { owns = location:orleans } location:orleans = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev9_maid_orleans years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_fra.9.b
+		ai_chance = { base = 30 }
+		add_stability = 4
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev9_poitiers_caution years = 18 mode = replace }
+	}
+}
+
+# 10. [FRA / 1432+] The Congress of Arras: Detaching Burgundy
+oe_v250_fra.10 = {
+	type = country_event
+	title = oe_v250_fra.10.t
+	desc = oe_v250_fra.10.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_v135_grand_treaty_hall.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.10.a
+		ai_chance = { base = 65 }
+		add_gold = -75
+		add_prestige = -6
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev10_arras_concord years = 18 mode = replace }
+		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } add_opinion = { target = c:BUR modifier = opinion_good_relations } c:BUR = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } c:ENG = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+	option = {
+		name = oe_v250_fra.10.b
+		ai_chance = { base = 35 }
+		add_prestige = 7
+		add_war_exhaustion = 1
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev10_valois_pride years = 18 mode = replace }
+		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } c:BUR = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+}
+
+# 11. [FRA / 1438+] The Pragmatic Sanction of Bourges
+oe_v250_fra.11 = {
+	type = country_event
+	title = oe_v250_fra.11.t
+	desc = oe_v250_fra.11.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v230_pap_kingdom_of_god.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.11.a
+		ai_chance = { base = 60 }
+		add_gold = 70
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev11_pragmatic_sanction years = 20 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+	option = {
+		name = oe_v250_fra.11.b
+		ai_chance = { base = 40 }
+		add_gold = -40
+		add_legitimacy = 5
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev11_papal_concordat years = 20 mode = replace }
+		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } add_opinion = { target = c:PAP modifier = opinion_good_relations } c:PAP = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+}
+
+# 12. [FRA / 1445+] The Bureau Brothers & Europe's First Standing Army
+oe_v250_fra.12 = {
+	type = country_event
+	title = oe_v250_fra.12.t
+	desc = oe_v250_fra.12.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v165_gunpowder_reform.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = FRA
+			has_or_had_tag = FRA
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_fra.12.a
+		ai_chance = { base = 65 }
+		add_gold = -90
+		add_army_tradition = 6
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev12_bureau_artillery years = 25 mode = replace }
+	}
+	option = {
+		name = oe_v250_fra.12.b
+		ai_chance = { base = 35 }
+		add_yearly_manpower = 0.45
+		add_country_modifier = { modifier = oe_v250_fra_mod_ev12_franc_archers years = 25 mode = replace }
+	}
+}

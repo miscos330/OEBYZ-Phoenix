@@ -1,0 +1,464 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4B 1337 Muscovy/Russia Deep Flavor & Mechanic Pack (oe_v250_mos_, gen_v250_1337_mos_yua.py) — 12 Historical Branching Events (strictly 1337-gated, verified 1080x440 DDS, 0 orphans). Edit gen_v250_1337_mos_yua.py, not this file.
+
+
+namespace = oe_v250_mos
+
+# 1. The Vladimir Yarlyk & Horde Tax Collector (1338+)
+oe_v250_mos.1 = {
+	type = country_event
+	title = oe_v250_mos.1.t
+	desc = oe_v250_mos.1.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v175_glh_sarai_kurultai.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.1.a
+		ai_chance = { base = 50 }
+		add_gold = -45
+		add_country_modifier = { modifier = oe_v250_mos_mod_yarlyk_patronage years = 12 mode = replace }
+		if = { limit = { country_exists = c:GLH c:GLH = { is_rebel_country = no } } add_opinion = { target = c:GLH modifier = opinion_good_relations } c:GLH = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v250_mos.1.b
+		ai_chance = { base = 35 }
+		add_gold = 70
+		add_inflation = inflation_weak_penalty
+		add_country_modifier = { modifier = oe_v250_mos_mod_kalita_moneybag years = 12 mode = replace }
+		if = { limit = { country_exists = c:GLH c:GLH = { is_rebel_country = no } } c:GLH = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v250_mos.1.c
+		ai_chance = { base = 15 }
+		add_stability = stability_weak_bonus
+		add_country_modifier = { modifier = oe_v250_mos_mod_rus_tax_leniency years = 12 mode = replace }
+	}
+}
+
+# 2. Metropolitan Peter's Seat & The Kremlin Hill (1340+)
+oe_v250_mos.2 = {
+	type = country_event
+	title = oe_v250_mos.2.t
+	desc = oe_v250_mos.2.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_holy_moscow.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.2.a
+		ai_chance = { base = 55 }
+		add_gold = -65
+		add_religious_influence = 10
+		if = { limit = { owns = location:moscow } location:moscow = { change_development = development_weak_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_metropolitan_seat years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.2.b
+		ai_chance = { base = 30 }
+		add_gold = -80
+		if = { limit = { owns = location:moscow } location:moscow = { change_control = control_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_kremlin_ramparts years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.2.c
+		ai_chance = { base = 15 }
+		add_gold = 45
+		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_secular_fisc years = 12 mode = replace }
+	}
+}
+
+# 3. Rivalry with Tver & The Golden Horde Embassy (1346+)
+oe_v250_mos.3 = {
+	type = country_event
+	title = oe_v250_mos.3.t
+	desc = oe_v250_mos.3.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_rus_boyarduma.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.3.a
+		ai_chance = { base = 50 }
+		add_gold = -75
+		add_country_modifier = { modifier = oe_v250_mos_mod_sarai_embassy years = 12 mode = replace }
+		if = { limit = { country_exists = c:GLH c:GLH = { is_rebel_country = no } } c:GLH = { add_opinion = { target = root modifier = opinion_pleased } } }
+		if = { limit = { country_exists = c:TVE c:TVE = { is_rebel_country = no } } c:TVE = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+	option = {
+		name = oe_v250_mos.3.b
+		ai_chance = { base = 35 }
+		add_army_tradition = army_tradition_weak_bonus
+		add_country_modifier = { modifier = oe_v250_mos_mod_western_marches years = 12 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.3.c
+		ai_chance = { base = 15 }
+		add_prestige = prestige_weak_bonus
+		add_country_modifier = { modifier = oe_v250_mos_mod_upper_volga_truce years = 12 mode = replace }
+		if = { limit = { country_exists = c:TVE c:TVE = { is_rebel_country = no } } add_opinion = { target = c:TVE modifier = opinion_diplomatic_move } c:TVE = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+}
+
+# 4. Saint Sergius of Radonezh & Trinity Lavra (1355+)
+oe_v250_mos.4 = {
+	type = country_event
+	title = oe_v250_mos.4.t
+	desc = oe_v250_mos.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_rel_hesychast.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.4.a
+		ai_chance = { base = 55 }
+		add_gold = -50
+		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
+		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_trinity_colonization years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.4.b
+		ai_chance = { base = 30 }
+		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
+		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_boyar_votchina_guard years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.4.c
+		ai_chance = { base = 15 }
+		add_stability = stability_weak_bonus
+		add_country_modifier = { modifier = oe_v250_mos_mod_sergius_concord years = 15 mode = replace }
+	}
+}
+
+# 5. Great Troubles in Sarai: Withholding the Vykhod (1362+)
+oe_v250_mos.5 = {
+	type = country_event
+	title = oe_v250_mos.5.t
+	desc = oe_v250_mos.5.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_pglh_sarai_gunpowder.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.5.a
+		ai_chance = { base = 50 }
+		add_gold = 85
+		add_prestige = prestige_mild_bonus
+		set_variable = { name = oe_v250_mos_withheld_vykhod value = 1 }
+		add_country_modifier = { modifier = oe_v250_mos_mod_vykhod_defiance years = 12 mode = replace }
+		if = { limit = { country_exists = c:GLH c:GLH = { is_rebel_country = no } } c:GLH = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+	option = {
+		name = oe_v250_mos.5.b
+		ai_chance = { base = 35 }
+		add_gold = -40
+		add_country_modifier = { modifier = oe_v250_mos_mod_steppe_arbitrage years = 12 mode = replace }
+		if = { limit = { country_exists = c:GLH c:GLH = { is_rebel_country = no } } c:GLH = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+	option = {
+		name = oe_v250_mos.5.c
+		ai_chance = { base = 15 }
+		add_stability = stability_weak_bonus
+		add_country_modifier = { modifier = oe_v250_mos_mod_heartland_hoard years = 12 mode = replace }
+	}
+}
+
+# 6. White-Stone Fortress of Dmitry Donskoy (1368+)
+oe_v250_mos.6 = {
+	type = country_event
+	title = oe_v250_mos.6.t
+	desc = oe_v250_mos.6.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_wnd_kremlin.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.6.a
+		ai_chance = { base = 60 }
+		add_gold = -110
+		if = { limit = { owns = location:moscow } location:moscow = { change_development = development_mild_bonus change_control = control_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_white_stone_kremlin years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.6.b
+		ai_chance = { base = 25 }
+		add_gold = -70
+		if = { limit = { owns = location:kolomna } location:kolomna = { change_control = control_weak_bonus } }
+		if = { limit = { owns = location:serpukhov } location:serpukhov = { change_control = control_weak_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_oka_abatis_line years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.6.c
+		ai_chance = { base = 15 }
+		add_gold = -55
+		add_army_tradition = army_tradition_mild_bonus
+		add_country_modifier = { modifier = oe_v250_mos_mod_mobile_druzhina years = 15 mode = replace }
+	}
+}
+
+# 7. The Kulikovo Field Muster (1378+)
+oe_v250_mos.7 = {
+	type = country_event
+	title = oe_v250_mos.7.t
+	desc = oe_v250_mos.7.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_rus_kulikovo.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.7.a
+		ai_chance = { base = 60 }
+		add_gold = -80
+		add_yearly_manpower = 0.40
+		add_army_tradition = army_tradition_mild_bonus
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_v250_mos_mod_kulikovo_crusade years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.7.b
+		ai_chance = { base = 25 }
+		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_princely_coalition_charter years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.7.c
+		ai_chance = { base = 15 }
+		add_stability = stability_weak_bonus
+		add_country_modifier = { modifier = oe_v250_mos_mod_oka_defensive_muster years = 15 mode = replace }
+	}
+}
+
+# 8. Tokhtamysh's Raid & Rebuilding the Heartland (1385+)
+oe_v250_mos.8 = {
+	type = country_event
+	title = oe_v250_mos.8.t
+	desc = oe_v250_mos.8.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v175_siege_refugees.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.8.a
+		ai_chance = { base = 50 }
+		add_gold = -65
+		if = { limit = { owns = location:moscow } location:moscow = { change_prosperity = prosperity_mild_bonus } }
+		if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_heartland_remission years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.8.b
+		ai_chance = { base = 35 }
+		add_yearly_manpower = 0.35
+		if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_border_conscription years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.8.c
+		ai_chance = { base = 15 }
+		add_inflation = inflation_weak_penalty
+		add_country_modifier = { modifier = oe_v250_mos_mod_guild_reconstruction years = 15 mode = replace }
+	}
+}
+
+# 9. The Muscovite Feudal War: Vasily II vs Shemyaka (1428+)
+oe_v250_mos.9 = {
+	type = country_event
+	title = oe_v250_mos.9.t
+	desc = oe_v250_mos.9.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_v180_royal_coronation_dynasty.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.9.a
+		ai_chance = { base = 60 }
+		add_stability = stability_mild_penalty
+		add_legitimacy = legitimacy_mild_bonus
+		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_penalty } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_autocratic_primogeniture years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.9.b
+		ai_chance = { base = 25 }
+		add_stability = stability_mild_bonus
+		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_appanage_compact years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.9.c
+		ai_chance = { base = 15 }
+		add_gold = -60
+		add_yearly_manpower = 0.30
+		add_country_modifier = { modifier = oe_v250_mos_mod_kasimov_auxiliaries years = 15 mode = replace }
+	}
+}
+
+# 10. Autocephaly of the Russian Orthodox Church (1448) (1448+)
+oe_v250_mos.10 = {
+	type = country_event
+	title = oe_v250_mos.10.t
+	desc = oe_v250_mos.10.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_ecc_florence.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.10.a
+		ai_chance = { base = 65 }
+		add_prestige = prestige_mild_bonus
+		add_religious_influence = 15
+		add_country_modifier = { modifier = oe_v250_mos_mod_autocephaly_1448 years = 25 mode = replace }
+		if = { limit = { country_exists = c:BYZ c:BYZ = { is_rebel_country = no } } c:BYZ = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v250_mos.10.b
+		ai_chance = { base = 20 }
+		add_country_modifier = { modifier = oe_v250_mos_mod_constantinople_concord years = 20 mode = replace }
+		if = { limit = { country_exists = c:BYZ c:BYZ = { is_rebel_country = no } } add_opinion = { target = c:BYZ modifier = opinion_pleased } c:BYZ = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+	option = {
+		name = oe_v250_mos.10.c
+		ai_chance = { base = 15 }
+		add_legitimacy = legitimacy_weak_bonus
+		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_crown_church_oversight years = 20 mode = replace }
+	}
+}
+
+# 11. Novgorod's Veche Bell & The Northern Fur Trade (1460+)
+oe_v250_mos.11 = {
+	type = country_event
+	title = oe_v250_mos.11.t
+	desc = oe_v250_mos.11.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v195_nov_veche_hanseatic.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.11.a
+		ai_chance = { base = 55 }
+		add_prestige = prestige_mild_bonus
+		if = { limit = { owns = location:novgorod } location:novgorod = { change_control = control_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_veche_bell_silenced years = 20 mode = replace }
+		if = { limit = { country_exists = c:NOV c:NOV = { is_rebel_country = no } } c:NOV = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+	option = {
+		name = oe_v250_mos.11.b
+		ai_chance = { base = 30 }
+		if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_novgorod_fur_charter years = 20 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.11.c
+		ai_chance = { base = 15 }
+		add_gold = 80
+		add_country_modifier = { modifier = oe_v250_mos_mod_northern_fur_monopoly years = 20 mode = replace }
+	}
+}
+
+# 12. Pomestye Service-Estates & Great Stand on the Ugra (1472+)
+oe_v250_mos.12 = {
+	type = country_event
+	title = oe_v250_mos.12.t
+	desc = oe_v250_mos.12.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_rus_ugra.dds"
+	trigger = {
+		NOT = { has_global_variable = oe_alt_era_start }
+		current_year <= 1515
+		OR = {
+			tag = MOS
+			tag = RUS
+		}
+	}
+	option = {
+		name = oe_v250_mos.12.a
+		ai_chance = { base = 65 }
+		add_prestige = prestige_mild_bonus
+		add_army_tradition = army_tradition_mild_bonus
+		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_pomestye_ugra_triumph years = 25 mode = replace }
+		if = { limit = { country_exists = c:GLH c:GLH = { is_rebel_country = no } } c:GLH = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+	option = {
+		name = oe_v250_mos.12.b
+		ai_chance = { base = 20 }
+		add_stability = stability_weak_bonus
+		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_mos_mod_duma_service_compromise years = 25 mode = replace }
+	}
+	option = {
+		name = oe_v250_mos.12.c
+		ai_chance = { base = 15 }
+		add_gold = -95
+		add_country_modifier = { modifier = oe_v250_mos_mod_ugra_gunpowder_wall years = 25 mode = replace }
+	}
+}

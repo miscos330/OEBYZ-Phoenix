@@ -2,12 +2,18 @@
 # Preserve the current custom ranges; do not add a fresh roll to existing abilities.
 oe_byz_initialize_historical_characters = {
     if = {
-        limit = { NOT = { has_global_variable = oe_byz_andronikos_abilities_repaired } }
-        oe_byz_set_andronikos_starting_abilities = yes
-        set_global_variable = oe_byz_andronikos_abilities_repaired
+        limit = {
+            oe_start_is_1337 = yes
+            exists = character:byz_andronikos_iii_palaiologos
+        }
+        if = {
+            limit = { NOT = { has_global_variable = oe_byz_andronikos_abilities_repaired } }
+            oe_byz_set_andronikos_starting_abilities = yes
+            set_global_variable = oe_byz_andronikos_abilities_repaired
+        }
+        oe_byz_apply_historical_character_patch = yes
+        oe_byz_initialize_andronikos_health = yes
     }
-    oe_byz_apply_historical_character_patch = yes
-    oe_byz_initialize_andronikos_health = yes
 }
 
 # Resolve the target range first, then add only the difference from the current stat.

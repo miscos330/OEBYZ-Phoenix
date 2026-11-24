@@ -17,8 +17,10 @@ types oe_noble_family_widgets {
             tooltip = "OE_NF_CAPACITY_TT"
         }
         vbox = {
+            size = { 480 -1 }
+            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_1').IsSet]"
+            vbox = {
                     datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_1').GetDynasty]"
-                    visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_1').IsSet]"
                     size = { 480 -1 } spacing = 6
                     margin = { 20 12 }
                     background = {
@@ -44,14 +46,17 @@ types oe_noble_family_widgets {
                             size = { 68 92 }
                             widget = {
                                 size = { 68 92 }
-                                visible = "[GetScriptedGui('oe_nf_head_visible_1').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
-                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_1').GetCharacter]"
-                                using = character_portrait_bg
-                                portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                                visible = "[And(GetScriptedGui('oe_nf_head_visible_1').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope).End), InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_1').IsSet)]"
+                                widget = {
+                                    size = { 68 92 }
+                                    datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_1').GetCharacter]"
+                                    using = character_portrait_bg
+                                    portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                                }
                             }
                             text_single = {
                                 position = { 0 32 } size = { 68 24 } fontsize = 12 align = center
-                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_1').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End))]"
+                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_1').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope).End))]"
                                 text = "OE_NF_HEAD_VACANT"
                             }
                         }
@@ -74,9 +79,19 @@ types oe_noble_family_widgets {
                             size = { 52 -1 } spacing = 5
                             widget = { size = { 1 10 } }
                             text_single = { size = { 52 20 } text = "OE_NF_INFLUENCE" fontsize = 14 align = center }
+                            widget = {
+                                size = { 52 25 }
+                                visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_1').IsSet]"
+                                text_single = {
+                                    size = { 52 25 } fontsize = 18 align = center
+                                    raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_1').GetValue|1]#!#!"
+                                    tooltip = "OE_NF_INFLUENCE_TT_1"
+                                }
+                            }
                             text_single = {
                                 size = { 52 25 } fontsize = 18 align = center
-                                raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_1').GetValue|1]#!#!"
+                                visible = "[Not(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_1').IsSet)]"
+                                raw_text = "#bold #G 0.0#!#!"
                                 tooltip = "OE_NF_INFLUENCE_TT_1"
                             }
                         }
@@ -285,9 +300,12 @@ widget = {
                     }
                     widget = { size = { 1 4 } }
                 }
-vbox = {
+        }
+        vbox = {
+            size = { 480 -1 }
+            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_2').IsSet]"
+            vbox = {
                     datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_2').GetDynasty]"
-                    visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_2').IsSet]"
                     size = { 480 -1 } spacing = 6
                     margin = { 20 12 }
                     background = {
@@ -313,14 +331,17 @@ vbox = {
                             size = { 68 92 }
                             widget = {
                                 size = { 68 92 }
-                                visible = "[GetScriptedGui('oe_nf_head_visible_2').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
-                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_2').GetCharacter]"
-                                using = character_portrait_bg
-                                portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                                visible = "[And(GetScriptedGui('oe_nf_head_visible_2').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope).End), InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_2').IsSet)]"
+                                widget = {
+                                    size = { 68 92 }
+                                    datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_2').GetCharacter]"
+                                    using = character_portrait_bg
+                                    portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                                }
                             }
                             text_single = {
                                 position = { 0 32 } size = { 68 24 } fontsize = 12 align = center
-                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_2').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End))]"
+                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_2').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope).End))]"
                                 text = "OE_NF_HEAD_VACANT"
                             }
                         }
@@ -343,9 +364,19 @@ vbox = {
                             size = { 52 -1 } spacing = 5
                             widget = { size = { 1 10 } }
                             text_single = { size = { 52 20 } text = "OE_NF_INFLUENCE" fontsize = 14 align = center }
+                            widget = {
+                                size = { 52 25 }
+                                visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_2').IsSet]"
+                                text_single = {
+                                    size = { 52 25 } fontsize = 18 align = center
+                                    raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_2').GetValue|1]#!#!"
+                                    tooltip = "OE_NF_INFLUENCE_TT_2"
+                                }
+                            }
                             text_single = {
                                 size = { 52 25 } fontsize = 18 align = center
-                                raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_2').GetValue|1]#!#!"
+                                visible = "[Not(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_2').IsSet)]"
+                                raw_text = "#bold #G 0.0#!#!"
                                 tooltip = "OE_NF_INFLUENCE_TT_2"
                             }
                         }
@@ -554,9 +585,12 @@ widget = {
                     }
                     widget = { size = { 1 4 } }
                 }
-vbox = {
+        }
+        vbox = {
+            size = { 480 -1 }
+            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_3').IsSet]"
+            vbox = {
                     datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_3').GetDynasty]"
-                    visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_3').IsSet]"
                     size = { 480 -1 } spacing = 6
                     margin = { 20 12 }
                     background = {
@@ -582,14 +616,17 @@ vbox = {
                             size = { 68 92 }
                             widget = {
                                 size = { 68 92 }
-                                visible = "[GetScriptedGui('oe_nf_head_visible_3').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
-                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_3').GetCharacter]"
-                                using = character_portrait_bg
-                                portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                                visible = "[And(GetScriptedGui('oe_nf_head_visible_3').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope).End), InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_3').IsSet)]"
+                                widget = {
+                                    size = { 68 92 }
+                                    datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_3').GetCharacter]"
+                                    using = character_portrait_bg
+                                    portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                                }
                             }
                             text_single = {
                                 position = { 0 32 } size = { 68 24 } fontsize = 12 align = center
-                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_3').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End))]"
+                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_3').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope).End))]"
                                 text = "OE_NF_HEAD_VACANT"
                             }
                         }
@@ -612,9 +649,19 @@ vbox = {
                             size = { 52 -1 } spacing = 5
                             widget = { size = { 1 10 } }
                             text_single = { size = { 52 20 } text = "OE_NF_INFLUENCE" fontsize = 14 align = center }
+                            widget = {
+                                size = { 52 25 }
+                                visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_3').IsSet]"
+                                text_single = {
+                                    size = { 52 25 } fontsize = 18 align = center
+                                    raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_3').GetValue|1]#!#!"
+                                    tooltip = "OE_NF_INFLUENCE_TT_3"
+                                }
+                            }
                             text_single = {
                                 size = { 52 25 } fontsize = 18 align = center
-                                raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_3').GetValue|1]#!#!"
+                                visible = "[Not(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_3').IsSet)]"
+                                raw_text = "#bold #G 0.0#!#!"
                                 tooltip = "OE_NF_INFLUENCE_TT_3"
                             }
                         }
@@ -823,9 +870,12 @@ widget = {
                     }
                     widget = { size = { 1 4 } }
                 }
-vbox = {
+        }
+        vbox = {
+            size = { 480 -1 }
+            visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_4').IsSet]"
+            vbox = {
                     datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_4').GetDynasty]"
-                    visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_dynasty_4').IsSet]"
                     size = { 480 -1 } spacing = 6
                     margin = { 20 12 }
                     background = {
@@ -851,14 +901,17 @@ vbox = {
                             size = { 68 92 }
                             widget = {
                                 size = { 68 92 }
-                                visible = "[GetScriptedGui('oe_nf_head_visible_4').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End)]"
-                                datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_4').GetCharacter]"
-                                using = character_portrait_bg
-                                portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                                visible = "[And(GetScriptedGui('oe_nf_head_visible_4').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope).End), InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_4').IsSet)]"
+                                widget = {
+                                    size = { 68 92 }
+                                    datacontext = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_head_4').GetCharacter]"
+                                    using = character_portrait_bg
+                                    portrait_standard_head_framed_button = { size = { 68 86 } position = { 1 2 } }
+                                }
                             }
                             text_single = {
                                 position = { 0 32 } size = { 68 24 } fontsize = 12 align = center
-                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_4').IsShown(GuiScope.SetRoot(GetCountry('BYZ').MakeScope).End))]"
+                                visible = "[Not(GetScriptedGui('oe_nf_head_visible_4').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope).End))]"
                                 text = "OE_NF_HEAD_VACANT"
                             }
                         }
@@ -881,9 +934,19 @@ vbox = {
                             size = { 52 -1 } spacing = 5
                             widget = { size = { 1 10 } }
                             text_single = { size = { 52 20 } text = "OE_NF_INFLUENCE" fontsize = 14 align = center }
+                            widget = {
+                                size = { 52 25 }
+                                visible = "[InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_4').IsSet]"
+                                text_single = {
+                                    size = { 52 25 } fontsize = 18 align = center
+                                    raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_4').GetValue|1]#!#!"
+                                    tooltip = "OE_NF_INFLUENCE_TT_4"
+                                }
+                            }
                             text_single = {
                                 size = { 52 25 } fontsize = 18 align = center
-                                raw_text = "#bold #G [InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_4').GetValue|1]#!#!"
+                                visible = "[Not(InternationalOrganizationsView.GetInternationalOrganization.MakeScope.GetVariable('oe_nf_influence_4').IsSet)]"
+                                raw_text = "#bold #G 0.0#!#!"
                                 tooltip = "OE_NF_INFLUENCE_TT_4"
                             }
                         }
@@ -1092,6 +1155,7 @@ widget = {
                     }
                     widget = { size = { 1 4 } }
                 }
+        }
         text_single = {
             visible = "[EqualTo_CFixedPoint(GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.MakeScope).ScriptValue('oe_nf_house_count'), '(CFixedPoint)0')]"
             text = "OE_NF_EMPTY" fontsize = 15 multiline = yes autoresize = yes layoutpolicy_horizontal = expanding

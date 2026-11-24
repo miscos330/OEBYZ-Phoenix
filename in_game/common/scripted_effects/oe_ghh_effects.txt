@@ -35,7 +35,7 @@ oe_ghh_init = {
 		if = {
 			limit = { current_date < 1356.1.1 }
 			c:GLH = {
-				add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 20 mode = replace }
+				add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 2 mode = replace }
 			}
 		}
 		oe_ghh_sync_modifiers = yes
@@ -380,8 +380,13 @@ oe_ghh_monthly = {
 				}
 				c:GLH = {
 					if = {
-						limit = { NOT = { has_country_modifier = oe_ghh_janibeg_pax } }
-						add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 20 mode = replace }
+						limit = {
+							OR = {
+								NOT = { has_country_modifier = oe_ghh_janibeg_pax }
+								current_month = 1
+							}
+						}
+						add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 2 mode = replace }
 					}
 					if = {
 						limit = { is_ai = yes horde_unity < 80 }
@@ -392,6 +397,13 @@ oe_ghh_monthly = {
 						add_stability = 10
 					}
 				}
+			}
+			else_if = {
+				limit = {
+					current_date >= 1357.1.1
+					c:GLH = { has_country_modifier = oe_ghh_janibeg_pax }
+				}
+				c:GLH = { remove_country_modifier = oe_ghh_janibeg_pax }
 			}
 			# 1. Human GLH 1337 intro event (.1)
 			if = {

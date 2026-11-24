@@ -1,0 +1,466 @@
+﻿# NEW 2026-11-24 v25.0 Phase 4A: 1337-1460 Deep Flavor & Mechanic Packs (TUR/FRA/ENG) (oe_v250_tur_, 0 mainline slots, 0 rules, 0 vanilla overrides) — 12 Deep 1337-1460 Historical Branching Events for Ottoman Beylik (1337-1460) (strictly 1337-gated, 0 orphans). Edit gen_v250_1337_tur_fra_eng.py, not this file.
+
+
+namespace = oe_v250_tur
+
+# 1. [TUR / 1345+] Annexation of Karasi & the Aegean Shipyards
+oe_v250_tur.1 = {
+	type = country_event
+	title = oe_v250_tur.1.t
+	desc = oe_v250_tur.1.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_mag_barbary_fleet.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.1.a
+		ai_chance = { base = 55 }
+		add_gold = -55
+		add_navy_tradition = 5
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev1_aegean_dockyards years = 15 mode = replace }
+		if = { limit = { country_exists = c:BYZ c:BYZ = { is_rebel_country = no } } c:BYZ = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
+	}
+	option = {
+		name = oe_v250_tur.1.b
+		ai_chance = { base = 30 }
+		add_gold = 35
+		if = { limit = { owns = location:bursa } location:bursa = { change_prosperity = prosperity_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev1_bursa_focus years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_tur.1.c
+		ai_chance = { base = 15 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev1_karasi_autonomy years = 15 mode = replace }
+		if = { limit = { country_exists = c:SRU c:SRU = { is_rebel_country = no } } add_opinion = { target = c:SRU modifier = opinion_pleased } c:SRU = { add_opinion = { target = root modifier = opinion_pleased } } }
+	}
+}
+
+# 2. [TUR / 1352+] The Tzympe & Gallipoli Crossing
+oe_v250_tur.2 = {
+	type = country_event
+	title = oe_v250_tur.2.t
+	desc = oe_v250_tur.2.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_anatolian_frontier.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.2.a
+		ai_chance = { base = 60 }
+		add_gold = -60
+		add_war_exhaustion = 1
+		add_prestige = 6
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev2_gallipoli_bridgehead years = 15 mode = replace }
+		if = { limit = { country_exists = c:BYZ c:BYZ = { is_rebel_country = no } } c:BYZ = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+	option = {
+		name = oe_v250_tur.2.b
+		ai_chance = { base = 25 }
+		add_gold = 75
+		add_prestige = -4
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev2_mercenary_transit years = 15 mode = replace }
+		if = { limit = { country_exists = c:BYZ c:BYZ = { is_rebel_country = no } } add_opinion = { target = c:BYZ modifier = opinion_diplomatic_move } c:BYZ = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+	option = {
+		name = oe_v250_tur.2.c
+		ai_chance = { base = 15 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev2_strait_watch years = 15 mode = replace }
+	}
+}
+
+# 3. [TUR / 1362+] Lala Sahin & the Rumelian Beylerbeylik
+oe_v250_tur.3 = {
+	type = country_event
+	title = oe_v250_tur.3.t
+	desc = oe_v250_tur.3.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_balkan_crossroads.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.3.a
+		ai_chance = { base = 60 }
+		add_gold = -50
+		add_army_tradition = 5
+		if = { limit = { owns = location:edirne } location:edirne = { change_development = development_mild_bonus } }
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev3_rumeli_beylerbey years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_tur.3.b
+		ai_chance = { base = 40 }
+		add_yearly_manpower = 0.35
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev3_ucbey_autonomy years = 15 mode = replace }
+	}
+}
+
+# 4. [TUR / 1365+] Founding the Pencik & Kapikulu Corps
+oe_v250_tur.4 = {
+	type = country_event
+	title = oe_v250_tur.4.t
+	desc = oe_v250_tur.4.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v160_tur_janissary.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.4.a
+		ai_chance = { base = 60 }
+		add_gold = -70
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev4_pencik_corps years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_tur.4.b
+		ai_chance = { base = 25 }
+		add_stability = 4
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev4_ghazi_primacy years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_tur.4.c
+		ai_chance = { base = 15 }
+		add_gold = -30
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev4_garrison_pencik years = 18 mode = replace }
+	}
+}
+
+# 5. [TUR / 1370+] The Tahrir Defteri Timar Land Survey
+oe_v250_tur.5 = {
+	type = country_event
+	title = oe_v250_tur.5.t
+	desc = oe_v250_tur.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_egypt_land_survey.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.5.a
+		ai_chance = { base = 55 }
+		add_yearly_manpower = 0.40
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev5_sipahi_timars years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_tur.5.b
+		ai_chance = { base = 45 }
+		add_gold = 65
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev5_crown_cash_tax years = 15 mode = replace }
+	}
+}
+
+# 6. [TUR / 1378+] Anatolian Beylik Diplomacy: Germiyan & Hamid
+oe_v250_tur.6 = {
+	type = country_event
+	title = oe_v250_tur.6.t
+	desc = oe_v250_tur.6.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.6.a
+		ai_chance = { base = 60 }
+		add_gold = -85
+		add_legitimacy = 5
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev6_beylik_purchase years = 15 mode = replace }
+		if = { limit = { country_exists = c:GRM c:GRM = { is_rebel_country = no } } add_opinion = { target = c:GRM modifier = opinion_good_relations } c:GRM = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		if = { limit = { country_exists = c:HMD c:HMD = { is_rebel_country = no } } add_opinion = { target = c:HMD modifier = opinion_good_relations } c:HMD = { add_opinion = { target = root modifier = opinion_good_relations } } }
+	}
+	option = {
+		name = oe_v250_tur.6.b
+		ai_chance = { base = 40 }
+		add_prestige = 7
+		add_army_tradition = 4
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev6_beylik_force years = 15 mode = replace }
+		if = { limit = { country_exists = c:KAR c:KAR = { is_rebel_country = no } } c:KAR = { add_opinion = { target = root modifier = opinion_insulted } } }
+		if = { limit = { country_exists = c:GRM c:GRM = { is_rebel_country = no } } c:GRM = { add_opinion = { target = root modifier = opinion_displeased } } }
+	}
+}
+
+# 7. [TUR / 1385+] The Field of Kosovo & Balkan Vassalage
+oe_v250_tur.7 = {
+	type = country_event
+	title = oe_v250_tur.7.t
+	desc = oe_v250_tur.7.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_levy_eurasian_hosts.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.7.a
+		ai_chance = { base = 55 }
+		add_gold = 40
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev7_balkan_vassals years = 15 mode = replace }
+		if = { limit = { country_exists = c:SER c:SER = { is_rebel_country = no } } add_opinion = { target = c:SER modifier = opinion_diplomatic_move } c:SER = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+	option = {
+		name = oe_v250_tur.7.b
+		ai_chance = { base = 45 }
+		add_stability = -4
+		add_prestige = 6
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev7_direct_sanjaks years = 15 mode = replace }
+	}
+}
+
+# 8. [TUR / 1390+] Centralizing the Divan-i Humayun
+oe_v250_tur.8 = {
+	type = country_event
+	title = oe_v250_tur.8.t
+	desc = oe_v250_tur.8.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_byz_senate_consistorium.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.8.a
+		ai_chance = { base = 55 }
+		add_gold = -45
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev8_kapikulu_divan years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_tur.8.b
+		ai_chance = { base = 45 }
+		add_legitimacy = 6
+		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev8_candarli_viziers years = 18 mode = replace }
+	}
+}
+
+# 9. [TUR / 1400+] Shadow of Timur & the Interregnum Warning
+oe_v250_tur.9 = {
+	type = country_event
+	title = oe_v250_tur.9.t
+	desc = oe_v250_tur.9.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_ev_timur_samarkand.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.9.a
+		ai_chance = { base = 50 }
+		add_prestige = -6
+		add_stability = 4
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev9_conciliate_beys years = 15 mode = replace }
+		if = { limit = { country_exists = c:TIM c:TIM = { is_rebel_country = no } } add_opinion = { target = c:TIM modifier = opinion_diplomatic_move } c:TIM = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+	}
+	option = {
+		name = oe_v250_tur.9.b
+		ai_chance = { base = 50 }
+		add_prestige = 8
+		add_war_exhaustion = 2
+		add_stability = -5
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev9_defy_timur years = 15 mode = replace }
+		if = { limit = { country_exists = c:TIM c:TIM = { is_rebel_country = no } } c:TIM = { add_opinion = { target = root modifier = opinion_insulted } } }
+	}
+}
+
+# 10. [TUR / 1415+] Restoring Order: The Sheikh Bedreddin Crisis
+oe_v250_tur.10 = {
+	type = country_event
+	title = oe_v250_tur.10.t
+	desc = oe_v250_tur.10.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_gr_street_revolt.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.10.a
+		ai_chance = { base = 60 }
+		add_stability = 5
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev10_ulema_orthodoxy years = 15 mode = replace }
+	}
+	option = {
+		name = oe_v250_tur.10.b
+		ai_chance = { base = 40 }
+		add_gold = -55
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_bonus }
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty }
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev10_agrarian_relief years = 15 mode = replace }
+	}
+}
+
+# 11. [TUR / 1435+] The Varna Frontier & Siege Artillery Foundries
+oe_v250_tur.11 = {
+	type = country_event
+	title = oe_v250_tur.11.t
+	desc = oe_v250_tur.11.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_mer2_cannon_foundry.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.11.a
+		ai_chance = { base = 60 }
+		add_gold = -80
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev11_bronze_bombards years = 18 mode = replace }
+	}
+	option = {
+		name = oe_v250_tur.11.b
+		ai_chance = { base = 40 }
+		add_gold = -35
+		add_yearly_manpower = 0.35
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev11_danube_horsemen years = 18 mode = replace }
+	}
+}
+
+# 12. [TUR / 1445+] The Law of Fratricide vs Imperial Council Succession
+oe_v250_tur.12 = {
+	type = country_event
+	title = oe_v250_tur.12.t
+	desc = oe_v250_tur.12.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v180_royal_coronation_dynasty.dds"
+	trigger = {
+		is_rebel_country = no
+		OR = {
+			tag = TUR
+			has_or_had_tag = TUR
+		}
+		NOT = { has_global_variable = oe_alt_era_start }
+		OR = {
+			oe_start_is_1337 = yes
+			NOT = { has_global_variable = oe_start_1337 }
+		}
+		current_year <= 1470
+	}
+	option = {
+		name = oe_v250_tur.12.a
+		ai_chance = { base = 60 }
+		add_stability = 6
+		add_legitimacy = -8
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev12_fratricide_law years = 25 mode = replace }
+	}
+	option = {
+		name = oe_v250_tur.12.b
+		ai_chance = { base = 40 }
+		add_legitimacy = 6
+		add_prestige = 5
+		add_country_modifier = { modifier = oe_v250_tur_mod_ev12_divan_succession years = 25 mode = replace }
+	}
+}

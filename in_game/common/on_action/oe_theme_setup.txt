@@ -5,19 +5,25 @@ on_game_started_after_lobby = { on_actions = { oe_theme_setup_startup } }
 oe_theme_setup_startup = {
     effect = {
         if = {
-            limit = { country_exists = c:BYT01 c:BYT01 = { oe_theme_member_trigger = yes } }
-            c:BYT01 = { oe_theme_admin_init = yes }
-        }
-        if = {
-            limit = { country_exists = c:BYZ c:BYZ = { is_ai = no } }
-            c:BYZ = { trigger_event_non_silently = oe_theme_setup.1 }
-        }
-        else_if = {
-            limit = { country_exists = c:BYZ }
-            c:BYZ = {
-                set_variable = { name = oe_theme_found_all_count value = 0 }
-                oe_theme_found_streamlined = yes
-                remove_variable = oe_theme_found_all_count
+            limit = {
+                oe_start_is_1337 = yes
+                current_year < 1340
+            }
+            if = {
+                limit = { country_exists = c:BYT01 c:BYT01 = { oe_theme_member_trigger = yes } }
+                c:BYT01 = { oe_theme_admin_init = yes }
+            }
+            if = {
+                limit = { country_exists = c:BYZ c:BYZ = { is_ai = no } }
+                c:BYZ = { trigger_event_non_silently = oe_theme_setup.1 }
+            }
+            else_if = {
+                limit = { country_exists = c:BYZ }
+                c:BYZ = {
+                    set_variable = { name = oe_theme_found_all_count value = 0 }
+                    oe_theme_found_streamlined = yes
+                    remove_variable = oe_theme_found_all_count
+                }
             }
         }
     }

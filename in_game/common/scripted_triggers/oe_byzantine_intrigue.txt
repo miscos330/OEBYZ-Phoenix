@@ -19,7 +19,10 @@ oe_bi_any_house_above_400 = { OR = {
         AND = { trigger_if = { limit = { has_variable = oe_nf_dynasty_4 has_variable = oe_nf_influence_4 } var:oe_nf_influence_4 > 400 } trigger_else = { always = no } }
 } }
 oe_bi_start_ready = {
+    oe_start_is_1337 = yes
     tag = BYZ
+    government_type = government_type:monarchy
+    exists = international_organization:oe_byz_empire_pillars
     NOT = { has_variable = oe_ely_is_elysia }
     NOT = { has_variable = oe_ely_voyager }
     NOT = { has_global_variable = oe_ely_settled }
@@ -36,26 +39,31 @@ oe_bi_start_ready = {
         AND = { has_ruler = yes current_ruler_term_years < 5 }
     }
     NOT = { has_variable = oe_ir_succession_done }
-    international_organization:oe_byz_empire_pillars = { oe_bi_rival_above_300 = yes }
+    international_organization:oe_byz_empire_pillars ?= { oe_bi_rival_above_300 = yes }
 }
 oe_bi_end_ready = {
     OR = {
         has_variable = oe_ely_is_elysia
+        NOT = { exists = international_organization:oe_byz_empire_pillars }
+        NOT = { government_type = government_type:monarchy }
         AND = {
             stability > 30 legitimacy > 30
-            international_organization:oe_byz_empire_pillars = { NOT = { oe_bi_rival_at_least_300 = yes } }
+            exists = international_organization:oe_byz_empire_pillars
+            international_organization:oe_byz_empire_pillars ?= { NOT = { oe_bi_rival_at_least_300 = yes } }
         }
     }
 }
 oe_bi_purge_ready = {
     oe_bi_active = yes
     NOT = { has_variable = oe_bi_capital_purged }
-    international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 2 }
+    exists = international_organization:oe_byz_empire_pillars
+    international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 2 }
 }
 oe_bi_bribe_ready = {
     oe_bi_active = yes
     NOT = { has_variable = oe_bi_bribe_cooldown }
-    international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 2 gold >= oe_bi_bribe_price oe_bi_has_rival_head = yes }
+    exists = international_organization:oe_byz_empire_pillars
+    international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 2 gold >= oe_bi_bribe_price oe_bi_has_rival_head = yes }
 }
 # Character scope. Skip the entire family if its head is among the coup victims.
 oe_bi_coup_candidate = {
@@ -74,7 +82,8 @@ oe_bi_coup_ready = {
     # NEW 2026-11-18 round 6 B2 (gen_vassal_andronikos.py): not while the usurper's struggle runs
     NOT = { has_variable = oe_vas_turmoil }
     NOT = { has_variable = oe_bi_capital_purged }
-    international_organization:oe_byz_empire_pillars = { oe_bi_has_coup_candidate = yes }
+    exists = international_organization:oe_byz_empire_pillars
+    international_organization:oe_byz_empire_pillars ?= { oe_bi_has_coup_candidate = yes }
 }
 oe_bi_civil_war_possible = {
     oe_bi_active = yes
@@ -90,13 +99,17 @@ oe_bi_civil_war_possible = {
 }
 oe_bi_civil_war_ready = {
     oe_bi_civil_war_possible = yes
-    international_organization:oe_byz_empire_pillars = { oe_bi_any_house_above_400 = yes }
+    exists = international_organization:oe_byz_empire_pillars
+    international_organization:oe_byz_empire_pillars ?= { oe_bi_any_house_above_400 = yes }
 }
 oe_bi_civil_war_event_ready = {
     oe_bi_civil_war_possible = yes
     OR = {
         has_variable = oe_bi_forced_civil_war
-        international_organization:oe_byz_empire_pillars = { oe_bi_any_house_above_400 = yes }
+        AND = {
+            exists = international_organization:oe_byz_empire_pillars
+            international_organization:oe_byz_empire_pillars ?= { oe_bi_any_house_above_400 = yes }
+        }
     }
 }
 oe_bi_has_rival_head = { OR = {
@@ -113,8 +126,9 @@ oe_bi_has_coup_candidate = { OR = {
 } }
 oe_bi_rival_head = {
     oe_nf_living = yes
+    exists = international_organization:oe_byz_empire_pillars
     save_temporary_scope_as = oe_bi_checked_head
-    international_organization:oe_byz_empire_pillars = { OR = {
+    international_organization:oe_byz_empire_pillars ?= { OR = {
         AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:oe_bi_checked_head NOT = { oe_nf_is_political_ally = { slot = 1 } } }
         AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:oe_bi_checked_head NOT = { oe_nf_is_political_ally = { slot = 2 } } }
         AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:oe_bi_checked_head NOT = { oe_nf_is_political_ally = { slot = 3 } } }
