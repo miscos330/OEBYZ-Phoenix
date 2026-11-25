@@ -1,0 +1,183 @@
+﻿# Project Phoenix v36.0 WP47: Imperial Mass Vassal Directives, Theme Escheatment & Praecepta Militaria Rework (oe_wp47_, 0 vanilla overrides, pure-additive).
+# Inspired by Ananeosis Autokratorias and Praecepta Militaria. Edit gen_v360_wp47_imperial_vassal_praecepta.py, not this file.
+
+# 3 Byzantine Imperial Military & Infrastructure Mobilization Actions (type = owncountry).
+# Calls shared oe_wp47_apply_* scripted effects synchronized with WP33 Phoenix Command Dock!
+
+oe_wp47_act_mobilize_thematic_fleet = {
+	type = owncountry
+	sound = UI_action_government_generic
+	show_message = no
+
+	potential = {
+		scope:actor = {
+			oe_wp47_is_byz_praecepta_host = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			has_ports = yes
+			gold >= 75
+			custom_tooltip = {
+				text = oe_wp47_fleet_not_active_tt
+				NOT = { has_country_modifier = oe_wp47_mod_mobilized_thematic_fleet }
+				NOT = { has_variable = oe_wp47_fleet_cd }
+			}
+		}
+	}
+
+	cooldown = {
+		type = oe_wp47_fleet_cd
+		years = 5
+	}
+
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 18
+	ai_prerequisite = {
+		is_rebel_country = no
+		has_ports = yes
+		at_war = yes
+		gold >= 120
+		NOT = { has_variable = oe_wp47_fleet_cd }
+	}
+
+	effect = {
+		custom_tooltip = oe_wp47_act_mobilize_thematic_fleet_tt
+		scope:actor = {
+			oe_wp47_apply_mobilize_thematic_fleet = yes
+		}
+	}
+
+	ai_will_do = {
+		add = 0
+		if = {
+			limit = {
+				scope:actor = {
+					at_war = yes
+					gold >= 150
+					has_ports = yes
+				}
+			}
+			add = 35
+		}
+	}
+}
+
+oe_wp47_act_muster_tagmata = {
+	type = owncountry
+	sound = UI_action_government_generic
+	show_message = no
+
+	potential = {
+		scope:actor = {
+			oe_wp47_is_byz_praecepta_host = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			gold >= 90
+			custom_tooltip = {
+				text = oe_wp47_tagmata_not_active_tt
+				NOT = { has_country_modifier = oe_wp47_mod_mustered_tagmata }
+				NOT = { has_variable = oe_wp47_tagmata_cd }
+			}
+		}
+	}
+
+	cooldown = {
+		type = oe_wp47_tagmata_cd
+		years = 5
+	}
+
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 18
+	ai_prerequisite = {
+		is_rebel_country = no
+		at_war = yes
+		gold >= 140
+		NOT = { has_variable = oe_wp47_tagmata_cd }
+	}
+
+	effect = {
+		custom_tooltip = oe_wp47_act_muster_tagmata_tt
+		scope:actor = {
+			oe_wp47_apply_muster_tagmata = yes
+		}
+	}
+
+	ai_will_do = {
+		add = 0
+		if = {
+			limit = {
+				scope:actor = {
+					at_war = yes
+					gold >= 150
+				}
+			}
+			add = 45
+		}
+	}
+}
+
+oe_wp47_act_patronize_roads_monasteries = {
+	type = owncountry
+	sound = UI_action_government_generic
+	show_message = no
+
+	potential = {
+		scope:actor = {
+			oe_wp47_is_byz_praecepta_host = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			at_war = no
+			gold >= 100
+			custom_tooltip = {
+				text = oe_wp47_roads_not_active_tt
+				NOT = { has_country_modifier = oe_wp47_mod_patronized_roads_monasteries }
+				NOT = { has_variable = oe_wp47_roads_cd }
+			}
+		}
+	}
+
+	cooldown = {
+		type = oe_wp47_roads_cd
+		years = 5
+	}
+
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 24
+	ai_prerequisite = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 220
+		NOT = { has_variable = oe_wp47_roads_cd }
+	}
+
+	effect = {
+		custom_tooltip = oe_wp47_act_patronize_roads_monasteries_tt
+		scope:actor = {
+			oe_wp47_apply_patronize_roads_monasteries = yes
+		}
+	}
+
+	ai_will_do = {
+		add = 0
+		if = {
+			limit = {
+				scope:actor = {
+					at_war = no
+					gold >= 250
+				}
+			}
+			add = 25
+		}
+	}
+}

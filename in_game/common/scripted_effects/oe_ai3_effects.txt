@@ -35,42 +35,45 @@ oe_ai3_kernel_yearly = {
 	}
 }
 
-# Global scope. Synchronize the 4 next-gen AI 3.0 personalities on qualifying Great Powers & poles.
+# Global scope. Synchronize the 4 next-gen AI 3.0 personalities on qualifying Great Powers & poles (1200+ only).
 oe_ai3_sync_personalities = {
-	every_country = {
-		limit = {
-			oe_ai3_ai_healthy_base = yes
-			OR = {
-				is_great_power = yes
-				num_locations >= 30
+	if = {
+		limit = { current_year >= 1200 }
+		every_country = {
+			limit = {
+				oe_ai3_ai_healthy_base = yes
+				OR = {
+					is_great_power = yes
+					num_locations >= 30
+				}
 			}
-		}
-		if = {
-			limit = { oe_ai3_is_industrial_modernizer_fit = yes }
 			if = {
-				limit = { ai_personality != ai_personality:oe_ai3_industrial_modernizer }
-				set_personality = ai_personality:oe_ai3_industrial_modernizer
+				limit = { oe_ai3_is_industrial_modernizer_fit = yes }
+				if = {
+					limit = { ai_personality != ai_personality:oe_ai3_industrial_modernizer }
+					set_personality = ai_personality:oe_ai3_industrial_modernizer
+				}
 			}
-		}
-		else_if = {
-			limit = { oe_ai3_is_balance_arbiter_fit = yes }
-			if = {
-				limit = { ai_personality != ai_personality:oe_ai3_balance_of_power_arbiter }
-				set_personality = ai_personality:oe_ai3_balance_of_power_arbiter
+			else_if = {
+				limit = { oe_ai3_is_balance_arbiter_fit = yes }
+				if = {
+					limit = { ai_personality != ai_personality:oe_ai3_balance_of_power_arbiter }
+					set_personality = ai_personality:oe_ai3_balance_of_power_arbiter
+				}
 			}
-		}
-		else_if = {
-			limit = { oe_ai3_is_maritime_thalassocrat_fit = yes }
-			if = {
-				limit = { ai_personality != ai_personality:oe_ai3_maritime_thalassocrat }
-				set_personality = ai_personality:oe_ai3_maritime_thalassocrat
+			else_if = {
+				limit = { oe_ai3_is_maritime_thalassocrat_fit = yes }
+				if = {
+					limit = { ai_personality != ai_personality:oe_ai3_maritime_thalassocrat }
+					set_personality = ai_personality:oe_ai3_maritime_thalassocrat
+				}
 			}
-		}
-		else_if = {
-			limit = { oe_ai3_is_silk_road_unifier_fit = yes }
-			if = {
-				limit = { ai_personality != ai_personality:oe_ai3_silk_road_unifier }
-				set_personality = ai_personality:oe_ai3_silk_road_unifier
+			else_if = {
+				limit = { oe_ai3_is_silk_road_unifier_fit = yes }
+				if = {
+					limit = { ai_personality != ai_personality:oe_ai3_silk_road_unifier }
+					set_personality = ai_personality:oe_ai3_silk_road_unifier
+				}
 			}
 		}
 	}

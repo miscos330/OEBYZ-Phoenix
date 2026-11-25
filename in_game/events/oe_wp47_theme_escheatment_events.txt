@@ -1,0 +1,511 @@
+﻿# Project Phoenix v36.0 WP47: Imperial Mass Vassal Directives, Theme Escheatment & Praecepta Militaria Rework (oe_wp47_, 0 vanilla overrides, pure-additive).
+# Inspired by Ananeosis Autokratorias and Praecepta Militaria. Edit gen_v360_wp47_imperial_vassal_praecepta.py, not this file.
+
+namespace = oe_wp47_escheat
+
+# 1. Core Imperial Theme Escheatment Event (overlord decides fate of heirless subject theme/vassal)
+oe_wp47_escheat.1 = {
+	type = country_event
+	title = oe_wp47_escheat.1.t
+	desc = oe_wp47_escheat.1.d
+	outcome = neutral
+
+	illustration_tags = {
+		10 = regular
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_escheat_overlord = yes
+		exists = scope:oe_wp47_escheat_subject
+		scope:oe_wp47_escheat_subject = {
+			is_rebel_country = no
+			is_subject_of = root
+			num_locations > 0
+		}
+	}
+
+	immediate = {
+		event_illustration_government_estate_effect = yes
+		oe_wp47_init_vars = yes
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+		if = {
+			limit = { has_variable = oe_wp47_escheat_count }
+			change_variable = { name = oe_wp47_escheat_count add = 1 }
+		}
+		else = {
+			set_variable = { name = oe_wp47_escheat_count value = 1 }
+		}
+	}
+
+	# Option A: Reclaim Theme to Imperial Demesne
+	option = {
+		name = oe_wp47_escheat.1.a
+		ai_chance = {
+			base = 45
+		}
+		custom_tooltip = oe_wp47_escheat.1.a.tt
+		set_variable = { name = oe_wp47_escheat_path value = 1 }
+		annex_country = {
+			country = scope:oe_wp47_escheat_subject
+			reason = Diplomatic
+			transfer = yes
+		}
+		add_stability = -4
+		if = {
+			limit = { country_has_estate = estate_type:nobles_estate }
+			add_estate_satisfaction = {
+				type = estate_type:nobles_estate
+				value = -0.08
+			}
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_reclaimed_theme
+			years = 8
+			mode = replace
+		}
+		capital ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_control = 0.04
+				change_prosperity = 0.02
+			}
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			add_opinion = {
+				target = root
+				modifier = oe_wp47_bias_escheat_seizure
+			}
+		}
+		trigger_event_non_silently = {
+			id = oe_wp47_escheat.5
+			days = 180
+		}
+	}
+
+	# Option B: Appoint Loyal Imperial Strategos
+	option = {
+		name = oe_wp47_escheat.1.b
+		ai_chance = {
+			base = 35
+		}
+		custom_tooltip = oe_wp47_escheat.1.b.tt
+		set_variable = { name = oe_wp47_escheat_path value = 2 }
+		add_prestige = 8
+		add_legitimacy = 5
+		ruler ?= { add_mil = 2 }
+		create_character = {
+			age = 38
+			adm = { 56 74 }
+			dip = { 54 72 }
+			mil = { 72 88 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_overlord_strategos_patronage
+			years = 10
+			mode = replace
+		}
+		scope:oe_wp47_escheat_subject = {
+			add_liberty_desire = liberty_desire_severe_minus
+			add_opinion = {
+				target = root
+				modifier = oe_wp47_bias_loyal_strategos
+			}
+			add_country_modifier = {
+				modifier = oe_wp47_mod_loyal_strategos
+				years = 15
+				mode = replace
+			}
+		}
+		trigger_event_non_silently = {
+			id = oe_wp47_escheat.2
+			days = 180
+		}
+	}
+
+	# Option C: Confirm Local Aristocratic Succession
+	option = {
+		name = oe_wp47_escheat.1.c
+		ai_chance = {
+			base = 20
+		}
+		custom_tooltip = oe_wp47_escheat.1.c.tt
+		set_variable = { name = oe_wp47_escheat_path value = 3 }
+		add_gold = 120
+		ruler ?= { add_dip = 2 }
+		if = {
+			limit = { country_has_estate = estate_type:nobles_estate }
+			add_estate_satisfaction = {
+				type = estate_type:nobles_estate
+				value = 0.08
+			}
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_aristocratic_charter
+			years = 10
+			mode = replace
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			add_liberty_desire = liberty_desire_weak_minus
+			add_opinion = {
+				target = root
+				modifier = oe_wp47_bias_confirmed_succession
+			}
+		}
+		trigger_event_non_silently = {
+			id = oe_wp47_escheat.4
+			days = 180
+		}
+	}
+}
+
+# 2. Follow-up Court Event: Oath of the Imperial Strategos
+oe_wp47_escheat.2 = {
+	type = country_event
+	title = oe_wp47_escheat.2.t
+	desc = oe_wp47_escheat.2.d
+	outcome = positive
+
+	illustration_tags = {
+		10 = happy
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_escheat_overlord = yes
+		num_subjects >= 1
+	}
+
+	immediate = {
+		event_illustration_government_estate_effect = yes
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_escheat.2.a
+		ai_chance = { base = 45 }
+		set_variable = { name = oe_wp47_strategos_oath_path value = 1 }
+		add_legitimacy = 4
+		ruler ?= { add_adm = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_overlord_strategos_patronage
+			years = 8
+			mode = replace
+		}
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.04 }
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			add_liberty_desire = liberty_desire_weak_minus
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_escheat_chain_cd } }
+			set_variable = { name = oe_wp47_escheat_chain_cd value = 1 years = 5 }
+			trigger_event_non_silently = { id = oe_wp47_escheat.3 days = 210 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_escheat.2.b
+		ai_chance = { base = 35 }
+		set_variable = { name = oe_wp47_strategos_oath_path value = 2 }
+		add_prestige = 6
+		add_army_tradition = 4
+		if = {
+			limit = { country_has_estate = estate_type:nobles_estate }
+			add_estate_satisfaction = {
+				type = estate_type:nobles_estate
+				value = 0.05
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_escheat.2.c
+		ai_chance = { base = 20 }
+		set_variable = { name = oe_wp47_strategos_oath_path value = 3 }
+		add_gold = -40
+		add_army_tradition = 5
+		create_character = {
+			age = 36
+			adm = { 54 72 }
+			dip = { 58 76 }
+			mil = { 70 88 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.03 }
+		}
+	}
+}
+
+# 3. Follow-up Court Event: Imperial Logothete Provincial Corruption Audit
+oe_wp47_escheat.3 = {
+	type = country_event
+	title = oe_wp47_escheat.3.t
+	desc = oe_wp47_escheat.3.d
+	outcome = neutral
+
+	illustration_tags = {
+		10 = regular
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_escheat_overlord = yes
+		num_subjects >= 1
+	}
+
+	immediate = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:nobles_estate
+			background = estate_type:burghers_estate
+		}
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_escheat.3.a
+		ai_chance = { base = 45 }
+		set_variable = { name = oe_wp47_audit_path value = 1 }
+		add_gold = 65
+		ruler ?= { add_adm = 2 }
+		if = {
+			limit = { country_has_estate = estate_type:nobles_estate }
+			add_estate_satisfaction = {
+				type = estate_type:nobles_estate
+				value = -0.05
+			}
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_clean_audit
+			years = 8
+			mode = replace
+		}
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.04 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_escheat_chain_cd } }
+			set_variable = { name = oe_wp47_escheat_chain_cd value = 1 years = 5 }
+			trigger_event_non_silently = { id = oe_wp47_escheat.4 days = 210 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_escheat.3.b
+		ai_chance = { base = 35 }
+		set_variable = { name = oe_wp47_audit_path value = 2 }
+		add_stability = 3
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			add_liberty_desire = liberty_desire_weak_minus
+		}
+	}
+
+	option = {
+		name = oe_wp47_escheat.3.c
+		ai_chance = { base = 20 }
+		set_variable = { name = oe_wp47_audit_path value = 3 }
+		add_gold = -30
+		add_legitimacy = 4
+		create_character = {
+			age = 43
+			adm = { 74 90 }
+			dip = { 62 80 }
+			mil = { 32 50 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_clean_audit
+			years = 10
+			mode = replace
+		}
+	}
+}
+
+# 4. Follow-up Court Event: Petition of the Thematic Archontes
+oe_wp47_escheat.4 = {
+	type = country_event
+	title = oe_wp47_escheat.4.t
+	desc = oe_wp47_escheat.4.d
+	outcome = neutral
+
+	illustration_tags = {
+		10 = regular
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_escheat_overlord = yes
+		num_subjects >= 1
+	}
+
+	immediate = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:nobles_estate
+			background = estate_type:nobles_estate
+		}
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_escheat.4.a
+		ai_chance = { base = 40 }
+		set_variable = { name = oe_wp47_archontes_path value = 1 }
+		add_legitimacy = 5
+		ruler ?= { add_adm = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_clean_audit
+			years = 6
+			mode = replace
+		}
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.03 }
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			add_liberty_desire = liberty_desire_weak_plus
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_escheat_chain_cd } }
+			set_variable = { name = oe_wp47_escheat_chain_cd value = 1 years = 5 }
+			trigger_event_non_silently = { id = oe_wp47_escheat.5 days = 210 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_escheat.4.b
+		ai_chance = { base = 40 }
+		set_variable = { name = oe_wp47_archontes_path value = 2 }
+		add_gold = -40
+		add_country_modifier = {
+			modifier = oe_wp47_mod_aristocratic_charter
+			years = 8
+			mode = replace
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			add_liberty_desire = liberty_desire_mild_minus
+			add_opinion = {
+				target = root
+				modifier = oe_wp47_bias_confirmed_succession
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_escheat.4.c
+		ai_chance = { base = 20 }
+		set_variable = { name = oe_wp47_archontes_path value = 3 }
+		add_prestige = 6
+		ruler ?= { add_dip = 2 }
+		create_character = {
+			age = 40
+			adm = { 62 78 }
+			dip = { 72 90 }
+			mil = { 44 62 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			add_liberty_desire = liberty_desire_weak_minus
+		}
+	}
+}
+
+# 5. Follow-up Court Event: Grand Imperial Census & Brebion Cadastre
+oe_wp47_escheat.5 = {
+	type = country_event
+	title = oe_wp47_escheat.5.t
+	desc = oe_wp47_escheat.5.d
+	outcome = positive
+
+	illustration_tags = {
+		10 = happy
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_escheat_overlord = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_government_estate_effect = yes
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_escheat.5.a
+		ai_chance = { base = 45 }
+		set_variable = { name = oe_wp47_census_path value = 1 }
+		add_gold = -35
+		ruler ?= { add_adm = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_imperial_census
+			years = 10
+			mode = replace
+		}
+		capital ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_control = 0.05
+				change_prosperity = 0.04
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_escheat.5.b
+		ai_chance = { base = 35 }
+		set_variable = { name = oe_wp47_census_path value = 2 }
+		add_manpower = {
+			value = monthly_manpower
+			multiply = 6
+		}
+		add_stability = 3
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_development = 0.25 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_escheat.5.c
+		ai_chance = { base = 20 }
+		set_variable = { name = oe_wp47_census_path value = 3 }
+		add_gold = -45
+		add_prestige = 5
+		create_character = {
+			age = 46
+			adm = { 74 90 }
+			dip = { 60 78 }
+			mil = { 38 56 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_imperial_census
+			years = 12
+			mode = replace
+		}
+	}
+}

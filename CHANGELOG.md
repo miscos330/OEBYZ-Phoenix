@@ -1,3 +1,127 @@
+# 《凤凰计划（OEBYZ）》v40.0 更新日志
+
+> **发布状态**：v40.0 正式版（EU5 1.4.9），合并 v31–v40 的全部更新。候选版 v40.0-rc1 已于 2026-11-26 在 EU5 1.4.9 实机验收，发布包与验收时的文件逐字节一致。
+> **存档提示**：v40.0 **不兼容旧版本存档**，请新开一局。
+> **第四罗马**：已并入《全时代历史剧本拓展包》（3844848618）。旧的《1453 第四罗马》条目（3845210560）停止更新，请取消订阅，不要与 v40.0 同时启用。
+
+制作：寐夜空灵、miscos330
+
+---
+
+## 一、中文更新日志
+
+### 1. 主模组（3667460405）
+
+- **凤凰指挥坞**：不覆盖原版界面的悬浮面板，v40.0 扩为 5 个页签，集中放置帝国敕令、批量御藩敕令、军事教范总动员和新增的“寰宇指引”，共 26 个按钮，实时显示状态。
+- **拜占庭核心制度**：新增核心制度、28 项帝国大工程与配套危机；军区收归与军事教范（v31、v36）。
+- **六大强权玩法**：奥斯曼（耶尼切里）、波斯（奇兹尔巴什与古拉姆）、罗斯（哥萨克与缙绅会议）、印度（曼萨布达尔与万教和谐）各分三个阶段演进；新增法兰西（三级会议与太阳王集权）、西班牙（卡斯蒂利亚黄金世纪与波旁改革）两条强权线；英国 53 项任务、东印度公司与明朝书院（v31、v39、v40）。
+- **殖民地**：4 项殖民地自治与独立决议及多分支事件；30 套动态殖民地纹章旗；修正“新西班牙总督区总督区”之类的叠词国名（v38、v39）。
+- **议和与停战**：罗马世界的仲裁决议改为只能由罗马领袖发起，仲裁范围限于帝国附庸之间，拜占庭不会再被强加与十几个邻国的停战；删除 26 条冗余议和条款（其中两条会把敌意显示成 -4.00）（v38）。
+- **AI**：按年代调整 AI 性格与扩张方向。清朝不再被当作“欧亚均势调停者”，也不再沿用明朝的南洋殖民方向；原版“探索非洲海岸”不再出现在 1415 年以前、东亚、内亚和内陆国家；AI 不再在和平期反复缔结 5 年停战（v40）。
+- **叙事**：345 篇事件重写，加入冷却，避免连续弹窗；45 条按年代与文化切换的国家简介，1648 的清朝、江户日本等不再显示 1337 年的简介（v38、v40）。
+- **界面文字**：玩家可见文字中的内部代号全部清除。
+
+### 2. 全时代历史剧本拓展包（3844848618）
+
+- **六个纪元**：1204 / 1337 / 1444 / 1648 / 1776 / 1821，32 个战区、160 位推荐君主。
+- **1444.11.11 瓦尔纳次日**：十五世纪开局从 1453 改为 1444.11.11。拜占庭约翰八世开局即可二选一：坚守君士坦丁堡反攻，或西渡大西洋建立第四罗马（原《1453 第四罗马》的全部内容已并入，含 5 座 3D 奇观与专属局势）。拜占庭由 AI 控制时，航程每 6 个月自动推进直到登陆（v39、v40）。
+- **1821 新纪元**：希腊独立战争与维也纳体系，30 邦德意志邦联，大西洋与美洲战区（v35–v39）。
+- **书签插图**：32 张战区插图全部按年代与地区重绘，不再出现年代错位的画面（v39、v40）。
+- **历史校准**：各纪元补齐成年史实君主、修正跨洲国家标签、1648 美洲殖民地宗教人口、1821 各国国教与首都；1648 明清战争延续到清军南下，清朝首都显示“北京”，朝鲜显示“朝鲜王国”（v37–v40）。
+- **玩法**：10 套时代局势（每套有独立面板）、17 项时代决议（含文化融合）、24 座世界奇观、1,400 余位成年史实人物（v39、v40）。
+
+### 3. 雄鹰陨落 361–768（3845632550，独立运行）
+
+- 24 张古羊皮纸战区地图与时代横幅，39 面推荐国家旗帜重绘（v37）。
+- 16 种晚期古典与罗马行省文化；1054 年大分裂前的教会改用当时的名称，可选阿里乌派与希腊多神教；国名、尊号与发展度按史实调整（v38）。
+- 10 套晚期古典局势、16 项决议（含 6 项文化融合）、18 座奇观（v39、v40）。
+- 神圣罗马帝国相关的载入报错、首都未发现告警、缺科技的法律全部清零（v40）。
+
+### 4. 其他子模组
+
+- **国家命运深度整合**（3845632867）与**兼容桥**（3845632818）：随主模组同步，修复一处本地化键哈希冲突。
+- **Glorp UI 1.4.9 凤凰适配增强**（3845632981）：快捷栏中文按钮加宽防截断，减少界面脚本报错。
+- **地图美化 A/B/C**（3845632643 / 3845632683 / 3845632746）：同步版本号。
+
+### 5. 实机验收（2026-11-26，EU5 1.4.9）
+
+- 1444 拜占庭：开局只弹出 1444 年的路线抉择；AI 西渡航程 33 个月后于 1447 年在切萨皮克登陆，建立新国家。
+- 1648 观察到 1655：清朝与日本的简介、清朝首都“北京”均正确，明清战争持续，大明退守广州。
+- 1776、1821 载入正常；雄鹰陨落 476、632、768 载入正常，476 运行 16 个月。
+- 书签界面 32 张新插图显示正常；凤凰指挥坞 5 个页签可用。
+
+### 6. 已知问题
+
+- 1648 开局载入时，游戏仍会清除约 400 条不合时代的政策（主要是民法与官房学政策）；1337 有少量国家的“大众教育”法律被清除。
+- 启用“国家命运”时，奥地利在 1648、1821 开局几天后就改名“多瑙君主国”，1821 的统治者头衔显示“神圣罗马皇帝”。
+- 部分草原部族在 1444、1776 的大厅简介仍是 1337 年的内容。
+- 3 个价格修正没有图标。
+- 1648 清朝统治者为多尔衮（史实应为顺治帝，多尔衮为摄政）。
+- 第四罗马登陆后建立的国家宗教为天主教。
+- 本轮没有实测：玩家亲自走完整条航程、新增局势面板与文化融合、法兰西与西班牙强权决议。
+
+---
+
+## 二、English Changelog
+
+> **Status:** v40.0 release (EU5 1.4.9), covering everything from v31 to v40. The v40.0-rc1 candidate was tested in EU5 1.4.9 on 2026-11-26; the released files are byte-identical to the tested ones.
+> **Saves:** v40.0 is **not** compatible with older saves. Please start a new game.
+> **Fourth Rome:** now part of All-Eras Historical Bookmarks (3844848618). The old "1453 Fourth Rome" item (3845210560) is no longer updated; please unsubscribe and do not enable it with v40.0.
+
+Made by: 寐夜空灵, miscos330
+
+### 1. Main mod (3667460405)
+
+- **Phoenix Command Dock:** a floating panel that overrides no vanilla interface, now with 5 tabs: imperial edicts, mass vassal directives, military-manual mobilisation and a new World Compass; 26 buttons with live status.
+- **Byzantine core institutions:** new core institutions, 28 imperial Great Projects with their crises, theme escheatment and military manuals (v31, v36).
+- **Six great powers:** Ottomans (Janissaries), Persia (Qizilbash and ghulams), Russia (Cossacks and the Zemsky Sobor) and India (mansabdars and universal harmony) evolve in three stages each; new France (Estates and absolutism) and Spain (Golden Age and Bourbon reforms) arcs; a 53-task British tree, the East India Company and Ming academies (v31, v39, v40).
+- **Colonies:** 4 colonial autonomy and independence decisions with branching events; 30 dynamic colonial ensigns; no more doubled names such as "Viceroyalty of New Spain Viceroyalty" (v38, v39).
+- **Peace and truces:** the Roman World arbitration resolution can only be proposed by the Roman leader and only covers the empire's subjects, so Byzantium is no longer forced into truces with a dozen neighbours; 26 redundant peace terms removed, two of which showed hostility as -4.00 (v38).
+- **AI:** era-aware personalities and expansion goals. The Qing are no longer tagged "Eurasian Balancer" or sent along the Ming's Nanyang colonial route; vanilla "explore the African coast" no longer fires before 1415, in East or Inner Asia, or for landlocked states; the AI no longer keeps signing 5-year truces in peacetime (v40).
+- **Storytelling:** 345 events rewritten with cooldowns against pop-up floods; 45 country descriptions that switch with era and culture, so 1648 Qing, Edo Japan and others no longer show their 1337 text (v38, v40).
+- **Interface text:** all internal code names removed from player-visible text.
+
+### 2. All-Eras Historical Bookmarks (3844848618)
+
+- **Six eras:** 1204 / 1337 / 1444 / 1648 / 1776 / 1821, 32 theaters, 160 featured rulers.
+- **1444.11.11, the day after Varna:** the fifteenth-century start moves from 1453 to 1444.11.11. John VIII of Byzantium chooses at once between holding Constantinople and sailing west to found a Fourth Rome (all of the former "1453 Fourth Rome" is included, with 5 3D wonders and its situations). An AI Byzantium advances the voyage every 6 months until landfall (v39, v40).
+- **New 1821 era:** the Greek War of Independence and the Vienna system, a 30-state German Confederation, an Atlantic and Americas theater (v35–v39).
+- **Bookmark art:** all 32 theater paintings redone to match their era and region (v39, v40).
+- **Historical calibration:** adult historical rulers in every era, cross-continent tag fixes, 1648 colonial religions, 1821 state religions and capitals; the 1648 Ming–Qing war carries on as the Qing push south, the Qing capital shows as Beijing and Korea as Joseon (v37–v40).
+- **Gameplay:** 10 era situations with their own panels, 17 era decisions (including cultural fusions), 24 world wonders, more than 1,400 adult historical characters (v39, v40).
+
+### 3. The Fallen Eagle 361–768 (3845632550, standalone)
+
+- 24 parchment theater maps and era banners, 39 featured flags redrawn (v37).
+- 16 Late Antique and Roman provincial cultures; churches before the 1054 schism use period names, with Arianism and Hellenic paganism available; period-accurate names, titles and development (v38).
+- 10 Late Antiquity situations, 16 decisions (6 cultural fusions), 18 wonders (v39, v40).
+- Holy Roman Empire load errors, "capital not discovered" warnings and laws missing their technology all cleared (v40).
+
+### 4. Other submods
+
+- **National Destinies integration** (3845632867) and **compatibility bridge** (3845632818): updated with the main mod; one localisation key hash collision fixed.
+- **Glorp UI 1.4.9 Phoenix edition** (3845632981): wider quick-bar buttons for Chinese labels, fewer interface script errors.
+- **Map beautification A/B/C** (3845632643 / 3845632683 / 3845632746): version bump.
+
+### 5. Live test (2026-11-26, EU5 1.4.9)
+
+- 1444 Byzantium: only the 1444 path choice appears at the start; the AI voyage landed on the Chesapeake in 1447 after 33 months and founded the new realm.
+- 1648 observed to 1655: Qing and Japanese descriptions and the Qing capital "Beijing" correct; the Ming–Qing war continues with the Ming falling back to Guangzhou.
+- 1776 and 1821 load fine; The Fallen Eagle 476, 632 and 768 load fine, 476 run for 16 months.
+- The 32 new bookmark paintings display correctly; all 5 Command Dock tabs work.
+
+### 6. Known issues
+
+- Loading 1648 still removes about 400 anachronistic policies (mostly civil law and cameralism); in 1337 a few countries lose a "mass education" law.
+- With National Destinies, Austria renames itself "Danubian Monarchy" a few days into the 1648 and 1821 starts, and in 1821 its ruler is titled "Holy Roman Emperor".
+- A few steppe hordes still show their 1337 lobby description in 1444 and 1776.
+- 3 price modifiers have no icon.
+- The 1648 Qing ruler is Dorgon (historically the Shunzhi Emperor, with Dorgon as regent).
+- The realm founded after the Fourth Rome landfall is Catholic.
+- Not tested this round: a player sailing the whole voyage by hand, the new situation panels and cultural fusions, the France and Spain decisions.
+
+---
+
 # 《凤凰计划（OEBYZ）》v30.2 更新日志（中英双语发布候选稿）
 
 > **发布状态**：v30.2 正式版（EU5 1.4.9）。本版候选 v30.2-rc1 已于 2026-11-25 实机复测：1204/1337/1453/1648/1776、532/768 各开局均可进局并运行 1 年以上，无崩溃；上一轮反馈的 10 项问题实测已修复。

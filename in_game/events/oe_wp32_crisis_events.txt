@@ -1,0 +1,348 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+namespace = oe_wp32_crisis
+
+# Four Courts Crisis Events (.1-.5)
+oe_wp32_crisis.1 = {
+	type = country_event
+	title = oe_wp32_crisis.1.t
+	desc = oe_wp32_crisis.1.d
+	outcome = negative
+	image = "gfx/interface/illustrations/disaster/oe_wp32_four_courts_crisis.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_crisis.1.a
+		ai_chance = { base = 40 }
+		set_variable = { name = oe_wp32_fc_strategy value = 1 }
+		add_stability = -5
+		add_legitimacy = -3
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = -0.03 }
+		}
+		trigger_event_non_silently = { id = oe_wp32_crisis.2 days = 180 }
+	}
+	option = {
+		name = oe_wp32_crisis.1.b
+		ai_chance = { base = 30 }
+		set_variable = { name = oe_wp32_fc_strategy value = 2 }
+		add_stability = -4
+		add_legitimacy = -5
+		trigger_event_non_silently = { id = oe_wp32_crisis.3 days = 180 }
+	}
+	option = {
+		name = oe_wp32_crisis.1.c
+		ai_chance = { base = 30 }
+		set_variable = { name = oe_wp32_fc_strategy value = 3 }
+		add_gold = -60
+		add_stability = -3
+		ruler ?= { add_adm = 2 }
+		trigger_event_non_silently = { id = oe_wp32_crisis.4 days = 180 }
+	}
+}
+
+oe_wp32_crisis.2 = {
+	type = country_event
+	title = oe_wp32_crisis.2.t
+	desc = oe_wp32_crisis.2.d
+	outcome = negative
+	image = "gfx/interface/illustrations/disaster/oe_wp32_four_courts_crisis.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes has_active_disaster = disaster_type:oe_wp32_four_courts_crisis }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_crisis.2.a
+		ai_chance = { base = 45 }
+		add_gold = -60
+		add_stability = 4
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.04 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_fc_chain_2_done } }
+			set_variable = { name = oe_wp32_fc_chain_2_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_crisis.3 days = 210 }
+		}
+	}
+	option = {
+		name = oe_wp32_crisis.2.b
+		ai_chance = { base = 30 }
+		add_prestige = -6
+		add_legitimacy = 4
+	}
+	option = {
+		name = oe_wp32_crisis.2.c
+		ai_chance = { base = 25 }
+		add_gold = -40
+		add_stability = 3
+		create_character = {
+			age = 45
+			adm = { 72 90 }
+			dip = { 66 84 }
+			mil = { 30 48 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+oe_wp32_crisis.3 = {
+	type = country_event
+	title = oe_wp32_crisis.3.t
+	desc = oe_wp32_crisis.3.d
+	outcome = negative
+	image = "gfx/interface/illustrations/international_organization_types/oe_wp32_imperial_church_io.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes has_active_disaster = disaster_type:oe_wp32_four_courts_crisis }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_crisis.3.a
+		ai_chance = { base = 45 }
+		add_gold = -50
+		add_stability = 5
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.03 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_fc_chain_3_done } }
+			set_variable = { name = oe_wp32_fc_chain_3_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_crisis.4 days = 210 }
+		}
+	}
+	option = {
+		name = oe_wp32_crisis.3.b
+		ai_chance = { base = 30 }
+		add_legitimacy = 4
+		add_stability = -4
+	}
+	option = {
+		name = oe_wp32_crisis.3.c
+		ai_chance = { base = 25 }
+		add_prestige = -4
+		add_stability = 3
+		create_character = {
+			age = 50
+			adm = { 62 80 }
+			dip = { 74 90 }
+			mil = { 28 44 }
+			estate = estate_type:clergy_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+oe_wp32_crisis.4 = {
+	type = country_event
+	title = oe_wp32_crisis.4.t
+	desc = oe_wp32_crisis.4.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_frontier_ultimatum.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes has_active_disaster = disaster_type:oe_wp32_four_courts_crisis }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_crisis.4.a
+		ai_chance = { base = 45 }
+		add_gold = -75
+		add_war_exhaustion = -2
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.03 }
+		}
+	}
+	option = {
+		name = oe_wp32_crisis.4.b
+		ai_chance = { base = 30 }
+		add_army_tradition = 4
+		add_stability = -3
+	}
+	option = {
+		name = oe_wp32_crisis.4.c
+		ai_chance = { base = 25 }
+		add_gold = -45
+		add_army_tradition = 5
+		create_character = {
+			age = 39
+			adm = { 54 70 }
+			dip = { 52 68 }
+			mil = { 75 92 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+oe_wp32_crisis.5 = {
+	type = country_event
+	title = oe_wp32_crisis.5.t
+	desc = oe_wp32_crisis.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_theodosian_walls.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_crisis.5.a
+		ai_chance = { base = 50 }
+		add_prestige = 20
+		add_legitimacy = 10
+		add_stability = 10
+		ruler ?= { add_adm = 3 add_dip = 2 }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.08 change_control = 0.06 }
+		}
+	}
+	option = {
+		name = oe_wp32_crisis.5.b
+		ai_chance = { base = 50 }
+		add_gold = 120
+		add_stability = 12
+		add_legitimacy = 8
+	}
+}
+
+# Praetorian / Varangian Guard Throne Auction Events (.6-.9)
+oe_wp32_crisis.6 = {
+	type = country_event
+	title = oe_wp32_crisis.6.t
+	desc = oe_wp32_crisis.6.d
+	outcome = negative
+	image = "gfx/interface/illustrations/disaster/oe_wp32_guard_auction_crisis.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_crisis.6.a
+		ai_chance = { base = 45 }
+		set_variable = { name = oe_wp32_ga_strategy value = 1 }
+		add_legitimacy = -6
+		add_stability = -4
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = -0.04 }
+		}
+		trigger_event_non_silently = { id = oe_wp32_crisis.7 days = 150 }
+	}
+	option = {
+		name = oe_wp32_crisis.6.b
+		ai_chance = { base = 30 }
+		set_variable = { name = oe_wp32_ga_strategy value = 2 }
+		add_gold = -80
+		add_legitimacy = -4
+		trigger_event_non_silently = { id = oe_wp32_crisis.7 days = 180 }
+	}
+	option = {
+		name = oe_wp32_crisis.6.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp32_ga_strategy value = 3 }
+		add_stability = -5
+		ruler ?= { add_mil = 2 }
+		trigger_event_non_silently = { id = oe_wp32_crisis.8 days = 150 }
+	}
+}
+
+oe_wp32_crisis.7 = {
+	type = country_event
+	title = oe_wp32_crisis.7.t
+	desc = oe_wp32_crisis.7.d
+	outcome = negative
+	image = "gfx/interface/illustrations/disaster/oe_wp32_guard_auction_crisis.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes has_active_disaster = disaster_type:oe_wp32_guard_auction_crisis }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_crisis.7.a
+		ai_chance = { base = 45 }
+		add_gold = -90
+		add_legitimacy = 6
+	}
+	option = {
+		name = oe_wp32_crisis.7.b
+		ai_chance = { base = 30 }
+		add_prestige = -5
+		add_stability = -3
+		add_army_tradition = 4
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_ga_chain_done } }
+			set_variable = { name = oe_wp32_ga_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_crisis.8 days = 150 }
+		}
+	}
+	option = {
+		name = oe_wp32_crisis.7.c
+		ai_chance = { base = 25 }
+		add_gold = -50
+		add_legitimacy = 5
+		create_character = {
+			age = 35
+			adm = { 50 68 }
+			dip = { 48 66 }
+			mil = { 76 92 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_ga_chain_done } }
+			set_variable = { name = oe_wp32_ga_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_crisis.8 days = 150 }
+		}
+	}
+}
+
+oe_wp32_crisis.8 = {
+	type = country_event
+	title = oe_wp32_crisis.8.t
+	desc = oe_wp32_crisis.8.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_balkan_triumph.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes has_active_disaster = disaster_type:oe_wp32_guard_auction_crisis }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_crisis.8.a
+		ai_chance = { base = 50 }
+		add_legitimacy = 8
+		add_stability = 5
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.05 }
+		}
+	}
+	option = {
+		name = oe_wp32_crisis.8.b
+		ai_chance = { base = 50 }
+		add_army_tradition = 6
+		add_legitimacy = 6
+		create_character = {
+			age = 40
+			adm = { 54 72 }
+			dip = { 52 70 }
+			mil = { 74 90 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+oe_wp32_crisis.9 = {
+	type = country_event
+	title = oe_wp32_crisis.9.t
+	desc = oe_wp32_crisis.9.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_theodosian_walls.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_crisis.9.a
+		ai_chance = { base = 50 }
+		add_prestige = 18
+		add_legitimacy = 12
+		add_stability = 8
+		ruler ?= { add_mil = 3 add_adm = 2 }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.08 change_prosperity = 0.05 }
+		}
+	}
+	option = {
+		name = oe_wp32_crisis.9.b
+		ai_chance = { base = 50 }
+		add_army_tradition = 10
+		add_legitimacy = 10
+		add_prestige = 15
+	}
+}

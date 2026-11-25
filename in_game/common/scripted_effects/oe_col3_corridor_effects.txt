@@ -30,7 +30,7 @@ oe_col3_dec_crackdown_heat = {
 }
 
 # ==============================================================================
-# Upgrade 5: One-Shot AI Corridor Seeding at on_game_start (zero pulse overhead)
+# Upgrade 5: Era-Aware AI Corridor Seeding & Vanilla Africa-Pref Pruning at on_game_start
 # ==============================================================================
 oe_col3_assign_ai_corridors = {
 	if = {
@@ -38,29 +38,89 @@ oe_col3_assign_ai_corridors = {
 		set_global_variable = { name = oe_col3_corridors_seeded value = 1 }
 		every_country = {
 			limit = { is_ai = yes is_rebel_country = no }
+			# Prune vanilla explore_african_coast leak on pre-1415, New World, East/Inner Asian, or landlocked AI
 			if = {
-				limit = { OR = { tag = CHI tag = MNG tag = MCH } }
+				limit = {
+					has_area_preference = explore_african_coast
+					OR = {
+						current_year < 1415
+						has_ports = no
+						capital ?= { continent = continent:america }
+						capital ?= {
+							OR = {
+								sub_continent = sub_continent:east_asia
+								region = region:mongolia_region
+								region = region:steppes_region
+								region = region:tibet_region
+								region = region:xinjiang_region
+							}
+						}
+					}
+				}
+				remove_area_preference = explore_african_coast
+			}
+			# Qing / Manchu (MCH or post-1644 / Manchu-formed CHI): Inner Asia corridor + anti-Africa guard
+			if = {
+				limit = {
+					OR = {
+						tag = MCH
+						AND = {
+							tag = CHI
+							OR = {
+								current_year >= 1644
+								has_or_had_tag = MCH
+							}
+						}
+					}
+				}
+				set_variable = { name = oe_col3_qing_corridor_assigned value = 1 }
+				if = {
+					limit = { has_area_preference = oe_col3_celestial_nanyang_nurgan_corridor }
+					remove_area_preference = oe_col3_celestial_nanyang_nurgan_corridor
+				}
+				add_area_preference = oe_col3_qing_inner_asia_corridor
+				add_area_preference = oe_col3_celestial_avoid_africa
+			}
+			# Ming / Pre-1644 Celestial Empire (1368-1643): Nanyang & Nurgan corridor + anti-Africa guard
+			else_if = {
+				limit = {
+					current_year >= 1368
+					current_year < 1644
+					OR = {
+						tag = MNG
+						AND = {
+							tag = CHI
+							NOT = { has_or_had_tag = MCH }
+						}
+					}
+				}
 				set_variable = { name = oe_col3_cel_corridor_assigned value = 1 }
 				add_area_preference = oe_col3_celestial_nanyang_nurgan_corridor
 				add_area_preference = oe_col3_celestial_avoid_africa
 			}
+			# European overseas exploration corridors (strictly gated >= 1450; 1337 receives them at 1450 via yearly tick)
 			if = {
-				limit = { OR = { tag = ENG tag = GBR } }
-				set_variable = { name = oe_col3_gbr_corridor_assigned value = 1 }
-				add_area_preference = oe_col3_eng_north_america_india_corridor
-			}
-			if = {
-				limit = { tag = FRA }
-				add_area_preference = oe_col3_fra_st_lawrence_louisiana_corridor
-			}
-			if = {
-				limit = { tag = NED }
-				set_variable = { name = oe_col3_ned_corridor_assigned value = 1 }
-				add_area_preference = oe_col3_ned_cape_spice_corridor
-			}
-			if = {
-				limit = { tag = POR }
-				add_area_preference = oe_col3_por_brazil_goa_macau_corridor
+				limit = { current_year >= 1450 }
+				if = {
+					limit = { OR = { tag = ENG tag = GBR } }
+					set_variable = { name = oe_col3_gbr_corridor_assigned value = 1 }
+					add_area_preference = oe_col3_eng_north_america_india_corridor
+				}
+				if = {
+					limit = { tag = FRA }
+					set_variable = { name = oe_col3_fra_corridor_assigned value = 1 }
+					add_area_preference = oe_col3_fra_st_lawrence_louisiana_corridor
+				}
+				if = {
+					limit = { tag = NED }
+					set_variable = { name = oe_col3_ned_corridor_assigned value = 1 }
+					add_area_preference = oe_col3_ned_cape_spice_corridor
+				}
+				if = {
+					limit = { tag = POR }
+					set_variable = { name = oe_col3_por_corridor_assigned value = 1 }
+					add_area_preference = oe_col3_por_brazil_goa_macau_corridor
+				}
 			}
 		}
 	}
@@ -68,13 +128,43 @@ oe_col3_assign_ai_corridors = {
 
 # ==============================================================================
 # Lightweight Yearly Pulse (called from Stage oe_v122_pulse.txt)
+# 0) One-shot per-country prune of vanilla explore_african_coast leak.
 # 1) Late-unlock Russia Far East corridor once Ostrog built or 1580+ reached.
-# 2) Post-1337 formable corridor seeding for Celestial Empire (CHI/MNG/MCH), NED, GBR.
-# 3) Dispatch 1700-1836 Colonial Autonomy & Independence Wave events (10-year CD).
+# 2) Era-aware Qing vs Ming Celestial corridor seeding & swap.
+# 3) Post-1450 dynamic European overseas exploration corridors (ENG/GBR, FRA, NED, POR).
+# 4) Dispatch 1700-1836 Colonial Autonomy & Independence Wave events (10-year CD).
 # ==============================================================================
 oe_col3_yearly_tick = {
 	if = {
 		limit = { is_rebel_country = no num_locations > 0 }
+		# 0. One-shot cleanup of vanilla explore_african_coast leak (runs once per AI country).
+		if = {
+			limit = {
+				is_ai = yes
+				NOT = { has_variable = oe_col3_africa_pref_pruned }
+			}
+			set_variable = { name = oe_col3_africa_pref_pruned value = 1 }
+			if = {
+				limit = {
+					has_area_preference = explore_african_coast
+					OR = {
+						current_year < 1415
+						has_ports = no
+						capital ?= { continent = continent:america }
+						capital ?= {
+							OR = {
+								sub_continent = sub_continent:east_asia
+								region = region:mongolia_region
+								region = region:steppes_region
+								region = region:tibet_region
+								region = region:xinjiang_region
+							}
+						}
+					}
+				}
+				remove_area_preference = explore_african_coast
+			}
+		}
 		# 1. Dynamic one-shot Russia Siberia->Pacific->Alaska unlock once Ostrog / 1580 active.
 		if = {
 			limit = {
@@ -89,35 +179,90 @@ oe_col3_yearly_tick = {
 			set_variable = { name = oe_col3_rus_fareast_assigned value = 1 }
 			add_area_preference = oe_col3_russia_far_east_corridor
 		}
-		# 2. Dynamic one-shot Celestial Empire corridor if MNG/MCH/CHI forms post-1337.
+		# 2a. Qing / Manchu (MCH or post-1644 / Manchu-formed CHI): Inner Asia corridor & prune Ming Nanyang corridor.
 		if = {
 			limit = {
 				is_ai = yes
-				OR = { tag = CHI tag = MNG tag = MCH oe_cel_is_celestial_emperor = yes }
+				OR = {
+					tag = MCH
+					AND = {
+						tag = CHI
+						OR = {
+							current_year >= 1644
+							has_or_had_tag = MCH
+						}
+					}
+				}
+				NOT = { has_variable = oe_col3_qing_corridor_assigned }
+			}
+			set_variable = { name = oe_col3_qing_corridor_assigned value = 1 }
+			if = {
+				limit = { has_area_preference = oe_col3_celestial_nanyang_nurgan_corridor }
+				remove_area_preference = oe_col3_celestial_nanyang_nurgan_corridor
+			}
+			add_area_preference = oe_col3_qing_inner_asia_corridor
+			if = {
+				limit = { NOT = { has_area_preference = oe_col3_celestial_avoid_africa } }
+				add_area_preference = oe_col3_celestial_avoid_africa
+			}
+		}
+		# 2b. Ming / Pre-1644 Celestial Empire (1368-1643): Nanyang & Nurgan corridor.
+		else_if = {
+			limit = {
+				is_ai = yes
+				current_year >= 1368
+				current_year < 1644
+				OR = {
+					tag = MNG
+					AND = {
+						tag = CHI
+						NOT = { has_or_had_tag = MCH }
+					}
+				}
 				NOT = { has_variable = oe_col3_cel_corridor_assigned }
 			}
 			set_variable = { name = oe_col3_cel_corridor_assigned value = 1 }
 			add_area_preference = oe_col3_celestial_nanyang_nurgan_corridor
 			add_area_preference = oe_col3_celestial_avoid_africa
 		}
-		# 3. Dynamic one-shot post-1337 formables (NED / GBR) corridor assignment.
+		# 3. Dynamic one-shot European overseas exploration corridors once 1450+ reached.
 		if = {
 			limit = {
 				is_ai = yes
-				tag = NED
-				NOT = { has_variable = oe_col3_ned_corridor_assigned }
+				current_year >= 1450
 			}
-			set_variable = { name = oe_col3_ned_corridor_assigned value = 1 }
-			add_area_preference = oe_col3_ned_cape_spice_corridor
-		}
-		if = {
-			limit = {
-				is_ai = yes
-				tag = GBR
-				NOT = { has_variable = oe_col3_gbr_corridor_assigned }
+			if = {
+				limit = {
+					OR = { tag = ENG tag = GBR }
+					NOT = { has_variable = oe_col3_gbr_corridor_assigned }
+				}
+				set_variable = { name = oe_col3_gbr_corridor_assigned value = 1 }
+				add_area_preference = oe_col3_eng_north_america_india_corridor
 			}
-			set_variable = { name = oe_col3_gbr_corridor_assigned value = 1 }
-			add_area_preference = oe_col3_eng_north_america_india_corridor
+			if = {
+				limit = {
+					tag = FRA
+					NOT = { has_variable = oe_col3_fra_corridor_assigned }
+				}
+				set_variable = { name = oe_col3_fra_corridor_assigned value = 1 }
+				add_area_preference = oe_col3_fra_st_lawrence_louisiana_corridor
+			}
+			if = {
+				limit = {
+					tag = NED
+					NOT = { has_variable = oe_col3_ned_corridor_assigned }
+				}
+				set_variable = { name = oe_col3_ned_corridor_assigned value = 1 }
+				add_area_preference = oe_col3_ned_cape_spice_corridor
+			}
+			if = {
+				limit = {
+					tag = POR
+					NOT = { has_variable = oe_col3_por_corridor_assigned }
+				}
+				set_variable = { name = oe_col3_por_corridor_assigned value = 1 }
+				add_area_preference = oe_col3_por_brazil_goa_macau_corridor
+			}
 		}
 		# 4. 1700-1836 Colonial Autonomy & Independence Arc (throttled: 10-year cooldown).
 		if = {

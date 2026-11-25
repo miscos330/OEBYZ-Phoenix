@@ -1,0 +1,1450 @@
+﻿# Project Phoenix v36.0 WP47: Imperial Mass Vassal Directives, Theme Escheatment & Praecepta Militaria Rework (oe_wp47_, 0 vanilla overrides, pure-additive).
+# Inspired by Ananeosis Autokratorias and Praecepta Militaria. Edit gen_v360_wp47_imperial_vassal_praecepta.py, not this file.
+
+namespace = oe_wp47_praecepta
+
+# 1. The Taktika of Emperor Leo VI
+oe_wp47_praecepta.1 = {
+	type = country_event
+	title = oe_wp47_praecepta.1.t
+	desc = oe_wp47_praecepta.1.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = armed
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_government_estate_effect = yes
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.1.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_taktika value = 1 }
+		add_army_tradition = 6
+		ruler ?= { add_mil = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_taktika_doctrine
+			years = 15
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_13_done } }
+			set_variable = { name = oe_wp47_prae_fu_13_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.13 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.1.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_taktika value = 2 }
+		add_stability = 3
+		add_prestige = 5
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.1.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_taktika value = 3 }
+		add_gold = -40
+		add_army_tradition = 5
+		create_character = {
+			age = 41
+			adm = { 55 75 }
+			dip = { 50 70 }
+			mil = { 72 90 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_taktika_doctrine
+			years = 12
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_13_done } }
+			set_variable = { name = oe_wp47_prae_fu_13_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.13 days = 240 }
+		}
+	}
+}
+
+# 2. Praecepta Militaria of Nikephoros Phokas
+oe_wp47_praecepta.2 = {
+	type = country_event
+	title = oe_wp47_praecepta.2.t
+	desc = oe_wp47_praecepta.2.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = armed
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:soldiers }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.2.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_praecepta value = 1 }
+		add_gold = -50
+		add_army_tradition = 8
+		ruler ?= { add_mil = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_praecepta_manual
+			years = 15
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_13_done } }
+			set_variable = { name = oe_wp47_prae_fu_13_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.13 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.2.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_praecepta value = 2 }
+		add_prestige = 5
+		add_army_tradition = 3
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.2.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_praecepta value = 3 }
+		add_gold = -65
+		add_army_tradition = 6
+		create_character = {
+			age = 37
+			adm = { 48 68 }
+			dip = { 45 65 }
+			mil = { 76 92 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_praecepta_manual
+			years = 12
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_13_done } }
+			set_variable = { name = oe_wp47_prae_fu_13_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.13 days = 240 }
+		}
+	}
+}
+
+# 3. The Imperial Greek Fire Siphon Foundry
+oe_wp47_praecepta.3 = {
+	type = country_event
+	title = oe_wp47_praecepta.3.t
+	desc = oe_wp47_praecepta.3.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = armed
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_estate_effect = { foreground = estate_type:burghers_estate background = estate_type:burghers_estate }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.3.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_greek_fire value = 1 }
+		add_gold = -60
+		add_navy_tradition = 8
+		add_country_modifier = {
+			modifier = oe_wp47_mod_greek_fire_foundry
+			years = 15
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_14_done } }
+			set_variable = { name = oe_wp47_prae_fu_14_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.14 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.3.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_greek_fire value = 2 }
+		add_prestige = 6
+		add_legitimacy = 4
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.3.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_greek_fire value = 3 }
+		add_gold = -70
+		add_navy_tradition = 6
+		create_character = {
+			age = 44
+			adm = { 62 80 }
+			dip = { 48 66 }
+			mil = { 68 86 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_greek_fire_foundry
+			years = 12
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_14_done } }
+			set_variable = { name = oe_wp47_prae_fu_14_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.14 days = 240 }
+		}
+	}
+}
+
+# 4. The Oath of the Varangian Axe-Bearers
+oe_wp47_praecepta.4 = {
+	type = country_event
+	title = oe_wp47_praecepta.4.t
+	desc = oe_wp47_praecepta.4.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = armed
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:soldiers }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.4.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_varangian value = 1 }
+		add_gold = -55
+		add_legitimacy = 5
+		ruler ?= { add_mil = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_varangian_oath
+			years = 15
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_16_done } }
+			set_variable = { name = oe_wp47_prae_fu_16_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.16 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.4.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_varangian value = 2 }
+		add_army_tradition = 5
+		add_prestige = 4
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.4.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_varangian value = 3 }
+		add_gold = -65
+		add_legitimacy = 4
+		create_character = {
+			age = 35
+			adm = { 46 64 }
+			dip = { 50 68 }
+			mil = { 75 92 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_varangian_oath
+			years = 12
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_16_done } }
+			set_variable = { name = oe_wp47_prae_fu_16_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.16 days = 240 }
+		}
+	}
+}
+
+# 5. Restoration of the Via Egnatia
+oe_wp47_praecepta.5 = {
+	type = country_event
+	title = oe_wp47_praecepta.5.t
+	desc = oe_wp47_praecepta.5.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_estate_effect = { foreground = estate_type:burghers_estate background = estate_type:peasants_estate }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.5.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_egnatia value = 1 }
+		add_gold = -65
+		add_prestige = 6
+		ruler ?= { add_adm = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_via_egnatia_repaired
+			years = 15
+			mode = replace
+		}
+		location:thessaloniki ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_15_done } }
+			set_variable = { name = oe_wp47_prae_fu_15_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.15 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.5.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_egnatia value = 2 }
+		add_gold = 35
+		add_stability = 2
+		location:thessaloniki ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.5.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_egnatia value = 3 }
+		add_gold = -75
+		add_army_tradition = 4
+		add_prestige = 5
+		add_country_modifier = {
+			modifier = oe_wp47_mod_via_egnatia_repaired
+			years = 12
+			mode = replace
+		}
+		location:thessaloniki ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_15_done } }
+			set_variable = { name = oe_wp47_prae_fu_15_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.15 days = 240 }
+		}
+	}
+}
+
+# 6. Chrysobull of the Holy Mountain (Mount Athos)
+oe_wp47_praecepta.6 = {
+	type = country_event
+	title = oe_wp47_praecepta.6.t
+	desc = oe_wp47_praecepta.6.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = happy
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:clergy_estate }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.6.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_athos value = 1 }
+		add_gold = -45
+		add_legitimacy = 6
+		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = 0.08 } }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_athos_chrysobull
+			years = 15
+			mode = replace
+		}
+		location:mount_athos ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_16_done } }
+			set_variable = { name = oe_wp47_prae_fu_16_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.16 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.6.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_athos value = 2 }
+		add_gold = 30
+		add_prestige = 4
+		location:mount_athos ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.6.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_athos value = 3 }
+		add_gold = -55
+		add_legitimacy = 4
+		create_character = {
+			age = 48
+			adm = { 65 84 }
+			dip = { 68 88 }
+			mil = { 30 48 }
+			estate = estate_type:clergy_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_athos_chrysobull
+			years = 12
+			mode = replace
+		}
+		location:mount_athos ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_16_done } }
+			set_variable = { name = oe_wp47_prae_fu_16_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.16 days = 240 }
+		}
+	}
+}
+
+# 7. Scriptorium of the Monastery of Studion
+oe_wp47_praecepta.7 = {
+	type = country_event
+	title = oe_wp47_praecepta.7.t
+	desc = oe_wp47_praecepta.7.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = happy
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:nobles_estate }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.7.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_studion value = 1 }
+		add_gold = -40
+		add_prestige = 8
+		ruler ?= { add_adm = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_studion_scriptorium
+			years = 15
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_16_done } }
+			set_variable = { name = oe_wp47_prae_fu_16_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.16 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.7.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_studion value = 2 }
+		add_stability = 3
+		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = 0.05 } }
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.7.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_studion value = 3 }
+		add_gold = -50
+		add_prestige = 5
+		create_character = {
+			age = 45
+			adm = { 72 90 }
+			dip = { 65 82 }
+			mil = { 30 48 }
+			estate = estate_type:clergy_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_studion_scriptorium
+			years = 12
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_16_done } }
+			set_variable = { name = oe_wp47_prae_fu_16_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.16 days = 240 }
+		}
+	}
+}
+
+# 8. Grand Thematic Cavalry Drill
+oe_wp47_praecepta.8 = {
+	type = country_event
+	title = oe_wp47_praecepta.8.t
+	desc = oe_wp47_praecepta.8.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = armed
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:soldiers }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.8.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_cavalry value = 1 }
+		add_gold = -45
+		add_army_tradition = 6
+		ruler ?= { add_mil = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_theme_cavalry_drill
+			years = 15
+			mode = replace
+		}
+		location:iznik ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_13_done } }
+			set_variable = { name = oe_wp47_prae_fu_13_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.13 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.8.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_cavalry value = 2 }
+		add_stability = 2
+		add_army_tradition = 3
+		location:iznik ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.8.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_cavalry value = 3 }
+		add_gold = -55
+		add_army_tradition = 5
+		create_character = {
+			age = 34
+			adm = { 48 66 }
+			dip = { 50 68 }
+			mil = { 74 90 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_theme_cavalry_drill
+			years = 12
+			mode = replace
+		}
+		location:iznik ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_13_done } }
+			set_variable = { name = oe_wp47_prae_fu_13_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.13 days = 240 }
+		}
+	}
+}
+
+# 9. Akritai Watchtowers of the Frontier Marches
+oe_wp47_praecepta.9 = {
+	type = country_event
+	title = oe_wp47_praecepta.9.t
+	desc = oe_wp47_praecepta.9.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = armed
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:peasants }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.9.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_akritai value = 1 }
+		add_gold = -50
+		add_army_tradition = 4
+		add_country_modifier = {
+			modifier = oe_wp47_mod_akritai_watchtowers
+			years = 15
+			mode = replace
+		}
+		location:edirne ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_13_done } }
+			set_variable = { name = oe_wp47_prae_fu_13_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.13 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.9.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_akritai value = 2 }
+		add_stability = 3
+		if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = 0.06 } }
+		location:edirne ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.9.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_akritai value = 3 }
+		add_gold = -60
+		add_army_tradition = 4
+		create_character = {
+			age = 39
+			adm = { 55 72 }
+			dip = { 48 66 }
+			mil = { 74 90 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_akritai_watchtowers
+			years = 12
+			mode = replace
+		}
+		location:edirne ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_13_done } }
+			set_variable = { name = oe_wp47_prae_fu_13_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.13 days = 240 }
+		}
+	}
+}
+
+# 10. Cibyrrhaeot Dromon Arsenals of the Aegean
+oe_wp47_praecepta.10 = {
+	type = country_event
+	title = oe_wp47_praecepta.10.t
+	desc = oe_wp47_praecepta.10.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = armed
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_estate_effect = { foreground = estate_type:burghers_estate background = estate_type:burghers_estate }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.10.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_dromon value = 1 }
+		add_gold = -55
+		add_navy_tradition = 7
+		add_country_modifier = {
+			modifier = oe_wp47_mod_dromon_arsenal
+			years = 15
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_14_done } }
+			set_variable = { name = oe_wp47_prae_fu_14_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.14 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.10.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_dromon value = 2 }
+		add_gold = 45
+		add_navy_tradition = 3
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.10.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_dromon value = 3 }
+		add_gold = -65
+		add_navy_tradition = 6
+		create_character = {
+			age = 40
+			adm = { 54 72 }
+			dip = { 58 76 }
+			mil = { 72 88 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_dromon_arsenal
+			years = 12
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_14_done } }
+			set_variable = { name = oe_wp47_prae_fu_14_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.14 days = 240 }
+		}
+	}
+}
+
+# 11. Logothete of the Drome & the Imperial Post
+oe_wp47_praecepta.11 = {
+	type = country_event
+	title = oe_wp47_praecepta.11.t
+	desc = oe_wp47_praecepta.11.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = regular
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_government_estate_effect = yes
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.11.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_dromos value = 1 }
+		add_gold = -45
+		add_prestige = 5
+		ruler ?= { add_dip = 2 }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_imperial_logothete_postal
+			years = 15
+			mode = replace
+		}
+		location:plovdiv ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_15_done } }
+			set_variable = { name = oe_wp47_prae_fu_15_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.15 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.11.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_dromos value = 2 }
+		add_prestige = 8
+		add_legitimacy = 3
+		location:plovdiv ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.11.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_dromos value = 3 }
+		add_gold = -55
+		add_prestige = 4
+		create_character = {
+			age = 33
+			adm = { 68 86 }
+			dip = { 74 92 }
+			mil = { 40 58 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_imperial_logothete_postal
+			years = 12
+			mode = replace
+		}
+		location:plovdiv ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_15_done } }
+			set_variable = { name = oe_wp47_prae_fu_15_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.15 days = 240 }
+		}
+	}
+}
+
+# 12. Sanctuaries of Meteora & Thessalian Monasteries
+oe_wp47_praecepta.12 = {
+	type = country_event
+	title = oe_wp47_praecepta.12.t
+	desc = oe_wp47_praecepta.12.d
+	outcome = positive
+	fire_only_once = yes
+
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:peasants_estate }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.12.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp47_path_meteora value = 1 }
+		add_gold = -40
+		add_stability = 4
+		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = 0.06 } }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_meteora_sanctuary
+			years = 15
+			mode = replace
+		}
+		location:trikala ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.03
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_16_done } }
+			set_variable = { name = oe_wp47_prae_fu_16_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.16 days = 240 }
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.12.b
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_meteora value = 2 }
+		add_prestige = 5
+		add_army_tradition = 3
+		location:trikala ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.03
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.12.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp47_path_meteora value = 3 }
+		add_gold = -50
+		add_stability = 3
+		ruler ?= { add_adm = 2 }
+		if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = 0.07 } }
+		add_country_modifier = {
+			modifier = oe_wp47_mod_meteora_sanctuary
+			years = 12
+			mode = replace
+		}
+		location:trikala ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+				change_development = 0.20
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp47_prae_fu_16_done } }
+			set_variable = { name = oe_wp47_prae_fu_16_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp47_praecepta.16 days = 240 }
+		}
+	}
+}
+
+# 13. Delayed Culmination: Imperial Field Maneuvers Review
+oe_wp47_praecepta.13 = {
+	type = country_event
+	title = oe_wp47_praecepta.13.t
+	desc = oe_wp47_praecepta.13.d
+	outcome = positive
+
+	illustration_tags = {
+		10 = armed
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:soldiers }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.13.a
+		ai_chance = { base = 45 }
+		add_gold = -40
+		add_army_tradition = 8
+		add_prestige = 8
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.04
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.13.b
+		ai_chance = { base = 30 }
+		add_prestige = 5
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			add_liberty_desire = liberty_desire_weak_minus
+		}
+		capital ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.13.c
+		ai_chance = { base = 25 }
+		add_legitimacy = 5
+		add_army_tradition = 5
+		ruler ?= { add_mil = 3 }
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_development = 0.25
+			}
+		}
+	}
+}
+
+# 14. Delayed Culmination: Straits Siphon & Dromon Fleet Trial
+oe_wp47_praecepta.14 = {
+	type = country_event
+	title = oe_wp47_praecepta.14.t
+	desc = oe_wp47_praecepta.14.d
+	outcome = positive
+
+	illustration_tags = {
+		10 = armed
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_estate_effect = { foreground = estate_type:burghers_estate background = estate_type:nobles_estate }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.14.a
+		ai_chance = { base = 45 }
+		add_navy_tradition = 8
+		add_prestige = 7
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.04
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.14.b
+		ai_chance = { base = 30 }
+		add_gold = 60
+		add_navy_tradition = 4
+		capital ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.14.c
+		ai_chance = { base = 25 }
+		add_legitimacy = 4
+		add_navy_tradition = 5
+		ruler ?= { add_dip = 2 }
+		if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = 0.06 } }
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_development = 0.25
+			}
+		}
+	}
+}
+
+# 15. Delayed Culmination: Grand Inspection of the Imperial Highway & Post
+oe_wp47_praecepta.15 = {
+	type = country_event
+	title = oe_wp47_praecepta.15.t
+	desc = oe_wp47_praecepta.15.d
+	outcome = positive
+
+	illustration_tags = {
+		10 = happy
+		10 = exterior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_government_estate_effect = yes
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.15.a
+		ai_chance = { base = 45 }
+		add_stability = 4
+		add_prestige = 6
+		location:thessaloniki ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.04
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.15.b
+		ai_chance = { base = 30 }
+		add_gold = 85
+		add_legitimacy = 3
+		capital ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.15.c
+		ai_chance = { base = 25 }
+		add_prestige = 6
+		ruler ?= { add_adm = 3 }
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			add_liberty_desire = liberty_desire_weak_minus
+		}
+		location:thessaloniki ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_development = 0.25
+			}
+		}
+	}
+}
+
+# 16. Delayed Culmination: Concord of Sanctuary, Scriptorium & Throne
+oe_wp47_praecepta.16 = {
+	type = country_event
+	title = oe_wp47_praecepta.16.t
+	desc = oe_wp47_praecepta.16.d
+	outcome = positive
+
+	illustration_tags = {
+		10 = happy
+		10 = interior
+	}
+
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		num_locations > 0
+	}
+
+	immediate = {
+		event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:nobles_estate }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+
+	option = {
+		name = oe_wp47_praecepta.16.a
+		ai_chance = { base = 45 }
+		add_stability = 5
+		add_legitimacy = 6
+		add_prestige = 6
+		location:mount_athos ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.05
+				change_control = 0.04
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.16.b
+		ai_chance = { base = 30 }
+		add_prestige = 6
+		ruler ?= { add_adm = 2 add_dip = 2 }
+		capital ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_prosperity = 0.04
+			}
+		}
+	}
+
+	option = {
+		name = oe_wp47_praecepta.16.c
+		ai_chance = { base = 25 }
+		add_gold = -35
+		add_prestige = 8
+		create_character = {
+			age = 42
+			adm = { 70 88 }
+			dip = { 68 86 }
+			mil = { 35 55 }
+			estate = estate_type:clergy_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		location:mount_athos ?= {
+			if = {
+				limit = { has_owner = yes owner ?= root }
+				change_development = 0.25
+			}
+		}
+	}
+}

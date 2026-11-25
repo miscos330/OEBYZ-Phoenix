@@ -36,3 +36,35 @@ oe_ai2_jwr_bankrupt_or_disaster_shield = {
 		}
 	}
 }
+
+oe_ai2_jwr_sakoku_isolation = {
+	join_war_disabled_trigger = {
+		is_ai = yes
+		is_rebel_country = no
+		is_subject = no
+		tag = JAP
+		current_year >= 1635
+		current_year <= 1853
+		exists = scope:second_leader
+		NOT = { is_neighbor_of = scope:second_leader }
+		scope:second_leader = {
+			capital ?= {
+				NOT = { region = region:japan_region }
+			}
+		}
+	}
+}
+
+oe_ai2_jwr_late_antiquity_theater_lock = {
+	join_war_disabled_trigger = {
+		is_ai = yes
+		is_rebel_country = no
+		is_subject = no
+		current_year < 1000
+		exists = scope:first_leader
+		exists = scope:second_leader
+		NOT = { is_neighbor_of = scope:first_leader }
+		NOT = { is_neighbor_of = scope:second_leader }
+		"border_distance_to(scope:second_leader)" > 900
+	}
+}

@@ -1,0 +1,1067 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+
+# 1. Commission the 8-Peak Anatolian Beacon Chain (Phryktoria)
+oe_wp32_dec_anatolian_beacon_chain = {
+	decision_category = infrastructure_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		oe_wp32_owns_beacon_corridor = yes
+		NOT = { has_variable = oe_wp32_beacon_chain_chartered }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 160
+		owns = location:constantinople
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 300 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:laborers } }
+	option = {
+		name = oe_wp32_dec_anatolian_beacon_chain.a
+		effect = {
+			set_variable = { name = oe_wp32_beacon_chain_chartered value = 1 }
+			add_gold = -160
+			add_country_modifier = { modifier = oe_wp32_mod_beacon_chain_active years = 40 mode = replace }
+			every_owned_location = {
+				limit = {
+					OR = {
+						this = location:tarsus
+				this = location:nigde
+				this = location:aksaray
+				this = location:konya
+				this = location:emirdag
+				this = location:kutahya
+				this = location:iznik
+				this = location:izmit
+					}
+					NOT = { has_building = building_type:oe_wp32_gp_phryktoria_beacon }
+					can_build_building = building_type:oe_wp32_gp_phryktoria_beacon
+				}
+				construct_building = {
+					building_type = building_type:oe_wp32_gp_phryktoria_beacon
+					owner = root
+					instant = yes
+					cost_multiplier = 0.25
+					cost_multiplier_reason = "oe_wp32_beacon_chain_reason"
+				}
+			}
+			trigger_event_non_silently = { id = oe_wp32_gp.1 days = 2 }
+		}
+	}
+}
+
+# 2. Establish Gregoras Chora Academy & Observatory
+oe_wp32_dec_gregoras_chora_academy = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns = location:constantinople
+		NOT = { has_variable = oe_wp32_charter_chora }
+	}
+	allow = {
+		is_rebel_country = no
+		gold >= 100
+		owns = location:constantinople
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 220 } add = 25 }
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:clergy background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_dec_gregoras_chora_academy.a
+		effect = {
+			set_variable = { name = oe_wp32_charter_chora value = 1 }
+			add_gold = -100
+			trigger_event_non_silently = { id = oe_wp32_flavor.4 days = 2 }
+		}
+	}
+}
+
+# 3. Charter Imperial Palace & Capital Great Projects (Projects #2-#9)
+oe_wp32_dec_charter_capital_projects = {
+	decision_category = infrastructure_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns = location:constantinople
+		NOT = { has_variable = oe_wp32_charter_capital }
+	}
+	allow = {
+		is_rebel_country = no
+		gold >= 120
+		stability >= 5
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 260 } add = 25 }
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:burghers_estate } }
+	option = {
+		name = oe_wp32_dec_charter_capital_projects.a
+		effect = {
+			set_variable = { name = oe_wp32_charter_capital value = 1 }
+			add_gold = -120
+			add_prestige = 8
+			custom_tooltip = oe_wp32_dec_charter_capital_projects_tt
+		}
+	}
+}
+
+# 4. Charter Roman Highways & Frontier Fortress Great Projects (Projects #11-#16, #25-#27)
+oe_wp32_dec_charter_frontier_projects = {
+	decision_category = infrastructure_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		NOT = { has_variable = oe_wp32_charter_frontiers }
+	}
+	allow = {
+		is_rebel_country = no
+		gold >= 120
+		OR = {
+			owns = location:thessaloniki
+			owns = location:plovdiv
+			owns = location:iznik
+			owns = location:tarsus
+			owns = location:trebizond
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 260 } add = 22 }
+	}
+	illustration_tags = { 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:laborers } }
+	option = {
+		name = oe_wp32_dec_charter_frontier_projects.a
+		effect = {
+			set_variable = { name = oe_wp32_charter_frontiers value = 1 }
+			add_gold = -120
+			add_army_tradition = 5
+			custom_tooltip = oe_wp32_dec_charter_frontier_projects_tt
+		}
+	}
+}
+
+# 5. Charter Mediterranean, Hellenic & Apostolic Great Projects (Projects #17-#24, #28)
+oe_wp32_dec_charter_mediterranean_projects = {
+	decision_category = infrastructure_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		NOT = { has_variable = oe_wp32_charter_mediterranean }
+	}
+	allow = {
+		is_rebel_country = no
+		gold >= 120
+		OR = {
+			owns = location:athens
+			owns = location:corinth
+			owns = location:mount_athos
+			owns = location:smyrna
+			owns = location:rome
+			owns = location:candia
+			owns = location:rodos
+			owns = location:syracuse
+			owns = location:jerusalem
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 260 } add = 22 }
+	}
+	illustration_tags = { 10 = exterior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:burghers_estate } }
+	option = {
+		name = oe_wp32_dec_charter_mediterranean_projects.a
+		effect = {
+			set_variable = { name = oe_wp32_charter_mediterranean value = 1 }
+			add_gold = -120
+			add_prestige = 8
+			custom_tooltip = oe_wp32_dec_charter_mediterranean_projects_tt
+		}
+	}
+}
+
+# 6. Host the Quadrennial Hippodrome Chariot Games (Blues vs Greens)
+oe_wp32_dec_host_hippodrome_games = {
+	decision_category = country_specific_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns = location:constantinople
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 60
+		NOT = { has_variable = oe_wp32_hippo_cd }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 200 stability < 20 } add = 18 }
+	}
+	illustration_tags = { 10 = exterior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:burghers_estate background = estate_type:nobles_estate } }
+	option = {
+		name = oe_wp32_dec_host_hippodrome_games.a
+		effect = {
+			set_variable = { name = oe_wp32_hippo_cd value = 1 years = 4 }
+			add_gold = -60
+			trigger_event_non_silently = { id = oe_wp32_hippodrome.1 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_thrace_hellas = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:constantinople
+		NOT = { has_variable = oe_wp32_triumph_thrace_hellas_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:constantinople
+		any_owned_location = { area = area:thrace_area count >= 3 }
+		any_owned_location = { area = area:macedonia_area count >= 3 }
+		any_owned_location = { area = area:northern_greece_area count >= 3 }
+		any_owned_location = { area = area:morea_area count >= 3 }
+		any_owned_location = { area = area:aegean_archipelago_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_thrace_hellas.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_thrace_hellas_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 15
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_anatolia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:ankara
+		NOT = { has_variable = oe_wp32_triumph_anatolia_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:ankara
+		any_owned_location = { region = region:anatolia_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_anatolia.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_anatolia_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 18
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_pontus_crimea = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:trebizond
+		NOT = { has_variable = oe_wp32_triumph_pontus_crimea_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:trebizond
+		any_owned_location = { area = area:pontus_area count >= 3 }
+		any_owned_location = { area = area:crimea_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_pontus_crimea.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_pontus_crimea_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 12
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_illyricum = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:belgrad
+		NOT = { has_variable = oe_wp32_triumph_illyricum_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:belgrad
+		any_owned_location = { area = area:serbia_area count >= 3 }
+		any_owned_location = { area = area:bosnia_area count >= 3 }
+		any_owned_location = { area = area:croatia_area count >= 3 }
+		any_owned_location = { area = area:slavonia_area count >= 3 }
+		any_owned_location = { area = area:albania_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_illyricum.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_illyricum_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 15
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_dacia_moesia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:tarnovo
+		NOT = { has_variable = oe_wp32_triumph_dacia_moesia_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:tarnovo
+		any_owned_location = { area = area:bulgaria_area count >= 3 }
+		any_owned_location = { area = area:wallachia_area count >= 3 }
+		any_owned_location = { area = area:moldavia_area count >= 3 }
+		any_owned_location = { area = area:transylvania_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_dacia_moesia.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_dacia_moesia_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 15
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_carpathia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:buda
+		NOT = { has_variable = oe_wp32_triumph_carpathia_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:buda
+		any_owned_location = { region = region:carpathia_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_carpathia.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_carpathia_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 15
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_armenia_caucasus = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:erzurum
+		NOT = { has_variable = oe_wp32_triumph_armenia_caucasus_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:erzurum
+		any_owned_location = { area = area:armenia_area count >= 3 }
+		any_owned_location = { area = area:armenian_highlands_area count >= 3 }
+		any_owned_location = { area = area:georgia_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_armenia_caucasus.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_armenia_caucasus_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 15
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_levant = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:antioch
+		NOT = { has_variable = oe_wp32_triumph_levant_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:antioch
+		any_owned_location = { area = area:levant_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_levant.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_levant_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 16
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_mesopotamia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:baghdad
+		NOT = { has_variable = oe_wp32_triumph_mesopotamia_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:baghdad
+		any_owned_location = { area = area:jazira_area count >= 3 }
+		any_owned_location = { area = area:iraq_arabi_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_mesopotamia.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_mesopotamia_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 16
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_persia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:isfahan
+		NOT = { has_variable = oe_wp32_triumph_persia_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:isfahan
+		any_owned_location = { region = region:persia_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_persia.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_persia_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 20
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_egypt = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:alexandria
+		NOT = { has_variable = oe_wp32_triumph_egypt_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:alexandria
+		any_owned_location = { region = region:egypt_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_egypt.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_egypt_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 18
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_cyrenaica_tripoli = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:tripoli
+		NOT = { has_variable = oe_wp32_triumph_cyrenaica_tripoli_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:tripoli
+		any_owned_location = { area = area:cyrenaica_area count >= 3 }
+		any_owned_location = { area = area:tripolitania_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_cyrenaica_tripoli.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_cyrenaica_tripoli_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 12
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_africa = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:tunis
+		NOT = { has_variable = oe_wp32_triumph_africa_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:tunis
+		any_owned_location = { area = area:tunis_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_africa.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_africa_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 14
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_mauretania = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:algiers
+		NOT = { has_variable = oe_wp32_triumph_mauretania_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:algiers
+		any_owned_location = { area = area:algiers_area count >= 3 }
+		any_owned_location = { area = area:morocco_area count >= 3 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_mauretania.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_mauretania_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 14
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_arabia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:medina
+		NOT = { has_variable = oe_wp32_triumph_arabia_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:medina
+		any_owned_location = { region = region:arabia_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_arabia.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_arabia_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 15
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_italia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:rome
+		NOT = { has_variable = oe_wp32_triumph_italia_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:rome
+		any_owned_location = { region = region:italy_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_italia.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_italia_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 20
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_hispania = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:toledo
+		NOT = { has_variable = oe_wp32_triumph_hispania_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:toledo
+		any_owned_location = { region = region:iberia_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_hispania.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_hispania_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 18
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_gallia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:paris
+		NOT = { has_variable = oe_wp32_triumph_gallia_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:paris
+		any_owned_location = { region = region:france_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_gallia.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_gallia_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 18
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_germania = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:trier
+		NOT = { has_variable = oe_wp32_triumph_germania_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:trier
+		any_owned_location = { region = region:south_german_region count >= 8 }
+		any_owned_location = { region = region:north_german_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_germania.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_germania_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 20
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}
+
+
+oe_wp32_triumph_britannia = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp32_is_byz_host = yes
+		owns_or_non_sovereign_subject_owns = location:london
+		NOT = { has_variable = oe_wp32_triumph_britannia_done }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		gold >= 100
+		owns_or_non_sovereign_subject_owns = location:london
+		any_owned_location = { region = region:great_britain_region count >= 8 }
+	}
+	ai_will_do = {
+		value = 0
+		if = { limit = { gold >= 250 at_war = no } add = 30 }
+	}
+	illustration_tags = { 10 = happy 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp32_triumph_britannia.a
+		effect = {
+			set_variable = { name = oe_wp32_triumph_britannia_done value = 1 }
+			add_gold = -100
+			add_army_tradition = 18
+			add_prestige = 20
+			add_legitimacy = 5
+			add_country_modifier = { modifier = oe_wp32_mod_roman_triumph years = 20 mode = replace }
+			hidden_effect = {
+				if = { limit = { has_variable = oe_wp32_triumphs_count } change_variable = { name = oe_wp32_triumphs_count add = 1 } }
+				else = { set_variable = { name = oe_wp32_triumphs_count value = 1 } }
+			}
+			trigger_event_non_silently = { id = oe_wp32_flavor.5 days = 2 }
+		}
+	}
+}

@@ -254,7 +254,23 @@ oe_aip_obj_ming_qing_joseon_tribute = {
 	recipient_priority = 50
 
 	pause_trigger = {
-		scope:actor = { is_at_war_with = scope:recipient }
+		scope:actor = {
+			OR = {
+				is_at_war_with = scope:recipient
+				AND = {
+					country_exists = c:MNG
+					is_at_war_with = c:MNG
+				}
+				AND = {
+					country_exists = c:MCH
+					is_at_war_with = c:MCH
+				}
+				AND = {
+					country_exists = c:CHI
+					is_at_war_with = c:CHI
+				}
+			}
+		}
 	}
 
 	cancel_trigger = {
@@ -496,5 +512,86 @@ oe_aip_obj_nanyang_celestial_ties = {
 	improve_relation = yes
 	improve_relation_limit = 110
 	antagonise = no
+	max_allowed = 2
+}
+
+# 11. Early Modern European Balance of Power (1648-1821): when FRA or SPA reaches >= 120 locations in Europe,
+# GBR/ENG, HAB, PRU, RUS, and NED cultivate defensive balance-of-power relations with each other
+oe_aip_obj_early_modern_euro_balance = {
+	days_between_checks = 360
+
+	actor_trigger = {
+		oe_aip_ai_active = yes
+		current_year >= 1648
+		current_year <= 1821
+		OR = {
+			tag = GBR
+			tag = ENG
+			tag = HAB
+			tag = PRU
+			tag = RUS
+			tag = NED
+		}
+		OR = {
+			AND = {
+				country_exists = c:FRA
+				NOT = { is_allied_with = { target = c:FRA } }
+				c:FRA = {
+					is_subject = no
+					any_owned_location = {
+						continent = continent:europe
+						count >= 120
+					}
+				}
+			}
+			AND = {
+				country_exists = c:SPA
+				NOT = { is_allied_with = { target = c:SPA } }
+				c:SPA = {
+					is_subject = no
+					any_owned_location = {
+						continent = continent:europe
+						count >= 120
+					}
+				}
+			}
+		}
+	}
+
+	recipient_trigger = {
+		scope:recipient = {
+			is_rebel_country = no
+			is_subject = no
+			OR = {
+				tag = GBR
+				tag = ENG
+				tag = HAB
+				tag = PRU
+				tag = RUS
+				tag = NED
+			}
+			NOT = { this = scope:actor }
+			NOT = { is_rival_of = scope:actor }
+			NOT = { is_at_war_with = scope:actor }
+			"opinion(scope:actor)" < 120
+		}
+	}
+
+	recipient_priority = 58
+
+	pause_trigger = {
+		scope:actor = { is_at_war_with = scope:recipient }
+	}
+
+	cancel_trigger = {
+		OR = {
+			current_year > 1821
+			scope:actor = { is_rival_of = scope:recipient }
+		}
+	}
+
+	improve_relation = yes
+	improve_relation_limit = 120
+	defensive_support = yes
 	max_allowed = 2
 }

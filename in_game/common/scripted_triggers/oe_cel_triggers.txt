@@ -11,13 +11,17 @@ oe_cel_is_celestial_emperor = {
 	is_leader_of_international_organization = international_organization:middle_kingdom
 }
 
-# Track 1: Great Yuan (CHI / YUA or a Mongolian culture).
+# Track 1: Great Yuan (CHI / YUA or a Mongolian culture; never Manchu/Jurchen Qing or Han Ming).
 oe_cel_is_yuan_track = {
 	oe_cel_is_celestial_emperor = yes
 	OR = {
 		global_var:oe_cel_track_override ?= 1
 		AND = {
 			NOT = { has_global_variable = oe_cel_track_override }
+			NOT = { culture ?= { has_culture_group = culture_group:jurchen_group } }
+			NOT = { culture ?= { has_culture_group = culture_group:chinese_group } }
+			NOT = { has_or_had_tag = MCH }
+			NOT = { has_or_had_tag = MNG }
 			OR = {
 				tag = CHI
 				tag = YUA
@@ -36,9 +40,11 @@ oe_cel_is_han_ming_track = {
 			NOT = { has_global_variable = oe_cel_track_override }
 			NOT = { oe_cel_is_yuan_track = yes }
 			NOT = { tag = MCH }
+			NOT = { has_or_had_tag = MCH }
 			NOT = { culture ?= { has_culture_group = culture_group:jurchen_group } }
 			OR = {
 				tag = MNG
+				has_or_had_tag = MNG
 				tag = WUU
 				tag = CSH
 				tag = SNG
@@ -49,7 +55,7 @@ oe_cel_is_han_ming_track = {
 	}
 }
 
-# Track 3: Qing and Manchu.
+# Track 3: Qing and Manchu (covers MCH, MCH->CHI, and Jurchen-culture Qing tags such as 1821 Qing).
 oe_cel_is_manchu_qing_track = {
 	oe_cel_is_celestial_emperor = yes
 	OR = {
@@ -59,6 +65,7 @@ oe_cel_is_manchu_qing_track = {
 			NOT = { oe_cel_is_yuan_track = yes }
 			OR = {
 				tag = MCH
+				has_or_had_tag = MCH
 				tag = JEC
 				tag = HNE
 				culture ?= { has_culture_group = culture_group:jurchen_group }

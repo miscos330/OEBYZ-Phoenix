@@ -448,3 +448,194 @@ oe_ai2_tim_persia_transoxiana_depth = {
 		multiply = 85
 	}
 }
+
+# 13. Qing (MCH / post-1644 CHI): prioritize existential unification of China proper against MNG and regional rivals (1644-1690)
+oe_ai2_qing_ming_existential_target = {
+	attacker_potential = {
+		oe_ai2_ready_for_expansion = yes
+		current_year >= 1644
+		current_year <= 1690
+		OR = {
+			tag = MCH
+			AND = {
+				tag = CHI
+				OR = {
+					has_or_had_tag = MCH
+					country_exists = c:MNG
+				}
+			}
+		}
+	}
+	candidate_list = {
+		if = {
+			limit = {
+				country_exists = c:MNG
+				c:MNG = {
+					is_rebel_country = no
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+				}
+			}
+			c:MNG = { add_to_list = source }
+		}
+		every_neighbor_country = {
+			limit = {
+				is_rebel_country = no
+				NOT = { is_subject_of = root }
+				NOT = { is_allied_with = { target = root } }
+				any_owned_location = {
+					OR = {
+						region = region:north_china_region
+						region = region:east_china_region
+						region = region:south_china_region
+						region = region:west_china_region
+					}
+				}
+			}
+			add_to_list = source
+		}
+	}
+	score = {
+		add = scope:target.country_tax_base
+		multiply = 10
+		add = 30
+		if = {
+			limit = { scope:target = { tag = MNG } }
+			add = 80
+		}
+	}
+	sort_value = {
+		add = scope:target.country_tax_base
+		multiply = 100
+		if = {
+			limit = { scope:target = { tag = MNG } }
+			add = 120
+		}
+	}
+}
+
+# 14. Ming (MNG): reciprocal counter-offensive targeting Qing (MCH/CHI) and China proper reunification (1644-1690)
+oe_ai2_ming_counter_qing_target = {
+	attacker_potential = {
+		oe_ai2_ready_for_expansion = yes
+		tag = MNG
+		current_year >= 1644
+		current_year <= 1690
+		OR = {
+			country_exists = c:MCH
+			country_exists = c:CHI
+		}
+	}
+	candidate_list = {
+		if = {
+			limit = {
+				country_exists = c:MCH
+				c:MCH = {
+					is_rebel_country = no
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+				}
+			}
+			c:MCH = { add_to_list = source }
+		}
+		if = {
+			limit = {
+				country_exists = c:CHI
+				c:CHI = {
+					is_rebel_country = no
+					NOT = { is_subject_of = root }
+					NOT = { is_allied_with = { target = root } }
+				}
+			}
+			c:CHI = { add_to_list = source }
+		}
+		every_neighbor_country = {
+			limit = {
+				is_rebel_country = no
+				NOT = { is_subject_of = root }
+				NOT = { is_allied_with = { target = root } }
+				any_owned_location = {
+					OR = {
+						region = region:north_china_region
+						region = region:east_china_region
+						region = region:south_china_region
+						region = region:west_china_region
+					}
+				}
+			}
+			add_to_list = source
+		}
+	}
+	score = {
+		add = scope:target.country_tax_base
+		multiply = 10
+		add = 28
+		if = {
+			limit = {
+				scope:target = {
+					OR = {
+						tag = MCH
+						tag = CHI
+					}
+				}
+			}
+			add = 75
+		}
+	}
+	sort_value = {
+		add = scope:target.country_tax_base
+		multiply = 95
+		if = {
+			limit = {
+				scope:target = {
+					OR = {
+						tag = MCH
+						tag = CHI
+					}
+				}
+			}
+			add = 110
+		}
+	}
+}
+
+# 15. Inner Asian Steppe Khanates (geographic trigger: Mongolia/Xinjiang capitals, 1450+; zero submod tag deps)
+oe_ai2_steppe_inner_asia_focus = {
+	attacker_potential = {
+		oe_ai2_ready_for_expansion = yes
+		current_year >= 1450
+		capital ?= {
+			OR = {
+				region = region:mongolia_region
+				region = region:xinjiang_region
+			}
+		}
+	}
+	candidate_list = {
+		every_neighbor_country = {
+			limit = {
+				is_rebel_country = no
+				NOT = { is_subject_of = root }
+				NOT = { is_allied_with = { target = root } }
+				any_owned_location = {
+					OR = {
+						region = region:mongolia_region
+						region = region:xinjiang_region
+						region = region:tibet_region
+						region = region:steppes_region
+					}
+				}
+			}
+			add_to_list = source
+		}
+	}
+	score = {
+		add = scope:target.country_tax_base
+		multiply = 8
+		add = 24
+	}
+	sort_value = {
+		add = scope:target.country_tax_base
+		multiply = 85
+	}
+}

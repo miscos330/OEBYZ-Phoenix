@@ -1,0 +1,150 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+# ------------------------------------------------------------------------------
+# Late-Game Imperial Disaster 1: The Four Courts Crisis (Palace / Senate / Synod / Army)
+# ------------------------------------------------------------------------------
+oe_wp32_four_courts_crisis = {
+	image = "gfx/interface/illustrations/disaster/oe_wp32_four_courts_crisis.dds"
+	monthly_spawn_chance = monthly_spawn_chance_low
+	fire_only_once = yes
+
+	can_start = {
+		oe_wp32_is_byz_host = yes
+		is_subject = no
+		has_any_active_disaster = no
+		current_year >= 1450
+		num_locations >= 60
+		NOT = { has_variable = oe_wp32_fc_resolved_forever }
+		OR = {
+			stability < 15
+			legitimacy < 55
+			war_exhaustion >= 6
+		}
+	}
+
+	can_end = {
+		OR = {
+			NOT = { oe_wp32_is_byz_host = yes }
+			AND = {
+				stability >= 20
+				legitimacy >= 65
+				trigger_if = {
+					limit = { has_variable = oe_wp32_fc_steps }
+					var:oe_wp32_fc_steps >= 3
+				}
+				trigger_else = { always = no }
+			}
+		}
+	}
+
+	modifier = {
+		tax_income_efficiency = -0.14
+		country_cabinet_efficiency = -0.10
+		monthly_legitimacy = -0.12
+		monthly_rebel_growth = 0.004
+		nobles_estate_target_satisfaction = -0.08
+		clergy_estate_target_satisfaction = -0.06
+	}
+
+	on_start = {
+		set_variable = { name = oe_wp32_fc_steps value = 0 }
+		trigger_event_non_silently = oe_wp32_crisis.1
+	}
+
+	on_monthly = {
+		random_list = {
+			5 = { custom_tooltip = an_event_occurs_tt }
+			95 = { custom_tooltip = no_event_occurs_tt }
+		}
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_variable = oe_wp32_ev_cd } }
+				random_list = {
+					94 = { }
+					2 = { trigger_event_silently = oe_wp32_crisis.2 }
+					2 = { trigger_event_silently = oe_wp32_crisis.3 }
+					2 = { trigger_event_silently = oe_wp32_crisis.4 }
+				}
+			}
+		}
+	}
+
+	on_end = {
+		set_variable = { name = oe_wp32_fc_resolved_forever value = 1 }
+		add_country_modifier = { modifier = oe_wp32_mod_fc_concord_triumph years = 25 mode = replace }
+		trigger_event_non_silently = oe_wp32_crisis.5
+	}
+}
+
+# ------------------------------------------------------------------------------
+# Late-Game Imperial Disaster 2: Praetorian / Varangian Guard Throne Auction
+# ------------------------------------------------------------------------------
+oe_wp32_guard_auction_crisis = {
+	image = "gfx/interface/illustrations/disaster/oe_wp32_guard_auction_crisis.dds"
+	monthly_spawn_chance = monthly_spawn_chance_low
+	fire_only_once = yes
+
+	can_start = {
+		oe_wp32_is_byz_host = yes
+		is_subject = no
+		has_any_active_disaster = no
+		current_year >= 1420
+		num_locations >= 35
+		NOT = { has_variable = oe_wp32_ga_resolved_forever }
+		OR = {
+			legitimacy < 50
+			has_regent = yes
+		}
+	}
+
+	can_end = {
+		OR = {
+			NOT = { oe_wp32_is_byz_host = yes }
+			AND = {
+				legitimacy >= 65
+				stability >= 15
+				trigger_if = {
+					limit = { has_variable = oe_wp32_ga_steps }
+					var:oe_wp32_ga_steps >= 2
+				}
+				trigger_else = { always = no }
+			}
+		}
+	}
+
+	modifier = {
+		monthly_legitimacy = -0.15
+		army_maintenance_efficiency = -0.15
+		monthly_rebel_growth = 0.005
+		stability_cost_efficiency = -0.15
+		court_spending_efficiency = -0.12
+	}
+
+	on_start = {
+		set_variable = { name = oe_wp32_ga_steps value = 0 }
+		trigger_event_non_silently = oe_wp32_crisis.6
+	}
+
+	on_monthly = {
+		random_list = {
+			5 = { custom_tooltip = an_event_occurs_tt }
+			95 = { custom_tooltip = no_event_occurs_tt }
+		}
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_variable = oe_wp32_ev_cd } }
+				random_list = {
+					96 = { }
+					2 = { trigger_event_silently = oe_wp32_crisis.7 }
+					2 = { trigger_event_silently = oe_wp32_crisis.8 }
+				}
+			}
+		}
+	}
+
+	on_end = {
+		set_variable = { name = oe_wp32_ga_resolved_forever value = 1 }
+		add_country_modifier = { modifier = oe_wp32_mod_ga_guard_disciplined years = 25 mode = replace }
+		trigger_event_non_silently = oe_wp32_crisis.9
+	}
+}

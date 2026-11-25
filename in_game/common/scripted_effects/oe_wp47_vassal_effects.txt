@@ -1,0 +1,500 @@
+﻿# Project Phoenix v36.0 WP47: Imperial Mass Vassal Directives, Theme Escheatment & Praecepta Militaria Rework (oe_wp47_, 0 vanilla overrides, pure-additive).
+# Inspired by Ananeosis Autokratorias and Praecepta Militaria. Edit gen_v360_wp47_imperial_vassal_praecepta.py, not this file.
+
+# Initialize all WP47 country counters cleanly (R12 compliant).
+oe_wp47_init_vars = {
+	if = {
+		limit = { NOT = { has_variable = oe_wp47_active_directive_id } }
+		set_variable = { name = oe_wp47_active_directive_id value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = oe_wp47_directive_count } }
+		set_variable = { name = oe_wp47_directive_count value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = oe_wp47_ai_directive_count } }
+		set_variable = { name = oe_wp47_ai_directive_count value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = oe_wp47_player_directive_count } }
+		set_variable = { name = oe_wp47_player_directive_count value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = oe_wp47_praecepta_mobilize_count } }
+		set_variable = { name = oe_wp47_praecepta_mobilize_count value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = oe_wp47_ai_praecepta_count } }
+		set_variable = { name = oe_wp47_ai_praecepta_count value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = oe_wp47_player_praecepta_count } }
+		set_variable = { name = oe_wp47_player_praecepta_count value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = oe_wp47_escheat_count } }
+		set_variable = { name = oe_wp47_escheat_count value = 0 }
+	}
+}
+
+# Subject scope: strip all 6 mutually exclusive WP47 subject directive modifiers.
+oe_wp47_clear_subject_directives = {
+	if = {
+		limit = { has_country_modifier = oe_wp47_dir_imperial_taxation }
+		remove_country_modifier = oe_wp47_dir_imperial_taxation
+	}
+	if = {
+		limit = { has_country_modifier = oe_wp47_dir_frontier_mobilization }
+		remove_country_modifier = oe_wp47_dir_frontier_mobilization
+	}
+	if = {
+		limit = { has_country_modifier = oe_wp47_dir_faith_mission }
+		remove_country_modifier = oe_wp47_dir_faith_mission
+	}
+	if = {
+		limit = { has_country_modifier = oe_wp47_dir_cultural_integration }
+		remove_country_modifier = oe_wp47_dir_cultural_integration
+	}
+	if = {
+		limit = { has_country_modifier = oe_wp47_dir_frontier_fortification }
+		remove_country_modifier = oe_wp47_dir_frontier_fortification
+	}
+	if = {
+		limit = { has_country_modifier = oe_wp47_dir_imperial_appeasement }
+		remove_country_modifier = oe_wp47_dir_imperial_appeasement
+	}
+}
+
+# Overlord scope: strip overlord-side WP47 directive modifiers cleanly.
+oe_wp47_clear_overlord_directives = {
+	if = {
+		limit = { has_country_modifier = oe_wp47_overlord_imperial_taxation }
+		remove_country_modifier = oe_wp47_overlord_imperial_taxation
+	}
+	if = {
+		limit = { has_country_modifier = oe_wp47_overlord_imperial_appeasement }
+		remove_country_modifier = oe_wp47_overlord_imperial_appeasement
+	}
+}
+
+# Directive 1: Imperial Directive: Fiscal Levy
+oe_wp47_apply_directive_imperial_taxation = {
+	if = {
+		limit = { is_rebel_country = no }
+		oe_wp47_init_vars = yes
+		oe_wp47_clear_overlord_directives = yes
+		save_temporary_scope_as = wp47_overlord
+		set_variable = { name = oe_wp47_active_directive_id value = 1 }
+		set_variable = { name = oe_wp47_directive_cd value = 1 years = 5 }
+		if = {
+			limit = { has_variable = oe_wp47_directive_count }
+			change_variable = { name = oe_wp47_directive_count add = 1 }
+		}
+		else = {
+			set_variable = { name = oe_wp47_directive_count value = 1 }
+		}
+		if = {
+			limit = { is_ai = yes }
+			if = {
+				limit = { has_variable = oe_wp47_ai_directive_count }
+				change_variable = { name = oe_wp47_ai_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_ai_directive_count value = 1 }
+			}
+		}
+		else = {
+			if = {
+				limit = { has_variable = oe_wp47_player_directive_count }
+				change_variable = { name = oe_wp47_player_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_player_directive_count value = 1 }
+			}
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_overlord_imperial_taxation
+			years = 5
+			mode = replace
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			oe_wp47_clear_subject_directives = yes
+			add_country_modifier = {
+				modifier = oe_wp47_dir_imperial_taxation
+				years = 5
+				mode = replace
+			}
+			add_liberty_desire = liberty_desire_weak_plus
+		}
+	}
+}
+
+# Directive 2: Imperial Directive: Frontier Mobilization
+oe_wp47_apply_directive_frontier_mobilization = {
+	if = {
+		limit = { is_rebel_country = no }
+		oe_wp47_init_vars = yes
+		oe_wp47_clear_overlord_directives = yes
+		save_temporary_scope_as = wp47_overlord
+		set_variable = { name = oe_wp47_active_directive_id value = 2 }
+		set_variable = { name = oe_wp47_directive_cd value = 1 years = 5 }
+		if = {
+			limit = { has_variable = oe_wp47_directive_count }
+			change_variable = { name = oe_wp47_directive_count add = 1 }
+		}
+		else = {
+			set_variable = { name = oe_wp47_directive_count value = 1 }
+		}
+		if = {
+			limit = { is_ai = yes }
+			if = {
+				limit = { has_variable = oe_wp47_ai_directive_count }
+				change_variable = { name = oe_wp47_ai_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_ai_directive_count value = 1 }
+			}
+		}
+		else = {
+			if = {
+				limit = { has_variable = oe_wp47_player_directive_count }
+				change_variable = { name = oe_wp47_player_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_player_directive_count value = 1 }
+			}
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			oe_wp47_clear_subject_directives = yes
+			add_country_modifier = {
+				modifier = oe_wp47_dir_frontier_mobilization
+				years = 5
+				mode = replace
+			}
+		}
+	}
+}
+
+# Directive 3: Imperial Directive: State Faith Mission
+oe_wp47_apply_directive_faith_mission = {
+	if = {
+		limit = { is_rebel_country = no }
+		oe_wp47_init_vars = yes
+		oe_wp47_clear_overlord_directives = yes
+		save_temporary_scope_as = wp47_overlord
+		set_variable = { name = oe_wp47_active_directive_id value = 3 }
+		set_variable = { name = oe_wp47_directive_cd value = 1 years = 5 }
+		if = {
+			limit = { has_variable = oe_wp47_directive_count }
+			change_variable = { name = oe_wp47_directive_count add = 1 }
+		}
+		else = {
+			set_variable = { name = oe_wp47_directive_count value = 1 }
+		}
+		if = {
+			limit = { is_ai = yes }
+			if = {
+				limit = { has_variable = oe_wp47_ai_directive_count }
+				change_variable = { name = oe_wp47_ai_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_ai_directive_count value = 1 }
+			}
+		}
+		else = {
+			if = {
+				limit = { has_variable = oe_wp47_player_directive_count }
+				change_variable = { name = oe_wp47_player_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_player_directive_count value = 1 }
+			}
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			oe_wp47_clear_subject_directives = yes
+			add_country_modifier = {
+				modifier = oe_wp47_dir_faith_mission
+				years = 5
+				mode = replace
+			}
+		}
+	}
+}
+
+# Directive 4: Imperial Directive: Cultural Integration
+oe_wp47_apply_directive_cultural_integration = {
+	if = {
+		limit = { is_rebel_country = no }
+		oe_wp47_init_vars = yes
+		oe_wp47_clear_overlord_directives = yes
+		save_temporary_scope_as = wp47_overlord
+		set_variable = { name = oe_wp47_active_directive_id value = 4 }
+		set_variable = { name = oe_wp47_directive_cd value = 1 years = 5 }
+		if = {
+			limit = { has_variable = oe_wp47_directive_count }
+			change_variable = { name = oe_wp47_directive_count add = 1 }
+		}
+		else = {
+			set_variable = { name = oe_wp47_directive_count value = 1 }
+		}
+		if = {
+			limit = { is_ai = yes }
+			if = {
+				limit = { has_variable = oe_wp47_ai_directive_count }
+				change_variable = { name = oe_wp47_ai_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_ai_directive_count value = 1 }
+			}
+		}
+		else = {
+			if = {
+				limit = { has_variable = oe_wp47_player_directive_count }
+				change_variable = { name = oe_wp47_player_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_player_directive_count value = 1 }
+			}
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			oe_wp47_clear_subject_directives = yes
+			add_country_modifier = {
+				modifier = oe_wp47_dir_cultural_integration
+				years = 5
+				mode = replace
+			}
+		}
+	}
+}
+
+# Directive 5: Imperial Directive: Frontier Fortification
+oe_wp47_apply_directive_frontier_fortification = {
+	if = {
+		limit = { is_rebel_country = no }
+		oe_wp47_init_vars = yes
+		oe_wp47_clear_overlord_directives = yes
+		save_temporary_scope_as = wp47_overlord
+		set_variable = { name = oe_wp47_active_directive_id value = 5 }
+		set_variable = { name = oe_wp47_directive_cd value = 1 years = 5 }
+		if = {
+			limit = { has_variable = oe_wp47_directive_count }
+			change_variable = { name = oe_wp47_directive_count add = 1 }
+		}
+		else = {
+			set_variable = { name = oe_wp47_directive_count value = 1 }
+		}
+		if = {
+			limit = { is_ai = yes }
+			if = {
+				limit = { has_variable = oe_wp47_ai_directive_count }
+				change_variable = { name = oe_wp47_ai_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_ai_directive_count value = 1 }
+			}
+		}
+		else = {
+			if = {
+				limit = { has_variable = oe_wp47_player_directive_count }
+				change_variable = { name = oe_wp47_player_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_player_directive_count value = 1 }
+			}
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			oe_wp47_clear_subject_directives = yes
+			add_country_modifier = {
+				modifier = oe_wp47_dir_frontier_fortification
+				years = 5
+				mode = replace
+			}
+		}
+	}
+}
+
+# Directive 6: Imperial Directive: Conciliation & Appeasement
+oe_wp47_apply_directive_imperial_appeasement = {
+	if = {
+		limit = { is_rebel_country = no }
+		oe_wp47_init_vars = yes
+		oe_wp47_clear_overlord_directives = yes
+		save_temporary_scope_as = wp47_overlord
+		set_variable = { name = oe_wp47_active_directive_id value = 6 }
+		set_variable = { name = oe_wp47_directive_cd value = 1 years = 5 }
+		if = {
+			limit = { has_variable = oe_wp47_directive_count }
+			change_variable = { name = oe_wp47_directive_count add = 1 }
+		}
+		else = {
+			set_variable = { name = oe_wp47_directive_count value = 1 }
+		}
+		if = {
+			limit = { is_ai = yes }
+			if = {
+				limit = { has_variable = oe_wp47_ai_directive_count }
+				change_variable = { name = oe_wp47_ai_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_ai_directive_count value = 1 }
+			}
+		}
+		else = {
+			if = {
+				limit = { has_variable = oe_wp47_player_directive_count }
+				change_variable = { name = oe_wp47_player_directive_count add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_wp47_player_directive_count value = 1 }
+			}
+		}
+		add_gold = -60
+		add_prestige = -5
+		add_country_modifier = {
+			modifier = oe_wp47_overlord_imperial_appeasement
+			years = 5
+			mode = replace
+		}
+		every_subject = {
+			limit = { oe_wp47_is_eligible_subject = yes }
+			oe_wp47_clear_subject_directives = yes
+			add_country_modifier = {
+				modifier = oe_wp47_dir_imperial_appeasement
+				years = 5
+				mode = replace
+			}
+			add_liberty_desire = liberty_desire_mild_minus
+			add_opinion = {
+				target = scope:wp47_overlord
+				modifier = oe_wp47_bias_imperial_appeasement
+			}
+		}
+	}
+}
+
+# Shared telemetry helper for Praecepta Militaria mobilizations (R12 compliant).
+oe_wp47_record_praecepta_mobilize = {
+	oe_wp47_init_vars = yes
+	if = {
+		limit = { has_variable = oe_wp47_praecepta_mobilize_count }
+		change_variable = { name = oe_wp47_praecepta_mobilize_count add = 1 }
+	}
+	else = {
+		set_variable = { name = oe_wp47_praecepta_mobilize_count value = 1 }
+	}
+	if = {
+		limit = { is_ai = yes }
+		if = {
+			limit = { has_variable = oe_wp47_ai_praecepta_count }
+			change_variable = { name = oe_wp47_ai_praecepta_count add = 1 }
+		}
+		else = {
+			set_variable = { name = oe_wp47_ai_praecepta_count value = 1 }
+		}
+	}
+	else = {
+		if = {
+			limit = { has_variable = oe_wp47_player_praecepta_count }
+			change_variable = { name = oe_wp47_player_praecepta_count add = 1 }
+		}
+		else = {
+			set_variable = { name = oe_wp47_player_praecepta_count value = 1 }
+		}
+	}
+}
+
+# Praecepta Mobilization 1: Mobilize the Thematic Fleet
+oe_wp47_apply_mobilize_thematic_fleet = {
+	if = {
+		limit = { is_rebel_country = no }
+		oe_wp47_record_praecepta_mobilize = yes
+		set_variable = { name = oe_wp47_fleet_cd value = 1 years = 5 }
+		add_gold = -75
+		add_navy_tradition = 5
+		add_sailors = {
+			value = monthly_sailors
+			multiply = 12
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_mobilized_thematic_fleet
+			years = 5
+			mode = replace
+		}
+	}
+}
+
+# Praecepta Mobilization 2: Muster the Imperial Tagmata
+oe_wp47_apply_muster_tagmata = {
+	if = {
+		limit = { is_rebel_country = no }
+		oe_wp47_record_praecepta_mobilize = yes
+		set_variable = { name = oe_wp47_tagmata_cd value = 1 years = 5 }
+		add_gold = -90
+		add_army_tradition = 5
+		add_manpower = {
+			value = monthly_manpower
+			multiply = 6
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_mustered_tagmata
+			years = 5
+			mode = replace
+		}
+	}
+}
+
+# Praecepta Mobilization 3: Patronize Imperial Roads & Monasteries
+oe_wp47_apply_patronize_roads_monasteries = {
+	if = {
+		limit = { is_rebel_country = no }
+		oe_wp47_record_praecepta_mobilize = yes
+		save_temporary_scope_as = wp47_patron
+		set_variable = { name = oe_wp47_roads_cd value = 1 years = 5 }
+		add_gold = -100
+		add_prestige = 6
+		add_legitimacy = 4
+		if = {
+			limit = { country_has_estate = estate_type:clergy_estate }
+			add_estate_satisfaction = {
+				type = estate_type:clergy_estate
+				value = 0.08
+			}
+		}
+		add_country_modifier = {
+			modifier = oe_wp47_mod_patronized_roads_monasteries
+			years = 5
+			mode = replace
+		}
+		location:constantinople ?= {
+			if = {
+				limit = { has_owner = yes owner ?= scope:wp47_patron }
+				change_prosperity = 0.05
+				change_control = 0.05
+			}
+		}
+		location:thessaloniki ?= {
+			if = {
+				limit = { has_owner = yes owner ?= scope:wp47_patron }
+				change_prosperity = 0.05
+				change_control = 0.05
+			}
+		}
+		location:mount_athos ?= {
+			if = {
+				limit = { has_owner = yes owner ?= scope:wp47_patron }
+				change_prosperity = 0.05
+			}
+		}
+		location:trikala ?= {
+			if = {
+				limit = { has_owner = yes owner ?= scope:wp47_patron }
+				change_prosperity = 0.05
+			}
+		}
+	}
+}

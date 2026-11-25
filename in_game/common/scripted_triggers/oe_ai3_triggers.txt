@@ -9,8 +9,10 @@ oe_ai3_active_guard = {
 }
 
 # Country scope. Healthy independent AI eligible for AI 3.0 personality adaptation.
+# Era-gated (>= 1200) and strictly yields to austerity, Sakoku, Celestial, Gunpowder & Imperial Restorer personalities.
 oe_ai3_ai_healthy_base = {
 	oe_ai3_active_guard = yes
+	current_year >= 1200
 	is_ai = yes
 	is_rebel_country = no
 	is_subject = no
@@ -19,6 +21,10 @@ oe_ai3_ai_healthy_base = {
 	war_exhaustion < 8
 	stability >= -10
 	NOT = { ai_personality = ai_personality:oe_ai2_fiscal_austerity }
+	NOT = { ai_personality = ai_personality:oe_ai2_sakoku_guardian }
+	NOT = { ai_personality = ai_personality:oe_aip_celestial_suzerain }
+	NOT = { ai_personality = ai_personality:oe_aip_gunpowder_conqueror }
+	NOT = { ai_personality = ai_personality:oe_aip_imperial_restorer }
 }
 
 # Country scope. Great Power or major regional pole (player or AI).
@@ -36,6 +42,24 @@ oe_ai3_is_industrial_modernizer_fit = {
 	oe_ai3_ai_healthy_base = yes
 	current_year >= 1650
 	num_locations >= 18
+	NOT = {
+		AND = {
+			tag = JAP
+			current_year >= 1635
+			current_year <= 1853
+		}
+	}
+	NOT = {
+		AND = {
+			current_year >= 1644
+			current_year <= 1685
+			OR = {
+				tag = CHI
+				tag = MNG
+				tag = MCH
+			}
+		}
+	}
 	OR = {
 		has_embraced_institution = institution:manufactories
 		has_embraced_institution = institution:scientific_revolution
@@ -46,7 +70,27 @@ oe_ai3_is_industrial_modernizer_fit = {
 # Country scope. Fit for Maritime Thalassocrat AI 3.0 personality.
 oe_ai3_is_maritime_thalassocrat_fit = {
 	oe_ai3_ai_healthy_base = yes
+	current_year >= 1450
 	num_of_ports >= 8
+	NOT = {
+		AND = {
+			tag = JAP
+			current_year >= 1635
+			current_year <= 1853
+		}
+	}
+	NOT = {
+		AND = {
+			current_year >= 1644
+			OR = {
+				tag = MCH
+				AND = {
+					tag = CHI
+					has_or_had_tag = MCH
+				}
+			}
+		}
+	}
 	OR = {
 		navy_size >= 25
 		has_colonial_charters = yes
@@ -57,10 +101,26 @@ oe_ai3_is_maritime_thalassocrat_fit = {
 	}
 }
 
-# Country scope. Fit for Balance-of-Power Arbiter AI 3.0 personality.
+# Country scope. Fit for Balance-of-Power Arbiter AI 3.0 personality (1648+ European/Mediterranean Concert sphere only).
 oe_ai3_is_balance_arbiter_fit = {
 	oe_ai3_ai_healthy_base = yes
+	current_year >= 1648
 	is_great_power = yes
+	OR = {
+		oe_aip_is_concert_member = yes
+		capital ?= {
+			OR = {
+				continent = continent:europe
+				region = region:anatolia_region
+			}
+		}
+	}
+	NOT = { oe_cel_is_celestial_emperor = yes }
+	NOT = { tag = CHI }
+	NOT = { tag = MNG }
+	NOT = { tag = MCH }
+	NOT = { tag = JAP }
+	NOT = { tag = KOR }
 	any_rival = {
 		is_rebel_country = no
 		is_great_power = yes
@@ -71,7 +131,19 @@ oe_ai3_is_balance_arbiter_fit = {
 # Country scope. Fit for Silk Road Unifier AI 3.0 personality.
 oe_ai3_is_silk_road_unifier_fit = {
 	oe_ai3_ai_healthy_base = yes
+	current_year >= 1200
 	num_locations >= 25
+	NOT = {
+		AND = {
+			current_year >= 1644
+			current_year <= 1685
+			OR = {
+				tag = CHI
+				tag = MNG
+				tag = MCH
+			}
+		}
+	}
 	OR = {
 		has_presence_in = region:persia_region
 		has_presence_in = region:khorasan_region

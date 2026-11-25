@@ -7,7 +7,7 @@
 # 1. Pax Romana Truce Arbitration
 oe_con_res_pax_romana_arbitration = {
 	international_organization_type = oe_byz_roman_world
-	show_message = no
+	show_message = yes
 
 	potential = {
 		NOT = { oe_con_rule_is_off = yes }
@@ -23,8 +23,13 @@ oe_con_res_pax_romana_arbitration = {
 			international_organization:oe_byz_roman_world = {
 				resolution_is_active = resolution:oe_con_res_pax_romana_arbitration
 			}
-			international_organization:oe_byz_roman_world = {
-				NOT = { has_variable = oe_con_res_pax_romana_arbitration_cd }
+			AND = {
+				scope:actor ?= {
+					is_leader_of_international_organization = international_organization:oe_byz_roman_world
+				}
+				international_organization:oe_byz_roman_world = {
+					NOT = { has_variable = oe_con_res_pax_romana_arbitration_cd }
+				}
 			}
 		}
 	}
@@ -56,7 +61,7 @@ oe_con_res_pax_romana_arbitration = {
 
 	proposal_price = price:oe_con_propose_roman_price
 	months = 6
-	ai_tick = monthly
+	ai_tick = never
 
 	select_trigger = {
 		looking_for_a = international_organization
@@ -93,6 +98,7 @@ oe_con_res_pax_romana_arbitration = {
 		custom_tooltip = {
 			text = oe_con_tt_pax_romana_truces
 			scope:recipient = {
+				leader_country ?= { save_scope_as = oe_con_pax_leader }
 				every_international_organization_member = {
 					limit = {
 						is_rebel_country = no
@@ -103,26 +109,33 @@ oe_con_res_pax_romana_arbitration = {
 						years = 10
 						mode = replace
 					}
-					save_scope_as = oe_con_pax_a
-					scope:recipient = {
-						every_international_organization_member = {
-							limit = {
-								is_rebel_country = no
-								num_locations > 0
-								NOT = { this = scope:oe_con_pax_a }
-								NOT = { is_subject_of = scope:oe_con_pax_a }
-								NOT = { is_at_war_with = scope:oe_con_pax_a }
-								NOT = { has_truce_with = scope:oe_con_pax_a }
-								OR = {
-									is_rival_of = scope:oe_con_pax_a
-									is_enemy_of = scope:oe_con_pax_a
-									opinion = { target = scope:oe_con_pax_a value < 0 }
+					if = {
+						limit = {
+							exists = scope:oe_con_pax_leader
+							is_subject_of = scope:oe_con_pax_leader
+						}
+						save_scope_as = oe_con_pax_a
+						scope:recipient = {
+							every_international_organization_member = {
+								limit = {
+									is_rebel_country = no
+									num_locations > 0
+									is_subject_of = scope:oe_con_pax_leader
+									NOT = { this = scope:oe_con_pax_a }
+									NOT = { is_subject_of = scope:oe_con_pax_a }
+									NOT = { is_at_war_with = scope:oe_con_pax_a }
+									NOT = { has_truce_with = scope:oe_con_pax_a }
+									OR = {
+										is_rival_of = scope:oe_con_pax_a
+										is_enemy_of = scope:oe_con_pax_a
+										opinion = { target = scope:oe_con_pax_a value < 0 }
+									}
 								}
-							}
-							add_truce_with = {
-								target = scope:oe_con_pax_a
-								years = 8
-								mutual = yes
+								add_truce_with = {
+									target = scope:oe_con_pax_a
+									years = 8
+									mutual = yes
+								}
 							}
 						}
 					}
@@ -194,7 +207,7 @@ oe_con_res_pax_romana_arbitration = {
 oe_con_res_imperial_joint_embargo = {
 	international_organization_type = oe_byz_roman_world
 	show_target_in_tooltip = yes
-	show_message = no
+	show_message = yes
 
 	potential = {
 		NOT = { oe_con_rule_is_off = yes }
@@ -210,8 +223,13 @@ oe_con_res_imperial_joint_embargo = {
 			international_organization:oe_byz_roman_world = {
 				resolution_is_active = resolution:oe_con_res_imperial_joint_embargo
 			}
-			international_organization:oe_byz_roman_world = {
-				NOT = { has_variable = oe_con_res_imperial_joint_embargo_cd }
+			AND = {
+				scope:actor ?= {
+					is_leader_of_international_organization = international_organization:oe_byz_roman_world
+				}
+				international_organization:oe_byz_roman_world = {
+					NOT = { has_variable = oe_con_res_imperial_joint_embargo_cd }
+				}
 			}
 		}
 	}
@@ -422,7 +440,7 @@ oe_con_res_imperial_joint_embargo = {
 # 3. Ecumenical Defense Mobilization
 oe_con_res_ecumenical_defense_levy = {
 	international_organization_type = oe_byz_roman_world
-	show_message = no
+	show_message = yes
 
 	potential = {
 		NOT = { oe_con_rule_is_off = yes }
@@ -438,13 +456,18 @@ oe_con_res_ecumenical_defense_levy = {
 			international_organization:oe_byz_roman_world = {
 				resolution_is_active = resolution:oe_con_res_ecumenical_defense_levy
 			}
-			international_organization:oe_byz_roman_world = {
-				NOT = { has_variable = oe_con_res_ecumenical_defense_levy_cd }
-				OR = {
-					total_members >= 3
-					any_international_organization_member = {
-						is_rebel_country = no
-						at_war = yes
+			AND = {
+				scope:actor ?= {
+					is_leader_of_international_organization = international_organization:oe_byz_roman_world
+				}
+				international_organization:oe_byz_roman_world = {
+					NOT = { has_variable = oe_con_res_ecumenical_defense_levy_cd }
+					OR = {
+						total_members >= 3
+						any_international_organization_member = {
+							is_rebel_country = no
+							at_war = yes
+						}
 					}
 				}
 			}
@@ -590,7 +613,7 @@ oe_con_res_ecumenical_defense_levy = {
 oe_con_res_roman_frontier_jurisdiction = {
 	international_organization_type = oe_byz_roman_world
 	show_target_in_tooltip = yes
-	show_message = no
+	show_message = yes
 
 	potential = {
 		NOT = { oe_con_rule_is_off = yes }
@@ -606,8 +629,13 @@ oe_con_res_roman_frontier_jurisdiction = {
 			international_organization:oe_byz_roman_world = {
 				resolution_is_active = resolution:oe_con_res_roman_frontier_jurisdiction
 			}
-			international_organization:oe_byz_roman_world = {
-				NOT = { has_variable = oe_con_res_roman_frontier_jurisdiction_cd }
+			AND = {
+				scope:actor ?= {
+					is_leader_of_international_organization = international_organization:oe_byz_roman_world
+				}
+				international_organization:oe_byz_roman_world = {
+					NOT = { has_variable = oe_con_res_roman_frontier_jurisdiction_cd }
+				}
 			}
 		}
 	}

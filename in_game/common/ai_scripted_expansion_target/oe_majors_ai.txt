@@ -102,6 +102,61 @@ oe_mai_tur_beylik_balkan_targets = {
     }
 }
 
+# 2b. TUR (1501+ Early Modern): keep Ottoman AI sharp across Balkans, Danube, Caucasus, Levant & Egypt.
+oe_mai_tur_early_modern_targets = {
+    attacker_potential = {
+        oe_mai_tur_early_modern_active = yes
+        stability >= 0
+        at_war = no
+    }
+    candidate_list = {
+        every_neighbor_country = {
+            limit = {
+                is_rebel_country = no
+                NOT = { is_subject_of = root }
+                NOT = { is_allied_with = { target = root } }
+                any_owned_location = {
+                    OR = {
+                        region = region:balkan_region
+                        region = region:carpathia_region
+                        region = region:caucasus_region
+                        region = region:egypt_region
+                        area = area:levant_area
+                        area = area:jazira_area
+                        area = area:iraq_arabi_area
+                    }
+                }
+            }
+            add_to_list = source
+        }
+    }
+    score = {
+        add = scope:target.country_tax_base
+        multiply = 7
+        add = 24
+        if = {
+            limit = {
+                scope:target = {
+                    any_owned_location = {
+                        OR = {
+                            region = region:carpathia_region
+                            region = region:caucasus_region
+                            region = region:egypt_region
+                            area = area:levant_area
+                        }
+                    }
+                }
+            }
+            add = 18
+        }
+    }
+    sort_value = {
+        add = scope:target.country_tax_base
+        multiply = 48
+        add = 22
+    }
+}
+
 # 3. CHI (Great Yuan): prioritize Red Turban / China core pacification (respects oe_rule_yuan_ai_assist).
 oe_mai_chi_core_pacification_targets = {
     attacker_potential = {

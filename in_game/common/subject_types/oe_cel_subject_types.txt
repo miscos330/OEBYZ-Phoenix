@@ -206,7 +206,6 @@ oe_cel_grand_duhu = {
 		global_max_control = 0.05
 		loyalty_to_overlord = 10
 	}
-
 	creation_visible = {
 		oe_cel_is_celestial_emperor = yes
 	}
@@ -216,11 +215,21 @@ oe_cel_grand_duhu = {
 			NOT = { is_subject_type = oe_yp_xingsheng }
 			NOT = { is_subject_type = oe_yp_frontier }
 		}
+		NOT = {
+			AND = {
+				is_ai = yes
+				oe_cel_is_manchu_qing_track = yes
+				current_year < 1690
+				scope:target ?= {
+					culture ?= { has_culture_group = culture_group:mongolian_group }
+					capital ?= { sub_continent = sub_continent:east_asia }
+				}
+			}
+		}
 	}
 	visible_through_diplomacy = { always = no }
 	enabled_through_diplomacy = { always = no }
 	visible_through_treaty = { always = no }
-
 	on_enable = {
 		set_variable = { name = oe_name_full_title value = 1 }
 		set_variable = { name = oe_cel_named_duhu value = 1 }

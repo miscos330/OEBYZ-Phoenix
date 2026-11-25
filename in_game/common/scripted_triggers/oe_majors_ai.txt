@@ -24,7 +24,7 @@ oe_mai_byz_recovery_ready = {
     NOT = { has_active_disaster = disaster_type:oe_byzantine_intrigue }
 }
 
-# 2. TUR focused on Anatolian Beyliks & Balkan foothold.
+# 2a. TUR focused on Anatolian Beyliks & Balkan foothold during Rise of the Ottomans (<= 1500).
 oe_mai_tur_expansion_active = {
     is_ai = yes
     is_rebel_country = no
@@ -36,12 +36,23 @@ oe_mai_tur_expansion_active = {
     }
 }
 
-# 3. CHI Great Yuan AI stabilization active (respects oe_rule_yuan_ai_assist).
+# 2b. TUR early-modern imperial theater focus (1501+: Balkans, Danube, Caucasus, Levant & Egypt).
+oe_mai_tur_early_modern_active = {
+    is_ai = yes
+    is_rebel_country = no
+    is_subject = no
+    tag = TUR
+    current_year > 1500
+}
+
+# 3. CHI Great Yuan AI stabilization active (pre-1500 non-Manchu Yuan ONLY; respects oe_rule_yuan_ai_assist).
 oe_mai_chi_assist_active = {
     is_ai = yes
     is_rebel_country = no
     is_subject = no
     tag = CHI
+    current_year < 1500
+    NOT = { has_or_had_tag = MCH }
     NOT = { oe_rule_is_yuan_ai_off = yes }
     oe_yp_yuan_fallen = no
 }
@@ -190,7 +201,7 @@ oe_heg_ai_hegemon_high_entropy = {
     }
 }
 
-# Country scope: belongs to the 12 Great Powers roster (plus key regional coalition counterweights).
+# Country scope: belongs to the 12 Great Powers roster (plus key regional & early-modern coalition counterweights).
 oe_heg_ai_is_major_12 = {
     OR = {
         tag = BYZ
@@ -215,6 +226,12 @@ oe_heg_ai_is_major_12 = {
         tag = GBR
         tag = MUG
         tag = BAH
+        tag = MNG
+        tag = MCH
+        tag = PRU
+        tag = SWE
+        tag = NED
+        tag = JAP
     }
 }
 

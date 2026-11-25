@@ -1,0 +1,83 @@
+﻿# Project Phoenix v36.0 WP47: Imperial Mass Vassal Directives, Theme Escheatment & Praecepta Militaria Rework (oe_wp47_, 0 vanilla overrides, pure-additive).
+# Inspired by Ananeosis Autokratorias and Praecepta Militaria. Edit gen_v360_wp47_imperial_vassal_praecepta.py, not this file.
+
+# Country scope: ANY non-rebel nation with at least 2 subjects (works in 1337 AND all 1204-1821 eras).
+oe_wp47_is_eligible_overlord = {
+	is_rebel_country = no
+	num_subjects >= 2
+}
+
+# Country scope: non-rebel subject eligible for empire-wide mass directives.
+oe_wp47_is_eligible_subject = {
+	is_rebel_country = no
+	is_subject = yes
+}
+
+# Country scope: subject currently holding any WP47 mass directive modifier.
+oe_wp47_has_active_directive_mod = {
+	OR = {
+		has_country_modifier = oe_wp47_dir_imperial_taxation
+		has_country_modifier = oe_wp47_dir_frontier_mobilization
+		has_country_modifier = oe_wp47_dir_faith_mission
+		has_country_modifier = oe_wp47_dir_cultural_integration
+		has_country_modifier = oe_wp47_dir_frontier_fortification
+		has_country_modifier = oe_wp47_dir_imperial_appeasement
+	}
+}
+
+# Country scope: Roman / Byzantine imperial host for Praecepta Militaria (R10 rebel-safe, ELR-isolated).
+oe_wp47_is_byz_praecepta_host = {
+	is_rebel_country = no
+	NOT = { has_variable = oe_ely_is_elysia }
+	NOT = { has_variable = oe_ely_is_nova_elysia }
+	NOT = { has_variable = oe_ely_voyager }
+	OR = {
+		has_or_had_tag = BYZ
+		has_or_had_tag = ROM
+	}
+}
+
+# Country scope: imperial overlord eligible for Theme Escheatment (BYZ/ROM or Imperial Theme/Bureaucracy reforms).
+oe_wp47_is_escheat_overlord = {
+	is_rebel_country = no
+	NOT = { has_variable = oe_ely_is_elysia }
+	NOT = { has_variable = oe_ely_is_nova_elysia }
+	NOT = { has_variable = oe_ely_voyager }
+	OR = {
+		has_or_had_tag = BYZ
+		has_or_had_tag = ROM
+		has_reform = government_reform:oe_byz_theme_system_reform
+		has_reform = government_reform:oe_byz_goodsystem
+		has_reform = government_reform:theme_system
+		has_reform = government_reform:bureaucratized_administration
+		has_reform = government_reform:oe_wp47_reform_tagmata_scholae
+	}
+}
+
+# Country scope: subject type eligible for Imperial Theme Escheatment upon heirless ruler death.
+oe_wp47_is_escheatable_subject_type = {
+	is_rebel_country = no
+	is_subject = yes
+	OR = {
+		is_subject_type = vassal
+		is_subject_type = fiefdom
+		is_subject_type = pronoia
+		is_subject_type = oe_empire_theme
+		is_subject_type = oe_empire_theme_naval
+		is_subject_type = oe_empire_theme_administrative
+		is_subject_type = oe_empire_theme_frontier
+		is_subject_type = oe_empire_theme_italian
+		is_subject_type = oe_empire_theme_latin
+		is_subject_type = oe_roman_march
+	}
+}
+
+# Country scope: holds at least one Praecepta Militaria military reform.
+oe_wp47_has_any_praecepta_reform = {
+	OR = {
+		has_reform = government_reform:oe_wp47_reform_tagmata_scholae
+		has_reform = government_reform:oe_wp47_reform_klibanophoroi
+		has_reform = government_reform:oe_wp47_reform_varangian_guard
+		has_reform = government_reform:oe_wp47_reform_thematic_navy
+	}
+}

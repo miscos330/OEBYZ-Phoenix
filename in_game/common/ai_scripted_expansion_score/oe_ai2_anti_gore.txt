@@ -328,3 +328,108 @@ oe_ai2_steppe_persia_anti_distant = {
 		add = -260
 	}
 }
+
+# R10. JAP (1635-1853 Sakoku Era): hard block overseas offensive wars outside the Japanese home islands
+oe_ai2_sakoku_overseas_restraint = {
+	attacker_potential = {
+		oe_ai2_ai_base = yes
+		tag = JAP
+		current_year >= 1635
+		current_year <= 1853
+	}
+	target_trigger = {
+		capital ?= {
+			NOT = { region = region:japan_region }
+		}
+	}
+	never_attack = {
+		always = yes
+	}
+}
+
+# R11. CHI / MNG / MCH (1644-1685 Ming-Qing Unification War): suppress peripheral distractions in Tibet/Indochina/Japan/Korea
+oe_ai2_ming_qing_no_distraction = {
+	attacker_potential = {
+		oe_ai2_ai_base = yes
+		current_year >= 1644
+		current_year <= 1685
+		OR = {
+			tag = CHI
+			tag = MNG
+			tag = MCH
+		}
+		OR = {
+			country_exists = c:MNG
+			country_exists = c:MCH
+		}
+	}
+	target_trigger = {
+		capital ?= {
+			OR = {
+				region = region:tibet_region
+				region = region:indochina_region
+				region = region:japan_region
+				region = region:korea_region
+			}
+		}
+	}
+	multiplier = {
+		add = -0.85
+	}
+	score = {
+		add = -320
+	}
+}
+
+# R12. New World Colonial Subjects: focus exclusively on the Americas, stop declaring trans-oceanic wars
+oe_ai2_colonial_subject_continent_focus = {
+	attacker_potential = {
+		is_ai = yes
+		is_rebel_country = no
+		is_subject = yes
+		capital ?= { continent = continent:america }
+	}
+	target_trigger = {
+		capital ?= {
+			NOT = { continent = continent:america }
+		}
+	}
+	multiplier = {
+		add = -0.90
+	}
+	score = {
+		add = -400
+	}
+}
+
+# R13. Late Antiquity & Early Middle Ages (< 1000): suppress absurd non-neighbor cross-continental wars
+oe_ai2_late_antiquity_anti_cross_continent = {
+	attacker_potential = {
+		oe_ai2_ai_base = yes
+		current_year < 1000
+		exists = capital
+	}
+	target_trigger = {
+		NOT = { is_neighbor_of = scope:attacker }
+		exists = capital
+		OR = {
+			"border_distance_to(scope:attacker)" > 900
+			AND = {
+				scope:attacker = { exists = capital }
+				NOT = { capital.continent = scope:attacker.capital.continent }
+				capital ?= {
+					NOT = { region = region:maghreb_region }
+					NOT = { region = region:egypt_region }
+					NOT = { region = region:anatolia_region }
+					NOT = { region = region:crescent_region }
+				}
+			}
+		}
+	}
+	multiplier = {
+		add = -0.90
+	}
+	score = {
+		add = -400
+	}
+}

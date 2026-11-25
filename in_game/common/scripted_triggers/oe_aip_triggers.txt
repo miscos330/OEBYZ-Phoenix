@@ -53,7 +53,7 @@ oe_aip_ready_for_expansion = {
 }
 
 # Country scope. Master gate before Slot 95 may shift an AI's personality.
-# STRICT YIELD: NEVER overwrites oe_ai2_fiscal_austerity or any country under fiscal crisis / high debt!
+# STRICT YIELD: NEVER overwrites oe_ai2_fiscal_austerity, oe_ai2_sakoku_guardian, or any country under fiscal crisis / high debt!
 oe_aip_can_shift_personality = {
 	oe_aip_personality_enabled = yes
 	is_ai = yes
@@ -65,6 +65,7 @@ oe_aip_can_shift_personality = {
 	is_during_bankruptcy = no
 	num_loans < 4
 	NOT = { ai_personality = ai_personality:oe_ai2_fiscal_austerity }
+	NOT = { ai_personality = ai_personality:oe_ai2_sakoku_guardian }
 	war_exhaustion < 8
 	stability >= -10
 }
@@ -170,17 +171,35 @@ oe_aip_elig_thalassocracy_hegemon = {
 	}
 }
 
-# 3. Celestial Suzerain (reigning Celestial Emperor outside severe crisis)
+# 3. Celestial Suzerain (reigning Celestial Emperor outside severe crisis; pauses during 1644-1685 Ming-Qing war)
 oe_aip_elig_celestial_suzerain = {
 	oe_cel_is_celestial_emperor = yes
 	war_exhaustion < 6
 	stability >= -5
+	NOT = {
+		AND = {
+			current_year >= 1644
+			current_year <= 1685
+			country_exists = c:MNG
+			OR = {
+				tag = MCH
+				tag = CHI
+			}
+		}
+	}
 }
 
-# 4. Gunpowder Conqueror (1440-1740 gunpowder surge powers or Military Hegemon)
+# 4. Gunpowder Conqueror (1440-1740 gunpowder surge powers, 1644-1685 Qing unification war, or Military Hegemon; excludes Edo JAP)
 oe_aip_elig_gunpowder_conqueror = {
 	war_exhaustion < 4
 	stability >= 0
+	NOT = {
+		AND = {
+			tag = JAP
+			current_year >= 1603
+			current_year <= 1853
+		}
+	}
 	OR = {
 		AND = {
 			current_year >= 1440
@@ -190,19 +209,51 @@ oe_aip_elig_gunpowder_conqueror = {
 				tag = TIM
 				tag = MUG
 				tag = ODA
-				tag = JAP
 				tag = PRU
+				AND = {
+					tag = JAP
+					current_year < 1603
+				}
+			}
+		}
+		AND = {
+			current_year >= 1644
+			current_year <= 1685
+			OR = {
+				tag = MCH
+				AND = {
+					tag = CHI
+					OR = {
+						has_or_had_tag = MCH
+						current_year >= 1644
+					}
+				}
+			}
+			OR = {
+				at_war = yes
+				country_exists = c:MNG
 			}
 		}
 		oe_heg2_is_mil_hegemon = yes
 	}
 }
 
-# 5. Enlightened Reformer (1660+ stable high-rank powers embracing early modern institutions)
+# 5. Enlightened Reformer (1660+ stable high-rank powers embracing early modern institutions; pauses during Ming-Qing war)
 oe_aip_elig_enlightened_reformer = {
 	current_year >= 1660
 	stability >= 15
 	war_exhaustion < 4
+	NOT = {
+		AND = {
+			current_year >= 1644
+			current_year <= 1685
+			country_exists = c:MNG
+			OR = {
+				tag = MCH
+				tag = CHI
+			}
+		}
+	}
 	OR = {
 		is_great_power = yes
 		country_rank_level >= 3
@@ -214,14 +265,21 @@ oe_aip_elig_enlightened_reformer = {
 	}
 }
 
-# 6. Concert Balancer (Pentarchy seat holder or balancing great power under high hegemonic tension)
+# 6. Concert Balancer (1648+ Pentarchy seat holder or European/Mediterranean balancing great power under high tension)
 oe_aip_elig_concert_balancer = {
+	current_year >= 1648
 	NOT = { oe_heg2_is_multi_hegemon = yes }
 	OR = {
 		oe_aip_has_concert_pentarchy_seat = yes
 		AND = {
 			oe_heg2_tension_high = yes
 			is_great_power = yes
+			capital ?= {
+				OR = {
+					continent = continent:europe
+					region = region:anatolia_region
+				}
+			}
 		}
 	}
 }

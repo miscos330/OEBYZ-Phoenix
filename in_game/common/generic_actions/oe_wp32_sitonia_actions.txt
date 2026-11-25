@@ -1,0 +1,218 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+# 1. Grain Fleet Convoys
+oe_wp32_sit_grain_convoys = {
+	type = situation
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { scope:actor = { oe_wp32_sitonia_actor = yes } }
+	allow = {
+		scope:actor = {
+			gold >= 60
+		}
+	}
+	cooldown = { type = oe_wp32_sit_convoys_cd years = 4 }
+
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_wp32_sitonia_situation = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_wp32_sitonia_situation = this
+			situation_is_active = yes
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -60
+			add_country_modifier = { modifier = oe_wp32_mod_sit_grain_convoys years = 5 mode = replace }
+		}
+		situation:oe_wp32_sitonia_situation ?= {
+			if = { limit = { has_variable = oe_wp32_sit_granary } change_variable = { name = oe_wp32_sit_granary add = 18 } }
+			else = { set_variable = { name = oe_wp32_sit_granary value = 53 } }
+		}
+		custom_tooltip = oe_wp32_sit_grain_convoys_tt
+	}
+
+	ai_will_do = {
+		value = 25
+	}
+}
+
+# 2. Constantinople Granary Reserve
+oe_wp32_sit_granary_reserve = {
+	type = situation
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { scope:actor = { oe_wp32_sitonia_actor = yes } }
+	allow = {
+		scope:actor = {
+			gold >= 75
+			at_war = no
+		}
+	}
+	cooldown = { type = oe_wp32_sit_granary_cd years = 5 }
+
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_wp32_sitonia_situation = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_wp32_sitonia_situation = this
+			situation_is_active = yes
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -75
+			add_country_modifier = { modifier = oe_wp32_mod_sit_granary_buffer years = 6 mode = replace }
+		}
+		situation:oe_wp32_sitonia_situation ?= {
+			if = { limit = { has_variable = oe_wp32_sit_granary } change_variable = { name = oe_wp32_sit_granary add = 22 } }
+			else = { set_variable = { name = oe_wp32_sit_granary value = 57 } }
+			if = { limit = { has_variable = oe_wp32_sit_tension } change_variable = { name = oe_wp32_sit_tension subtract = 6 } }
+			else = { set_variable = { name = oe_wp32_sit_tension value = 14 } }
+		}
+		custom_tooltip = oe_wp32_sit_granary_reserve_tt
+	}
+
+	ai_will_do = {
+		value = 20
+	}
+}
+
+# 3. Black Sea Tariff Enforcement
+oe_wp32_sit_black_sea_tariff = {
+	type = situation
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { scope:actor = { oe_wp32_sitonia_actor = yes } }
+	allow = {
+		scope:actor = {
+			prestige >= 5
+		}
+	}
+	cooldown = { type = oe_wp32_sit_tariff_cd years = 5 }
+
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_wp32_sitonia_situation = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_wp32_sitonia_situation = this
+			situation_is_active = yes
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = 110
+			add_country_modifier = { modifier = oe_wp32_mod_sit_straits_tariff years = 5 mode = replace }
+		}
+		if = {
+			limit = { country_exists = c:VEN }
+			c:VEN = { add_opinion = { target = scope:actor modifier = oe_wp32_bias_sitonia_tariff } }
+		}
+		if = {
+			limit = { country_exists = c:GEN }
+			c:GEN = { add_opinion = { target = scope:actor modifier = oe_wp32_bias_sitonia_tariff } }
+		}
+		situation:oe_wp32_sitonia_situation ?= {
+			if = { limit = { has_variable = oe_wp32_sit_tension } change_variable = { name = oe_wp32_sit_tension add = 12 } }
+			else = { set_variable = { name = oe_wp32_sit_tension value = 32 } }
+		}
+		custom_tooltip = oe_wp32_sit_black_sea_tariff_tt
+	}
+
+	ai_will_do = {
+		value = 10
+	}
+}
+
+# 4. Emergency Bread Dole
+oe_wp32_sit_emergency_bread_dole = {
+	type = situation
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { scope:actor = { oe_wp32_sitonia_actor = yes } }
+	allow = {
+		scope:actor = { gold >= 40 }
+		custom_tooltip = {
+			text = oe_wp32_sit_need_granary_25_tt
+			situation:oe_wp32_sitonia_situation ?= {
+				trigger_if = {
+					limit = { has_variable = oe_wp32_sit_granary }
+					var:oe_wp32_sit_granary >= 25
+				}
+				trigger_else = { always = no }
+			}
+		}
+	}
+	cooldown = { type = oe_wp32_sit_dole_cd years = 5 }
+
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_wp32_sitonia_situation = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_wp32_sitonia_situation = this
+			situation_is_active = yes
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -40
+			add_stability = 6
+			add_legitimacy = 4
+			add_country_modifier = { modifier = oe_wp32_mod_sit_bread_dole years = 5 mode = replace }
+			location:constantinople ?= {
+				if = { limit = { has_owner = yes owner ?= scope:actor } change_prosperity = 0.06 }
+			}
+		}
+		situation:oe_wp32_sitonia_situation ?= {
+			if = { limit = { has_variable = oe_wp32_sit_granary } change_variable = { name = oe_wp32_sit_granary subtract = 20 } }
+			else = { set_variable = { name = oe_wp32_sit_granary value = 15 } }
+		}
+		custom_tooltip = oe_wp32_sit_emergency_bread_dole_tt
+	}
+
+	ai_will_do = {
+		value = 0
+		if = { limit = { scope:actor = { stability < 15 } } add = 40 }
+	}
+}

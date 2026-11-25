@@ -1,0 +1,102 @@
+﻿# Project Phoenix v36.0 WP47: Imperial Mass Vassal Directives, Theme Escheatment & Praecepta Militaria Rework (oe_wp47_, 0 vanilla overrides, pure-additive).
+# Inspired by Ananeosis Autokratorias and Praecepta Militaria. Edit gen_v360_wp47_imperial_vassal_praecepta.py, not this file.
+
+# Additive hook into vanilla EU5 1.4.9 on_ruler_death (root = country, scope:old_ruler = dead character).
+# Zero vanilla overrides; fires overlord escheatment decision when an eligible theme/vassal dies heirless.
+on_ruler_death = {
+	on_actions = {
+		oe_wp47_on_ruler_death_theme_escheatment
+	}
+}
+
+# Additive hook into vanilla EU5 1.4.9 yearly_country_pulse for administrative court & Praecepta flavor events.
+yearly_country_pulse = {
+	on_actions = {
+		oe_wp47_escheat_court_pulse
+		oe_wp47_praecepta_flavor_pulse
+	}
+}
+
+oe_wp47_on_ruler_death_theme_escheatment = {
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_escheatable_subject_type = yes
+		has_heir = no
+		num_locations > 0
+		NOT = { has_variable = oe_wp47_escheat_recent }
+		trigger_if = {
+			limit = { exists = overlord }
+			overlord = { oe_wp47_is_escheat_overlord = yes }
+		}
+		trigger_else = { always = no }
+	}
+	effect = {
+		set_variable = { name = oe_wp47_escheat_recent years = 10 }
+		save_scope_as = oe_wp47_escheat_subject
+		if = {
+			limit = { exists = overlord }
+			overlord = {
+				trigger_event_non_silently = {
+					id = oe_wp47_escheat.1
+					days = 2
+				}
+			}
+		}
+	}
+}
+
+# Periodic administrative court events for imperial overlords managing themes & vassals (ELR & rebel isolated, 1337 opening throttle).
+oe_wp47_escheat_court_pulse = {
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_escheat_overlord = yes
+		current_year >= 1338
+		num_subjects >= 1
+		NOT = { has_variable = oe_wp47_escheat_court_cd }
+		NOT = { has_variable = oe_wp47_ev_cd }
+	}
+	effect = {
+		oe_wp47_init_vars = yes
+		set_variable = { name = oe_wp47_escheat_court_cd value = 1 years = 6 }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+	random_events = {
+		70 = 0
+		10 = oe_wp47_escheat.2
+		10 = oe_wp47_escheat.3
+		10 = oe_wp47_escheat.4
+		10 = oe_wp47_escheat.5
+	}
+}
+
+# Periodic Praecepta Militaria & Imperial Infrastructure flavor pulse for BYZ/ROM (ELR & rebel isolated, 1337 opening throttle).
+oe_wp47_praecepta_flavor_pulse = {
+	trigger = {
+		is_rebel_country = no
+		oe_wp47_is_byz_praecepta_host = yes
+		current_year >= 1338
+		num_locations > 0
+		NOT = { has_variable = oe_wp47_praecepta_ev_cd }
+		NOT = { has_variable = oe_wp47_ev_cd }
+	}
+	effect = {
+		oe_wp47_init_vars = yes
+		set_variable = { name = oe_wp47_praecepta_ev_cd value = 1 years = 4 }
+		set_variable = { name = oe_wp47_ev_cd value = 1 days = 75 }
+	}
+	random_events = {
+		60 = 0
+		10 = oe_wp47_praecepta.1
+		10 = oe_wp47_praecepta.2
+		10 = oe_wp47_praecepta.3
+		10 = oe_wp47_praecepta.4
+		10 = oe_wp47_praecepta.5
+		10 = oe_wp47_praecepta.6
+		10 = oe_wp47_praecepta.7
+		10 = oe_wp47_praecepta.8
+		10 = oe_wp47_praecepta.9
+		10 = oe_wp47_praecepta.10
+		10 = oe_wp47_praecepta.11
+		10 = oe_wp47_praecepta.12
+	}
+}

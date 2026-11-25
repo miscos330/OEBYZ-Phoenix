@@ -1,0 +1,341 @@
+﻿# Project Phoenix v36.0 WP47: Imperial Mass Vassal Directives, Theme Escheatment & Praecepta Militaria Rework (oe_wp47_, 0 vanilla overrides, pure-additive).
+# Inspired by Ananeosis Autokratorias and Praecepta Militaria. Edit gen_v360_wp47_imperial_vassal_praecepta.py, not this file.
+# 6 Empire-Wide Subject Directives (type = owncountry, available to ANY nation with >= 2 subjects across all eras).
+
+oe_wp47_directive_imperial_taxation = {
+	type = owncountry
+	sound = UI_action_government_generic
+	show_message = no
+
+	potential = {
+		scope:actor = {
+			oe_wp47_is_eligible_overlord = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			num_subjects >= 2
+			custom_tooltip = {
+				text = oe_wp47_directive_ready_tt
+				NOT = { has_variable = oe_wp47_directive_cd }
+			}
+		}
+	}
+
+	cooldown = {
+		type = oe_wp47_mass_directive_cd
+		years = 5
+	}
+
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 24
+	ai_prerequisite = {
+		num_subjects >= 2
+		is_rebel_country = no
+		at_war = no
+		gold < 200
+		NOT = { has_variable = oe_wp47_directive_cd }
+	}
+
+	effect = {
+		custom_tooltip = oe_wp47_directive_imperial_taxation_tt
+		scope:actor = {
+			oe_wp47_apply_directive_imperial_taxation = yes
+		}
+	}
+
+	ai_will_do = {
+		add = 0
+		if = {
+			limit = {
+				scope:actor = {
+					at_war = no
+					gold < 150
+					NOT = { any_subject = { subject_loyalty < 55 } }
+				}
+			}
+			add = 25
+		}
+	}
+}
+
+oe_wp47_directive_frontier_mobilization = {
+	type = owncountry
+	sound = UI_action_government_generic
+	show_message = no
+
+	potential = {
+		scope:actor = {
+			oe_wp47_is_eligible_overlord = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			num_subjects >= 2
+			custom_tooltip = {
+				text = oe_wp47_directive_ready_tt
+				NOT = { has_variable = oe_wp47_directive_cd }
+			}
+		}
+	}
+
+	cooldown = {
+		type = oe_wp47_mass_directive_cd
+		years = 5
+	}
+
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 24
+	ai_prerequisite = {
+		num_subjects >= 2
+		is_rebel_country = no
+		at_war = yes
+		NOT = { has_variable = oe_wp47_directive_cd }
+	}
+
+	effect = {
+		custom_tooltip = oe_wp47_directive_frontier_mobilization_tt
+		scope:actor = {
+			oe_wp47_apply_directive_frontier_mobilization = yes
+		}
+	}
+
+	ai_will_do = {
+		add = 0
+		if = {
+			limit = { scope:actor = { at_war = yes } }
+			add = 40
+		}
+	}
+}
+
+oe_wp47_directive_faith_mission = {
+	type = owncountry
+	sound = UI_action_government_generic
+	show_message = no
+
+	potential = {
+		scope:actor = {
+			oe_wp47_is_eligible_overlord = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			num_subjects >= 2
+			custom_tooltip = {
+				text = oe_wp47_directive_ready_tt
+				NOT = { has_variable = oe_wp47_directive_cd }
+			}
+		}
+	}
+
+	cooldown = {
+		type = oe_wp47_mass_directive_cd
+		years = 5
+	}
+
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 24
+	ai_prerequisite = {
+		num_subjects >= 2
+		is_rebel_country = no
+		at_war = no
+		NOT = { has_variable = oe_wp47_directive_cd }
+	}
+
+	effect = {
+		custom_tooltip = oe_wp47_directive_faith_mission_tt
+		scope:actor = {
+			oe_wp47_apply_directive_faith_mission = yes
+		}
+	}
+
+	ai_will_do = {
+		add = 0
+		if = {
+			limit = {
+				scope:actor = {
+					at_war = no
+					NOT = { any_subject = { subject_loyalty < 45 } }
+				}
+			}
+			add = 12
+		}
+	}
+}
+
+oe_wp47_directive_cultural_integration = {
+	type = owncountry
+	sound = UI_action_government_generic
+	show_message = no
+
+	potential = {
+		scope:actor = {
+			oe_wp47_is_eligible_overlord = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			num_subjects >= 2
+			custom_tooltip = {
+				text = oe_wp47_directive_ready_tt
+				NOT = { has_variable = oe_wp47_directive_cd }
+			}
+		}
+	}
+
+	cooldown = {
+		type = oe_wp47_mass_directive_cd
+		years = 5
+	}
+
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 24
+	ai_prerequisite = {
+		num_subjects >= 2
+		is_rebel_country = no
+		at_war = no
+		NOT = { has_variable = oe_wp47_directive_cd }
+	}
+
+	effect = {
+		custom_tooltip = oe_wp47_directive_cultural_integration_tt
+		scope:actor = {
+			oe_wp47_apply_directive_cultural_integration = yes
+		}
+	}
+
+	ai_will_do = {
+		add = 0
+		if = {
+			limit = {
+				scope:actor = {
+					at_war = no
+					NOT = { any_subject = { subject_loyalty < 45 } }
+				}
+			}
+			add = 14
+		}
+	}
+}
+
+oe_wp47_directive_frontier_fortification = {
+	type = owncountry
+	sound = UI_action_government_generic
+	show_message = no
+
+	potential = {
+		scope:actor = {
+			oe_wp47_is_eligible_overlord = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			num_subjects >= 2
+			custom_tooltip = {
+				text = oe_wp47_directive_ready_tt
+				NOT = { has_variable = oe_wp47_directive_cd }
+			}
+		}
+	}
+
+	cooldown = {
+		type = oe_wp47_mass_directive_cd
+		years = 5
+	}
+
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 24
+	ai_prerequisite = {
+		num_subjects >= 2
+		is_rebel_country = no
+		at_war = yes
+		NOT = { has_variable = oe_wp47_directive_cd }
+	}
+
+	effect = {
+		custom_tooltip = oe_wp47_directive_frontier_fortification_tt
+		scope:actor = {
+			oe_wp47_apply_directive_frontier_fortification = yes
+		}
+	}
+
+	ai_will_do = {
+		add = 0
+		if = {
+			limit = { scope:actor = { is_in_defensive_war = yes } }
+			add = 45
+		}
+	}
+}
+
+oe_wp47_directive_imperial_appeasement = {
+	type = owncountry
+	sound = UI_action_government_generic
+	show_message = no
+
+	potential = {
+		scope:actor = {
+			oe_wp47_is_eligible_overlord = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			num_subjects >= 2
+			gold >= 60
+			prestige >= 5
+			custom_tooltip = {
+				text = oe_wp47_directive_ready_tt
+				NOT = { has_variable = oe_wp47_directive_cd }
+			}
+		}
+	}
+
+	cooldown = {
+		type = oe_wp47_mass_directive_cd
+		years = 5
+	}
+
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 24
+	ai_prerequisite = {
+		num_subjects >= 2
+		is_rebel_country = no
+		gold >= 150
+		prestige >= 10
+		NOT = { has_variable = oe_wp47_directive_cd }
+		any_subject = { subject_loyalty < 45 }
+	}
+
+	effect = {
+		custom_tooltip = oe_wp47_directive_imperial_appeasement_tt
+		scope:actor = {
+			oe_wp47_apply_directive_imperial_appeasement = yes
+		}
+	}
+
+	ai_will_do = {
+		add = 0
+		if = {
+			limit = {
+				scope:actor = {
+					gold >= 150
+					any_subject = { subject_loyalty < 45 }
+				}
+			}
+			add = 50
+		}
+	}
+}

@@ -1,0 +1,188 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+# 1. Armamenton Imperial Armory IO (standardized arms, cataphract panoply & Greek fire stockpiles)
+oe_wp32_armamenton_io = {
+	has_target = no
+	unique = yes
+	has_leader_country = yes
+	leader_type = character
+	leader_change_trigger_type = none
+	leader_change_method = none
+	disband_if_no_leader = no
+	show_leave_message = no
+	show_on_diplomatic_map = no
+	diplomatic_capacity_cost = 0
+	subject_limited = no
+	expel_members_who_are_targets_of_other_members = no
+	background_texture = "gfx/interface/illustrations/international_organization_types/oe_wp32_armamenton_io.dds"
+
+	leader = {
+		leader_country ?= {
+			ruler ?= { add_to_list = leaders }
+		}
+	}
+
+	create_visible_trigger = { always = no }
+	invite_visible_trigger = { always = no }
+	join_visible_trigger = { always = no }
+	can_declare_war = { always = yes }
+
+	can_lead_trigger = { oe_wp32_is_byz_host = yes }
+	can_join_trigger = { oe_wp32_is_byz_host = yes }
+	can_leave_trigger = { always = no }
+	auto_leave_trigger = { NOT = { oe_wp32_is_byz_host = yes } }
+	auto_disband_trigger = {
+		OR = {
+			NOT = { exists = leader_country }
+			leader_country ?= { NOT = { oe_wp32_is_byz_host = yes } }
+		}
+	}
+
+	variables = {
+		oe_wp32_amt_techne = {
+			min = 0
+			max = 100
+			start = 30
+			monthly_change_hidden = yes
+		}
+		oe_wp32_amt_apotheke = {
+			min = 0
+			max = 100
+			start = 30
+			monthly_change_hidden = yes
+		}
+	}
+
+	leader_modifier = {
+		army_heavy_cavalry_power = 0.03
+		fort_maintenance_efficiency = 0.03
+	}
+
+	ai_desire_to_join = { value = 0 }
+	ai_desire_to_allow_new_member = { value = 0 }
+}
+
+# 2. Pronoia Land Registry IO (Sekreton ton Praktikon — cadastre audits & charistikion balance)
+oe_wp32_pronoia_registry_io = {
+	has_target = no
+	unique = yes
+	has_leader_country = yes
+	leader_type = character
+	leader_change_trigger_type = none
+	leader_change_method = none
+	disband_if_no_leader = no
+	show_leave_message = no
+	show_on_diplomatic_map = no
+	diplomatic_capacity_cost = 0
+	subject_limited = no
+	expel_members_who_are_targets_of_other_members = no
+	background_texture = "gfx/interface/illustrations/international_organization_types/oe_wp32_pronoia_registry_io.dds"
+
+	leader = {
+		leader_country ?= {
+			ruler ?= { add_to_list = leaders }
+		}
+	}
+
+	create_visible_trigger = { always = no }
+	invite_visible_trigger = { always = no }
+	join_visible_trigger = { always = no }
+	can_declare_war = { always = yes }
+
+	can_lead_trigger = { oe_wp32_is_byz_host = yes }
+	can_join_trigger = { oe_wp32_is_byz_host = yes }
+	can_leave_trigger = { always = no }
+	auto_leave_trigger = { NOT = { oe_wp32_is_byz_host = yes } }
+	auto_disband_trigger = {
+		OR = {
+			NOT = { exists = leader_country }
+			leader_country ?= { NOT = { oe_wp32_is_byz_host = yes } }
+		}
+	}
+
+	variables = {
+		oe_wp32_pnr_akribeia = {
+			min = 0
+			max = 100
+			start = 40
+			monthly_change_hidden = yes
+		}
+		oe_wp32_pnr_gonikotes = {
+			min = 0
+			max = 100
+			start = 45
+			monthly_change_hidden = yes
+		}
+	}
+
+	leader_modifier = {
+		global_levy_size_modifier = 0.04
+		global_manpower_modifier = 0.03
+	}
+
+	ai_desire_to_join = { value = 0 }
+	ai_desire_to_allow_new_member = { value = 0 }
+}
+
+# 3. Imperial Orthodox Church & Five Metropolitan Sees IO (Symphonia of Crown & Patriarchate)
+oe_wp32_imperial_church_io = {
+	has_target = no
+	unique = yes
+	has_leader_country = yes
+	leader_type = character
+	leader_change_trigger_type = none
+	leader_change_method = none
+	disband_if_no_leader = no
+	show_leave_message = no
+	show_on_diplomatic_map = no
+	diplomatic_capacity_cost = 0
+	subject_limited = no
+	expel_members_who_are_targets_of_other_members = no
+	background_texture = "gfx/interface/illustrations/international_organization_types/oe_wp32_imperial_church_io.dds"
+
+	leader = {
+		leader_country ?= {
+			ruler ?= { add_to_list = leaders }
+		}
+	}
+
+	create_visible_trigger = { always = no }
+	invite_visible_trigger = { always = no }
+	join_visible_trigger = { always = no }
+	can_declare_war = { always = yes }
+
+	can_lead_trigger = { oe_wp32_church_eligible = yes }
+	can_join_trigger = { oe_wp32_church_eligible = yes }
+	can_leave_trigger = { always = no }
+	auto_leave_trigger = { NOT = { oe_wp32_church_eligible = yes } }
+	auto_disband_trigger = {
+		OR = {
+			NOT = { exists = leader_country }
+			leader_country ?= { NOT = { oe_wp32_church_eligible = yes } }
+		}
+	}
+
+	variables = {
+		oe_wp32_chr_symphonia = {
+			min = 0
+			max = 100
+			start = 60
+			monthly_change_hidden = yes
+		}
+		oe_wp32_chr_sees_active = {
+			min = 0
+			max = 5
+			start = 2
+			monthly_change_hidden = yes
+		}
+	}
+
+	leader_modifier = {
+		tolerance_own = 0.50
+		orthodox_synod_cost_modifier = -0.10
+		clergy_estate_target_satisfaction = 0.03
+	}
+
+	ai_desire_to_join = { value = 0 }
+	ai_desire_to_allow_new_member = { value = 0 }
+}

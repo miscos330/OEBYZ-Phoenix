@@ -1,0 +1,439 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+# --- Armamenton IO Interactive Actions (3) ---
+
+oe_wp32_act_amt_equip_cataphracts = {
+	type = internationalorganization
+	show_in_gui_list = yes
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { exists = international_organization:oe_wp32_armamenton_io }
+	allow = {
+		scope:actor = {
+			oe_wp32_is_byz_host = yes
+			gold >= 80
+		}
+	}
+	cooldown = { type = oe_wp32_act_amt_equip_cd years = 8 }
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_wp32_armamenton_io
+			scope:actor ?= { is_leader_of_international_organization = root }
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -80
+			add_army_tradition = 4
+			add_country_modifier = { modifier = oe_wp32_mod_amt_cataphract_issue years = 10 mode = replace }
+		}
+		international_organization:oe_wp32_armamenton_io ?= {
+			if = { limit = { has_variable = oe_wp32_amt_techne } change_variable = { name = oe_wp32_amt_techne add = 8 } }
+			else = { set_variable = { name = oe_wp32_amt_techne value = 38 } }
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = { limit = { scope:actor = { gold >= 200 at_war = yes } } add = 30 }
+	}
+}
+
+oe_wp32_act_amt_stockpile_greek_fire = {
+	type = internationalorganization
+	show_in_gui_list = yes
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { exists = international_organization:oe_wp32_armamenton_io }
+	allow = {
+		scope:actor = {
+			oe_wp32_is_byz_host = yes
+			gold >= 90
+		}
+	}
+	cooldown = { type = oe_wp32_act_amt_gf_cd years = 10 }
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_wp32_armamenton_io
+			scope:actor ?= { is_leader_of_international_organization = root }
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -90
+			add_country_modifier = { modifier = oe_wp32_mod_amt_greek_fire_stock years = 10 mode = replace }
+			if = {
+				limit = { NOT = { has_variable = oe_wp32_amt_master_event_done } }
+				set_variable = { name = oe_wp32_amt_master_event_done value = 1 }
+				trigger_event_non_silently = { id = oe_wp32_io.2 days = 5 }
+			}
+		}
+		international_organization:oe_wp32_armamenton_io ?= {
+			if = { limit = { has_variable = oe_wp32_amt_apotheke } change_variable = { name = oe_wp32_amt_apotheke add = 12 } }
+			else = { set_variable = { name = oe_wp32_amt_apotheke value = 42 } }
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = { limit = { scope:actor = { gold >= 220 } } add = 20 }
+	}
+}
+
+oe_wp32_act_amt_inspect_fabricae = {
+	type = internationalorganization
+	show_in_gui_list = yes
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { exists = international_organization:oe_wp32_armamenton_io }
+	allow = {
+		scope:actor = {
+			oe_wp32_is_byz_host = yes
+			gold >= 70
+			at_war = no
+		}
+	}
+	cooldown = { type = oe_wp32_act_amt_fab_cd years = 10 }
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_wp32_armamenton_io
+			scope:actor ?= { is_leader_of_international_organization = root }
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -70
+			add_country_modifier = { modifier = oe_wp32_mod_amt_fabricae_charter years = 12 mode = replace }
+		}
+		international_organization:oe_wp32_armamenton_io ?= {
+			if = { limit = { has_variable = oe_wp32_amt_techne } change_variable = { name = oe_wp32_amt_techne add = 6 } }
+			else = { set_variable = { name = oe_wp32_amt_techne value = 36 } }
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = { limit = { scope:actor = { gold >= 200 at_war = no } } add = 15 }
+	}
+}
+
+# --- Pronoia Land Registry IO Interactive Actions (3) ---
+
+oe_wp32_act_pnr_apographe_audit = {
+	type = internationalorganization
+	show_in_gui_list = yes
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { exists = international_organization:oe_wp32_pronoia_registry_io }
+	allow = {
+		scope:actor = {
+			oe_wp32_is_byz_host = yes
+			gold >= 60
+			at_war = no
+		}
+	}
+	cooldown = { type = oe_wp32_act_pnr_audit_cd years = 10 }
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_wp32_pronoia_registry_io
+			scope:actor ?= { is_leader_of_international_organization = root }
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -60
+			add_country_modifier = { modifier = oe_wp32_mod_pnr_apographe_audit years = 10 mode = replace }
+			if = {
+				limit = { NOT = { has_variable = oe_wp32_pnr_dispute_done } }
+				set_variable = { name = oe_wp32_pnr_dispute_done value = 1 }
+				trigger_event_non_silently = { id = oe_wp32_io.4 days = 10 }
+			}
+		}
+		international_organization:oe_wp32_pronoia_registry_io ?= {
+			if = { limit = { has_variable = oe_wp32_pnr_akribeia } change_variable = { name = oe_wp32_pnr_akribeia add = 15 } }
+			else = { set_variable = { name = oe_wp32_pnr_akribeia value = 55 } }
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = { limit = { scope:actor = { gold >= 180 at_war = no } } add = 20 }
+	}
+}
+
+oe_wp32_act_pnr_charistikion_review = {
+	type = internationalorganization
+	show_in_gui_list = yes
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { exists = international_organization:oe_wp32_pronoia_registry_io }
+	allow = {
+		scope:actor = {
+			oe_wp32_is_byz_host = yes
+			prestige >= 5
+		}
+	}
+	cooldown = { type = oe_wp32_act_pnr_char_cd years = 10 }
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_wp32_pronoia_registry_io
+			scope:actor ?= { is_leader_of_international_organization = root }
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_prestige = -5
+			add_stability = 3
+			add_country_modifier = { modifier = oe_wp32_mod_pnr_charistikion_reform years = 10 mode = replace }
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = { limit = { scope:actor = { prestige >= 25 } } add = 15 }
+	}
+}
+
+oe_wp32_act_pnr_rebalance_grants = {
+	type = internationalorganization
+	show_in_gui_list = yes
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { exists = international_organization:oe_wp32_pronoia_registry_io }
+	allow = {
+		scope:actor = {
+			oe_wp32_is_byz_host = yes
+			gold >= 50
+		}
+	}
+	cooldown = { type = oe_wp32_act_pnr_bal_cd years = 8 }
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_wp32_pronoia_registry_io
+			scope:actor ?= { is_leader_of_international_organization = root }
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -50
+			add_country_modifier = { modifier = oe_wp32_mod_pnr_balanced_grants years = 10 mode = replace }
+		}
+		international_organization:oe_wp32_pronoia_registry_io ?= {
+			if = { limit = { has_variable = oe_wp32_pnr_gonikotes } change_variable = { name = oe_wp32_pnr_gonikotes subtract = 5 } }
+			else = { set_variable = { name = oe_wp32_pnr_gonikotes value = 40 } }
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = { limit = { scope:actor = { gold >= 160 } } add = 15 }
+	}
+}
+
+# --- Imperial Orthodox Church IO Interactive Actions (3) ---
+
+oe_wp32_act_chr_convene_synod = {
+	type = internationalorganization
+	show_in_gui_list = yes
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { exists = international_organization:oe_wp32_imperial_church_io }
+	allow = {
+		scope:actor = {
+			oe_wp32_church_eligible = yes
+			gold >= 60
+		}
+	}
+	cooldown = { type = oe_wp32_act_chr_synod_cd years = 10 }
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_wp32_imperial_church_io
+			scope:actor ?= { is_leader_of_international_organization = root }
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -60
+			add_stability = 4
+			add_country_modifier = { modifier = oe_wp32_mod_chr_permanent_synod years = 12 mode = replace }
+			oe_wp32_sync_five_sees = yes
+		}
+		international_organization:oe_wp32_imperial_church_io ?= {
+			if = { limit = { has_variable = oe_wp32_chr_symphonia } change_variable = { name = oe_wp32_chr_symphonia add = 8 } }
+			else = { set_variable = { name = oe_wp32_chr_symphonia value = 68 } }
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = { limit = { scope:actor = { gold >= 160 } } add = 20 }
+	}
+}
+
+oe_wp32_act_chr_endow_metropolitan = {
+	type = internationalorganization
+	show_in_gui_list = yes
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = { exists = international_organization:oe_wp32_imperial_church_io }
+	allow = {
+		scope:actor = {
+			oe_wp32_church_eligible = yes
+			gold >= 80
+		}
+	}
+	cooldown = { type = oe_wp32_act_chr_endow_cd years = 10 }
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_wp32_imperial_church_io
+			scope:actor ?= { is_leader_of_international_organization = root }
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			add_gold = -80
+			add_country_modifier = { modifier = oe_wp32_mod_chr_five_sees_endowed years = 12 mode = replace }
+			oe_wp32_sync_five_sees = yes
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = { limit = { scope:actor = { gold >= 200 } } add = 18 }
+	}
+}
+
+oe_wp32_act_chr_revive_eastern_sees = {
+	type = internationalorganization
+	show_in_gui_list = yes
+	show_message = no
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	automation_tick = never
+	automation_tick_frequency = 12
+
+	potential = {
+		exists = international_organization:oe_wp32_imperial_church_io
+		scope:actor = {
+			oe_wp32_church_eligible = yes
+			NOT = { has_variable = oe_wp32_eastern_sees_revived }
+		}
+	}
+	allow = {
+		scope:actor = {
+			oe_wp32_church_eligible = yes
+			gold >= 120
+			OR = {
+				owns_or_non_sovereign_subject_owns = location:antioch
+				owns_or_non_sovereign_subject_owns = location:alexandria
+			}
+		}
+	}
+	cooldown = { type = oe_wp32_act_chr_revive_cd years = 15 }
+
+	select_trigger = {
+		looking_for_a = international_organization
+		target_flag = recipient
+		name = "choose_international_organization"
+		column = { data = name }
+		visible = {
+			this = international_organization:oe_wp32_imperial_church_io
+			scope:actor ?= { is_leader_of_international_organization = root }
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			set_variable = { name = oe_wp32_eastern_sees_revived value = 1 }
+			add_gold = -120
+			add_prestige = 15
+			add_country_modifier = { modifier = oe_wp32_mod_chr_apostolic_revival years = 30 mode = replace }
+			oe_wp32_sync_five_sees = yes
+			trigger_event_non_silently = { id = oe_wp32_io.6 days = 3 }
+		}
+	}
+
+	ai_will_do = {
+		value = 35
+	}
+}

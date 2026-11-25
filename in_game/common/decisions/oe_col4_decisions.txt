@@ -147,3 +147,179 @@ oe_col4_dec_introduce_old_world_livestock = {
 		}
 	}
 }
+
+# 4. v39.0 Colonial Charter Tax & Trade Concession (Overlord balances tariffs vs liberty desire)
+oe_col4_dec_charter_tax_trade = {
+	decision_category = economy_decisions
+	potential = {
+		is_rebel_country = no
+		any_subject = { oe_col4_is_overseas_colonial_subject = yes }
+	}
+	allow = {
+		at_war = no
+		NOT = { has_variable = oe_col4_tariff_dec_cd }
+		NOT = { has_variable = oe_col4_evol_ev_cd }
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				at_war = no
+				OR = {
+					any_subject = {
+						oe_col4_is_overseas_colonial_subject = yes
+						liberty_desire >= 40
+					}
+					gold < 200
+				}
+			}
+			add = 18
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:burghers_estate
+			background = estate_type:nobles_estate
+		}
+	}
+	option = {
+		name = oe_col4_dec_charter_tax_trade.a
+		effect = {
+			set_variable = { name = oe_col4_tariff_dec_cd value = 1 days = 3650 }
+			trigger_event_non_silently = oe_col4.201
+		}
+	}
+}
+
+# 5. v39.0 Arbitrate Colonial Viceroyalty Borders (Settle frontier friction for loyalty + development)
+oe_col4_dec_arbitrate_borders = {
+	decision_category = government_decisions
+	potential = {
+		is_rebel_country = no
+		any_subject = { oe_col4_is_overseas_colonial_subject = yes }
+	}
+	allow = {
+		at_war = no
+		gold >= 75
+		NOT = { has_variable = oe_col4_border_arb_cd }
+		NOT = { has_variable = oe_col4_evol_ev_cd }
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				at_war = no
+				gold >= 180
+			}
+			add = 15
+		}
+	}
+	illustration_tags = { 10 = exterior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:nobles_estate
+			background = estate_type:burghers_estate
+		}
+	}
+	option = {
+		name = oe_col4_dec_arbitrate_borders.a
+		effect = {
+			add_gold = -75
+			set_variable = { name = oe_col4_border_arb_cd value = 1 days = 3650 }
+			trigger_event_non_silently = oe_col4.202
+		}
+	}
+}
+
+# 6. v39.0 Grant Colonial Self-Government Charter (Age 5/6 peaceful dominion path)
+oe_col4_dec_self_gov_charter = {
+	decision_category = government_decisions
+	potential = {
+		is_rebel_country = no
+		current_age_or_later = { age = age_5_absolutism }
+		any_subject = { oe_col4_is_overseas_colonial_subject = yes }
+	}
+	allow = {
+		at_war = no
+		stability >= 10
+		NOT = { has_variable = oe_col4_self_gov_cd }
+		NOT = { has_variable = oe_col4_evol_ev_cd }
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				at_war = no
+				any_subject = {
+					oe_col4_is_overseas_colonial_subject = yes
+					liberty_desire >= 45
+				}
+			}
+			add = 22
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = {
+		event_illustration_estate_effect = {
+			foreground = estate_type:crown_estate
+			background = estate_type:burghers_estate
+		}
+	}
+	option = {
+		name = oe_col4_dec_self_gov_charter.a
+		effect = {
+			set_variable = { name = oe_col4_self_gov_cd value = 1 days = 3650 }
+			trigger_event_non_silently = oe_col4.203
+		}
+	}
+}
+
+# 7. v39.0 Proclaim Colonial Declaration of Independence (Age 5/6 high-liberty-desire overseas colonies)
+oe_col4_dec_proclaim_independence = {
+	decision_category = expansion_decisions
+	potential = {
+		is_rebel_country = no
+		oe_col4_is_overseas_colonial_subject = yes
+		current_age_or_later = { age = age_5_absolutism }
+		exists = overlord
+	}
+	allow = {
+		at_war = no
+		liberty_desire >= 55
+		NOT = { has_variable = oe_col4_indep_dec_cd }
+		NOT = { has_variable = oe_col4_evol_ev_cd }
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				at_war = no
+				liberty_desire >= 75
+			}
+			add = 25
+		}
+		if = {
+			limit = {
+				at_war = no
+				liberty_desire >= 65
+				current_age_or_later = { age = age_6_revolutions }
+			}
+			add = 20
+		}
+	}
+	illustration_tags = { 10 = exterior }
+	illustration_scope = {
+		event_illustration_poptype_effect = {
+			foreground = pop_type:soldiers
+			background = pop_type:burghers
+		}
+	}
+	option = {
+		name = oe_col4_dec_proclaim_independence.a
+		effect = {
+			set_variable = { name = oe_col4_indep_dec_cd value = 1 days = 3650 }
+			trigger_event_non_silently = oe_col4.204
+		}
+	}
+}

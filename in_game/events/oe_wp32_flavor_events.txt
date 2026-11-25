@@ -1,0 +1,386 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+namespace = oe_wp32_flavor
+
+# 1. Venice receives the 1204 Reparations Demand
+oe_wp32_flavor.1 = {
+	type = country_event
+	title = oe_wp32_flavor.1.t
+	desc = oe_wp32_flavor.1.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_1204_venice.dds"
+	trigger = { is_rebel_country = no }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_flavor.1.a
+		ai_chance = { base = 25 }
+		add_gold = -200
+		add_prestige = -10
+		scope:oe_wp32_1204_claimant ?= {
+			set_variable = { name = oe_wp32_venice_reparations_settled value = 1 }
+			add_opinion = { target = root modifier = oe_wp32_bias_1204_settled }
+			trigger_event_non_silently = { id = oe_wp32_flavor.2 days = 5 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.1.b
+		ai_chance = { base = 55 }
+		add_prestige = 8
+		scope:oe_wp32_1204_claimant ?= {
+			trigger_event_non_silently = { id = oe_wp32_flavor.3 days = 5 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.1.c
+		ai_chance = { base = 20 }
+		add_gold = -120
+		add_prestige = -4
+		scope:oe_wp32_1204_claimant ?= {
+			set_variable = { name = oe_wp32_venice_reparations_settled value = 1 }
+			add_opinion = { target = root modifier = oe_wp32_bias_1204_settled }
+			trigger_event_non_silently = { id = oe_wp32_flavor.2 days = 5 }
+		}
+	}
+}
+
+# 2. Venice Pays 1204 Reparations & Returns Imperial Treasures
+oe_wp32_flavor.2 = {
+	type = country_event
+	title = oe_wp32_flavor.2.t
+	desc = oe_wp32_flavor.2.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_1204_venice.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_flavor.2.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp32_venice_stance value = 1 }
+		add_gold = 200
+		add_prestige = 18
+		ruler ?= { add_dip = 3 }
+		add_country_modifier = { modifier = oe_wp32_mod_venice_restitution years = 25 mode = replace }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.06 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_senate_echo_done } }
+			set_variable = { name = oe_wp32_senate_echo_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.9 days = 240 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.2.b
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp32_venice_stance value = 2 }
+		add_gold = 120
+		add_legitimacy = 10
+		add_stability = 6
+		add_country_modifier = { modifier = oe_wp32_mod_venice_restitution years = 25 mode = replace }
+	}
+}
+
+# 3. Venice Defies the Ledger of 1204 -> CB Ready!
+oe_wp32_flavor.3 = {
+	type = country_event
+	title = oe_wp32_flavor.3.t
+	desc = oe_wp32_flavor.3.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_1204_venice.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_flavor.3.a
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp32_venice_stance value = 3 }
+		add_prestige = 6
+		add_navy_tradition = 6
+		custom_tooltip = oe_wp32_cb_venice_armed_tt
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_amt_chain_done } }
+			set_variable = { name = oe_wp32_amt_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.6 days = 210 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.3.b
+		ai_chance = { base = 50 }
+		set_variable = { name = oe_wp32_venice_stance value = 4 }
+		add_prestige = 6
+		custom_tooltip = oe_wp32_cb_venice_armed_tt
+		create_character = {
+			age = 38
+			adm = { 54 72 }
+			dip = { 56 74 }
+			mil = { 74 90 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+# 4. Gregoras Chora Academy Curriculum Choice
+oe_wp32_flavor.4 = {
+	type = country_event
+	title = oe_wp32_flavor.4.t
+	desc = oe_wp32_flavor.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_neoplatonic_academy.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_flavor.4.a
+		ai_chance = { base = 40 }
+		set_variable = { name = oe_wp32_chora_school value = 1 }
+		add_country_modifier = { modifier = oe_wp32_mod_chora_astronomy years = 30 mode = replace }
+		add_prestige = 8
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.04 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_chora_chain_done } }
+			set_variable = { name = oe_wp32_chora_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_gp.3 days = 270 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.4.b
+		ai_chance = { base = 35 }
+		set_variable = { name = oe_wp32_chora_school value = 2 }
+		add_country_modifier = { modifier = oe_wp32_mod_chora_rhetoric years = 30 mode = replace }
+		add_legitimacy = 6
+		ruler ?= { add_adm = 2 }
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_chora_chain_done } }
+			set_variable = { name = oe_wp32_chora_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_gp.3 days = 270 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.4.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp32_chora_school value = 3 }
+		add_gold = -45
+		add_prestige = 6
+		add_country_modifier = { modifier = oe_wp32_mod_chora_astronomy years = 25 mode = replace }
+		create_character = {
+			age = 44
+			adm = { 76 92 }
+			dip = { 70 88 }
+			mil = { 30 48 }
+			estate = estate_type:clergy_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+# 5. Grand Roman Triumph Celebration along the Mese
+oe_wp32_flavor.5 = {
+	type = country_event
+	title = oe_wp32_flavor.5.t
+	desc = oe_wp32_flavor.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_balkan_triumph.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_flavor.5.a
+		ai_chance = { base = 45 }
+		add_stability = 3
+		add_prestige = 5
+		ruler ?= { add_mil = 2 }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.04 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.5.b
+		ai_chance = { base = 30 }
+		add_gold = -30
+		add_legitimacy = 6
+		add_prestige = 8
+	}
+	option = {
+		name = oe_wp32_flavor.5.c
+		ai_chance = { base = 25 }
+		add_prestige = 5
+		create_character = {
+			age = 35
+			adm = { 52 70 }
+			dip = { 54 72 }
+			mil = { 74 92 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+# 6. Delayed Follow-up: Armamenton & Tagmata Imperial Review
+oe_wp32_flavor.6 = {
+	type = country_event
+	title = oe_wp32_flavor.6.t
+	desc = oe_wp32_flavor.6.d
+	outcome = positive
+	image = "gfx/interface/illustrations/international_organization_types/oe_wp32_armamenton_io.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_flavor.6.a
+		ai_chance = { base = 45 }
+		add_army_tradition = 6
+		add_prestige = 6
+		ruler ?= { add_mil = 2 }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.04 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.6.b
+		ai_chance = { base = 30 }
+		add_navy_tradition = 6
+		add_gold = 55
+	}
+	option = {
+		name = oe_wp32_flavor.6.c
+		ai_chance = { base = 25 }
+		add_gold = -35
+		add_army_tradition = 5
+		create_character = {
+			age = 39
+			adm = { 56 74 }
+			dip = { 48 66 }
+			mil = { 74 90 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+# 7. Delayed Follow-up: Great Assize of the Pronoia Registry
+oe_wp32_flavor.7 = {
+	type = country_event
+	title = oe_wp32_flavor.7.t
+	desc = oe_wp32_flavor.7.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/international_organization_types/oe_wp32_pronoia_registry_io.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_flavor.7.a
+		ai_chance = { base = 45 }
+		add_gold = 75
+		ruler ?= { add_adm = 2 }
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.05 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.7.b
+		ai_chance = { base = 30 }
+		add_stability = 5
+		add_legitimacy = 4
+	}
+	option = {
+		name = oe_wp32_flavor.7.c
+		ai_chance = { base = 25 }
+		add_prestige = 5
+		create_character = {
+			age = 42
+			adm = { 72 90 }
+			dip = { 62 78 }
+			mil = { 40 58 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+# 8. Delayed Follow-up: Reckoning of the Black Sea Grain Syndicate
+oe_wp32_flavor.8 = {
+	type = country_event
+	title = oe_wp32_flavor.8.t
+	desc = oe_wp32_flavor.8.d
+	outcome = positive
+	image = "gfx/interface/illustrations/situation/oe_wp32_sitonia_situation.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_flavor.8.a
+		ai_chance = { base = 45 }
+		add_stability = 4
+		situation:oe_wp32_sitonia_situation ?= {
+			if = { limit = { has_variable = oe_wp32_sit_granary } change_variable = { name = oe_wp32_sit_granary add = 10 } }
+			else = { set_variable = { name = oe_wp32_sit_granary value = 45 } }
+		}
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.05 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.8.b
+		ai_chance = { base = 30 }
+		add_gold = 85
+		add_prestige = 5
+	}
+	option = {
+		name = oe_wp32_flavor.8.c
+		ai_chance = { base = 25 }
+		add_prestige = 6
+		ruler ?= { add_dip = 2 }
+		create_character = {
+			age = 37
+			adm = { 66 84 }
+			dip = { 70 88 }
+			mil = { 34 52 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+# 9. Delayed Follow-up: Acclamation of the Imperial Senate & People
+oe_wp32_flavor.9 = {
+	type = country_event
+	title = oe_wp32_flavor.9.t
+	desc = oe_wp32_flavor.9.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_theodosian_walls.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_flavor.9.a
+		ai_chance = { base = 45 }
+		add_legitimacy = 6
+		add_prestige = 8
+		ruler ?= { add_adm = 2 add_dip = 2 }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.05 change_control = 0.04 }
+		}
+	}
+	option = {
+		name = oe_wp32_flavor.9.b
+		ai_chance = { base = 30 }
+		add_stability = 6
+		add_gold = 60
+	}
+	option = {
+		name = oe_wp32_flavor.9.c
+		ai_chance = { base = 25 }
+		add_prestige = 6
+		create_character = {
+			age = 45
+			adm = { 70 88 }
+			dip = { 72 90 }
+			mil = { 36 54 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}

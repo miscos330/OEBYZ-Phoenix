@@ -214,3 +214,39 @@ oe_col4_has_consolidatable_enclaves = {
 		}
 	}
 }
+
+# Country scope. True when an overseas colonial subject carries a full-title Colonization 4.0 name
+# (e.g. 新西班牙总督区 / 北美十三殖民地 / 扶桑西岸都护府), so country_name_construction uses $NAME$ alone
+# and NEVER doubles rank words (总督区总督区 / 殖民地伯国 / 联邦伯国 / Viceroyalty of Viceroyalty).
+oe_col4_has_full_title_colonial_name = {
+	oe_col4_is_overseas_colonial_subject = yes
+	OR = {
+		has_variable = oe_col4_named
+		trigger_if = {
+			limit = {
+				exists = overlord
+				exists = capital
+			}
+			capital = { oe_col4_is_colonial_frontier_loc = yes }
+			overlord ?= {
+				OR = {
+					culture = { has_culture_group = culture_group:greek_group }
+					culture = { has_culture_group = culture_group:british_group }
+					culture = { has_culture_group = culture_group:french_group }
+					culture.language = language:spanish_language
+					culture.language = language:portuguese_language
+					culture = { has_culture_group = culture_group:netherlandish_group }
+					culture = { has_culture_group = culture_group:german_group }
+					culture = { has_culture_group = culture_group:italian_group }
+					culture.language = language:east_slavic_language
+					culture.language = language:scandinavian_language
+					culture = { has_culture_group = culture_group:turkic_group }
+					culture = { has_culture_group = culture_group:arabic_group }
+					culture = { has_culture_group = culture_group:chinese_group }
+					culture = { has_culture_group = culture_group:japanese_group }
+				}
+			}
+		}
+		trigger_else = { always = no }
+	}
+}

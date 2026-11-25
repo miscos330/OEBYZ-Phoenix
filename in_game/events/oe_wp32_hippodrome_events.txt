@@ -1,0 +1,187 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+namespace = oe_wp32_hippodrome
+
+oe_wp32_hippodrome.1 = {
+	type = country_event
+	title = oe_wp32_hippodrome.1.t
+	desc = oe_wp32_hippodrome.1.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_hellenic_splendor.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_hippodrome.1.a
+		ai_chance = { base = 35 }
+		set_variable = { name = oe_wp32_hippo_patronage value = 1 }
+		random_list = {
+			75 = { trigger_event_non_silently = { id = oe_wp32_hippodrome.2 days = 5 } }
+			25 = { trigger_event_non_silently = { id = oe_wp32_hippodrome.4 days = 5 } }
+		}
+	}
+	option = {
+		name = oe_wp32_hippodrome.1.b
+		ai_chance = { base = 35 }
+		set_variable = { name = oe_wp32_hippo_patronage value = 2 }
+		random_list = {
+			75 = { trigger_event_non_silently = { id = oe_wp32_hippodrome.3 days = 5 } }
+			25 = { trigger_event_non_silently = { id = oe_wp32_hippodrome.4 days = 5 } }
+		}
+	}
+	option = {
+		name = oe_wp32_hippodrome.1.c
+		ai_chance = { base = 30 }
+		set_variable = { name = oe_wp32_hippo_patronage value = 3 }
+		trigger_event_non_silently = { id = oe_wp32_hippodrome.5 days = 5 }
+	}
+}
+
+oe_wp32_hippodrome.2 = {
+	type = country_event
+	title = oe_wp32_hippodrome.2.t
+	desc = oe_wp32_hippodrome.2.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_hellenic_splendor.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_hippodrome.2.a
+		ai_chance = { base = 50 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_wp32_mod_hippo_blues years = 4 mode = replace }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.03 }
+		}
+	}
+	option = {
+		name = oe_wp32_hippodrome.2.b
+		ai_chance = { base = 25 }
+		add_legitimacy = 4
+		add_country_modifier = { modifier = oe_wp32_mod_hippo_blues years = 4 mode = replace }
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_senate_echo_done } }
+			set_variable = { name = oe_wp32_senate_echo_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.9 days = 180 }
+		}
+	}
+	option = {
+		name = oe_wp32_hippodrome.2.c
+		ai_chance = { base = 25 }
+		add_gold = -25
+		add_prestige = 6
+		create_character = {
+			age = 31
+			adm = { 54 72 }
+			dip = { 66 84 }
+			mil = { 52 70 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+oe_wp32_hippodrome.3 = {
+	type = country_event
+	title = oe_wp32_hippodrome.3.t
+	desc = oe_wp32_hippodrome.3.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_hellenic_splendor.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_hippodrome.3.a
+		ai_chance = { base = 50 }
+		add_gold = 45
+		add_country_modifier = { modifier = oe_wp32_mod_hippo_greens years = 4 mode = replace }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.04 }
+		}
+	}
+	option = {
+		name = oe_wp32_hippodrome.3.b
+		ai_chance = { base = 25 }
+		add_stability = 3
+		add_country_modifier = { modifier = oe_wp32_mod_hippo_greens years = 4 mode = replace }
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_senate_echo_done } }
+			set_variable = { name = oe_wp32_senate_echo_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.9 days = 180 }
+		}
+	}
+	option = {
+		name = oe_wp32_hippodrome.3.c
+		ai_chance = { base = 25 }
+		add_gold = 20
+		create_character = {
+			age = 33
+			adm = { 66 84 }
+			dip = { 62 80 }
+			mil = { 38 56 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+oe_wp32_hippodrome.4 = {
+	type = country_event
+	title = oe_wp32_hippodrome.4.t
+	desc = oe_wp32_hippodrome.4.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_hippodrome_tumult.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_hippodrome.4.a
+		ai_chance = { base = 45 }
+		add_gold = -40
+		add_stability = 3
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.03 }
+		}
+	}
+	option = {
+		name = oe_wp32_hippodrome.4.b
+		ai_chance = { base = 30 }
+		add_stability = -4
+		add_legitimacy = 4
+		ruler ?= { add_mil = 2 }
+	}
+	option = {
+		name = oe_wp32_hippodrome.4.c
+		ai_chance = { base = 25 }
+		add_prestige = -4
+		add_stability = 2
+		ruler ?= { add_dip = 2 }
+	}
+}
+
+oe_wp32_hippodrome.5 = {
+	type = country_event
+	title = oe_wp32_hippodrome.5.t
+	desc = oe_wp32_hippodrome.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_hellenic_splendor.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_hippodrome.5.a
+		ai_chance = { base = 50 }
+		add_legitimacy = 5
+		add_prestige = 6
+		ruler ?= { add_dip = 2 }
+		add_country_modifier = { modifier = oe_wp32_mod_hippo_golden_splendor years = 4 mode = replace }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.05 change_development = 0.20 }
+		}
+	}
+	option = {
+		name = oe_wp32_hippodrome.5.b
+		ai_chance = { base = 50 }
+		add_gold = 55
+		add_prestige = 6
+		add_country_modifier = { modifier = oe_wp32_mod_hippo_golden_splendor years = 4 mode = replace }
+	}
+}

@@ -1,0 +1,89 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+# 1204 Venetian Reparations Diplomatic Action (serve the Ledger of 1204 upon Venice)
+oe_wp32_venice_reparations = {
+	type = diplomacy
+	category = CATEGORY_HOSTILE_ACTIONS
+	block_when_at_war = yes
+	ai_tick = monthly
+	ai_tick_frequency = 24
+	use_in_automation = no
+
+	ai_prerequisite = {
+		oe_wp32_is_byz_host = yes
+		is_subject = no
+		at_war = no
+		prestige >= 15
+		NOT = { has_variable = oe_wp32_ledger_1204_issued }
+	}
+
+	potential = {
+		scope:actor = {
+			oe_wp32_is_byz_host = yes
+			is_subject = no
+			NOT = { has_variable = oe_wp32_venice_reparations_settled }
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			at_war = no
+			prestige >= 10
+			NOT = { has_variable = oe_wp32_ledger_1204_issued }
+		}
+	}
+
+	cooldown = {
+		type = oe_wp32_venice_rep_cd
+		years = 15
+	}
+
+	select_trigger = {
+		looking_for_a = country
+		target_flag = recipient
+		name = "choose_country"
+		default_sort = will
+		column = { data = name }
+		visible = {
+			tag = VEN
+			country_exists = this
+			is_rebel_country = no
+			NOT = { is_subject_or_below_of = scope:actor }
+		}
+		enabled = {
+			NOT = { is_allied_with = { target = scope:actor } }
+		}
+	}
+
+	effect = {
+		if = {
+			limit = { exists = scope:recipient }
+			scope:actor = {
+				set_variable = { name = oe_wp32_ledger_1204_issued value = 1 }
+				save_scope_as = oe_wp32_1204_claimant
+				add_prestige = 5
+			}
+			scope:recipient = {
+				add_opinion = { target = scope:actor modifier = oe_wp32_bias_1204_demand }
+				trigger_event_non_silently = { id = oe_wp32_flavor.1 days = 5 }
+			}
+		}
+		else = {
+			custom_tooltip = oe_wp32_venice_reparations_tt
+		}
+	}
+
+	ai_will_do = {
+		add = -20
+		if = {
+			limit = {
+				exists = scope:recipient
+				scope:actor = {
+					is_rival_of = scope:recipient
+					prestige >= 25
+				}
+			}
+			add = 40
+		}
+	}
+}

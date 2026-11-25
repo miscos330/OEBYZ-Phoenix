@@ -1,0 +1,160 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+oe_wp32_sitonia_situation = {
+	monthly_spawn_chance = monthly_spawn_chance_unique
+	hint_tag = hint_oe_wp32_sitonia
+
+	can_start = {
+		current_year >= 1338
+		current_year < 1460
+		NOT = { has_global_variable = oe_wp32_sitonia_done }
+		country_exists = c:BYZ
+		c:BYZ = {
+			is_rebel_country = no
+			oe_main_mod_old_world_event_allowed = yes
+			owns = location:constantinople
+		}
+	}
+
+	outcome = {
+		name = "oe_wp32_sit_outcome_dominion"
+		desc = "oe_wp32_sit_outcome_dominion_desc"
+		trigger = {
+			custom_tooltip = {
+				text = oe_wp32_sit_outcome_dominion_tt
+				country_exists = c:BYZ
+				c:BYZ = {
+					is_rebel_country = no
+					owns = location:constantinople
+					stability >= 20
+				}
+				trigger_if = {
+					limit = { has_variable = oe_wp32_sit_granary }
+					var:oe_wp32_sit_granary >= 80
+				}
+				trigger_else = { always = no }
+			}
+		}
+		immediate = {
+			c:BYZ ?= {
+				if = {
+					limit = { is_rebel_country = no oe_main_mod_old_world_event_allowed = yes }
+					add_country_modifier = { modifier = oe_wp32_mod_sit_pontic_dominion years = 30 mode = replace }
+					trigger_event_non_silently = { id = oe_wp32_sit.3 days = 2 }
+				}
+			}
+		}
+	}
+
+	outcome = {
+		name = "oe_wp32_sit_outcome_closes"
+		desc = "oe_wp32_sit_outcome_closes_desc"
+		trigger = {
+			custom_tooltip = {
+				text = oe_wp32_sit_outcome_closes_tt
+				OR = {
+					current_year >= 1460
+					NOT = {
+						location:constantinople ?= {
+							has_owner = yes
+							owner ?= { oe_is_phoenix_empire = yes }
+						}
+					}
+				}
+			}
+		}
+		immediate = {
+			c:BYZ ?= {
+				if = {
+					limit = { is_rebel_country = no oe_main_mod_old_world_event_allowed = yes }
+					trigger_event_non_silently = { id = oe_wp32_sit.4 days = 2 }
+				}
+			}
+		}
+	}
+
+	visible = {
+		OR = {
+			oe_is_phoenix_empire = yes
+			tag = VEN
+			tag = GEN
+			tag = TRE
+		}
+	}
+
+	on_start = {
+		set_variable = { name = oe_wp32_sit_granary value = 35 }
+		set_variable = { name = oe_wp32_sit_tension value = 20 }
+		c:BYZ ?= {
+			if = {
+				limit = { is_rebel_country = no oe_main_mod_old_world_event_allowed = yes }
+				trigger_event_non_silently = { id = oe_wp32_sit.1 days = 10 }
+			}
+		}
+	}
+
+	on_monthly = {
+		oe_wp32_sitonia_monthly_tick = yes
+		hidden_effect = {
+			random_list = {
+				97 = { }
+				3 = {
+					c:BYZ ?= {
+						if = {
+							limit = {
+								is_rebel_country = no
+								oe_main_mod_old_world_event_allowed = yes
+								owns = location:constantinople
+								NOT = { has_variable = oe_wp32_sit_harvest_cd }
+								NOT = { has_variable = oe_wp32_ev_cd }
+							}
+							set_variable = { name = oe_wp32_sit_harvest_cd value = 1 years = 8 }
+							set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 }
+							trigger_event_silently = oe_wp32_sit.2
+						}
+					}
+				}
+			}
+		}
+	}
+
+	on_ended = {
+		set_global_variable = { name = oe_wp32_sitonia_done value = 1 }
+	}
+
+	tooltip = {
+		if = {
+			limit = { has_owner = yes owner ?= { oe_is_phoenix_empire = yes } }
+			custom_tooltip = oe_wp32_sit_map_empire_tt
+		}
+		else_if = {
+			limit = { has_owner = yes owner ?= { OR = { tag = VEN tag = GEN } } }
+			custom_tooltip = oe_wp32_sit_map_latin_tt
+		}
+	}
+
+	map_color = {
+		if = {
+			limit = { has_owner = yes owner ?= { oe_is_phoenix_empire = yes } }
+			value = owner.country_color
+		}
+		else_if = {
+			limit = { has_owner = yes owner ?= { OR = { tag = VEN tag = GEN } } }
+			value = yellow
+		}
+		else = {
+			value = define:NMapColors|DEFAULT_COLOR
+		}
+	}
+
+	legend_key = {
+		desc = "oe_wp32_sit_legend_empire"
+		color = purple
+		require_color_on_map = yes
+	}
+	legend_key = {
+		desc = "oe_wp32_sit_legend_latins"
+		color = yellow
+		require_color_on_map = yes
+	}
+}

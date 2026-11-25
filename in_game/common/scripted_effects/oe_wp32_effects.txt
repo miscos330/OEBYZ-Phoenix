@@ -1,0 +1,143 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+# Ensure the 3 domestic Byzantine IOs exist cleanly for an eligible Byzantine/Roman host.
+oe_wp32_ensure_byz_ios = {
+	if = {
+		limit = {
+			oe_wp32_is_byz_host = yes
+			owns = location:constantinople
+		}
+		save_scope_as = oe_wp32_founder
+		# 1. Armamenton Imperial Armory IO
+		if = {
+			limit = { NOT = { exists = international_organization:oe_wp32_armamenton_io } }
+			create_international_organization = {
+				type = international_organization_type:oe_wp32_armamenton_io
+				add_country_to_international_organization = scope:oe_wp32_founder
+				set_leader_country = scope:oe_wp32_founder
+			}
+			international_organization:oe_wp32_armamenton_io ?= {
+				add_policy_to_international_organization = policy:oe_wp32_pol_amt_customary
+				add_policy_to_international_organization = policy:oe_wp32_pol_gf_palace_vault
+				set_variable = { name = oe_wp32_amt_techne value = 30 }
+				set_variable = { name = oe_wp32_amt_apotheke value = 30 }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_wp32_amt_intro_done } }
+				set_variable = { name = oe_wp32_amt_intro_done value = 1 }
+				trigger_event_non_silently = { id = oe_wp32_io.1 days = 90 }
+			}
+		}
+		# 2. Pronoia Land Registry IO
+		if = {
+			limit = { NOT = { exists = international_organization:oe_wp32_pronoia_registry_io } }
+			create_international_organization = {
+				type = international_organization_type:oe_wp32_pronoia_registry_io
+				add_country_to_international_organization = scope:oe_wp32_founder
+				set_leader_country = scope:oe_wp32_founder
+			}
+			international_organization:oe_wp32_pronoia_registry_io ?= {
+				add_policy_to_international_organization = policy:oe_wp32_pol_pnr_conditional
+				add_policy_to_international_organization = policy:oe_wp32_pol_char_customary
+				set_variable = { name = oe_wp32_pnr_akribeia value = 40 }
+				set_variable = { name = oe_wp32_pnr_gonikotes value = 45 }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_wp32_pnr_intro_done } }
+				set_variable = { name = oe_wp32_pnr_intro_done value = 1 }
+				trigger_event_non_silently = { id = oe_wp32_io.3 days = 210 }
+			}
+		}
+		# 3. Imperial Orthodox Church & Five Metropolitan Sees IO
+		if = {
+			limit = {
+				oe_wp32_church_eligible = yes
+				NOT = { exists = international_organization:oe_wp32_imperial_church_io }
+			}
+			create_international_organization = {
+				type = international_organization_type:oe_wp32_imperial_church_io
+				add_country_to_international_organization = scope:oe_wp32_founder
+				set_leader_country = scope:oe_wp32_founder
+			}
+			international_organization:oe_wp32_imperial_church_io ?= {
+				add_policy_to_international_organization = policy:oe_wp32_pol_chr_balanced
+				add_policy_to_international_organization = policy:oe_wp32_pol_chr_diocese_charities
+				set_variable = { name = oe_wp32_chr_symphonia value = 60 }
+				set_variable = { name = oe_wp32_chr_sees_active value = 2 }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_wp32_chr_intro_done } }
+				set_variable = { name = oe_wp32_chr_intro_done value = 1 }
+				trigger_event_non_silently = { id = oe_wp32_io.5 days = 330 }
+			}
+		}
+	}
+}
+
+# Recalculate active Metropolitan Sees count (Constantinople, Thessalonica, Nicaea, Trebizond, Antioch/Alexandria).
+oe_wp32_sync_five_sees = {
+	if = {
+		limit = {
+			oe_wp32_church_eligible = yes
+			exists = international_organization:oe_wp32_imperial_church_io
+		}
+		save_temporary_scope_as = oe_wp32_chr_host
+		international_organization:oe_wp32_imperial_church_io = {
+			set_variable = { name = oe_wp32_chr_sees_active value = 0 }
+			if = {
+				limit = { scope:oe_wp32_chr_host = { owns_or_non_sovereign_subject_owns = location:constantinople } }
+				if = { limit = { has_variable = oe_wp32_chr_sees_active } change_variable = { name = oe_wp32_chr_sees_active add = 1 } }
+				else = { set_variable = { name = oe_wp32_chr_sees_active value = 1 } }
+			}
+			if = {
+				limit = { scope:oe_wp32_chr_host = { owns_or_non_sovereign_subject_owns = location:thessaloniki } }
+				if = { limit = { has_variable = oe_wp32_chr_sees_active } change_variable = { name = oe_wp32_chr_sees_active add = 1 } }
+				else = { set_variable = { name = oe_wp32_chr_sees_active value = 1 } }
+			}
+			if = {
+				limit = { scope:oe_wp32_chr_host = { owns_or_non_sovereign_subject_owns = location:iznik } }
+				if = { limit = { has_variable = oe_wp32_chr_sees_active } change_variable = { name = oe_wp32_chr_sees_active add = 1 } }
+				else = { set_variable = { name = oe_wp32_chr_sees_active value = 1 } }
+			}
+			if = {
+				limit = { scope:oe_wp32_chr_host = { owns_or_non_sovereign_subject_owns = location:trebizond } }
+				if = { limit = { has_variable = oe_wp32_chr_sees_active } change_variable = { name = oe_wp32_chr_sees_active add = 1 } }
+				else = { set_variable = { name = oe_wp32_chr_sees_active value = 1 } }
+			}
+			if = {
+				limit = {
+					scope:oe_wp32_chr_host = {
+						OR = {
+							owns_or_non_sovereign_subject_owns = location:antioch
+							owns_or_non_sovereign_subject_owns = location:alexandria
+						}
+					}
+				}
+				if = { limit = { has_variable = oe_wp32_chr_sees_active } change_variable = { name = oe_wp32_chr_sees_active add = 1 } }
+				else = { set_variable = { name = oe_wp32_chr_sees_active value = 1 } }
+			}
+		}
+	}
+}
+
+# Sitonia monthly update helper (safe variable init + bounded drift).
+oe_wp32_sitonia_monthly_tick = {
+	situation:oe_wp32_sitonia_situation ?= {
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_sit_granary } }
+			set_variable = { name = oe_wp32_sit_granary value = 35 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_sit_tension } }
+			set_variable = { name = oe_wp32_sit_tension value = 20 }
+		}
+		if = {
+			limit = { has_variable = oe_wp32_sit_granary var:oe_wp32_sit_granary > 15 }
+			change_variable = { name = oe_wp32_sit_granary subtract = 0.5 }
+		}
+		if = {
+			limit = { has_variable = oe_wp32_sit_tension var:oe_wp32_sit_tension > 10 }
+			change_variable = { name = oe_wp32_sit_tension subtract = 0.25 }
+		}
+	}
+}

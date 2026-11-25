@@ -139,7 +139,7 @@ oe_ai2_sync_corridors = {
 		}
 	}
 
-	# MOS / RUS / NOV: 3-stage Rus Heartland -> Volga/Baltic -> Siberia
+	# MOS / RUS / NOV: 4-stage Rus Heartland -> Volga/Baltic -> Siberia -> Early Modern Baltic & Black Sea
 	else_if = {
 		limit = {
 			OR = {
@@ -165,6 +165,14 @@ oe_ai2_sync_corridors = {
 				NOT = { has_area_preference = oe_ai2_corridor_siberia_east }
 			}
 			add_area_preference = oe_ai2_corridor_siberia_east
+		}
+		if = {
+			limit = {
+				tag = RUS
+				current_year >= 1648
+				NOT = { has_area_preference = oe_ai2_corridor_baltic_blacksea_rus }
+			}
+			add_area_preference = oe_ai2_corridor_baltic_blacksea_rus
 		}
 	}
 
@@ -192,7 +200,45 @@ oe_ai2_sync_corridors = {
 		}
 	}
 
-	# CHI / MNG: China core + highland deterrent (lifted after 1550 once stable)
+	# MCH & post-1644 Qing (CHI): China core + Manchuria/Liaodong; lift highland deterrent at 1685+ for Kangxi/Qianlong campaigns
+	else_if = {
+		limit = {
+			OR = {
+				tag = MCH
+				AND = {
+					tag = CHI
+					OR = {
+						current_year >= 1644
+						has_or_had_tag = MCH
+					}
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { has_area_preference = oe_ai2_corridor_china_core } }
+			add_area_preference = oe_ai2_corridor_china_core
+		}
+		if = {
+			limit = { NOT = { has_area_preference = oe_ai2_corridor_manchuria_liaodong } }
+			add_area_preference = oe_ai2_corridor_manchuria_liaodong
+		}
+		if = {
+			limit = {
+				current_year < 1685
+				NOT = { has_area_preference = oe_ai2_deter_china_highlands }
+			}
+			add_area_preference = oe_ai2_deter_china_highlands
+		}
+		else_if = {
+			limit = {
+				current_year >= 1685
+				has_area_preference = oe_ai2_deter_china_highlands
+			}
+			remove_area_preference = oe_ai2_deter_china_highlands
+		}
+	}
+
+	# Pre-1644 CHI / MNG: China core + highland deterrent (lifted after 1550 once stable)
 	else_if = {
 		limit = {
 			OR = {
@@ -217,19 +263,6 @@ oe_ai2_sync_corridors = {
 				has_area_preference = oe_ai2_deter_china_highlands
 			}
 			remove_area_preference = oe_ai2_deter_china_highlands
-		}
-	}
-
-	# MCH: Manchuria & Liaodong -> China core
-	else_if = {
-		limit = { tag = MCH }
-		if = {
-			limit = { NOT = { has_area_preference = oe_ai2_corridor_manchuria_liaodong } }
-			add_area_preference = oe_ai2_corridor_manchuria_liaodong
-		}
-		if = {
-			limit = { NOT = { has_area_preference = oe_ai2_deter_china_highlands } }
-			add_area_preference = oe_ai2_deter_china_highlands
 		}
 	}
 
@@ -261,6 +294,28 @@ oe_ai2_sync_personality = {
 				ai_personality != ai_personality:oe_ai2_fiscal_austerity
 			}
 			set_personality = ai_personality:oe_ai2_fiscal_austerity
+		}
+		else_if = {
+			limit = {
+				tag = JAP
+				current_year >= 1635
+				current_year <= 1853
+				oe_ai2_in_fiscal_crisis = no
+			}
+			set_variable = oe_ai2_pers_init
+			if = {
+				limit = { ai_personality != ai_personality:oe_ai2_sakoku_guardian }
+				set_personality = ai_personality:oe_ai2_sakoku_guardian
+			}
+		}
+		else_if = {
+			limit = {
+				tag = JAP
+				current_year > 1853
+				oe_ai2_in_fiscal_crisis = no
+				ai_personality = ai_personality:oe_ai2_sakoku_guardian
+			}
+			set_personality = ai_personality:oe_ai2_maritime_power
 		}
 		else_if = {
 			limit = {
@@ -408,10 +463,12 @@ oe_ai2_steward_byz = {
 
 # 4. AI Great Yuan (CHI) / Ming (MNG) / Manchu (MCH) Macro-Steward: Chao, Haiyun Grain & Laws
 oe_ai2_steward_china = {
-	# 4a. Great Yuan Chao currency stabilization (pays real gold, 3-year cooldown)
+	# 4a. Great Yuan Chao currency stabilization (pre-1600 non-Manchu Yuan ONLY; pays real gold, 3-year cooldown)
 	if = {
 		limit = {
 			tag = CHI
+			current_year < 1600
+			NOT = { has_or_had_tag = MCH }
 			has_global_variable = oe_yc_on
 			has_global_variable = oe_yc_cred
 			global_var:oe_yc_cred < 0
@@ -424,10 +481,12 @@ oe_ai2_steward_china = {
 		set_variable = { name = oe_ai2_yc_cd months = 36 }
 	}
 
-	# 4b. Great Yuan Haiyun maritime grain replenishment (pays real gold, 3-year cooldown)
+	# 4b. Great Yuan Haiyun maritime grain replenishment (pre-1600 non-Manchu Yuan ONLY; pays real gold, 3-year cooldown)
 	if = {
 		limit = {
 			tag = CHI
+			current_year < 1600
+			NOT = { has_or_had_tag = MCH }
 			has_global_variable = oe_yh_on
 			has_global_variable = oe_yh_grain
 			global_var:oe_yh_grain < 180

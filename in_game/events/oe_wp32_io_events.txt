@@ -1,0 +1,321 @@
+﻿# Project Phoenix v31.0 WP32: Byzantine Core Institutions, 28 Great Projects & Late-Game Crises (oe_wp32_, 0 vanilla overrides, pure-additive). Edit gen_v310_wp32_byz_institutions_projects_crises.py, not this file.
+
+namespace = oe_wp32_io
+
+oe_wp32_io.1 = {
+	type = country_event
+	title = oe_wp32_io.1.t
+	desc = oe_wp32_io.1.d
+	outcome = positive
+	image = "gfx/interface/illustrations/international_organization_types/oe_wp32_armamenton_io.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_io.1.a
+		ai_chance = { base = 45 }
+		set_variable = { name = oe_wp32_amt_doctrine value = 1 }
+		add_army_tradition = 4
+		ruler ?= { add_mil = 2 }
+		add_country_modifier = { modifier = oe_wp32_mod_amt_cataphract_issue years = 10 mode = replace }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.04 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_amt_chain_done } }
+			set_variable = { name = oe_wp32_amt_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.6 days = 240 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.1.b
+		ai_chance = { base = 30 }
+		set_variable = { name = oe_wp32_amt_doctrine value = 2 }
+		add_navy_tradition = 4
+		add_country_modifier = { modifier = oe_wp32_mod_amt_greek_fire_stock years = 10 mode = replace }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.03 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_amt_chain_done } }
+			set_variable = { name = oe_wp32_amt_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.6 days = 240 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.1.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp32_amt_doctrine value = 3 }
+		add_gold = -40
+		add_army_tradition = 3
+		add_navy_tradition = 3
+		create_character = {
+			age = 42
+			adm = { 60 78 }
+			dip = { 48 66 }
+			mil = { 72 88 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		add_country_modifier = { modifier = oe_wp32_mod_amt_fabricae_charter years = 10 mode = replace }
+	}
+}
+
+oe_wp32_io.2 = {
+	type = country_event
+	title = oe_wp32_io.2.t
+	desc = oe_wp32_io.2.d
+	outcome = positive
+	image = "gfx/interface/illustrations/international_organization_types/oe_wp32_armamenton_io.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_io.2.a
+		ai_chance = { base = 45 }
+		set_variable = { name = oe_wp32_armorer_path value = 1 }
+		add_prestige = 8
+		add_country_modifier = { modifier = oe_wp32_mod_amt_fabricae_charter years = 12 mode = replace }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_development = 0.25 change_prosperity = 0.04 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_amt_chain_done } }
+			set_variable = { name = oe_wp32_amt_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.6 days = 240 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.2.b
+		ai_chance = { base = 30 }
+		set_variable = { name = oe_wp32_armorer_path value = 2 }
+		add_gold = 65
+		add_stability = 3
+	}
+	option = {
+		name = oe_wp32_io.2.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp32_armorer_path value = 3 }
+		add_gold = -35
+		add_army_tradition = 5
+		create_character = {
+			age = 38
+			adm = { 58 76 }
+			dip = { 46 64 }
+			mil = { 70 86 }
+			estate = estate_type:burghers_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.05 }
+		}
+	}
+}
+
+oe_wp32_io.3 = {
+	type = country_event
+	title = oe_wp32_io.3.t
+	desc = oe_wp32_io.3.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/international_organization_types/oe_wp32_pronoia_registry_io.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_io.3.a
+		ai_chance = { base = 40 }
+		set_variable = { name = oe_wp32_pnr_policy value = 1 }
+		ruler ?= { add_adm = 2 }
+		add_country_modifier = { modifier = oe_wp32_mod_pnr_apographe_audit years = 10 mode = replace }
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.04 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_pnr_chain_done } }
+			set_variable = { name = oe_wp32_pnr_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.7 days = 240 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.3.b
+		ai_chance = { base = 35 }
+		set_variable = { name = oe_wp32_pnr_policy value = 2 }
+		add_country_modifier = { modifier = oe_wp32_mod_pnr_balanced_grants years = 10 mode = replace }
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_pnr_chain_done } }
+			set_variable = { name = oe_wp32_pnr_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.7 days = 240 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.3.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp32_pnr_policy value = 3 }
+		add_gold = -35
+		add_legitimacy = 4
+		create_character = {
+			age = 44
+			adm = { 74 90 }
+			dip = { 58 76 }
+			mil = { 34 52 }
+			estate = estate_type:nobles_estate
+			culture = root.culture
+			religion = root.religion
+		}
+		location:thessaloniki ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.05 }
+		}
+	}
+}
+
+oe_wp32_io.4 = {
+	type = country_event
+	title = oe_wp32_io.4.t
+	desc = oe_wp32_io.4.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/international_organization_types/oe_wp32_pronoia_registry_io.dds"
+	trigger = { is_rebel_country = no oe_wp32_is_byz_host = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_io.4.a
+		ai_chance = { base = 45 }
+		set_variable = { name = oe_wp32_praktika_verdict value = 1 }
+		add_gold = 55
+		add_legitimacy = 3
+		capital ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_control = 0.03 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_pnr_chain_done } }
+			set_variable = { name = oe_wp32_pnr_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.7 days = 240 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.4.b
+		ai_chance = { base = 30 }
+		set_variable = { name = oe_wp32_praktika_verdict value = 2 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_wp32_mod_pnr_charistikion_reform years = 10 mode = replace }
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_pnr_chain_done } }
+			set_variable = { name = oe_wp32_pnr_chain_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.7 days = 240 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.4.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp32_praktika_verdict value = 3 }
+		add_prestige = 5
+		ruler ?= { add_adm = 2 }
+		create_character = {
+			age = 41
+			adm = { 70 86 }
+			dip = { 62 78 }
+			mil = { 36 54 }
+			estate = estate_type:clergy_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+oe_wp32_io.5 = {
+	type = country_event
+	title = oe_wp32_io.5.t
+	desc = oe_wp32_io.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/international_organization_types/oe_wp32_imperial_church_io.dds"
+	trigger = { is_rebel_country = no oe_wp32_church_eligible = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_io.5.a
+		ai_chance = { base = 45 }
+		set_variable = { name = oe_wp32_chr_direction value = 1 }
+		add_stability = 5
+		add_country_modifier = { modifier = oe_wp32_mod_chr_permanent_synod years = 12 mode = replace }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.04 }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wp32_senate_echo_done } }
+			set_variable = { name = oe_wp32_senate_echo_done value = 1 }
+			trigger_event_non_silently = { id = oe_wp32_flavor.9 days = 270 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.5.b
+		ai_chance = { base = 30 }
+		set_variable = { name = oe_wp32_chr_direction value = 2 }
+		add_prestige = 6
+		add_country_modifier = { modifier = oe_wp32_mod_chr_five_sees_endowed years = 12 mode = replace }
+		location:thessaloniki ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.04 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.5.c
+		ai_chance = { base = 25 }
+		set_variable = { name = oe_wp32_chr_direction value = 3 }
+		add_gold = -35
+		add_legitimacy = 5
+		create_character = {
+			age = 49
+			adm = { 66 84 }
+			dip = { 72 90 }
+			mil = { 28 46 }
+			estate = estate_type:clergy_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
+
+oe_wp32_io.6 = {
+	type = country_event
+	title = oe_wp32_io.6.t
+	desc = oe_wp32_io.6.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wp32_ev_patriarchal_seat.dds"
+	trigger = { is_rebel_country = no oe_wp32_church_eligible = yes }
+	immediate = { set_variable = { name = oe_wp32_ev_cd value = 1 days = 75 } }
+	option = {
+		name = oe_wp32_io.6.a
+		ai_chance = { base = 50 }
+		add_prestige = 15
+		add_legitimacy = 8
+		add_stability = 6
+		ruler ?= { add_dip = 3 }
+		location:constantinople ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.06 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.6.b
+		ai_chance = { base = 30 }
+		add_prestige = 10
+		add_stability = 8
+		add_country_modifier = { modifier = oe_wp32_mod_chr_five_sees_endowed years = 15 mode = replace }
+		location:iznik ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.05 }
+		}
+		location:trebizond ?= {
+			if = { limit = { has_owner = yes owner ?= root } change_prosperity = 0.05 }
+		}
+	}
+	option = {
+		name = oe_wp32_io.6.c
+		ai_chance = { base = 20 }
+		add_legitimacy = 10
+		add_prestige = 12
+		create_character = {
+			age = 52
+			adm = { 68 86 }
+			dip = { 76 92 }
+			mil = { 30 48 }
+			estate = estate_type:clergy_estate
+			culture = root.culture
+			religion = root.religion
+		}
+	}
+}
