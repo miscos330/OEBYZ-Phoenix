@@ -2,6 +2,7 @@
 
 oe_sit_byz_renaissance = {
 	monthly_spawn_chance = monthly_spawn_chance_unique
+	hint_tag = hint_oe_sit_byz_renaissance
 	can_start = {
 		oe_start_is_1337 = yes
 		NOT = { has_global_variable = oe_sit2_ren_started }
@@ -27,7 +28,10 @@ oe_sit_byz_renaissance = {
 				country_exists = c:ROM
 			}
 			has_variable = oe_sit2_ren_beacon
-			var:oe_sit2_ren_beacon >= 85
+			trigger_if = {
+				limit = { has_variable = oe_sit2_ren_beacon }
+				var:oe_sit2_ren_beacon >= 85
+			}
 		}
 		immediate = {
 			set_global_variable = { name = oe_sit2_ren_ended value = 1 }
@@ -59,9 +63,15 @@ oe_sit_byz_renaissance = {
 		desc = "oe_sit_byz_renaissance_outcome_shared_desc"
 		trigger = {
 			has_variable = oe_sit2_ren_exchange
-			var:oe_sit2_ren_exchange >= 80
+			trigger_if = {
+				limit = { has_variable = oe_sit2_ren_exchange }
+				var:oe_sit2_ren_exchange >= 80
+			}
 			has_variable = oe_sit2_ren_beacon
-			var:oe_sit2_ren_beacon >= 45
+			trigger_if = {
+				limit = { has_variable = oe_sit2_ren_beacon }
+				var:oe_sit2_ren_beacon >= 45
+			}
 		}
 		immediate = {
 			set_global_variable = { name = oe_sit2_ren_ended value = 2 }
@@ -103,7 +113,10 @@ oe_sit_byz_renaissance = {
 				AND = {
 					current_year >= 1530
 					has_variable = oe_sit2_ren_beacon
-					var:oe_sit2_ren_beacon < 85
+					trigger_if = {
+						limit = { has_variable = oe_sit2_ren_beacon }
+						var:oe_sit2_ren_beacon < 85
+					}
 				}
 			}
 		}

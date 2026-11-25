@@ -36,32 +36,35 @@ oe_osmaris_memorial_accept = {
     }
 }
 oe_osmaris_introduce_constantine = {
-    if = {
-        limit = { NOT = { exists = character:oe_osmaris_constantine } NOT = { has_variable = oe_osmaris_constantine_introduced } }
-        set_variable = oe_osmaris_constantine_introduced
-        create_character = {
-            first_name = oe_osmaris_constantine_name
-            birth_date = 1387.1.1
-            birth_location = location:bursa
-            dynasty = dynasty:ottomans_dynasty
-            culture = culture:oe_tur_greek_culture
-            religion = religion:orthodox
-            estate = estate_type:burghers_estate
-            female = no
-            adm = 85 dip = 75 mil = 60
-            script = oe_osmaris_constantine
-            save_scope_as = oe_osmaris_constantine_person
-        }
-        character:oe_osmaris_constantine ?= {
-            set_nickname = oe_osmaris_good
-            character:oe_osmaris_basil ?= { save_scope_as = oe_osmaris_constantine_father }
-            if = { limit = { exists = scope:oe_osmaris_constantine_father } change_father = scope:oe_osmaris_constantine_father }
-        }
-    }
-    character:oe_osmaris_constantine ?= { save_scope_as = oe_osmaris_constantine_person }
-    international_organization:oe_byz_empire_pillars = {
-        save_scope_value_as = { name = oe_osmaris_aid_cost value = { value = oe_pillars_purse_monthly_income min = 0 multiply = 6 } }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { NOT = { exists = character:oe_osmaris_constantine } NOT = { has_variable = oe_osmaris_constantine_introduced } }
+	        set_variable = oe_osmaris_constantine_introduced
+	        create_character = {
+	            first_name = oe_osmaris_constantine_name
+	            birth_date = 1387.1.1
+	            birth_location = location:bursa
+	            dynasty = dynasty:ottomans_dynasty
+	            culture = culture:oe_tur_greek_culture
+	            religion = religion:orthodox
+	            estate = estate_type:burghers_estate
+	            female = no
+	            adm = 85 dip = 75 mil = 60
+	            script = oe_osmaris_constantine
+	            save_scope_as = oe_osmaris_constantine_person
+	        }
+	        character:oe_osmaris_constantine ?= {
+	            set_nickname = oe_osmaris_good
+	            character:oe_osmaris_basil ?= { save_scope_as = oe_osmaris_constantine_father }
+	            if = { limit = { exists = scope:oe_osmaris_constantine_father } change_father = scope:oe_osmaris_constantine_father }
+	        }
+	    }
+	    character:oe_osmaris_constantine ?= { save_scope_as = oe_osmaris_constantine_person }
+	    international_organization:oe_byz_empire_pillars = {
+	        save_scope_value_as = { name = oe_osmaris_aid_cost value = { value = oe_pillars_purse_monthly_income min = 0 multiply = 6 } }
+	    }
+	}
 }
 oe_osmaris_aid_constantine = {
     if = {

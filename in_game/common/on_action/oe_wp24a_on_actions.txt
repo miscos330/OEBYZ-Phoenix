@@ -1,0 +1,279 @@
+﻿# NEW 2026-11-24 v29.0 WP24-A Main Mod Core Deepening (oe_wp24a_, gen_v290_wp24a_core_deepening.py) — WP11 Four Praetorian Prefectures + WP12 Teutonic 1525 Reformation Fork + WP13 Northern Yuan & Four Khanates (0 vanilla overrides, 0 mainline slots). Edit gen_v290_wp24a_core_deepening.py, not this file.
+
+yearly_country_pulse = {
+	on_actions = {
+		oe_wp24a_yearly_pulse
+	}
+}
+
+# Strictly isolated from Fourth Rome (ELR), rebels (R10), and pre-1337 starts (R31).
+# Paces follow-up arcs cleanly and bridges pre-existing WP11/WP12/WP13 choices without spam.
+oe_wp24a_yearly_pulse = {
+	trigger = {
+		is_rebel_country = no
+		NOT = { oe_is_fourth_rome_exile_country = yes }
+		num_locations > 0
+		current_year >= 1337
+		NOT = { has_variable = oe_wp24a_pulse_cd }
+		OR = {
+			oe_wp24a_is_roman_host = yes
+			oe_wp24a_is_teu_host = yes
+			oe_wp24a_is_yuan_host = yes
+		}
+	}
+	effect = {
+		# --- WP11: Praetorian Prefecture follow-up safety net ---
+		if = {
+			limit = {
+				oe_wp24a_is_roman_host = yes
+				has_variable = oe_wp24a_oriens_chartered
+				NOT = { has_variable = oe_wp24a_pref_2_done }
+				oe_wp24a_holds_oriens = yes
+			}
+			set_variable = { name = oe_wp24a_pref_2_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_pref.2
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_roman_host = yes
+				has_variable = oe_wp24a_pref_2_done
+				NOT = { has_variable = oe_wp24a_pref_3_done }
+				oe_wp24a_holds_oriens = yes
+			}
+			set_variable = { name = oe_wp24a_pref_3_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_pref.3
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_roman_host = yes
+				has_variable = oe_wp24a_illyricum_chartered
+				NOT = { has_variable = oe_wp24a_pref_5_done }
+				oe_wp24a_holds_illyricum = yes
+			}
+			set_variable = { name = oe_wp24a_pref_5_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_pref.5
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_roman_host = yes
+				has_variable = oe_wp24a_pref_5_done
+				NOT = { has_variable = oe_wp24a_pref_6_done }
+				oe_wp24a_holds_illyricum = yes
+			}
+			set_variable = { name = oe_wp24a_pref_6_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_pref.6
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_roman_host = yes
+				has_variable = oe_wp24a_italia_chartered
+				NOT = { has_variable = oe_wp24a_pref_8_done }
+				oe_wp24a_holds_italia = yes
+			}
+			set_variable = { name = oe_wp24a_pref_8_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_pref.8
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_roman_host = yes
+				has_variable = oe_wp24a_pref_8_done
+				NOT = { has_variable = oe_wp24a_pref_9_done }
+				oe_wp24a_holds_italia = yes
+			}
+			set_variable = { name = oe_wp24a_pref_9_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_pref.9
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_roman_host = yes
+				has_variable = oe_wp24a_gallia_chartered
+				NOT = { has_variable = oe_wp24a_pref_11_done }
+				oe_wp24a_holds_gallia = yes
+			}
+			set_variable = { name = oe_wp24a_pref_11_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_pref.11
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_roman_host = yes
+				has_variable = oe_wp24a_pref_11_done
+				NOT = { has_variable = oe_wp24a_pref_12_done }
+				oe_wp24a_holds_gallia = yes
+			}
+			set_variable = { name = oe_wp24a_pref_12_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_pref.12
+		}
+		# --- WP12: Teutonic 1525 Reformation Fork seamless bridge & follow-up ---
+		else_if = {
+			limit = {
+				oe_wp24a_is_teu_host = yes
+				oe_wp24a_is_teu_reformation_era = yes
+				has_variable = oe_teu_secularized_pru
+				NOT = { has_variable = oe_wp24a_teu_1_done }
+				NOT = { has_variable = oe_wp24a_teu_branch_catholic }
+			}
+			set_variable = { name = oe_wp24a_teu_branch_secular value = 1 }
+			set_variable = { name = oe_wp24a_teu_1_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_teu.1
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_teu_host = yes
+				oe_wp24a_is_teu_reformation_era = yes
+				has_variable = oe_wp24a_teu_branch_secular
+				NOT = { has_variable = oe_wp24a_teu_2_done }
+			}
+			set_variable = { name = oe_wp24a_teu_2_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_teu.2
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_teu_host = yes
+				oe_wp24a_is_teu_reformation_era = yes
+				has_variable = oe_wp24a_teu_2_done
+				NOT = { has_variable = oe_wp24a_teu_3_done }
+			}
+			set_variable = { name = oe_wp24a_teu_3_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_teu.3
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_teu_host = yes
+				oe_wp24a_is_teu_reformation_era = yes
+				has_variable = oe_wp24a_teu_3_done
+				NOT = { has_variable = oe_wp24a_teu_4_done }
+			}
+			set_variable = { name = oe_wp24a_teu_4_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_teu.4
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_teu_host = yes
+				oe_wp24a_is_teu_reformation_era = yes
+				has_variable = oe_teu_counter_reformation_order
+				NOT = { has_variable = oe_wp24a_teu_5_done }
+				NOT = { has_variable = oe_wp24a_teu_branch_secular }
+			}
+			set_variable = { name = oe_wp24a_teu_branch_catholic value = 1 }
+			set_variable = { name = oe_wp24a_teu_5_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_teu.5
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_teu_host = yes
+				oe_wp24a_is_teu_reformation_era = yes
+				has_variable = oe_wp24a_teu_branch_catholic
+				NOT = { has_variable = oe_wp24a_teu_6_done }
+			}
+			set_variable = { name = oe_wp24a_teu_6_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_teu.6
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_teu_host = yes
+				oe_wp24a_is_teu_reformation_era = yes
+				has_variable = oe_wp24a_teu_6_done
+				NOT = { has_variable = oe_wp24a_teu_7_done }
+			}
+			set_variable = { name = oe_wp24a_teu_7_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_teu.7
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_teu_host = yes
+				oe_wp24a_is_teu_reformation_era = yes
+				has_variable = oe_wp24a_teu_7_done
+				NOT = { has_variable = oe_wp24a_teu_8_done }
+			}
+			set_variable = { name = oe_wp24a_teu_8_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_teu.8
+		}
+		# --- WP13: Northern Yuan Comeback & Four Khanates follow-up safety net ---
+		else_if = {
+			limit = {
+				oe_wp24a_is_yuan_host = yes
+				has_variable = oe_wp24a_yuan_tumens_done
+				NOT = { has_variable = oe_wp24a_yuan_2_done }
+			}
+			set_variable = { name = oe_wp24a_yuan_2_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_yuan.2
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_yuan_host = yes
+				has_variable = oe_wp24a_yuan_2_done
+				NOT = { has_variable = oe_wp24a_yuan_3_done }
+			}
+			set_variable = { name = oe_wp24a_yuan_3_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_yuan.3
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_yuan_host = yes
+				has_variable = oe_wp24a_yuan_dadu_arc_done
+				NOT = { has_variable = oe_wp24a_yuan_5_done }
+			}
+			set_variable = { name = oe_wp24a_yuan_5_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_yuan.5
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_yuan_host = yes
+				has_variable = oe_wp24a_yuan_yam_done
+				NOT = { has_variable = oe_wp24a_yuan_7_done }
+			}
+			set_variable = { name = oe_wp24a_yuan_7_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_yuan.7
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_yuan_host = yes
+				has_variable = oe_wp24a_yuan_7_done
+				NOT = { has_variable = oe_wp24a_yuan_8_done }
+			}
+			set_variable = { name = oe_wp24a_yuan_8_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_yuan.8
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_yuan_host = yes
+				has_variable = oe_wp24a_yuan_8_done
+				NOT = { has_variable = oe_wp24a_yuan_9_done }
+			}
+			set_variable = { name = oe_wp24a_yuan_9_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_yuan.9
+		}
+		else_if = {
+			limit = {
+				oe_wp24a_is_yuan_host = yes
+				has_variable = oe_wp24a_yuan_9_done
+				NOT = { has_variable = oe_wp24a_yuan_10_done }
+			}
+			set_variable = { name = oe_wp24a_yuan_10_done value = 1 }
+			set_variable = { name = oe_wp24a_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wp24a_yuan.10
+		}
+	}
+}

@@ -10,8 +10,14 @@ situation_panel = {
                 spriteborder = { 0 0 }
             }
         }
+        blockoverride "FirstCountryVisible" {
+            visible = "[GetCountry('BYZ').IsValid]"
+        }
         blockoverride "FirstCountryContext" {
             datacontext = "[GetCountry('BYZ')]"
+        }
+        blockoverride "SecondCountryVisible" {
+            visible = "[GetCountry('BYZ').MakeScope.GetVariable('oe_cw_rebels').GetCountry.IsValid]"
         }
         blockoverride "SecondCountryContext" {
             datacontext = "[GetCountry('BYZ').MakeScope.GetVariable('oe_cw_rebels').GetCountry]"
@@ -41,6 +47,13 @@ situation_panel = {
 
     blockoverride "situation_subheader_content" {}
 
+    blockoverride "situation_panel_outcome_hint" {
+        action_tooltip = {
+            title = "OPEN_HINT"
+            on_action = "[OpenLateralViewWithParams('hints', 'selected_hint = hint_oe_cw_war')]"
+        }
+    }
+
     blockoverride "situation_panel_main_content" {
         oe_sit_end_conditions = {}
         card_common = {
@@ -55,13 +68,13 @@ situation_panel = {
                     spacing = 6
                 oe_sit_tug_bar = {
                     blockoverride "tug_left" {
-                        text_single = { fontsize = 13 default_format = "#color_gold" text = "OE_SIT_CW_LEFT" }
+                        text_single = { fontsize = 13 default_format = "#color_yellow" text = "OE_SIT_CW_LEFT" }
                     }
                     blockoverride "tug_center" {
                         text_single = { fontsize = 14 default_format = "#bold" raw_text = "[GetCountry('BYZ').MakeScope.GetVariable('oe_cw_tide').GetValue|0] / 100" }
                     }
                     blockoverride "tug_right" {
-                        text_single = { fontsize = 13 default_format = "#weak" text = "OE_SIT_CW_RIGHT" }
+                        text_single = { fontsize = 13 default_format = "#medium" text = "OE_SIT_CW_RIGHT" }
                     }
                     blockoverride "tug_bar_style" { using = progress_bar_red_blue_alt }
                     blockoverride "tug_bar_bounds" { min = 0 max = 100 }
@@ -89,8 +102,8 @@ situation_panel = {
                         multiline = yes
                         autoresize = yes
                         maximumsize = { 440 -1 }
-                        fontsize = 12
-                        default_format = "#weak"
+                        fontsize = 13
+                        default_format = "#color_light_gray"
                         text = "OE_SIT_CW_TIDE_FOOT"
                     }
                 }
@@ -103,8 +116,8 @@ situation_panel = {
                             text_single = {
                                 layoutpolicy_horizontal = expanding
                                 align = hcenter|nobaseline
-                                fontsize = 12
-                                default_format = "#weak"
+                                fontsize = 13
+                                default_format = "#medium"
                                 text = "OE_SIT_MONTHS"
                             }
                         }
@@ -114,7 +127,7 @@ situation_panel = {
                                 align = hcenter|nobaseline
                                 elide = right
                                 fontsize = 15
-                                default_format = "#bold #color_gold"
+                                default_format = "#color_yellow;bold"
                                 raw_text = "[GetCountry('BYZ').MakeScope.GetVariable('oe_cw_wm').GetValue|0] / 72"
                             }
                         }
@@ -124,8 +137,8 @@ situation_panel = {
                             text_single = {
                                 layoutpolicy_horizontal = expanding
                                 align = hcenter|nobaseline
-                                fontsize = 12
-                                default_format = "#weak"
+                                fontsize = 13
+                                default_format = "#medium"
                                 text = "OE_SIT_CW_RIFT"
                             }
                         }

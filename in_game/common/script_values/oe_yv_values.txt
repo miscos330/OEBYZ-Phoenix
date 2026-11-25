@@ -142,25 +142,33 @@ oe_yv_dev_rtr = { value = 0 if = { limit = { situation:red_turban_rebellions = {
 oe_yv_dev_tib = { value = 0 if = { limit = { country_exists = c:TIB c:TIB = { has_variable = oe_yv_phagmodru } } value = 1 } }
 # -1 missing (no such character), 0 dead, 1 alive, 2 in the cabinet, 3 head of the cabinet
 oe_yv_dev_bayan = {
-    value = -1
-    if = { limit = { character:yua_bayan_merkid ?= { always = yes } } value = 0 }
-    if = {
-        limit = { character:yua_bayan_merkid ?= { is_alive = yes } }
-        value = 1
-        if = { limit = { character:yua_bayan_merkid = { in_cabinet = yes } } value = 2 }
-        if = { limit = { character:yua_bayan_merkid = { has_character_modifier = head_of_the_cabinet_modifier } } value = 3 }
-    }
+	value = 0
+	if = {
+		limit = { exists = character:yua_bayan_merkid }
+	    value = -1
+	    if = { limit = { character:yua_bayan_merkid ?= { always = yes } } value = 0 }
+	    if = {
+	        limit = { character:yua_bayan_merkid ?= { is_alive = yes } }
+	        value = 1
+	        if = { limit = { character:yua_bayan_merkid = { in_cabinet = yes } } value = 2 }
+	        if = { limit = { character:yua_bayan_merkid = { has_character_modifier = head_of_the_cabinet_modifier } } value = 3 }
+	    }
+	}
 }
 # 0 dead or missing, 1 alive, 2 in the cabinet, 3 head of the cabinet, 4 imprisoned
 oe_yv_dev_toqto = {
-    value = 0
-    if = {
-        limit = { character:yua_toqto ?= { is_alive = yes } }
-        value = 1
-        if = { limit = { character:yua_toqto = { in_cabinet = yes } } value = 2 }
-        if = { limit = { character:yua_toqto = { has_character_modifier = head_of_the_cabinet_modifier } } value = 3 }
-        if = { limit = { character:yua_toqto = { has_character_modifier = imprisoned } } value = 4 }
-    }
+	value = 0
+	if = {
+		limit = { exists = character:yua_toqto }
+	    value = 0
+	    if = {
+	        limit = { character:yua_toqto ?= { is_alive = yes } }
+	        value = 1
+	        if = { limit = { character:yua_toqto = { in_cabinet = yes } } value = 2 }
+	        if = { limit = { character:yua_toqto = { has_character_modifier = head_of_the_cabinet_modifier } } value = 3 }
+	        if = { limit = { character:yua_toqto = { has_character_modifier = imprisoned } } value = 4 }
+	    }
+	}
 }
 # vanilla factional-strife intensity; 1 when the variable is unset (vanilla's implicit start value)
 oe_yv_dev_intensity = { value = 1 if = { limit = { country_exists = c:CHI c:CHI = { has_variable = chi_rtr_modifier_intensity } } value = c:CHI.var:chi_rtr_modifier_intensity } }
@@ -238,14 +246,18 @@ oe_yv_dev_cpg = { value = 0 if = { limit = { has_global_variable = oe_yv_cp } va
 oe_yv_dev_cpv = { value = 0 if = { limit = { has_global_variable = oe_yv_crown_prince } value = 1 } }
 # El Tegus: -1 no such character, 0 dead, 1 alive at the Yuan court, 2 there and barred from ruling, 3 alive elsewhere
 oe_yv_dev_et = {
-    value = -1
-    if = { limit = { character:oe_s37_el_tegus ?= { always = yes } } value = 0 }
-    if = {
-        limit = { character:oe_s37_el_tegus ?= { is_alive = yes } }
-        value = 3
-        if = { limit = { character:oe_s37_el_tegus = { owner ?= c:CHI } } value = 1 }
-        if = { limit = { character:oe_s37_el_tegus = { owner ?= c:CHI has_character_modifier = blocked_from_being_ruler } } value = 2 }
-    }
+	value = 0
+	if = {
+		limit = { exists = character:oe_s37_el_tegus }
+	    value = -1
+	    if = { limit = { character:oe_s37_el_tegus ?= { always = yes } } value = 0 }
+	    if = {
+	        limit = { character:oe_s37_el_tegus ?= { is_alive = yes } }
+	        value = 3
+	        if = { limit = { character:oe_s37_el_tegus = { owner ?= c:CHI } } value = 1 }
+	        if = { limit = { character:oe_s37_el_tegus = { owner ?= c:CHI has_character_modifier = blocked_from_being_ruler } } value = 2 }
+	    }
+	}
 }
 # El Tegus is alive and on the road into exile (character var oe_yv_exiled; .21 comes 31 days after option a)
 oe_yv_dev_etx = { value = 0 if = { limit = { character:oe_s37_el_tegus ?= { is_alive = yes has_variable = oe_yv_exiled } } value = 1 } }

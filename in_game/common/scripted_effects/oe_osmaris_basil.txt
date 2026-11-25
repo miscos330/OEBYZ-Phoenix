@@ -3,42 +3,52 @@
 # Any scope. Write only the registered Osmaris house's influence on the pillars IO.
 # Scalar macro argument; arithmetic blocks belong inside native change_variable.
 oe_osmaris_add_house_influence = {
-    international_organization:oe_byz_empire_pillars = {
-        if = {
-            limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:ottomans_dynasty }
-            change_variable = { name = oe_nf_influence_1 add = $amount$ }
-            clamp_variable = { name = oe_nf_influence_1 min = 0 max = 1000 }
-        }
-        else_if = {
-            limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:ottomans_dynasty }
-            change_variable = { name = oe_nf_influence_2 add = $amount$ }
-            clamp_variable = { name = oe_nf_influence_2 min = 0 max = 1000 }
-        }
-        else_if = {
-            limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:ottomans_dynasty }
-            change_variable = { name = oe_nf_influence_3 add = $amount$ }
-            clamp_variable = { name = oe_nf_influence_3 min = 0 max = 1000 }
-        }
-        else_if = {
-            limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:ottomans_dynasty }
-            change_variable = { name = oe_nf_influence_4 add = $amount$ }
-            clamp_variable = { name = oe_nf_influence_4 min = 0 max = 1000 }
-        }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = {
+	        if = {
+	            limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:ottomans_dynasty }
+	            if = { limit = { NOT = { has_variable = oe_nf_influence_1 } } set_variable = { name = oe_nf_influence_1 value = 0 } }
+	            change_variable = { name = oe_nf_influence_1 add = $amount$ }
+	            clamp_variable = { name = oe_nf_influence_1 min = 0 max = 1000 }
+	        }
+	        else_if = {
+	            limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:ottomans_dynasty }
+	            if = { limit = { NOT = { has_variable = oe_nf_influence_2 } } set_variable = { name = oe_nf_influence_2 value = 0 } }
+	            change_variable = { name = oe_nf_influence_2 add = $amount$ }
+	            clamp_variable = { name = oe_nf_influence_2 min = 0 max = 1000 }
+	        }
+	        else_if = {
+	            limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:ottomans_dynasty }
+	            if = { limit = { NOT = { has_variable = oe_nf_influence_3 } } set_variable = { name = oe_nf_influence_3 value = 0 } }
+	            change_variable = { name = oe_nf_influence_3 add = $amount$ }
+	            clamp_variable = { name = oe_nf_influence_3 min = 0 max = 1000 }
+	        }
+	        else_if = {
+	            limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:ottomans_dynasty }
+	            if = { limit = { NOT = { has_variable = oe_nf_influence_4 } } set_variable = { name = oe_nf_influence_4 value = 0 } }
+	            change_variable = { name = oe_nf_influence_4 add = $amount$ }
+	            clamp_variable = { name = oe_nf_influence_4 min = 0 max = 1000 }
+	        }
+	    }
+	}
 }
 oe_osmaris_reward_house = {
-    if = {
-        limit = {
-            international_organization:oe_byz_empire_pillars = { OR = {
-                AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:ottomans_dynasty }
-                AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:ottomans_dynasty }
-                AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:ottomans_dynasty }
-                AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:ottomans_dynasty }
-            } }
-        }
-        oe_osmaris_add_house_influence = { amount = 50 }
-    }
-    else = { oe_osmaris_admit_house = { head = $member$ } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = {
+	            international_organization:oe_byz_empire_pillars = { OR = {
+	                AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:ottomans_dynasty }
+	                AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:ottomans_dynasty }
+	                AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:ottomans_dynasty }
+	                AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:ottomans_dynasty }
+	            } }
+	        }
+	        oe_osmaris_add_house_influence = { amount = 50 }
+	    }
+	    else = { oe_osmaris_admit_house = { head = $member$ } }
+	}
 }
 oe_osmaris_introduce_basil = {
     if = {

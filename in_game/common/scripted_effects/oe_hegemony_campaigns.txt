@@ -1,12 +1,15 @@
 ﻿# Location scope. The same predicate controls UI permission and scripted expansion.
 oe_heg_add_roman_location = {
-    if = {
-        limit = {
-            oe_roman_world_land_trigger = yes
-            NOT = { is_owned_by_international_organization = international_organization:oe_byz_roman_world }
-        }
-        international_organization:oe_byz_roman_world = { add_location_to_international_organization = prev }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_roman_world }
+	    if = {
+	        limit = {
+	            oe_roman_world_land_trigger = yes
+	            NOT = { is_owned_by_international_organization = international_organization:oe_byz_roman_world }
+	        }
+	        international_organization:oe_byz_roman_world = { add_location_to_international_organization = prev }
+	    }
+	}
 }
 # Organization scope; also repairs missing extension locations on the monthly sync.
 oe_heg_sync_campaign_territory = {
@@ -47,25 +50,31 @@ oe_heg_sync_campaign_territory = {
     }
 }
 oe_heg_plan_egypt_effect = {
-    add_gold = -1000
-    set_variable = oe_heg_egypt_plan_done
-    add_casus_belli = {
-        target = location:alexandria.owner
-        type = casus_belli:cb_conquer_province
-        province = location:alexandria.province
-    }
-    international_organization:oe_byz_roman_world = {
-        set_variable = oe_rw_levant_egypt_included
-        oe_heg_sync_campaign_territory = yes
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_roman_world }
+	    add_gold = -1000
+	    set_variable = oe_heg_egypt_plan_done
+	    add_casus_belli = {
+	        target = location:alexandria.owner
+	        type = casus_belli:cb_conquer_province
+	        province = location:alexandria.province
+	    }
+	    international_organization:oe_byz_roman_world = {
+	        set_variable = oe_rw_levant_egypt_included
+	        oe_heg_sync_campaign_territory = yes
+	    }
+	}
 }
 oe_heg_plan_africa_effect = {
-    add_gold = -1000
-    set_variable = oe_heg_africa_plan_done
-    international_organization:oe_byz_roman_world = {
-        set_variable = oe_rw_maghreb_included
-        oe_heg_sync_campaign_territory = yes
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_roman_world }
+	    add_gold = -1000
+	    set_variable = oe_heg_africa_plan_done
+	    international_organization:oe_byz_roman_world = {
+	        set_variable = oe_rw_maghreb_included
+	        oe_heg_sync_campaign_territory = yes
+	    }
+	}
 }
 # Location scope; owner is passed as a parameter. Old design: one era regiment + one cog per group.
 oe_heg_expedition_reinforcements = {

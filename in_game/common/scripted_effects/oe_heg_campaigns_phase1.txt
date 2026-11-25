@@ -3,62 +3,65 @@
 # ======================== 埃及 ========================
 # BYZ scope. Launch: pay, declare on every country with its capital in the region, start the campaign.
 oe_hc_egypt_start = {
-    add_gold = { value = oe_hc_declare_cost multiply = -1 }
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
-    every_country = { limit = { has_variable = oe_hc_egypt_target } remove_variable = oe_hc_egypt_target }
-    every_current_war = { remove_variable = oe_hc_egypt_war }
-    every_country = {
-        limit = { oe_hc_egypt_target = yes }
-        set_variable = oe_hc_egypt_target
-        add_to_list = oe_hc_egypt_targets
-    }
-    every_in_list = {
-        list = oe_hc_egypt_targets
-        save_scope_as = oe_hc_enemy
-        c:BYZ = {
-            if = {
-                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
-                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-            }
-        }
-    }
-    every_in_list = {
-        list = oe_hc_egypt_targets
-        every_current_war = {
-            limit = {
-                OR = {
-                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
-                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
-                }
-            }
-            set_variable = oe_hc_egypt_war
-        }
-    }
-    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
-    # effect preview does not show a +1000 gold line next to the cost).
-    if = {
-        limit = { NOT = { any_country = { oe_hc_egypt_target_active = yes } } }
-        hidden_effect = {
-            add_gold = oe_hc_declare_cost
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
-        }
-    }
-    else = {
-        set_variable = oe_hc_egypt_active
-        set_variable = { name = oe_hc_egypt_progress value = 0 }
-        set_variable = { name = oe_hc_egypt_pressure value = 0 }
-        set_variable = { name = oe_hc_egypt_bonus value = 0 }
-        set_variable = { name = oe_hc_egypt_months value = 0 }
-        set_global_variable = oe_hc_any_active
-        if = { limit = { NOT = { is_situation_active = situation:oe_hc_egypt } } activate_situation = situation:oe_hc_egypt }
-        trigger_event_non_silently = oe_hc.100
-        oe_hcr_egypt_on_start = yes
-        oe_tmc_on_start = { r = egypt }
-        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
-        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
-        oe_rc2_on_campaign_launched = { region_code = 1 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    add_gold = { value = oe_hc_declare_cost multiply = -1 }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
+	    every_country = { limit = { has_variable = oe_hc_egypt_target } remove_variable = oe_hc_egypt_target }
+	    every_current_war = { remove_variable = oe_hc_egypt_war }
+	    every_country = {
+	        limit = { oe_hc_egypt_target = yes }
+	        set_variable = oe_hc_egypt_target
+	        add_to_list = oe_hc_egypt_targets
+	    }
+	    every_in_list = {
+	        list = oe_hc_egypt_targets
+	        save_scope_as = oe_hc_enemy
+	        c:BYZ = {
+	            if = {
+	                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
+	                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	            }
+	        }
+	    }
+	    every_in_list = {
+	        list = oe_hc_egypt_targets
+	        every_current_war = {
+	            limit = {
+	                OR = {
+	                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+	                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+	                }
+	            }
+	            set_variable = oe_hc_egypt_war
+	        }
+	    }
+	    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
+	    # effect preview does not show a +1000 gold line next to the cost).
+	    if = {
+	        limit = { NOT = { any_country = { oe_hc_egypt_target_active = yes } } }
+	        hidden_effect = {
+	            add_gold = oe_hc_declare_cost
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
+	        }
+	    }
+	    else = {
+	        set_variable = oe_hc_egypt_active
+	        set_variable = { name = oe_hc_egypt_progress value = 0 }
+	        set_variable = { name = oe_hc_egypt_pressure value = 0 }
+	        set_variable = { name = oe_hc_egypt_bonus value = 0 }
+	        set_variable = { name = oe_hc_egypt_months value = 0 }
+	        set_global_variable = oe_hc_any_active
+	        if = { limit = { NOT = { is_situation_active = situation:oe_hc_egypt } } activate_situation = situation:oe_hc_egypt }
+	        trigger_event_non_silently = oe_hc.100
+	        oe_hcr_egypt_on_start = yes
+	        oe_tmc_on_start = { r = egypt }
+	        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
+	        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
+	        oe_rc2_on_campaign_launched = { region_code = 1 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
+	    }
+	}
 }
 
 # Location scope (occupation and siege hooks).
@@ -204,62 +207,65 @@ oe_hc_egypt_end_3 = {
 # ======================== 北非 ========================
 # BYZ scope. Launch: pay, declare on every country with its capital in the region, start the campaign.
 oe_hc_africa_start = {
-    add_gold = { value = oe_hc_declare_cost multiply = -1 }
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
-    every_country = { limit = { has_variable = oe_hc_africa_target } remove_variable = oe_hc_africa_target }
-    every_current_war = { remove_variable = oe_hc_africa_war }
-    every_country = {
-        limit = { oe_hc_africa_target = yes }
-        set_variable = oe_hc_africa_target
-        add_to_list = oe_hc_africa_targets
-    }
-    every_in_list = {
-        list = oe_hc_africa_targets
-        save_scope_as = oe_hc_enemy
-        c:BYZ = {
-            if = {
-                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
-                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-            }
-        }
-    }
-    every_in_list = {
-        list = oe_hc_africa_targets
-        every_current_war = {
-            limit = {
-                OR = {
-                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
-                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
-                }
-            }
-            set_variable = oe_hc_africa_war
-        }
-    }
-    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
-    # effect preview does not show a +1000 gold line next to the cost).
-    if = {
-        limit = { NOT = { any_country = { oe_hc_africa_target_active = yes } } }
-        hidden_effect = {
-            add_gold = oe_hc_declare_cost
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
-        }
-    }
-    else = {
-        set_variable = oe_hc_africa_active
-        set_variable = { name = oe_hc_africa_progress value = 0 }
-        set_variable = { name = oe_hc_africa_pressure value = 0 }
-        set_variable = { name = oe_hc_africa_bonus value = 0 }
-        set_variable = { name = oe_hc_africa_months value = 0 }
-        set_global_variable = oe_hc_any_active
-        if = { limit = { NOT = { is_situation_active = situation:oe_hc_africa } } activate_situation = situation:oe_hc_africa }
-        trigger_event_non_silently = oe_hc.100
-        oe_hcr_africa_on_start = yes
-        oe_tmc_on_start = { r = africa }
-        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
-        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
-        oe_rc2_on_campaign_launched = { region_code = 2 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    add_gold = { value = oe_hc_declare_cost multiply = -1 }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
+	    every_country = { limit = { has_variable = oe_hc_africa_target } remove_variable = oe_hc_africa_target }
+	    every_current_war = { remove_variable = oe_hc_africa_war }
+	    every_country = {
+	        limit = { oe_hc_africa_target = yes }
+	        set_variable = oe_hc_africa_target
+	        add_to_list = oe_hc_africa_targets
+	    }
+	    every_in_list = {
+	        list = oe_hc_africa_targets
+	        save_scope_as = oe_hc_enemy
+	        c:BYZ = {
+	            if = {
+	                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
+	                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	            }
+	        }
+	    }
+	    every_in_list = {
+	        list = oe_hc_africa_targets
+	        every_current_war = {
+	            limit = {
+	                OR = {
+	                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+	                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+	                }
+	            }
+	            set_variable = oe_hc_africa_war
+	        }
+	    }
+	    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
+	    # effect preview does not show a +1000 gold line next to the cost).
+	    if = {
+	        limit = { NOT = { any_country = { oe_hc_africa_target_active = yes } } }
+	        hidden_effect = {
+	            add_gold = oe_hc_declare_cost
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
+	        }
+	    }
+	    else = {
+	        set_variable = oe_hc_africa_active
+	        set_variable = { name = oe_hc_africa_progress value = 0 }
+	        set_variable = { name = oe_hc_africa_pressure value = 0 }
+	        set_variable = { name = oe_hc_africa_bonus value = 0 }
+	        set_variable = { name = oe_hc_africa_months value = 0 }
+	        set_global_variable = oe_hc_any_active
+	        if = { limit = { NOT = { is_situation_active = situation:oe_hc_africa } } activate_situation = situation:oe_hc_africa }
+	        trigger_event_non_silently = oe_hc.100
+	        oe_hcr_africa_on_start = yes
+	        oe_tmc_on_start = { r = africa }
+	        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
+	        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
+	        oe_rc2_on_campaign_launched = { region_code = 2 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
+	    }
+	}
 }
 
 # Location scope (occupation and siege hooks).
@@ -414,62 +420,65 @@ oe_hc_africa_end_3 = {
 # ======================== 意大利 ========================
 # BYZ scope. Launch: pay, declare on every country with its capital in the region, start the campaign.
 oe_hc_italy_start = {
-    add_gold = { value = oe_hc_declare_cost multiply = -1 }
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
-    every_country = { limit = { has_variable = oe_hc_italy_target } remove_variable = oe_hc_italy_target }
-    every_current_war = { remove_variable = oe_hc_italy_war }
-    every_country = {
-        limit = { oe_hc_italy_target = yes }
-        set_variable = oe_hc_italy_target
-        add_to_list = oe_hc_italy_targets
-    }
-    every_in_list = {
-        list = oe_hc_italy_targets
-        save_scope_as = oe_hc_enemy
-        c:BYZ = {
-            if = {
-                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
-                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-            }
-        }
-    }
-    every_in_list = {
-        list = oe_hc_italy_targets
-        every_current_war = {
-            limit = {
-                OR = {
-                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
-                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
-                }
-            }
-            set_variable = oe_hc_italy_war
-        }
-    }
-    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
-    # effect preview does not show a +1000 gold line next to the cost).
-    if = {
-        limit = { NOT = { any_country = { oe_hc_italy_target_active = yes } } }
-        hidden_effect = {
-            add_gold = oe_hc_declare_cost
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
-        }
-    }
-    else = {
-        set_variable = oe_hc_italy_active
-        set_variable = { name = oe_hc_italy_progress value = 0 }
-        set_variable = { name = oe_hc_italy_pressure value = 0 }
-        set_variable = { name = oe_hc_italy_bonus value = 0 }
-        set_variable = { name = oe_hc_italy_months value = 0 }
-        set_global_variable = oe_hc_any_active
-        if = { limit = { NOT = { is_situation_active = situation:oe_hc_italy } } activate_situation = situation:oe_hc_italy }
-        trigger_event_non_silently = oe_hc.100
-        oe_hcr_italy_on_start = yes
-        oe_tmc_on_start = { r = italy }
-        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
-        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
-        oe_rc2_on_campaign_launched = { region_code = 3 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    add_gold = { value = oe_hc_declare_cost multiply = -1 }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
+	    every_country = { limit = { has_variable = oe_hc_italy_target } remove_variable = oe_hc_italy_target }
+	    every_current_war = { remove_variable = oe_hc_italy_war }
+	    every_country = {
+	        limit = { oe_hc_italy_target = yes }
+	        set_variable = oe_hc_italy_target
+	        add_to_list = oe_hc_italy_targets
+	    }
+	    every_in_list = {
+	        list = oe_hc_italy_targets
+	        save_scope_as = oe_hc_enemy
+	        c:BYZ = {
+	            if = {
+	                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
+	                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	            }
+	        }
+	    }
+	    every_in_list = {
+	        list = oe_hc_italy_targets
+	        every_current_war = {
+	            limit = {
+	                OR = {
+	                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+	                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+	                }
+	            }
+	            set_variable = oe_hc_italy_war
+	        }
+	    }
+	    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
+	    # effect preview does not show a +1000 gold line next to the cost).
+	    if = {
+	        limit = { NOT = { any_country = { oe_hc_italy_target_active = yes } } }
+	        hidden_effect = {
+	            add_gold = oe_hc_declare_cost
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
+	        }
+	    }
+	    else = {
+	        set_variable = oe_hc_italy_active
+	        set_variable = { name = oe_hc_italy_progress value = 0 }
+	        set_variable = { name = oe_hc_italy_pressure value = 0 }
+	        set_variable = { name = oe_hc_italy_bonus value = 0 }
+	        set_variable = { name = oe_hc_italy_months value = 0 }
+	        set_global_variable = oe_hc_any_active
+	        if = { limit = { NOT = { is_situation_active = situation:oe_hc_italy } } activate_situation = situation:oe_hc_italy }
+	        trigger_event_non_silently = oe_hc.100
+	        oe_hcr_italy_on_start = yes
+	        oe_tmc_on_start = { r = italy }
+	        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
+	        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
+	        oe_rc2_on_campaign_launched = { region_code = 3 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
+	    }
+	}
 }
 
 # Location scope (occupation and siege hooks).
@@ -619,62 +628,65 @@ oe_hc_italy_end_3 = {
 # ======================== 法兰西 ========================
 # BYZ scope. Launch: pay, declare on every country with its capital in the region, start the campaign.
 oe_hc_france_start = {
-    add_gold = { value = oe_hc_declare_cost multiply = -1 }
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
-    every_country = { limit = { has_variable = oe_hc_france_target } remove_variable = oe_hc_france_target }
-    every_current_war = { remove_variable = oe_hc_france_war }
-    every_country = {
-        limit = { oe_hc_france_target = yes }
-        set_variable = oe_hc_france_target
-        add_to_list = oe_hc_france_targets
-    }
-    every_in_list = {
-        list = oe_hc_france_targets
-        save_scope_as = oe_hc_enemy
-        c:BYZ = {
-            if = {
-                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
-                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-            }
-        }
-    }
-    every_in_list = {
-        list = oe_hc_france_targets
-        every_current_war = {
-            limit = {
-                OR = {
-                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
-                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
-                }
-            }
-            set_variable = oe_hc_france_war
-        }
-    }
-    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
-    # effect preview does not show a +1000 gold line next to the cost).
-    if = {
-        limit = { NOT = { any_country = { oe_hc_france_target_active = yes } } }
-        hidden_effect = {
-            add_gold = oe_hc_declare_cost
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
-        }
-    }
-    else = {
-        set_variable = oe_hc_france_active
-        set_variable = { name = oe_hc_france_progress value = 0 }
-        set_variable = { name = oe_hc_france_pressure value = 0 }
-        set_variable = { name = oe_hc_france_bonus value = 0 }
-        set_variable = { name = oe_hc_france_months value = 0 }
-        set_global_variable = oe_hc_any_active
-        if = { limit = { NOT = { is_situation_active = situation:oe_hc_france } } activate_situation = situation:oe_hc_france }
-        trigger_event_non_silently = oe_hc.100
-        oe_hcr_france_on_start = yes
-        oe_tmc_on_start = { r = france }
-        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
-        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
-        oe_rc2_on_campaign_launched = { region_code = 4 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    add_gold = { value = oe_hc_declare_cost multiply = -1 }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
+	    every_country = { limit = { has_variable = oe_hc_france_target } remove_variable = oe_hc_france_target }
+	    every_current_war = { remove_variable = oe_hc_france_war }
+	    every_country = {
+	        limit = { oe_hc_france_target = yes }
+	        set_variable = oe_hc_france_target
+	        add_to_list = oe_hc_france_targets
+	    }
+	    every_in_list = {
+	        list = oe_hc_france_targets
+	        save_scope_as = oe_hc_enemy
+	        c:BYZ = {
+	            if = {
+	                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
+	                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	            }
+	        }
+	    }
+	    every_in_list = {
+	        list = oe_hc_france_targets
+	        every_current_war = {
+	            limit = {
+	                OR = {
+	                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+	                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+	                }
+	            }
+	            set_variable = oe_hc_france_war
+	        }
+	    }
+	    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
+	    # effect preview does not show a +1000 gold line next to the cost).
+	    if = {
+	        limit = { NOT = { any_country = { oe_hc_france_target_active = yes } } }
+	        hidden_effect = {
+	            add_gold = oe_hc_declare_cost
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
+	        }
+	    }
+	    else = {
+	        set_variable = oe_hc_france_active
+	        set_variable = { name = oe_hc_france_progress value = 0 }
+	        set_variable = { name = oe_hc_france_pressure value = 0 }
+	        set_variable = { name = oe_hc_france_bonus value = 0 }
+	        set_variable = { name = oe_hc_france_months value = 0 }
+	        set_global_variable = oe_hc_any_active
+	        if = { limit = { NOT = { is_situation_active = situation:oe_hc_france } } activate_situation = situation:oe_hc_france }
+	        trigger_event_non_silently = oe_hc.100
+	        oe_hcr_france_on_start = yes
+	        oe_tmc_on_start = { r = france }
+	        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
+	        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
+	        oe_rc2_on_campaign_launched = { region_code = 4 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
+	    }
+	}
 }
 
 # Location scope (occupation and siege hooks).
@@ -822,62 +834,65 @@ oe_hc_france_end_3 = {
 # ======================== 伊比利亚 ========================
 # BYZ scope. Launch: pay, declare on every country with its capital in the region, start the campaign.
 oe_hc_iberia_start = {
-    add_gold = { value = oe_hc_declare_cost multiply = -1 }
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
-    every_country = { limit = { has_variable = oe_hc_iberia_target } remove_variable = oe_hc_iberia_target }
-    every_current_war = { remove_variable = oe_hc_iberia_war }
-    every_country = {
-        limit = { oe_hc_iberia_target = yes }
-        set_variable = oe_hc_iberia_target
-        add_to_list = oe_hc_iberia_targets
-    }
-    every_in_list = {
-        list = oe_hc_iberia_targets
-        save_scope_as = oe_hc_enemy
-        c:BYZ = {
-            if = {
-                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
-                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-            }
-        }
-    }
-    every_in_list = {
-        list = oe_hc_iberia_targets
-        every_current_war = {
-            limit = {
-                OR = {
-                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
-                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
-                }
-            }
-            set_variable = oe_hc_iberia_war
-        }
-    }
-    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
-    # effect preview does not show a +1000 gold line next to the cost).
-    if = {
-        limit = { NOT = { any_country = { oe_hc_iberia_target_active = yes } } }
-        hidden_effect = {
-            add_gold = oe_hc_declare_cost
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
-        }
-    }
-    else = {
-        set_variable = oe_hc_iberia_active
-        set_variable = { name = oe_hc_iberia_progress value = 0 }
-        set_variable = { name = oe_hc_iberia_pressure value = 0 }
-        set_variable = { name = oe_hc_iberia_bonus value = 0 }
-        set_variable = { name = oe_hc_iberia_months value = 0 }
-        set_global_variable = oe_hc_any_active
-        if = { limit = { NOT = { is_situation_active = situation:oe_hc_iberia } } activate_situation = situation:oe_hc_iberia }
-        trigger_event_non_silently = oe_hc.100
-        oe_hcr_iberia_on_start = yes
-        oe_tmc_on_start = { r = iberia }
-        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
-        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
-        oe_rc2_on_campaign_launched = { region_code = 5 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    add_gold = { value = oe_hc_declare_cost multiply = -1 }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
+	    every_country = { limit = { has_variable = oe_hc_iberia_target } remove_variable = oe_hc_iberia_target }
+	    every_current_war = { remove_variable = oe_hc_iberia_war }
+	    every_country = {
+	        limit = { oe_hc_iberia_target = yes }
+	        set_variable = oe_hc_iberia_target
+	        add_to_list = oe_hc_iberia_targets
+	    }
+	    every_in_list = {
+	        list = oe_hc_iberia_targets
+	        save_scope_as = oe_hc_enemy
+	        c:BYZ = {
+	            if = {
+	                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
+	                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	            }
+	        }
+	    }
+	    every_in_list = {
+	        list = oe_hc_iberia_targets
+	        every_current_war = {
+	            limit = {
+	                OR = {
+	                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+	                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+	                }
+	            }
+	            set_variable = oe_hc_iberia_war
+	        }
+	    }
+	    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
+	    # effect preview does not show a +1000 gold line next to the cost).
+	    if = {
+	        limit = { NOT = { any_country = { oe_hc_iberia_target_active = yes } } }
+	        hidden_effect = {
+	            add_gold = oe_hc_declare_cost
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
+	        }
+	    }
+	    else = {
+	        set_variable = oe_hc_iberia_active
+	        set_variable = { name = oe_hc_iberia_progress value = 0 }
+	        set_variable = { name = oe_hc_iberia_pressure value = 0 }
+	        set_variable = { name = oe_hc_iberia_bonus value = 0 }
+	        set_variable = { name = oe_hc_iberia_months value = 0 }
+	        set_global_variable = oe_hc_any_active
+	        if = { limit = { NOT = { is_situation_active = situation:oe_hc_iberia } } activate_situation = situation:oe_hc_iberia }
+	        trigger_event_non_silently = oe_hc.100
+	        oe_hcr_iberia_on_start = yes
+	        oe_tmc_on_start = { r = iberia }
+	        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
+	        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
+	        oe_rc2_on_campaign_launched = { region_code = 5 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
+	    }
+	}
 }
 
 # Location scope (occupation and siege hooks).
@@ -1026,62 +1041,65 @@ oe_hc_iberia_end_3 = {
 # ======================== 不列颠 ========================
 # BYZ scope. Launch: pay, declare on every country with its capital in the region, start the campaign.
 oe_hc_britain_start = {
-    add_gold = { value = oe_hc_declare_cost multiply = -1 }
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
-    every_country = { limit = { has_variable = oe_hc_britain_target } remove_variable = oe_hc_britain_target }
-    every_current_war = { remove_variable = oe_hc_britain_war }
-    every_country = {
-        limit = { oe_hc_britain_target = yes }
-        set_variable = oe_hc_britain_target
-        add_to_list = oe_hc_britain_targets
-    }
-    every_in_list = {
-        list = oe_hc_britain_targets
-        save_scope_as = oe_hc_enemy
-        c:BYZ = {
-            if = {
-                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
-                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-            }
-        }
-    }
-    every_in_list = {
-        list = oe_hc_britain_targets
-        every_current_war = {
-            limit = {
-                OR = {
-                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
-                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
-                }
-            }
-            set_variable = oe_hc_britain_war
-        }
-    }
-    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
-    # effect preview does not show a +1000 gold line next to the cost).
-    if = {
-        limit = { NOT = { any_country = { oe_hc_britain_target_active = yes } } }
-        hidden_effect = {
-            add_gold = oe_hc_declare_cost
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
-        }
-    }
-    else = {
-        set_variable = oe_hc_britain_active
-        set_variable = { name = oe_hc_britain_progress value = 0 }
-        set_variable = { name = oe_hc_britain_pressure value = 0 }
-        set_variable = { name = oe_hc_britain_bonus value = 0 }
-        set_variable = { name = oe_hc_britain_months value = 0 }
-        set_global_variable = oe_hc_any_active
-        if = { limit = { NOT = { is_situation_active = situation:oe_hc_britain } } activate_situation = situation:oe_hc_britain }
-        trigger_event_non_silently = oe_hc.100
-        oe_hcr_britain_on_start = yes
-        oe_tmc_on_start = { r = britain }
-        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
-        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
-        oe_rc2_on_campaign_launched = { region_code = 6 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    add_gold = { value = oe_hc_declare_cost multiply = -1 }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
+	    every_country = { limit = { has_variable = oe_hc_britain_target } remove_variable = oe_hc_britain_target }
+	    every_current_war = { remove_variable = oe_hc_britain_war }
+	    every_country = {
+	        limit = { oe_hc_britain_target = yes }
+	        set_variable = oe_hc_britain_target
+	        add_to_list = oe_hc_britain_targets
+	    }
+	    every_in_list = {
+	        list = oe_hc_britain_targets
+	        save_scope_as = oe_hc_enemy
+	        c:BYZ = {
+	            if = {
+	                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
+	                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	            }
+	        }
+	    }
+	    every_in_list = {
+	        list = oe_hc_britain_targets
+	        every_current_war = {
+	            limit = {
+	                OR = {
+	                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+	                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+	                }
+	            }
+	            set_variable = oe_hc_britain_war
+	        }
+	    }
+	    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
+	    # effect preview does not show a +1000 gold line next to the cost).
+	    if = {
+	        limit = { NOT = { any_country = { oe_hc_britain_target_active = yes } } }
+	        hidden_effect = {
+	            add_gold = oe_hc_declare_cost
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
+	        }
+	    }
+	    else = {
+	        set_variable = oe_hc_britain_active
+	        set_variable = { name = oe_hc_britain_progress value = 0 }
+	        set_variable = { name = oe_hc_britain_pressure value = 0 }
+	        set_variable = { name = oe_hc_britain_bonus value = 0 }
+	        set_variable = { name = oe_hc_britain_months value = 0 }
+	        set_global_variable = oe_hc_any_active
+	        if = { limit = { NOT = { is_situation_active = situation:oe_hc_britain } } activate_situation = situation:oe_hc_britain }
+	        trigger_event_non_silently = oe_hc.100
+	        oe_hcr_britain_on_start = yes
+	        oe_tmc_on_start = { r = britain }
+	        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
+	        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
+	        oe_rc2_on_campaign_launched = { region_code = 6 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
+	    }
+	}
 }
 
 # Location scope (occupation and siege hooks).
@@ -1228,62 +1246,65 @@ oe_hc_britain_end_3 = {
 # ======================== 波斯 ========================
 # BYZ scope. Launch: pay, declare on every country with its capital in the region, start the campaign.
 oe_hc_persia_start = {
-    add_gold = { value = oe_hc_declare_cost multiply = -1 }
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
-    every_country = { limit = { has_variable = oe_hc_persia_target } remove_variable = oe_hc_persia_target }
-    every_current_war = { remove_variable = oe_hc_persia_war }
-    every_country = {
-        limit = { oe_hc_persia_target = yes }
-        set_variable = oe_hc_persia_target
-        add_to_list = oe_hc_persia_targets
-    }
-    every_in_list = {
-        list = oe_hc_persia_targets
-        save_scope_as = oe_hc_enemy
-        c:BYZ = {
-            if = {
-                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
-                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-            }
-        }
-    }
-    every_in_list = {
-        list = oe_hc_persia_targets
-        every_current_war = {
-            limit = {
-                OR = {
-                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
-                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
-                }
-            }
-            set_variable = oe_hc_persia_war
-        }
-    }
-    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
-    # effect preview does not show a +1000 gold line next to the cost).
-    if = {
-        limit = { NOT = { any_country = { oe_hc_persia_target_active = yes } } }
-        hidden_effect = {
-            add_gold = oe_hc_declare_cost
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
-        }
-    }
-    else = {
-        set_variable = oe_hc_persia_active
-        set_variable = { name = oe_hc_persia_progress value = 0 }
-        set_variable = { name = oe_hc_persia_pressure value = 0 }
-        set_variable = { name = oe_hc_persia_bonus value = 0 }
-        set_variable = { name = oe_hc_persia_months value = 0 }
-        set_global_variable = oe_hc_any_active
-        if = { limit = { NOT = { is_situation_active = situation:oe_hc_persia } } activate_situation = situation:oe_hc_persia }
-        trigger_event_non_silently = oe_hc.100
-        oe_hcr_persia_on_start = yes
-        oe_tmc_on_start = { r = persia }
-        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
-        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
-        oe_rc2_on_campaign_launched = { region_code = 7 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    add_gold = { value = oe_hc_declare_cost multiply = -1 }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
+	    every_country = { limit = { has_variable = oe_hc_persia_target } remove_variable = oe_hc_persia_target }
+	    every_current_war = { remove_variable = oe_hc_persia_war }
+	    every_country = {
+	        limit = { oe_hc_persia_target = yes }
+	        set_variable = oe_hc_persia_target
+	        add_to_list = oe_hc_persia_targets
+	    }
+	    every_in_list = {
+	        list = oe_hc_persia_targets
+	        save_scope_as = oe_hc_enemy
+	        c:BYZ = {
+	            if = {
+	                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
+	                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	            }
+	        }
+	    }
+	    every_in_list = {
+	        list = oe_hc_persia_targets
+	        every_current_war = {
+	            limit = {
+	                OR = {
+	                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+	                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+	                }
+	            }
+	            set_variable = oe_hc_persia_war
+	        }
+	    }
+	    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
+	    # effect preview does not show a +1000 gold line next to the cost).
+	    if = {
+	        limit = { NOT = { any_country = { oe_hc_persia_target_active = yes } } }
+	        hidden_effect = {
+	            add_gold = oe_hc_declare_cost
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
+	        }
+	    }
+	    else = {
+	        set_variable = oe_hc_persia_active
+	        set_variable = { name = oe_hc_persia_progress value = 0 }
+	        set_variable = { name = oe_hc_persia_pressure value = 0 }
+	        set_variable = { name = oe_hc_persia_bonus value = 0 }
+	        set_variable = { name = oe_hc_persia_months value = 0 }
+	        set_global_variable = oe_hc_any_active
+	        if = { limit = { NOT = { is_situation_active = situation:oe_hc_persia } } activate_situation = situation:oe_hc_persia }
+	        trigger_event_non_silently = oe_hc.100
+	        oe_hcr_persia_on_start = yes
+	        oe_tmc_on_start = { r = persia }
+	        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
+	        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
+	        oe_rc2_on_campaign_launched = { region_code = 7 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
+	    }
+	}
 }
 
 # Location scope (occupation and siege hooks).
@@ -1430,62 +1451,65 @@ oe_hc_persia_end_3 = {
 # ======================== 黑海 ========================
 # BYZ scope. Launch: pay, declare on every country with its capital in the region, start the campaign.
 oe_hc_blacksea_start = {
-    add_gold = { value = oe_hc_declare_cost multiply = -1 }
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
-    every_country = { limit = { has_variable = oe_hc_blacksea_target } remove_variable = oe_hc_blacksea_target }
-    every_current_war = { remove_variable = oe_hc_blacksea_war }
-    every_country = {
-        limit = { oe_hc_blacksea_target = yes }
-        set_variable = oe_hc_blacksea_target
-        add_to_list = oe_hc_blacksea_targets
-    }
-    every_in_list = {
-        list = oe_hc_blacksea_targets
-        save_scope_as = oe_hc_enemy
-        c:BYZ = {
-            if = {
-                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
-                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-            }
-        }
-    }
-    every_in_list = {
-        list = oe_hc_blacksea_targets
-        every_current_war = {
-            limit = {
-                OR = {
-                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
-                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
-                }
-            }
-            set_variable = oe_hc_blacksea_war
-        }
-    }
-    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
-    # effect preview does not show a +1000 gold line next to the cost).
-    if = {
-        limit = { NOT = { any_country = { oe_hc_blacksea_target_active = yes } } }
-        hidden_effect = {
-            add_gold = oe_hc_declare_cost
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
-        }
-    }
-    else = {
-        set_variable = oe_hc_blacksea_active
-        set_variable = { name = oe_hc_blacksea_progress value = 0 }
-        set_variable = { name = oe_hc_blacksea_pressure value = 0 }
-        set_variable = { name = oe_hc_blacksea_bonus value = 0 }
-        set_variable = { name = oe_hc_blacksea_months value = 0 }
-        set_global_variable = oe_hc_any_active
-        if = { limit = { NOT = { is_situation_active = situation:oe_hc_blacksea } } activate_situation = situation:oe_hc_blacksea }
-        trigger_event_non_silently = oe_hc.100
-        oe_hcr_blacksea_on_start = yes
-        oe_tmc_on_start = { r = blacksea }
-        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
-        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
-        oe_rc2_on_campaign_launched = { region_code = 8 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    add_gold = { value = oe_hc_declare_cost multiply = -1 }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
+	    every_country = { limit = { has_variable = oe_hc_blacksea_target } remove_variable = oe_hc_blacksea_target }
+	    every_current_war = { remove_variable = oe_hc_blacksea_war }
+	    every_country = {
+	        limit = { oe_hc_blacksea_target = yes }
+	        set_variable = oe_hc_blacksea_target
+	        add_to_list = oe_hc_blacksea_targets
+	    }
+	    every_in_list = {
+	        list = oe_hc_blacksea_targets
+	        save_scope_as = oe_hc_enemy
+	        c:BYZ = {
+	            if = {
+	                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
+	                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	            }
+	        }
+	    }
+	    every_in_list = {
+	        list = oe_hc_blacksea_targets
+	        every_current_war = {
+	            limit = {
+	                OR = {
+	                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+	                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+	                }
+	            }
+	            set_variable = oe_hc_blacksea_war
+	        }
+	    }
+	    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
+	    # effect preview does not show a +1000 gold line next to the cost).
+	    if = {
+	        limit = { NOT = { any_country = { oe_hc_blacksea_target_active = yes } } }
+	        hidden_effect = {
+	            add_gold = oe_hc_declare_cost
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
+	        }
+	    }
+	    else = {
+	        set_variable = oe_hc_blacksea_active
+	        set_variable = { name = oe_hc_blacksea_progress value = 0 }
+	        set_variable = { name = oe_hc_blacksea_pressure value = 0 }
+	        set_variable = { name = oe_hc_blacksea_bonus value = 0 }
+	        set_variable = { name = oe_hc_blacksea_months value = 0 }
+	        set_global_variable = oe_hc_any_active
+	        if = { limit = { NOT = { is_situation_active = situation:oe_hc_blacksea } } activate_situation = situation:oe_hc_blacksea }
+	        trigger_event_non_silently = oe_hc.100
+	        oe_hcr_blacksea_on_start = yes
+	        oe_tmc_on_start = { r = blacksea }
+	        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
+	        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
+	        oe_rc2_on_campaign_launched = { region_code = 8 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
+	    }
+	}
 }
 
 # Location scope (occupation and siege hooks).
@@ -1631,62 +1655,65 @@ oe_hc_blacksea_end_3 = {
 # ======================== 阿拉伯 ========================
 # BYZ scope. Launch: pay, declare on every country with its capital in the region, start the campaign.
 oe_hc_arabia_start = {
-    add_gold = { value = oe_hc_declare_cost multiply = -1 }
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
-    every_country = { limit = { has_variable = oe_hc_arabia_target } remove_variable = oe_hc_arabia_target }
-    every_current_war = { remove_variable = oe_hc_arabia_war }
-    every_country = {
-        limit = { oe_hc_arabia_target = yes }
-        set_variable = oe_hc_arabia_target
-        add_to_list = oe_hc_arabia_targets
-    }
-    every_in_list = {
-        list = oe_hc_arabia_targets
-        save_scope_as = oe_hc_enemy
-        c:BYZ = {
-            if = {
-                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
-                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
-            }
-        }
-    }
-    every_in_list = {
-        list = oe_hc_arabia_targets
-        every_current_war = {
-            limit = {
-                OR = {
-                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
-                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
-                }
-            }
-            set_variable = oe_hc_arabia_war
-        }
-    }
-    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
-    # effect preview does not show a +1000 gold line next to the cost).
-    if = {
-        limit = { NOT = { any_country = { oe_hc_arabia_target_active = yes } } }
-        hidden_effect = {
-            add_gold = oe_hc_declare_cost
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
-        }
-    }
-    else = {
-        set_variable = oe_hc_arabia_active
-        set_variable = { name = oe_hc_arabia_progress value = 0 }
-        set_variable = { name = oe_hc_arabia_pressure value = 0 }
-        set_variable = { name = oe_hc_arabia_bonus value = 0 }
-        set_variable = { name = oe_hc_arabia_months value = 0 }
-        set_global_variable = oe_hc_any_active
-        if = { limit = { NOT = { is_situation_active = situation:oe_hc_arabia } } activate_situation = situation:oe_hc_arabia }
-        trigger_event_non_silently = oe_hc.100
-        oe_hcr_arabia_on_start = yes
-        oe_tmc_on_start = { r = arabia }
-        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
-        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
-        oe_rc2_on_campaign_launched = { region_code = 9 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    add_gold = { value = oe_hc_declare_cost multiply = -1 }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } }
+	    every_country = { limit = { has_variable = oe_hc_arabia_target } remove_variable = oe_hc_arabia_target }
+	    every_current_war = { remove_variable = oe_hc_arabia_war }
+	    every_country = {
+	        limit = { oe_hc_arabia_target = yes }
+	        set_variable = oe_hc_arabia_target
+	        add_to_list = oe_hc_arabia_targets
+	    }
+	    every_in_list = {
+	        list = oe_hc_arabia_targets
+	        save_scope_as = oe_hc_enemy
+	        c:BYZ = {
+	            if = {
+	                limit = { NOT = { is_at_war_with = scope:oe_hc_enemy } }
+	                add_casus_belli = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	                declare_war_with_cb = { target = scope:oe_hc_enemy type = casus_belli:oe_heg_capital_invasion }
+	            }
+	        }
+	    }
+	    every_in_list = {
+	        list = oe_hc_arabia_targets
+	        every_current_war = {
+	            limit = {
+	                OR = {
+	                    AND = { is_an_attacker = c:BYZ is_a_defender = prev }
+	                    AND = { is_a_defender = c:BYZ is_an_attacker = prev }
+	                }
+	            }
+	            set_variable = oe_hc_arabia_war
+	        }
+	    }
+	    # Native diplomacy may refuse a declaration: refund when no campaign war exists (hidden, so the
+	    # effect preview does not show a +1000 gold line next to the cost).
+	    if = {
+	        limit = { NOT = { any_country = { oe_hc_arabia_target_active = yes } } }
+	        hidden_effect = {
+	            add_gold = oe_hc_declare_cost
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 10 } }
+	        }
+	    }
+	    else = {
+	        set_variable = oe_hc_arabia_active
+	        set_variable = { name = oe_hc_arabia_progress value = 0 }
+	        set_variable = { name = oe_hc_arabia_pressure value = 0 }
+	        set_variable = { name = oe_hc_arabia_bonus value = 0 }
+	        set_variable = { name = oe_hc_arabia_months value = 0 }
+	        set_global_variable = oe_hc_any_active
+	        if = { limit = { NOT = { is_situation_active = situation:oe_hc_arabia } } activate_situation = situation:oe_hc_arabia }
+	        trigger_event_non_silently = oe_hc.100
+	        oe_hcr_arabia_on_start = yes
+	        oe_tmc_on_start = { r = arabia }
+	        oe_tsn_on_campaign_start = yes  # territory rework: senate vote on the war levy (gen_territory_senate.py)
+	        oe_tm_alliance_muster = yes  # territory rework: alliance contingents (gen_territory_middle.py)
+	        oe_rc2_on_campaign_launched = { region_code = 9 }  # v21.0 Module C: Reconquest 2.0 (gen_v210_byz_reconquest2.py)
+	    }
+	}
 }
 
 # Location scope (occupation and siege hooks).
@@ -1851,47 +1878,53 @@ oe_hc_pick_seat = {
 # Same founding steps as oe_theme_found_at_seat, without the historical-region data (distance band comes from
 # oe_theme_admin_init, which measures the seat's distance to Constantinople).
 oe_hc_found_theme = {
-    scope:oe_hc_seat = {
-        create_building_country_in_location = {
-            religion = religion:orthodox
-            culture = culture:oe_roman_noble_culture
-            subject_type = subject_type:oe_empire_theme
-            overlord = c:BYZ
-            reforms = { oe_byz_theme_system_subject }
-            hidden_effect = {
-                change_government_type = government_type:monarchy
-                change_heir_selection = heir_selection:oe_rome_province_elect
-            }
-            save_scope_as = oe_hc_theme
-        }
-        construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_hc_theme cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
-    }
-    international_organization:oe_byz_empire_pillars = {
-        add_country_to_international_organization = scope:oe_hc_theme
-        international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_hc_theme }
-    }
-    every_owned_location = {
-        limit = { var:oe_hc_gain ?= root.var:oe_hc_last_region }
-        construct_building = { building_type = building_type:oe_byz_theme_system owner = scope:oe_hc_theme cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
-    }
-    scope:oe_hc_seat = {
-        while = { count = 3 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_hc_theme } }
-    }
-    scope:oe_hc_theme = { set_gold = 300 add_manpower = 3 }
-    # Historical name from the seat (gen_theme_names.py).
-    scope:oe_hc_seat = { save_scope_as = oe_theme_name_seat }
-    scope:oe_hc_theme = { oe_theme_apply_name = yes }
-    # 2026-11-18 territory rework: land won in a campaign is governed as an exarchate (gen_territory_status.py).
-    scope:oe_hc_theme = { oe_ts_set_status = { status = 3 } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    scope:oe_hc_seat = {
+	        create_building_country_in_location = {
+	            religion = religion:orthodox
+	            culture = culture:oe_roman_noble_culture
+	            subject_type = subject_type:oe_empire_theme
+	            overlord = c:BYZ
+	            reforms = { oe_byz_theme_system_subject }
+	            hidden_effect = {
+	                change_government_type = government_type:monarchy
+	                change_heir_selection = heir_selection:oe_rome_province_elect
+	            }
+	            save_scope_as = oe_hc_theme
+	        }
+	        construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_hc_theme cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+	    }
+	    international_organization:oe_byz_empire_pillars = {
+	        add_country_to_international_organization = scope:oe_hc_theme
+	        international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_hc_theme }
+	    }
+	    every_owned_location = {
+	        limit = { var:oe_hc_gain ?= root.var:oe_hc_last_region }
+	        construct_building = { building_type = building_type:oe_byz_theme_system owner = scope:oe_hc_theme cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+	    }
+	    scope:oe_hc_seat = {
+	        while = { count = 3 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_hc_theme } }
+	    }
+	    scope:oe_hc_theme = { set_gold = 300 add_manpower = 3 }
+	    # Historical name from the seat (gen_theme_names.py).
+	    scope:oe_hc_seat = { save_scope_as = oe_theme_name_seat }
+	    scope:oe_hc_theme = { oe_theme_apply_name = yes }
+	    # 2026-11-18 territory rework: land won in a campaign is governed as an exarchate (gen_territory_status.py).
+	    scope:oe_hc_theme = { oe_ts_set_status = { status = 3 } }
+	}
 }
 
 # BYZ scope. Governance option 3: hand the gained land to a new Roman-alliance subject seated at scope:oe_hc_seat.
 oe_hc_make_ally = {
     scope:oe_hc_seat = {
-        create_country_from_location = {
-            overlord = c:BYZ
-            subject_type = subject_type:oe_rome_sub
-            save_scope_as = oe_hc_ally
+        if = {
+        	limit = { has_owner = yes }
+	        create_country_from_location = {
+	            overlord = c:BYZ
+	            subject_type = subject_type:oe_rome_sub
+	            save_scope_as = oe_hc_ally
+	        }
         }
     }
     if = {

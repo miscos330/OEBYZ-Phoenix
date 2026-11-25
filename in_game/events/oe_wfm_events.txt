@@ -1,0 +1,565 @@
+﻿# NEW 2026-11-24 v26.1 WP15-3 Ming Historical Gap Arcs & 15 Curated East Asian Landmarks (oe_wfm_, gen_v261_wanfang_ming_landmarks.py) — 0 vanilla overrides, 0 oe_pmng overlap, G09/G12/G_ELR_ISOLATION compliant. Edit gen_v261_wanfang_ming_landmarks.py, not this file.
+
+namespace = oe_wfm
+
+# =============================================================================
+# ARC 1 (1337 Ming-rise): Hongwu Border Princes -> Jianwen Reduction -> Jingnan -> Fang Xiaoru
+# =============================================================================
+
+# oe_wfm.1: Hongwu Enfeoffment of the Nine Border Princes
+oe_wfm.1 = {
+	type = country_event
+	title = oe_wfm.1.t
+	desc = oe_wfm.1.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_ming_unification_map.dds"
+	trigger = {
+		oe_wfm_is_1337_ming_timeline = yes
+		current_year <= 1410
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev1_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.1.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_wfm_mod_border_princes years = 25 mode = replace }
+	}
+	option = {
+		name = oe_wfm.1.b
+		ai_chance = { base = 30 }
+		add_stability = 3
+		add_country_modifier = { modifier = oe_wfm_mod_central_commissions years = 25 mode = replace }
+	}
+}
+
+# oe_wfm.2: Jianwen Imperial Reduction Crisis
+oe_wfm.2 = {
+	type = country_event
+	title = oe_wfm.2.t
+	desc = oe_wfm.2.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_wf_ev_duomen_coup.dds"
+	trigger = {
+		oe_wfm_is_1337_ming_timeline = yes
+		current_year <= 1420
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev2_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.2.a
+		historical_option = yes
+		ai_chance = { base = 65 }
+		add_stability = -3
+		add_country_modifier = { modifier = oe_wfm_mod_jianwen_reduction years = 20 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.3 days = 180 }
+	}
+	option = {
+		name = oe_wfm.2.b
+		ai_chance = { base = 35 }
+		add_gold = -120
+		add_country_modifier = { modifier = oe_wfm_mod_princely_compromise years = 20 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.3 days = 240 }
+	}
+}
+
+# oe_wfm.3: The Jingnan Crossroads (Centralizing Scholars vs Northern Military Regency)
+oe_wfm.3 = {
+	type = country_event
+	title = oe_wfm.3.t
+	desc = oe_wfm.3.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_jingnan_campaign.dds"
+	trigger = {
+		oe_wfm_is_1337_ming_timeline = yes
+		NOT = { has_variable = oe_wfm_ev3_done }
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev3_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.3.a
+		historical_option = yes
+		ai_chance = { base = 65 }
+		add_army_tradition = 8
+		add_stability = -4
+		add_country_modifier = { modifier = oe_wfm_mod_jingnan_regency years = 25 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.4 days = 180 }
+	}
+	option = {
+		name = oe_wfm.3.b
+		ai_chance = { base = 35 }
+		add_stability = 3
+		culture = { add_cultural_tradition = 5 }
+		add_country_modifier = { modifier = oe_wfm_mod_jingnan_scholars years = 25 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.4 days = 180 }
+	}
+}
+
+# oe_wfm.4: Fang Xiaoru's Defiance & Jianzhou Frontier Settlement
+oe_wfm.4 = {
+	type = country_event
+	title = oe_wfm.4.t
+	desc = oe_wfm.4.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_grand_secretariat_council.dds"
+	trigger = {
+		oe_wfm_is_1337_ming_timeline = yes
+		NOT = { has_variable = oe_wfm_ev4_done }
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev4_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.4.a
+		ai_chance = { base = 55 }
+		add_stability = 4
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_wfm_mod_literati_amnesty years = 20 mode = replace }
+	}
+	option = {
+		name = oe_wfm.4.b
+		historical_option = yes
+		ai_chance = { base = 45 }
+		add_legitimacy = 6
+		add_country_modifier = { modifier = oe_wfm_mod_iron_orthodoxy years = 20 mode = replace }
+	}
+}
+
+# =============================================================================
+# ARC 2 (1337 Ming-rise, 1424-1448): Renxuan Governance & Grand Coordinators
+# =============================================================================
+
+# oe_wfm.5: Renxuan Consolidation & Provincial Grand Coordinators (Xunfu)
+oe_wfm.5 = {
+	type = country_event
+	title = oe_wfm.5.t
+	desc = oe_wfm.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wf_ev_beijing_imperial_capital.dds"
+	trigger = {
+		oe_wfm_is_1337_ming_timeline = yes
+		current_year >= 1424
+		current_year <= 1448
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev5_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.5.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		add_gold = -80
+		add_stability = 4
+		add_country_modifier = { modifier = oe_wfm_mod_grand_coordinators years = 30 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.6 days = 365 }
+	}
+	option = {
+		name = oe_wfm.5.b
+		ai_chance = { base = 30 }
+		add_gold = 80
+		add_country_modifier = { modifier = oe_wfm_mod_three_commissions years = 25 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.6 days = 365 }
+	}
+}
+
+# oe_wfm.6: Post-Yongle Fiscal Recuperation vs Maritime Readiness
+oe_wfm.6 = {
+	type = country_event
+	title = oe_wfm.6.t
+	desc = oe_wfm.6.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wf_ev_zheng_he_ocean_voyage.dds"
+	trigger = {
+		oe_wfm_is_1337_ming_timeline = yes
+		NOT = { has_variable = oe_wfm_ev6_done }
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev6_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.6.a
+		historical_option = yes
+		ai_chance = { base = 60 }
+		add_stability = 5
+		add_country_modifier = { modifier = oe_wfm_mod_renxuan_recuperation years = 25 mode = replace }
+	}
+	option = {
+		name = oe_wfm.6.b
+		ai_chance = { base = 40 }
+		add_gold = -120
+		add_navy_tradition = 6
+		add_country_modifier = { modifier = oe_wfm_mod_maritime_readiness years = 25 mode = replace }
+	}
+}
+
+# =============================================================================
+# ARC 3 (1337 + 1453!): 1449 Tumu Crisis -> Yu Qian -> Southern Palace -> 1457 Duomen Coup -> Martial Exams
+# =============================================================================
+
+# oe_wfm.7: 1449 The Tumu Crisis (1337 Ming-rise only; 1453 starts directly at oe_wfm.8!)
+oe_wfm.7 = {
+	type = country_event
+	title = oe_wfm.7.t
+	desc = oe_wfm.7.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_wf_ev_tumu_crisis_capture.dds"
+	trigger = {
+		oe_wfm_is_1337_ming_timeline = yes
+		current_year >= 1445
+		current_year <= 1458
+		owns = location:dadu
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev7_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.7.a
+		historical_option = yes
+		ai_chance = { base = 75 }
+		add_stability = -3
+		add_army_tradition = 6
+		add_country_modifier = { modifier = oe_wfm_mod_tumu_emergency years = 15 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.8 days = 45 }
+	}
+	option = {
+		name = oe_wfm.7.b
+		ai_chance = { base = 25 }
+		add_prestige = prestige_mild_penalty
+		add_gold = 120
+		add_country_modifier = { modifier = oe_wfm_mod_tumu_retrenchment years = 15 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.8 days = 60 }
+	}
+}
+
+# oe_wfm.8: Jingtai Regency & Yu Qian's Defense of Beijing (works in BOTH 1453 start & post-Tumu 1337!)
+oe_wfm.8 = {
+	type = country_event
+	title = oe_wfm.8.t
+	desc = oe_wfm.8.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wf_ev_steppe_banners_oirat.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		owns = location:dadu
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev8_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.8.a
+		historical_option = yes
+		ai_chance = { base = 75 }
+		add_gold = -100
+		add_army_tradition = 8
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_wfm_mod_yu_qian_camps years = 25 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.9 days = 180 }
+	}
+	option = {
+		name = oe_wfm.8.b
+		ai_chance = { base = 25 }
+		add_manpower = 3
+		add_country_modifier = { modifier = oe_wfm_mod_capital_militia years = 20 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.9 days = 180 }
+	}
+}
+
+# oe_wfm.9: Shadow of the Southern Palace (1450-1456, BOTH 1337 & 1453)
+oe_wfm.9 = {
+	type = country_event
+	title = oe_wfm.9.t
+	desc = oe_wfm.9.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_beijing_imperial_capital.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		NOT = { has_variable = oe_wfm_ev9_done }
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev9_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.9.a
+		ai_chance = { base = 50 }
+		add_stability = 3
+		add_legitimacy = 5
+		add_country_modifier = { modifier = oe_wfm_mod_southern_palace_truce years = 15 mode = replace }
+	}
+	option = {
+		name = oe_wfm.9.b
+		historical_option = yes
+		ai_chance = { base = 50 }
+		add_country_modifier = { modifier = oe_wfm_mod_jingtai_centralization years = 15 mode = replace }
+	}
+}
+
+# oe_wfm.10: 1457 Duomen Coup — Storming of the Southern Gate (BOTH 1337 & 1453!)
+oe_wfm.10 = {
+	type = country_event
+	title = oe_wfm.10.t
+	desc = oe_wfm.10.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_defense_of_capital_siege.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		current_year >= 1457
+		current_year <= 1466
+		owns = location:dadu
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev10_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.10.a
+		historical_option = yes
+		ai_chance = { base = 60 }
+		add_legitimacy = 8
+		add_stability = -2
+		add_country_modifier = { modifier = oe_wfm_mod_tianshun_restoration years = 20 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.11 days = 365 }
+	}
+	option = {
+		name = oe_wfm.10.b
+		ai_chance = { base = 40 }
+		add_gold = -100
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_wfm_mod_jingtai_continuity years = 20 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.11 days = 365 }
+	}
+}
+
+# oe_wfm.11: Abolition of Palace Immolation & First Martial Examinations (BOTH 1337 & 1453!)
+oe_wfm.11 = {
+	type = country_event
+	title = oe_wfm.11.t
+	desc = oe_wfm.11.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wf_ev_imperial_examination.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		NOT = { has_variable = oe_wfm_ev11_done }
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev11_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.11.a
+		historical_option = yes
+		ai_chance = { base = 60 }
+		add_prestige = prestige_mild_bonus
+		add_army_tradition = 6
+		add_country_modifier = { modifier = oe_wfm_mod_martial_exams years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wfm.11.b
+		ai_chance = { base = 40 }
+		add_stability = 5
+		add_legitimacy = 6
+		add_country_modifier = { modifier = oe_wfm_mod_humane_rites years = 30 mode = replace }
+	}
+}
+
+# =============================================================================
+# ARC 4 (1538-1575, 1337 + 1453): Southeast Wokou Crisis (complements oe_pmng.7/.8!)
+# =============================================================================
+
+# oe_wfm.12: Shuangyu Contraband & the Wokou Storm
+oe_wfm.12 = {
+	type = country_event
+	title = oe_wfm.12.t
+	desc = oe_wfm.12.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_wf_ev_ming_firearms_shenji.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		current_year >= 1538
+		current_year <= 1570
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev12_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.12.a
+		historical_option = yes
+		ai_chance = { base = 60 }
+		add_gold = -100
+		add_navy_tradition = 5
+		add_country_modifier = { modifier = oe_wfm_mod_wokou_crackdown years = 18 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.13 days = 180 }
+	}
+	option = {
+		name = oe_wfm.12.b
+		ai_chance = { base = 40 }
+		add_gold = 90
+		add_country_modifier = { modifier = oe_wfm_mod_coastal_accommodation years = 18 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.13 days = 180 }
+	}
+}
+
+# oe_wfm.13: Supreme Commander Hu Zongxian's Grand Strategy
+oe_wfm.13 = {
+	type = country_event
+	title = oe_wfm.13.t
+	desc = oe_wfm.13.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_defense_of_capital_siege.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		NOT = { has_variable = oe_wfm_ev13_done }
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev13_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.13.a
+		historical_option = yes
+		ai_chance = { base = 65 }
+		add_gold = -120
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_wfm_mod_hu_zongxian_intel years = 20 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.14 days = 180 }
+	}
+	option = {
+		name = oe_wfm.13.b
+		ai_chance = { base = 35 }
+		add_gold = -90
+		add_country_modifier = { modifier = oe_wfm_mod_coastal_fort_chain years = 20 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.14 days = 180 }
+	}
+}
+
+# oe_wfm.14: Admiral Yu Dayou's War Junks & Southern Sweeps
+oe_wfm.14 = {
+	type = country_event
+	title = oe_wfm.14.t
+	desc = oe_wfm.14.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wf_ev_wokou_coastal_conflict.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		NOT = { has_variable = oe_wfm_ev14_done }
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev14_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.14.a
+		historical_option = yes
+		ai_chance = { base = 65 }
+		add_gold = -140
+		add_navy_tradition = 8
+		add_country_modifier = { modifier = oe_wfm_mod_yu_dayou_fleet years = 25 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.15 days = 180 }
+	}
+	option = {
+		name = oe_wfm.14.b
+		ai_chance = { base = 35 }
+		add_gold = -80
+		add_navy_tradition = 4
+		add_country_modifier = { modifier = oe_wfm_mod_estuary_watch years = 20 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.15 days = 180 }
+	}
+}
+
+# oe_wfm.15: Pacification of the Eastern Seas
+oe_wfm.15 = {
+	type = country_event
+	title = oe_wfm.15.t
+	desc = oe_wfm.15.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wf_ev_river_dike_engineering.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		NOT = { has_variable = oe_wfm_ev15_done }
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev15_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.15.a
+		historical_option = yes
+		ai_chance = { base = 65 }
+		add_stability = 4
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_wfm_mod_pacific_customs years = 25 mode = replace }
+	}
+	option = {
+		name = oe_wfm.15.b
+		ai_chance = { base = 35 }
+		add_stability = 3
+		add_navy_tradition = 5
+		add_country_modifier = { modifier = oe_wfm_mod_iron_coast_guard years = 25 mode = replace }
+	}
+}
+
+# =============================================================================
+# ARC 5 (1520-1620, 1337 + 1453): Yellow River Captures the Huai & Pan Jixun
+# =============================================================================
+
+# oe_wfm.16: Yellow River Captures the Huai & Grand Canal Silting
+oe_wfm.16 = {
+	type = country_event
+	title = oe_wfm.16.t
+	desc = oe_wfm.16.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_wf_ev_yellow_river_flood.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		current_year >= 1520
+		current_year <= 1622
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev16_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.16.a
+		historical_option = yes
+		ai_chance = { base = 65 }
+		add_gold = -160
+		add_country_modifier = { modifier = oe_wfm_mod_river_emergency years = 15 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.17 days = 180 }
+	}
+	option = {
+		name = oe_wfm.16.b
+		ai_chance = { base = 35 }
+		add_gold = -120
+		add_country_modifier = { modifier = oe_wfm_mod_canal_bypass years = 15 mode = replace }
+		trigger_event_non_silently = { id = oe_wfm.17 days = 180 }
+	}
+}
+
+# oe_wfm.17: Pan Jixun's Confine-Water Hydraulic Masterwork
+oe_wfm.17 = {
+	type = country_event
+	title = oe_wfm.17.t
+	desc = oe_wfm.17.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wf_ev_celestial_court_palace.dds"
+	trigger = {
+		oe_wfm_is_ming = yes
+		NOT = { has_variable = oe_wfm_ev17_done }
+	}
+	immediate = {
+		set_variable = { name = oe_wfm_ev17_done value = 1 }
+	}
+	option = {
+		name = oe_wfm.17.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		add_gold = -200
+		add_prestige = prestige_mild_bonus
+		add_stability = 4
+		add_country_modifier = { modifier = oe_wfm_mod_pan_jixun_hydraulics years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wfm.17.b
+		ai_chance = { base = 30 }
+		add_gold = -100
+		add_stability = 3
+		add_country_modifier = { modifier = oe_wfm_mod_multi_branch_diversion years = 25 mode = replace }
+	}
+}

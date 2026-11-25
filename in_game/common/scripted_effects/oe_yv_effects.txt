@@ -217,42 +217,45 @@ oe_yv_ev_pick = {
 }
 # CHI scope, monthly while var oe_yv_on is set.
 oe_yv_ev_monthly = {
-    set_variable = { name = oe_yv_m value = oe_yv_m_now }
-    # Bayan's grand-chancellor modifier ends whenever Bayan leaves power (our events or vanilla .24/.25 or death).
-    if = {
-        limit = { has_country_modifier = oe_yv_grand_chancellor NOT = { oe_yv_bayan_in_power = yes } }
-        remove_country_modifier = oe_yv_grand_chancellor
-    }
-    # An exiled Bayan dies on the road (1340 in history), here silently from 1341.1 (see oe_yv_bayan_out).
-    if = {
-        limit = { has_variable = oe_yv_bayan_exiled var:oe_yv_m >= 45 }
-        if = {
-            limit = { character:yua_bayan_merkid ?= { is_alive = yes } }
-            kill_character_silently = { target = character:yua_bayan_merkid }
-        }
-        remove_variable = oe_yv_bayan_exiled
-    }
-    # Vanilla's river works (flavor_chi.122) seen for the first time: event 10 opens 1-3 months later.
-    if = {
-        limit = { has_country_modifier = chi_yellow_river_works NOT = { has_variable = oe_yv_works_seen } }
-        set_variable = { name = oe_yv_works_seen value = var:oe_yv_m }
-    }
-    # yuan-heir1: Wenzong's Son at Court (event 13 b) ends when El Tegus dies or leaves the Yuan.
-    if = {
-        limit = { has_country_modifier = oe_yv_wenzong_son NOT = { oe_yv_et_at_court = yes } }
-        remove_country_modifier = oe_yv_wenzong_son
-    }
-    # yuan-m6-power: Sole Chancellor's Sway ends when Toqto'a dies/is dismissed or Yuan falls; Divided Secretariat when Yuan falls.
-    oe_yv_m6_cleanup = yes
-    if = {
-        limit = { var:oe_yv_m >= 1 NOT = { has_global_variable = oe_yp_dissolved } }
-        oe_yv_ev_lapse = yes
-        oe_yv_ev_pick = yes
-    }
-    if = {
-        limit = { OR = { oe_yv_all_done = yes var:oe_yv_m >= 240 has_global_variable = oe_yp_dissolved } }
-        remove_variable = oe_yv_on
-    }
+	if = {
+		limit = { exists = character:yua_bayan_merkid }
+	    set_variable = { name = oe_yv_m value = oe_yv_m_now }
+	    # Bayan's grand-chancellor modifier ends whenever Bayan leaves power (our events or vanilla .24/.25 or death).
+	    if = {
+	        limit = { has_country_modifier = oe_yv_grand_chancellor NOT = { oe_yv_bayan_in_power = yes } }
+	        remove_country_modifier = oe_yv_grand_chancellor
+	    }
+	    # An exiled Bayan dies on the road (1340 in history), here silently from 1341.1 (see oe_yv_bayan_out).
+	    if = {
+	        limit = { has_variable = oe_yv_bayan_exiled var:oe_yv_m >= 45 }
+	        if = {
+	            limit = { character:yua_bayan_merkid ?= { is_alive = yes } }
+	            kill_character_silently = { target = character:yua_bayan_merkid }
+	        }
+	        remove_variable = oe_yv_bayan_exiled
+	    }
+	    # Vanilla's river works (flavor_chi.122) seen for the first time: event 10 opens 1-3 months later.
+	    if = {
+	        limit = { has_country_modifier = chi_yellow_river_works NOT = { has_variable = oe_yv_works_seen } }
+	        set_variable = { name = oe_yv_works_seen value = var:oe_yv_m }
+	    }
+	    # yuan-heir1: Wenzong's Son at Court (event 13 b) ends when El Tegus dies or leaves the Yuan.
+	    if = {
+	        limit = { has_country_modifier = oe_yv_wenzong_son NOT = { oe_yv_et_at_court = yes } }
+	        remove_country_modifier = oe_yv_wenzong_son
+	    }
+	    # yuan-m6-power: Sole Chancellor's Sway ends when Toqto'a dies/is dismissed or Yuan falls; Divided Secretariat when Yuan falls.
+	    oe_yv_m6_cleanup = yes
+	    if = {
+	        limit = { var:oe_yv_m >= 1 NOT = { has_global_variable = oe_yp_dissolved } }
+	        oe_yv_ev_lapse = yes
+	        oe_yv_ev_pick = yes
+	    }
+	    if = {
+	        limit = { OR = { oe_yv_all_done = yes var:oe_yv_m >= 240 has_global_variable = oe_yp_dissolved } }
+	        remove_variable = oe_yv_on
+	    }
+	}
 }
 
 # CHI scope. Monthly cleanup for M6 modifiers (also called from oe_yv_pulse after oe_yv_on stops).
@@ -368,15 +371,18 @@ oe_yv_cp_designate = {
 # Tegus is barred from ruling (vanilla blocked_from_being_ruler) and sent into exile; .21 kills El Tegus silently
 # 31 days later (edict 1340-07-09, death 1340-08-09).
 oe_yv_et_exile = {
-    oe_yv_cp_designate = yes
-    if = {
-        limit = { oe_yv_et_at_court = yes }
-        character:oe_s37_el_tegus = {
-            add_character_modifier = { modifier = blocked_from_being_ruler years = -1 mode = add_and_extend }
-            set_variable = { name = oe_yv_exiled value = 1 }
-        }
-        trigger_event_silently = { id = oe_yv.21 days = 31 }
-    }
+	if = {
+		limit = { exists = character:oe_s37_el_tegus }
+	    oe_yv_cp_designate = yes
+	    if = {
+	        limit = { oe_yv_et_at_court = yes }
+	        character:oe_s37_el_tegus = {
+	            add_character_modifier = { modifier = blocked_from_being_ruler years = -1 mode = add_and_extend }
+	            set_variable = { name = oe_yv_exiled value = 1 }
+	        }
+	        trigger_event_silently = { id = oe_yv.21 days = 31 }
+	    }
+	}
 }
 # CHI scope. Event 13 option b (counterfactual), run by oe_yv.20: the crown prince becomes the heir; El Tegus stays at
 # court as a prince (the modifier is given by the option itself).
@@ -386,23 +392,26 @@ oe_yv_et_keep = {
 # ---- TEST ONLY (yuan-heir1; dev page 49)
 # Makes the crown prince even before 1340.1.23 (then 0 years old); every other condition of oe_yv_cp_can_make applies.
 oe_yv_test_make_prince = {
-    if = {
-        limit = { current_date >= 1340.1.23 }
-        oe_yv_ensure_crown_prince = yes
-    }
-    else_if = {
-        limit = {
-            NOT = { has_global_variable = oe_yv_crown_prince }
-            NOT = { exists = character:oe_yv_crown_prince }
-            country_exists = c:CHI
-            c:CHI = { has_ruler = yes ruler ?= character:yua_togon_temur }
-        }
-        c:CHI = {
-            if = { limit = { exists = character:yua_gi } create_character = { first_name = oe_yv_name_ayushiridara dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no father = character:yua_togon_temur mother = character:yua_gi age = 0 birth_location = location:dadu adm = 55 dip = 45 mil = 45 trait_category = none script = oe_yv_crown_prince } }
-            else = { create_character = { first_name = oe_yv_name_ayushiridara dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no father = character:yua_togon_temur age = 0 birth_location = location:dadu adm = 55 dip = 45 mil = 45 trait_category = none script = oe_yv_crown_prince } }
-        }
-        oe_yv_cp_store = yes
-    }
+	if = {
+		limit = { exists = character:yua_togon_temur }
+	    if = {
+	        limit = { current_date >= 1340.1.23 }
+	        oe_yv_ensure_crown_prince = yes
+	    }
+	    else_if = {
+	        limit = {
+	            NOT = { has_global_variable = oe_yv_crown_prince }
+	            NOT = { exists = character:oe_yv_crown_prince }
+	            country_exists = c:CHI
+	            c:CHI = { has_ruler = yes ruler ?= character:yua_togon_temur }
+	        }
+	        c:CHI = {
+	            if = { limit = { exists = character:yua_gi } create_character = { first_name = oe_yv_name_ayushiridara dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no father = character:yua_togon_temur mother = character:yua_gi age = 0 birth_location = location:dadu adm = 55 dip = 45 mil = 45 trait_category = none script = oe_yv_crown_prince } }
+	            else = { create_character = { first_name = oe_yv_name_ayushiridara dynasty = dynasty:borjigin_dynasty culture = culture:mongolian_culture religion = religion:tibetan_buddhism estate = estate_type:nobles_estate female = no father = character:yua_togon_temur age = 0 birth_location = location:dadu adm = 55 dip = 45 mil = 45 trait_category = none script = oe_yv_crown_prince } }
+	        }
+	        oe_yv_cp_store = yes
+	    }
+	}
 }
 # Event 13 can be tried again: its state, the exile mark and the bar on El Tegus (if alive), Wenzong's Son at Court and
 # a "dropped" status go; the crown prince stays (he is made once).

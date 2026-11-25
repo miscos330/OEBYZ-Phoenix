@@ -2,6 +2,7 @@
 
 oe_sit_eastern_crossroads = {
 	monthly_spawn_chance = monthly_spawn_chance_unique
+	hint_tag = hint_oe_sit_eastern_crossroads
 	can_start = {
 		oe_start_is_1337 = yes
 		NOT = { has_global_variable = oe_sit2_ec_started }
@@ -12,9 +13,15 @@ oe_sit_eastern_crossroads = {
 			current_year >= 1460
 			AND = {
 				has_global_variable = oe_rpl_player
-				global_var:oe_rpl_player = {
-					has_variable = oe_rpl_yoke_broken
-					var:oe_rpl_yoke_broken >= 1
+				trigger_if = {
+					limit = { has_global_variable = oe_rpl_player }
+					global_var:oe_rpl_player = {
+						has_variable = oe_rpl_yoke_broken
+						trigger_if = {
+							limit = { has_variable = oe_rpl_yoke_broken }
+							var:oe_rpl_yoke_broken >= 1
+						}
+					}
 				}
 			}
 		}
@@ -27,7 +34,10 @@ oe_sit_eastern_crossroads = {
 		desc = "oe_sit_eastern_crossroads_outcome_rus_desc"
 		trigger = {
 			has_variable = oe_sit2_ec_rus_power
-			var:oe_sit2_ec_rus_power >= 80
+			trigger_if = {
+				limit = { has_variable = oe_sit2_ec_rus_power }
+				var:oe_sit2_ec_rus_power >= 80
+			}
 			OR = {
 				country_exists = c:RUS
 				country_exists = c:MOS
@@ -50,7 +60,10 @@ oe_sit_eastern_crossroads = {
 		desc = "oe_sit_eastern_crossroads_outcome_west_desc"
 		trigger = {
 			has_variable = oe_sit2_ec_west_power
-			var:oe_sit2_ec_west_power >= 80
+			trigger_if = {
+				limit = { has_variable = oe_sit2_ec_west_power }
+				var:oe_sit2_ec_west_power >= 80
+			}
 			OR = {
 				country_exists = c:PLC
 				country_exists = c:POL
@@ -76,7 +89,10 @@ oe_sit_eastern_crossroads = {
 				current_year >= 1580
 				AND = {
 					has_variable = oe_sit2_ec_steppe_power
-					var:oe_sit2_ec_steppe_power >= 80
+					trigger_if = {
+						limit = { has_variable = oe_sit2_ec_steppe_power }
+						var:oe_sit2_ec_steppe_power >= 80
+					}
 				}
 			}
 		}

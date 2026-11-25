@@ -47,25 +47,28 @@ oe_cw_monthly = {
 
 # BYZ scope. Act 2 begins: the emperor is dead, John V is a minor, Kantakouzenos stands beside the throne.
 oe_cw_begin = {
-    set_global_variable = oe_cw_begun
-    set_variable = oe_cw_active
-    set_variable = { name = oe_cw_stage value = 1 }
-    set_variable = { name = oe_cw_rift value = 30 }
-    # The author's 'Kantakouzenos's ambition' (+300 influence) makes the rift wider from the start.
-    if = {
-        limit = {
-            international_organization:oe_byz_empire_pillars = {
-                OR = {
-                    AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_1 > 300 }
-                    AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_2 > 300 }
-                    AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_3 > 300 }
-                    AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_4 > 300 }
-                }
-            }
-        }
-        change_variable = { name = oe_cw_rift add = 10 }
-    }
-    trigger_event_non_silently = oe_cw.2
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    set_global_variable = oe_cw_begun
+	    set_variable = oe_cw_active
+	    set_variable = { name = oe_cw_stage value = 1 }
+	    set_variable = { name = oe_cw_rift value = 30 }
+	    # The author's 'Kantakouzenos's ambition' (+300 influence) makes the rift wider from the start.
+	    if = {
+	        limit = {
+	            international_organization:oe_byz_empire_pillars = {
+	                OR = {
+	                    AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_1 > 300 }
+	                    AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_2 > 300 }
+	                    AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_3 > 300 }
+	                    AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_4 > 300 }
+	                }
+	            }
+	        }
+	        change_variable = { name = oe_cw_rift add = 10 }
+	    }
+	    trigger_event_non_silently = oe_cw.2
+	}
 }
 
 # BYZ scope. End of the fuse: war or joint rule. If another civil war is still being fought, the war waits for it.
@@ -80,54 +83,57 @@ oe_cw_decide = {
 
 # BYZ scope. Didymoteicho: Kantakouzenos raises Thrace.
 oe_cw_war_start = {
-    if = {
-        limit = { oe_cw_war_possible = no }
-        set_variable = oe_cw_pending
-    }
-    else = {
-        remove_variable = oe_cw_pending
-        set_variable = { name = oe_cw_stage value = 2 }
-        set_variable = { name = oe_cw_tide value = 40 }
-        set_variable = { name = oe_cw_wm value = 0 }
-        set_variable = { name = oe_cw_capm value = 0 }
-        set_variable = { name = oe_cw_evcd months = 2 }
-        # His base: Didymoteicho and the Thracian countryside. Adrianople and Komotini stay with the regency (their
-        # townsmen expel the nobles the next day, event oe_cw.8).
-        every_owned_location = {
-            limit = { var:oe_theme_region ?= 2 is_capital = no NOT = { this = location:edirne } NOT = { this = location:komotini } }
-            add_to_list = oe_cw_base
-        }
-        create_rebel = { category = estate estate = nobles_estate name = OE_CW_REBELS save_scope_as = oe_cw_rebel_group }
-        every_in_list = {
-            list = oe_cw_base
-            every_pop = { limit = { owner = c:BYZ } change_pop_allegiance = scope:oe_cw_rebel_group }
-        }
-        scope:oe_cw_rebel_group = { start_civil_war = { save_scope_as = oe_cw_country } }
-        if = {
-            limit = { exists = scope:oe_cw_country }
-            set_variable = { name = oe_cw_rebels value = scope:oe_cw_country }
-            every_in_list = { list = oe_cw_base if = { limit = { owner = c:BYZ } change_location_owner = scope:oe_cw_country } }
-            character:byz_john_kantakouzenos = { save_scope_as = oe_cw_k }
-            scope:oe_cw_k = { move_country = scope:oe_cw_country }
-            scope:oe_cw_country = { set_new_ruler = scope:oe_cw_k add_gold = 300 }
-            location:demotica = {
-                if = {
-                    limit = { owner = scope:oe_cw_country }
-                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw_country }
-                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw_country }
-                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw_country }
-                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_cavalry owner = scope:oe_cw_country }
-                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_cavalry owner = scope:oe_cw_country }
-                }
-            }
-            # Disloyal themes that rise join this rebel state (oe_theme_revolt_start joins a theme rebel state at war).
-            set_variable = { name = oe_theme_revolt_country value = scope:oe_cw_country }
-            activate_situation = situation:oe_cw_war
-            trigger_event_non_silently = { id = oe_cw.8 days = 1 }
-            trigger_event_non_silently = { id = oe_cw.9 days = 3 }
-        }
-        else = { oe_cw_corule = yes }
-    }
+	if = {
+		limit = { exists = character:byz_john_kantakouzenos }
+	    if = {
+	        limit = { oe_cw_war_possible = no }
+	        set_variable = oe_cw_pending
+	    }
+	    else = {
+	        remove_variable = oe_cw_pending
+	        set_variable = { name = oe_cw_stage value = 2 }
+	        set_variable = { name = oe_cw_tide value = 40 }
+	        set_variable = { name = oe_cw_wm value = 0 }
+	        set_variable = { name = oe_cw_capm value = 0 }
+	        set_variable = { name = oe_cw_evcd months = 2 }
+	        # His base: Didymoteicho and the Thracian countryside. Adrianople and Komotini stay with the regency (their
+	        # townsmen expel the nobles the next day, event oe_cw.8).
+	        every_owned_location = {
+	            limit = { var:oe_theme_region ?= 2 is_capital = no NOT = { this = location:edirne } NOT = { this = location:komotini } }
+	            add_to_list = oe_cw_base
+	        }
+	        create_rebel = { category = estate estate = nobles_estate name = OE_CW_REBELS save_scope_as = oe_cw_rebel_group }
+	        every_in_list = {
+	            list = oe_cw_base
+	            every_pop = { limit = { owner = c:BYZ } change_pop_allegiance = scope:oe_cw_rebel_group }
+	        }
+	        scope:oe_cw_rebel_group = { start_civil_war = { save_scope_as = oe_cw_country } }
+	        if = {
+	            limit = { exists = scope:oe_cw_country }
+	            set_variable = { name = oe_cw_rebels value = scope:oe_cw_country }
+	            every_in_list = { list = oe_cw_base if = { limit = { owner = c:BYZ } change_location_owner = scope:oe_cw_country } }
+	            character:byz_john_kantakouzenos = { save_scope_as = oe_cw_k }
+	            scope:oe_cw_k = { move_country = scope:oe_cw_country }
+	            scope:oe_cw_country = { set_new_ruler = scope:oe_cw_k add_gold = 300 }
+	            location:demotica = {
+	                if = {
+	                    limit = { owner = scope:oe_cw_country }
+	                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw_country }
+	                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw_country }
+	                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw_country }
+	                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_cavalry owner = scope:oe_cw_country }
+	                    create_sub_unit_with_owner = { type = a_age_1_traditions_light_cavalry owner = scope:oe_cw_country }
+	                }
+	            }
+	            # Disloyal themes that rise join this rebel state (oe_theme_revolt_start joins a theme rebel state at war).
+	            set_variable = { name = oe_theme_revolt_country value = scope:oe_cw_country }
+	            activate_situation = situation:oe_cw_war
+	            trigger_event_non_silently = { id = oe_cw.8 days = 1 }
+	            trigger_event_non_silently = { id = oe_cw.9 days = 3 }
+	        }
+	        else = { oe_cw_corule = yes }
+	    }
+	}
 }
 
 # BYZ scope. Act 3 monthly.
@@ -158,8 +164,8 @@ oe_cw_war_monthly = {
         if = { limit = { var:oe_cw_tide < 30 country_exists = c:SER NOT = { has_variable = oe_cw_done_13 } } oe_cw_fire = { n = 13 } }
         if = { limit = { has_variable = oe_cw_momchil has_variable = oe_cw_umur NOT = { has_variable = oe_cw_done_20 } } oe_cw_fire = { n = 20 } }
         if = { limit = { has_variable = oe_cw_theodora has_variable = oe_cw_wm var:oe_cw_wm >= 3 NOT = { has_variable = oe_cw_done_10 } } oe_cw_fire = { n = 10 } }
-        if = { limit = { has_variable = oe_cw_wm var:oe_cw_wm >= 6 location:thessaloniki = { owner = c:BYZ } var:oe_ts_thessalonica_side ?= 2 NOT = { has_variable = oe_cw_done_12 } NOT = { has_variable = oe_cw_done_11 } } oe_cw_fire = { n = 11 } }
-        if = { limit = { has_variable = oe_cw_wm var:oe_cw_wm >= 6 location:thessaloniki = { owner = c:BYZ } NOT = { var:oe_ts_thessalonica_side ?= 2 } NOT = { has_variable = oe_cw_done_11 } NOT = { has_variable = oe_cw_done_12 } } oe_cw_fire = { n = 12 } }
+        if = { limit = { has_variable = oe_cw_wm var:oe_cw_wm >= 6 location:thessaloniki = { owner ?= c:BYZ } var:oe_ts_thessalonica_side ?= 2 NOT = { has_variable = oe_cw_done_12 } NOT = { has_variable = oe_cw_done_11 } } oe_cw_fire = { n = 11 } }
+        if = { limit = { has_variable = oe_cw_wm var:oe_cw_wm >= 6 location:thessaloniki = { owner ?= c:BYZ } NOT = { var:oe_ts_thessalonica_side ?= 2 } NOT = { has_variable = oe_cw_done_11 } NOT = { has_variable = oe_cw_done_12 } } oe_cw_fire = { n = 12 } }
         if = { limit = { has_variable = oe_cw_wm var:oe_cw_wm >= 45 NOT = { has_variable = oe_cw_apok_out } exists = character:byz_alexios_apokaukos character:byz_alexios_apokaukos = { is_alive = yes } NOT = { has_variable = oe_cw_done_22 } } oe_cw_fire = { n = 22 } }
         if = {
             limit = { NOT = { has_variable = oe_cw_evcd } }
@@ -169,13 +175,13 @@ oe_cw_war_monthly = {
                 random_list = {
             10 = { trigger = { country_exists = c:AYD has_variable = oe_cw_wm var:oe_cw_wm >= 6 NOT = { has_variable = oe_cw_done_15 } } oe_cw_fire = { n = 15 } }
             10 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 12 gold < 300 country_exists = c:VEN oe_mf_jewels_at_home = yes NOT = { has_variable = oe_cw_done_17 } } oe_cw_fire = { n = 17 } }
-            10 = { trigger = { country_exists = c:BUL has_variable = oe_cw_wm var:oe_cw_wm >= 24 location:plovdiv = { owner = c:BYZ } NOT = { has_variable = oe_cw_done_18 } } oe_cw_fire = { n = 18 } }
+            10 = { trigger = { country_exists = c:BUL has_variable = oe_cw_wm var:oe_cw_wm >= 24 location:plovdiv = { owner ?= c:BYZ } NOT = { has_variable = oe_cw_done_18 } } oe_cw_fire = { n = 18 } }
             10 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 12 NOT = { has_variable = oe_cw_done_19 } } oe_cw_fire = { n = 19 } }
-            10 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 36 location:edirne = { owner = c:BYZ } NOT = { has_variable = oe_cw_done_21 } } oe_cw_fire = { n = 21 } }
+            10 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 36 location:edirne = { owner ?= c:BYZ } NOT = { has_variable = oe_cw_done_21 } } oe_cw_fire = { n = 21 } }
             8 = { trigger = { country_exists = c:SRU has_variable = oe_cw_wm var:oe_cw_wm >= 48 NOT = { has_variable = oe_cw_done_23 } } oe_cw_fire = { n = 23 } }
             10 = { trigger = { country_exists = c:TUR has_variable = oe_cw_wm var:oe_cw_wm >= 48 NOT = { has_global_variable = oe_mf_byz_tur_marriage } NOT = { has_variable = oe_cw_done_24 } } oe_cw_fire = { n = 24 } }
             8 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 52 NOT = { has_variable = oe_cw_done_25 } } oe_cw_fire = { n = 25 } }
-            8 = { trigger = { country_exists = c:GEN has_variable = oe_cw_wm var:oe_cw_wm >= 54 OR = { location:chios = { owner = c:BYZ } location:foca = { owner = c:BYZ } } NOT = { has_variable = oe_cw_done_26 } } oe_cw_fire = { n = 26 } }
+            8 = { trigger = { country_exists = c:GEN has_variable = oe_cw_wm var:oe_cw_wm >= 54 OR = { location:chios = { owner ?= c:BYZ } location:foca = { owner ?= c:BYZ } } NOT = { has_variable = oe_cw_done_26 } } oe_cw_fire = { n = 26 } }
             12 = { trigger = { has_variable = oe_cw_wm var:oe_cw_wm >= 24 has_variable = oe_cw_tide var:oe_cw_tide >= 40 has_variable = oe_cw_tide var:oe_cw_tide <= 60 NOT = { has_variable = oe_cw_no_parley } NOT = { has_variable = oe_cw_parley_cd } } oe_cw_fire = { n = 27 } }
                 }
             }

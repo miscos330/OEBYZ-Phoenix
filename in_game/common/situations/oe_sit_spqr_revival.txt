@@ -2,6 +2,7 @@
 
 oe_sit_spqr_revival = {
 	monthly_spawn_chance = monthly_spawn_chance_unique
+	hint_tag = hint_oe_sit_spqr_revival
 	can_start = {
 		NOT = { has_global_variable = oe_spqr_sit_started }
 		current_year <= 1550
@@ -23,15 +24,24 @@ oe_sit_spqr_revival = {
 		trigger = {
 			has_global_variable = oe_spqr_proclaimed_global
 			has_variable = oe_spqr_sit_months
-			var:oe_spqr_sit_months >= 24
+			trigger_if = {
+				limit = { has_variable = oe_spqr_sit_months }
+				var:oe_spqr_sit_months >= 24
+			}
 			OR = {
 				AND = {
 					has_variable = oe_spqr_sit_momentum
-					var:oe_spqr_sit_momentum >= 75
+					trigger_if = {
+						limit = { has_variable = oe_spqr_sit_momentum }
+						var:oe_spqr_sit_momentum >= 75
+					}
 				}
 				AND = {
 					has_variable = oe_spqr_sit_proconsuls
-					var:oe_spqr_sit_proconsuls >= 2
+					trigger_if = {
+						limit = { has_variable = oe_spqr_sit_proconsuls }
+						var:oe_spqr_sit_proconsuls >= 2
+					}
 				}
 			}
 		}
@@ -64,15 +74,35 @@ oe_sit_spqr_revival = {
 		trigger = {
 			NOT = { has_global_variable = oe_spqr_proclaimed_global }
 			has_variable = oe_spqr_sit_months
-			var:oe_spqr_sit_months >= 36
+			trigger_if = {
+				limit = { has_variable = oe_spqr_sit_months }
+				var:oe_spqr_sit_months >= 36
+			}
 			has_variable = oe_spqr_sit_momentum
-			var:oe_spqr_sit_momentum <= 20
+			trigger_if = {
+				limit = { has_variable = oe_spqr_sit_momentum }
+				var:oe_spqr_sit_momentum <= 20
+			}
 		}
 		immediate = {
 			set_global_variable = { name = oe_spqr_sit_ended value = 2 }
 			if = {
 				limit = { country_exists = c:PAP }
 				c:PAP = {
+					add_country_modifier = { modifier = oe_spqr_mod_sit_papal_victory years = 30 mode = replace }
+					trigger_event_non_silently = oe_spqr.14
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:NAP }
+				c:NAP = {
+					add_country_modifier = { modifier = oe_spqr_mod_sit_papal_victory years = 30 mode = replace }
+					trigger_event_non_silently = oe_spqr.14
+				}
+			}
+			else_if = {
+				limit = { country_exists = c:MLO }
+				c:MLO = {
 					add_country_modifier = { modifier = oe_spqr_mod_sit_papal_victory years = 30 mode = replace }
 					trigger_event_non_silently = oe_spqr.14
 				}
@@ -85,7 +115,10 @@ oe_sit_spqr_revival = {
 		trigger = {
 			current_year >= 1560
 			has_variable = oe_spqr_sit_months
-			var:oe_spqr_sit_months >= 36
+			trigger_if = {
+				limit = { has_variable = oe_spqr_sit_months }
+				var:oe_spqr_sit_months >= 36
+			}
 		}
 		immediate = {
 			set_global_variable = { name = oe_spqr_sit_ended value = 3 }

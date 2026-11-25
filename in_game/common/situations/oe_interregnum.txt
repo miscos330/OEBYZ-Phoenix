@@ -2,10 +2,11 @@
 
 oe_ivr_interregnum = {
     monthly_spawn_chance = 0
+    hint_tag = hint_oe_ivr_interregnum
     # Started by oe_ivr_open (activate_situation); the contest itself runs from the bet framework's monthly pulse.
     can_start = { always = no }
     can_end = { NOT = { AND = { country_exists = c:BYZ c:BYZ = { var:oe_bet_round ?= 1 } } } }
-    visible = { country_exists = c:BYZ c:BYZ = { var:oe_bet_round ?= 1 } }
+    visible = { trigger_if = { limit = { country_exists = c:BYZ } c:BYZ = { var:oe_bet_round ?= 1 } OR = { tag = BYZ tag = ROM tag = TUR is_subject_or_below_of = c:BYZ is_at_war_with = c:BYZ is_neighbor_of = c:BYZ AND = { trigger_if = { limit = { country_exists = c:ROM } OR = { is_subject_or_below_of = c:ROM is_at_war_with = c:ROM is_neighbor_of = c:ROM } } trigger_else = { always = no } } } } trigger_else = { always = no } }
     on_start = { }
     on_monthly = { }
     on_ending = { }

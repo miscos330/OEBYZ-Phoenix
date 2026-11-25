@@ -39,28 +39,34 @@ oe_bi_force_house = {
     }
 }
 oe_bi_negotiate_house = {
-    if = {
-        limit = { oe_bi_negotiate_ready = yes scope:target_head = { oe_bi_negotiable_head = yes } }
-        set_variable = { name = oe_bi_negotiate_cooldown value = 1 months = 12 }
-        scope:target_head.dynasty = { save_scope_as = oe_bi_negotiated_family }
-        international_organization:oe_byz_empire_pillars = {
-            change_variable = { name = oe_pillars_authority subtract = 2 }
-            add_to_variable_list = { name = oe_bi_negotiated_families target = scope:oe_bi_negotiated_family }
-            oe_bi_reduce_selected_house = { amount = -25 }
-        }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { oe_bi_negotiate_ready = yes scope:target_head = { oe_bi_negotiable_head = yes } }
+	        set_variable = { name = oe_bi_negotiate_cooldown value = 1 months = 12 }
+	        scope:target_head.dynasty = { save_scope_as = oe_bi_negotiated_family }
+	        international_organization:oe_byz_empire_pillars = {
+	            change_variable = { name = oe_pillars_authority subtract = 2 }
+	            add_to_variable_list = { name = oe_bi_negotiated_families target = scope:oe_bi_negotiated_family }
+	            oe_bi_reduce_selected_house = { amount = -25 }
+	        }
+	    }
+	}
 }
 oe_bi_assert_authority = {
-    if = {
-        limit = { oe_bi_assert_authority_ready = yes }
-        add_stability = -5
-        add_legitimacy = -5
-        set_variable = { name = oe_bi_assert_authority_cooldown value = 1 months = 12 }
-        international_organization:oe_byz_empire_pillars = {
-            change_variable = { name = oe_pillars_authority add = 5 }
-            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-        }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { oe_bi_assert_authority_ready = yes }
+	        add_stability = -5
+	        add_legitimacy = -5
+	        set_variable = { name = oe_bi_assert_authority_cooldown value = 1 months = 12 }
+	        international_organization:oe_byz_empire_pillars = {
+	            change_variable = { name = oe_pillars_authority add = 5 }
+	            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	        }
+	    }
+	}
 }
 oe_bi_curb_house = {
     if = {

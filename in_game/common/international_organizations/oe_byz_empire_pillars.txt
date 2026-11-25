@@ -14,11 +14,11 @@
     show_leave_message = no
     subject_limited = no
     background_texture = "gfx/interface/illustrations/international_organization_types/oe_byz_empire_pillars.dds"
-    # Location scope: highlight existing bandit strongholds in Byzantine-owned land.
+    # Location scope: highlight existing bandit strongholds in imperial-owned land.
     map_color_override = {
         if = { limit = { oe_nf_selected_territory = yes } value = rgb { 245 195 65 } }
         else_if = {
-            limit = { has_owner = yes owner = c:BYZ has_building = building_type:oe_byz_bad_thief_greek }
+            limit = { oe_owned_by_phoenix_empire = yes has_building = building_type:oe_byz_bad_thief_greek }
             value = rgb { 40 200 70 }
         }
     }
@@ -26,15 +26,14 @@
     secondary_map_color_override = {
         if = { limit = { oe_nf_controlled = yes } value = rgb { 155 65 195 } }
         else_if = {
-            limit = { has_owner = yes owner = c:BYZ has_building = building_type:oe_byz_bad_thief_greek }
+            limit = { oe_owned_by_phoenix_empire = yes has_building = building_type:oe_byz_bad_thief_greek }
             value = rgb { 40 200 70 }
         }
     }
     tooltip = {
         if = {
             limit = {
-                has_owner = yes
-                owner = c:BYZ
+                oe_owned_by_phoenix_empire = yes
                 has_building = building_type:oe_byz_bad_thief_greek
             }
             custom_tooltip = { text = oe_byz_bad_thief_greek }
@@ -47,14 +46,17 @@
         if = { limit = { oe_nf_controls_slot = { slot = 4 } } custom_tooltip = { text = OE_NF_MAP_HOUSE_4 } }
     }
     leader = { leader_country ?= { ruler ?= { add_to_list = leaders } } }
-    can_lead_trigger = { tag = BYZ }
+    can_lead_trigger = { oe_is_phoenix_empire = yes }
     create_visible_trigger = { always = no }
     invite_visible_trigger = { always = no }
     join_visible_trigger = { always = no }
     can_join_trigger = { oe_pillars_eligible_trigger = yes }
     can_leave_trigger = { always = no }
     auto_leave_trigger = { NOT = { oe_pillars_eligible_trigger = yes } }
-    auto_disband_trigger = { NOT = { country_exists = c:BYZ } }
+    auto_disband_trigger = {
+        NOT = { country_exists = c:BYZ }
+        NOT = { country_exists = c:ROM }
+    }
     can_declare_war = { always = yes }
     on_creation = {
         oe_pillars_initialize_resources_effect = yes
@@ -83,7 +85,7 @@
             max = 100
             start = 25
             monthly_change = { value = -0.2 
-if = { limit = { c:BYZ ?= { has_variable = oe_ir_offices_done } } add = 0.05 }
+if = { limit = { leader_country ?= { has_variable = oe_ir_offices_done } } add = 0.05 }
 
                 add = {
                     desc = "oe_court_chancellor"
@@ -102,7 +104,7 @@ if = { limit = { c:BYZ ?= { has_variable = oe_ir_offices_done } } add = 0.05 }
                 subtract = var:oe_pillars_public_opinion
                 divide = 100
             
-if = { limit = { c:BYZ ?= { has_variable = oe_ir_offices_done } } add = 0.05 }
+if = { limit = { leader_country ?= { has_variable = oe_ir_offices_done } } add = 0.05 }
 
                 add = {
                     desc = "oe_court_judge"

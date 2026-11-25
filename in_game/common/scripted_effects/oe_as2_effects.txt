@@ -15,14 +15,22 @@ oe_as2_kernel_yearly = {
 		}
 		change_global_variable = { name = oe_as2_tick_count add = 1 }
 
-		# 1. Byzantine / Roman 3-Stage Romanization Milestone Chain (O(1))
+		# 1. Byzantine / Roman 3-Stage Romanization Milestone Chain, GUI Region Cache & AI Parity (O(1))
 		if = {
 			limit = { country_exists = c:ROM c:ROM = { oe_as2_is_roman_host = yes } }
-			c:ROM = { oe_as2_tick_roman_milestones = yes }
+			oe_rw_refresh_region_count_cache = yes
+			c:ROM = {
+				oe_as2_tick_roman_milestones = yes
+				oe_as2_ai_romanization_tick = yes
+			}
 		}
 		else_if = {
 			limit = { country_exists = c:BYZ c:BYZ = { oe_as2_is_roman_host = yes } }
-			c:BYZ = { oe_as2_tick_roman_milestones = yes }
+			oe_rw_refresh_region_count_cache = yes
+			c:BYZ = {
+				oe_as2_tick_roman_milestones = yes
+				oe_as2_ai_romanization_tick = yes
+			}
 		}
 
 		# 2. Targeted O(1) Great-Empire Cultural Integration Chain pacing (4 civilizations)

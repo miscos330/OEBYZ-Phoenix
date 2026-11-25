@@ -33,16 +33,20 @@ oe_byd_byz_navy_x = { value = 0 if = { limit = { country_exists = c:BYZ } value 
 # BYZ scope. Starting meters: grain 60 + 8 a granary level (at most 92); morale 50 + (public opinion - 50) / 2, 20-80.
 oe_byd_food_start = { value = oe_byd_granary multiply = 8 add = 60 max = 92 }
 oe_byd_morale_start = {
-    value = 50
-    if = {
-        limit = { international_organization:oe_byz_empire_pillars ?= { has_variable = oe_pillars_public_opinion } }
-        value = international_organization:oe_byz_empire_pillars.var:oe_pillars_public_opinion
-        subtract = 50
-        divide = 2
-        add = 50
-    }
-    min = 20
-    max = 80
+	value = 0
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    value = 50
+	    if = {
+	        limit = { international_organization:oe_byz_empire_pillars ?= { has_variable = oe_pillars_public_opinion } }
+	        value = international_organization:oe_byz_empire_pillars.var:oe_pillars_public_opinion
+	        subtract = 50
+	        divide = 2
+	        add = 50
+	    }
+	    min = 20
+	    max = 80
+	}
 }
 
 # BYZ scope. Grain stores, monthly change (design 3.3).

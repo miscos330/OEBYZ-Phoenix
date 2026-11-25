@@ -9,52 +9,55 @@ oe_ar_add_strain = {
 # jurisdiction is every imperial location of the region not yet in a theme. Same founding steps as
 # oe_theme_found_at_seat (gen_theme_setup.py), with a region-wide jurisdiction.
 oe_ar_found_exarchate = {
-    if = {
-        limit = { location:$seat$ = { owner = c:BYZ NOT = { has_building = building_type:oe_byz_theme_system } } }
-        location:$seat$ = { save_scope_as = oe_ar_seat }
-    }
-    else = {
-        ordered_owned_location = { limit = { $region$ = yes NOT = { has_building = building_type:oe_byz_theme_system } } order_by = population save_scope_as = oe_ar_seat }
-    }
-    if = {
-        limit = { exists = scope:oe_ar_seat }
-        scope:oe_ar_seat = {
-            create_building_country_in_location = {
-                religion = religion:orthodox
-                culture = culture:oe_roman_noble_culture
-                subject_type = subject_type:$type$
-                overlord = c:BYZ
-                reforms = { oe_byz_theme_system_subject }
-                hidden_effect = {
-                    change_government_type = government_type:monarchy
-                    change_heir_selection = heir_selection:oe_rome_province_elect
-                }
-                save_scope_as = oe_ar_exarch_country
-            }
-            construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_ar_exarch_country cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
-        }
-        international_organization:oe_byz_empire_pillars = {
-            add_country_to_international_organization = scope:oe_ar_exarch_country
-            international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_ar_exarch_country }
-        }
-        every_owned_location = {
-            limit = { $region$ = yes NOT = { has_building = building_type:oe_byz_theme_system } }
-            construct_building = { building_type = building_type:oe_byz_theme_system owner = scope:oe_ar_exarch_country cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
-        }
-        scope:oe_ar_exarch_country = {
-            set_variable = oe_ar_exarchate
-            set_variable = oe_theme_named
-            set_variable = oe_theme_name_fixed  # keeps the exarchate's own name (gen_theme_names.py)
-            set_variable = { name = oe_theme_distance value = 4 }
-            change_country_name = $name$
-            oe_ts_set_status = { status = 3 }  # 2026-11-18 territory rework: exarchate status (gen_territory_status.py)
-            set_gold = 500
-            add_manpower = 5
-        }
-        scope:oe_ar_seat = {
-            while = { count = 5 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_ar_exarch_country } }
-        }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { location:$seat$ = { owner ?= c:BYZ NOT = { has_building = building_type:oe_byz_theme_system } } }
+	        location:$seat$ = { save_scope_as = oe_ar_seat }
+	    }
+	    else = {
+	        ordered_owned_location = { limit = { $region$ = yes NOT = { has_building = building_type:oe_byz_theme_system } } order_by = population save_scope_as = oe_ar_seat }
+	    }
+	    if = {
+	        limit = { exists = scope:oe_ar_seat }
+	        scope:oe_ar_seat = {
+	            create_building_country_in_location = {
+	                religion = religion:orthodox
+	                culture = culture:oe_roman_noble_culture
+	                subject_type = subject_type:$type$
+	                overlord = c:BYZ
+	                reforms = { oe_byz_theme_system_subject }
+	                hidden_effect = {
+	                    change_government_type = government_type:monarchy
+	                    change_heir_selection = heir_selection:oe_rome_province_elect
+	                }
+	                save_scope_as = oe_ar_exarch_country
+	            }
+	            construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_ar_exarch_country cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+	        }
+	        international_organization:oe_byz_empire_pillars = {
+	            add_country_to_international_organization = scope:oe_ar_exarch_country
+	            international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_ar_exarch_country }
+	        }
+	        every_owned_location = {
+	            limit = { $region$ = yes NOT = { has_building = building_type:oe_byz_theme_system } }
+	            construct_building = { building_type = building_type:oe_byz_theme_system owner = scope:oe_ar_exarch_country cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+	        }
+	        scope:oe_ar_exarch_country = {
+	            set_variable = oe_ar_exarchate
+	            set_variable = oe_theme_named
+	            set_variable = oe_theme_name_fixed  # keeps the exarchate's own name (gen_theme_names.py)
+	            set_variable = { name = oe_theme_distance value = 4 }
+	            change_country_name = $name$
+	            oe_ts_set_status = { status = 3 }  # 2026-11-18 territory rework: exarchate status (gen_territory_status.py)
+	            set_gold = 500
+	            add_manpower = 5
+	        }
+	        scope:oe_ar_seat = {
+	            while = { count = 5 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_ar_exarch_country } }
+	        }
+	    }
+	}
 }
 
 oe_ar_fire = {
@@ -107,7 +110,7 @@ oe_ar_tick = {
     if = { limit = { has_variable = oe_ar_consuls NOT = { has_variable = oe_ar_consul_cd } } set_variable = { name = oe_ar_consul_cd months = 12 } trigger_event_non_silently = oe_ar.13 }
     if = { limit = { var:oe_ar_months >= 36 NOT = { has_variable = oe_ar_done_7 } OR = { var:oe_ar_path ?= 2 var:oe_ar_path ?= 3 } } oe_ar_fire = { n = 7 } }
     if = { limit = { var:oe_ar_months >= 12 NOT = { has_variable = oe_ar_done_8 } exists = international_organization:hre exists = international_organization:hre.leader_country international_organization:hre.leader_country = { NOT = { this = c:BYZ } } } oe_ar_fire = { n = 8 } }
-    if = { limit = { var:oe_ar_months >= 24 NOT = { has_variable = oe_ar_done_9 } location:rome = { owner = c:BYZ } location:constantinople = { owner = c:BYZ } location:alexandria = { owner = c:BYZ } location:antioch = { owner = c:BYZ } location:jerusalem = { owner = c:BYZ } } oe_ar_fire = { n = 9 } }
+    if = { limit = { var:oe_ar_months >= 24 NOT = { has_variable = oe_ar_done_9 } location:rome = { owner ?= c:BYZ } location:constantinople = { owner ?= c:BYZ } location:alexandria = { owner ?= c:BYZ } location:antioch = { owner ?= c:BYZ } location:jerusalem = { owner ?= c:BYZ } } oe_ar_fire = { n = 9 } }
     # Crises.
     if = { limit = { var:oe_ar_strain >= 70 NOT = { has_variable = oe_ar_border_cd } } random = { chance = 4 set_variable = { name = oe_ar_border_cd months = 24 } trigger_event_non_silently = oe_ar.10 } }
     if = { limit = { var:oe_ar_strain >= 60 NOT = { has_variable = oe_ar_plague_cd } } random = { chance = 3 set_variable = { name = oe_ar_plague_cd months = 36 } trigger_event_non_silently = oe_ar.11 } }

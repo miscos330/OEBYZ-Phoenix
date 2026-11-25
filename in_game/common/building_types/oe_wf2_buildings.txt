@@ -1,0 +1,66 @@
+﻿# NEW 2026-11-25 v27.0 WP19 Wanfang Phase 2 (oe_wf2_, gen_v270_wanfang_p2.py) — Wokou Native Disaster, Yellow River & Grand Canal Huai'an, 10 Vaulted Reforms/Privileges & Osmanli Rome (0 vanilla overrides, 0 edits to existing files, 100% O(1), R31 & G_ELR_ISOLATION compliant). Edit gen_v270_wanfang_p2.py, not this file.
+
+# WP19-2: Grand Canal Huai'an Grain Transport Headquarters (exact icon match: main_menu/gfx/interface/icons/buildings/oe_wfm_bld_grand_canal_huaian.dds).
+# Placed in location:shanyang_huaian (verified Jiangsu Huai'an seat in huaian_province of definitions.txt). G09 compliant (0 manpower/sailors).
+oe_wfm_bld_grand_canal_huaian = {
+	audio_tier = 5
+	is_special = yes
+	is_foreign = no
+	in_empty = owned
+	pop_type = burghers
+	max_levels = 1
+	employment_size = 1.0
+	category = infrastructure_category
+
+	rural_settlement = yes
+	town = yes
+	city = yes
+	megalopolis = yes
+
+	expensive = yes
+	forbidden_for_estates = yes
+	can_destroy = { always = no }
+
+	build_time = 900
+	construction_demand = pound_lock_canal_infrastructure_construction
+
+	location_potential = {
+		this = location:shanyang_huaian
+	}
+	country_potential = {
+		owns = location:shanyang_huaian
+		is_rebel_country = no
+		NOT = { oe_is_fourth_rome_exile_country = yes }
+	}
+	allow = {
+		has_owner = yes
+		owner ?= {
+			is_rebel_country = no
+			NOT = { oe_is_fourth_rome_exile_country = yes }
+		}
+	}
+
+	on_built = {
+		if = {
+			limit = {
+				NOT = { has_global_variable = oe_wfm_bld_grand_canal_huaian_built }
+				location = { has_owner = yes }
+			}
+			set_global_variable = { name = oe_wfm_bld_grand_canal_huaian_built value = 1 }
+			location.owner = {
+				add_prestige = prestige_mild_bonus
+				add_stability = 3
+			}
+		}
+	}
+
+	possible_production_methods = {
+		pound_lock_canal_infrastructure_maintenance
+	}
+
+	modifier = {
+		local_merchant_capacity = 0.50
+		local_monthly_food_modifier = 0.14
+		local_max_control = 0.05
+	}
+}

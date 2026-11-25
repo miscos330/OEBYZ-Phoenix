@@ -2,12 +2,21 @@
 
 oe_sit_yuan_restoration = {
 	monthly_spawn_chance = monthly_spawn_chance_unique
+	hint_tag = hint_oe_sit_yuan_restoration
 	can_start = {
 		oe_start_is_1337 = yes
 		NOT = { has_global_variable = oe_sit2_yr_started }
 		NOT = { is_situation_active = situation:red_turban_rebellions }
 		current_year < 1415
+		NOT = { has_global_variable = oe_alt_era_start }
+		NOT = { has_global_variable = oe_yp_dissolved }
 		country_exists = c:CHI
+		c:CHI = {
+			culture = { has_culture_group = culture_group:mongolian_group }
+			NOT = { has_variable = rtr_is_new_china }
+			NOT = { has_or_had_tag = MNG }
+			NOT = { has_or_had_tag = MCH }
+		}
 		OR = {
 			AND = {
 				has_global_variable = oe_yr_on
@@ -32,13 +41,13 @@ oe_sit_yuan_restoration = {
 			country_exists = c:CHI
 			OR = {
 				AND = {
-					has_variable = oe_sit2_yr_progress
-					var:oe_sit2_yr_progress >= 80
+					trigger_if = {
+						limit = { has_variable = oe_sit2_yr_progress }
+						var:oe_sit2_yr_progress >= 80
+					}
+					trigger_else = { always = no }
 				}
-				AND = {
-					has_global_variable = oe_yr_end
-					global_var:oe_yr_end = 1
-				}
+				global_var:oe_yr_end ?= 1
 			}
 		}
 		immediate = {
@@ -58,8 +67,11 @@ oe_sit_yuan_restoration = {
 				NOT = { location:dadu = { owner ?= c:CHI } }
 				AND = {
 					current_year >= 1415
-					has_variable = oe_sit2_yr_progress
-					var:oe_sit2_yr_progress < 80
+					trigger_if = {
+						limit = { has_variable = oe_sit2_yr_progress }
+						var:oe_sit2_yr_progress < 80
+					}
+					trigger_else = { always = no }
 				}
 			}
 		}
@@ -75,7 +87,16 @@ oe_sit_yuan_restoration = {
 		name = "oe_sit_yuan_restoration_outcome_lost"
 		desc = "oe_sit_yuan_restoration_outcome_lost_desc"
 		trigger = {
-			NOT = { country_exists = c:CHI }
+			OR = {
+				NOT = { country_exists = c:CHI }
+				c:CHI = {
+					OR = {
+						has_variable = rtr_is_new_china
+						has_or_had_tag = MNG
+						has_or_had_tag = MCH
+					}
+				}
+			}
 		}
 		immediate = {
 			set_global_variable = { name = oe_sit2_yr_ended value = 3 }

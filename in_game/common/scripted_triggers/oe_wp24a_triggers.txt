@@ -1,0 +1,123 @@
+﻿# NEW 2026-11-24 v29.0 WP24-A Main Mod Core Deepening (oe_wp24a_, gen_v290_wp24a_core_deepening.py) — WP11 Four Praetorian Prefectures + WP12 Teutonic 1525 Reformation Fork + WP13 Northern Yuan & Four Khanates (0 vanilla overrides, 0 mainline slots). Edit gen_v290_wp24a_core_deepening.py, not this file.
+
+# ZERO if/else in scripted_triggers; all triggers strictly R04/R10/R11/R31/G_ELR_ISOLATION compliant.
+
+# Country scope: Roman imperial host (BYZ or formed ROM), never rebel, never Fourth Rome exile.
+oe_wp24a_is_roman_host = {
+	is_rebel_country = no
+	NOT = { oe_is_fourth_rome_exile_country = yes }
+	oe_is_phoenix_empire = yes
+}
+
+# Country scope: Roman bloc holds Oriens Prefecture core or has active Oriens prefecture/theme charter.
+oe_wp24a_holds_oriens = {
+	oe_wp24a_is_roman_host = yes
+	OR = {
+		var:oe_prf_mode_1 ?= 1
+		var:oe_prf_mode_1 ?= 2
+		has_variable = oe_theme_pref_1_charter
+		owns_or_non_sovereign_subject_owns = location:antioch
+		owns_or_non_sovereign_subject_owns = location:damascus
+		owns_or_non_sovereign_subject_owns = location:aleppo
+		owns_or_non_sovereign_subject_owns = location:alexandria
+	}
+}
+
+# Country scope: Roman bloc holds Illyricum Prefecture core or has active Illyricum prefecture/theme charter.
+oe_wp24a_holds_illyricum = {
+	oe_wp24a_is_roman_host = yes
+	OR = {
+		var:oe_prf_mode_2 ?= 1
+		var:oe_prf_mode_2 ?= 2
+		has_variable = oe_theme_pref_2_charter
+		owns_or_non_sovereign_subject_owns = location:thessaloniki
+		owns_or_non_sovereign_subject_owns = location:belgrad
+		owns_or_non_sovereign_subject_owns = location:buda
+	}
+}
+
+# Country scope: Roman bloc holds Italia & Carthage Prefecture core or has active Italia prefecture/theme charter.
+oe_wp24a_holds_italia = {
+	oe_wp24a_is_roman_host = yes
+	OR = {
+		var:oe_prf_mode_3 ?= 1
+		var:oe_prf_mode_3 ?= 2
+		has_variable = oe_theme_pref_3_charter
+		owns_or_non_sovereign_subject_owns = location:ravenna
+		owns_or_non_sovereign_subject_owns = location:rome
+		owns_or_non_sovereign_subject_owns = location:palermo
+		owns_or_non_sovereign_subject_owns = location:tunis
+	}
+}
+
+# Country scope: Roman bloc holds Gallia Prefecture core or has active Gallia prefecture/theme charter.
+oe_wp24a_holds_gallia = {
+	oe_wp24a_is_roman_host = yes
+	OR = {
+		var:oe_prf_mode_4 ?= 1
+		var:oe_prf_mode_4 ?= 2
+		has_variable = oe_theme_pref_4_charter
+		owns_or_non_sovereign_subject_owns = location:lyon
+		owns_or_non_sovereign_subject_owns = location:trier
+		owns_or_non_sovereign_subject_owns = location:paris
+		owns_or_non_sovereign_subject_owns = location:toledo
+	}
+}
+
+# Country scope: Teutonic Order host (TEU, secularized PRU from TEU, or independent LIV if TEU gone).
+oe_wp24a_is_teu_host = {
+	is_rebel_country = no
+	NOT = { oe_is_fourth_rome_exile_country = yes }
+	OR = {
+		tag = TEU
+		AND = {
+			tag = PRU
+			has_or_had_tag = TEU
+		}
+		AND = {
+			tag = LIV
+			is_subject = no
+			NOT = { country_exists = c:TEU }
+		}
+	}
+}
+
+# Country scope: Reformation-era closed lower-bound guard (R31 safe: strictly >= 1517).
+oe_wp24a_is_teu_reformation_era = {
+	current_year >= 1517
+	OR = {
+		current_age_or_later = { age = age_4_reformation }
+		current_year >= 1525
+		religion:lutheran = { is_religion_enabled = yes }
+	}
+}
+
+# Country scope: Northern Yuan / Great Yuan Mongol host (blocks Ming/Qing/Han New China and pre-1337 starts).
+oe_wp24a_is_yuan_host = {
+	is_rebel_country = no
+	NOT = { oe_is_fourth_rome_exile_country = yes }
+	current_year >= 1337
+	OR = {
+		tag = YUA
+		tag = MGE
+		tag = OIR
+		AND = {
+			tag = CHI
+			NOT = { has_variable = rtr_is_new_china }
+			NOT = { has_or_had_tag = MNG }
+			NOT = { has_or_had_tag = MCH }
+			culture = { has_culture_group = culture_group:mongolian_group }
+		}
+	}
+}
+
+# Country scope: Steppe retreat or Mongolian heartland anchor for Northern Yuan Comeback Arc.
+oe_wp24a_yuan_steppe_anchor = {
+	oe_wp24a_is_yuan_host = yes
+	OR = {
+		NOT = { owns = location:dadu }
+		owns = location:karakorum
+		owns = location:shangdu
+		any_owned_location = { region = region:mongolia_region }
+	}
+}

@@ -814,10 +814,10 @@ oe_yp_setup_rulers = {
     }
 }
 
-# Branch-secretariat country scope (building or frontier), monthly (v14.5 Secretariats 2.0).
+# Branch-secretariat country scope (building or frontier), monthly (v14.5 + WP13 PERF-2/3 O(1) dirty-flag refactor).
 # Tracks independent oe_yp_warlordism (0-100, permanently 0 when Sansi-reformed), moves loyalty 1 point/month toward
-# the per-province oe_yp_loyalty_target_value, applies non-zero regional Tier 2/3 modifiers on tier change and every January,
-# and syncs high-warlordism (>=60) penalties + v12.2 Road Office priority on frontier cavalry provinces.
+# the per-province oe_yp_loyalty_target_value, applies permanent country/seat tier modifiers ONLY when tier changes
+# (zero Jan-1 rebuilds!), and syncs high-warlordism (>=60) via dirty flag (zero idle monthly location scans!).
 oe_yp_monthly = {
     oe_yp_monthly_warlordism = yes
     oe_yp_monthly_loyalty = yes
@@ -828,7 +828,6 @@ oe_yp_monthly = {
                 NOT = { has_variable = oe_yp_tier }
                 var:oe_yp_tier < var:oe_yp_tier_new
                 var:oe_yp_tier > var:oe_yp_tier_new
-                current_month = 1
             }
         }
         set_variable = { name = oe_yp_tier value = var:oe_yp_tier_new }
@@ -915,7 +914,8 @@ oe_yp_change_warlordism = {
     }
 }
 
-# Branch-secretariat / managed-province country scope (CMDLOG=0). Syncs high-warlordism (>=60) penalties.
+# Branch-secretariat / managed-province country scope (WP13 PERF-2, CMDLOG=0).
+# Dirty-flag O(1) sync for high-warlordism (>=60): ZERO monthly location scans when state is unchanged!
 oe_yp_sync_warlordism_effects = {
     if = {
         limit = {
@@ -923,29 +923,32 @@ oe_yp_sync_warlordism_effects = {
             has_variable = oe_yp_warlordism
             var:oe_yp_warlordism >= 60
         }
-        add_country_modifier = { modifier = oe_yp_high_warlordism_mod months = 13 mode = replace }
         if = {
-            limit = { is_subject_type = oe_yp_xingsheng has_variable = oe_yp_unit }
-            save_scope_as = oe_yp_wl_src
-            c:CHI ?= {
-                every_owned_location = {
-                    limit = { has_variable = oe_yp_unit var:oe_yp_unit = scope:oe_yp_wl_src.var:oe_yp_unit }
-                    add_location_modifier = { modifier = oe_yp_warlordism_loc_mod months = 13 mode = replace }
-                }
+            limit = { NOT = { var:oe_yp_wl_applied ?= 1 } }
+            set_variable = { name = oe_yp_wl_applied value = 1 }
+            add_country_modifier = { modifier = oe_yp_high_warlordism_mod years = -1 mode = replace }
+            if = {
+                limit = { is_subject_type = oe_yp_xingsheng exists = capital }
+                capital = { add_location_modifier = { modifier = oe_yp_warlordism_loc_mod years = -1 mode = replace } }
             }
+            oe_yp_sync_chi_aggregate_mods = yes
         }
     }
     else = {
-        if = { limit = { has_country_modifier = oe_yp_high_warlordism_mod } remove_country_modifier = oe_yp_high_warlordism_mod }
         if = {
-            limit = { is_subject_type = oe_yp_xingsheng has_variable = oe_yp_unit }
-            save_scope_as = oe_yp_wl_src
-            c:CHI ?= {
-                every_owned_location = {
-                    limit = { has_variable = oe_yp_unit var:oe_yp_unit = scope:oe_yp_wl_src.var:oe_yp_unit has_location_modifier = oe_yp_warlordism_loc_mod }
-                    remove_location_modifier = oe_yp_warlordism_loc_mod
+            limit = {
+                OR = {
+                    var:oe_yp_wl_applied ?= 1
+                    has_country_modifier = oe_yp_high_warlordism_mod
                 }
             }
+            set_variable = { name = oe_yp_wl_applied value = 0 }
+            if = { limit = { has_country_modifier = oe_yp_high_warlordism_mod } remove_country_modifier = oe_yp_high_warlordism_mod }
+            if = {
+                limit = { is_subject_type = oe_yp_xingsheng exists = capital }
+                capital = { if = { limit = { has_location_modifier = oe_yp_warlordism_loc_mod } remove_location_modifier = oe_yp_warlordism_loc_mod } }
+            }
+            oe_yp_sync_chi_aggregate_mods = yes
         }
     }
 }
@@ -1057,8 +1060,8 @@ oe_yp_appoint_governor = {
         }
     }
 }
-# Location scope; scope:oe_yp_tp is the branch secretariat (CMDLOG=0). Clears old tier modifiers and applies the
-# province's regional profile modifier for Tier 3 (>=70) / Tier 2 (40-69), or lax/estranged for Tier 1/0.
+# Seat-location scope; scope:oe_yp_tp is the branch secretariat (WP13 PERF-3, CMDLOG=0).
+# Applied ONLY to the provincial seat (1 location, years = -1) when tier changes.
 oe_yp_tier_location = {
     if = { limit = { has_location_modifier = oe_yp_tier_loyal } remove_location_modifier = oe_yp_tier_loyal }
     if = { limit = { has_location_modifier = oe_yp_tier_lax } remove_location_modifier = oe_yp_tier_lax }
@@ -1072,44 +1075,88 @@ oe_yp_tier_location = {
     if = { limit = { has_location_modifier = oe_yp_prof_frontier_t2 } remove_location_modifier = oe_yp_prof_frontier_t2 }
     if = { limit = { has_location_modifier = oe_yp_prof_frontier_t3 } remove_location_modifier = oe_yp_prof_frontier_t3 }
     if = { limit = { scope:oe_yp_tp = { var:oe_yp_tier ?= 3 } }
-        if = { limit = { scope:oe_yp_tp = { OR = { tag = YJZ tag = YJX } } } add_location_modifier = { modifier = oe_yp_prof_wealth_t3 months = 13 mode = replace } }
-        else_if = { limit = { scope:oe_yp_tp = { OR = { tag = YHN tag = YHG } } } add_location_modifier = { modifier = oe_yp_prof_front_t3 months = 13 mode = replace } }
-        else_if = { limit = { scope:oe_yp_tp = { OR = { tag = YSX tag = YSC } } } add_location_modifier = { modifier = oe_yp_prof_fortress_t3 months = 13 mode = replace } }
-        else_if = { limit = { scope:oe_yp_tp = { is_subject_type = oe_yp_frontier } } add_location_modifier = { modifier = oe_yp_prof_frontier_t3 months = 13 mode = replace } }
-        else = { add_location_modifier = { modifier = oe_yp_tier_loyal months = 13 mode = replace } }
+        if = { limit = { scope:oe_yp_tp = { OR = { tag = YJZ tag = YJX } } } add_location_modifier = { modifier = oe_yp_prof_wealth_t3 years = -1 mode = replace } }
+        else_if = { limit = { scope:oe_yp_tp = { OR = { tag = YHN tag = YHG } } } add_location_modifier = { modifier = oe_yp_prof_front_t3 years = -1 mode = replace } }
+        else_if = { limit = { scope:oe_yp_tp = { OR = { tag = YSX tag = YSC } } } add_location_modifier = { modifier = oe_yp_prof_fortress_t3 years = -1 mode = replace } }
+        else_if = { limit = { scope:oe_yp_tp = { is_subject_type = oe_yp_frontier } } add_location_modifier = { modifier = oe_yp_prof_frontier_t3 years = -1 mode = replace } }
+        else = { add_location_modifier = { modifier = oe_yp_tier_loyal years = -1 mode = replace } }
     }
     else_if = { limit = { scope:oe_yp_tp = { var:oe_yp_tier ?= 2 } }
-        if = { limit = { scope:oe_yp_tp = { OR = { tag = YJZ tag = YJX } } } add_location_modifier = { modifier = oe_yp_prof_wealth_t2 months = 13 mode = replace } }
-        else_if = { limit = { scope:oe_yp_tp = { OR = { tag = YHN tag = YHG } } } add_location_modifier = { modifier = oe_yp_prof_front_t2 months = 13 mode = replace } }
-        else_if = { limit = { scope:oe_yp_tp = { OR = { tag = YSX tag = YSC } } } add_location_modifier = { modifier = oe_yp_prof_fortress_t2 months = 13 mode = replace } }
-        else_if = { limit = { scope:oe_yp_tp = { is_subject_type = oe_yp_frontier } } add_location_modifier = { modifier = oe_yp_prof_frontier_t2 months = 13 mode = replace } }
+        if = { limit = { scope:oe_yp_tp = { OR = { tag = YJZ tag = YJX } } } add_location_modifier = { modifier = oe_yp_prof_wealth_t2 years = -1 mode = replace } }
+        else_if = { limit = { scope:oe_yp_tp = { OR = { tag = YHN tag = YHG } } } add_location_modifier = { modifier = oe_yp_prof_front_t2 years = -1 mode = replace } }
+        else_if = { limit = { scope:oe_yp_tp = { OR = { tag = YSX tag = YSC } } } add_location_modifier = { modifier = oe_yp_prof_fortress_t2 years = -1 mode = replace } }
+        else_if = { limit = { scope:oe_yp_tp = { is_subject_type = oe_yp_frontier } } add_location_modifier = { modifier = oe_yp_prof_frontier_t2 years = -1 mode = replace } }
     }
-    else_if = { limit = { scope:oe_yp_tp = { var:oe_yp_tier ?= 1 } } add_location_modifier = { modifier = oe_yp_tier_lax months = 13 mode = replace } }
-    else_if = { limit = { scope:oe_yp_tp = { var:oe_yp_tier ?= 0 } } add_location_modifier = { modifier = oe_yp_tier_estranged months = 13 mode = replace } }
+    else_if = { limit = { scope:oe_yp_tp = { var:oe_yp_tier ?= 1 } } add_location_modifier = { modifier = oe_yp_tier_lax years = -1 mode = replace } }
+    else_if = { limit = { scope:oe_yp_tp = { var:oe_yp_tier ?= 0 } } add_location_modifier = { modifier = oe_yp_tier_estranged years = -1 mode = replace } }
 }
 
-# Branch-secretariat country scope (CMDLOG=0). Rewrites regional tier modifiers on the unit's land and (for frontier)
-# also applies frontier cavalry/road country modifiers.
+# Any scope (WP13 PERF-2/3/4, CMDLOG=0). O(1) sync of c:CHI scaled country modifiers from the 6 inner branch secretariats.
+# Called ONLY on tier change, warlordism state flip, or Three-Commission reform (never scans locations!).
+oe_yp_sync_chi_aggregate_mods = {
+    if = {
+        limit = { country_exists = c:CHI oe_yp_yuan_fallen = no NOT = { has_global_variable = oe_yp_dissolved } }
+        c:CHI = {
+            set_local_variable = { name = oe_yp_cnt_loyal value = 0 }
+            set_local_variable = { name = oe_yp_cnt_estranged value = 0 }
+            set_local_variable = { name = oe_yp_cnt_wl value = 0 }
+            set_local_variable = { name = oe_yp_cnt_sansi value = 0 }
+            every_subject = {
+                limit = { is_subject_type = oe_yp_xingsheng }
+                if = { limit = { var:oe_yp_tier ?= 3 } change_local_variable = { name = oe_yp_cnt_loyal add = 1 } }
+                else_if = { limit = { OR = { var:oe_yp_tier ?= 1 var:oe_yp_tier ?= 0 } } change_local_variable = { name = oe_yp_cnt_estranged add = 1 } }
+                if = { limit = { var:oe_yp_wl_applied ?= 1 } change_local_variable = { name = oe_yp_cnt_wl add = 1 } }
+                if = { limit = { has_variable = oe_yp_sansi_reformed } change_local_variable = { name = oe_yp_cnt_sansi add = 1 } }
+            }
+            if = {
+                limit = { local_var:oe_yp_cnt_loyal > 0 }
+                add_country_modifier = { modifier = oe_yp_chi_tier_loyal_synergy years = -1 mode = replace size = local_var:oe_yp_cnt_loyal }
+            }
+            else_if = { limit = { has_country_modifier = oe_yp_chi_tier_loyal_synergy } remove_country_modifier = oe_yp_chi_tier_loyal_synergy }
+            if = {
+                limit = { local_var:oe_yp_cnt_estranged > 0 }
+                add_country_modifier = { modifier = oe_yp_chi_tier_estranged_drag years = -1 mode = replace size = local_var:oe_yp_cnt_estranged }
+            }
+            else_if = { limit = { has_country_modifier = oe_yp_chi_tier_estranged_drag } remove_country_modifier = oe_yp_chi_tier_estranged_drag }
+            if = {
+                limit = { local_var:oe_yp_cnt_wl > 0 }
+                add_country_modifier = { modifier = oe_yp_chi_warlordism_drag years = -1 mode = replace size = local_var:oe_yp_cnt_wl }
+            }
+            else_if = { limit = { has_country_modifier = oe_yp_chi_warlordism_drag } remove_country_modifier = oe_yp_chi_warlordism_drag }
+            if = {
+                limit = { local_var:oe_yp_cnt_sansi > 0 }
+                add_country_modifier = { modifier = oe_yp_chi_sansi_network years = -1 mode = replace size = local_var:oe_yp_cnt_sansi }
+            }
+            else_if = { limit = { has_country_modifier = oe_yp_chi_sansi_network } remove_country_modifier = oe_yp_chi_sansi_network }
+        }
+    }
+}
+
+# Branch-secretariat country scope (WP13 PERF-3, CMDLOG=0). O(1) update on tier change only:
+# updates ONLY the provincial seat location banner (1 loc) + permanent country-level tier/overlord modifiers.
 oe_yp_apply_tier = {
     save_scope_as = oe_yp_tp
-    if = { limit = { var:oe_yp_unit ?= 2 } c:CHI ?= { every_owned_location = { limit = { var:oe_yp_unit ?= 2 } oe_yp_tier_location = yes } } } # 河南江北
-    else_if = { limit = { var:oe_yp_unit ?= 3 } c:CHI ?= { every_owned_location = { limit = { var:oe_yp_unit ?= 3 } oe_yp_tier_location = yes } } } # 江浙
-    else_if = { limit = { var:oe_yp_unit ?= 4 } c:CHI ?= { every_owned_location = { limit = { var:oe_yp_unit ?= 4 } oe_yp_tier_location = yes } } } # 江西
-    else_if = { limit = { var:oe_yp_unit ?= 5 } c:CHI ?= { every_owned_location = { limit = { var:oe_yp_unit ?= 5 } oe_yp_tier_location = yes } } } # 湖广
-    else_if = { limit = { var:oe_yp_unit ?= 6 } c:CHI ?= { every_owned_location = { limit = { var:oe_yp_unit ?= 6 } oe_yp_tier_location = yes } } } # 陕西
-    else_if = { limit = { var:oe_yp_unit ?= 7 } c:CHI ?= { every_owned_location = { limit = { var:oe_yp_unit ?= 7 } oe_yp_tier_location = yes } } } # 四川
+    if = {
+        limit = { is_subject_type = oe_yp_xingsheng }
+        if = { limit = { exists = capital } capital = { oe_yp_tier_location = yes } }
+        oe_yp_sync_chi_aggregate_mods = yes
+    }
     else_if = {
         limit = { is_subject_type = oe_yp_frontier }
-        every_owned_location = { oe_yp_tier_location = yes }
+        if = { limit = { exists = capital } capital = { oe_yp_tier_location = yes } }
         if = { limit = { has_country_modifier = oe_yp_prof_frontier_t2_c } remove_country_modifier = oe_yp_prof_frontier_t2_c }
         if = { limit = { has_country_modifier = oe_yp_prof_frontier_t3_c } remove_country_modifier = oe_yp_prof_frontier_t3_c }
-        if = { limit = { var:oe_yp_tier ?= 3 } add_country_modifier = { modifier = oe_yp_prof_frontier_t3_c months = 13 mode = replace } }
-        else_if = { limit = { var:oe_yp_tier ?= 2 } add_country_modifier = { modifier = oe_yp_prof_frontier_t2_c months = 13 mode = replace } }
+        if = { limit = { has_country_modifier = oe_yp_tier_lax_c } remove_country_modifier = oe_yp_tier_lax_c }
+        if = { limit = { has_country_modifier = oe_yp_tier_estranged_c } remove_country_modifier = oe_yp_tier_estranged_c }
+        if = { limit = { var:oe_yp_tier ?= 3 } add_country_modifier = { modifier = oe_yp_prof_frontier_t3_c years = -1 mode = replace } }
+        else_if = { limit = { var:oe_yp_tier ?= 2 } add_country_modifier = { modifier = oe_yp_prof_frontier_t2_c years = -1 mode = replace } }
+        else_if = { limit = { var:oe_yp_tier ?= 1 } add_country_modifier = { modifier = oe_yp_tier_lax_c years = -1 mode = replace } }
+        else_if = { limit = { var:oe_yp_tier ?= 0 } add_country_modifier = { modifier = oe_yp_tier_estranged_c years = -1 mode = replace } }
     }
 }
 
-# Any scope (v14.5 Secretariats 2.0, CMDLOG=0). Monthly governance update for Special Branch Secretariats:
-# Yunnan (LNG) and Zhengdong (KOR) while they are subjects of CHI; cleans up when they leave.
+# Any scope (v14.5 + WP13 PERF-3 O(1) tier-change guard, CMDLOG=0). Monthly governance update for Special Branch Secretariats:
+# Yunnan (LNG) and Zhengdong (KOR) while they are subjects of CHI; updates country modifiers ONLY on tier change.
 oe_yp_special_monthly = {
     if = {
         limit = { country_exists = c:CHI country_exists = c:LNG c:LNG = { is_subject_of = c:CHI } }
@@ -1117,19 +1164,29 @@ oe_yp_special_monthly = {
             if = { limit = { NOT = { has_variable = oe_yp_warlordism } } set_variable = { name = oe_yp_warlordism value = 12 } }
             oe_yp_monthly_warlordism = yes
             oe_yp_monthly_loyalty = yes
-            set_variable = { name = oe_yp_tier value = oe_yp_tier_value }
-            if = { limit = { has_country_modifier = oe_yp_prof_yunnan_t2 } remove_country_modifier = oe_yp_prof_yunnan_t2 }
-            if = { limit = { has_country_modifier = oe_yp_prof_yunnan_t3 } remove_country_modifier = oe_yp_prof_yunnan_t3 }
-            if = { limit = { var:oe_yp_tier ?= 3 } add_country_modifier = { modifier = oe_yp_prof_yunnan_t3 months = 13 mode = replace } }
-            else_if = { limit = { var:oe_yp_tier ?= 2 } add_country_modifier = { modifier = oe_yp_prof_yunnan_t2 months = 13 mode = replace } }
+            set_variable = { name = oe_yp_tier_new value = oe_yp_tier_value }
+            if = {
+                limit = {
+                    OR = {
+                        NOT = { has_variable = oe_yp_tier }
+                        var:oe_yp_tier < var:oe_yp_tier_new
+                        var:oe_yp_tier > var:oe_yp_tier_new
+                    }
+                }
+                set_variable = { name = oe_yp_tier value = var:oe_yp_tier_new }
+                if = { limit = { has_country_modifier = oe_yp_prof_yunnan_t2 } remove_country_modifier = oe_yp_prof_yunnan_t2 }
+                if = { limit = { has_country_modifier = oe_yp_prof_yunnan_t3 } remove_country_modifier = oe_yp_prof_yunnan_t3 }
+                if = { limit = { var:oe_yp_tier ?= 3 } add_country_modifier = { modifier = oe_yp_prof_yunnan_t3 years = -1 mode = replace } }
+                else_if = { limit = { var:oe_yp_tier ?= 2 } add_country_modifier = { modifier = oe_yp_prof_yunnan_t2 years = -1 mode = replace } }
+                if = {
+                    limit = { var:oe_yp_tier ?= 3 }
+                    c:CHI = { add_country_modifier = { modifier = oe_yp_overlord_yunnan_mod years = -1 mode = replace } }
+                }
+                else = {
+                    c:CHI = { if = { limit = { has_country_modifier = oe_yp_overlord_yunnan_mod } remove_country_modifier = oe_yp_overlord_yunnan_mod } }
+                }
+            }
             oe_yp_sync_warlordism_effects = yes
-        }
-        if = {
-            limit = { c:LNG = { var:oe_yp_tier ?= 3 } }
-            c:CHI = { add_country_modifier = { modifier = oe_yp_overlord_yunnan_mod months = 13 mode = replace } }
-        }
-        else = {
-            c:CHI = { if = { limit = { has_country_modifier = oe_yp_overlord_yunnan_mod } remove_country_modifier = oe_yp_overlord_yunnan_mod } }
         }
     }
     else = {
@@ -1146,19 +1203,29 @@ oe_yp_special_monthly = {
             if = { limit = { NOT = { has_variable = oe_yp_warlordism } } set_variable = { name = oe_yp_warlordism value = 8 } }
             oe_yp_monthly_warlordism = yes
             oe_yp_monthly_loyalty = yes
-            set_variable = { name = oe_yp_tier value = oe_yp_tier_value }
-            if = { limit = { has_country_modifier = oe_yp_prof_zhengdong_t2 } remove_country_modifier = oe_yp_prof_zhengdong_t2 }
-            if = { limit = { has_country_modifier = oe_yp_prof_zhengdong_t3 } remove_country_modifier = oe_yp_prof_zhengdong_t3 }
-            if = { limit = { var:oe_yp_tier ?= 3 } add_country_modifier = { modifier = oe_yp_prof_zhengdong_t3 months = 13 mode = replace } }
-            else_if = { limit = { var:oe_yp_tier ?= 2 } add_country_modifier = { modifier = oe_yp_prof_zhengdong_t2 months = 13 mode = replace } }
+            set_variable = { name = oe_yp_tier_new value = oe_yp_tier_value }
+            if = {
+                limit = {
+                    OR = {
+                        NOT = { has_variable = oe_yp_tier }
+                        var:oe_yp_tier < var:oe_yp_tier_new
+                        var:oe_yp_tier > var:oe_yp_tier_new
+                    }
+                }
+                set_variable = { name = oe_yp_tier value = var:oe_yp_tier_new }
+                if = { limit = { has_country_modifier = oe_yp_prof_zhengdong_t2 } remove_country_modifier = oe_yp_prof_zhengdong_t2 }
+                if = { limit = { has_country_modifier = oe_yp_prof_zhengdong_t3 } remove_country_modifier = oe_yp_prof_zhengdong_t3 }
+                if = { limit = { var:oe_yp_tier ?= 3 } add_country_modifier = { modifier = oe_yp_prof_zhengdong_t3 years = -1 mode = replace } }
+                else_if = { limit = { var:oe_yp_tier ?= 2 } add_country_modifier = { modifier = oe_yp_prof_zhengdong_t2 years = -1 mode = replace } }
+                if = {
+                    limit = { var:oe_yp_tier ?= 3 }
+                    c:CHI = { add_country_modifier = { modifier = oe_yp_overlord_zhengdong_mod years = -1 mode = replace } }
+                }
+                else = {
+                    c:CHI = { if = { limit = { has_country_modifier = oe_yp_overlord_zhengdong_mod } remove_country_modifier = oe_yp_overlord_zhengdong_mod } }
+                }
+            }
             oe_yp_sync_warlordism_effects = yes
-        }
-        if = {
-            limit = { c:KOR = { var:oe_yp_tier ?= 3 } }
-            c:CHI = { add_country_modifier = { modifier = oe_yp_overlord_zhengdong_mod months = 13 mode = replace } }
-        }
-        else = {
-            c:CHI = { if = { limit = { has_country_modifier = oe_yp_overlord_zhengdong_mod } remove_country_modifier = oe_yp_overlord_zhengdong_mod } }
         }
     }
     else = {
@@ -1171,18 +1238,95 @@ oe_yp_special_monthly = {
     }
 }
 
-# Any scope (CMDLOG=0). Applies a location modifier to every CHI-owned location of inner unit $unit$ (2..7).
-oe_yp_apply_unit_loc_mod = {
+# Any scope (WP13 PERF-1, CMDLOG=0). Applies $mod$ for $years$ years to at most 8 strategic locations
+# (provincial seat, forts, cities/megalopolises; fallback top-5 population towns) of inner unit $unit$ (2..7).
+# Always invoked inside hidden_effect with a concise custom_tooltip to prevent tooltip lag.
+oe_yp_apply_unit_key_locs_mod = {
     c:CHI ?= {
-        every_owned_location = {
-            limit = { var:oe_yp_unit ?= $unit$ }
+        ordered_owned_location = {
+            limit = {
+                var:oe_yp_unit ?= $unit$
+                OR = {
+                    has_variable = oe_yp_seat
+                    has_fort = yes
+                    location_rank = location_rank:city
+                    location_rank = location_rank:megalopolis
+                }
+            }
+            order_by = {
+                value = population
+                if = { limit = { has_variable = oe_yp_seat } add = 1000000 }
+                if = { limit = { has_fort = yes } add = 500000 }
+            }
+            max = 8
+            check_range_bounds = no
             add_location_modifier = { modifier = $mod$ years = $years$ mode = replace }
+        }
+        if = {
+            limit = {
+                NOT = {
+                    any_owned_location = {
+                        var:oe_yp_unit ?= $unit$
+                        OR = {
+                            has_variable = oe_yp_seat
+                            has_fort = yes
+                            location_rank = location_rank:city
+                            location_rank = location_rank:megalopolis
+                        }
+                    }
+                }
+            }
+            ordered_owned_location = {
+                limit = { var:oe_yp_unit ?= $unit$ }
+                order_by = population
+                max = 5
+                check_range_bounds = no
+                add_location_modifier = { modifier = $mod$ years = $years$ mode = replace }
+            }
         }
     }
 }
 
-# CHI scope + scope:target_country (CMDLOG=0). GUI button 1: 行枢密 (Empower Branch Bureau of Military Affairs).
-# +10% max control & +25% levy 5y (plus +10% control at seat), warlordism +18 (unless Sansi-reformed), 5y cooldown.
+# CHI scope + scope:target_country (WP13 PERF-4, CMDLOG=0). Applies $mod$ for $years$ years to at most 6 strategic
+# locations (seat/fort/city/highest population) of the targeted secretariat (building or landed).
+oe_yp_apply_target_key_locs_mod = {
+    if = {
+        limit = { scope:target_country = { is_subject_type = oe_yp_xingsheng has_variable = oe_yp_unit } }
+        c:CHI ?= {
+            ordered_owned_location = {
+                limit = { has_variable = oe_yp_unit var:oe_yp_unit = scope:target_country.var:oe_yp_unit }
+                order_by = {
+                    value = population
+                    if = { limit = { has_variable = oe_yp_seat } add = 1000000 }
+                    if = { limit = { has_fort = yes } add = 500000 }
+                    if = { limit = { OR = { location_rank = location_rank:city location_rank = location_rank:megalopolis } } add = 250000 }
+                }
+                max = 6
+                check_range_bounds = no
+                add_location_modifier = { modifier = $mod$ years = $years$ mode = replace }
+            }
+        }
+    }
+    else = {
+        scope:target_country = {
+            ordered_owned_location = {
+                order_by = {
+                    value = population
+                    if = { limit = { is_capital = yes } add = 1000000 }
+                    if = { limit = { has_fort = yes } add = 500000 }
+                    if = { limit = { OR = { location_rank = location_rank:city location_rank = location_rank:megalopolis } } add = 250000 }
+                }
+                max = 6
+                check_range_bounds = no
+                add_location_modifier = { modifier = $mod$ years = $years$ mode = replace }
+            }
+        }
+    }
+}
+
+# CHI scope + scope:target_country (WP13 PERF-4, CMDLOG=0). Unified Branch Shumiyuan action shared by GUI button 1 (行枢密)
+# AND Red Turban situation action #5 (oe_y7_act_branch_shumiyuan) so they share cooldown oe_yp_cd_shumiyuan & never double-stack!
+# Applies oe_yp_shumiyuan_country_mod (5y) + oe_yp_shumiyuan_empowered_mod (5y) on at most 6 strategic locations (+10% control at seat).
 oe_yp_gui_shumiyuan_effect = {
     if = {
         limit = {
@@ -1196,26 +1340,11 @@ oe_yp_gui_shumiyuan_effect = {
         scope:target_country = {
             set_variable = { name = oe_yp_cd_shumiyuan years = 5 }
             oe_yp_change_warlordism_self = { amount = 18 }
-            if = {
-                limit = { is_subject_type = oe_yp_xingsheng has_variable = oe_yp_unit }
-                add_country_modifier = { modifier = oe_yp_shumiyuan_country_mod years = 5 mode = replace }
-                c:CHI = {
-                    every_owned_location = {
-                        limit = { has_variable = oe_yp_unit var:oe_yp_unit = scope:target_country.var:oe_yp_unit }
-                        add_location_modifier = { modifier = oe_yp_shumiyuan_empowered_mod years = 5 mode = replace }
-                    }
-                }
-                if = { limit = { exists = capital } capital = { change_control = 0.10 } }
-            }
-            else = {
-                add_country_modifier = { modifier = oe_yp_shumiyuan_country_mod years = 5 mode = replace }
-                every_owned_location = {
-                    add_location_modifier = { modifier = oe_yp_shumiyuan_empowered_mod years = 5 mode = replace }
-                }
-                if = { limit = { exists = capital } capital = { change_control = 0.10 } }
-            }
+            add_country_modifier = { modifier = oe_yp_shumiyuan_country_mod years = 5 mode = replace }
+            if = { limit = { exists = capital } capital = { change_control = 0.10 } }
             oe_yp_sync_warlordism_effects = yes
         }
+        oe_yp_apply_target_key_locs_mod = { mod = oe_yp_shumiyuan_empowered_mod years = 5 }
     }
 }
 
@@ -1284,8 +1413,8 @@ oe_yp_gui_stipend_effect = {
     }
 }
 
-# CHI scope + scope:target_country (CMDLOG=0). GUI button 2: 御史台 (Dispatch Branch Censorate Inspection).
-# Costs 25 gold, 5y cooldown; warlordism -20, loyalty +10, CHI inflation -0.5%, 5y anti-corruption production/control boost.
+# CHI scope + scope:target_country (WP13 PERF-4, CMDLOG=0). GUI button 2: 御史台 (Dispatch Branch Censorate Inspection).
+# Costs 25 gold, 5y cooldown; warlordism -20, loyalty +10, CHI inflation -0.5%, 5y country mod + max 6 key locations.
 oe_yp_gui_censorate_effect = {
     if = {
         limit = {
@@ -1306,23 +1435,10 @@ oe_yp_gui_censorate_effect = {
             if = { limit = { NOT = { has_variable = oe_yp_loyalty } } set_variable = { name = oe_yp_loyalty value = 50 } }
             change_variable = { name = oe_yp_loyalty add = 10 }
             clamp_variable = { name = oe_yp_loyalty min = 0 max = 100 }
-            if = {
-                limit = { is_subject_type = oe_yp_xingsheng has_variable = oe_yp_unit }
-                c:CHI = {
-                    every_owned_location = {
-                        limit = { has_variable = oe_yp_unit var:oe_yp_unit = scope:target_country.var:oe_yp_unit }
-                        add_location_modifier = { modifier = oe_yp_censorate_mod years = 5 mode = replace }
-                    }
-                }
-            }
-            else = {
-                add_country_modifier = { modifier = oe_yp_censorate_country_mod years = 5 mode = replace }
-                every_owned_location = {
-                    add_location_modifier = { modifier = oe_yp_censorate_mod years = 5 mode = replace }
-                }
-            }
+            add_country_modifier = { modifier = oe_yp_censorate_country_mod years = 5 mode = replace }
             oe_yp_sync_warlordism_effects = yes
         }
+        oe_yp_apply_target_key_locs_mod = { mod = oe_yp_censorate_mod years = 5 }
     }
 }
 
@@ -1356,8 +1472,9 @@ oe_yp_gui_requisition_effect = {
     }
 }
 
-# CHI scope + scope:target_country (CMDLOG=0). GUI button 4: 改三司 (Three-Commission Reform).
-# Restoration unlock, loyalty >= 75, warlordism <= 25, once per province; permanently locks warlordism = 0 & grants permanent reform mod.
+# CHI scope + scope:target_country (WP13 PERF-4, CMDLOG=0). GUI button 4: 改三司 (Three-Commission Reform).
+# Restoration unlock, loyalty >= 75, warlordism <= 25, once per province; permanently locks warlordism = 0.
+# ZERO province-wide years = -1 location modifier buildup: uses seat capital banner + scaled CHI/subject country modifiers!
 oe_yp_gui_sansi_reform_effect = {
     if = {
         limit = {
@@ -1377,23 +1494,11 @@ oe_yp_gui_sansi_reform_effect = {
         scope:target_country = {
             set_variable = { name = oe_yp_sansi_reformed value = 1 }
             set_variable = { name = oe_yp_warlordism value = 0 }
-            if = {
-                limit = { is_subject_type = oe_yp_xingsheng has_variable = oe_yp_unit }
-                c:CHI = {
-                    every_owned_location = {
-                        limit = { has_variable = oe_yp_unit var:oe_yp_unit = scope:target_country.var:oe_yp_unit }
-                        add_location_modifier = { modifier = oe_yp_sansi_reformed_mod years = -1 mode = replace }
-                    }
-                }
-            }
-            else = {
-                add_country_modifier = { modifier = oe_yp_sansi_reformed_country_mod years = -1 mode = replace }
-                every_owned_location = {
-                    add_location_modifier = { modifier = oe_yp_sansi_reformed_mod years = -1 mode = replace }
-                }
-            }
+            add_country_modifier = { modifier = oe_yp_sansi_reformed_country_mod years = -1 mode = replace }
+            if = { limit = { exists = capital } capital = { add_location_modifier = { modifier = oe_yp_sansi_reformed_mod years = -1 mode = replace } } }
             oe_yp_sync_warlordism_effects = yes
         }
+        oe_yp_sync_chi_aggregate_mods = yes
     }
 }
 
@@ -1972,6 +2077,7 @@ oe_yp_end_unit_2 = {
     set_global_variable = { name = oe_yp_end_u2 value = $reason$ }
     oe_yp_end_YHN = yes
     oe_yp_clear_unit_2 = yes
+    oe_yp_sync_chi_aggregate_mods = yes
     debug_log = "oe_yp Y2: branch secretariat YHN (unit 2, Henan Jiangbei) ended"
 }
 
@@ -2001,6 +2107,7 @@ oe_yp_end_unit_3 = {
     set_global_variable = { name = oe_yp_end_u3 value = $reason$ }
     oe_yp_end_YJZ = yes
     oe_yp_clear_unit_3 = yes
+    oe_yp_sync_chi_aggregate_mods = yes
     debug_log = "oe_yp Y2: branch secretariat YJZ (unit 3, Jiangzhe) ended"
 }
 
@@ -2030,6 +2137,7 @@ oe_yp_end_unit_4 = {
     set_global_variable = { name = oe_yp_end_u4 value = $reason$ }
     oe_yp_end_YJX = yes
     oe_yp_clear_unit_4 = yes
+    oe_yp_sync_chi_aggregate_mods = yes
     debug_log = "oe_yp Y2: branch secretariat YJX (unit 4, Jiangxi) ended"
 }
 
@@ -2059,6 +2167,7 @@ oe_yp_end_unit_5 = {
     set_global_variable = { name = oe_yp_end_u5 value = $reason$ }
     oe_yp_end_YHG = yes
     oe_yp_clear_unit_5 = yes
+    oe_yp_sync_chi_aggregate_mods = yes
     debug_log = "oe_yp Y2: branch secretariat YHG (unit 5, Huguang) ended"
 }
 
@@ -2088,6 +2197,7 @@ oe_yp_end_unit_6 = {
     set_global_variable = { name = oe_yp_end_u6 value = $reason$ }
     oe_yp_end_YSX = yes
     oe_yp_clear_unit_6 = yes
+    oe_yp_sync_chi_aggregate_mods = yes
     debug_log = "oe_yp Y2: branch secretariat YSX (unit 6, Shaanxi) ended"
 }
 
@@ -2117,6 +2227,7 @@ oe_yp_end_unit_7 = {
     set_global_variable = { name = oe_yp_end_u7 value = $reason$ }
     oe_yp_end_YSC = yes
     oe_yp_clear_unit_7 = yes
+    oe_yp_sync_chi_aggregate_mods = yes
     debug_log = "oe_yp Y2: branch secretariat YSC (unit 7, Sichuan) ended"
 }
 
@@ -2146,6 +2257,7 @@ oe_yp_end_YLB = {
                 if = { limit = { has_variable = oe_yp_tier_new } remove_variable = oe_yp_tier_new }
                 if = { limit = { has_variable = oe_yp_gov_appointed } remove_variable = oe_yp_gov_appointed }
                 if = { limit = { has_variable = oe_yp_warlordism } remove_variable = oe_yp_warlordism }
+                if = { limit = { has_variable = oe_yp_wl_applied } remove_variable = oe_yp_wl_applied }
                 if = { limit = { has_variable = oe_yp_sansi_reformed } remove_variable = oe_yp_sansi_reformed }
                 if = { limit = { has_variable = oe_yp_cd_shumiyuan } remove_variable = oe_yp_cd_shumiyuan }
                 if = { limit = { has_variable = oe_yp_cd_censorate } remove_variable = oe_yp_cd_censorate }
@@ -2153,6 +2265,11 @@ oe_yp_end_YLB = {
                 if = { limit = { has_variable = oe_yp_req_cd } remove_variable = oe_yp_req_cd }
                 if = { limit = { has_variable = oe_yp_censor_boost } remove_variable = oe_yp_censor_boost }
                 if = { limit = { has_variable = oe_yp_ended } remove_variable = oe_yp_ended }
+                if = { limit = { has_country_modifier = oe_yp_prof_frontier_t2_c } remove_country_modifier = oe_yp_prof_frontier_t2_c }
+                if = { limit = { has_country_modifier = oe_yp_prof_frontier_t3_c } remove_country_modifier = oe_yp_prof_frontier_t3_c }
+                if = { limit = { has_country_modifier = oe_yp_tier_lax_c } remove_country_modifier = oe_yp_tier_lax_c }
+                if = { limit = { has_country_modifier = oe_yp_tier_estranged_c } remove_country_modifier = oe_yp_tier_estranged_c }
+                if = { limit = { has_country_modifier = oe_yp_high_warlordism_mod } remove_country_modifier = oe_yp_high_warlordism_mod }
             }
         }
     }
@@ -2164,6 +2281,7 @@ oe_yp_end_unit_8 = {
     set_global_variable = { name = oe_yp_end_u8 value = $reason$ }
     oe_yp_end_YLB = yes
     oe_yp_clear_unit_8 = yes
+    oe_yp_sync_chi_aggregate_mods = yes
     debug_log = "oe_yp Y2: branch secretariat YLB (unit 8, Lingbei) ended"
 }
 
@@ -2193,6 +2311,7 @@ oe_yp_end_YLY = {
                 if = { limit = { has_variable = oe_yp_tier_new } remove_variable = oe_yp_tier_new }
                 if = { limit = { has_variable = oe_yp_gov_appointed } remove_variable = oe_yp_gov_appointed }
                 if = { limit = { has_variable = oe_yp_warlordism } remove_variable = oe_yp_warlordism }
+                if = { limit = { has_variable = oe_yp_wl_applied } remove_variable = oe_yp_wl_applied }
                 if = { limit = { has_variable = oe_yp_sansi_reformed } remove_variable = oe_yp_sansi_reformed }
                 if = { limit = { has_variable = oe_yp_cd_shumiyuan } remove_variable = oe_yp_cd_shumiyuan }
                 if = { limit = { has_variable = oe_yp_cd_censorate } remove_variable = oe_yp_cd_censorate }
@@ -2200,6 +2319,11 @@ oe_yp_end_YLY = {
                 if = { limit = { has_variable = oe_yp_req_cd } remove_variable = oe_yp_req_cd }
                 if = { limit = { has_variable = oe_yp_censor_boost } remove_variable = oe_yp_censor_boost }
                 if = { limit = { has_variable = oe_yp_ended } remove_variable = oe_yp_ended }
+                if = { limit = { has_country_modifier = oe_yp_prof_frontier_t2_c } remove_country_modifier = oe_yp_prof_frontier_t2_c }
+                if = { limit = { has_country_modifier = oe_yp_prof_frontier_t3_c } remove_country_modifier = oe_yp_prof_frontier_t3_c }
+                if = { limit = { has_country_modifier = oe_yp_tier_lax_c } remove_country_modifier = oe_yp_tier_lax_c }
+                if = { limit = { has_country_modifier = oe_yp_tier_estranged_c } remove_country_modifier = oe_yp_tier_estranged_c }
+                if = { limit = { has_country_modifier = oe_yp_high_warlordism_mod } remove_country_modifier = oe_yp_high_warlordism_mod }
             }
         }
     }
@@ -2211,6 +2335,7 @@ oe_yp_end_unit_9 = {
     set_global_variable = { name = oe_yp_end_u9 value = $reason$ }
     oe_yp_end_YLY = yes
     oe_yp_clear_unit_9 = yes
+    oe_yp_sync_chi_aggregate_mods = yes
     debug_log = "oe_yp Y2: branch secretariat YLY (unit 9, Liaoyang) ended"
 }
 
@@ -2240,6 +2365,7 @@ oe_yp_end_YGU = {
                 if = { limit = { has_variable = oe_yp_tier_new } remove_variable = oe_yp_tier_new }
                 if = { limit = { has_variable = oe_yp_gov_appointed } remove_variable = oe_yp_gov_appointed }
                 if = { limit = { has_variable = oe_yp_warlordism } remove_variable = oe_yp_warlordism }
+                if = { limit = { has_variable = oe_yp_wl_applied } remove_variable = oe_yp_wl_applied }
                 if = { limit = { has_variable = oe_yp_sansi_reformed } remove_variable = oe_yp_sansi_reformed }
                 if = { limit = { has_variable = oe_yp_cd_shumiyuan } remove_variable = oe_yp_cd_shumiyuan }
                 if = { limit = { has_variable = oe_yp_cd_censorate } remove_variable = oe_yp_cd_censorate }
@@ -2247,6 +2373,11 @@ oe_yp_end_YGU = {
                 if = { limit = { has_variable = oe_yp_req_cd } remove_variable = oe_yp_req_cd }
                 if = { limit = { has_variable = oe_yp_censor_boost } remove_variable = oe_yp_censor_boost }
                 if = { limit = { has_variable = oe_yp_ended } remove_variable = oe_yp_ended }
+                if = { limit = { has_country_modifier = oe_yp_prof_frontier_t2_c } remove_country_modifier = oe_yp_prof_frontier_t2_c }
+                if = { limit = { has_country_modifier = oe_yp_prof_frontier_t3_c } remove_country_modifier = oe_yp_prof_frontier_t3_c }
+                if = { limit = { has_country_modifier = oe_yp_tier_lax_c } remove_country_modifier = oe_yp_tier_lax_c }
+                if = { limit = { has_country_modifier = oe_yp_tier_estranged_c } remove_country_modifier = oe_yp_tier_estranged_c }
+                if = { limit = { has_country_modifier = oe_yp_high_warlordism_mod } remove_country_modifier = oe_yp_high_warlordism_mod }
             }
         }
     }
@@ -2258,6 +2389,7 @@ oe_yp_end_unit_10 = {
     set_global_variable = { name = oe_yp_end_u10 value = $reason$ }
     oe_yp_end_YGU = yes
     oe_yp_clear_unit_10 = yes
+    oe_yp_sync_chi_aggregate_mods = yes
     debug_log = "oe_yp Y2: branch secretariat YGU (unit 10, Gansu) ended"
 }
 
@@ -2287,10 +2419,10 @@ oe_yp_dissolve_all = {
     oe_yp_clear_unit_8 = yes
     oe_yp_clear_unit_9 = yes
     oe_yp_clear_unit_10 = yes
-    # v14.5 Secretariats 2.0: clear Yunnan (LNG), Zhengdong (KOR), and CHI overlord/path modifiers on collapse
+    # v14.5 + WP13 Secretariats 2.0: clear Yunnan (LNG), Zhengdong (KOR), frontier & CHI overlord/aggregate modifiers on collapse
     c:LNG ?= { if = { limit = { has_country_modifier = oe_yp_prof_yunnan_t2 } remove_country_modifier = oe_yp_prof_yunnan_t2 } if = { limit = { has_country_modifier = oe_yp_prof_yunnan_t3 } remove_country_modifier = oe_yp_prof_yunnan_t3 } if = { limit = { has_country_modifier = oe_yp_high_warlordism_mod } remove_country_modifier = oe_yp_high_warlordism_mod } every_owned_location = { oe_yp_clear_location = yes } }
     c:KOR ?= { if = { limit = { has_country_modifier = oe_yp_prof_zhengdong_t2 } remove_country_modifier = oe_yp_prof_zhengdong_t2 } if = { limit = { has_country_modifier = oe_yp_prof_zhengdong_t3 } remove_country_modifier = oe_yp_prof_zhengdong_t3 } if = { limit = { has_country_modifier = oe_yp_high_warlordism_mod } remove_country_modifier = oe_yp_high_warlordism_mod } every_owned_location = { oe_yp_clear_location = yes } }
-    c:CHI ?= { if = { limit = { has_country_modifier = oe_yp_overlord_yunnan_mod } remove_country_modifier = oe_yp_overlord_yunnan_mod } if = { limit = { has_country_modifier = oe_yp_overlord_zhengdong_mod } remove_country_modifier = oe_yp_overlord_zhengdong_mod } }
+    c:CHI ?= { if = { limit = { has_country_modifier = oe_yp_overlord_yunnan_mod } remove_country_modifier = oe_yp_overlord_yunnan_mod } if = { limit = { has_country_modifier = oe_yp_overlord_zhengdong_mod } remove_country_modifier = oe_yp_overlord_zhengdong_mod } if = { limit = { has_country_modifier = oe_yp_chi_warlordism_drag } remove_country_modifier = oe_yp_chi_warlordism_drag } if = { limit = { has_country_modifier = oe_yp_chi_tier_loyal_synergy } remove_country_modifier = oe_yp_chi_tier_loyal_synergy } if = { limit = { has_country_modifier = oe_yp_chi_tier_estranged_drag } remove_country_modifier = oe_yp_chi_tier_estranged_drag } if = { limit = { has_country_modifier = oe_yp_chi_sansi_network } remove_country_modifier = oe_yp_chi_sansi_network } }
     oe_y1_on_yuan_fall = yes # registered clean-up of another Yuan line
     oe_yw_on_yuan_fall = yes # registered clean-up of another Yuan line
     oe_y7_on_yuan_fall = yes # registered clean-up of another Yuan line

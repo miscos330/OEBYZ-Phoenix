@@ -76,7 +76,7 @@ oe_yk_kr_open = {
     has_global_variable = oe_yk_king_m
     has_global_variable = oe_y1_st_3
     OR = {
-        AND = { c:KOR = { ruler = { NOT = { has_variable = oe_yk_kr_done } } } global_var:oe_yk_m >= oe_yk_kr_lo }
+        AND = { country_exists = c:KOR c:KOR = { has_ruler = yes ruler ?= { NOT = { has_variable = oe_yk_kr_done } } } global_var:oe_yk_m >= oe_yk_kr_lo }
         AND = { has_global_variable = oe_yk_kr_next global_var:oe_yk_m >= global_var:oe_yk_kr_next global_var:oe_yk_kr_skip < 3 }
     }
 }
@@ -97,7 +97,8 @@ oe_yk_per_open = {
 oe_yk_ok_wed = {
     global_var:oe_yk_stance >= 2
     oe_yk_king_bare = no
-    c:KOR = { ruler = { is_female = no age_in_years >= 16 NOT = { any_spouse = { is_alive = yes dynasty ?= dynasty:borjigin_dynasty } } } }
+    country_exists = c:KOR
+    c:KOR = { has_ruler = yes ruler ?= { is_female = no age_in_years >= 16 NOT = { any_spouse = { is_alive = yes dynasty ?= dynasty:borjigin_dynasty } } } }
     OR = {
         NOT = { has_global_variable = oe_yk_wed_m }
         AND = { has_global_variable = oe_yk_wed_m global_var:oe_yk_m >= oe_yk_wed_next }
@@ -130,7 +131,7 @@ oe_yk_ok_any = { OR = { oe_yk_king_bare = yes oe_yk_ok_wed = yes oe_yk_ok_girls 
 oe_yk_busy = {
     OR = {
         AND = { country_exists = c:CHI c:CHI = { has_variable = oe_yv_pick var:oe_yv_pick > 0 has_variable = oe_yv_m var:oe_yv_m = global_var:oe_yk_m } }
-        AND = { has_global_variable = oe_y1_m global_var:oe_y1_m = global_var:oe_yk_m has_global_variable = oe_y1_pick OR = { global_var:oe_y1_pick = 1 global_var:oe_y1_pick = 4 global_var:oe_y1_pick = 5 } has_global_variable = oe_dbg_n_y1 global_var:oe_dbg_n_y1 > oe_yk_y1n_seen }
+        AND = { has_global_variable = oe_y1_m global_var:oe_y1_m = global_var:oe_yk_m has_global_variable = oe_y1_pick OR = { global_var:oe_y1_pick = 1 global_var:oe_y1_pick = 4 global_var:oe_y1_pick = 5 global_var:oe_y1_pick = 10 global_var:oe_y1_pick = 12 global_var:oe_y1_pick = 13 } has_global_variable = oe_dbg_n_y1 global_var:oe_dbg_n_y1 > oe_yk_y1n_seen }
         AND = { has_global_variable = oe_yuan_ev_m global_var:oe_yuan_ev_m = global_var:oe_yk_m }
     }
 }
@@ -185,6 +186,7 @@ oe_yk_dh_alive = {
 # away and carrying Y1's Gi clan marker (oe_y1_ki_clan, Y1 .4 a); .4 a campaign of the suppression being fought (oe_y7_camp > 0 in phases 1-3), from 1355.1.1 or after Y7's Gaoyou levy, Goryeo a subject
 # of stance 2 or more, at most 2 levies 36 months apart.
 oe_yk_cond_3 = {
+	exists = character:yua_togon_temur
     character:yua_gi ?= { is_alive = yes is_spouse_of = character:yua_togon_temur }
     NOT = { has_global_variable = oe_yk_break }
     country_exists = c:KOR c:KOR = { has_country_modifier = oe_y1_ki_clan }

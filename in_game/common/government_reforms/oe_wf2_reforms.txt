@@ -1,0 +1,217 @@
+﻿# NEW 2026-11-25 v27.0 WP19 Wanfang Phase 2 (oe_wf2_, gen_v270_wanfang_p2.py) — Wokou Native Disaster, Yellow River & Grand Canal Huai'an, 10 Vaulted Reforms/Privileges & Osmanli Rome (0 vanilla overrides, 0 edits to existing files, 100% O(1), R31 & G_ELR_ISOLATION compliant). Edit gen_v270_wanfang_p2.py, not this file.
+
+# WP19-3: All 6 Vaulted Wanfang Government Reforms (exact IDs match main_menu/gfx/interface/icons/government_reforms/illustrations/*.dds)
+
+# 1. Abolition of the Chancellery (Hongwu Direct Autocracy; mutually exclusive with Ming Grand Secretariat & Qing Grand Council)
+oe_wf_ref_abolish_chancellor = {
+	age = age_1_traditions
+	block_for_rebel = yes
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+	}
+	allow = {
+		is_rebel_country = no
+		NOT = { has_reform = government_reform:oe_wf_ref_ming_celestial_court }
+		NOT = { has_reform = government_reform:oe_wf_ref_qing_celestial_court }
+	}
+	on_fully_activated = {
+		if = {
+			limit = { NOT = { has_variable = oe_wf2_ref_ev1_done } }
+			set_variable = { name = oe_wf2_ref_ev1_done value = 1 }
+			trigger_event_non_silently = oe_wf2_ref.1
+		}
+	}
+	country_modifier = {
+		global_crown_estate_power = 0.14
+		global_monthly_control = 0.004
+		legislative_efficiency = 0.08
+		monthly_towards_centralization = societal_value_minor_monthly_move
+		nobles_estate_target_satisfaction = -0.06
+		country_cabinet_efficiency = -0.04
+	}
+	years = 2
+	ai_will_do = {
+		value = 20
+		if = {
+			limit = {
+				tag = MNG
+				current_year >= 1368
+				current_year <= 1435
+			}
+			add = 30
+		}
+	}
+}
+
+# 2. Ming Grand Secretariat Court (mutually exclusive with Abolition of Chancellery & Qing Grand Council)
+oe_wf_ref_ming_celestial_court = {
+	age = age_2_renaissance
+	block_for_rebel = yes
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+		NOT = { tag = MCH }
+	}
+	allow = {
+		is_rebel_country = no
+		NOT = { has_reform = government_reform:oe_wf_ref_abolish_chancellor }
+		NOT = { has_reform = government_reform:oe_wf_ref_qing_celestial_court }
+	}
+	on_fully_activated = {
+		if = {
+			limit = { NOT = { has_variable = oe_wf2_ref_ev1_done } }
+			set_variable = { name = oe_wf2_ref_ev1_done value = 1 }
+			trigger_event_non_silently = oe_wf2_ref.1
+		}
+	}
+	country_modifier = {
+		country_cabinet_efficiency = 0.07
+		tax_income_efficiency = 0.05
+		stability_investment = 0.05
+		monthly_celestial_authority = 0.02
+		global_crown_estate_power = -0.04
+		army_maintenance_efficiency = -0.04
+	}
+	years = 2
+	ai_will_do = {
+		value = 25
+		if = {
+			limit = {
+				tag = MNG
+				current_year >= 1436
+			}
+			add = 35
+		}
+	}
+}
+
+# 3. Qing Grand Council & Banner Court (mutually exclusive with Abolition of Chancellery & Ming Grand Secretariat)
+oe_wf_ref_qing_celestial_court = {
+	age = age_3_discovery
+	block_for_rebel = yes
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+		OR = {
+			tag = MCH
+			has_or_had_tag = MCH
+			current_year >= 1600
+		}
+	}
+	allow = {
+		is_rebel_country = no
+		NOT = { has_reform = government_reform:oe_wf_ref_abolish_chancellor }
+		NOT = { has_reform = government_reform:oe_wf_ref_ming_celestial_court }
+	}
+	country_modifier = {
+		discipline = 0.025
+		global_crown_estate_power = 0.10
+		country_cabinet_efficiency = 0.05
+		monthly_towards_absolutism = societal_value_minor_monthly_move
+		court_spending_efficiency = -0.05
+		burghers_estate_target_satisfaction = -0.05
+	}
+	years = 2
+	ai_will_do = {
+		value = 20
+		if = {
+			limit = { tag = MCH }
+			add = 45
+		}
+	}
+}
+
+# 4. Triennial Imperial Examination Bureau
+oe_wf_ref_imperial_examination = {
+	age = age_1_traditions
+	block_for_rebel = yes
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+	}
+	allow = {
+		is_rebel_country = no
+	}
+	country_modifier = {
+		research_speed_modifier = 0.05
+		global_monthly_literacy = 0.005
+		country_cabinet_efficiency = 0.05
+		nobles_estate_target_satisfaction = -0.05
+		court_spending_efficiency = -0.04
+	}
+	years = 2
+	ai_will_do = {
+		value = 40
+	}
+}
+
+# 5. Fengshan Sacred Rites of Mount Tai (Middle Kingdom leader holding Qufu/Shandong at high stability)
+oe_wf_ref_fengshan_sacred_peak = {
+	age = age_2_renaissance
+	block_for_rebel = yes
+	potential = {
+		oe_wf_is_middle_kingdom_leader = yes
+	}
+	allow = {
+		is_rebel_country = no
+		owns = location:qufu
+		stability >= 15
+	}
+	on_fully_activated = {
+		if = {
+			limit = { NOT = { has_variable = oe_wf2_ref_ev2_done } }
+			set_variable = { name = oe_wf2_ref_ev2_done value = 1 }
+			trigger_event_non_silently = oe_wf2_ref.2
+		}
+	}
+	country_modifier = {
+		monthly_celestial_authority = 0.04
+		monthly_legitimacy = 0.05
+		cultural_influence_modifier = 0.08
+		diplomatic_reputation = 0.75
+		court_spending_efficiency = -0.07
+		peasants_estate_target_satisfaction = -0.04
+	}
+	years = 2
+	ai_will_do = {
+		value = 30
+		if = {
+			limit = { stability >= 25 }
+			add = 20
+		}
+	}
+}
+
+# 6. Heirloom Seal of the Celestial Mandate
+oe_wf_ref_celestial_seal_mandate = {
+	age = age_2_renaissance
+	block_for_rebel = yes
+	potential = {
+		oe_wf_is_middle_kingdom_leader = yes
+	}
+	allow = {
+		is_rebel_country = no
+		OR = {
+			owns = location:dadu
+			owns = location:shangyuan
+			owns = location:changan
+		}
+	}
+	on_fully_activated = {
+		if = {
+			limit = { NOT = { has_variable = oe_wf2_ref_ev3_done } }
+			set_variable = { name = oe_wf2_ref_ev3_done value = 1 }
+			trigger_event_non_silently = oe_wf2_ref.3
+		}
+	}
+	country_modifier = {
+		monthly_celestial_authority = 0.03
+		subject_loyalty = 8
+		monthly_prestige = 0.05
+		stability_cost_efficiency = 0.06
+		diplomatic_capacity = 1
+		court_spending_efficiency = -0.05
+		global_estate_target_satisfaction = -0.03
+	}
+	years = 2
+	ai_will_do = {
+		value = 35
+	}
+}

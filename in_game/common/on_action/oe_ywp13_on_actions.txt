@@ -1,0 +1,98 @@
+﻿# NEW 2026-11-24 v26.0 WP13 Great Yuan P2-A Content Pack (oe_ywp13_, gen_v260_yuan_wp13.py) — Four-Class/Three-Teachings Stability Closure & 1342 Marignolli Silk Road Flavor (0 vanilla overrides, 0 mainline slots, 1337-gated). Edit gen_v260_yuan_wp13.py, not this file.
+
+on_game_start = {
+	on_actions = {
+		oe_ywp13_1337_fiscal_init
+	}
+}
+
+on_game_started_after_lobby = {
+	on_actions = {
+		oe_ywp13_1337_fiscal_init
+	}
+}
+
+oe_ywp13_1337_fiscal_init = {
+	trigger = {
+		current_year >= 1337
+		current_year < 1338
+		NOT = { has_global_variable = oe_alt_era_start }
+		NOT = { has_global_variable = oe_ywp13_1337_fiscal_done }
+	}
+	effect = {
+		set_global_variable = { name = oe_ywp13_1337_fiscal_done value = 1 }
+		c:CHI ?= {
+			if = {
+				limit = {
+					is_rebel_country = no
+					NOT = { has_variable = rtr_is_new_china }
+					NOT = { has_or_had_tag = MNG }
+					NOT = { has_or_had_tag = MCH }
+				}
+				add_country_modifier = { modifier = oe_ywp13_1337_zhongshu_fiscal_mod years = 10 mode = replace }
+			}
+		}
+	}
+}
+
+yearly_country_pulse = {
+	on_actions = {
+		oe_ywp13_yearly_pulse
+	}
+}
+
+oe_ywp13_yearly_pulse = {
+	trigger = {
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		is_rebel_country = no
+		OR = {
+			tag = YUA
+			AND = {
+				tag = CHI
+				NOT = { has_variable = rtr_is_new_china }
+				NOT = { has_or_had_tag = MNG }
+				NOT = { has_or_had_tag = MCH }
+				culture = { has_culture_group = culture_group:mongolian_group }
+			}
+		}
+		num_locations > 0
+		current_year >= 1342
+		current_year <= 1450
+		NOT = { has_variable = oe_ywp13_ev_cd }
+	}
+	effect = {
+		if = {
+			limit = {
+				NOT = { has_variable = oe_ywp13_ev3_done }
+				current_year >= 1342
+				current_year <= 1352
+				owns = location:dadu
+			}
+			set_variable = { name = oe_ywp13_ev3_done value = 1 }
+			set_variable = { name = oe_ywp13_ev_cd value = 1 years = 3 }
+			trigger_event_non_silently = oe_ywp13.3
+		}
+		else_if = {
+			limit = {
+				NOT = { has_variable = oe_ywp13_ev4_done }
+				current_year >= 1370
+				NOT = { is_situation_active = situation:red_turban_rebellions }
+				owns = location:dadu
+				OR = {
+					AND = {
+						country_exists = c:BYZ
+						c:BYZ = { owns = location:constantinople }
+					}
+					AND = {
+						country_exists = c:ROM
+						c:ROM = { owns = location:constantinople }
+					}
+				}
+			}
+			set_variable = { name = oe_ywp13_ev4_done value = 1 }
+			set_variable = { name = oe_ywp13_ev_cd value = 1 years = 3 }
+			trigger_event_non_silently = oe_ywp13.4
+		}
+	}
+}

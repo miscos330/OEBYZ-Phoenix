@@ -1,0 +1,83 @@
+﻿# NEW 2026-11-24 v26.1 WP15-2 Wanfang Celestial Empire Core (oe_wf_, gen_v261_wanfang_celestial.py) — EU5-Native Era Names, 3-Stage Mandate Cycle, Bilateral Royal Favor & Five Court Policies (0 vanilla overrides, 0 edits to existing files, 100% O(1) & G_ELR_ISOLATION compliant). Edit gen_v261_wanfang_celestial.py, not this file.
+
+# Clear all 5 Era Name style modifiers so only one active reign-title ethos applies at a time.
+oe_wf_clear_era_modifiers = {
+	if = { limit = { has_country_modifier = oe_wf_era_wenzhi_mod } remove_country_modifier = oe_wf_era_wenzhi_mod }
+	if = { limit = { has_country_modifier = oe_wf_era_wugong_mod } remove_country_modifier = oe_wf_era_wugong_mod }
+	if = { limit = { has_country_modifier = oe_wf_era_shoucheng_mod } remove_country_modifier = oe_wf_era_shoucheng_mod }
+	if = { limit = { has_country_modifier = oe_wf_era_zhongxing_mod } remove_country_modifier = oe_wf_era_zhongxing_mod }
+	if = { limit = { has_country_modifier = oe_wf_era_haiyu_mod } remove_country_modifier = oe_wf_era_haiyu_mod }
+}
+
+# Clear the 3 Mandate Cycle stage modifiers before applying the current stage.
+oe_wf_clear_cycle_modifiers = {
+	if = { limit = { has_country_modifier = oe_wf_cycle_stage_1_mod } remove_country_modifier = oe_wf_cycle_stage_1_mod }
+	if = { limit = { has_country_modifier = oe_wf_cycle_stage_2_mod } remove_country_modifier = oe_wf_cycle_stage_2_mod }
+	if = { limit = { has_country_modifier = oe_wf_cycle_stage_3_mod } remove_country_modifier = oe_wf_cycle_stage_3_mod }
+}
+
+# Clear Diligent / Hands-Off governance modifiers before toggling.
+oe_wf_clear_governance_modifiers = {
+	if = { limit = { has_country_modifier = oe_wf_gov_diligent_mod } remove_country_modifier = oe_wf_gov_diligent_mod }
+	if = { limit = { has_country_modifier = oe_wf_gov_hands_off_mod } remove_country_modifier = oe_wf_gov_hands_off_mod }
+}
+
+# Safely adjust tributary Royal Favor (oe_wf_huangen) clamped to [0, 100].
+oe_wf_add_huangen = {
+	if = {
+		limit = { NOT = { has_variable = oe_wf_huangen } }
+		set_variable = { name = oe_wf_huangen value = 0 }
+	}
+	change_variable = { name = oe_wf_huangen add = $amount$ }
+	if = {
+		limit = { var:oe_wf_huangen > 100 }
+		set_variable = { name = oe_wf_huangen value = 100 }
+	}
+	if = {
+		limit = { var:oe_wf_huangen < 0 }
+		set_variable = { name = oe_wf_huangen value = 0 }
+	}
+}
+
+# Safely adjust Emperor's Imperial Grace pool (oe_wf_imperial_grace) clamped to [0, 100].
+oe_wf_add_imperial_grace = {
+	if = {
+		limit = { NOT = { has_variable = oe_wf_imperial_grace } }
+		set_variable = { name = oe_wf_imperial_grace value = 0 }
+	}
+	change_variable = { name = oe_wf_imperial_grace add = $amount$ }
+	if = {
+		limit = { var:oe_wf_imperial_grace > 100 }
+		set_variable = { name = oe_wf_imperial_grace value = 100 }
+	}
+	if = {
+		limit = { var:oe_wf_imperial_grace < 0 }
+		set_variable = { name = oe_wf_imperial_grace value = 0 }
+	}
+}
+
+# Propagate lightweight shared Celestial Calendar aura ("奉正朔") to tributaries/subjects (O(1) bounded, zero location loops).
+oe_wf_propagate_era_to_tributaries = {
+	if = {
+		limit = {
+			exists = international_organization:middle_kingdom
+			is_leader_of_international_organization = international_organization:middle_kingdom
+		}
+		international_organization:middle_kingdom = {
+			every_international_organization_member = {
+				limit = {
+					NOT = { this = root }
+					oe_main_mod_old_world_event_allowed = yes
+				}
+				add_country_modifier = { modifier = oe_wf_era_tributary_calendar_mod years = 15 mode = replace }
+			}
+		}
+	}
+	every_subject = {
+		limit = {
+			oe_main_mod_old_world_event_allowed = yes
+			NOT = { has_country_modifier = oe_wf_era_tributary_calendar_mod }
+		}
+		add_country_modifier = { modifier = oe_wf_era_tributary_calendar_mod years = 15 mode = replace }
+	}
+}

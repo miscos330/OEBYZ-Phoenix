@@ -5,9 +5,16 @@ oe_v250_yua_ref_zhongshu_xing_sheng = {
 	age = age_1_traditions
 	potential = {
 		OR = {
-			tag = CHI
 			tag = YUA
-			tag = MNG
+			AND = {
+				tag = CHI
+				oe_start_is_1337 = yes
+				NOT = { has_global_variable = oe_alt_era_start }
+				NOT = { has_variable = rtr_is_new_china }
+				NOT = { has_or_had_tag = MNG }
+				NOT = { has_or_had_tag = MCH }
+				culture = { has_culture_group = culture_group:mongolian_group }
+			}
 		}
 	}
 	allow = {
@@ -22,16 +29,18 @@ oe_v250_yua_ref_zhongshu_xing_sheng = {
 		nobles_estate_target_satisfaction = -0.04
 	}
 	years = 2
-	ai_will_do = { value = 20 }
+	ai_will_do = { value = 0 if = { limit = { current_year >= 1370 } add = 20 } }
 }
 
 oe_v250_yua_ref_huangce_weisuo_order = {
 	age = age_2_renaissance
 	potential = {
 		OR = {
-			tag = CHI
-			tag = YUA
 			tag = MNG
+			AND = {
+				tag = CHI
+				has_or_had_tag = MNG
+			}
 		}
 	}
 	allow = {

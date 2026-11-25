@@ -1,0 +1,181 @@
+﻿# NEW 2026-11-24 v25.5 Wave 2B: Roman Reconquest Campaign Situation Actions (all 9 oe_hc_* situations).
+
+# 1. BYZ / ROM & Imperial Bloc: Imperial Offensive Supply (+6 active campaign progress, 3y cd)
+oe_hc_act_imperial_supply = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			OR = {
+				tag = BYZ
+				tag = ROM
+				oe_heg_byz_bloc = yes
+			}
+		}
+	}
+	allow = {
+		scope:actor = {
+			gold >= 150
+			manpower >= 0.5
+		}
+	}
+	cooldown = {
+		type = oe_hc_act_imperial_supply_cd
+		years = 3
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_hc_egypt = { add_to_list = source }
+			situation:oe_hc_africa = { add_to_list = source }
+			situation:oe_hc_italy = { add_to_list = source }
+			situation:oe_hc_france = { add_to_list = source }
+			situation:oe_hc_iberia = { add_to_list = source }
+			situation:oe_hc_britain = { add_to_list = source }
+			situation:oe_hc_persia = { add_to_list = source }
+			situation:oe_hc_blacksea = { add_to_list = source }
+			situation:oe_hc_arabia = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation_is_active = yes
+			OR = {
+				this = situation:oe_hc_egypt
+				this = situation:oe_hc_africa
+				this = situation:oe_hc_italy
+				this = situation:oe_hc_france
+				this = situation:oe_hc_iberia
+				this = situation:oe_hc_britain
+				this = situation:oe_hc_persia
+				this = situation:oe_hc_blacksea
+				this = situation:oe_hc_arabia
+			}
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -150
+			add_army_tradition = 5
+			add_country_modifier = { modifier = oe_hc_mod_act_imperial_supply years = 4 mode = replace }
+		}
+		custom_tooltip = oe_hc_act_imperial_supply_tt
+		hidden_effect = {
+			if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = {
+				if = { limit = { has_variable = oe_hc_egypt_active has_variable = oe_hc_egypt_progress } change_variable = { name = oe_hc_egypt_progress add = 6 } clamp_variable = { name = oe_hc_egypt_progress max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_africa_active has_variable = oe_hc_africa_progress } change_variable = { name = oe_hc_africa_progress add = 6 } clamp_variable = { name = oe_hc_africa_progress max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_italy_active has_variable = oe_hc_italy_progress } change_variable = { name = oe_hc_italy_progress add = 6 } clamp_variable = { name = oe_hc_italy_progress max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_france_active has_variable = oe_hc_france_progress } change_variable = { name = oe_hc_france_progress add = 6 } clamp_variable = { name = oe_hc_france_progress max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_iberia_active has_variable = oe_hc_iberia_progress } change_variable = { name = oe_hc_iberia_progress add = 6 } clamp_variable = { name = oe_hc_iberia_progress max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_britain_active has_variable = oe_hc_britain_progress } change_variable = { name = oe_hc_britain_progress add = 6 } clamp_variable = { name = oe_hc_britain_progress max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_persia_active has_variable = oe_hc_persia_progress } change_variable = { name = oe_hc_persia_progress add = 6 } clamp_variable = { name = oe_hc_persia_progress max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_blacksea_active has_variable = oe_hc_blacksea_progress } change_variable = { name = oe_hc_blacksea_progress add = 6 } clamp_variable = { name = oe_hc_blacksea_progress max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_arabia_active has_variable = oe_hc_arabia_progress } change_variable = { name = oe_hc_arabia_progress add = 6 } clamp_variable = { name = oe_hc_arabia_progress max = 100 min = 0 } }
+				}
+			}
+		}
+	}
+	ai_will_do = {
+		add = 18
+		if = {
+			limit = { scope:actor = { at_war = yes } }
+			add = 20
+		}
+	}
+}
+
+# 2. Regional Defenders & Coalition Neighbors: Defender Coalition Resistance (+6 active campaign pressure, 3y cd)
+oe_hc_act_coalition_resistance = {
+	type = situation
+	show_message = no
+	potential = {
+		scope:actor = {
+			is_rebel_country = no
+			NOT = { tag = BYZ }
+			NOT = { tag = ROM }
+			NOT = { oe_heg_byz_bloc = yes }
+		}
+	}
+	allow = {
+		scope:actor = {
+			gold >= 80
+			prestige >= 5
+		}
+	}
+	cooldown = {
+		type = oe_hc_act_coalition_resistance_cd
+		years = 3
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_hc_egypt = { add_to_list = source }
+			situation:oe_hc_africa = { add_to_list = source }
+			situation:oe_hc_italy = { add_to_list = source }
+			situation:oe_hc_france = { add_to_list = source }
+			situation:oe_hc_iberia = { add_to_list = source }
+			situation:oe_hc_britain = { add_to_list = source }
+			situation:oe_hc_persia = { add_to_list = source }
+			situation:oe_hc_blacksea = { add_to_list = source }
+			situation:oe_hc_arabia = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation_is_active = yes
+			OR = {
+				this = situation:oe_hc_egypt
+				this = situation:oe_hc_africa
+				this = situation:oe_hc_italy
+				this = situation:oe_hc_france
+				this = situation:oe_hc_iberia
+				this = situation:oe_hc_britain
+				this = situation:oe_hc_persia
+				this = situation:oe_hc_blacksea
+				this = situation:oe_hc_arabia
+			}
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -80
+			add_prestige = -5
+			add_manpower = 1.2
+			add_country_modifier = { modifier = oe_hc_mod_act_coalition_resistance years = 4 mode = replace }
+		}
+		custom_tooltip = oe_hc_act_coalition_resistance_tt
+		hidden_effect = {
+			if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = {
+				if = { limit = { has_variable = oe_hc_egypt_active has_variable = oe_hc_egypt_pressure } change_variable = { name = oe_hc_egypt_pressure add = 6 } clamp_variable = { name = oe_hc_egypt_pressure max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_africa_active has_variable = oe_hc_africa_pressure } change_variable = { name = oe_hc_africa_pressure add = 6 } clamp_variable = { name = oe_hc_africa_pressure max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_italy_active has_variable = oe_hc_italy_pressure } change_variable = { name = oe_hc_italy_pressure add = 6 } clamp_variable = { name = oe_hc_italy_pressure max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_france_active has_variable = oe_hc_france_pressure } change_variable = { name = oe_hc_france_pressure add = 6 } clamp_variable = { name = oe_hc_france_pressure max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_iberia_active has_variable = oe_hc_iberia_pressure } change_variable = { name = oe_hc_iberia_pressure add = 6 } clamp_variable = { name = oe_hc_iberia_pressure max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_britain_active has_variable = oe_hc_britain_pressure } change_variable = { name = oe_hc_britain_pressure add = 6 } clamp_variable = { name = oe_hc_britain_pressure max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_persia_active has_variable = oe_hc_persia_pressure } change_variable = { name = oe_hc_persia_pressure add = 6 } clamp_variable = { name = oe_hc_persia_pressure max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_blacksea_active has_variable = oe_hc_blacksea_pressure } change_variable = { name = oe_hc_blacksea_pressure add = 6 } clamp_variable = { name = oe_hc_blacksea_pressure max = 100 min = 0 } }
+				if = { limit = { has_variable = oe_hc_arabia_active has_variable = oe_hc_arabia_pressure } change_variable = { name = oe_hc_arabia_pressure add = 6 } clamp_variable = { name = oe_hc_arabia_pressure max = 100 min = 0 } }
+				}
+			}
+		}
+	}
+	ai_will_do = {
+		add = 18
+		if = {
+			limit = { scope:actor = { at_war = yes } }
+			add = 25
+		}
+	}
+}

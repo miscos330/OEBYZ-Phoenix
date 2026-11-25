@@ -8,8 +8,7 @@ oe_t2_consolidate_theme = {
     ai_tick = never
     potential = {
         scope:actor = {
-            tag = BYZ
-            is_rebel_country = no
+            oe_is_phoenix_empire = yes
             any_subject = { count >= 2 oe_theme_member_trigger = yes }
         }
     }
@@ -32,7 +31,7 @@ oe_t2_consolidate_theme = {
             oe_t2_can_be_consolidated_recipient = yes
         }
         enabled = {
-            custom_tooltip = { text = oe_t2_small_jurisdiction_tt oe_theme_jurisdiction_size <= 15 }
+            custom_tooltip = { text = oe_t2_small_jurisdiction_tt oe_theme_jurisdiction_size <= 25 }
             at_war = no
         }
     }
@@ -48,14 +47,23 @@ oe_t2_consolidate_theme = {
         visible = {
             oe_theme_convertible_trigger = yes
             NOT = { this = scope:recipient }
-            NOT = { is_subject_type = oe_empire_theme_naval }
+            OR = {
+                AND = {
+                    is_subject_type = oe_empire_theme_naval
+                    scope:recipient = { is_subject_type = oe_empire_theme_naval }
+                }
+                AND = {
+                    NOT = { is_subject_type = oe_empire_theme_naval }
+                    scope:recipient = { NOT = { is_subject_type = oe_empire_theme_naval } }
+                }
+            }
             oe_t2_receiver_under_region_cap = yes
             NOT = { has_variable = oe_theme_revolt_now }
             oe_t2_adjacent_distance_band = yes
         }
         enabled = {
             custom_tooltip = { text = oe_t2_receiver_loyal_tt OR = { var:oe_theme_loyalty_band ?= 2 var:oe_theme_loyalty_band ?= 3 } }
-            custom_tooltip = { text = oe_t2_combined_cap_tt oe_t2_combined_jurisdiction_size <= 45 }
+            custom_tooltip = { text = oe_t2_combined_cap_tt oe_t2_combined_jurisdiction_size <= 95 }
             at_war = no
         }
     }
@@ -76,8 +84,7 @@ oe_t2_split_theme = {
     ai_tick = never
     potential = {
         scope:actor = {
-            tag = BYZ
-            is_rebel_country = no
+            oe_is_phoenix_empire = yes
             any_subject = { oe_theme_member_trigger = yes has_variable = oe_t2_absorbed_region has_variable = oe_t2_absorbed_seat }
         }
     }
@@ -124,8 +131,7 @@ oe_t2_rotate_strategoi = {
     ai_tick = never
     potential = {
         scope:actor = {
-            tag = BYZ
-            is_rebel_country = no
+            oe_is_phoenix_empire = yes
             any_subject = { count >= 2 oe_theme_member_trigger = yes }
         }
     }
@@ -198,8 +204,7 @@ oe_t2_triumph_retire = {
     ai_tick = never
     potential = {
         scope:actor = {
-            tag = BYZ
-            is_rebel_country = no
+            oe_is_phoenix_empire = yes
             any_subject = { oe_theme_member_trigger = yes }
         }
     }
@@ -247,8 +252,7 @@ oe_t2_imperial_marriage_tie = {
     ai_tick = never
     potential = {
         scope:actor = {
-            tag = BYZ
-            is_rebel_country = no
+            oe_is_phoenix_empire = yes
             any_subject = { oe_theme_member_trigger = yes }
         }
     }
@@ -294,8 +298,7 @@ oe_t2_confirm_hereditary_command = {
     ai_tick = never
     potential = {
         scope:actor = {
-            tag = BYZ
-            is_rebel_country = no
+            oe_is_phoenix_empire = yes
             any_subject = { oe_theme_member_trigger = yes }
         }
     }

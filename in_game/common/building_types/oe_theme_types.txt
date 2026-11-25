@@ -1,12 +1,15 @@
 ﻿# New theme offices; script-created, one level. Only the naval seat needs a coast.
+# v26.0 WP11-2 Option 2A + WP8-2/8-3 + BYZ/ROM compatibility:
+# Seats: 0.2 nobles (-50% food), rural allowed for R43/R44/R49; Admin post: 0.1 nobles + rural_settlement = no;
+# Naval/Frontier posts: 0.25 soldiers, scaled_gold 0.30, Hub-only deployment.
 oe_byz_theme_naval_seat = {
     is_foreign = yes
     need_good_relation = no
     pop_type = nobles
     category = government_category
     max_levels = 1
-    employment_size = 1
-    pop_size_created = 1
+    employment_size = 0.2
+    pop_size_created = 0.2
     rural_settlement = yes
     town = yes
     city = yes
@@ -17,15 +20,16 @@ oe_byz_theme_naval_seat = {
     remove_if = {
         NOT = { owner ?= { has_variable = oe_theme_conversion_in_progress } }
         OR = {
-            NOT = { owner ?= { country_type = building is_subject_of = c:BYZ is_subject_type = oe_empire_theme_naval has_reform = government_reform:oe_byz_theme_naval_subject } }
-            NOT = { location = { owner = c:BYZ } }
-            NOT = { location = { is_coastal = yes } }
+            NOT = { owner ?= { country_type = building oe_subject_of_phoenix_empire = yes is_subject_type = oe_empire_theme_naval has_reform = government_reform:oe_byz_theme_naval_subject } }
+            NOT = { location ?= { oe_owned_by_phoenix_empire = yes } }
+            NOT = { location ?= { is_coastal = yes } }
         }
     }
     country_potential = { is_subject_type = oe_empire_theme_naval }
     location_potential = { is_coastal = yes }
     construction_demand = oe_byz_pornia_construction
     modifier = {
+        local_nobles_food_consumption = -0.5
         scaled_gold_to_building_owner = 1
         gold_to_building_owner = 10
         sailors_to_building_owner = 0.0125
@@ -45,8 +49,8 @@ oe_byz_theme_naval_post = {
     pop_type = soldiers
     category = government_category
     max_levels = 1
-    employment_size = 1
-    pop_size_created = 1
+    employment_size = 0.25
+    pop_size_created = 0.25
     rural_settlement = yes
     town = yes
     city = yes
@@ -57,14 +61,14 @@ oe_byz_theme_naval_post = {
     remove_if = {
         NOT = { owner ?= { has_variable = oe_theme_conversion_in_progress } }
         OR = {
-            NOT = { owner ?= { country_type = building is_subject_of = c:BYZ is_subject_type = oe_empire_theme_naval has_reform = government_reform:oe_byz_theme_naval_subject } }
-            NOT = { location = { owner = c:BYZ } }
+            NOT = { owner ?= { country_type = building oe_subject_of_phoenix_empire = yes is_subject_type = oe_empire_theme_naval has_reform = government_reform:oe_byz_theme_naval_subject } }
+            NOT = { location ?= { oe_owned_by_phoenix_empire = yes } }
         }
     }
     country_potential = { is_subject_type = oe_empire_theme_naval }
     construction_demand = oe_byz_pornia_construction
     modifier = {
-        scaled_gold_to_building_owner = 0.15
+        scaled_gold_to_building_owner = 0.30
         sailors_to_building_owner = 0.005
         local_sailors_modifier = 0.5
     }
@@ -80,8 +84,8 @@ oe_byz_theme_administrative_seat = {
     pop_type = nobles
     category = government_category
     max_levels = 1
-    employment_size = 1
-    pop_size_created = 1
+    employment_size = 0.2
+    pop_size_created = 0.2
     rural_settlement = yes
     town = yes
     city = yes
@@ -92,15 +96,15 @@ oe_byz_theme_administrative_seat = {
     remove_if = {
         NOT = { owner ?= { has_variable = oe_theme_conversion_in_progress } }
         OR = {
-            NOT = { owner ?= { country_type = building is_subject_of = c:BYZ is_subject_type = oe_empire_theme_administrative has_reform = government_reform:oe_byz_theme_administrative_subject } }
-            NOT = { location = { owner = c:BYZ } }
+            NOT = { owner ?= { country_type = building oe_subject_of_phoenix_empire = yes is_subject_type = oe_empire_theme_administrative has_reform = government_reform:oe_byz_theme_administrative_subject } }
+            NOT = { location ?= { oe_owned_by_phoenix_empire = yes } }
         }
     }
     country_potential = { is_subject_type = oe_empire_theme_administrative }
     construction_demand = oe_byz_pornia_construction
     modifier = {
-        local_proximity_source = 50
-        local_nobles_food_consumption = -0.2
+        local_proximity_source = 35
+        local_nobles_food_consumption = -0.5
         scaled_gold_to_building_owner = 1
         gold_to_building_owner = 10
         local_crown_estate_power = 0.5
@@ -117,8 +121,8 @@ oe_byz_theme_administrative_post = {
     category = government_category
     max_levels = 1
     employment_size = 0.1
-    pop_size_created = 1
-    rural_settlement = yes
+    pop_size_created = 0.1
+    rural_settlement = no
     town = yes
     city = yes
     megalopolis = yes
@@ -128,8 +132,8 @@ oe_byz_theme_administrative_post = {
     remove_if = {
         NOT = { owner ?= { has_variable = oe_theme_conversion_in_progress } }
         OR = {
-            NOT = { owner ?= { country_type = building is_subject_of = c:BYZ is_subject_type = oe_empire_theme_administrative has_reform = government_reform:oe_byz_theme_administrative_subject } }
-            NOT = { location = { owner = c:BYZ } }
+            NOT = { owner ?= { country_type = building oe_subject_of_phoenix_empire = yes is_subject_type = oe_empire_theme_administrative has_reform = government_reform:oe_byz_theme_administrative_subject } }
+            NOT = { location ?= { oe_owned_by_phoenix_empire = yes } }
         }
     }
     country_potential = { is_subject_type = oe_empire_theme_administrative }
@@ -137,8 +141,8 @@ oe_byz_theme_administrative_post = {
     modifier = {
         local_monthly_control = 0.01
         local_distance_from_capital_speed_propagation = 0.2
-        local_nobles_food_consumption = -0.2
-        scaled_gold_to_building_owner = 0.15
+        local_nobles_food_consumption = -0.5
+        scaled_gold_to_building_owner = 0.30
     }
     raw_modifier = {
         local_army_levy_size_modifier = -3
@@ -151,8 +155,8 @@ oe_byz_theme_frontier_seat = {
     pop_type = nobles
     category = government_category
     max_levels = 1
-    employment_size = 1
-    pop_size_created = 1
+    employment_size = 0.2
+    pop_size_created = 0.2
     rural_settlement = yes
     town = yes
     city = yes
@@ -163,13 +167,14 @@ oe_byz_theme_frontier_seat = {
     remove_if = {
         NOT = { owner ?= { has_variable = oe_theme_conversion_in_progress } }
         OR = {
-            NOT = { owner ?= { country_type = building is_subject_of = c:BYZ is_subject_type = oe_empire_theme_frontier has_reform = government_reform:oe_byz_theme_frontier_subject } }
-            NOT = { location = { owner = c:BYZ } }
+            NOT = { owner ?= { country_type = building oe_subject_of_phoenix_empire = yes is_subject_type = oe_empire_theme_frontier has_reform = government_reform:oe_byz_theme_frontier_subject } }
+            NOT = { location ?= { oe_owned_by_phoenix_empire = yes } }
         }
     }
     country_potential = { is_subject_type = oe_empire_theme_frontier }
     construction_demand = oe_byz_pornia_construction
     modifier = {
+        local_nobles_food_consumption = -0.5
         scaled_gold_to_building_owner = 1
         gold_to_building_owner = 10
         local_defensive = 0.5
@@ -187,8 +192,8 @@ oe_byz_theme_frontier_post = {
     pop_type = soldiers
     category = government_category
     max_levels = 1
-    employment_size = 1
-    pop_size_created = 1
+    employment_size = 0.25
+    pop_size_created = 0.25
     rural_settlement = yes
     town = yes
     city = yes
@@ -199,15 +204,15 @@ oe_byz_theme_frontier_post = {
     remove_if = {
         NOT = { owner ?= { has_variable = oe_theme_conversion_in_progress } }
         OR = {
-            NOT = { owner ?= { country_type = building is_subject_of = c:BYZ is_subject_type = oe_empire_theme_frontier has_reform = government_reform:oe_byz_theme_frontier_subject } }
-            NOT = { location = { owner = c:BYZ } }
+            NOT = { owner ?= { country_type = building oe_subject_of_phoenix_empire = yes is_subject_type = oe_empire_theme_frontier has_reform = government_reform:oe_byz_theme_frontier_subject } }
+            NOT = { location ?= { oe_owned_by_phoenix_empire = yes } }
         }
     }
     country_potential = { is_subject_type = oe_empire_theme_frontier }
     construction_demand = oe_byz_pornia_construction
     modifier = {
         manpower_to_building_owner = 0.003
-        scaled_gold_to_building_owner = 0.15
+        scaled_gold_to_building_owner = 0.30
         local_defensive = 0.25
         local_garrison_size = 0.1
         local_fort_maintenance_efficiency = 0.1

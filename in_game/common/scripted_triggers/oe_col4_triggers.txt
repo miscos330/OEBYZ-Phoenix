@@ -17,19 +17,22 @@ oe_col4_is_overseas_colonial_subject = {
 	OR = {
 		is_subject_type = colonial_nation
 		is_colonial_subject = yes
-		AND = {
-			is_subject = yes
-			OR = {
-				is_subject_type = fiefdom
-				is_subject_type = dominion
-				is_subject_type = vassal
+		trigger_if = {
+			limit = {
+				is_subject = yes
+				OR = {
+					is_subject_type = fiefdom
+					is_subject_type = dominion
+					is_subject_type = vassal
+				}
+				exists = capital
+				exists = overlord
 			}
-			exists = capital
-			exists = overlord
 			overlord = { exists = capital }
 			capital = { oe_col4_is_colonial_frontier_loc = yes }
 			NOT = { capital.continent = overlord.capital.continent }
 		}
+		trigger_else = { always = no }
 	}
 }
 

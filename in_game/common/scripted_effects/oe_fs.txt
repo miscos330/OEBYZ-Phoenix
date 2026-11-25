@@ -417,15 +417,18 @@ oe_fs_build_ally = {
         else = { religion:catholic = { save_scope_as = oe_fs_rel } }
     }
     scope:oe_fs_seat = {
-        create_country_from_location = {
-            overlord = c:BYZ
-            subject_type = subject_type:oe_rome_sub
-            save_scope_as = oe_fs_ally
-            change_government_type = government_type:monarchy
-            change_country_type = location
-            change_heir_selection = heir_selection:cognatic_primogeniture
-            change_religion = scope:oe_fs_rel
-            if = { limit = { exists = scope:oe_fs_cul } change_culture = scope:oe_fs_cul }
+        if = {
+        	limit = { has_owner = yes }
+	        create_country_from_location = {
+	            overlord = c:BYZ
+	            subject_type = subject_type:oe_rome_sub
+	            save_scope_as = oe_fs_ally
+	            change_government_type = government_type:monarchy
+	            change_country_type = location
+	            change_heir_selection = heir_selection:cognatic_primogeniture
+	            change_religion = scope:oe_fs_rel
+	            if = { limit = { exists = scope:oe_fs_cul } change_culture = scope:oe_fs_cul }
+	        }
         }
     }
     # one step that built a country which is not our subject: the second step repairs it (code 4, for the probe)
@@ -473,13 +476,16 @@ oe_fs_finish = {
 }
 # BYZ scope. Pillars Authority up or down by $amount$ (0-100).
 oe_fs_auth_add = {
-    international_organization:oe_byz_empire_pillars = {
-        if = {
-            limit = { has_variable = oe_pillars_authority }
-            change_variable = { name = oe_pillars_authority add = $amount$ }
-            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-        }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = {
+	        if = {
+	            limit = { has_variable = oe_pillars_authority }
+	            change_variable = { name = oe_pillars_authority add = $amount$ }
+	            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	        }
+	    }
+	}
 }
 
 # ======================================================================== the former ruler (engine probe P2)

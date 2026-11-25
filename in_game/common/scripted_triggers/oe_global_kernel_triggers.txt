@@ -44,9 +44,13 @@ oe_gk_preset_is_elysia_fast = {
 	has_global_variable = oe_v150_preset_elysia_fast
 }
 
-# Country scope (BYZ). At least one Tier-2 expansion theme zone is unlocked.
+# Country scope (BYZ/ROM). At least one imperial expansion charter or Prefecture is unlocked.
 oe_v150_has_any_expansion_zone_unlocked = {
 	OR = {
+		has_variable = oe_theme_pref_1_unlocked
+		has_variable = oe_theme_pref_2_unlocked
+		has_variable = oe_theme_pref_3_unlocked
+		has_variable = oe_theme_pref_4_unlocked
 		AND = {
 			has_variable = oe_ir_italian_theme_done
 			oe_italian_theme_creation_unlocked = yes
@@ -57,102 +61,41 @@ oe_v150_has_any_expansion_zone_unlocked = {
 	}
 }
 
-# Country scope (BYZ). At least one Italian area is eligible for Tier-2 expansion founding.
-oe_v150_italy_area_creatable = {
-	has_variable = oe_ir_italian_theme_done
-	oe_italian_theme_creation_unlocked = yes
-	any_owned_location = {
-		region = region:italy_region
-		is_province_capital = yes
-		area = {
-			NOT = { any_location_in_area = { oe_theme_location_occupied_trigger = yes } }
-		}
-	}
-}
-
-# Country scope (BYZ). At least one Eastern expansion area is eligible.
-oe_v150_eastern_area_creatable = {
-	has_variable = oe_create_eastern_themes_done
-	any_owned_location = {
-		NOT = { has_variable = oe_theme_region }
-		OR = {
-			area = area:jazira_area
-			area = area:iraq_arabi_area
-			area = area:levant_area
-		}
-		area = {
-			NOT = { any_location_in_area = { oe_theme_location_occupied_trigger = yes } }
-		}
-	}
-}
-
-# Country scope (BYZ). At least one Austrian expansion area is eligible.
-oe_v150_austrian_area_creatable = {
-	has_variable = oe_create_austrian_themes_done
-	any_owned_location = {
-		NOT = { has_variable = oe_theme_region }
-		OR = {
-			area = area:transdanubia_area
-			area = area:upper_austria_area
-			area = area:austria_area
-			area = area:styria_area
-			area = area:salzburg_area
-			area = area:carinthia_area
-			area = area:tirol_area
-		}
-		area = {
-			NOT = { any_location_in_area = { oe_theme_location_occupied_trigger = yes } }
-		}
-	}
-}
-
-# Country scope (BYZ). At least one Swiss expansion area is eligible.
-oe_v150_swiss_area_creatable = {
-	has_variable = oe_create_swiss_themes_done
-	any_owned_location = {
-		NOT = { has_variable = oe_theme_region }
-		OR = {
-			area = area:eastern_switzerland_area
-			area = area:central_switzerland_area
-			area = area:western_switzerland_area
-		}
-		area = {
-			NOT = { any_location_in_area = { oe_theme_location_occupied_trigger = yes } }
-		}
-	}
-}
-
-# Country scope (BYZ). Any unlocked Tier-2 expansion zone currently has a creatable theme area.
+# Country scope (BYZ/ROM). Any of the 4 Praetorian Prefectures currently has an eligible creatable region (R02-R79).
+# v26.0 WP11: replaces the retired ghost oe_theme_found_expansion_all_action checks.
 oe_v150_any_expansion_theme_creatable = {
+	oe_is_phoenix_empire = yes
 	OR = {
-		oe_v150_italy_area_creatable = yes
-		oe_v150_eastern_area_creatable = yes
-		oe_v150_austrian_area_creatable = yes
-		oe_v150_swiss_area_creatable = yes
+		oe_theme_pref_any_creatable_1 = yes
+		oe_theme_pref_any_creatable_2 = yes
+		oe_theme_pref_any_creatable_3 = yes
+		oe_theme_pref_any_creatable_4 = yes
 	}
 }
 
-# Country scope (BYZ). True when BYZ has an eligible small theme (<=15 locs, non-naval)
-# and at least one loyal non-naval theme with < 3 absorbed regions to receive it.
+# Country scope (BYZ/ROM). True when an Eastern Exarchate (E01-E10) is ready OR a consolidatable theme pair exists.
 oe_v150_any_consolidatable_theme_pair = {
-	tag = BYZ
-	is_rebel_country = no
-	any_subject = {
-		count >= 2
-		oe_theme_member_trigger = yes
-	}
-	any_subject = {
-		oe_t2_can_be_consolidated_recipient = yes
-		oe_theme_jurisdiction_size <= 15
-	}
-	any_subject = {
-		oe_theme_convertible_trigger = yes
-		NOT = { is_subject_type = oe_empire_theme_naval }
-		oe_t2_receiver_under_region_cap = yes
-		NOT = { has_variable = oe_theme_revolt_now }
-		OR = {
-			var:oe_theme_loyalty_band ?= 2
-			var:oe_theme_loyalty_band ?= 3
+	oe_is_phoenix_empire = yes
+	OR = {
+		oe_theme_any_exarchate_ready = yes
+		AND = {
+			any_subject = {
+				count >= 2
+				oe_theme_member_trigger = yes
+			}
+			any_subject = {
+				oe_t2_can_be_consolidated_recipient = yes
+				oe_theme_jurisdiction_size <= 25
+			}
+			any_subject = {
+				oe_theme_convertible_trigger = yes
+				oe_t2_receiver_under_region_cap = yes
+				NOT = { has_variable = oe_theme_revolt_now }
+				OR = {
+					var:oe_theme_loyalty_band ?= 2
+					var:oe_theme_loyalty_band ?= 3
+				}
+			}
 		}
 	}
 }

@@ -107,6 +107,7 @@ oe_as2_loc_owner_roman_extension = {
 oe_as2_doctrine_eligible = {
 	is_rebel_country = no
 	is_subject = no
+	NOT = { oe_is_fourth_rome_isolated_phase = yes }
 	num_locations >= 5
 	OR = {
 		tag = BYZ
@@ -119,9 +120,16 @@ oe_as2_doctrine_eligible = {
 oe_as2_is_roman_host = {
 	is_rebel_country = no
 	is_subject = no
-	OR = {
-		tag = BYZ
-		tag = ROM
+	oe_is_phoenix_empire = yes
+}
+
+# Location-scope trigger: derived Greek/Roman culture (greek_group) ready for Tier-2 Unitary Romanitas fusion into primary culture.
+oe_as2_loc_is_derived_roman_non_primary = {
+	has_owner = yes
+	exists = dominant_culture
+	NOT = { dominant_culture ?= owner.culture }
+	dominant_culture = {
+		has_culture_group = culture_group:greek_group
 	}
 }
 
@@ -132,6 +140,43 @@ oe_as2_has_any_romanization_active = {
 		has_country_modifier = oe_as2_romanization_extension_mod
 		has_country_modifier = oe_as2_frontier_persia_synthesis_mod
 		has_country_modifier = oe_as2_frontier_pontic_synthesis_mod
+		has_variable = oe_rw_turkish_romanization_started
+		has_variable = oe_rw_egypt_romanization_started
+		has_variable = oe_rw_syria_romanization_started
+		has_variable = oe_rw_africa_romanization_started
+		has_variable = oe_rw_gaul_romanization_started
+		has_variable = oe_rw_iberia_romanization_started
+		has_variable = oe_rw_britain_romanization_started
+		has_variable = oe_rw_serbia_romanization_started
+		has_variable = oe_rw_bulgaria_romanization_started
+		has_variable = oe_rw_albania_romanization_started
+		has_variable = oe_rw_illyria_romanization_started
+		has_variable = oe_rw_latin_romanization_started
+		has_variable = oe_rw_german_romanization_started
+		has_variable = oe_rw_dacia_romanization_started
+		has_variable = oe_rw_paeones_romanization_started
+		AND = {
+			country_exists = c:ROM
+			c:ROM = {
+				OR = {
+					has_variable = oe_rw_turkish_romanization_started
+					has_variable = oe_rw_egypt_romanization_started
+					has_variable = oe_rw_syria_romanization_started
+					has_variable = oe_rw_africa_romanization_started
+					has_variable = oe_rw_gaul_romanization_started
+					has_variable = oe_rw_iberia_romanization_started
+					has_variable = oe_rw_britain_romanization_started
+					has_variable = oe_rw_serbia_romanization_started
+					has_variable = oe_rw_bulgaria_romanization_started
+					has_variable = oe_rw_albania_romanization_started
+					has_variable = oe_rw_illyria_romanization_started
+					has_variable = oe_rw_latin_romanization_started
+					has_variable = oe_rw_german_romanization_started
+					has_variable = oe_rw_dacia_romanization_started
+					has_variable = oe_rw_paeones_romanization_started
+				}
+			}
+		}
 		AND = {
 			country_exists = c:BYZ
 			c:BYZ = {

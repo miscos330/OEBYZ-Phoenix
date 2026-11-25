@@ -38,6 +38,12 @@ oe_tbd_levy_target = { oe_tbd_march_ok = yes NOT = { has_variable = oe_tbd_levy_
 oe_tbd_hire_target = { oe_tbd_march_ok = yes NOT = { has_variable = oe_tbd_hire_cd } }
 # Theme scope. AI never hires mercenaries for a theme with loyalty below 40.
 oe_tbd_hire_ai_target = { oe_tbd_hire_target = yes has_variable = oe_theme_loyalty var:oe_theme_loyalty >= 40 }
+# BYZ scope. Border events may fire (never on Fourth Rome exile countries, and never during the 1453-1455 pre-departure window).
+oe_tbd_events_allowed = {
+    NOT = { oe_is_fourth_rome_exile_country = yes }
+    NOT = { has_global_variable = oe_elr_exile_active }
+    NOT = { AND = { current_year >= 1453 current_year <= 1455 } }
+}
 # BYZ scope. The treasury can pay for an action (the actions' allow).
 oe_tbd_can_fortify = { tag = BYZ custom_tooltip = { text = oe_tbd_allow_fortify gold >= 100 } }
 oe_tbd_can_levy = { tag = BYZ custom_tooltip = { text = oe_tbd_allow_levy gold >= 50 } }

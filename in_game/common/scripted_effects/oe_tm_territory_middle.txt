@@ -45,10 +45,13 @@ oe_tm_demote = {
 # BYZ scope; scope:oe_tm_req = the subject. Pays the Authority and puts the issue to the senate (track SENATE).
 # The pending mark lapses after 12 months in case the vote never comes back.
 oe_tm_request = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    set_variable = { name = oe_tm_target value = scope:oe_tm_req }
-    set_variable = { name = oe_tm_pending value = scope:oe_tm_req months = 12 }
-    oe_tsn_request = { issue = 3 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -10 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    set_variable = { name = oe_tm_target value = scope:oe_tm_req }
+	    set_variable = { name = oe_tm_pending value = scope:oe_tm_req months = 12 }
+	    oe_tsn_request = { issue = 3 }
+	}
 }
 # BYZ scope. Contract: the senate passed (or the emperor forced) issue 3.
 oe_tsn_apply_3 = {
@@ -169,157 +172,166 @@ oe_tm_provincialise = {
 # BYZ scope. Founds province $n$ at scope:oe_tm_seat$n$ as scope:oe_tm_th$n$: same steps as oe_theme_found_at_seat
 # (gen_theme_setup.py) with the army course; the jurisdiction comes from oe_tm_post instead of a historical region.
 oe_tm_found_1 = {
-    scope:oe_tm_seat1 = {
-        create_building_country_in_location = {
-            religion = religion:orthodox
-            culture = culture:oe_roman_noble_culture
-            subject_type = subject_type:oe_empire_theme
-            overlord = c:BYZ
-            reforms = { oe_byz_theme_system_subject }
-            hidden_effect = {
-                change_government_type = government_type:monarchy
-                change_heir_selection = heir_selection:oe_rome_province_elect
-            }
-            save_scope_as = oe_tm_th1
-        }
-        construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_tm_th1 cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
-    }
-    scope:oe_tm_th1 = {
-        if = { limit = { exists = ruler } ruler = { add_trait = trait:oe_character_war_score_trait_VI } }
-    }
-    international_organization:oe_byz_empire_pillars = {
-        add_country_to_international_organization = scope:oe_tm_th1
-        international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_tm_th1 }
-    }
-    # Historical name from the seat (gen_theme_names.py).
-    scope:oe_tm_seat1 = { save_scope_as = oe_theme_name_seat }
-    scope:oe_tm_th1 = { oe_theme_apply_name = yes }
-    scope:oe_tm_th1 = {
-        if = {
-            limit = { scope:oe_tm_seat1 = { has_variable = oe_theme_region } }
-            set_variable = { name = oe_theme_region_id value = scope:oe_tm_seat1.var:oe_theme_region }
-            if = {
-                limit = { scope:oe_tm_seat1 = { has_variable = oe_theme_region_tier } }
-                set_variable = { name = oe_theme_distance value = scope:oe_tm_seat1.var:oe_theme_region_tier }
-            }
-        }
-    }
-    # The new country's capital link resolves to a location scope during this effect; use the seat itself.
-    scope:oe_tm_seat1 = {
-        while = { count = 3 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_tm_th1 } }
-        if = {
-            limit = { is_coastal = yes }
-            while = { count = 6 create_sub_unit_with_owner = { type = n_cog owner = scope:oe_tm_th1 } }
-        }
-    }
-    scope:oe_tm_th1 = {
-        set_gold = 300
-        add_manpower = 3
-        # Origin mark: made from a subject kingdom (for the Roman-law integration and the frontier checks).
-        set_variable = { name = oe_tm_origin value = 1 }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    scope:oe_tm_seat1 = {
+	        create_building_country_in_location = {
+	            religion = religion:orthodox
+	            culture = culture:oe_roman_noble_culture
+	            subject_type = subject_type:oe_empire_theme
+	            overlord = c:BYZ
+	            reforms = { oe_byz_theme_system_subject }
+	            hidden_effect = {
+	                change_government_type = government_type:monarchy
+	                change_heir_selection = heir_selection:oe_rome_province_elect
+	            }
+	            save_scope_as = oe_tm_th1
+	        }
+	        construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_tm_th1 cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+	    }
+	    scope:oe_tm_th1 = {
+	        if = { limit = { exists = ruler } ruler = { add_trait = trait:oe_character_war_score_trait_VI } }
+	    }
+	    international_organization:oe_byz_empire_pillars = {
+	        add_country_to_international_organization = scope:oe_tm_th1
+	        international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_tm_th1 }
+	    }
+	    # Historical name from the seat (gen_theme_names.py).
+	    scope:oe_tm_seat1 = { save_scope_as = oe_theme_name_seat }
+	    scope:oe_tm_th1 = { oe_theme_apply_name = yes }
+	    scope:oe_tm_th1 = {
+	        if = {
+	            limit = { scope:oe_tm_seat1 = { has_variable = oe_theme_region } }
+	            set_variable = { name = oe_theme_region_id value = scope:oe_tm_seat1.var:oe_theme_region }
+	            if = {
+	                limit = { scope:oe_tm_seat1 = { has_variable = oe_theme_region_tier } }
+	                set_variable = { name = oe_theme_distance value = scope:oe_tm_seat1.var:oe_theme_region_tier }
+	            }
+	        }
+	    }
+	    # The new country's capital link resolves to a location scope during this effect; use the seat itself.
+	    scope:oe_tm_seat1 = {
+	        while = { count = 3 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_tm_th1 } }
+	        if = {
+	            limit = { is_coastal = yes }
+	            while = { count = 6 create_sub_unit_with_owner = { type = n_cog owner = scope:oe_tm_th1 } }
+	        }
+	    }
+	    scope:oe_tm_th1 = {
+	        set_gold = 300
+	        add_manpower = 3
+	        # Origin mark: made from a subject kingdom (for the Roman-law integration and the frontier checks).
+	        set_variable = { name = oe_tm_origin value = 1 }
+	    }
+	}
 }
 oe_tm_found_2 = {
-    scope:oe_tm_seat2 = {
-        create_building_country_in_location = {
-            religion = religion:orthodox
-            culture = culture:oe_roman_noble_culture
-            subject_type = subject_type:oe_empire_theme
-            overlord = c:BYZ
-            reforms = { oe_byz_theme_system_subject }
-            hidden_effect = {
-                change_government_type = government_type:monarchy
-                change_heir_selection = heir_selection:oe_rome_province_elect
-            }
-            save_scope_as = oe_tm_th2
-        }
-        construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_tm_th2 cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
-    }
-    scope:oe_tm_th2 = {
-        if = { limit = { exists = ruler } ruler = { add_trait = trait:oe_character_war_score_trait_VI } }
-    }
-    international_organization:oe_byz_empire_pillars = {
-        add_country_to_international_organization = scope:oe_tm_th2
-        international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_tm_th2 }
-    }
-    # Historical name from the seat (gen_theme_names.py).
-    scope:oe_tm_seat2 = { save_scope_as = oe_theme_name_seat }
-    scope:oe_tm_th2 = { oe_theme_apply_name = yes }
-    scope:oe_tm_th2 = {
-        if = {
-            limit = { scope:oe_tm_seat2 = { has_variable = oe_theme_region } }
-            set_variable = { name = oe_theme_region_id value = scope:oe_tm_seat2.var:oe_theme_region }
-            if = {
-                limit = { scope:oe_tm_seat2 = { has_variable = oe_theme_region_tier } }
-                set_variable = { name = oe_theme_distance value = scope:oe_tm_seat2.var:oe_theme_region_tier }
-            }
-        }
-    }
-    # The new country's capital link resolves to a location scope during this effect; use the seat itself.
-    scope:oe_tm_seat2 = {
-        while = { count = 3 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_tm_th2 } }
-        if = {
-            limit = { is_coastal = yes }
-            while = { count = 6 create_sub_unit_with_owner = { type = n_cog owner = scope:oe_tm_th2 } }
-        }
-    }
-    scope:oe_tm_th2 = {
-        set_gold = 300
-        add_manpower = 3
-        # Origin mark: made from a subject kingdom (for the Roman-law integration and the frontier checks).
-        set_variable = { name = oe_tm_origin value = 1 }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    scope:oe_tm_seat2 = {
+	        create_building_country_in_location = {
+	            religion = religion:orthodox
+	            culture = culture:oe_roman_noble_culture
+	            subject_type = subject_type:oe_empire_theme
+	            overlord = c:BYZ
+	            reforms = { oe_byz_theme_system_subject }
+	            hidden_effect = {
+	                change_government_type = government_type:monarchy
+	                change_heir_selection = heir_selection:oe_rome_province_elect
+	            }
+	            save_scope_as = oe_tm_th2
+	        }
+	        construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_tm_th2 cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+	    }
+	    scope:oe_tm_th2 = {
+	        if = { limit = { exists = ruler } ruler = { add_trait = trait:oe_character_war_score_trait_VI } }
+	    }
+	    international_organization:oe_byz_empire_pillars = {
+	        add_country_to_international_organization = scope:oe_tm_th2
+	        international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_tm_th2 }
+	    }
+	    # Historical name from the seat (gen_theme_names.py).
+	    scope:oe_tm_seat2 = { save_scope_as = oe_theme_name_seat }
+	    scope:oe_tm_th2 = { oe_theme_apply_name = yes }
+	    scope:oe_tm_th2 = {
+	        if = {
+	            limit = { scope:oe_tm_seat2 = { has_variable = oe_theme_region } }
+	            set_variable = { name = oe_theme_region_id value = scope:oe_tm_seat2.var:oe_theme_region }
+	            if = {
+	                limit = { scope:oe_tm_seat2 = { has_variable = oe_theme_region_tier } }
+	                set_variable = { name = oe_theme_distance value = scope:oe_tm_seat2.var:oe_theme_region_tier }
+	            }
+	        }
+	    }
+	    # The new country's capital link resolves to a location scope during this effect; use the seat itself.
+	    scope:oe_tm_seat2 = {
+	        while = { count = 3 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_tm_th2 } }
+	        if = {
+	            limit = { is_coastal = yes }
+	            while = { count = 6 create_sub_unit_with_owner = { type = n_cog owner = scope:oe_tm_th2 } }
+	        }
+	    }
+	    scope:oe_tm_th2 = {
+	        set_gold = 300
+	        add_manpower = 3
+	        # Origin mark: made from a subject kingdom (for the Roman-law integration and the frontier checks).
+	        set_variable = { name = oe_tm_origin value = 1 }
+	    }
+	}
 }
 oe_tm_found_3 = {
-    scope:oe_tm_seat3 = {
-        create_building_country_in_location = {
-            religion = religion:orthodox
-            culture = culture:oe_roman_noble_culture
-            subject_type = subject_type:oe_empire_theme
-            overlord = c:BYZ
-            reforms = { oe_byz_theme_system_subject }
-            hidden_effect = {
-                change_government_type = government_type:monarchy
-                change_heir_selection = heir_selection:oe_rome_province_elect
-            }
-            save_scope_as = oe_tm_th3
-        }
-        construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_tm_th3 cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
-    }
-    scope:oe_tm_th3 = {
-        if = { limit = { exists = ruler } ruler = { add_trait = trait:oe_character_war_score_trait_VI } }
-    }
-    international_organization:oe_byz_empire_pillars = {
-        add_country_to_international_organization = scope:oe_tm_th3
-        international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_tm_th3 }
-    }
-    # Historical name from the seat (gen_theme_names.py).
-    scope:oe_tm_seat3 = { save_scope_as = oe_theme_name_seat }
-    scope:oe_tm_th3 = { oe_theme_apply_name = yes }
-    scope:oe_tm_th3 = {
-        if = {
-            limit = { scope:oe_tm_seat3 = { has_variable = oe_theme_region } }
-            set_variable = { name = oe_theme_region_id value = scope:oe_tm_seat3.var:oe_theme_region }
-            if = {
-                limit = { scope:oe_tm_seat3 = { has_variable = oe_theme_region_tier } }
-                set_variable = { name = oe_theme_distance value = scope:oe_tm_seat3.var:oe_theme_region_tier }
-            }
-        }
-    }
-    # The new country's capital link resolves to a location scope during this effect; use the seat itself.
-    scope:oe_tm_seat3 = {
-        while = { count = 3 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_tm_th3 } }
-        if = {
-            limit = { is_coastal = yes }
-            while = { count = 6 create_sub_unit_with_owner = { type = n_cog owner = scope:oe_tm_th3 } }
-        }
-    }
-    scope:oe_tm_th3 = {
-        set_gold = 300
-        add_manpower = 3
-        # Origin mark: made from a subject kingdom (for the Roman-law integration and the frontier checks).
-        set_variable = { name = oe_tm_origin value = 1 }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    scope:oe_tm_seat3 = {
+	        create_building_country_in_location = {
+	            religion = religion:orthodox
+	            culture = culture:oe_roman_noble_culture
+	            subject_type = subject_type:oe_empire_theme
+	            overlord = c:BYZ
+	            reforms = { oe_byz_theme_system_subject }
+	            hidden_effect = {
+	                change_government_type = government_type:monarchy
+	                change_heir_selection = heir_selection:oe_rome_province_elect
+	            }
+	            save_scope_as = oe_tm_th3
+	        }
+	        construct_building = { building_type = building_type:oe_byz_theme_system_noble owner = scope:oe_tm_th3 cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+	    }
+	    scope:oe_tm_th3 = {
+	        if = { limit = { exists = ruler } ruler = { add_trait = trait:oe_character_war_score_trait_VI } }
+	    }
+	    international_organization:oe_byz_empire_pillars = {
+	        add_country_to_international_organization = scope:oe_tm_th3
+	        international_organization_add_special_status = { type = special_status:oe_pillars_theme country = scope:oe_tm_th3 }
+	    }
+	    # Historical name from the seat (gen_theme_names.py).
+	    scope:oe_tm_seat3 = { save_scope_as = oe_theme_name_seat }
+	    scope:oe_tm_th3 = { oe_theme_apply_name = yes }
+	    scope:oe_tm_th3 = {
+	        if = {
+	            limit = { scope:oe_tm_seat3 = { has_variable = oe_theme_region } }
+	            set_variable = { name = oe_theme_region_id value = scope:oe_tm_seat3.var:oe_theme_region }
+	            if = {
+	                limit = { scope:oe_tm_seat3 = { has_variable = oe_theme_region_tier } }
+	                set_variable = { name = oe_theme_distance value = scope:oe_tm_seat3.var:oe_theme_region_tier }
+	            }
+	        }
+	    }
+	    # The new country's capital link resolves to a location scope during this effect; use the seat itself.
+	    scope:oe_tm_seat3 = {
+	        while = { count = 3 create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:oe_tm_th3 } }
+	        if = {
+	            limit = { is_coastal = yes }
+	            while = { count = 6 create_sub_unit_with_owner = { type = n_cog owner = scope:oe_tm_th3 } }
+	        }
+	    }
+	    scope:oe_tm_th3 = {
+	        set_gold = 300
+	        add_manpower = 3
+	        # Origin mark: made from a subject kingdom (for the Roman-law integration and the frontier checks).
+	        set_variable = { name = oe_tm_origin value = 1 }
+	    }
+	}
 }
 # Location scope. A post of province $n$; marks the province as a frontier when the location borders a country
 # outside the Byzantine bloc.
@@ -449,13 +461,16 @@ oe_tm_join_war = {
 }
 # BYZ scope. Event oe_tm.4 b: the refusers of this muster lose the +5 years again.
 oe_tm_muster_pardon = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    every_subject = {
-        limit = { has_variable = oe_tm_m_ref_added }
-        change_variable = { name = oe_tm_ladder_extra add = -5 }
-        if = { limit = { var:oe_tm_ladder_extra ?= 0 } remove_variable = oe_tm_ladder_extra }
-        remove_variable = oe_tm_m_ref_added
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    every_subject = {
+	        limit = { has_variable = oe_tm_m_ref_added }
+	        change_variable = { name = oe_tm_ladder_extra add = -5 }
+	        if = { limit = { var:oe_tm_ladder_extra ?= 0 } remove_variable = oe_tm_ladder_extra }
+	        remove_variable = oe_tm_m_ref_added
+	    }
+	}
 }
 
 # ======================== tests (dev mod buttons) ========================

@@ -99,22 +99,28 @@ oe_glh_world = {
 
 # BYZ scope. W1: Alexander of Tver is put to death at Sarai, by order of the khan; Tver holds it against Moscow.
 oe_glh_w1_do = {
-    c:GLH ?= { ruler ?= { save_scope_as = oe_glh_khan } }
-    if = { limit = { exists = scope:oe_glh_khan } kill_character = { target = character:tve_aleksandr_mikhailovich_rurikovich reason = execution killer = scope:oe_glh_khan } }
-    else = { kill_character = { target = character:tve_aleksandr_mikhailovich_rurikovich reason = execution } }
-    c:TVE ?= { if = { limit = { is_ai = yes country_exists = c:MOS } add_opinion = { modifier = oe_glh_bw_tver_grief target = c:MOS } } }
+	if = {
+		limit = { exists = character:tve_aleksandr_mikhailovich_rurikovich }
+	    c:GLH ?= { ruler ?= { save_scope_as = oe_glh_khan } }
+	    if = { limit = { exists = scope:oe_glh_khan } kill_character = { target = character:tve_aleksandr_mikhailovich_rurikovich reason = execution killer = scope:oe_glh_khan } }
+	    else = { kill_character = { target = character:tve_aleksandr_mikhailovich_rurikovich reason = execution } }
+	    c:TVE ?= { if = { limit = { is_ai = yes country_exists = c:MOS } add_opinion = { modifier = oe_glh_bw_tver_grief target = c:MOS } } }
+	}
 }
 # BYZ scope. W2: Özbeg dies; compensate scripted succession unity & stability hit so Jani Beg's reign stays strong (v21.0-rc2).
 oe_glh_w2_do = {
-    kill_character = character:glh_giyas_al_din_mohammed_oz_beg_borjigin
-    if = {
-        limit = { country_exists = c:GLH }
-        c:GLH = {
-            add_horde_unity = 40
-            add_stability = 15
-            add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 16 mode = replace }
-        }
-    }
+	if = {
+		limit = { exists = character:glh_giyas_al_din_mohammed_oz_beg_borjigin }
+	    kill_character = character:glh_giyas_al_din_mohammed_oz_beg_borjigin
+	    if = {
+	        limit = { country_exists = c:GLH }
+	        c:GLH = {
+	            add_horde_unity = 40
+	            add_stability = 15
+	            add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 16 mode = replace }
+	        }
+	    }
+	}
 }
 # BYZ scope. W3 direct succession fallback: if Jani Beg took the throne before W2 ran, grant Pax of Jani Beg once.
 oe_glh_w3_direct_do = {
@@ -132,13 +138,16 @@ oe_glh_w3_direct_do = {
 }
 # BYZ scope. W3: Jani Beg takes the throne and Tini Beg is killed; compensate scripted succession unity & stability hit (v21.0-rc2).
 oe_glh_w3_do = {
-    c:GLH = { set_new_ruler = character:glh_jani_beg_borjigin }
-    if = { limit = { character:glh_tini_beg_borjigin ?= { is_alive = yes } } kill_character = { target = character:glh_tini_beg_borjigin reason = assassination } }
-    c:GLH = {
-        add_horde_unity = 40
-        add_stability = 15
-        add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 16 mode = replace }
-    }
+	if = {
+		limit = { exists = character:glh_jani_beg_borjigin exists = character:glh_tini_beg_borjigin }
+	    c:GLH = { set_new_ruler = character:glh_jani_beg_borjigin }
+	    if = { limit = { character:glh_tini_beg_borjigin ?= { is_alive = yes } } kill_character = { target = character:glh_tini_beg_borjigin reason = assassination } }
+	    c:GLH = {
+	        add_horde_unity = 40
+	        add_stability = 15
+	        add_country_modifier = { modifier = oe_ghh_janibeg_pax years = 16 mode = replace }
+	    }
+	}
 }
 # BYZ scope. W4: the bloodshed at Tana; the Italians are expelled and Venice and Genoa declare an embargo.
 oe_glh_w4_do = {
@@ -153,24 +162,30 @@ oe_glh_unity_to_30 = {
 }
 # BYZ scope. W5: Jani Beg dies; Pax of Jani Beg ends so the authentic 1357-1359 Great Troubles crisis proceeds (v21.0).
 oe_glh_w5_do = {
-    if = {
-        limit = { country_exists = c:GLH }
-        c:GLH = {
-            if = { limit = { has_country_modifier = oe_ghh_janibeg_pax } remove_country_modifier = oe_ghh_janibeg_pax }
-        }
-    }
-    kill_character = character:glh_jani_beg_borjigin
+	if = {
+		limit = { exists = character:glh_jani_beg_borjigin }
+	    if = {
+	        limit = { country_exists = c:GLH }
+	        c:GLH = {
+	            if = { limit = { has_country_modifier = oe_ghh_janibeg_pax } remove_country_modifier = oe_ghh_janibeg_pax }
+	        }
+	    }
+	    kill_character = character:glh_jani_beg_borjigin
+	}
 }
 # BYZ scope. W6: Berdi Beg dies; the line of Batu ends and the Horde falls apart.
 oe_glh_w6_do = {
-    if = {
-        limit = { country_exists = c:GLH }
-        c:GLH = {
-            if = { limit = { has_country_modifier = oe_ghh_janibeg_pax } remove_country_modifier = oe_ghh_janibeg_pax }
-        }
-    }
-    if = { limit = { country_exists = c:GLH character:glh_berdi_beg_borjigin ?= { is_alive = yes is_ruler_of = c:GLH } } kill_character = character:glh_berdi_beg_borjigin }
-    c:GLH ?= { oe_glh_unity_to_30 = yes }
+	if = {
+		limit = { exists = character:glh_berdi_beg_borjigin }
+	    if = {
+	        limit = { country_exists = c:GLH }
+	        c:GLH = {
+	            if = { limit = { has_country_modifier = oe_ghh_janibeg_pax } remove_country_modifier = oe_ghh_janibeg_pax }
+	        }
+	    }
+	    if = { limit = { country_exists = c:GLH character:glh_berdi_beg_borjigin ?= { is_alive = yes is_ruler_of = c:GLH } } kill_character = character:glh_berdi_beg_borjigin }
+	    c:GLH ?= { oe_glh_unity_to_30 = yes }
+	}
 }
 # BYZ scope. W7: Kulikovo. Moscow wins glory at a heavy cost in men; the Horde loses unity and prestige. No war.
 oe_glh_w7_do = {

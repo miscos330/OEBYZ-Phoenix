@@ -1,12 +1,19 @@
-﻿# Country scope. All country forms qualify for membership.
+﻿# Country scope. All country forms qualify for membership (BYZ or formed ROM + subjects).
 oe_pillars_eligible_trigger = {
     OR = {
-        tag = BYZ
-        is_subject_of = c:BYZ
-        AND = { exists = top_overlord top_overlord = c:BYZ }
+        oe_is_phoenix_empire = yes
+        oe_subject_of_phoenix_empire = yes
+        AND = {
+            is_subject = yes
+            trigger_if = {
+                limit = { is_subject = yes exists = top_overlord }
+                top_overlord ?= { oe_is_phoenix_empire = yes }
+            }
+            trigger_else = { always = no }
+        }
     }
 }
-oe_pillars_empire_trigger = { tag = BYZ }
+oe_pillars_empire_trigger = { oe_is_phoenix_empire = yes }
 # PAUSED 2026-09-26: noble countries replaced by domestic dynasties.
 # oe_pillars_noble_trigger = {
 #     oe_pillars_eligible_trigger = yes
@@ -16,7 +23,7 @@ oe_pillars_noble_trigger = { always = no }
 
 oe_pillars_theme_trigger = {
     oe_pillars_eligible_trigger = yes
-    NOT = { tag = BYZ }
+    NOT = { oe_is_phoenix_empire = yes }
     NOT = { oe_pillars_noble_trigger = yes }
     has_reform = government_reform:oe_byz_theme_system_subject
 
@@ -24,7 +31,7 @@ oe_pillars_theme_trigger = {
 }
 oe_pillars_subject_trigger = {
     oe_pillars_eligible_trigger = yes
-    NOT = { tag = BYZ }
+    NOT = { oe_is_phoenix_empire = yes }
     NOT = { oe_pillars_noble_trigger = yes }
     NOT = { oe_pillars_theme_trigger = yes }
     country_type = location

@@ -157,19 +157,13 @@ oe_gr_emperor_escape = {
 oe_gr_reactionary_uprising = {
     oe_gr_snapshot_country = yes
     location:constantinople = { save_scope_as = oe_gr_protected }
-    # Province first, then a non-Constantinople location inside it.
-    random_province = {
+    # Non-Constantinople owned location with parent pops (flattened from random_province -> any_location_in_province -> any_pop).
+    random_owned_location = {
         limit = {
-            any_location_in_province = {
-                owner = scope:oe_gr_parent
-                this != location:constantinople
-                any_pop = { owner = scope:oe_gr_parent }
-            }
+            this != location:constantinople
+            any_pop = { owner = scope:oe_gr_parent }
         }
-        random_location_in_province = {
-            limit = { owner = scope:oe_gr_parent this != location:constantinople any_pop = { owner = scope:oe_gr_parent } }
-            save_scope_as = oe_gr_origin
-        }
+        save_scope_as = oe_gr_origin
     }
     if = {
         limit = { exists = scope:oe_gr_origin }

@@ -10,9 +10,9 @@ oe_theme_skill_con = { value = 50 if = { limit = { exists = ruler } value = rule
 # Highest of the strategos' three abilities: min = raises the value to at least that ability.
 oe_theme_best_skill = { value = 50 if = { limit = { exists = ruler } value = ruler.adm min = ruler.dip min = ruler.mil } }
 oe_theme_tenure_years = { value = 0 if = { limit = { has_variable = oe_theme_tenure } value = var:oe_theme_tenure divide = 12 } }
-oe_theme_jurisdiction_size = { value = 0 every_owned_foreign_building_location = { limit = { owner ?= c:BYZ } add = 1 } }
-oe_theme_official_cost = { value = oe_theme_jurisdiction_size multiply = 0.2 }
-oe_theme_taxfarm_gain = { value = oe_theme_jurisdiction_size multiply = 0.5 }
+oe_theme_jurisdiction_size = { value = 0 every_owned_foreign_building_location = { limit = { oe_owned_by_phoenix_empire = yes } add = 1 } }
+oe_theme_official_cost = { value = oe_theme_jurisdiction_size multiply = 0.8 }
+oe_theme_taxfarm_gain = { value = oe_theme_jurisdiction_size multiply = 2.0 }
 
 # Line bonus from the course (subject type package) plus the province status; the name is kept from stage 2.
 oe_theme_type_bonus_1 = { # 军务
@@ -60,7 +60,7 @@ oe_tl_c_skill = { # 将军能力：-(最高能力 - 50) x 0.2
 }
 oe_tl_c_kin = { # 将军身份
     value = 0
-    if = { limit = { has_ruler = yes ruler = { has_dynasty = yes } country_exists = c:BYZ c:BYZ = { has_ruler = yes ruler = { has_dynasty = yes } } ruler = { dynasty ?= c:BYZ.ruler.dynasty } } add = 10 }
+    if = { limit = { has_ruler = yes ruler = { has_dynasty = yes } has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire global_var:oe_phoenix_empire = { has_ruler = yes ruler = { has_dynasty = yes } } ruler = { dynasty ?= global_var:oe_phoenix_empire.ruler.dynasty } } add = 10 }
     if = { limit = { has_ruler = yes ruler = { has_character_modifier = oe_byz_caesar_modifier } } add = 15 }
 }
 oe_tl_c_tenure = { # 任职时间：前 3 年 +5；之后每年 -2，最多 -20
@@ -68,11 +68,12 @@ oe_tl_c_tenure = { # 任职时间：前 3 年 +5；之后每年 -2，最多 -20
     if = { limit = { oe_theme_tenure_years < 3 } add = 5 }
     else = { add = { value = oe_theme_tenure_years subtract = 3 multiply = -2 min = -20 } }
 }
-oe_tl_c_dist = { # 离首都远近（辖区表）
+oe_tl_c_dist = { # 离首都远近（辖区表 + WP11 近卫大区远疆减负）
     value = 0
     if = { limit = { var:oe_theme_distance ?= 1 } add = 5 }
     else_if = { limit = { var:oe_theme_distance ?= 3 } add = -5 }
     else_if = { limit = { var:oe_theme_distance ?= 4 } add = -10 }
+    add = oe_theme_emp_dist_prf_relief
 }
 oe_tl_c_course = { # 方针与地位
     value = 0
@@ -96,16 +97,16 @@ oe_tl_c_pay = { # 军饷拨付
 }
 oe_tl_c_legit = { # 皇帝合法性：(合法性 - 50) x 0.2
     value = 0
-    if = { limit = { country_exists = c:BYZ } add = { value = c:BYZ.legitimacy subtract = 50 multiply = 0.2 } }
+    if = { limit = { has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire } add = { value = global_var:oe_phoenix_empire.legitimacy subtract = 50 multiply = 0.2 } }
 }
 oe_tl_c_mil = { # 皇帝与将军的军事能力
     value = 0
-    if = { limit = { exists = ruler country_exists = c:BYZ exists = c:BYZ.ruler c:BYZ.ruler.mil >= ruler.mil } add = 5 }
+    if = { limit = { exists = ruler has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire exists = global_var:oe_phoenix_empire.ruler global_var:oe_phoenix_empire.ruler.mil >= ruler.mil } add = 5 }
     else = { add = -5 }
 }
 oe_tl_c_intrigue = { # 宫廷阴谋
     value = 0
-    if = { limit = { country_exists = c:BYZ c:BYZ = { any_active_disaster = { disaster_type = disaster_type:oe_byzantine_intrigue } } } add = -10 }
+    if = { limit = { has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire global_var:oe_phoenix_empire = { any_active_disaster = { disaster_type = disaster_type:oe_byzantine_intrigue } } } add = -10 }
 }
 oe_tl_c_deter = { # 平叛威慑（反叛阶段设置）
     value = 0

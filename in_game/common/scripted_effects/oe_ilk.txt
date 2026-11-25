@@ -417,21 +417,24 @@ oe_ilk_w7_run = {
 # r19, probe 6: the annexation in the middle of the war works; whether the war then leaves the annexer's list is the
 # first thing to look at in game (readout oe_ilk_rd_jal).
 oe_ilk_w1_do = {
-    if = {
-        limit = { character:hlg_musa_khan ?= { is_alive = yes } }
-        if = {
-            limit = { oe_ilk_jal_alive = yes global_var:oe_ilk_jal = { has_ruler = yes } }
-            global_var:oe_ilk_jal = { ruler = { save_scope_as = oe_ilk_jal_ruler } }
-            kill_character = { target = character:hlg_musa_khan reason = execution killer = scope:oe_ilk_jal_ruler }
-        }
-        else = { kill_character = { target = character:hlg_musa_khan reason = execution } }
-    }
-    # Shaikh Ali Qushji of Esfarayen, Musa's ally, died with him (who had him killed is told two ways: no killer).
-    if = {
-        limit = { country_exists = c:SFR c:SFR = { oe_ilk_ai = yes } character:sfr_shaikh_ali_qushji ?= { is_alive = yes is_ruler_of = c:SFR } }
-        kill_character = { target = character:sfr_shaikh_ali_qushji reason = execution }
-    }
-    global_var:oe_ilk_jal = { annex_country = { country = c:HLG reason = Diplomatic transfer = yes } }
+	if = {
+		limit = { exists = character:hlg_musa_khan exists = character:sfr_shaikh_ali_qushji }
+	    if = {
+	        limit = { character:hlg_musa_khan ?= { is_alive = yes } }
+	        if = {
+	            limit = { oe_ilk_jal_alive = yes global_var:oe_ilk_jal = { has_ruler = yes } }
+	            global_var:oe_ilk_jal = { ruler = { save_scope_as = oe_ilk_jal_ruler } }
+	            kill_character = { target = character:hlg_musa_khan reason = execution killer = scope:oe_ilk_jal_ruler }
+	        }
+	        else = { kill_character = { target = character:hlg_musa_khan reason = execution } }
+	    }
+	    # Shaikh Ali Qushji of Esfarayen, Musa's ally, died with him (who had him killed is told two ways: no killer).
+	    if = {
+	        limit = { country_exists = c:SFR c:SFR = { oe_ilk_ai = yes } character:sfr_shaikh_ali_qushji ?= { is_alive = yes is_ruler_of = c:SFR } }
+	        kill_character = { target = character:sfr_shaikh_ali_qushji reason = execution }
+	    }
+	    global_var:oe_ilk_jal = { annex_country = { country = c:HLG reason = Diplomatic transfer = yes } }
+	}
 }
 # BYZ scope. w2 the Western merchants leave Tabriz (Genoa's boycotts of 1340 and 1342): the road by Tabriz and
 # Trebizond thins out. No pop-up: the empire has no choice to make.
@@ -457,18 +460,21 @@ oe_ilk_w2_do = {
 # BYZ scope. w3 Sutay changes hands (1343): Ibrahim Shah, backed by the Chobanids, kills Hajji Taghay and rules. The
 # Sutayids leave the Jalayirids; they do not become Chobanid subjects (design 6.5).
 oe_ilk_w3_do = {
-    c:SUT = { set_new_ruler = character:sut_ibrahim_sah }
-    if = {
-        limit = { character:sut_hajji_taghay ?= { is_alive = yes } }
-        kill_character = { target = character:sut_hajji_taghay reason = assassination killer = character:sut_ibrahim_sah }
-    }
-    if = {
-        limit = { oe_ilk_jal_alive = yes global_var:oe_ilk_jal = { is_ai = yes } }
-        if = { limit = { c:SUT = { is_subject_of = global_var:oe_ilk_jal } } global_var:oe_ilk_jal = { cancel_subject = c:SUT } }
-        c:SUT = { add_opinion = { modifier = oe_ilk_bw_sut_jal target = global_var:oe_ilk_jal } }
-    }
-    c:SUT = { add_opinion = { modifier = oe_ilk_bw_sut_chb target = c:CHB } }
-    c:CHB = { add_opinion = { modifier = oe_ilk_bw_sut_chb target = c:SUT } }
+	if = {
+		limit = { exists = character:sut_ibrahim_sah exists = character:sut_hajji_taghay }
+	    c:SUT = { set_new_ruler = character:sut_ibrahim_sah }
+	    if = {
+	        limit = { character:sut_hajji_taghay ?= { is_alive = yes } }
+	        kill_character = { target = character:sut_hajji_taghay reason = assassination killer = character:sut_ibrahim_sah }
+	    }
+	    if = {
+	        limit = { oe_ilk_jal_alive = yes global_var:oe_ilk_jal = { is_ai = yes } }
+	        if = { limit = { c:SUT = { is_subject_of = global_var:oe_ilk_jal } } global_var:oe_ilk_jal = { cancel_subject = c:SUT } }
+	        c:SUT = { add_opinion = { modifier = oe_ilk_bw_sut_jal target = global_var:oe_ilk_jal } }
+	    }
+	    c:SUT = { add_opinion = { modifier = oe_ilk_bw_sut_chb target = c:CHB } }
+	    c:CHB = { add_opinion = { modifier = oe_ilk_bw_sut_chb target = c:SUT } }
+	}
 }
 # BYZ scope. w4 Karanbuk (September-October 1343): Eretna defeats the army the Chobanids sent and rules as a sovereign
 # from then on. global oe_ilk_w4_did: 1 freed of the Jalayirids + 10 the title of sultan + 100 Darende back.
@@ -513,14 +519,17 @@ oe_ilk_w4_do = {
 }
 # BYZ scope. w5 Hasan Kuchak dies at the end of 1343 (killed at Tabriz); Malek Ashraf takes the Chobanid throne.
 oe_ilk_w5_do = {
-    if = {
-        limit = { character:chb_malek_ashraf ?= { is_alive = yes is_ruler = no } }
-        c:CHB = { set_new_ruler = character:chb_malek_ashraf }
-    }
-    if = {
-        limit = { character:chb_hasan_kuchak ?= { is_alive = yes } }
-        kill_character = { target = character:chb_hasan_kuchak reason = assassination }
-    }
+	if = {
+		limit = { exists = character:chb_malek_ashraf exists = character:chb_hasan_kuchak }
+	    if = {
+	        limit = { character:chb_malek_ashraf ?= { is_alive = yes is_ruler = no } }
+	        c:CHB = { set_new_ruler = character:chb_malek_ashraf }
+	    }
+	    if = {
+	        limit = { character:chb_hasan_kuchak ?= { is_alive = yes } }
+	        kill_character = { target = character:chb_hasan_kuchak reason = assassination }
+	    }
+	}
 }
 # BYZ scope. w6, The White Sheep (AQQ, capital palu): the owner X of palu gives the tag its home locations.
 # r19, probe 1: a build from cores brought fewer than two locations. r20, probe 10: a location handed to a tag that
@@ -760,29 +769,32 @@ oe_ilk_test_next = {
 # BYZ scope. The alternative of w1 (design 6.4; generator switch W1_ANNEX = False): Musa Khan is only put to death and
 # his side lives on. For the in-game comparison with the annexation.
 oe_ilk_test_w1x = {
-    oe_ilk_test_begin = yes
-    if = { limit = { has_global_variable = oe_ilk_w1 } debug_log = "oe_ilk test: w1 is already recorded (world [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_world_a')|0] sheep [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_sheep')|0] home [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_home')|0]); reset first" }
-    else_if = {
-        limit = { oe_ilk_w1_who = yes character:hlg_musa_khan ?= { is_alive = yes is_ruler_of = c:HLG } }
-        if = {
-            limit = { character:hlg_musa_khan ?= { is_alive = yes } }
-            if = {
-                limit = { oe_ilk_jal_alive = yes global_var:oe_ilk_jal = { has_ruler = yes } }
-                global_var:oe_ilk_jal = { ruler = { save_scope_as = oe_ilk_jal_ruler } }
-                kill_character = { target = character:hlg_musa_khan reason = execution killer = scope:oe_ilk_jal_ruler }
-            }
-            else = { kill_character = { target = character:hlg_musa_khan reason = execution } }
-        }
-        # Shaikh Ali Qushji of Esfarayen, Musa's ally, died with him (who had him killed is told two ways: no killer).
-        if = {
-            limit = { country_exists = c:SFR c:SFR = { oe_ilk_ai = yes } character:sfr_shaikh_ali_qushji ?= { is_alive = yes is_ruler_of = c:SFR } }
-            kill_character = { target = character:sfr_shaikh_ali_qushji reason = execution }
-        }
-        if = { limit = { NOT = { character:hlg_musa_khan ?= { is_alive = yes } } } set_global_variable = { name = oe_ilk_w1 value = 1 } }
-        else = { set_global_variable = { name = oe_ilk_w1 value = 4 } }
-        debug_log = "oe_ilk test: w1 without the annexation (world [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_world_a')|0] sheep [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_sheep')|0] home [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_home')|0])"
-    }
-    else = { debug_log = "oe_ilk test: w1 (execution only) cannot run now" }
+	if = {
+		limit = { exists = character:hlg_musa_khan exists = character:sfr_shaikh_ali_qushji }
+	    oe_ilk_test_begin = yes
+	    if = { limit = { has_global_variable = oe_ilk_w1 } debug_log = "oe_ilk test: w1 is already recorded (world [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_world_a')|0] sheep [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_sheep')|0] home [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_home')|0]); reset first" }
+	    else_if = {
+	        limit = { oe_ilk_w1_who = yes character:hlg_musa_khan ?= { is_alive = yes is_ruler_of = c:HLG } }
+	        if = {
+	            limit = { character:hlg_musa_khan ?= { is_alive = yes } }
+	            if = {
+	                limit = { oe_ilk_jal_alive = yes global_var:oe_ilk_jal = { has_ruler = yes } }
+	                global_var:oe_ilk_jal = { ruler = { save_scope_as = oe_ilk_jal_ruler } }
+	                kill_character = { target = character:hlg_musa_khan reason = execution killer = scope:oe_ilk_jal_ruler }
+	            }
+	            else = { kill_character = { target = character:hlg_musa_khan reason = execution } }
+	        }
+	        # Shaikh Ali Qushji of Esfarayen, Musa's ally, died with him (who had him killed is told two ways: no killer).
+	        if = {
+	            limit = { country_exists = c:SFR c:SFR = { oe_ilk_ai = yes } character:sfr_shaikh_ali_qushji ?= { is_alive = yes is_ruler_of = c:SFR } }
+	            kill_character = { target = character:sfr_shaikh_ali_qushji reason = execution }
+	        }
+	        if = { limit = { NOT = { character:hlg_musa_khan ?= { is_alive = yes } } } set_global_variable = { name = oe_ilk_w1 value = 1 } }
+	        else = { set_global_variable = { name = oe_ilk_w1 value = 4 } }
+	        debug_log = "oe_ilk test: w1 without the annexation (world [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_world_a')|0] sheep [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_sheep')|0] home [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_home')|0])"
+	    }
+	    else = { debug_log = "oe_ilk test: w1 (execution only) cannot run now" }
+	}
 }
 # Any scope. Test preparation for w3, w4 and w5, which need the Chobanids: vanilla's flavor_chb.1 (1338-1343, 5% a
 # month for the Jalayirids) is sent to JAL now. It builds CHB around Tabriz when Hasan Kuchak lives and JAL holds tabriz.
@@ -959,12 +971,15 @@ oe_ilk_w15_run = {
 # BYZ scope. w8 Jani Beg comes south (1357): the khan of the Golden Horde takes Tabriz and has Malik Ashraf put to
 # death; the Chobanids are left leaderless. Before the Golden Horde line's W5 (Jani Beg's death, from 1357.7).
 oe_ilk_w8_do = {
-    if = {
-        limit = { character:glh_jani_beg_borjigin ?= { is_alive = yes } }
-        kill_character = { target = character:chb_malek_ashraf reason = execution killer = character:glh_jani_beg_borjigin }
-    }
-    else = { kill_character = { target = character:chb_malek_ashraf reason = execution } }
-    c:CHB = { add_country_modifier = { modifier = oe_ilk_leaderless years = 5 mode = replace } }
+	if = {
+		limit = { exists = character:chb_malek_ashraf exists = character:glh_jani_beg_borjigin }
+	    if = {
+	        limit = { character:glh_jani_beg_borjigin ?= { is_alive = yes } }
+	        kill_character = { target = character:chb_malek_ashraf reason = execution killer = character:glh_jani_beg_borjigin }
+	    }
+	    else = { kill_character = { target = character:chb_malek_ashraf reason = execution } }
+	    c:CHB = { add_country_modifier = { modifier = oe_ilk_leaderless years = 5 mode = replace } }
+	}
 }
 # BYZ scope. w9 the Jalayirids take Tabriz (1358-1360, made one step; design 3.5 note 2): a peaceful annexation of the
 # Chobanids. Their subjects are counted first (global oe_ilk_w9_subs) for the in-game check of what becomes of them;
@@ -1273,11 +1288,14 @@ oe_ilk_test_tim = {
 }
 # Any scope. Test preparation for w8: Jani Beg rules the Golden Horde now (the Golden Horde line's W3 does the same).
 oe_ilk_test_jani = {
-    if = {
-        limit = { country_exists = c:GLH character:glh_jani_beg_borjigin ?= { is_alive = yes is_ruler = no } }
-        c:GLH = { set_new_ruler = character:glh_jani_beg_borjigin }
-    }
-    else = { debug_log = "oe_ilk test: the Golden Horde is gone or Jani Beg cannot take its throne" }
+	if = {
+		limit = { exists = character:glh_jani_beg_borjigin }
+	    if = {
+	        limit = { country_exists = c:GLH character:glh_jani_beg_borjigin ?= { is_alive = yes is_ruler = no } }
+	        c:GLH = { set_new_ruler = character:glh_jani_beg_borjigin }
+	    }
+	    else = { debug_log = "oe_ilk test: the Golden Horde is gone or Jani Beg cannot take its throne" }
+	}
 }
 # BYZ scope. Show .2 / .3 now: the window, calm and the lock are left out; the event's own trigger is checked.
 oe_ilk_test_3 = {
@@ -1382,8 +1400,11 @@ oe_ilk_w17_do = {
 # BYZ scope. w18 Togha Temur's death (December 1353): the last khan of Gurgan is murdered by the Sarbadars, who gain
 # prestige. No killer is named (who struck the blow is told several ways).
 oe_ilk_w18_do = {
-    kill_character = { target = character:grg_togha_temur reason = assassination }
-    c:SRB = { add_prestige = prestige_mild_bonus }
+	if = {
+		limit = { exists = character:grg_togha_temur }
+	    kill_character = { target = character:grg_togha_temur reason = assassination }
+	    c:SRB = { add_prestige = prestige_mild_bonus }
+	}
 }
 oe_ilk_w18_after = {
     # Gurgan's claim to the Ilkhanate goes with Togha Temur (design 6.11; W18_CLAIMANT). oe_ilk_w18_claim: 1 taken, 2 it
@@ -1407,7 +1428,10 @@ oe_ilk_w19_do = {
 # BYZ scope. w20 Shah Shoja (1358): the son takes his father's throne. The father was blinded and kept prisoner and died
 # in 1363: he is not killed here (design).
 oe_ilk_w20_do = {
-    c:MZF = { set_new_ruler = character:mzf_shah_shoja }
+	if = {
+		limit = { exists = character:mzf_shah_shoja }
+	    c:MZF = { set_new_ruler = character:mzf_shah_shoja }
+	}
 }
 # BYZ scope. w21 Herat (1381-1383): the Kartids of Herat bow to Timur; a former overlord, Gurgan, lets them go
 # first (W21_SUBJECT).
@@ -1694,52 +1718,55 @@ oe_ilk_test_p15 = {
     else = { debug_log = "oe_ilk test prep: w15 is still not ready (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
 }
 oe_ilk_test_p16 = {
-    oe_ilk_test_begin = yes
-    oe_ilk_test_tim_build = yes
-    # Timur himself dies (w16 comes after his death): from now on nothing that needs him alive can be tried in this game
-    if = { limit = { character:chg_timur_lame_borjigin ?= { is_alive = yes } } kill_character = { target = character:chg_timur_lame_borjigin } }
-    if = {
-        limit = { country_exists = c:TIM }
-        # the Black Sheep there: they become Timur's vassal (the "freed" branch); gone: two home locations to Timur (the
-        # "rebuilt" branch)
-        if = {
-            limit = { country_exists = c:QAR }
-            if = {
-                limit = { c:QAR = { oe_ilk_ai = yes NOT = { is_subject_of = c:TIM } } }
-                if = { limit = { country_exists = c:QAR c:QAR = { is_subject = yes overlord ?= { is_ai = yes oe_heg_byz_bloc = no } } } c:QAR = { overlord = { cancel_subject = c:QAR } } }
-                c:QAR = { make_subject_of = { target = c:TIM type = subject_type:vassal } }
-            }
-        }
-        else = {
-            if = {
-                limit = { location:ercis = { has_owner = yes has_siege = no owner = { oe_ilk_ai = yes NOT = { this = c:TIM } } } }
-                location:ercis = { owner = { save_scope_as = oe_ilk_tp_o } }
-                if = {
-                    limit = { location:ercis = { is_capital = yes } }
-                    scope:oe_ilk_tp_o = {
-                        random_owned_location = { limit = { NOT = { this = location:ercis } has_siege = no } save_scope_as = oe_ilk_tp_cap_ercis }
-                        if = { limit = { exists = scope:oe_ilk_tp_cap_ercis } set_capital = scope:oe_ilk_tp_cap_ercis }
-                    }
-                }
-                location:ercis = { if = { limit = { is_capital = no } change_location_owner = c:TIM } }
-            }
-            if = {
-                limit = { location:bargiri = { has_owner = yes has_siege = no owner = { oe_ilk_ai = yes NOT = { this = c:TIM } } } }
-                location:bargiri = { owner = { save_scope_as = oe_ilk_tp_o } }
-                if = {
-                    limit = { location:bargiri = { is_capital = yes } }
-                    scope:oe_ilk_tp_o = {
-                        random_owned_location = { limit = { NOT = { this = location:bargiri } has_siege = no } save_scope_as = oe_ilk_tp_cap_bargiri }
-                        if = { limit = { exists = scope:oe_ilk_tp_cap_bargiri } set_capital = scope:oe_ilk_tp_cap_bargiri }
-                    }
-                }
-                location:bargiri = { if = { limit = { is_capital = no } change_location_owner = c:TIM } }
-            }
-        }
-    }
-    else = { debug_log = "oe_ilk test prep w16: Timur's state could not be built" }
-    if = { limit = { oe_ilk_w16_ok = yes } debug_log = "oe_ilk test prep: w16 is ready; press its button (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
-    else = { debug_log = "oe_ilk test prep: w16 is still not ready (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
+	if = {
+		limit = { exists = character:chg_timur_lame_borjigin }
+	    oe_ilk_test_begin = yes
+	    oe_ilk_test_tim_build = yes
+	    # Timur himself dies (w16 comes after his death): from now on nothing that needs him alive can be tried in this game
+	    if = { limit = { character:chg_timur_lame_borjigin ?= { is_alive = yes } } kill_character = { target = character:chg_timur_lame_borjigin } }
+	    if = {
+	        limit = { country_exists = c:TIM }
+	        # the Black Sheep there: they become Timur's vassal (the "freed" branch); gone: two home locations to Timur (the
+	        # "rebuilt" branch)
+	        if = {
+	            limit = { country_exists = c:QAR }
+	            if = {
+	                limit = { c:QAR = { oe_ilk_ai = yes NOT = { is_subject_of = c:TIM } } }
+	                if = { limit = { country_exists = c:QAR c:QAR = { is_subject = yes overlord ?= { is_ai = yes oe_heg_byz_bloc = no } } } c:QAR = { overlord = { cancel_subject = c:QAR } } }
+	                c:QAR = { make_subject_of = { target = c:TIM type = subject_type:vassal } }
+	            }
+	        }
+	        else = {
+	            if = {
+	                limit = { location:ercis = { has_owner = yes has_siege = no owner = { oe_ilk_ai = yes NOT = { this = c:TIM } } } }
+	                location:ercis = { owner = { save_scope_as = oe_ilk_tp_o } }
+	                if = {
+	                    limit = { location:ercis = { is_capital = yes } }
+	                    scope:oe_ilk_tp_o = {
+	                        random_owned_location = { limit = { NOT = { this = location:ercis } has_siege = no } save_scope_as = oe_ilk_tp_cap_ercis }
+	                        if = { limit = { exists = scope:oe_ilk_tp_cap_ercis } set_capital = scope:oe_ilk_tp_cap_ercis }
+	                    }
+	                }
+	                location:ercis = { if = { limit = { is_capital = no } change_location_owner = c:TIM } }
+	            }
+	            if = {
+	                limit = { location:bargiri = { has_owner = yes has_siege = no owner = { oe_ilk_ai = yes NOT = { this = c:TIM } } } }
+	                location:bargiri = { owner = { save_scope_as = oe_ilk_tp_o } }
+	                if = {
+	                    limit = { location:bargiri = { is_capital = yes } }
+	                    scope:oe_ilk_tp_o = {
+	                        random_owned_location = { limit = { NOT = { this = location:bargiri } has_siege = no } save_scope_as = oe_ilk_tp_cap_bargiri }
+	                        if = { limit = { exists = scope:oe_ilk_tp_cap_bargiri } set_capital = scope:oe_ilk_tp_cap_bargiri }
+	                    }
+	                }
+	                location:bargiri = { if = { limit = { is_capital = no } change_location_owner = c:TIM } }
+	            }
+	        }
+	    }
+	    else = { debug_log = "oe_ilk test prep w16: Timur's state could not be built" }
+	    if = { limit = { oe_ilk_w16_ok = yes } debug_log = "oe_ilk test prep: w16 is ready; press its button (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
+	    else = { debug_log = "oe_ilk test prep: w16 is still not ready (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
+	}
 }
 oe_ilk_test_p17 = {
     oe_ilk_test_begin = yes
@@ -1764,14 +1791,17 @@ oe_ilk_test_p17 = {
     else = { debug_log = "oe_ilk test prep: w17 is still not ready (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
 }
 oe_ilk_test_p18 = {
-    oe_ilk_test_begin = yes
-    if = {
-        limit = { country_exists = c:GRG character:grg_togha_temur ?= { is_alive = yes is_ruler = no } }
-        c:GRG = { set_new_ruler = character:grg_togha_temur }
-    }
-    if = { limit = { NOT = { country_exists = c:SRB } } debug_log = "oe_ilk test prep w18: the Sarbadars are gone; this cannot be built" }
-    if = { limit = { oe_ilk_w18_ok = yes } debug_log = "oe_ilk test prep: w18 is ready; press its button (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
-    else = { debug_log = "oe_ilk test prep: w18 is still not ready (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
+	if = {
+		limit = { exists = character:grg_togha_temur }
+	    oe_ilk_test_begin = yes
+	    if = {
+	        limit = { country_exists = c:GRG character:grg_togha_temur ?= { is_alive = yes is_ruler = no } }
+	        c:GRG = { set_new_ruler = character:grg_togha_temur }
+	    }
+	    if = { limit = { NOT = { country_exists = c:SRB } } debug_log = "oe_ilk test prep w18: the Sarbadars are gone; this cannot be built" }
+	    if = { limit = { oe_ilk_w18_ok = yes } debug_log = "oe_ilk test prep: w18 is ready; press its button (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
+	    else = { debug_log = "oe_ilk test prep: w18 is still not ready (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
+	}
 }
 oe_ilk_test_p19 = {
     oe_ilk_test_begin = yes
@@ -1796,13 +1826,16 @@ oe_ilk_test_p19 = {
     else = { debug_log = "oe_ilk test prep: w19 is still not ready (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
 }
 oe_ilk_test_p20 = {
-    oe_ilk_test_begin = yes
-    if = {
-        limit = { country_exists = c:MZF character:mzf_mubariz_al_din_muhammad ?= { is_alive = yes is_ruler = no } }
-        c:MZF = { set_new_ruler = character:mzf_mubariz_al_din_muhammad }
-    }
-    if = { limit = { oe_ilk_w20_ok = yes } debug_log = "oe_ilk test prep: w20 is ready; press its button (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
-    else = { debug_log = "oe_ilk test prep: w20 is still not ready (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
+	if = {
+		limit = { exists = character:mzf_mubariz_al_din_muhammad }
+	    oe_ilk_test_begin = yes
+	    if = {
+	        limit = { country_exists = c:MZF character:mzf_mubariz_al_din_muhammad ?= { is_alive = yes is_ruler = no } }
+	        c:MZF = { set_new_ruler = character:mzf_mubariz_al_din_muhammad }
+	    }
+	    if = { limit = { oe_ilk_w20_ok = yes } debug_log = "oe_ilk test prep: w20 is ready; press its button (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
+	    else = { debug_log = "oe_ilk test prep: w20 is still not ready (ready2 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2')|0] ready2b [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready2b')|0] ready3 [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_ready3')|0] tim [GetCountry('BYZ').MakeScope.ScriptValue('oe_ilk_rd_tim')|0])" }
+	}
 }
 oe_ilk_test_p21 = {
     oe_ilk_test_begin = yes

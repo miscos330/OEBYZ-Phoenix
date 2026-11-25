@@ -7,7 +7,7 @@ oe_ti.1 = {
     image = "gfx/interface/illustrations/government/siege_battle_illustration.dds"
     title = oe_ti.1.t
     desc = oe_ti.1.d
-    trigger = { tag = BYZ any_subject = { has_variable = oe_ti_q_front } }
+    trigger = { is_rebel_country = no tag = BYZ any_subject = { has_variable = oe_ti_q_front } }
     immediate = { random_subject = { limit = { has_variable = oe_ti_q_front } save_scope_as = oe_ti_ev_theme } scope:oe_ti_ev_theme ?= { remove_variable = oe_ti_q_front ruler ?= { save_scope_as = oe_ti_ev_ruler } } }
     option = {
         name = oe_ti.1.a
@@ -29,7 +29,7 @@ oe_ti.2 = {
     image = "gfx/interface/illustrations/government/geopolitics_illustration.dds"
     title = oe_ti.2.t
     desc = oe_ti.2.d
-    trigger = { tag = BYZ any_subject = { has_variable = oe_ti_q_quiet } }
+    trigger = { is_rebel_country = no tag = BYZ any_subject = { has_variable = oe_ti_q_quiet } }
     immediate = { random_subject = { limit = { has_variable = oe_ti_q_quiet } save_scope_as = oe_ti_ev_theme } scope:oe_ti_ev_theme ?= { remove_variable = oe_ti_q_quiet ruler ?= { save_scope_as = oe_ti_ev_ruler } } }
     option = {
         name = oe_ti.2.a
@@ -51,7 +51,7 @@ oe_ti.21 = {
     image = "gfx/interface/illustrations/institutions/legalism.dds"
     title = oe_ti.21.t
     desc = oe_ti.21.d
-    trigger = { tag = BYZ has_variable = oe_ti_law_last }
+    trigger = { is_rebel_country = no tag = BYZ has_variable = oe_ti_law_last }
     immediate = { var:oe_ti_law_last ?= { save_scope_as = oe_ti_ev_theme } remove_variable = oe_ti_law_last }
     option = {
         name = oe_ti.21.a
@@ -66,7 +66,7 @@ oe_ti.30 = {
     image = "gfx/interface/illustrations/events/oe_ev_byz_senate_consistorium.dds"
     title = oe_ti.30.t
     desc = { first_valid = { triggered_desc = { trigger = { current_date < 1409.1.1 } desc = oe_ti.30.d_pre } desc = oe_ti.30.d } }
-    trigger = { tag = BYZ has_variable = oe_ti_dsp_last }
+    trigger = { is_rebel_country = no tag = BYZ has_variable = oe_ti_dsp_last }
     immediate = { var:oe_ti_dsp_last ?= { save_scope_as = oe_ti_ev_theme } remove_variable = oe_ti_dsp_last scope:oe_ti_ev_theme ?= { ruler ?= { save_scope_as = oe_ti_ev_ruler } } }
     option = {
         name = oe_ti.30.a
@@ -81,7 +81,7 @@ oe_ti.31 = {
     image = "gfx/interface/illustrations/disaster/struggle_for_royal_power.dds"
     title = oe_ti.31.t
     desc = { first_valid = { triggered_desc = { trigger = { current_date < 1384.1.1 exists = scope:oe_ti_ev_heir } desc = oe_ti.31.d1_pre } triggered_desc = { trigger = { current_date < 1384.1.1 } desc = oe_ti.31.d_pre } triggered_desc = { trigger = { exists = scope:oe_ti_ev_heir } desc = oe_ti.31.d1 } desc = oe_ti.31.d } }
-    trigger = { tag = BYZ any_subject = { has_variable = oe_ti_q_heir } }
+    trigger = { is_rebel_country = no tag = BYZ any_subject = { has_variable = oe_ti_q_heir } }
     immediate = { random_subject = { limit = { has_variable = oe_ti_q_heir } save_scope_as = oe_ti_ev_theme } scope:oe_ti_ev_theme ?= { remove_variable = oe_ti_q_heir set_variable = { name = oe_ti_heir_open months = 3 } var:oe_ti_despot_dyn ?= { save_scope_as = oe_ti_ev_dyn } } if = { limit = { exists = scope:oe_ti_ev_dyn scope:oe_ti_ev_theme = { exists = ruler ruler = { oe_ti_heir_ok = yes } } } scope:oe_ti_ev_theme = { ruler = { save_scope_as = oe_ti_ev_heir } } } if = { limit = { NOT = { exists = scope:oe_ti_ev_heir } exists = scope:oe_ti_ev_dyn exists = scope:oe_ti_ev_theme } ordered_character = { limit = { oe_ti_court_free = yes oe_ti_heir_ok = yes is_eligible_heir_baseline = scope:oe_ti_ev_theme } order_by = age_in_years save_scope_as = oe_ti_ev_heir } } }
     option = {
         name = oe_ti.31.a
@@ -112,7 +112,7 @@ oe_ti.32 = {
     image = "gfx/interface/illustrations/disaster/coup_attempt.dds"
     title = oe_ti.32.t
     desc = { first_valid = { triggered_desc = { trigger = { current_date < 1443.1.1 has_regent = yes } desc = oe_ti.32.d1_pre } triggered_desc = { trigger = { current_date < 1443.1.1 } desc = oe_ti.32.d_pre } triggered_desc = { trigger = { has_regent = yes } desc = oe_ti.32.d1 } desc = oe_ti.32.d } }
-    trigger = { tag = BYZ any_subject = { has_variable = oe_ti_q_covet } }
+    trigger = { exists = international_organization:oe_byz_empire_pillars is_rebel_country = no tag = BYZ any_subject = { has_variable = oe_ti_q_covet } }
     immediate = { random_subject = { limit = { has_variable = oe_ti_q_covet } save_scope_as = oe_ti_ev_theme } scope:oe_ti_ev_theme ?= { remove_variable = oe_ti_q_covet ruler ?= { save_scope_as = oe_ti_ev_ruler } } }
     option = {
         name = oe_ti.32.a
@@ -142,7 +142,7 @@ oe_ti.40 = {
     image = "gfx/interface/illustrations/government/geopolitics_expansion_illustration.dds"
     title = oe_ti.40.t
     desc = oe_ti.40.d
-    trigger = { tag = BYZ has_variable = oe_ti_settle_target }
+    trigger = { is_rebel_country = no tag = BYZ has_variable = oe_ti_settle_target }
     immediate = { var:oe_ti_settle_target ?= { save_scope_as = oe_ti_ev_theme } }
     option = {
         name = oe_ti.40.a
@@ -172,7 +172,7 @@ oe_ti.50 = {
     image = "gfx/interface/illustrations/institutions/feudalism.dds"
     title = oe_ti.50.t
     desc = oe_ti.50.d
-    trigger = { tag = BYZ any_subject = { has_variable = oe_ti_q_pronoia } }
+    trigger = { is_rebel_country = no tag = BYZ any_subject = { has_variable = oe_ti_q_pronoia } }
     immediate = { random_subject = { limit = { has_variable = oe_ti_q_pronoia } save_scope_as = oe_ti_ev_theme } scope:oe_ti_ev_theme ?= { remove_variable = oe_ti_q_pronoia ruler ?= { save_scope_as = oe_ti_ev_ruler } } }
     option = {
         name = oe_ti.50.a

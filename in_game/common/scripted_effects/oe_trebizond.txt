@@ -88,37 +88,43 @@ oe_tre_inf_add = {
 
 # BYZ scope, stage 0. Basil's death when vanilla flavor_tre.3 did not come (design 3.2, fallbacks A and B).
 oe_tre_fallback = {
-    if = { limit = { character:tre_basil_komnenos ?= { is_alive = yes } } set_variable = { name = oe_tre_bm value = var:oe_tre_now } }
-    if = {
-        limit = { oe_tre_fb_a = yes }
-        random = {
-            chance = oe_tre_fb_a_ch
-            kill_character = { target = character:tre_basil_komnenos }
-            c:TRE = { set_new_ruler = character:tre_irene_palaiologos }
-            set_variable = { name = oe_tre_fb value = 1 }
-            oe_tre_log = yes
-        }
-    }
-    else_if = {
-        limit = { oe_tre_fb_b = yes }
-        c:TRE = { set_new_ruler = character:tre_irene_palaiologos }
-        set_variable = { name = oe_tre_fb value = 2 }
-        oe_tre_log = yes
-    }
+	if = {
+		limit = { exists = character:tre_basil_komnenos exists = character:tre_irene_palaiologos }
+	    if = { limit = { character:tre_basil_komnenos ?= { is_alive = yes } } set_variable = { name = oe_tre_bm value = var:oe_tre_now } }
+	    if = {
+	        limit = { oe_tre_fb_a = yes }
+	        random = {
+	            chance = oe_tre_fb_a_ch
+	            kill_character = { target = character:tre_basil_komnenos }
+	            c:TRE = { set_new_ruler = character:tre_irene_palaiologos }
+	            set_variable = { name = oe_tre_fb value = 1 }
+	            oe_tre_log = yes
+	        }
+	    }
+	    else_if = {
+	        limit = { oe_tre_fb_b = yes }
+	        c:TRE = { set_new_ruler = character:tre_irene_palaiologos }
+	        set_variable = { name = oe_tre_fb value = 2 }
+	        oe_tre_log = yes
+	    }
+	}
 }
 
 # BYZ scope. .2: the boy John (later Alexios III), born at Trebizond on 5 October 1338, son of Basil and Irene of
 # Trebizond, created in the empire (not in the 1337 setup). Before that date he is created as a newborn.
 oe_tre_make_john = {
-    if = {
-        limit = { NOT = { var:oe_tre_john ?= { is_alive = yes } } }
-        if = {
-            limit = { current_date >= 1338.11.1 }
-            create_character = { first_name = name_john female = no dynasty = dynasty:komnenos_dynasty culture = culture:greek_culture religion = religion:orthodox birth_location = location:trebizond father = character:tre_basil_komnenos mother = character:tre_irene_trebizond birth_date = 1338.10.5 save_scope_as = oe_tre_new }
-        }
-        else = { create_character = { first_name = name_john female = no dynasty = dynasty:komnenos_dynasty culture = culture:greek_culture religion = religion:orthodox birth_location = location:trebizond father = character:tre_basil_komnenos mother = character:tre_irene_trebizond age = 0 save_scope_as = oe_tre_new } }
-        set_variable = { name = oe_tre_john value = scope:oe_tre_new }
-    }
+	if = {
+		limit = { exists = character:tre_basil_komnenos exists = character:tre_irene_trebizond }
+	    if = {
+	        limit = { NOT = { var:oe_tre_john ?= { is_alive = yes } } }
+	        if = {
+	            limit = { current_date >= 1338.11.1 }
+	            create_character = { first_name = name_john female = no dynasty = dynasty:komnenos_dynasty culture = culture:greek_culture religion = religion:orthodox birth_location = location:trebizond father = character:tre_basil_komnenos mother = character:tre_irene_trebizond birth_date = 1338.10.5 save_scope_as = oe_tre_new }
+	        }
+	        else = { create_character = { first_name = name_john female = no dynasty = dynasty:komnenos_dynasty culture = culture:greek_culture religion = religion:orthodox birth_location = location:trebizond father = character:tre_basil_komnenos mother = character:tre_irene_trebizond age = 0 save_scope_as = oe_tre_new } }
+	        set_variable = { name = oe_tre_john value = scope:oe_tre_new }
+	    }
+	}
 }
 # BYZ scope. .2: Irene's rival and the elder son go to Constantinople.
 oe_tre_send_rivals = {
@@ -129,116 +135,128 @@ oe_tre_send_rivals = {
 # BYZ scope. .4: who wins in July 1341. oe_tre_e4 = 1 Anna (history), 2 Irene keeps the throne and marries Michael
 # (only after .3 a, oe_tre_keep_ch), 3 no Anna to raise: the ruler stays.
 oe_tre_e4_do = {
-    set_variable = { name = oe_tre_e4 value = 1 }
-    if = {
-        limit = { has_variable = oe_tre_suitor oe_tre_mich_ok = yes oe_tre_irene_rules = yes }
-        random = { chance = oe_tre_keep_ch set_variable = { name = oe_tre_e4 value = 2 } }
-    }
-    if = { limit = { var:oe_tre_e4 = 1 NOT = { oe_tre_anna_ok = yes } } set_variable = { name = oe_tre_e4 value = 3 } }
-    if = {
-        limit = { var:oe_tre_e4 = 2 }
-        character:tre_michael_komnenos = { move_country = c:TRE marry_character_ignore_blocks = character:tre_irene_palaiologos }
-        c:TRE = { set_new_ruler = character:tre_michael_komnenos }
-        oe_tre_stage_to = { s = 3 }
-    }
-    else_if = {
-        limit = { var:oe_tre_e4 = 1 }
-        location:trebizond = { change_prosperity = prosperity_severe_penalty }
-        character:tre_anna_anachoutlou = { if = { limit = { NOT = { owner ?= c:TRE } } move_country = c:TRE } }
-        c:TRE = { set_new_ruler = character:tre_anna_anachoutlou }
-        character:tre_irene_palaiologos ?= { if = { limit = { is_alive = yes owner ?= c:TRE is_ruler = no } move_country = c:BYZ reset_ruler_title = {} } }
-        if = {
-            limit = { has_variable = oe_tre_suitor oe_tre_mich_ok = yes }
-            character:tre_michael_komnenos = { move_country = c:TRE set_variable = oe_tre_captive }
-        }
-        oe_tre_stage_to = { s = 2 }
-    }
-    else = {
-        location:trebizond = { change_prosperity = prosperity_severe_penalty }
-        oe_tre_stage_to = { s = 3 }
-    }
+	if = {
+		limit = { exists = character:tre_michael_komnenos exists = character:tre_irene_palaiologos exists = character:tre_anna_anachoutlou }
+	    set_variable = { name = oe_tre_e4 value = 1 }
+	    if = {
+	        limit = { has_variable = oe_tre_suitor oe_tre_mich_ok = yes oe_tre_irene_rules = yes }
+	        random = { chance = oe_tre_keep_ch set_variable = { name = oe_tre_e4 value = 2 } }
+	    }
+	    if = { limit = { var:oe_tre_e4 = 1 NOT = { oe_tre_anna_ok = yes } } set_variable = { name = oe_tre_e4 value = 3 } }
+	    if = {
+	        limit = { var:oe_tre_e4 = 2 }
+	        character:tre_michael_komnenos = { move_country = c:TRE marry_character_ignore_blocks = character:tre_irene_palaiologos }
+	        c:TRE = { set_new_ruler = character:tre_michael_komnenos }
+	        oe_tre_stage_to = { s = 3 }
+	    }
+	    else_if = {
+	        limit = { var:oe_tre_e4 = 1 }
+	        location:trebizond = { change_prosperity = prosperity_severe_penalty }
+	        character:tre_anna_anachoutlou = { if = { limit = { NOT = { owner ?= c:TRE } } move_country = c:TRE } }
+	        c:TRE = { set_new_ruler = character:tre_anna_anachoutlou }
+	        character:tre_irene_palaiologos ?= { if = { limit = { is_alive = yes owner ?= c:TRE is_ruler = no } move_country = c:BYZ reset_ruler_title = {} } }
+	        if = {
+	            limit = { has_variable = oe_tre_suitor oe_tre_mich_ok = yes }
+	            character:tre_michael_komnenos = { move_country = c:TRE set_variable = oe_tre_captive }
+	        }
+	        oe_tre_stage_to = { s = 2 }
+	    }
+	    else = {
+	        location:trebizond = { change_prosperity = prosperity_severe_penalty }
+	        oe_tre_stage_to = { s = 3 }
+	    }
+	}
 }
 
 # BYZ scope, hidden .91 (.5 a / b): John III goes home; certain after .5 a, oe_tre_succ_ch after .5 b.
 oe_tre_91 = {
-    if = {
-        limit = { var:oe_tre_st ?= 2 NOT = { has_global_variable = oe_tre_void } country_exists = c:TRE c:TRE = { is_ai = yes } character:tre_ioannes_iii_komnenos ?= { is_alive = yes is_ruler = no } }
-        set_variable = { name = oe_tre_ok91 value = 0 }
-        if = { limit = { var:oe_tre_q91 ?= 2 } set_variable = { name = oe_tre_ok91 value = 1 } }
-        else = { random = { chance = oe_tre_succ_ch set_variable = { name = oe_tre_ok91 value = 1 } } }
-        if = {
-            limit = { var:oe_tre_ok91 = 1 }
-            character:tre_ioannes_iii_komnenos = { move_country = c:TRE }
-            c:TRE = { set_new_ruler = character:tre_ioannes_iii_komnenos }
-            if = { limit = { character:tre_anna_anachoutlou ?= { is_alive = yes } } character:tre_anna_anachoutlou = { save_scope_as = oe_tre_anna_x } kill_character = { target = scope:oe_tre_anna_x reason = execution } }
-            if = { limit = { has_variable = oe_tre_pretender } remove_variable = oe_tre_pretender }
-            oe_tre_stage_to = { s = 4 }
-        }
-        else = {
-            oe_tre_inf_add = { n = -5 }
-            set_variable = { name = oe_tre_pretender value = character:tre_ioannes_iii_komnenos }
-            oe_tre_log = yes
-        }
-        remove_variable = oe_tre_ok91
-    }
-    if = { limit = { has_variable = oe_tre_q91 } remove_variable = oe_tre_q91 }
+	if = {
+		limit = { exists = character:tre_ioannes_iii_komnenos exists = character:tre_anna_anachoutlou }
+	    if = {
+	        limit = { var:oe_tre_st ?= 2 NOT = { has_global_variable = oe_tre_void } country_exists = c:TRE c:TRE = { is_ai = yes } character:tre_ioannes_iii_komnenos ?= { is_alive = yes is_ruler = no } }
+	        set_variable = { name = oe_tre_ok91 value = 0 }
+	        if = { limit = { var:oe_tre_q91 ?= 2 } set_variable = { name = oe_tre_ok91 value = 1 } }
+	        else = { random = { chance = oe_tre_succ_ch set_variable = { name = oe_tre_ok91 value = 1 } } }
+	        if = {
+	            limit = { var:oe_tre_ok91 = 1 }
+	            character:tre_ioannes_iii_komnenos = { move_country = c:TRE }
+	            c:TRE = { set_new_ruler = character:tre_ioannes_iii_komnenos }
+	            if = { limit = { character:tre_anna_anachoutlou ?= { is_alive = yes } } character:tre_anna_anachoutlou = { save_scope_as = oe_tre_anna_x } kill_character = { target = scope:oe_tre_anna_x reason = execution } }
+	            if = { limit = { has_variable = oe_tre_pretender } remove_variable = oe_tre_pretender }
+	            oe_tre_stage_to = { s = 4 }
+	        }
+	        else = {
+	            oe_tre_inf_add = { n = -5 }
+	            set_variable = { name = oe_tre_pretender value = character:tre_ioannes_iii_komnenos }
+	            oe_tre_log = yes
+	        }
+	        remove_variable = oe_tre_ok91
+	    }
+	    if = { limit = { has_variable = oe_tre_q91 } remove_variable = oe_tre_q91 }
+	}
 }
 
 # BYZ scope, .6 immediate: Michael on the throne, John III to the empire.
 oe_tre_6_do = {
-    set_variable = { name = oe_tre_e6 value = 2 }
-    if = { limit = { character:tre_michael_komnenos ?= { owner ?= c:TRE } } set_variable = { name = oe_tre_e6 value = 1 } }
-    character:tre_michael_komnenos = {
-        if = { limit = { NOT = { owner ?= c:TRE } } move_country = c:TRE }
-        if = { limit = { has_variable = oe_tre_captive } remove_variable = oe_tre_captive }
-    }
-    c:TRE = { set_new_ruler = character:tre_michael_komnenos }
-    character:tre_ioannes_iii_komnenos ?= { if = { limit = { is_alive = yes owner ?= c:TRE is_ruler = no } move_country = c:BYZ reset_ruler_title = {} } }
-    oe_tre_stage_to = { s = 5 }
+	if = {
+		limit = { exists = character:tre_michael_komnenos }
+	    set_variable = { name = oe_tre_e6 value = 2 }
+	    if = { limit = { character:tre_michael_komnenos ?= { owner ?= c:TRE } } set_variable = { name = oe_tre_e6 value = 1 } }
+	    character:tre_michael_komnenos = {
+	        if = { limit = { NOT = { owner ?= c:TRE } } move_country = c:TRE }
+	        if = { limit = { has_variable = oe_tre_captive } remove_variable = oe_tre_captive }
+	    }
+	    c:TRE = { set_new_ruler = character:tre_michael_komnenos }
+	    character:tre_ioannes_iii_komnenos ?= { if = { limit = { is_alive = yes owner ?= c:TRE is_ruler = no } move_country = c:BYZ reset_ruler_title = {} } }
+	    oe_tre_stage_to = { s = 5 }
+	}
 }
 
 # BYZ scope, hidden .92 (.8 a / b / c): the new emperor goes home. oe_tre_q92 = 1 the prince (var:oe_tre_cv), 2 John III.
 oe_tre_92 = {
-    if = {
-        limit = {
-            NOT = { has_global_variable = oe_tre_void }
-            country_exists = c:TRE c:TRE = { is_ai = yes }
-            OR = {
-                AND = { var:oe_tre_q92 ?= 2 oe_tre_pret_ok = yes }
-                AND = { var:oe_tre_q92 ?= 1 var:oe_tre_cv ?= { is_alive = yes is_ruler = no } }
-            }
-        }
-        if = {
-            limit = { var:oe_tre_q92 = 2 }
-            var:oe_tre_pretender = { save_scope_as = oe_tre_nr }
-            set_variable = { name = oe_tre_installed value = 2 }
-            remove_variable = oe_tre_pretender
-        }
-        else = {
-            var:oe_tre_cv = { save_scope_as = oe_tre_nr }
-            set_variable = { name = oe_tre_installed value = var:oe_tre_ck }
-        }
-        c:TRE = { ruler ?= { save_scope_as = oe_tre_or } }
-        scope:oe_tre_nr = { if = { limit = { NOT = { owner ?= c:TRE } } move_country = c:TRE } }
-        c:TRE = { set_new_ruler = scope:oe_tre_nr }
-        # The old ruler goes to Constantinople (history: Michael, deposed, in 1351); Anna would stay.
-        if = {
-            limit = { exists = scope:oe_tre_or scope:oe_tre_or = { is_alive = yes is_ruler = no owner ?= c:TRE NOT = { this = character:tre_anna_anachoutlou } } }
-            scope:oe_tre_or = { move_country = c:BYZ reset_ruler_title = {} }
-        }
-        # The boy's mother goes home with him and is regent if the engine set up a regency.
-        character:tre_irene_trebizond ?= { if = { limit = { is_alive = yes NOT = { owner ?= c:TRE } } move_country = c:TRE } }
-        if = {
-            limit = { scope:oe_tre_nr = { is_adult = no } c:TRE = { has_regent = yes } character:tre_irene_trebizond ?= { is_alive = yes owner ?= c:TRE } }
-            c:TRE = { set_regent = character:tre_irene_trebizond }
-        }
-        set_variable = { name = oe_tre_alx value = scope:oe_tre_nr }
-        if = { limit = { has_variable = oe_tre_q92_bride var:oe_tre_q92 = 1 } oe_tre_make_bride = yes }
-        oe_tre_stage_to = { s = 6 }
-        trigger_event_non_silently = { id = oe_tre.9 days = 30 }
-    }
-    else_if = { limit = { NOT = { has_global_variable = oe_tre_void } } oe_tre_end = { r = 6 } }
-    if = { limit = { has_variable = oe_tre_q92 } remove_variable = oe_tre_q92 } if = { limit = { has_variable = oe_tre_q92_bride } remove_variable = oe_tre_q92_bride }
+	if = {
+		limit = { exists = character:tre_anna_anachoutlou exists = character:tre_irene_trebizond }
+	    if = {
+	        limit = {
+	            NOT = { has_global_variable = oe_tre_void }
+	            country_exists = c:TRE c:TRE = { is_ai = yes }
+	            OR = {
+	                AND = { var:oe_tre_q92 ?= 2 oe_tre_pret_ok = yes }
+	                AND = { var:oe_tre_q92 ?= 1 var:oe_tre_cv ?= { is_alive = yes is_ruler = no } }
+	            }
+	        }
+	        if = {
+	            limit = { var:oe_tre_q92 = 2 }
+	            var:oe_tre_pretender = { save_scope_as = oe_tre_nr }
+	            set_variable = { name = oe_tre_installed value = 2 }
+	            remove_variable = oe_tre_pretender
+	        }
+	        else = {
+	            var:oe_tre_cv = { save_scope_as = oe_tre_nr }
+	            set_variable = { name = oe_tre_installed value = var:oe_tre_ck }
+	        }
+	        c:TRE = { ruler ?= { save_scope_as = oe_tre_or } }
+	        scope:oe_tre_nr = { if = { limit = { NOT = { owner ?= c:TRE } } move_country = c:TRE } }
+	        c:TRE = { set_new_ruler = scope:oe_tre_nr }
+	        # The old ruler goes to Constantinople (history: Michael, deposed, in 1351); Anna would stay.
+	        if = {
+	            limit = { exists = scope:oe_tre_or scope:oe_tre_or = { is_alive = yes is_ruler = no owner ?= c:TRE NOT = { this = character:tre_anna_anachoutlou } } }
+	            scope:oe_tre_or = { move_country = c:BYZ reset_ruler_title = {} }
+	        }
+	        # The boy's mother goes home with him and is regent if the engine set up a regency.
+	        character:tre_irene_trebizond ?= { if = { limit = { is_alive = yes NOT = { owner ?= c:TRE } } move_country = c:TRE } }
+	        if = {
+	            limit = { scope:oe_tre_nr = { is_adult = no } c:TRE = { has_regent = yes } character:tre_irene_trebizond ?= { is_alive = yes owner ?= c:TRE } }
+	            c:TRE = { set_regent = character:tre_irene_trebizond }
+	        }
+	        set_variable = { name = oe_tre_alx value = scope:oe_tre_nr }
+	        if = { limit = { has_variable = oe_tre_q92_bride var:oe_tre_q92 = 1 } oe_tre_make_bride = yes }
+	        oe_tre_stage_to = { s = 6 }
+	        trigger_event_non_silently = { id = oe_tre.9 days = 30 }
+	    }
+	    else_if = { limit = { NOT = { has_global_variable = oe_tre_void } } oe_tre_end = { r = 6 } }
+	    if = { limit = { has_variable = oe_tre_q92 } remove_variable = oe_tre_q92 } if = { limit = { has_variable = oe_tre_q92_bride } remove_variable = oe_tre_q92_bride }
+	}
 }
 # BYZ scope; scope:oe_tre_nr = the young emperor. .8 a: a bride of the imperial family, betrothed to him (Theodora
 # Kantakouzene while John VI reigns; otherwise a girl of the reigning dynasty), about 10 years old.
@@ -344,14 +362,17 @@ oe_tre_after = {
 # ---------------------------------------------------------------- test page (DEV_LINES in gen_trebizond.py), BYZ scope
 # Basil dies and Irene takes the throne of Trebizond (Trebizond must be run by the AI); .2 follows.
 oe_tre_test_start = {
-    set_variable = { name = oe_tre_now value = oe_ml_month_now }
-    if = {
-        limit = { country_exists = c:TRE c:TRE = { is_ai = yes } oe_tre_irene_alive = yes }
-        if = { limit = { oe_tre_basil_rules = yes } kill_character = { target = character:tre_basil_komnenos } }
-        character:tre_irene_palaiologos = { if = { limit = { NOT = { owner ?= c:TRE } } move_country = c:TRE } }
-        c:TRE = { set_new_ruler = character:tre_irene_palaiologos }
-        trigger_event_non_silently = { id = oe_tre.2 days = 1 }
-    }
+	if = {
+		limit = { exists = character:tre_basil_komnenos exists = character:tre_irene_palaiologos }
+	    set_variable = { name = oe_tre_now value = oe_ml_month_now }
+	    if = {
+	        limit = { country_exists = c:TRE c:TRE = { is_ai = yes } oe_tre_irene_alive = yes }
+	        if = { limit = { oe_tre_basil_rules = yes } kill_character = { target = character:tre_basil_komnenos } }
+	        character:tre_irene_palaiologos = { if = { limit = { NOT = { owner ?= c:TRE } } move_country = c:TRE } }
+	        c:TRE = { set_new_ruler = character:tre_irene_palaiologos }
+	        trigger_event_non_silently = { id = oe_tre.2 days = 1 }
+	    }
+	}
 }
 # The next event of the line at once, without windows and lock (event triggers still apply).
 oe_tre_test_next = {
@@ -378,22 +399,25 @@ oe_tre_test_next = {
 oe_tre_test_inf = { oe_tre_inf_add = { n = 20 } oe_tre_log = yes }
 # Straight to 1349: the prince goes home (.8); a boy of 11 is created when there is no candidate.
 oe_tre_test_1349 = {
-    set_variable = { name = oe_tre_now value = oe_ml_month_now }
-    if = {
-        limit = { country_exists = c:TRE c:TRE = { is_ai = yes } }
-        if = {
-            limit = { NOT = { oe_tre_cand_any = yes } }
-            create_character = { first_name = name_john female = no dynasty = dynasty:komnenos_dynasty culture = culture:greek_culture religion = religion:orthodox birth_location = location:trebizond father = character:tre_basil_komnenos mother = character:tre_irene_trebizond age = 11 save_scope_as = oe_tre_new }
-            set_variable = { name = oe_tre_john value = scope:oe_tre_new }
-        }
-        oe_tre_inf_init = yes
-        set_global_variable = oe_tre_begun
-        if = { limit = { has_global_variable = oe_tre_done } remove_global_variable = oe_tre_done }
-        if = { limit = { has_global_variable = oe_tre_void } remove_global_variable = oe_tre_void }
-        if = { limit = { NOT = { oe_tre_st15 = yes } } oe_tre_stage_to = { s = 5 } }
-        if = { limit = { has_variable = oe_tre_done_8 } remove_variable = oe_tre_done_8 } if = { limit = { has_variable = oe_tre_result } remove_variable = oe_tre_result } if = { limit = { has_variable = oe_tre_void_r } remove_variable = oe_tre_void_r }
-        trigger_event_non_silently = oe_tre.8
-    }
+	if = {
+		limit = { exists = character:tre_basil_komnenos exists = character:tre_irene_trebizond }
+	    set_variable = { name = oe_tre_now value = oe_ml_month_now }
+	    if = {
+	        limit = { country_exists = c:TRE c:TRE = { is_ai = yes } }
+	        if = {
+	            limit = { NOT = { oe_tre_cand_any = yes } }
+	            create_character = { first_name = name_john female = no dynasty = dynasty:komnenos_dynasty culture = culture:greek_culture religion = religion:orthodox birth_location = location:trebizond father = character:tre_basil_komnenos mother = character:tre_irene_trebizond age = 11 save_scope_as = oe_tre_new }
+	            set_variable = { name = oe_tre_john value = scope:oe_tre_new }
+	        }
+	        oe_tre_inf_init = yes
+	        set_global_variable = oe_tre_begun
+	        if = { limit = { has_global_variable = oe_tre_done } remove_global_variable = oe_tre_done }
+	        if = { limit = { has_global_variable = oe_tre_void } remove_global_variable = oe_tre_void }
+	        if = { limit = { NOT = { oe_tre_st15 = yes } } oe_tre_stage_to = { s = 5 } }
+	        if = { limit = { has_variable = oe_tre_done_8 } remove_variable = oe_tre_done_8 } if = { limit = { has_variable = oe_tre_result } remove_variable = oe_tre_result } if = { limit = { has_variable = oe_tre_void_r } remove_variable = oe_tre_void_r }
+	        trigger_event_non_silently = oe_tre.8
+	    }
+	}
 }
 # Clears every variable of the line (the rulers of Trebizond stay as they are).
 oe_tre_test_reset = {

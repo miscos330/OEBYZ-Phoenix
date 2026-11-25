@@ -260,46 +260,49 @@ oe_court_initialize = {
     if = {
         limit = { tag = BYZ oe_court_offices_active = yes NOT = { has_variable = oe_court_initialized } }
         set_variable = oe_court_initialized
-        character:byz_john_kantakouzenos ?= {
-            if = {
-                limit = {
-                    current_date = 1337.4.1
-                    is_alive = yes
-                    is_adult = yes
-                    OR = { owner = c:BYZ owner = { is_subject_of = c:BYZ is_subject_type = oe_noble } }
+        if = {
+            limit = { oe_start_is_1337 = yes }
+            character:byz_john_kantakouzenos ?= {
+                if = {
+                    limit = {
+                        current_date = 1337.4.1
+                        is_alive = yes
+                        is_adult = yes
+                        OR = { owner = c:BYZ owner = { is_subject_of = c:BYZ is_subject_type = oe_noble } }
+                    }
+                    if = {
+                        limit = { NOT = { OR = { has_estate = estate_type:clergy_estate has_estate = estate_type:nobles_estate has_estate = estate_type:crown_estate } } }
+                        change_character_estate = estate_type:nobles_estate
+                    }
+                    if = { limit = { in_cabinet = yes } owner = { remove_from_cabinet = prev } }
                 }
                 if = {
-                    limit = { NOT = { OR = { has_estate = estate_type:clergy_estate has_estate = estate_type:nobles_estate has_estate = estate_type:crown_estate } } }
-                    change_character_estate = estate_type:nobles_estate
+                    limit = { oe_court_incumbent_eligible = yes NOT = { has_variable = oe_court_office_held } }
+                    save_scope_as = oe_court_opening_appointee
+                    set_variable = oe_court_office_held
+                    c:BYZ = { set_variable = { name = oe_court_domestikos value = scope:oe_court_opening_appointee } } # 1337 restoration: megas domestikos
                 }
-                if = { limit = { in_cabinet = yes } owner = { remove_from_cabinet = prev } }
             }
-            if = {
-                limit = { oe_court_incumbent_eligible = yes NOT = { has_variable = oe_court_office_held } }
-                save_scope_as = oe_court_opening_appointee
-                set_variable = oe_court_office_held
-                c:BYZ = { set_variable = { name = oe_court_domestikos value = scope:oe_court_opening_appointee } } # 1337 restoration: megas domestikos
-            }
-        }
-        character:byz_alexios_apokaukos ?= {
-            if = {
-                limit = {
-                    current_date = 1337.4.1
-                    is_alive = yes
-                    is_adult = yes
-                    OR = { owner = c:BYZ owner = { is_subject_of = c:BYZ is_subject_type = oe_noble } }
+            character:byz_alexios_apokaukos ?= {
+                if = {
+                    limit = {
+                        current_date = 1337.4.1
+                        is_alive = yes
+                        is_adult = yes
+                        OR = { owner = c:BYZ owner = { is_subject_of = c:BYZ is_subject_type = oe_noble } }
+                    }
+                    if = {
+                        limit = { NOT = { OR = { has_estate = estate_type:clergy_estate has_estate = estate_type:nobles_estate has_estate = estate_type:crown_estate } } }
+                        change_character_estate = estate_type:nobles_estate
+                    }
+                    if = { limit = { in_cabinet = yes } owner = { remove_from_cabinet = prev } }
                 }
                 if = {
-                    limit = { NOT = { OR = { has_estate = estate_type:clergy_estate has_estate = estate_type:nobles_estate has_estate = estate_type:crown_estate } } }
-                    change_character_estate = estate_type:nobles_estate
+                    limit = { oe_court_incumbent_eligible = yes NOT = { has_variable = oe_court_office_held } }
+                    save_scope_as = oe_court_opening_appointee
+                    set_variable = oe_court_office_held
+                    c:BYZ = { set_variable = { name = oe_court_taxmaster value = scope:oe_court_opening_appointee } } # 1337 restoration: parakoimomenos, ran the finances; megas doux only in 1341
                 }
-                if = { limit = { in_cabinet = yes } owner = { remove_from_cabinet = prev } }
-            }
-            if = {
-                limit = { oe_court_incumbent_eligible = yes NOT = { has_variable = oe_court_office_held } }
-                save_scope_as = oe_court_opening_appointee
-                set_variable = oe_court_office_held
-                c:BYZ = { set_variable = { name = oe_court_taxmaster value = scope:oe_court_opening_appointee } } # 1337 restoration: parakoimomenos, ran the finances; megas doux only in 1341
             }
         }
         oe_court_chancellor_fill_opening = yes

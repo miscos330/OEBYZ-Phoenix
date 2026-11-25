@@ -1,0 +1,279 @@
+﻿# NEW 2026-11-24 v29.0 WP24-A Main Mod Core Deepening (oe_wp24a_, gen_v290_wp24a_core_deepening.py) — WP11 Four Praetorian Prefectures + WP12 Teutonic 1525 Reformation Fork + WP13 Northern Yuan & Four Khanates (0 vanilla overrides, 0 mainline slots). Edit gen_v290_wp24a_core_deepening.py, not this file.
+
+namespace = oe_wp24a_teu
+
+# === BRANCH A: Grand Master Albrecht's 1525 Secularization of Prussia (Events 1–4) ===
+
+oe_wp24a_teu.1 = {
+	type = country_event
+	title = oe_wp24a_teu.1.t
+	desc = oe_wp24a_teu.1.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/situation/reformation.dds"
+	trigger = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		NOT = { has_variable = oe_wp24a_teu_branch_catholic }
+	}
+	immediate = {
+		set_variable = { name = oe_wp24a_teu_branch_secular value = 1 }
+		set_variable = { name = oe_teu_1525_choice_made value = 1 }
+		remove_country_modifier = oe_wp24a_teu_marian_oath_mod
+		remove_country_modifier = oe_wp24a_teu_papal_volunteers_mod
+		remove_country_modifier = oe_wp24a_teu_ordensburg_bastions_mod
+		remove_country_modifier = oe_wp24a_teu_tridentine_knights_mod
+	}
+	option = {
+		name = oe_wp24a_teu.1.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		if = {
+			limit = { NOT = { has_variable = oe_teu_secularized_pru } }
+			set_variable = { name = oe_teu_secularized_pru value = 1 }
+			set_variable = { name = oe_teu_ordensstaat_active value = 1 }
+			if = {
+				limit = { has_estate_privilege = estate_privilege:clergy_military_orders }
+				revoke_estate_privilege = estate_privilege:clergy_military_orders
+			}
+			if = {
+				limit = { has_reform = government_reform:military_order_reform }
+				remove_reform = government_reform:military_order_reform
+			}
+			if = {
+				limit = { religion:lutheran = { is_religion_enabled = yes } }
+				change_religion = religion:lutheran
+			}
+			change_government_type = government_type:monarchy
+			if = {
+				limit = { NOT = { tag = PRU } NOT = { country_exists = c:PRU } }
+				form_country = formable_country:PRU_f
+			}
+		}
+		if = {
+			limit = { country_exists = c:PAP }
+			c:PAP = { add_opinion = { target = root modifier = oe_wp24a_op_prussian_secular_rift } }
+		}
+		add_stability = 4
+		add_country_modifier = { modifier = oe_wp24a_teu_prussian_duchy_mod years = 35 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_teu.1.b
+		ai_chance = { base = 30 }
+		set_variable = { name = oe_teu_secularized_pru value = 1 }
+		set_variable = { name = oe_teu_ordensstaat_active value = 1 }
+		if = {
+			limit = { has_estate_privilege = estate_privilege:clergy_military_orders }
+			revoke_estate_privilege = estate_privilege:clergy_military_orders
+		}
+		if = {
+			limit = { has_reform = government_reform:military_order_reform }
+			remove_reform = government_reform:military_order_reform
+		}
+		change_government_type = government_type:monarchy
+		add_gold = 120
+		add_country_modifier = { modifier = oe_wp24a_teu_prussian_duchy_mod years = 25 mode = replace }
+	}
+}
+
+oe_wp24a_teu.2 = {
+	type = country_event
+	title = oe_wp24a_teu.2.t
+	desc = oe_wp24a_teu.2.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_ordensmark_enfeoff.dds"
+	trigger = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		has_variable = oe_wp24a_teu_branch_secular
+	}
+	option = {
+		name = oe_wp24a_teu.2.a
+		historical_option = yes
+		ai_chance = { base = 65 }
+		add_manpower = 1.5
+		add_country_modifier = { modifier = oe_wp24a_teu_junker_estates_mod years = 35 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_teu.2.b
+		ai_chance = { base = 35 }
+		add_gold = 100
+		add_stability = 5
+		add_country_modifier = { modifier = oe_wp24a_teu_prussian_duchy_mod years = 30 mode = replace }
+	}
+}
+
+oe_wp24a_teu.3 = {
+	type = country_event
+	title = oe_wp24a_teu.3.t
+	desc = oe_wp24a_teu.3.d
+	outcome = positive
+	image = "gfx/interface/illustrations/institutions/legalism.dds"
+	trigger = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		has_variable = oe_wp24a_teu_branch_secular
+	}
+	option = {
+		name = oe_wp24a_teu.3.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		add_gold = -80
+		location:konigsberg ?= { if = { limit = { owner ?= root } change_prosperity = 0.08 } }
+		add_country_modifier = { modifier = oe_wp24a_teu_albertina_univ_mod years = 40 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_teu.3.b
+		ai_chance = { base = 30 }
+		add_prestige = prestige_mild_bonus
+		add_stability = 4
+	}
+}
+
+oe_wp24a_teu.4 = {
+	type = country_event
+	title = oe_wp24a_teu.4.t
+	desc = oe_wp24a_teu.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_lake_peipus_east.dds"
+	trigger = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		has_variable = oe_wp24a_teu_branch_secular
+	}
+	option = {
+		name = oe_wp24a_teu.4.a
+		historical_option = yes
+		ai_chance = { base = 75 }
+		add_army_tradition = 8
+		add_country_modifier = { modifier = oe_wp24a_teu_prussian_drill_mod years = 40 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_teu.4.b
+		ai_chance = { base = 25 }
+		add_gold = 90
+		add_manpower = 1.5
+		add_country_modifier = { modifier = oe_wp24a_teu_junker_estates_mod years = 30 mode = replace }
+	}
+}
+
+# === BRANCH B: Eternal Catholic Crusade Order (Events 5–8) ===
+
+oe_wp24a_teu.5 = {
+	type = country_event
+	title = oe_wp24a_teu.5.t
+	desc = oe_wp24a_teu.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_marienburg_crusade.dds"
+	trigger = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		NOT = { has_variable = oe_wp24a_teu_branch_secular }
+	}
+	immediate = {
+		set_variable = { name = oe_wp24a_teu_branch_catholic value = 1 }
+		set_variable = { name = oe_teu_1525_choice_made value = 1 }
+		set_variable = { name = oe_teu_counter_reformation_order value = 1 }
+		set_variable = { name = oe_teu_ordensstaat_active value = 1 }
+		remove_country_modifier = oe_wp24a_teu_prussian_duchy_mod
+		remove_country_modifier = oe_wp24a_teu_junker_estates_mod
+		remove_country_modifier = oe_wp24a_teu_albertina_univ_mod
+		remove_country_modifier = oe_wp24a_teu_prussian_drill_mod
+	}
+	option = {
+		name = oe_wp24a_teu.5.a
+		ai_chance = { base = 70 }
+		add_devotion = 10
+		add_prestige = prestige_mild_bonus
+		if = {
+			limit = { country_exists = c:PAP }
+			c:PAP = { add_opinion = { target = root modifier = oe_wp24a_op_papal_militant_blessing } }
+		}
+		add_country_modifier = { modifier = oe_wp24a_teu_marian_oath_mod years = 35 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_teu.5.b
+		ai_chance = { base = 30 }
+		add_stability = 6
+		add_devotion = 5
+		add_country_modifier = { modifier = oe_wp24a_teu_marian_oath_mod years = 25 mode = replace }
+	}
+}
+
+oe_wp24a_teu.6 = {
+	type = country_event
+	title = oe_wp24a_teu.6.t
+	desc = oe_wp24a_teu.6.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_hre_rimini_bull.dds"
+	trigger = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		has_variable = oe_wp24a_teu_branch_catholic
+	}
+	option = {
+		name = oe_wp24a_teu.6.a
+		ai_chance = { base = 65 }
+		add_manpower = 2.0
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_wp24a_teu_papal_volunteers_mod years = 35 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_teu.6.b
+		ai_chance = { base = 35 }
+		add_gold = 110
+		add_devotion = 5
+	}
+}
+
+oe_wp24a_teu.7 = {
+	type = country_event
+	title = oe_wp24a_teu.7.t
+	desc = oe_wp24a_teu.7.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v220_teu_marienburg_crusade.dds"
+	trigger = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		has_variable = oe_wp24a_teu_branch_catholic
+	}
+	option = {
+		name = oe_wp24a_teu.7.a
+		ai_chance = { base = 70 }
+		add_gold = -80
+		location:malbork ?= { if = { limit = { owner ?= root } change_prosperity = 0.08 } }
+		add_country_modifier = { modifier = oe_wp24a_teu_ordensburg_bastions_mod years = 40 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_teu.7.b
+		ai_chance = { base = 30 }
+		add_manpower = 1.5
+		add_country_modifier = { modifier = oe_wp24a_teu_papal_volunteers_mod years = 25 mode = replace }
+	}
+}
+
+oe_wp24a_teu.8 = {
+	type = country_event
+	title = oe_wp24a_teu.8.t
+	desc = oe_wp24a_teu.8.d
+	outcome = positive
+	image = "gfx/interface/illustrations/situation/council_of_trent.dds"
+	trigger = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		has_variable = oe_wp24a_teu_branch_catholic
+	}
+	option = {
+		name = oe_wp24a_teu.8.a
+		ai_chance = { base = 75 }
+		add_army_tradition = 7
+		add_devotion = 8
+		add_country_modifier = { modifier = oe_wp24a_teu_tridentine_knights_mod years = 40 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_teu.8.b
+		ai_chance = { base = 25 }
+		add_prestige = prestige_mild_bonus
+		add_stability = 6
+		add_country_modifier = { modifier = oe_wp24a_teu_ordensburg_bastions_mod years = 30 mode = replace }
+	}
+}

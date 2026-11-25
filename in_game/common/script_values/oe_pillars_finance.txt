@@ -58,14 +58,18 @@ oe_pillars_purse_monthly_income = {
 
 oe_pillars_authority_max_gain = 0.5
 oe_pillars_authority_requested_spend = {
-    value = 0
-    if = {
-        limit = { country_exists = c:BYZ }
-        value = "c:BYZ.payment_maintenance(international_organization:oe_byz_empire_pillars|oe_pillars_authority_budget)"
-        min = 0
-        max = 1
-        multiply = oe_pillars_purse_monthly_income
-    }
+	value = 0
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    value = 0
+	    if = {
+	        limit = { country_exists = c:BYZ }
+	        value = "c:BYZ.payment_maintenance(international_organization:oe_byz_empire_pillars|oe_pillars_authority_budget)"
+	        min = 0
+	        max = 1
+	        multiply = oe_pillars_purse_monthly_income
+	    }
+	}
 }
 oe_pillars_authority_available_spend = {
     value = oe_pillars_authority_requested_spend

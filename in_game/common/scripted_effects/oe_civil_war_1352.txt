@@ -41,28 +41,31 @@ oe_cw2_monthly = {
 
 # BYZ scope. The fuse begins.
 oe_cw2_begin = {
-    set_global_variable = oe_cw2_begun
-    set_variable = oe_cw2_active
-    set_variable = { name = oe_cw2_stage value = 1 }
-    set_variable = { name = oe_cw2_rift value = 30 }
-    if = { limit = { character:byz_john_kantakouzenos = { is_ruler_of = c:BYZ } } set_variable = { name = oe_cw2_mode value = 1 } }
-    else = { set_variable = { name = oe_cw2_mode value = 2 } }
-    # A Kantakouzenos house above 300 influence widens the rift (as in the 1341 war).
-    if = {
-        limit = {
-            international_organization:oe_byz_empire_pillars = {
-                OR = {
-                    AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_1 > 300 }
-                    AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_2 > 300 }
-                    AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_3 > 300 }
-                    AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_4 > 300 }
-                }
-            }
-        }
-        change_variable = { name = oe_cw2_rift add = 10 }
-    }
-    if = { limit = { var:oe_cw2_mode = 1 } trigger_event_non_silently = oe_cw2.1 }
-    else = { trigger_event_non_silently = oe_cw2.5 }
+	if = {
+		limit = { exists = character:byz_john_kantakouzenos exists = international_organization:oe_byz_empire_pillars }
+	    set_global_variable = oe_cw2_begun
+	    set_variable = oe_cw2_active
+	    set_variable = { name = oe_cw2_stage value = 1 }
+	    set_variable = { name = oe_cw2_rift value = 30 }
+	    if = { limit = { character:byz_john_kantakouzenos = { is_ruler_of = c:BYZ } } set_variable = { name = oe_cw2_mode value = 1 } }
+	    else = { set_variable = { name = oe_cw2_mode value = 2 } }
+	    # A Kantakouzenos house above 300 influence widens the rift (as in the 1341 war).
+	    if = {
+	        limit = {
+	            international_organization:oe_byz_empire_pillars = {
+	                OR = {
+	                    AND = { has_variable = oe_nf_dynasty_1 var:oe_nf_dynasty_1 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_1 > 300 }
+	                    AND = { has_variable = oe_nf_dynasty_2 var:oe_nf_dynasty_2 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_2 > 300 }
+	                    AND = { has_variable = oe_nf_dynasty_3 var:oe_nf_dynasty_3 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_3 > 300 }
+	                    AND = { has_variable = oe_nf_dynasty_4 var:oe_nf_dynasty_4 = dynasty:kantakouzenos_dynasty var:oe_nf_influence_4 > 300 }
+	                }
+	            }
+	        }
+	        change_variable = { name = oe_cw2_rift add = 10 }
+	    }
+	    if = { limit = { var:oe_cw2_mode = 1 } trigger_event_non_silently = oe_cw2.1 }
+	    else = { trigger_event_non_silently = oe_cw2.5 }
+	}
 }
 
 # BYZ scope. End of the fuse: war or concord. If another civil war is being fought, the war waits for it.
@@ -81,74 +84,77 @@ oe_cw2_decide = {
 
 # BYZ scope. The rebel side rises: John V in the Evros valley (mode 1) or Matthew around Adrianople (mode 2).
 oe_cw2_war_start = {
-    if = {
-        limit = { oe_cw2_war_possible = no }
-        set_variable = oe_cw2_pending
-    }
-    else = {
-        remove_variable = oe_cw2_pending
-        set_variable = { name = oe_cw2_stage value = 2 }
-        set_variable = { name = oe_cw2_wm value = 0 }
-        set_variable = { name = oe_cw2_capm value = 0 }
-        set_variable = { name = oe_cw2_evcd months = 2 }
-        if = {
-            limit = { var:oe_cw2_mode = 1 }
-            set_variable = { name = oe_cw2_tide value = 40 }
-            location:demotica = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            location:komotini = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            location:traianopolis = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            location:xanthia = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            if = { limit = { has_variable = oe_cw2_jv_land }
-                location:enez = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-                location:kesan = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            }
-            character:byz_john_v_palaiologos = { save_scope_as = oe_cw2_lead }
-            create_rebel = { category = estate estate = nobles_estate name = OE_CW2_REBELS_PAL save_scope_as = oe_cw2_rebel_group }
-        }
-        else = {
-            set_variable = { name = oe_cw2_tide value = 60 }
-            location:edirne = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            location:kirklareli = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            location:luleburgaz = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            location:ahtopol = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            location:kiyikoy = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            if = { limit = { has_variable = oe_cw2_mat_land }
-                location:vize = { if = { limit = { owner = c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
-            }
-            character:byz_matthaios_kantakouzenos = { save_scope_as = oe_cw2_lead }
-            create_rebel = { category = estate estate = nobles_estate name = OE_CW2_REBELS_KAN save_scope_as = oe_cw2_rebel_group }
-        }
-        every_in_list = {
-            list = oe_cw2_base
-            every_pop = { limit = { owner = c:BYZ } change_pop_allegiance = scope:oe_cw2_rebel_group }
-        }
-        scope:oe_cw2_rebel_group = { start_civil_war = { save_scope_as = oe_cw2_country } }
-        if = {
-            limit = { exists = scope:oe_cw2_country }
-            set_variable = { name = oe_cw2_rebels value = scope:oe_cw2_country }
-            every_in_list = { list = oe_cw2_base if = { limit = { owner = c:BYZ } change_location_owner = scope:oe_cw2_country } }
-            scope:oe_cw2_lead = { move_country = scope:oe_cw2_country }
-            scope:oe_cw2_country = { set_new_ruler = scope:oe_cw2_lead add_gold = 300 }
-            random_in_list = {
-                list = oe_cw2_base
-                limit = { owner = scope:oe_cw2_country }
-                create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw2_country }
-                create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw2_country }
-                create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw2_country }
-                create_sub_unit_with_owner = { type = a_age_1_traditions_light_cavalry owner = scope:oe_cw2_country }
-                create_sub_unit_with_owner = { type = a_age_1_traditions_light_cavalry owner = scope:oe_cw2_country }
-            }
-            # Disloyal themes that rise join this rebel state (oe_theme_revolt_start joins a theme rebel state at war).
-            # The theme usurpation (oe_theme_usurp_monthly: rebels holding Constantinople 6 months while
-            # oe_theme_revolt_active is set) must not settle this war: this script handles the capital itself.
-            set_variable = { name = oe_theme_revolt_country value = scope:oe_cw2_country }
-            remove_variable = oe_theme_revolt_active
-            remove_variable = oe_theme_usurp_months
-            activate_situation = situation:oe_cw2_war
-            trigger_event_non_silently = { id = oe_cw2.21 days = 3 }
-        }
-        else = { oe_cw2_concord = yes }
-    }
+	if = {
+		limit = { exists = character:byz_john_v_palaiologos exists = character:byz_matthaios_kantakouzenos }
+	    if = {
+	        limit = { oe_cw2_war_possible = no }
+	        set_variable = oe_cw2_pending
+	    }
+	    else = {
+	        remove_variable = oe_cw2_pending
+	        set_variable = { name = oe_cw2_stage value = 2 }
+	        set_variable = { name = oe_cw2_wm value = 0 }
+	        set_variable = { name = oe_cw2_capm value = 0 }
+	        set_variable = { name = oe_cw2_evcd months = 2 }
+	        if = {
+	            limit = { var:oe_cw2_mode = 1 }
+	            set_variable = { name = oe_cw2_tide value = 40 }
+	            location:demotica = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            location:komotini = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            location:traianopolis = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            location:xanthia = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            if = { limit = { has_variable = oe_cw2_jv_land }
+	                location:enez = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	                location:kesan = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            }
+	            character:byz_john_v_palaiologos = { save_scope_as = oe_cw2_lead }
+	            create_rebel = { category = estate estate = nobles_estate name = OE_CW2_REBELS_PAL save_scope_as = oe_cw2_rebel_group }
+	        }
+	        else = {
+	            set_variable = { name = oe_cw2_tide value = 60 }
+	            location:edirne = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            location:kirklareli = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            location:luleburgaz = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            location:ahtopol = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            location:kiyikoy = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            if = { limit = { has_variable = oe_cw2_mat_land }
+	                location:vize = { if = { limit = { owner ?= c:BYZ is_capital = no } add_to_list = oe_cw2_base } }
+	            }
+	            character:byz_matthaios_kantakouzenos = { save_scope_as = oe_cw2_lead }
+	            create_rebel = { category = estate estate = nobles_estate name = OE_CW2_REBELS_KAN save_scope_as = oe_cw2_rebel_group }
+	        }
+	        every_in_list = {
+	            list = oe_cw2_base
+	            every_pop = { limit = { owner = c:BYZ } change_pop_allegiance = scope:oe_cw2_rebel_group }
+	        }
+	        scope:oe_cw2_rebel_group = { start_civil_war = { save_scope_as = oe_cw2_country } }
+	        if = {
+	            limit = { exists = scope:oe_cw2_country }
+	            set_variable = { name = oe_cw2_rebels value = scope:oe_cw2_country }
+	            every_in_list = { list = oe_cw2_base if = { limit = { owner = c:BYZ } change_location_owner = scope:oe_cw2_country } }
+	            scope:oe_cw2_lead = { move_country = scope:oe_cw2_country }
+	            scope:oe_cw2_country = { set_new_ruler = scope:oe_cw2_lead add_gold = 300 }
+	            random_in_list = {
+	                list = oe_cw2_base
+	                limit = { owner = scope:oe_cw2_country }
+	                create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw2_country }
+	                create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw2_country }
+	                create_sub_unit_with_owner = { type = a_age_1_traditions_light_infantry owner = scope:oe_cw2_country }
+	                create_sub_unit_with_owner = { type = a_age_1_traditions_light_cavalry owner = scope:oe_cw2_country }
+	                create_sub_unit_with_owner = { type = a_age_1_traditions_light_cavalry owner = scope:oe_cw2_country }
+	            }
+	            # Disloyal themes that rise join this rebel state (oe_theme_revolt_start joins a theme rebel state at war).
+	            # The theme usurpation (oe_theme_usurp_monthly: rebels holding Constantinople 6 months while
+	            # oe_theme_revolt_active is set) must not settle this war: this script handles the capital itself.
+	            set_variable = { name = oe_theme_revolt_country value = scope:oe_cw2_country }
+	            remove_variable = oe_theme_revolt_active
+	            remove_variable = oe_theme_usurp_months
+	            activate_situation = situation:oe_cw2_war
+	            trigger_event_non_silently = { id = oe_cw2.21 days = 3 }
+	        }
+	        else = { oe_cw2_concord = yes }
+	    }
+	}
 }
 
 # BYZ scope. The war, monthly.
@@ -210,7 +216,7 @@ oe_cw2_war_monthly = {
             12 = { trigger = { country_exists = c:TUR NOT = { has_variable = oe_osman_chain_active } has_variable = oe_cw2_wm var:oe_cw2_wm >= 2 NOT = { has_variable = oe_cw2_done_10 } } oe_cw2_fire = { n = 10 } }
             10 = { trigger = { country_exists = c:SER has_variable = oe_cw2_wm var:oe_cw2_wm >= 3 NOT = { has_variable = oe_cw2_done_11 } } oe_cw2_fire = { n = 11 } }
             10 = { trigger = { has_variable = oe_cw2_wm var:oe_cw2_wm >= 12 has_variable = oe_cw2_tide var:oe_cw2_tide < 45 NOT = { has_variable = oe_cw2_done_13 } } oe_cw2_fire = { n = 13 } }
-            10 = { trigger = { current_date >= 1354.3.1 country_exists = c:TUR NOT = { has_variable = oe_osman_chain_active } OR = { location:gallipoli = { owner = c:TUR } c:TUR = { has_variable = gallipoli_earthquake } } NOT = { has_variable = oe_cw2_done_14 } } oe_cw2_fire = { n = 14 } }
+            10 = { trigger = { current_date >= 1354.3.1 country_exists = c:TUR NOT = { has_variable = oe_osman_chain_active } OR = { location:gallipoli = { owner ?= c:TUR } c:TUR = { has_variable = gallipoli_earthquake } } NOT = { has_variable = oe_cw2_done_14 } } oe_cw2_fire = { n = 14 } }
             8 = { trigger = { var:oe_cw2_mode ?= 1 has_variable = oe_cw2_wm var:oe_cw2_wm >= 6 NOT = { has_variable = oe_cw2_done_15 } } oe_cw2_fire = { n = 15 } }
                 }
             }

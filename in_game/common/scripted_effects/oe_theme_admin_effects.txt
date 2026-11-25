@@ -88,8 +88,8 @@ oe_theme_admin_monthly = {
     remove_variable = oe_theme_new_tier
     # 属官俸禄与包税
     if = { limit = { OR = { var:oe_theme_judge ?= 1 var:oe_theme_fiscal ?= 1 } } save_scope_value_as = { name = oe_theme_official_cost_now value = oe_theme_official_cost } }
-    if = { limit = { var:oe_theme_judge ?= 1 country_exists = c:BYZ } c:BYZ = { add_gold = { value = scope:oe_theme_official_cost_now multiply = -1 } } }
-    if = { limit = { var:oe_theme_fiscal ?= 1 country_exists = c:BYZ } c:BYZ = { add_gold = { value = scope:oe_theme_official_cost_now multiply = -1 } } }
+    if = { limit = { var:oe_theme_judge ?= 1 has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire } global_var:oe_phoenix_empire = { add_gold = { value = scope:oe_theme_official_cost_now multiply = -1 } } }
+    if = { limit = { var:oe_theme_fiscal ?= 1 has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire } global_var:oe_phoenix_empire = { add_gold = { value = scope:oe_theme_official_cost_now multiply = -1 } } }
     if = { limit = { var:oe_theme_fiscal ?= 2 } add_gold = oe_theme_taxfarm_gain }
     # 档位变化时立即刷新辖区修正，否则每 12 个月刷新一次（新并入的地点也在这时拿到修正）
     if = {
@@ -100,11 +100,11 @@ oe_theme_admin_monthly = {
     }
 }
 
-# Theme scope. Re-applies tier modifiers on every BYZ location holding one of this theme's buildings.
+# Theme scope. Re-applies tier modifiers on every imperial hub location holding one of this theme's buildings.
 oe_theme_admin_apply = {
     save_scope_as = oe_theme_admin_owner
     every_owned_foreign_building_location = {
-        limit = { owner ?= c:BYZ }
+        limit = { oe_owned_by_phoenix_empire = yes }
         remove_location_modifier = oe_theme_mil_t0
         remove_location_modifier = oe_theme_mil_t2
         remove_location_modifier = oe_theme_mil_t3
@@ -241,26 +241,29 @@ oe_ta_course_finish = {
 
 # BYZ scope, monthly. AI Byzantium changes at most one theme's course a year, keeping 20 authority in reserve.
 oe_ta_ai_course = {
-    if = {
-        limit = {
-            is_ai = yes
-            NOT = { has_variable = oe_ta_ai_cd }
-            international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 25 }
-        }
-        set_variable = { name = oe_ta_ai_cd months = 12 }
-        random_subject = {
-            limit = { oe_theme_member_trigger = yes oe_ta_ai_wants_change = yes }
-            save_scope_as = oe_ta_ai_pick
-        }
-        if = {
-            limit = { exists = scope:oe_ta_ai_pick }
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
-            scope:oe_ta_ai_pick = {
-                set_variable = { name = oe_theme_focus_cd years = 5 }
-                if = { limit = { oe_ta_ai_course_army = yes } oe_ta_set_course = { course = army } }
-                else_if = { limit = { oe_ta_ai_course_navy = yes } oe_ta_set_course = { course = navy } }
-                else = { oe_ta_set_course = { course = civil } }
-            }
-        }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = {
+	            is_ai = yes
+	            NOT = { has_variable = oe_ta_ai_cd }
+	            international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 25 }
+	        }
+	        set_variable = { name = oe_ta_ai_cd months = 12 }
+	        random_subject = {
+	            limit = { oe_theme_member_trigger = yes oe_ta_ai_wants_change = yes }
+	            save_scope_as = oe_ta_ai_pick
+	        }
+	        if = {
+	            limit = { exists = scope:oe_ta_ai_pick }
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
+	            scope:oe_ta_ai_pick = {
+	                set_variable = { name = oe_theme_focus_cd years = 5 }
+	                if = { limit = { oe_ta_ai_course_army = yes } oe_ta_set_course = { course = army } }
+	                else_if = { limit = { oe_ta_ai_course_navy = yes } oe_ta_set_course = { course = navy } }
+	                else = { oe_ta_set_course = { course = civil } }
+	            }
+	        }
+	    }
+	}
 }

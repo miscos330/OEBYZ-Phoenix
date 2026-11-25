@@ -1,14 +1,15 @@
-﻿oe_create_eastern_themes = {
+﻿# v26.0 WP11 Bug (b) fix: removed the absurd oe_ir_italian_theme_done hard prerequisite on Eastern/Austrian/Swiss theme expansion!
+# Now independently available to BYZ/ROM and synced with the new 4-Prefecture Expansion Charters.
+oe_create_eastern_themes = {
     type = internationalorganization
     show_message = no
-    potential = { scope:actor = { tag = BYZ has_variable = oe_ir_italian_theme_done NOT = { has_variable = oe_create_eastern_themes_done } } }
+    potential = { exists = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes NOT = { has_variable = oe_create_eastern_themes_done } } }
     allow = {
         scope:actor = {
-            tag = BYZ
-            has_variable = oe_ir_italian_theme_done
+            oe_is_phoenix_empire = yes
             custom_tooltip = { text = OE_THEME_EXPANSION_NOT_DONE NOT = { has_variable = oe_create_eastern_themes_done } }
         }
-        international_organization:oe_byz_empire_pillars = {
+        international_organization:oe_byz_empire_pillars ?= {
             custom_tooltip = { text = OE_IR_AUTHORITY_20 var:oe_pillars_authority >= 20 }
         }
     }
@@ -21,16 +22,16 @@
         name = "choose_international_organization"
         none_available_msg_key = "leave_international_organization_none"
         column = { data = name }
-        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes } }
     }
     effect = {
         if = {
             limit = {
-                scope:actor = { tag = BYZ has_variable = oe_ir_italian_theme_done NOT = { has_variable = oe_create_eastern_themes_done } }
+                scope:actor = { oe_is_phoenix_empire = yes NOT = { has_variable = oe_create_eastern_themes_done } }
                 scope:recipient = { this = international_organization:oe_byz_empire_pillars var:oe_pillars_authority >= 20 }
             }
             scope:recipient = { change_variable = { name = oe_pillars_authority add = -20 } }
-            scope:actor = { custom_tooltip = { text = oe_create_eastern_themes_tt set_variable = oe_create_eastern_themes_done } }
+            scope:actor = { custom_tooltip = { text = oe_create_eastern_themes_tt set_variable = oe_create_eastern_themes_done set_variable = oe_theme_pref_1_charter } }
         }
     }
 }
@@ -38,14 +39,13 @@
 oe_create_austrian_themes = {
     type = internationalorganization
     show_message = no
-    potential = { scope:actor = { tag = BYZ has_variable = oe_ir_italian_theme_done NOT = { has_variable = oe_create_austrian_themes_done } } }
+    potential = { exists = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes NOT = { has_variable = oe_create_austrian_themes_done } } }
     allow = {
         scope:actor = {
-            tag = BYZ
-            has_variable = oe_ir_italian_theme_done
+            oe_is_phoenix_empire = yes
             custom_tooltip = { text = OE_THEME_EXPANSION_NOT_DONE NOT = { has_variable = oe_create_austrian_themes_done } }
         }
-        international_organization:oe_byz_empire_pillars = {
+        international_organization:oe_byz_empire_pillars ?= {
             custom_tooltip = { text = OE_IR_AUTHORITY_20 var:oe_pillars_authority >= 20 }
         }
     }
@@ -58,16 +58,16 @@ oe_create_austrian_themes = {
         name = "choose_international_organization"
         none_available_msg_key = "leave_international_organization_none"
         column = { data = name }
-        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes } }
     }
     effect = {
         if = {
             limit = {
-                scope:actor = { tag = BYZ has_variable = oe_ir_italian_theme_done NOT = { has_variable = oe_create_austrian_themes_done } }
+                scope:actor = { oe_is_phoenix_empire = yes NOT = { has_variable = oe_create_austrian_themes_done } }
                 scope:recipient = { this = international_organization:oe_byz_empire_pillars var:oe_pillars_authority >= 20 }
             }
             scope:recipient = { change_variable = { name = oe_pillars_authority add = -20 } }
-            scope:actor = { custom_tooltip = { text = oe_create_austrian_themes_tt set_variable = oe_create_austrian_themes_done } }
+            scope:actor = { custom_tooltip = { text = oe_create_austrian_themes_tt set_variable = oe_create_austrian_themes_done set_variable = oe_theme_pref_2_charter } }
         }
     }
 }
@@ -75,14 +75,13 @@ oe_create_austrian_themes = {
 oe_create_swiss_themes = {
     type = internationalorganization
     show_message = no
-    potential = { scope:actor = { tag = BYZ has_variable = oe_ir_italian_theme_done NOT = { has_variable = oe_create_swiss_themes_done } } }
+    potential = { exists = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes NOT = { has_variable = oe_create_swiss_themes_done } } }
     allow = {
         scope:actor = {
-            tag = BYZ
-            has_variable = oe_ir_italian_theme_done
+            oe_is_phoenix_empire = yes
             custom_tooltip = { text = OE_THEME_EXPANSION_NOT_DONE NOT = { has_variable = oe_create_swiss_themes_done } }
         }
-        international_organization:oe_byz_empire_pillars = {
+        international_organization:oe_byz_empire_pillars ?= {
             custom_tooltip = { text = OE_IR_AUTHORITY_20 var:oe_pillars_authority >= 20 }
         }
     }
@@ -95,16 +94,16 @@ oe_create_swiss_themes = {
         name = "choose_international_organization"
         none_available_msg_key = "leave_international_organization_none"
         column = { data = name }
-        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes } }
     }
     effect = {
         if = {
             limit = {
-                scope:actor = { tag = BYZ has_variable = oe_ir_italian_theme_done NOT = { has_variable = oe_create_swiss_themes_done } }
+                scope:actor = { oe_is_phoenix_empire = yes NOT = { has_variable = oe_create_swiss_themes_done } }
                 scope:recipient = { this = international_organization:oe_byz_empire_pillars var:oe_pillars_authority >= 20 }
             }
             scope:recipient = { change_variable = { name = oe_pillars_authority add = -20 } }
-            scope:actor = { custom_tooltip = { text = oe_create_swiss_themes_tt set_variable = oe_create_swiss_themes_done } }
+            scope:actor = { custom_tooltip = { text = oe_create_swiss_themes_tt set_variable = oe_create_swiss_themes_done set_variable = oe_theme_pref_3_charter } }
         }
     }
 }

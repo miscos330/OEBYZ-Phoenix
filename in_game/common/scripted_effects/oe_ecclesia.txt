@@ -6,13 +6,16 @@
 
 # Any scope. Imperial Authority $amount$ (negative = a cost), kept within 0-100. Nothing once the church lines were closed (phase 6, global oe_ecc_fall): a popup still open when the City fell does not charge.
 oe_ecc_auth = {
-    if = {
-        limit = { NOT = { has_global_variable = oe_ecc_fall } }
-        international_organization:oe_byz_empire_pillars = {
-            change_variable = { name = oe_pillars_authority add = $amount$ }
-            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-        }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { NOT = { has_global_variable = oe_ecc_fall } }
+	        international_organization:oe_byz_empire_pillars = {
+	            change_variable = { name = oe_pillars_authority add = $amount$ }
+	            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	        }
+	    }
+	}
 }
 
 # Any scope. Saves oe_ecc_byz_ap (Constantinople's church, led by BYZ), oe_ecc_pec_ap and oe_ecc_pec_lord (Serbia's church and its leader), oe_ecc_tarnovo_ap, and oe_ecc_patriarch (the author's patriarch: the BYZ character with oe_byz_religion_leader; else the organisation's var:patriarch). Missing ones stay unset.
@@ -156,14 +159,17 @@ oe_ecc_p1_monthly = {
 
 # Any scope; scope:oe_ecc_pec_lord saved. oe_ecc_envoy: Lazar Hrebeljanović while alive and in that country's service, else its ruler or regent, else any of its characters.
 oe_ecc_save_envoy = {
-    scope:oe_ecc_pec_lord ?= {
-        if = {
-            limit = { character:ser_lazar_hrebeljanovic ?= { is_alive = yes owner ?= scope:oe_ecc_pec_lord } }
-            character:ser_lazar_hrebeljanovic = { save_scope_as = oe_ecc_envoy }
-        }
-        else_if = { limit = { exists = ruler_or_regent } ruler_or_regent = { save_scope_as = oe_ecc_envoy } }
-        else = { random_character = { save_scope_as = oe_ecc_envoy } }
-    }
+	if = {
+		limit = { exists = character:ser_lazar_hrebeljanovic }
+	    scope:oe_ecc_pec_lord ?= {
+	        if = {
+	            limit = { character:ser_lazar_hrebeljanovic ?= { is_alive = yes owner ?= scope:oe_ecc_pec_lord } }
+	            character:ser_lazar_hrebeljanovic = { save_scope_as = oe_ecc_envoy }
+	        }
+	        else_if = { limit = { exists = ruler_or_regent } ruler_or_regent = { save_scope_as = oe_ecc_envoy } }
+	        else = { random_character = { save_scope_as = oe_ecc_envoy } }
+	    }
+	}
 }
 
 # Any scope. One debug-log line with phase 1's state (for the observer logger of the test mod).

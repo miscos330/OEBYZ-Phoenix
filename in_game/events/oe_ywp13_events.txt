@@ -1,0 +1,197 @@
+﻿# NEW 2026-11-24 v26.0 WP13 Great Yuan P2-A Content Pack (oe_ywp13_, gen_v260_yuan_wp13.py) — Four-Class/Three-Teachings Stability Closure & 1342 Marignolli Silk Road Flavor (0 vanilla overrides, 0 mainline slots, 1337-gated). Edit gen_v260_yuan_wp13.py, not this file.
+
+namespace = oe_ywp13
+
+# 1. The Great Concord of the Four Classes and Three Teachings (triggered by decision oe_ywp13_dec_four_class_closure)
+oe_ywp13.1 = {
+	type = country_event
+	title = oe_ywp13.1.t
+	desc = oe_ywp13.1.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_cel_mandate_court.dds"
+	trigger = {
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		is_rebel_country = no
+		OR = {
+			tag = YUA
+			AND = {
+				tag = CHI
+				NOT = { has_variable = rtr_is_new_china }
+				NOT = { has_or_had_tag = MNG }
+				NOT = { has_or_had_tag = MCH }
+				culture = { has_culture_group = culture_group:mongolian_group }
+			}
+		}
+	}
+	option = {
+		name = oe_ywp13.1.a
+		trigger = {
+			NOT = { has_policy = limit_the_han_powers }
+			societal_value:sinicized_vs_unsinicized <= -20
+		}
+		ai_chance = { base = 60 }
+		add_stability = 6
+		add_legitimacy = 5
+		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
+		add_country_modifier = { modifier = oe_ywp13_sanjiao_concord years = 40 mode = replace }
+		trigger_event_non_silently = { id = oe_ywp13.2 days = 30 }
+	}
+	option = {
+		name = oe_ywp13.1.b
+		ai_chance = { base = 25 }
+		add_stability = 5
+		add_legitimacy = 4
+		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
+		add_country_modifier = { modifier = oe_ywp13_imperial_preceptor_order years = 40 mode = replace }
+		trigger_event_non_silently = { id = oe_ywp13.2 days = 30 }
+	}
+	option = {
+		name = oe_ywp13.1.c
+		ai_chance = { base = 15 }
+		add_stability = 4
+		change_societal_value = { type = sinicized_vs_unsinicized value = -10 }
+		add_country_modifier = { modifier = oe_ywp13_gradual_harmony years = 25 mode = replace }
+		trigger_event_non_silently = { id = oe_ywp13.2 days = 30 }
+	}
+}
+
+# 2. Echoes of the Great Edict Across the Realm (chained 30 days after oe_ywp13.1)
+oe_ywp13.2 = {
+	type = country_event
+	title = oe_ywp13.2.t
+	desc = oe_ywp13.2.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_sci_siku_qintianjian.dds"
+	trigger = {
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		is_rebel_country = no
+		OR = {
+			tag = YUA
+			AND = {
+				tag = CHI
+				NOT = { has_variable = rtr_is_new_china }
+				NOT = { has_or_had_tag = MNG }
+				NOT = { has_or_had_tag = MCH }
+				culture = { has_culture_group = culture_group:mongolian_group }
+			}
+		}
+	}
+	option = {
+		name = oe_ywp13.2.a
+		ai_chance = { base = 65 }
+		add_stability = 4
+		add_prestige = prestige_mild_bonus
+	}
+	option = {
+		name = oe_ywp13.2.b
+		trigger = { gold >= 60 }
+		ai_chance = { base = 35 }
+		add_gold = -60
+		add_stability = 6
+		add_legitimacy = 4
+	}
+}
+
+# 3. 1342 Giovanni de' Marignolli Papal Embassy & The Heavenly Horse of Fulin
+oe_ywp13.3 = {
+	type = country_event
+	title = oe_ywp13.3.t
+	desc = oe_ywp13.3.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_yuan_court_envoy.dds"
+	trigger = {
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		is_rebel_country = no
+		OR = {
+			tag = YUA
+			AND = {
+				tag = CHI
+				NOT = { has_variable = rtr_is_new_china }
+				NOT = { has_or_had_tag = MNG }
+				NOT = { has_or_had_tag = MCH }
+				culture = { has_culture_group = culture_group:mongolian_group }
+			}
+		}
+		current_year >= 1342
+		current_year <= 1352
+		owns = location:dadu
+	}
+	immediate = {
+		if = {
+			limit = { country_exists = c:BYZ }
+			add_opinion = { target = c:BYZ modifier = opinion_good_relations }
+			c:BYZ = { add_opinion = { target = root modifier = opinion_good_relations } }
+		}
+		else_if = {
+			limit = { country_exists = c:ROM }
+			add_opinion = { target = c:ROM modifier = opinion_good_relations }
+			c:ROM = { add_opinion = { target = root modifier = opinion_good_relations } }
+		}
+	}
+	option = {
+		name = oe_ywp13.3.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_ywp13_heavenly_horse_mod years = 15 mode = replace }
+	}
+	option = {
+		name = oe_ywp13.3.b
+		ai_chance = { base = 30 }
+		add_army_tradition = 3
+		add_country_modifier = { modifier = oe_ywp13_fulin_caravan_mod years = 15 mode = replace }
+	}
+}
+
+# 4. Erke'un of Dadu and the Ecumenical Patriarchate on the Silk Road (1370+, post-RTR, BYZ/ROM holds Constantinople)
+oe_ywp13.4 = {
+	type = country_event
+	title = oe_ywp13.4.t
+	desc = oe_ywp13.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_rel2_caliphate_silk_church.dds"
+	trigger = {
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		is_rebel_country = no
+		OR = {
+			tag = YUA
+			AND = {
+				tag = CHI
+				NOT = { has_variable = rtr_is_new_china }
+				NOT = { has_or_had_tag = MNG }
+				NOT = { has_or_had_tag = MCH }
+				culture = { has_culture_group = culture_group:mongolian_group }
+			}
+		}
+		current_year >= 1370
+		NOT = { is_situation_active = situation:red_turban_rebellions }
+		owns = location:dadu
+	}
+	option = {
+		name = oe_ywp13.4.a
+		historical_option = yes
+		ai_chance = { base = 65 }
+		add_prestige = prestige_mild_bonus
+		if = {
+			limit = { country_exists = c:BYZ }
+			add_opinion = { target = c:BYZ modifier = opinion_good_relations }
+			c:BYZ = { add_opinion = { target = root modifier = opinion_good_relations } }
+		}
+		else_if = {
+			limit = { country_exists = c:ROM }
+			add_opinion = { target = c:ROM modifier = opinion_good_relations }
+			c:ROM = { add_opinion = { target = root modifier = opinion_good_relations } }
+		}
+		add_country_modifier = { modifier = oe_ywp13_phoenix_silk_hostels years = 20 mode = replace }
+	}
+	option = {
+		name = oe_ywp13.4.b
+		ai_chance = { base = 35 }
+		add_prestige = prestige_weak_bonus
+		add_country_modifier = { modifier = oe_ywp13_qintian_exchange years = 15 mode = replace }
+	}
+}

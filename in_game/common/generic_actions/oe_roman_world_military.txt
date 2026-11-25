@@ -3,7 +3,7 @@
     potential = {
         scope:actor = {
             trigger_if = {
-                limit = { oe_start_is_1337 = yes exists = international_organization:oe_byz_roman_world }
+                limit = { oe_byz_core_active = yes exists = international_organization:oe_byz_roman_world }
                 has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_beylik international_organization = international_organization:oe_byz_roman_world }
             }
             trigger_else = { always = no }
@@ -23,7 +23,7 @@
         column = { data = name }
         visible = {
             trigger_if = {
-                limit = { oe_start_is_1337 = yes exists = international_organization:oe_byz_roman_world }
+                limit = { oe_byz_core_active = yes exists = international_organization:oe_byz_roman_world }
                 this = international_organization:oe_byz_roman_world
                 scope:actor = { has_special_status_in_international_organization = { type = special_status:oe_byz_roman_world_beylik international_organization = international_organization:oe_byz_roman_world } }
             }
@@ -53,8 +53,12 @@ oe_rw_latin_instructors_action = {
         none_available_msg_key = "leave_international_organization_none"
         column = { data = name }
         visible = {
-            this = international_organization:oe_byz_roman_world
-            scope:actor = { oe_rw_latin_instructors_eligible = yes }
+            trigger_if = {
+                limit = { exists = international_organization:oe_byz_roman_world }
+                this = international_organization:oe_byz_roman_world
+                scope:actor = { oe_rw_latin_instructors_eligible = yes }
+            }
+            trigger_else = { always = no }
         }
     }
     effect = {
@@ -69,8 +73,26 @@ oe_rw_latin_instructors_action = {
 
 oe_rw_study_roman_tactics = {
     type = internationalorganization
-    potential = { scope:actor = { is_member_of_international_organization = international_organization:oe_byz_roman_world } }
-    allow = { scope:actor = { is_member_of_international_organization = international_organization:oe_byz_roman_world custom_tooltip = { text = OE_RW_MONTHLY_INCOME_AFFORD gold >= oe_rw_one_month_income_cost } custom_tooltip = { text = OE_RW_MILITARY_STUDY_READY NOT = { has_variable = oe_rw_military_study_cooldown } } } }
+    potential = {
+        scope:actor = {
+            trigger_if = {
+                limit = { oe_byz_core_active = yes exists = international_organization:oe_byz_roman_world }
+                is_member_of_international_organization = international_organization:oe_byz_roman_world
+            }
+            trigger_else = { always = no }
+        }
+    }
+    allow = {
+        scope:actor = {
+            trigger_if = {
+                limit = { oe_byz_core_active = yes exists = international_organization:oe_byz_roman_world }
+                is_member_of_international_organization = international_organization:oe_byz_roman_world
+                custom_tooltip = { text = OE_RW_MONTHLY_INCOME_AFFORD gold >= oe_rw_one_month_income_cost }
+                custom_tooltip = { text = OE_RW_MILITARY_STUDY_READY NOT = { has_variable = oe_rw_military_study_cooldown } }
+            }
+            trigger_else = { always = no }
+        }
+    }
     automation_tick = never
     automation_tick_frequency = 12
     ai_tick = never
@@ -83,8 +105,12 @@ oe_rw_study_roman_tactics = {
         none_available_msg_key = "leave_international_organization_none"
         column = { data = name }
         visible = {
-            this = international_organization:oe_byz_roman_world
-            scope:actor = { is_member_of_international_organization = international_organization:oe_byz_roman_world }
+            trigger_if = {
+                limit = { oe_byz_core_active = yes exists = international_organization:oe_byz_roman_world }
+                this = international_organization:oe_byz_roman_world
+                scope:actor = { is_member_of_international_organization = international_organization:oe_byz_roman_world }
+            }
+            trigger_else = { always = no }
         }
     }
     effect = {
@@ -114,8 +140,12 @@ oe_rw_challenge_empire = {
         none_available_msg_key = "leave_international_organization_none"
         column = { data = name }
         visible = {
-            this = international_organization:oe_byz_roman_world
-            scope:actor = { oe_rw_challenge_empire_visible = yes }
+            trigger_if = {
+                limit = { exists = international_organization:oe_byz_roman_world }
+                this = international_organization:oe_byz_roman_world
+                scope:actor = { oe_rw_challenge_empire_visible = yes }
+            }
+            trigger_else = { always = no }
         }
     }
     effect = {

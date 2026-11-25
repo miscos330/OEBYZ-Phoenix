@@ -13,34 +13,38 @@ oe_prf_auth_add = {
 
 # Ensure the repurposed Sacrum Consistorium IO (oe_byz_policy_org) exists and BYZ presides over it.
 oe_prf_found_consistorium = {
-    if = {
-        limit = { NOT = { exists = international_organization:oe_byz_policy_org } }
-        create_international_organization = {
-            type = international_organization_type:oe_byz_policy_org
-            add_country_to_international_organization = c:BYZ
-            set_leader_country = c:BYZ
-            international_organization_add_special_status = {
-                type = special_status:oe_byz_policy_org_real_empire_king
-                country = c:BYZ
-            }
-        }
-    }
-    else = {
-        international_organization:oe_byz_policy_org = {
-            if = {
-                limit = { NOT = { c:BYZ = { is_member_of_international_organization = international_organization:oe_byz_policy_org } } }
-                add_country_to_international_organization = c:BYZ
-            }
-            if = {
-                limit = { NOT = { c:BYZ = { has_special_status_in_international_organization = { type = special_status:oe_byz_policy_org_real_empire_king international_organization = international_organization:oe_byz_policy_org } } } }
-                international_organization_add_special_status = {
-                    type = special_status:oe_byz_policy_org_real_empire_king
-                    country = c:BYZ
-                }
-            }
-        }
-    }
-    oe_prf_sync_consistorium_members = yes
+	if = {
+		limit = { exists = international_organization:oe_byz_policy_org }
+	    save_scope_as = oe_prf_emperor
+	    if = {
+	        limit = { NOT = { exists = international_organization:oe_byz_policy_org } }
+	        create_international_organization = {
+	            type = international_organization_type:oe_byz_policy_org
+	            add_country_to_international_organization = scope:oe_prf_emperor
+	            set_leader_country = scope:oe_prf_emperor
+	            international_organization_add_special_status = {
+	                type = special_status:oe_byz_policy_org_real_empire_king
+	                country = scope:oe_prf_emperor
+	            }
+	        }
+	    }
+	    else = {
+	        international_organization:oe_byz_policy_org = {
+	            if = {
+	                limit = { NOT = { scope:oe_prf_emperor = { is_member_of_international_organization = international_organization:oe_byz_policy_org } } }
+	                add_country_to_international_organization = scope:oe_prf_emperor
+	            }
+	            if = {
+	                limit = { NOT = { scope:oe_prf_emperor = { has_special_status_in_international_organization = { type = special_status:oe_byz_policy_org_real_empire_king international_organization = international_organization:oe_byz_policy_org } } } }
+	                international_organization_add_special_status = {
+	                    type = special_status:oe_byz_policy_org_real_empire_king
+	                    country = scope:oe_prf_emperor
+	                }
+	            }
+	        }
+	    }
+	    oe_prf_sync_consistorium_members = yes
+	}
 }
 
 # Enroll eligible imperial exarchates, senior themes, and outer Roman clients into oe_byz_policy_org.
@@ -80,6 +84,7 @@ oe_prf_sync_consistorium_members = {
 
 # Refresh all Prefecture modifiers, Diocese seat modifiers, and Consistorium posture balance (all mode = replace).
 oe_prf_sync_modifiers = {
+    save_scope_as = oe_prf_emperor
     remove_country_modifier = oe_prf_oriens_civil
     remove_country_modifier = oe_prf_oriens_mil
     if = { limit = { var:oe_prf_mode_1 ?= 1 } add_country_modifier = { modifier = oe_prf_oriens_civil years = -1 mode = replace } }
@@ -98,12 +103,12 @@ oe_prf_sync_modifiers = {
     else_if = { limit = { var:oe_prf_mode_4 ?= 2 } add_country_modifier = { modifier = oe_prf_galliae_foederati years = -1 mode = replace } }
     location:constantinople = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_1 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_1 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_1 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_1 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -114,12 +119,12 @@ oe_prf_sync_modifiers = {
     }
     location:smyrna = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_2 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_2 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_2 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_2 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -130,12 +135,12 @@ oe_prf_sync_modifiers = {
     }
     location:trebizond = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_3 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_3 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_3 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_3 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -146,12 +151,12 @@ oe_prf_sync_modifiers = {
     }
     location:antioch = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_4 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_4 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_4 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_4 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -162,12 +167,12 @@ oe_prf_sync_modifiers = {
     }
     location:alexandria = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_5 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_5 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_5 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_5 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -178,12 +183,12 @@ oe_prf_sync_modifiers = {
     }
     location:thessaloniki = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_6 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_6 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_6 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_6 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -194,12 +199,12 @@ oe_prf_sync_modifiers = {
     }
     location:belgrad = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_7 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_7 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_7 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_7 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -210,12 +215,12 @@ oe_prf_sync_modifiers = {
     }
     location:buda = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_8 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_8 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_8 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_8 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -226,12 +231,12 @@ oe_prf_sync_modifiers = {
     }
     location:ravenna = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_9 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_9 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_9 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_9 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -242,12 +247,12 @@ oe_prf_sync_modifiers = {
     }
     location:tunis = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_10 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_10 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_10 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_10 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -258,12 +263,12 @@ oe_prf_sync_modifiers = {
     }
     location:lyon = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_11 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_11 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_11 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_11 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }
@@ -274,12 +279,12 @@ oe_prf_sync_modifiers = {
     }
     location:trier = {
         if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_12 ?= 1 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_12 ?= 1 } }
             remove_location_modifier = oe_prf_dio_seat_mil
             add_location_modifier = { modifier = oe_prf_dio_seat_civil years = -1 mode = replace }
         }
         else_if = {
-            limit = { owner ?= c:BYZ c:BYZ = { var:oe_prf_dio_12 ?= 2 } }
+            limit = { owner ?= scope:oe_prf_emperor scope:oe_prf_emperor = { var:oe_prf_dio_12 ?= 2 } }
             remove_location_modifier = oe_prf_dio_seat_civil
             add_location_modifier = { modifier = oe_prf_dio_seat_mil years = -1 mode = replace }
         }

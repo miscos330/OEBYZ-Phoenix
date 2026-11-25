@@ -1,0 +1,292 @@
+﻿# NEW 2026-11-24 v29.0 WP24-A Main Mod Core Deepening (oe_wp24a_, gen_v290_wp24a_core_deepening.py) — WP11 Four Praetorian Prefectures + WP12 Teutonic 1525 Reformation Fork + WP13 Northern Yuan & Four Khanates (0 vanilla overrides, 0 mainline slots). Edit gen_v290_wp24a_core_deepening.py, not this file.
+
+namespace = oe_wp24a_pref
+
+# === ORIENS (Antioch / Eastern Prefecture): Events 1–3 ===
+
+oe_wp24a_pref.1 = {
+	type = country_event
+	title = oe_wp24a_pref.1.t
+	desc = oe_wp24a_pref.1.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_maritime_silk_road.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.1.a
+		ai_chance = { base = 65 }
+		add_prestige = prestige_mild_bonus
+		location:antioch ?= { if = { limit = { owner ?= root } change_prosperity = 0.06 } }
+		add_country_modifier = { modifier = oe_wp24a_pref_oriens_silk_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.1.b
+		ai_chance = { base = 35 }
+		add_gold = 90
+		add_army_tradition = 4
+		add_country_modifier = { modifier = oe_wp24a_pref_oriens_limes_mod years = 25 mode = replace }
+	}
+}
+
+oe_wp24a_pref.2 = {
+	type = country_event
+	title = oe_wp24a_pref.2.t
+	desc = oe_wp24a_pref.2.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_rel2_caliphate_silk_church.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.2.a
+		ai_chance = { base = 60 }
+		add_stability = 5
+		add_country_modifier = { modifier = oe_wp24a_pref_oriens_harmony_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.2.b
+		ai_chance = { base = 40 }
+		add_prestige = prestige_weak_bonus
+		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
+		change_societal_value = { type = centralization_vs_decentralization value = -5 }
+	}
+}
+
+oe_wp24a_pref.3 = {
+	type = country_event
+	title = oe_wp24a_pref.3.t
+	desc = oe_wp24a_pref.3.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v170_byz_ctesiphon.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.3.a
+		ai_chance = { base = 55 }
+		add_army_tradition = 5
+		add_country_modifier = { modifier = oe_wp24a_pref_oriens_limes_mod years = 30 mode = replace }
+		hidden_effect = { oe_prf_auth_add = { amount = 4 } }
+	}
+	option = {
+		name = oe_wp24a_pref.3.b
+		ai_chance = { base = 45 }
+		add_stability = 5
+		add_legitimacy = 4
+		add_country_modifier = { modifier = oe_wp24a_pref_oriens_silk_mod years = 25 mode = replace }
+	}
+}
+
+# === ILLYRICUM (Thessalonica / Danubian Prefecture): Events 4–6 ===
+
+oe_wp24a_pref.4 = {
+	type = country_event
+	title = oe_wp24a_pref.4.t
+	desc = oe_wp24a_pref.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_byz_nomisma_treasury.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.4.a
+		ai_chance = { base = 60 }
+		add_prestige = prestige_mild_bonus
+		location:thessaloniki ?= { if = { limit = { owner ?= root } change_prosperity = 0.06 } }
+		add_country_modifier = { modifier = oe_wp24a_pref_illyricum_egnatia_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.4.b
+		ai_chance = { base = 40 }
+		add_army_tradition = 4
+		add_country_modifier = { modifier = oe_wp24a_pref_illyricum_danube_mod years = 25 mode = replace }
+	}
+}
+
+oe_wp24a_pref.5 = {
+	type = country_event
+	title = oe_wp24a_pref.5.t
+	desc = oe_wp24a_pref.5.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_byz_siege_walls.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.5.a
+		ai_chance = { base = 65 }
+		add_gold = -60
+		add_army_tradition = 5
+		location:belgrad ?= { if = { limit = { owner ?= root } change_prosperity = 0.05 } }
+		add_country_modifier = { modifier = oe_wp24a_pref_illyricum_danube_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.5.b
+		ai_chance = { base = 35 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_wp24a_pref_illyricum_egnatia_mod years = 25 mode = replace }
+	}
+}
+
+oe_wp24a_pref.6 = {
+	type = country_event
+	title = oe_wp24a_pref.6.t
+	desc = oe_wp24a_pref.6.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v160_byz_katepanate.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.6.a
+		ai_chance = { base = 60 }
+		add_manpower = 1.5
+		add_country_modifier = { modifier = oe_wp24a_pref_illyricum_stratiotai_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.6.b
+		ai_chance = { base = 40 }
+		add_legitimacy = 5
+		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
+		hidden_effect = { oe_prf_auth_add = { amount = 4 } }
+	}
+}
+
+# === ITALIA & CARTHAGE (Ravenna, Rome, Sicily & Africa): Events 7–9 ===
+
+oe_wp24a_pref.7 = {
+	type = country_event
+	title = oe_wp24a_pref.7.t
+	desc = oe_wp24a_pref.7.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_con_pax_romana.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.7.a
+		ai_chance = { base = 60 }
+		add_navy_tradition = 6
+		location:ravenna ?= { if = { limit = { owner ?= root } change_prosperity = 0.06 } }
+		location:tunis ?= { if = { limit = { owner ?= root } change_prosperity = 0.06 } }
+		add_country_modifier = { modifier = oe_wp24a_pref_italia_exarch_fleet_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.7.b
+		ai_chance = { base = 40 }
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_wp24a_pref_italia_senate_mod years = 25 mode = replace }
+	}
+}
+
+oe_wp24a_pref.8 = {
+	type = country_event
+	title = oe_wp24a_pref.8.t
+	desc = oe_wp24a_pref.8.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_v230_spqr_roman_senate_revival.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.8.a
+		ai_chance = { base = 60 }
+		add_stability = 6
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_wp24a_pref_italia_senate_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.8.b
+		ai_chance = { base = 40 }
+		add_legitimacy = 6
+		change_societal_value = { type = centralization_vs_decentralization value = -5 }
+		hidden_effect = { oe_prf_auth_add = { amount = 5 } }
+	}
+}
+
+oe_wp24a_pref.9 = {
+	type = country_event
+	title = oe_wp24a_pref.9.t
+	desc = oe_wp24a_pref.9.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_econ2_granary_fleet.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.9.a
+		ai_chance = { base = 65 }
+		add_stability = 4
+		location:palermo ?= { if = { limit = { owner ?= root } change_prosperity = 0.06 } }
+		add_country_modifier = { modifier = oe_wp24a_pref_italia_annona_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.9.b
+		ai_chance = { base = 35 }
+		add_gold = 100
+		add_navy_tradition = 5
+		add_country_modifier = { modifier = oe_wp24a_pref_italia_exarch_fleet_mod years = 25 mode = replace }
+	}
+}
+
+# === GALLIA (Lyon, Trier, Rhine Limes & Atlantic Frontier): Events 10–12 ===
+
+oe_wp24a_pref.10 = {
+	type = country_event
+	title = oe_wp24a_pref.10.t
+	desc = oe_wp24a_pref.10.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_byz_senate_consistorium.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.10.a
+		ai_chance = { base = 55 }
+		add_army_tradition = 5
+		location:trier ?= { if = { limit = { owner ?= root } change_prosperity = 0.06 } }
+		add_country_modifier = { modifier = oe_wp24a_pref_gallia_rhine_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.10.b
+		ai_chance = { base = 45 }
+		add_prestige = prestige_mild_bonus
+		location:lyon ?= { if = { limit = { owner ?= root } change_prosperity = 0.06 } }
+		add_country_modifier = { modifier = oe_wp24a_pref_gallia_curiae_mod years = 30 mode = replace }
+	}
+}
+
+oe_wp24a_pref.11 = {
+	type = country_event
+	title = oe_wp24a_pref.11.t
+	desc = oe_wp24a_pref.11.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.11.a
+		ai_chance = { base = 60 }
+		add_stability = 5
+		add_country_modifier = { modifier = oe_wp24a_pref_gallia_curiae_mod years = 30 mode = replace }
+	}
+	option = {
+		name = oe_wp24a_pref.11.b
+		ai_chance = { base = 40 }
+		add_gold = 110
+		add_legitimacy = 4
+		hidden_effect = { oe_prf_auth_add = { amount = 4 } }
+	}
+}
+
+oe_wp24a_pref.12 = {
+	type = country_event
+	title = oe_wp24a_pref.12.t
+	desc = oe_wp24a_pref.12.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_con_pax_romana.dds"
+	trigger = { oe_wp24a_is_roman_host = yes }
+	option = {
+		name = oe_wp24a_pref.12.a
+		ai_chance = { base = 60 }
+		add_navy_tradition = 6
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_wp24a_pref_gallia_atlantic_mod years = 30 mode = replace }
+		if = {
+			limit = {
+				has_variable = oe_wp24a_oriens_chartered
+				has_variable = oe_wp24a_illyricum_chartered
+				has_variable = oe_wp24a_italia_chartered
+				has_variable = oe_wp24a_gallia_chartered
+			}
+			add_prestige = prestige_severe_bonus
+			hidden_effect = { oe_prf_auth_add = { amount = 8 } }
+		}
+	}
+	option = {
+		name = oe_wp24a_pref.12.b
+		ai_chance = { base = 40 }
+		add_army_tradition = 6
+		add_country_modifier = { modifier = oe_wp24a_pref_gallia_rhine_mod years = 30 mode = replace }
+	}
+}

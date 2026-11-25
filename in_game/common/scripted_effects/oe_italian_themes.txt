@@ -1,11 +1,11 @@
-﻿# Action context. Jurisdiction is the chosen province's area, on direct BYZ land.
+﻿# Action context. Jurisdiction is the chosen province's area, on direct imperial land (WP11-2 Option 2A hubs, BYZ/ROM safe).
 oe_it_theme_create_offices = {
     scope:oe_it_theme_capital = {
         create_building_country_in_location = {
             religion = religion:orthodox
             culture = culture:oe_roman_noble_culture
             subject_type = subject_type:$subject_type$
-            overlord = c:BYZ
+            overlord = scope:actor
             reforms = { $reform$ }
             hidden_effect = {
                 change_government_type = government_type:monarchy
@@ -17,7 +17,7 @@ oe_it_theme_create_offices = {
     }
     scope:target.area = {
         every_location_in_area = {
-            limit = { owner = c:BYZ region = region:italy_region this != scope:oe_it_theme_capital }
+            limit = { oe_owned_by_phoenix_empire = yes region = region:italy_region oe_theme_is_hub_location = yes this != scope:oe_it_theme_capital }
             construct_building = { building_type = building_type:$post$ owner = scope:oe_it_theme_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
         }
     }

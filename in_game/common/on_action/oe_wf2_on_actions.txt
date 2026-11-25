@@ -1,0 +1,120 @@
+﻿# NEW 2026-11-25 v27.0 WP19 Wanfang Phase 2 (oe_wf2_, gen_v270_wanfang_p2.py) — Wokou Native Disaster, Yellow River & Grand Canal Huai'an, 10 Vaulted Reforms/Privileges & Osmanli Rome (0 vanilla overrides, 0 edits to existing files, 100% O(1), R31 & G_ELR_ISOLATION compliant). Edit gen_v270_wanfang_p2.py, not this file.
+
+yearly_country_pulse = {
+	on_actions = {
+		oe_wf2_yearly_pulse
+	}
+}
+
+# Strictly O(1) annual pulse for WP19-2 (Yellow River & Grand Canal) & WP19-3 (Privilege flavor).
+# Zero map-wide location loops; 100% G_ELR_ISOLATION, R10, and R31 compliant.
+oe_wf2_yearly_pulse = {
+	trigger = {
+		oe_main_mod_old_world_event_allowed = yes
+		is_rebel_country = no
+		num_locations > 0
+		NOT = { has_variable = oe_wf2_pulse_cd }
+	}
+	effect = {
+		# --- WP19-2: Yellow River Flood Control & Grand Canal Huai'an (year >= 1450) ---
+		if = {
+			limit = {
+				oe_wf2_is_yellow_river_steward = yes
+				current_year >= 1450
+				current_year <= 1820
+			}
+			if = {
+				limit = {
+					NOT = { has_variable = oe_wf2_yr_ev1_done }
+					current_year >= 1455
+					current_year <= 1560
+				}
+				set_variable = { name = oe_wf2_yr_ev1_done value = 1 }
+				set_variable = { name = oe_wf2_pulse_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_wf2_yr.1
+			}
+			else_if = {
+				limit = {
+					NOT = { has_variable = oe_wf2_yr_breach_cd }
+					current_year >= 1480
+					NOT = { has_country_modifier = oe_wf2_mod_shushui_gongsha }
+				}
+				set_variable = { name = oe_wf2_yr_breach_cd value = 1 years = 25 }
+				set_variable = { name = oe_wf2_pulse_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_wf2_yr.2
+			}
+			else_if = {
+				limit = {
+					NOT = { has_variable = oe_wf2_yr_ev3_done }
+					owns = location:shanyang_huaian
+					current_year >= 1490
+					current_year <= 1720
+				}
+				set_variable = { name = oe_wf2_yr_ev3_done value = 1 }
+				set_variable = { name = oe_wf2_pulse_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_wf2_yr.3
+			}
+			else_if = {
+				limit = {
+					NOT = { has_variable = oe_wf2_yr_ev4_done }
+					has_variable = oe_wf2_yr_ev1_done
+					current_year >= 1510
+					current_year <= 1760
+				}
+				set_variable = { name = oe_wf2_yr_ev4_done value = 1 }
+				set_variable = { name = oe_wf2_pulse_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_wf2_yr.4
+			}
+			else_if = {
+				limit = {
+					NOT = { has_variable = oe_wf2_yr_ev5_done }
+					current_year >= 1550
+					current_year <= 1750
+				}
+				set_variable = { name = oe_wf2_yr_ev5_done value = 1 }
+				set_variable = { name = oe_wf2_pulse_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_wf2_yr.5
+			}
+			else_if = {
+				limit = {
+					NOT = { has_variable = oe_wf2_yr_ev7_done }
+					OR = {
+						has_country_modifier = oe_wf2_mod_shushui_gongsha
+						oe_wf2_has_grand_canal_huaian = yes
+					}
+					NOT = { has_country_modifier = oe_wf2_mod_river_neglect_crisis }
+				}
+				set_variable = { name = oe_wf2_yr_ev7_done value = 1 }
+				set_variable = { name = oe_wf2_pulse_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_wf2_yr.7
+			}
+			else_if = {
+				limit = {
+					has_country_modifier = oe_wf2_mod_river_neglect_crisis
+					NOT = { has_variable = oe_wf2_yr_ev8_cd }
+				}
+				set_variable = { name = oe_wf2_yr_ev8_cd value = 1 years = 18 }
+				set_variable = { name = oe_wf2_pulse_cd value = 1 years = 3 }
+				trigger_event_non_silently = oe_wf2_yr.8
+			}
+		}
+
+		# --- WP19-3: Privilege Showcase Event when holding any of the 4 activated Wanfang privileges ---
+		if = {
+			limit = {
+				oe_wf_is_era_name_eligible = yes
+				NOT = { has_variable = oe_wf2_ref_ev4_done }
+				NOT = { has_variable = oe_wf2_pulse_cd }
+				OR = {
+					has_estate_privilege = estate_privilege:oe_wf_priv_encourage_exam
+					has_estate_privilege = estate_privilege:oe_wf_priv_imperial_princes
+					has_estate_privilege = estate_privilege:oe_wf_priv_military_exam
+					has_estate_privilege = estate_privilege:oe_wf_priv_tea_salt_monopoly
+				}
+			}
+			set_variable = { name = oe_wf2_ref_ev4_done value = 1 }
+			set_variable = { name = oe_wf2_pulse_cd value = 1 years = 3 }
+			trigger_event_non_silently = oe_wf2_ref.4
+		}
+	}
+}

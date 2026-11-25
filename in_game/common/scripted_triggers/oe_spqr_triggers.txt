@@ -257,6 +257,8 @@ oe_spqr_sit_republic_bloc = {
 }
 
 oe_spqr_sit_papal_monarch_bloc = {
+	is_rebel_country = no
+	NOT = { oe_spqr_sit_republic_bloc = yes }
 	OR = {
 		tag = PAP
 		tag = NAP
@@ -267,6 +269,7 @@ oe_spqr_sit_papal_monarch_bloc = {
 			country_exists = c:PAP
 			is_subject_of = c:PAP
 		}
+		capital ?= { region = region:italy_region }
 	}
 }
 
@@ -274,11 +277,28 @@ oe_spqr_sit_participant = {
 	OR = {
 		oe_spqr_sit_republic_bloc = yes
 		oe_spqr_sit_papal_monarch_bloc = yes
-		tag = BYZ
+		tag = PAP
 		tag = FRA
-		tag = TUN
-		tag = MAM
-		tag = TUR
+		tag = ARA
+		tag = NAP
+		tag = SIC
+		tag = VEN
+		tag = GEN
+		tag = MLO
+		tag = FLO
+		is_leader_of_international_organization = international_organization:hre
 		capital ?= { region = region:italy_region }
+		has_presence_in = region:italy_region
+		AND = {
+			OR = {
+				tag = BYZ
+				tag = ROM
+			}
+			OR = {
+				has_presence_in = region:italy_region
+				has_global_variable = oe_spqr_proclaimed_global
+				has_global_variable = oe_spqr_proclaimed
+			}
+		}
 	}
 }

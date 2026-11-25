@@ -11,12 +11,15 @@ oe_nf_apply_control_modifier = {
     }
 }
 oe_nf_claim_location = {
-    if = {
-        limit = { oe_nf_can_control = { slot = $slot$ } }
-        save_scope_as = oe_nf_claimed_location
-        international_organization:oe_byz_empire_pillars = { add_to_variable_list = { name = oe_nf_locations_$slot$ target = scope:oe_nf_claimed_location } }
-        oe_nf_apply_control_modifier = { slot = $slot$ }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { oe_nf_can_control = { slot = $slot$ } }
+	        save_scope_as = oe_nf_claimed_location
+	        international_organization:oe_byz_empire_pillars = { add_to_variable_list = { name = oe_nf_locations_$slot$ target = scope:oe_nf_claimed_location } }
+	        oe_nf_apply_control_modifier = { slot = $slot$ }
+	    }
+	}
 }
 # international_organization:oe_byz_empire_pillars scope, called before releasing an extinct family slot.
 oe_nf_release_territories = {
@@ -39,34 +42,37 @@ oe_nf_release_territories = {
 # Rank changes: retain the earliest slot if a shared town becomes rural.
 # Existing holdings persist through ownership changes; acquisition is BYZ-only.
 oe_nf_clean_territory_slot = {
-    clear_variable_list = oe_nf_kept_locations
-    every_in_list = {
-        variable = oe_nf_locations_$slot$
-        if = {
-            limit = {
-                this != location:mount_athos
-                NOT = { oe_nf_province_protected = yes }
-                OR = {
-                    NOT = { location_rank = location_rank:rural_settlement }
-                    NOT = { oe_nf_earlier_control_$slot$ = yes }
-                }
-            }
-            oe_nf_apply_control_modifier = { slot = $slot$ }
-            save_scope_as = oe_nf_kept_location
-            international_organization:oe_byz_empire_pillars = { add_to_variable_list = { name = oe_nf_kept_locations target = scope:oe_nf_kept_location } }
-        }
-        else = {
-            if = { limit = { has_location_modifier = oe_nf_land_$slot$ } remove_location_modifier = oe_nf_land_$slot$ }
-            if = { limit = { has_location_modifier = oe_nf_industry_$slot$ } remove_location_modifier = oe_nf_industry_$slot$ }
-        }
-    }
-    clear_variable_list = oe_nf_locations_$slot$
-    every_in_list = {
-        variable = oe_nf_kept_locations
-        save_scope_as = oe_nf_kept_location
-        international_organization:oe_byz_empire_pillars = { add_to_variable_list = { name = oe_nf_locations_$slot$ target = scope:oe_nf_kept_location } }
-    }
-    clear_variable_list = oe_nf_kept_locations
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    clear_variable_list = oe_nf_kept_locations
+	    every_in_list = {
+	        variable = oe_nf_locations_$slot$
+	        if = {
+	            limit = {
+	                this != location:mount_athos
+	                NOT = { oe_nf_province_protected = yes }
+	                OR = {
+	                    NOT = { location_rank = location_rank:rural_settlement }
+	                    NOT = { oe_nf_earlier_control_$slot$ = yes }
+	                }
+	            }
+	            oe_nf_apply_control_modifier = { slot = $slot$ }
+	            save_scope_as = oe_nf_kept_location
+	            international_organization:oe_byz_empire_pillars = { add_to_variable_list = { name = oe_nf_kept_locations target = scope:oe_nf_kept_location } }
+	        }
+	        else = {
+	            if = { limit = { has_location_modifier = oe_nf_land_$slot$ } remove_location_modifier = oe_nf_land_$slot$ }
+	            if = { limit = { has_location_modifier = oe_nf_industry_$slot$ } remove_location_modifier = oe_nf_industry_$slot$ }
+	        }
+	    }
+	    clear_variable_list = oe_nf_locations_$slot$
+	    every_in_list = {
+	        variable = oe_nf_kept_locations
+	        save_scope_as = oe_nf_kept_location
+	        international_organization:oe_byz_empire_pillars = { add_to_variable_list = { name = oe_nf_locations_$slot$ target = scope:oe_nf_kept_location } }
+	    }
+	    clear_variable_list = oe_nf_kept_locations
+	}
 }
 oe_nf_clean_territories = {
     oe_nf_clean_territory_slot = { slot = 1 }

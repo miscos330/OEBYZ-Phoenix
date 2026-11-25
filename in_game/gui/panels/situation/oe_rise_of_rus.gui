@@ -16,6 +16,12 @@ situation_panel = {
                 }
             }
         }
+        blockoverride "one_country_character_visible" {
+            visible = "[And(SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_rus_first').GetCountry.IsValid, SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_rus_first').GetCountry.GetGovernment.HasRulerOrRegent)]"
+        }
+        blockoverride "country_container_visible" {
+            visible = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_rus_first').GetCountry.IsValid]"
+        }
         blockoverride "CountryContext" {
             datacontext = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_rus_first').GetCountry]"
         }
@@ -41,8 +47,14 @@ situation_panel = {
 
     blockoverride "situation_subheader_content" {}
 
+    blockoverride "situation_panel_outcome_hint" {
+        action_tooltip = {
+            title = "OPEN_HINT"
+            on_action = "[OpenLateralViewWithParams('hints', 'selected_hint = hint_oe_rise_of_rus')]"
+        }
+    }
+
     blockoverride "situation_panel_main_content" {
-        oe_sit_end_conditions = {}
         card_common = {
             layoutpolicy_horizontal = expanding
             blockoverride "header_decor_templates" { using = oe_header_rus_kremlin }
@@ -70,11 +82,23 @@ situation_panel = {
             hbox = {
                 size = { 100% 100% }
                 margin = { 10 0 }
-                text_single = { layoutpolicy_horizontal = expanding align = left|nobaseline fontsize = 14 default_format = "#color_gold" text = "OE_SIT_RUS_TOP3" }
+                text_single = { layoutpolicy_horizontal = expanding align = left|nobaseline fontsize = 14 default_format = "#yellow_titles" text = "OE_SIT_RUS_TOP3" }
             }
         }
         situation_card_expandable = {
             datacontext = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_rus_first').GetCountry]"
+            blockoverride "header_button_onclick" {
+                onclick = "[LateralView.Vars.Toggle('oe_rus_rank_1_toggled')]"
+            }
+            blockoverride "bottom_content_onclick" {
+                visible = "[LateralView.Vars.Exists('oe_rus_rank_1_toggled')]"
+            }
+            blockoverride "icon_replace_visible_yes" {
+                visible = "[LateralView.Vars.Exists('oe_rus_rank_1_toggled')]"
+            }
+            blockoverride "icon_replace_visible_not" {
+                visible = "[Not(LateralView.Vars.Exists('oe_rus_rank_1_toggled'))]"
+            }
             visible = "[Country.IsValid]"
             blockoverride "header_icon" { country_flag_small_plus = { size = { 50 30 } } }
             blockoverride "header_text" { margin_left = 25 text = "oe_rus_rank_first" }
@@ -86,7 +110,7 @@ situation_panel = {
                             autoresize = no
                             align = center|nobaseline
                             fontsize = 13
-                            default_format = "#bold #color_gold"
+                            default_format = "#color_yellow;bold"
                             raw_text = "[Country.MakeScope.GetVariable('oe_rus_score').GetValue|1]"
                         }
                     }
@@ -114,6 +138,18 @@ situation_panel = {
         }
         situation_card_expandable = {
             datacontext = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_rus_second').GetCountry]"
+            blockoverride "header_button_onclick" {
+                onclick = "[LateralView.Vars.Toggle('oe_rus_rank_2_toggled')]"
+            }
+            blockoverride "bottom_content_onclick" {
+                visible = "[LateralView.Vars.Exists('oe_rus_rank_2_toggled')]"
+            }
+            blockoverride "icon_replace_visible_yes" {
+                visible = "[LateralView.Vars.Exists('oe_rus_rank_2_toggled')]"
+            }
+            blockoverride "icon_replace_visible_not" {
+                visible = "[Not(LateralView.Vars.Exists('oe_rus_rank_2_toggled'))]"
+            }
             visible = "[Country.IsValid]"
             blockoverride "header_icon" { country_flag_small_plus = { size = { 50 30 } } }
             blockoverride "header_text" { margin_left = 25 text = "oe_rus_rank_second" }
@@ -125,7 +161,7 @@ situation_panel = {
                             autoresize = no
                             align = center|nobaseline
                             fontsize = 13
-                            default_format = "#bold #color_gold"
+                            default_format = "#color_yellow;bold"
                             raw_text = "[Country.MakeScope.GetVariable('oe_rus_score').GetValue|1]"
                         }
                     }
@@ -153,6 +189,18 @@ situation_panel = {
         }
         situation_card_expandable = {
             datacontext = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_rus_third').GetCountry]"
+            blockoverride "header_button_onclick" {
+                onclick = "[LateralView.Vars.Toggle('oe_rus_rank_3_toggled')]"
+            }
+            blockoverride "bottom_content_onclick" {
+                visible = "[LateralView.Vars.Exists('oe_rus_rank_3_toggled')]"
+            }
+            blockoverride "icon_replace_visible_yes" {
+                visible = "[LateralView.Vars.Exists('oe_rus_rank_3_toggled')]"
+            }
+            blockoverride "icon_replace_visible_not" {
+                visible = "[Not(LateralView.Vars.Exists('oe_rus_rank_3_toggled'))]"
+            }
             visible = "[Country.IsValid]"
             blockoverride "header_icon" { country_flag_small_plus = { size = { 50 30 } } }
             blockoverride "header_text" { margin_left = 25 text = "oe_rus_rank_third" }
@@ -164,7 +212,7 @@ situation_panel = {
                             autoresize = no
                             align = center|nobaseline
                             fontsize = 13
-                            default_format = "#bold #color_gold"
+                            default_format = "#color_yellow;bold"
                             raw_text = "[Country.MakeScope.GetVariable('oe_rus_score').GetValue|1]"
                         }
                     }

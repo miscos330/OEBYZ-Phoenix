@@ -1,14 +1,14 @@
 ﻿oe_ir_italian_theme = {
     type = internationalorganization
     show_message = no
-    potential = { scope:actor = { tag = BYZ } }
+    potential = { exists = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes } }
     allow = {
         scope:actor = {
-            tag = BYZ
+            oe_is_phoenix_empire = yes
             custom_tooltip = { text = OE_IR_NOT_DONE NOT = { has_variable = oe_ir_italian_theme_done } }
             custom_tooltip = { text = OE_IR_ITALY_HALF_REQUIRED oe_ir_italy_half_owned = yes }
         }
-        international_organization:oe_byz_empire_pillars = {
+        international_organization:oe_byz_empire_pillars ?= {
             custom_tooltip = { text = OE_IR_AUTHORITY_20 var:oe_pillars_authority >= 20 }
         }
     }
@@ -21,13 +21,13 @@
         name = "choose_international_organization"
         none_available_msg_key = "leave_international_organization_none"
         column = { data = name }
-        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes } }
     }
     effect = {
         if = {
             limit = {
                 scope:recipient = { this = international_organization:oe_byz_empire_pillars var:oe_pillars_authority >= 20 }
-                scope:actor = { tag = BYZ NOT = { has_variable = oe_ir_italian_theme_done } oe_ir_italy_half_owned = yes }
+                scope:actor = { oe_is_phoenix_empire = yes NOT = { has_variable = oe_ir_italian_theme_done } oe_ir_italy_half_owned = yes }
             }
             scope:recipient = { change_variable = { name = oe_pillars_authority add = -20 } }
             scope:actor = {
@@ -39,18 +39,20 @@
     }
 }
 
+# v26.0 WP11-3: Consolidates Italy into 6 Classical Provinces (R54-R59) for new starts while keeping
+# full Italian Commercial vs Latin Military two-way choice and legacy 14-area fallback for old saves.
 oe_create_theme_in_italy = {
     type = internationalorganization
     show_message = no
-    potential = { scope:actor = { tag = BYZ has_variable = oe_ir_italian_theme_done } }
+    potential = { exists = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes has_variable = oe_ir_italian_theme_done } }
     allow = {
         scope:actor = {
-            tag = BYZ
+            oe_is_phoenix_empire = yes
             at_war = no
             has_raised_levies = no
             custom_tooltip = { text = OE_IT_THEME_CHOICE_REQUIRED oe_italian_theme_creation_unlocked = yes }
         }
-        international_organization:oe_byz_empire_pillars = {
+        international_organization:oe_byz_empire_pillars ?= {
             custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_5 var:oe_pillars_authority >= 5 }
         }
     }
@@ -63,7 +65,7 @@ oe_create_theme_in_italy = {
         name = "choose_international_organization"
         none_available_msg_key = "leave_international_organization_none"
         column = { data = name }
-        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { tag = BYZ } }
+        visible = { this = international_organization:oe_byz_empire_pillars scope:actor = { oe_is_phoenix_empire = yes } }
     }
     select_trigger = {
         # Explicit 1.4 target overlay; nonselectable land remains unhighlighted.
@@ -78,47 +80,65 @@ oe_create_theme_in_italy = {
         column = { data = name }
         visible = {
             region = region:italy_region
-            any_location_in_province = { is_province_capital = yes owner = c:BYZ }
-            area = { NOT = { any_location_in_area = { oe_theme_location_occupied_trigger = yes } } }
+            OR = {
+                any_location_in_province = { oe_theme_region_center_creatable = yes }
+                AND = {
+                    NOT = { any_location_in_province = { has_variable = oe_theme_region } }
+                    any_location_in_province = { is_province_capital = yes oe_owned_by_phoenix_empire = yes }
+                    area = { NOT = { any_location_in_area = { oe_theme_location_occupied_trigger = yes } } }
+                }
+            }
         }
     }
     effect = {
         if = {
             limit = {
-                scope:actor = { tag = BYZ oe_italian_theme_creation_unlocked = yes at_war = no has_raised_levies = no }
+                scope:actor = { oe_is_phoenix_empire = yes oe_italian_theme_creation_unlocked = yes at_war = no has_raised_levies = no }
                 scope:recipient = { this = international_organization:oe_byz_empire_pillars var:oe_pillars_authority >= 5 }
-                scope:target = {
-                    region = region:italy_region
-                    any_location_in_province = { is_province_capital = yes owner = c:BYZ }
-                    area = { NOT = { any_location_in_area = { oe_theme_location_occupied_trigger = yes } } }
-                }
-            }
-            scope:recipient = { change_variable = { name = oe_pillars_authority add = -5 } }
-            scope:target = {
-                every_location_in_province = {
-                    limit = { is_province_capital = yes owner = c:BYZ }
-                    save_scope_as = oe_it_theme_capital
-                }
+                scope:target = { region = region:italy_region }
             }
             if = {
-                limit = { scope:actor = { has_variable = oe_theme_italian_unlocked } }
-                oe_it_theme_create_offices = { subject_type = oe_empire_theme_italian reform = oe_byz_theme_italian_subject seat = oe_byz_theme_italian_seat post = oe_byz_theme_italian_post }
+                limit = { scope:target = { any_location_in_province = { oe_theme_region_center_creatable = yes } } }
+                scope:recipient = { change_variable = { name = oe_pillars_authority add = -5 } }
+                scope:target = { random_location_in_province = { limit = { oe_theme_region_center_creatable = yes } save_scope_as = oe_theme_seat } }
+                scope:actor = {
+                    oe_theme_found_at_seat_empire = yes
+                    oe_theme_empire_sync_caps = yes
+                }
             }
             else_if = {
-                limit = { scope:actor = { has_variable = oe_theme_latin_unlocked } }
-                oe_it_theme_create_offices = { subject_type = oe_empire_theme_latin reform = oe_byz_theme_latin_subject seat = oe_byz_theme_latin_seat post = oe_byz_theme_latin_post }
-                scope:oe_it_theme_country = { add_manpower = 3 }
-                scope:oe_it_theme_capital = { oe_it_theme_create_three_current_age_infantry = { owner = scope:oe_it_theme_country } }
+                limit = {
+                    scope:target = {
+                        NOT = { any_location_in_province = { has_variable = oe_theme_region } }
+                        any_location_in_province = { is_province_capital = yes oe_owned_by_phoenix_empire = yes }
+                        area = { NOT = { any_location_in_area = { oe_theme_location_occupied_trigger = yes } } }
+                    }
+                }
+                scope:recipient = { change_variable = { name = oe_pillars_authority add = -5 } }
+                scope:target = {
+                    every_location_in_province = {
+                        limit = { is_province_capital = yes oe_owned_by_phoenix_empire = yes }
+                        save_scope_as = oe_it_theme_capital
+                    }
+                }
+                if = {
+                    limit = { scope:actor = { has_variable = oe_theme_italian_unlocked } }
+                    oe_it_theme_create_offices = { subject_type = oe_empire_theme_italian reform = oe_byz_theme_italian_subject seat = oe_byz_theme_italian_seat post = oe_byz_theme_italian_post }
+                }
+                else_if = {
+                    limit = { scope:actor = { has_variable = oe_theme_latin_unlocked } }
+                    oe_it_theme_create_offices = { subject_type = oe_empire_theme_latin reform = oe_byz_theme_latin_subject seat = oe_byz_theme_latin_seat post = oe_byz_theme_latin_post }
+                    scope:oe_it_theme_country = { add_manpower = 3 }
+                    scope:oe_it_theme_capital = { oe_it_theme_create_three_current_age_infantry = { owner = scope:oe_it_theme_country } }
+                }
+                scope:oe_it_theme_country = { set_gold = 300 }
+                scope:recipient = {
+                    save_scope_as = oe_pillars_org
+                    add_country_to_international_organization = scope:oe_it_theme_country
+                }
+                scope:oe_it_theme_country = { oe_pillars_classify_member_effect = yes }
+                scope:actor = { oe_theme_empire_sync_caps = yes }
             }
-            scope:oe_it_theme_country = {
-                set_gold = 300
-                # FIX 2026-11-17 (author decision): no food-access relation on founding (popup spam; themes cancelled it the next month).
-            }
-            scope:recipient = {
-                save_scope_as = oe_pillars_org
-                add_country_to_international_organization = scope:oe_it_theme_country
-            }
-            scope:oe_it_theme_country = { oe_pillars_classify_member_effect = yes }
         }
     }
 }

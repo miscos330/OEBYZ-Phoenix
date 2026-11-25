@@ -1,24 +1,44 @@
 ﻿# International-organization scope. Idempotent reconciliation, no gold/variable resets.
+# v26.0 WP11: BYZ/ROM-safe via global_var:oe_phoenix_empire; fast O(subjects) monthly scan, full every_country sweep only once on init + January.
 oe_pillars_sync_effect = {
     save_scope_as = oe_pillars_org
+    oe_phoenix_empire_sync = yes
     if = {
-        limit = { country_exists = c:BYZ }
+        limit = { has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire }
         if = {
             limit = {
                 OR = {
                     international_organization_has_leader = no
-                    leader_country ?= { NOT = { tag = BYZ } }
+                    NOT = { leader_country ?= global_var:oe_phoenix_empire }
                 }
             }
-            set_leader_country = c:BYZ
+            set_leader_country = global_var:oe_phoenix_empire
         }
-        every_country = {
-            limit = {
-                oe_pillars_eligible_trigger = yes
-                NOT = { is_member_of_international_organization = scope:oe_pillars_org }
+        if = {
+            limit = { NOT = { global_var:oe_phoenix_empire = { is_member_of_international_organization = scope:oe_pillars_org } } }
+            add_country_to_international_organization = global_var:oe_phoenix_empire
+        }
+        global_var:oe_phoenix_empire = {
+            every_subject = {
+                limit = {
+                    oe_pillars_eligible_trigger = yes
+                    NOT = { is_member_of_international_organization = scope:oe_pillars_org }
+                }
+                save_scope_as = oe_pillars_joiner
+                scope:oe_pillars_org = { add_country_to_international_organization = scope:oe_pillars_joiner }
             }
-            save_scope_as = oe_pillars_joiner
-            scope:oe_pillars_org = { add_country_to_international_organization = scope:oe_pillars_joiner }
+        }
+        if = {
+            limit = { OR = { current_month = 1 NOT = { has_variable = oe_pillars_synced_once } } }
+            set_variable = oe_pillars_synced_once
+            every_country = {
+                limit = {
+                    oe_pillars_eligible_trigger = yes
+                    NOT = { is_member_of_international_organization = scope:oe_pillars_org }
+                }
+                save_scope_as = oe_pillars_joiner
+                scope:oe_pillars_org = { add_country_to_international_organization = scope:oe_pillars_joiner }
+            }
         }
         every_international_organization_member = {
             if = {

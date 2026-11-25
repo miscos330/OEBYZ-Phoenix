@@ -36,12 +36,27 @@ oe_spqr_maritime_hubs_val = {
 	if = { limit = { owns_or_non_sovereign_subject_owns = location:palermo } add = 1 }
 }
 
+# Country scope. Scaled gold costs for S.P.Q.R. situation actions (bounded for small communes & empires).
+oe_spqr_action_gold_small = {
+	value = monthly_income_trade_and_tax
+	multiply = 2.5
+	min = 25
+	max = 350
+}
+
+oe_spqr_action_gold_med = {
+	value = monthly_income_trade_and_tax
+	multiply = 4
+	min = 40
+	max = 500
+}
+
 # Global/Situation scope. Classical Republican Revival Momentum (0..100).
 oe_spqr_revival_momentum_val = {
-	value = 38
+	value = 25
 	if = {
 		limit = { has_global_variable = oe_spqr_rienzo_ignited }
-		add = 10
+		add = 8
 	}
 	if = {
 		limit = { has_global_variable = oe_spqr_proclaimed_global }
@@ -55,6 +70,10 @@ oe_spqr_revival_momentum_val = {
 		limit = { location:rome = { has_owner = yes owner = { tag = PAP } } }
 		add = -10
 	}
+	else_if = {
+		limit = { location:rome = { has_owner = yes owner = { oe_spqr_sit_papal_monarch_bloc = yes } } }
+		add = -6
+	}
 	if = { limit = { location:venice = { has_owner = yes owner = { government_type = government_type:republic } } } add = 4 }
 	if = { limit = { location:genoa = { has_owner = yes owner = { government_type = government_type:republic } } } add = 4 }
 	if = { limit = { location:florence = { has_owner = yes owner = { government_type = government_type:republic } } } add = 4 }
@@ -63,6 +82,10 @@ oe_spqr_revival_momentum_val = {
 	if = { limit = { location:naples = { has_owner = yes owner = { government_type = government_type:republic } } } add = 5 }
 	if = { limit = { location:tunis = { has_owner = yes owner = { oe_spqr_sit_republic_bloc = yes } } } add = 5 }
 	if = { limit = { location:athens = { has_owner = yes owner = { oe_spqr_sit_republic_bloc = yes } } } add = 5 }
+	if = {
+		limit = { has_global_variable = oe_spqr_sit_momentum_shift }
+		add = global_var:oe_spqr_sit_momentum_shift
+	}
 	min = 0
 	max = 100
 }

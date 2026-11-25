@@ -6,32 +6,35 @@ oe_heg_stabilize_africa_effect = {
 # Country scope; each event supplies its own snapshot variable.
 # The requested triumph award remains exact even after Army Reform III.
 oe_heg_triumph_rewards = {
-    hidden_effect = {
-        if = { limit = { NOT = { has_variable = oe_byz_nobleII_reformmm_var } } set_variable = { name = oe_byz_nobleII_reformmm_var value = 0 } }
-    }
-    custom_description = {
-        text = OE_HEG_TRIUMPH_ARMY_AWARD
-        value = var:$count_variable$
-        change_variable = { name = oe_byz_nobleII_reformmm_var add = var:$count_variable$ }
-    }
-    save_scope_value_as = { name = oe_heg_triumph_authority_award value = { value = var:$count_variable$ multiply = 0.1 } }
-    international_organization:oe_byz_empire_pillars = {
-        custom_description = {
-            text = OE_HEG_TRIUMPH_AUTHORITY_AWARD
-            value = scope:oe_heg_triumph_authority_award
-            change_variable = { name = oe_pillars_authority add = scope:oe_heg_triumph_authority_award }
-        }
-        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-        custom_tooltip = {
-            text = OE_HEG_TRIUMPH_OPINION_AWARD
-            change_variable = { name = oe_pillars_public_opinion add = 5 }
-            clamp_variable = { name = oe_pillars_public_opinion min = 0 max = 100 }
-        }
-    }
-    add_stability = 10
-    add_legitimacy = 10
-    # NEW 2026-11-17 Roman Reconquest: triumph fervour.
-    oe_rr_add_hope = { amount = 5 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    hidden_effect = {
+	        if = { limit = { NOT = { has_variable = oe_byz_nobleII_reformmm_var } } set_variable = { name = oe_byz_nobleII_reformmm_var value = 0 } }
+	    }
+	    custom_description = {
+	        text = OE_HEG_TRIUMPH_ARMY_AWARD
+	        value = var:$count_variable$
+	        change_variable = { name = oe_byz_nobleII_reformmm_var add = var:$count_variable$ }
+	    }
+	    save_scope_value_as = { name = oe_heg_triumph_authority_award value = { value = var:$count_variable$ multiply = 0.1 } }
+	    international_organization:oe_byz_empire_pillars = {
+	        custom_description = {
+	            text = OE_HEG_TRIUMPH_AUTHORITY_AWARD
+	            value = scope:oe_heg_triumph_authority_award
+	            change_variable = { name = oe_pillars_authority add = scope:oe_heg_triumph_authority_award }
+	        }
+	        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	        custom_tooltip = {
+	            text = OE_HEG_TRIUMPH_OPINION_AWARD
+	            change_variable = { name = oe_pillars_public_opinion add = 5 }
+	            clamp_variable = { name = oe_pillars_public_opinion min = 0 max = 100 }
+	        }
+	    }
+	    add_stability = 10
+	    add_legitimacy = 10
+	    # NEW 2026-11-17 Roman Reconquest: triumph fervour.
+	    oe_rr_add_hope = { amount = 5 }
+	}
 }
 
 # Snapshot once when this event opens. Temporary country scope is used only here.

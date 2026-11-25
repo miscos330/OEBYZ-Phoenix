@@ -1,0 +1,232 @@
+﻿# NEW 2026-11-24 v26.1 WP15-2 Wanfang Celestial Empire Core (oe_wf_, gen_v261_wanfang_celestial.py) — EU5-Native Era Names, 3-Stage Mandate Cycle, Bilateral Royal Favor & Five Court Policies (0 vanilla overrides, 0 edits to existing files, 100% O(1) & G_ELR_ISOLATION compliant). Edit gen_v261_wanfang_celestial.py, not this file.
+
+# Vanilla EU5 1.4.9 native hooks (0 vanilla files overridden, strictly additive).
+on_new_ruler = {
+	on_actions = {
+		oe_wf_on_new_ruler
+	}
+}
+
+yearly_country_pulse = {
+	on_actions = {
+		oe_wf_yearly_pulse
+		oe_wf_tributary_yearly_pulse
+	}
+}
+
+# System 1: New Sovereign Proclaims Era Name (strictly gated against rebels and Fourth Rome).
+oe_wf_on_new_ruler = {
+	trigger = {
+		is_rebel_country = no
+		oe_wf_is_era_name_eligible = yes
+		NOT = { has_variable = oe_wf_era_reign_set_cd }
+	}
+	effect = {
+		remove_variable = oe_wf_era_reign_proclaimed
+		remove_variable = oe_wf_era_jubilee_done
+		set_variable = { name = oe_wf_era_reign_years value = 0 }
+		set_variable = { name = oe_wf_era_reign_set_cd value = 1 years = 1 }
+		trigger_event_non_silently = { id = oe_wf.1 days = 15 }
+	}
+}
+
+# Systems 1 & 2: Strictly O(1) Annual Pulse for Celestial Court & Mandate Cycle (zero location loops, 100% G_ELR_ISOLATION compliant).
+oe_wf_yearly_pulse = {
+	trigger = {
+		is_rebel_country = no
+		oe_wf_is_era_name_eligible = yes
+		num_locations > 0
+	}
+	effect = {
+		# --- System 1: Track current reign-title years ---
+		if = {
+			limit = { has_variable = oe_wf_era_reign_proclaimed }
+			if = {
+				limit = { NOT = { has_variable = oe_wf_era_reign_years } }
+				set_variable = { name = oe_wf_era_reign_years value = 0 }
+			}
+			change_variable = { name = oe_wf_era_reign_years add = 1 }
+		}
+
+		# Auspicious Era Jubilee after 10+ years of peaceful reign
+		if = {
+			limit = {
+				has_variable = oe_wf_era_reign_proclaimed
+				has_variable = oe_wf_era_reign_years
+				var:oe_wf_era_reign_years >= 10
+				NOT = { has_variable = oe_wf_era_jubilee_done }
+				NOT = { has_variable = oe_wf_annual_ev_cd }
+				at_war = no
+				stability >= 15
+			}
+			set_variable = { name = oe_wf_era_jubilee_done value = 1 }
+			set_variable = { name = oe_wf_annual_ev_cd value = 1 months = 11 }
+			trigger_event_non_silently = oe_wf.2
+		}
+
+		# Crisis Reign-Title Change (改元禳灾)
+		if = {
+			limit = {
+				has_variable = oe_wf_era_reign_proclaimed
+				has_variable = oe_wf_era_reign_years
+				var:oe_wf_era_reign_years >= 3
+				NOT = { has_variable = oe_wf_era_crisis_cd }
+				NOT = { has_variable = oe_wf_annual_ev_cd }
+				OR = {
+					stability < -5
+					war_exhaustion >= 6
+					trigger_if = {
+						limit = {
+							exists = international_organization:middle_kingdom
+							is_leader_of_international_organization = international_organization:middle_kingdom
+						}
+						NOT = { current_celestial_authority = { value = 35 } }
+					}
+					trigger_else = {
+						always = no
+					}
+				}
+			}
+			set_variable = { name = oe_wf_era_crisis_cd value = 1 years = 20 }
+			set_variable = { name = oe_wf_annual_ev_cd value = 1 months = 11 }
+			trigger_event_non_silently = oe_wf.3
+		}
+
+		# --- System 2 & 3 (Emperor): Strictly Middle Kingdom Leader Mandate Cycle + Imperial Grace ---
+		if = {
+			limit = { oe_wf_is_middle_kingdom_leader = yes }
+
+			# Accrue Emperor's Imperial Grace pool (+4/yr, clamped 0..100)
+			oe_wf_add_imperial_grace = { amount = 4 }
+
+			# Initialize Dynasty Age & Cycle Stage (Stage 1: Founding Vigor)
+			if = {
+				limit = { NOT = { has_variable = oe_wf_dynasty_age } }
+				set_variable = { name = oe_wf_dynasty_age value = 0 }
+			}
+			change_variable = { name = oe_wf_dynasty_age add = 1 }
+
+			if = {
+				limit = { NOT = { has_variable = oe_wf_cycle_stage } }
+				set_variable = { name = oe_wf_cycle_stage value = 1 }
+				oe_wf_clear_cycle_modifiers = yes
+				add_country_modifier = { modifier = oe_wf_cycle_stage_1_mod years = 20 mode = replace }
+			}
+
+			# Keep current stage modifier refreshed cleanly (timed 20y, mode = replace, never permanent bloat)
+			if = {
+				limit = {
+					var:oe_wf_cycle_stage = 1
+					NOT = { has_country_modifier = oe_wf_cycle_stage_1_mod }
+				}
+				add_country_modifier = { modifier = oe_wf_cycle_stage_1_mod years = 20 mode = replace }
+			}
+			else_if = {
+				limit = {
+					var:oe_wf_cycle_stage = 2
+					NOT = { has_country_modifier = oe_wf_cycle_stage_2_mod }
+				}
+				add_country_modifier = { modifier = oe_wf_cycle_stage_2_mod years = 20 mode = replace }
+			}
+			else_if = {
+				limit = {
+					var:oe_wf_cycle_stage >= 3
+					NOT = { has_country_modifier = oe_wf_cycle_stage_3_mod }
+				}
+				add_country_modifier = { modifier = oe_wf_cycle_stage_3_mod years = 20 mode = replace }
+			}
+
+			# Stage 1 -> Stage 2 Transition (age >= 60)
+			if = {
+				limit = {
+					var:oe_wf_cycle_stage = 1
+					var:oe_wf_dynasty_age >= 60
+					NOT = { has_variable = oe_wf_annual_ev_cd }
+				}
+				set_variable = { name = oe_wf_cycle_stage value = 2 }
+				oe_wf_clear_cycle_modifiers = yes
+				add_country_modifier = { modifier = oe_wf_cycle_stage_2_mod years = 20 mode = replace }
+				set_variable = { name = oe_wf_annual_ev_cd value = 1 months = 11 }
+				trigger_event_non_silently = oe_wf.10
+			}
+			# Stage 2 -> Stage 3 Transition (age >= 140 OR severe mandate/stability decay after age >= 75)
+			else_if = {
+				limit = {
+					var:oe_wf_cycle_stage = 2
+					NOT = { has_variable = oe_wf_annual_ev_cd }
+					OR = {
+						var:oe_wf_dynasty_age >= 140
+						AND = {
+							var:oe_wf_dynasty_age >= 75
+							stability < 0
+							NOT = { current_celestial_authority = { value = 35 } }
+						}
+					}
+				}
+				set_variable = { name = oe_wf_cycle_stage value = 3 }
+				oe_wf_clear_cycle_modifiers = yes
+				add_country_modifier = { modifier = oe_wf_cycle_stage_3_mod years = 20 mode = replace }
+				set_variable = { name = oe_wf_annual_ev_cd value = 1 months = 11 }
+				trigger_event_non_silently = oe_wf.11
+			}
+			# Grand Reformer Renewal Opportunity (oe_wf.15 -> oe_wf.16)
+			else_if = {
+				limit = {
+					NOT = { has_variable = oe_wf_renewal_cd }
+					NOT = { has_variable = oe_wf_annual_ev_cd }
+					OR = {
+						var:oe_wf_cycle_stage >= 3
+						AND = {
+							var:oe_wf_cycle_stage = 2
+							var:oe_wf_dynasty_age >= 115
+						}
+					}
+					OR = {
+						AND = {
+							has_variable = oe_wf_reform_momentum
+							var:oe_wf_reform_momentum >= 2
+						}
+						AND = {
+							stability >= 5
+							gold >= 120
+						}
+					}
+				}
+				set_variable = { name = oe_wf_renewal_cd value = 1 years = 25 }
+				set_variable = { name = oe_wf_annual_ev_cd value = 1 months = 11 }
+				trigger_event_non_silently = oe_wf.15
+			}
+			# Periodic Stage 2/3 Challenges (oe_wf.12 / .13 / .14, 12y CD)
+			else_if = {
+				limit = {
+					var:oe_wf_cycle_stage >= 2
+					NOT = { has_variable = oe_wf_cycle_ev_cd }
+					NOT = { has_variable = oe_wf_annual_ev_cd }
+				}
+				set_variable = { name = oe_wf_cycle_ev_cd value = 1 years = 12 }
+				set_variable = { name = oe_wf_annual_ev_cd value = 1 months = 11 }
+				random_list = {
+					34 = { trigger_event_non_silently = oe_wf.12 }
+					33 = { trigger_event_non_silently = oe_wf.13 }
+					33 = { trigger_event_non_silently = oe_wf.14 }
+				}
+			}
+		}
+	}
+}
+
+# System 3: Strictly O(1) Annual Royal Favor Accrual on Tributaries/Subjects (0 events dispatched here, 100% G_ELR_ISOLATION compliant).
+oe_wf_tributary_yearly_pulse = {
+	trigger = {
+		is_rebel_country = no
+		oe_wf_is_tributary_of_emperor = yes
+		num_locations > 0
+	}
+	effect = {
+		oe_wf_add_huangen = { amount = 3 }
+		if = {
+			limit = { at_war = yes }
+			oe_wf_add_huangen = { amount = 2 }
+		}
+	}
+}

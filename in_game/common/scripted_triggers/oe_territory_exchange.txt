@@ -3,7 +3,11 @@ oe_tx_in_bloc = {
     OR = {
         this = $leader$
         is_subject_of = $leader$
-        AND = { exists = overlord overlord = { is_subject_of = $leader$ } }
+        trigger_if = {
+            limit = { is_subject = yes exists = overlord }
+            overlord = { is_subject_of = $leader$ }
+        }
+        trigger_else = { always = no }
     }
 }
 # Disabled at user request on 2026-11-01. Do not reopen without explicit authorization.

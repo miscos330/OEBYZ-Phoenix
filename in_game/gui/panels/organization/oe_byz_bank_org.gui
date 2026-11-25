@@ -1,4 +1,4 @@
-organization_geodiplomatic_theme = {
+﻿organization_geodiplomatic_theme = {
     
     blockoverride "organization_laws_tab_text" { # Hide laws tab
         text = "OE_BANK_ORG_LAWS"
@@ -73,7 +73,7 @@ organization_geodiplomatic_theme = {
                     icon = {
                         size = { 30 30 }
                         block "common_header_icon_texture" {
-                            texture = "[GetSpecialStatusIconFromKey('tatar_tax_collector')]"
+                            texture = "[InternationalOrganizationsView.GetInternationalOrganization.GetIcon]"
                         }
                         texture_density = 2
                     }                                            
@@ -100,16 +100,16 @@ organization_geodiplomatic_theme = {
                     }
                 }
                 blockoverride "header_button_onclick" {
-                    onclick = "[GetVariableSystem.Toggle( 'tatar_tax_collector_info' )]"
+                    onclick = "[GetVariableSystem.Toggle( 'oe_byz_bank_summary_collapsed' )]"
                 }
                 blockoverride "icon_replace_visible_yes" {
-                    visible = "[GetVariableSystem.Exists( 'tatar_tax_collector_info' )]"
+                    visible = "[Not(GetVariableSystem.Exists( 'oe_byz_bank_summary_collapsed' ))]"
                 }
                 blockoverride "icon_replace_visible_not" {
-                    visible = "[Not(GetVariableSystem.Exists( 'tatar_tax_collector_info' ))]"
+                    visible = "[GetVariableSystem.Exists( 'oe_byz_bank_summary_collapsed' )]"
                 }
-                blockoverride"bottom_content_onclick" {
-                    visible = "[GetVariableSystem.Exists( 'tatar_tax_collector_info' )]"
+                blockoverride "bottom_content_onclick" {
+                    visible = "[Not(GetVariableSystem.Exists( 'oe_byz_bank_summary_collapsed' ))]"
                 }
                 margin_bottom = 10
             }
@@ -151,7 +151,7 @@ organization_geodiplomatic_theme = {
             tooltipwidget = {
                 using = io_leave_button_tooltip
             }
-            visible = "[And(Not(Player.IsMemberOfInternationalOrganization(InternationalOrganizationsView.GetInternationalOrganization)),PdxGuiWidget.IsUberButtonVisible)]"
+            visible = "[And(Player.IsMemberOfInternationalOrganization(InternationalOrganizationsView.GetInternationalOrganization),PdxGuiWidget.IsUberButtonVisible)]"
             enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
             scripted_action_tooltip = {
                 click_type = left

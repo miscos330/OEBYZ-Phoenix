@@ -1,0 +1,74 @@
+﻿# NEW 2026-11-25 v27.0 WP19 Wanfang Phase 2 (oe_wf2_, gen_v270_wanfang_p2.py) — Wokou Native Disaster, Yellow River & Grand Canal Huai'an, 10 Vaulted Reforms/Privileges & Osmanli Rome (0 vanilla overrides, 0 edits to existing files, 100% O(1), R31 & G_ELR_ISOLATION compliant). Edit gen_v270_wanfang_p2.py, not this file.
+
+# Safely adjust Wokou suppression score (0..100), always R12-initialized.
+oe_wf2_add_wokou_suppression = {
+	if = {
+		limit = { NOT = { has_variable = oe_wf2_wokou_suppression } }
+		set_variable = { name = oe_wf2_wokou_suppression value = 0 }
+	}
+	change_variable = { name = oe_wf2_wokou_suppression add = $amount$ }
+	if = {
+		limit = { var:oe_wf2_wokou_suppression > 100 }
+		set_variable = { name = oe_wf2_wokou_suppression value = 100 }
+	}
+	if = {
+		limit = { var:oe_wf2_wokou_suppression < 0 }
+		set_variable = { name = oe_wf2_wokou_suppression value = 0 }
+	}
+}
+
+# Safely adjust Yellow River hydraulic readiness (0..100), always R12-initialized.
+oe_wf2_add_river_readiness = {
+	if = {
+		limit = { NOT = { has_variable = oe_wf2_river_readiness } }
+		set_variable = { name = oe_wf2_river_readiness value = 0 }
+	}
+	change_variable = { name = oe_wf2_river_readiness add = $amount$ }
+	if = {
+		limit = { var:oe_wf2_river_readiness > 100 }
+		set_variable = { name = oe_wf2_river_readiness value = 100 }
+	}
+	if = {
+		limit = { var:oe_wf2_river_readiness < 0 }
+		set_variable = { name = oe_wf2_river_readiness value = 0 }
+	}
+}
+
+# Apply coastal bastion modifier to up to 3 owned key SE Chinese ports (O(1) bounded).
+oe_wf2_fortify_se_bastions = {
+	if = {
+		limit = { owns = location:dinghai }
+		location:dinghai = { add_location_modifier = { modifier = oe_wf2_loc_coastal_bastion years = 20 mode = replace } }
+	}
+	if = {
+		limit = { owns = location:linhai }
+		location:linhai = { add_location_modifier = { modifier = oe_wf2_loc_coastal_bastion years = 20 mode = replace } }
+	}
+	if = {
+		limit = { owns = location:jinjiang }
+		location:jinjiang = { add_location_modifier = { modifier = oe_wf2_loc_coastal_bastion years = 20 mode = replace } }
+	}
+}
+
+# Apply Yellow River flood or Gaojia Dike protection to owned basin hubs (O(1) bounded).
+oe_wf2_apply_river_dike_boon = {
+	if = {
+		limit = { owns = location:shanyang_huaian }
+		location:shanyang_huaian = { add_location_modifier = { modifier = oe_wf2_loc_gaojia_dike_fortified years = 20 mode = replace } }
+	}
+	if = {
+		limit = { owns = location:kaifeng }
+		location:kaifeng = { add_location_modifier = { modifier = oe_wf2_loc_gaojia_dike_fortified years = 20 mode = replace } }
+	}
+}
+
+oe_wf2_apply_river_flood_hit = {
+	if = {
+		limit = { owns = location:kaifeng }
+		location:kaifeng = { add_location_modifier = { modifier = oe_wf2_loc_yellow_river_flood years = 8 mode = replace } }
+	}
+	if = {
+		limit = { owns = location:shanyang_huaian }
+		location:shanyang_huaian = { add_location_modifier = { modifier = oe_wf2_loc_yellow_river_flood years = 8 mode = replace } }
+	}
+}

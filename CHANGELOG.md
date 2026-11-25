@@ -1,3 +1,84 @@
+# 《凤凰计划（OEBYZ）》v30.2 更新日志（中英双语发布候选稿）
+
+> **发布状态**：v30.2 正式版（EU5 1.4.9）。本版候选 v30.2-rc1 已于 2026-11-25 实机复测：1204/1337/1453/1648/1776、532/768 各开局均可进局并运行 1 年以上，无崩溃；上一轮反馈的 10 项问题实测已修复。
+> **存档提示**：`v30.2` **不兼容旧版本存档**，请新开一局。
+
+---
+
+## 一、中文更新日志（GitHub Releases / Steam 创意工坊更新说明）
+
+### 1. 旗舰新内容（v30.0–v30.2 全矩阵跃升）
+- **五纪元全时代与 1204 第四次十字军（《全时代历史剧本拓展包》）**：
+  - 正式扩展为 **`1204 / 1337 / 1453 / 1648 / 1776` 五大历史纪元**，配备 CK3 风格 5+1 地区战区选国界面与 **127 / 127 全员定制油画君主圆章**（含全新绘制的 `1204` 全 25 席油画肖像，彻底消除黑剪影占位）；
+  - 新增 **157 位历史人物 3D 捏脸 DNA**（92 位 `1337–1776` + 65 位 `1204`，每角色完整 102 基因，服饰继续交由原版 `portrait_modifiers` 渲染）；
+  - `1204` 开局拜占庭（`BYZ`）在大厅与开局动态显示为 **“尼西亚帝国”** 并加载 1204 专属史实背景文案（收复君堡后恢复拜占庭/罗马国号，零影响 `1337`/`1453` 原有文案）；补齐中世纪盛期时代、3 项思潮诞生修正、8 项 1204 静态修正及 11 项兵种史实描述。
+- **古典晚期独立大修（《雄鹰陨落：361–768》）**：
+  - 升级为 **6 纪元古典晚期独立大修**（`361 / 395 / 476 / 532 / 632 / 768`），全新重构 **6 纪元 CK3 图集书签界面**（顶栏 6 纪元完整显示不裁切、返回键无遮挡、532 展示 8 张旗舰油画、其余 5 纪元配 30 枚鎏金纹章圆章与独立开始按钮）；
+  - 实装 4 个古典晚期时代（补齐 `age_format_*` 顶栏格式）、12 项古典晚期思潮与诞生修正、**176 位历史人物 3D DNA**（70 位 `532` + 106 位多纪元，每角色 102 基因）、28 枚 9 层 Mipmap DXT5 纹章贴图、6 座 3D 古典晚期奇观，并将 `532` 拜占庭显示名统一为 **“东罗马帝国”**。
+- **3D 奇观、希腊动态地名、罗马大道与修道院（主模组 & 第四罗马）**：
+  - 主模组新增 **3D 圣索菲亚大教堂**（`standard_building` 地图物件着色器，支持 `_mapobject` 与阴影四变体）与东罗马/瓦兰吉 **Skoutarion 鸢形盾**；
+  - 新增 **19,539 条希腊语动态地名**、**155 段罗马帝国大道网络**、**12 座巴尔干历史修道院**与 **16 项安纳托利亚修道院兴复决议**；
+  - 补全 **100% R29 原生 DDS 图标**，内置**凤凰历史百科**与**古典点唱机**；
+  - 《1453 第四罗马》扩充至 **8 项帝国敕令与《帝国复兴》国际组织**，新增 **5 座 3D 极乐奇观**（圣母圣殿、大科通港、西方竞技场、新亚历山大图书馆、西方巨像）、极乐卫队 3D 兵模及新大陆希腊动态地名。
+- **授权深度整合与视觉增强矩阵**：
+  - **《国家命运（National Destinies）》授权深度整合包**：完整整合 `3668193813` 与中文汉化 `3744757513`（50,702 条中英双语 100% 对等），通过 `on_new_country_formed` 与年度对账钩子无缝同步凤凰 11 项旗舰建国链（另提供轻量《国家命运兼容桥》供直接订阅工坊原版使用）；
+  - **《Glorp UI 1.4.9 凤凰适配增强》**：获 `3601047146` 授权深度适配，融合天朝秘书处宽幅决议标题并内置观察者模式季节控件保护（须排在播放集最底部）；
+  - **《地图美化》三套风格预设（三选一）**：经典制图（Classic Atlas）、高对比政区（High-Contrast Political）、帝国羊皮纸（Imperial Parchment），均零着色器冲突并附带 2 个实时叠加地图模式。
+
+### 2. v30.2-rc1 实机验收缺陷专项清零（对应 v30.1 全部 10 项反馈）
+1. **顶栏时代格式键名清零**：补齐 `age_0_high_middle_ages` 与 4 个古典晚期时代（`age_la_1_twilight` / `2_migrations` / `3_renovatio` / `4_crescent`）的中英双语 `age_format_*` 词条，消除顶栏与 DHE 提示框键名裸露。
+2. **303 位历史人物 DNA 报错清零**：为全时代（92 + 65 人）与雄鹰陨落（70 + 106 人）全部 333 位人物补齐 EU5 1.4.9 引擎必选的 5 项基础基因槽（`eyes` / `eyelashes` / `mouth_inside` / `beards` / `hair_styles` 中性默认值），彻底消除加载期 1,500+ 行缺基因报错，同时保持服饰零强行覆盖。
+3. **雄鹰陨落 UI、纹章与 532 运行期噪声清零**：重做 6 纪元书签界面；将 28 枚 `oe_tfe_coa_*.dds` 迁移至原版正确路径 `main_menu/gfx/coat_of_arms/textured_emblems/` 并重导 9 层 Mipmap DXT5；补齐 12 项思潮诞生修正、全部 54 个事件 `outcome` 与东罗马国名；从根因清除 532 开局 19,251 行原版科技报错、2,295 行 `HRE doesn't exists` 报错与 91 行 `country_yearly.txt` 报错。
+4. **1204 书签全面定稿**：补齐 `bookmark_1204_name` 中英标题；25/25 席全换定制油画肖像并重绘无剪影鎏金纹章兜底器；修正 1204 大厅尼西亚国名与开局背景文案穿帮。
+5. **3D 圣索菲亚着色器修复**：由不支持地图物件批次的 `snap_to_terrain_alpha_to_coverage` 切换为原版 `standard_building`（完整具备 `_mapobject` 与 `Shadow_mapobject`），并完成第四罗马 5 座奇观与雄鹰陨落 6 座奇观的着色器静态核验。
+6. **国家命运 `INJECT:form_effect` 失效修复**：清除深度整合包与兼容桥中的重复 `INJECT:form_effect` 死块，统一交由 `on_new_country_formed` + 年度对账执行；同步修复上游 `PLC_f` / `POL_f` 重复 `form_effect`。
+7. **天朝秘书处“决议”标题截断与 GUI 布局修复**：移除主模组 `common.gui:586` 在布局容器子控件上的非法 `parentanchor = vcenter`，并在 Glorp UI `glorpUI_common.gui` 同步注入宽幅 `organization_resolutions_content` 覆盖块。
+8. **Glorp UI 观察者模式季节刷屏清零**：为 `glorp.gui` 季节控件增加 `visible = "[GetPlayer.IsValid]"`，并将 4 条 `GLORP_UI_CURRENT_SEASON*` 词条改为延迟求值的 `SelectLocalization(GetPlayer.IsValid, ...)` 守卫。
+9. **小项与本地化清债**：重命名 `oe_wp26_enc_532_gen_narses` 彻底消除 Murmur3 哈希碰撞；修复 1337 拜占庭军区开局事件计数为 0 的作用域偏差；微调 1337 大元中书省开局官僚维护与朝贡开销；修复 `lde_history_entries_replace_l_simp_chinese.yml` 中 `chaac_god` / `dzahui_god` 无效神祇引用（94 条报错清零）。
+10. **防回归静态 CI 升级**：引擎静态规则库由 32 条扩展至 **36 条（72 项正反单测全绿）**，新增 `R33`（自定义时代 `age_format_*`）、`R34`（DNA 5 必选基因）、`R35`（`INJECT` 建国 `form_effect` 冲突）、`R36`（`map_objects` 着色器 `_mapobject` 校验）。
+
+### 3. 已知事项与实机验证边界
+- **书签预选国家说明**：EU5 1.4.9 原生书签按钮接口 `BookmarkView.SelectAndContinue` 仅负责选定开局年代进入大厅，不支持从书签界面直接锁定指定国家标签；进入大厅后请按推荐战区在地图上点选目标国家。
+- **实机验证范围**：已实测五纪元与雄鹰陨落 532/768 开局、全栈（国家命运 + Glorp UI）与兼容桥、第四罗马启航至 1455 年；3D 圣索菲亚等 3D 模型、第四罗马登陆之后的内容、雄鹰陨落 361/395/476/632 开局尚未逐一目测。
+
+---
+
+## 二、English Changelog (GitHub Releases / Steam Workshop Change Notes)
+
+### 1. Major Highlights (v30.0–v30.2 Full Matrix)
+- **5-Era All-Eras Expansion & 1204 Fourth Crusade (`oebyz.phoenix.all_eras`)**:
+  - Expanded to **5 historical bookmarks (`1204 / 1337 / 1453 / 1648 / 1776`)** with the CK3-style 5+1 regional theater selector and **127 / 127 bespoke oil monarch portraits** (including all 25/25 newly painted `1204` rulers — zero silhouettes anywhere).
+  - Added **157 historical 3D character DNAs** (`92` for `1337–1776` + `65` for `1204`, complete 102-gene structure per character while leaving attire to vanilla `portrait_modifiers`).
+  - `1204` `BYZ` dynamically displays as the **Empire of Nicaea** with authentic 1204 exile lore (reverting cleanly upon Constantinople's reconquest without affecting 1337/1453 BYZ); completed High Middle Ages formatting, 3 institution birth modifiers, 8 `1204` static modifiers, and historical EN/ZH descriptions for all 11 `age_0` unit advances.
+- **The Fallen Eagle 361–768 AD Standalone Overhaul (`oebyz.phoenix.fallen_eagle`)**:
+  - Expanded into a **6-Era Late Antiquity overhaul (`361 / 395 / 476 / 532 / 632 / 768`)** with a rebuilt **6-Era CK3 Atlas bookmark UI** (all 6 era tabs cleanly visible, unobstructed Back button, 8 flagship 532 oil portraits + 30 gilded heraldic medallions, explicit Start button).
+  - Ships 4 Late Antiquity ages with `age_format_*` loc, 12 institutions & birth modifiers, **176 historical 3D DNAs** (102 genes/char), 28 mipmapped DXT5 heraldic COA emblems in vanilla's `main_menu/gfx/coat_of_arms/textured_emblems/`, 6 custom 3D monuments, and `Eastern Roman Empire` (`BYZ`) localization.
+- **3D Landmarks, Greek Toponymy, Roman Roads & Monasteries (Main Mod & Fourth Rome)**:
+  - Main Mod adds 3D **Hagia Sophia** (`standard_building` map-object shader), Byzantine/Varangian **Skoutarion** shield, **19,539 Greek dynamic place names**, **155 Roman imperial road segments**, **12 Balkan monasteries**, **16 Anatolian monastery restoration decisions**, 100% native R29 DDS icons, built-in **Historical Encyclopedia**, and **Classical Music Player**.
+  - `1453 Fourth Rome` expands with **8 imperial edicts**, the *Restored Empire* IO, **5 custom 3D Elysian Great Wonders**, Elysian Guard 3D units, and Greek New World toponymy.
+- **Authorized Expansion & Visual Matrix**:
+  - **National Destinies Deep Integration** (permitted integration of `3668193813` + ZH `3744757513`, 50,702 EN/ZH keys synced with Phoenix formables via `on_new_country_formed` + yearly reconciliation; plus a lightweight **ND Compat Bridge** for standalone Workshop users).
+  - **Glorp UI 1.4.9 Phoenix Overhaul** (permitted integration of `3601047146`, harmonized Celestial Secretariat resolutions & observer-safe season guard — always place last in playset).
+  - **Map Beautification (3 Pick-One Presets)**: Classic Atlas, High-Contrast Political, and Imperial Parchment — zero-shader conflicts + 2 additive live map modes.
+
+### 2. v30.2-rc1 Live-Test Fix Sweep (10/10 Issues Resolved Offline)
+1. **Age Format Localization**: Added EN/ZH `age_format_*` keys for `age_0_high_middle_ages` and all 4 Late Antiquity ages (`age_la_1..4`), removing raw keys from the topbar and DHE tooltips.
+2. **333 Historical 3D DNAs Completed**: Added all 5 EU5 1.4.9 mandatory neutral base genes (`eyes`, `eyelashes`, `mouth_inside`, `beards`, `hair_styles`) across All-Eras (`92 + 65`) and Fallen Eagle (`70 + 106`), eliminating 1,500+ startup gene errors while keeping zero wardrobe overrides.
+3. **Fallen Eagle UI, COAs & 532 Runtime Hygiene**: Rebuilt 6-era bookmark UI; relocated & re-encoded 28 `oe_tfe_coa_*.dds` (9-mip DXT5); defined 12 missing institution birth modifiers, all 54 event outcomes, and Eastern Roman Empire display names; resolved root causes behind 19,251 advance errors, 2,295 `HRE doesn't exists` lines, and 91 `country_yearly.txt` errors.
+4. **1204 Polish**: Added `bookmark_1204_name`, shipped all 25/25 oil portraits + upgraded heraldic fallback renderer, and fixed dynamic 1204 Nicaea name & non-anachronistic history text.
+5. **3D Hagia Sophia Shader**: Switched to vanilla `standard_building` (full `_mapobject` & `Shadow_mapobject` support) and verified all Fourth Rome & Fallen Eagle monument shaders against vanilla `.shader` files.
+6. **National Destinies `form_effect` Fixes**: Removed dead `INJECT:form_effect` blocks in favor of `on_new_country_formed` + yearly sync, and converted upstream `PLC_f`/`POL_f` to clean `REPLACE:` blocks.
+7. **Celestial Secretariat Resolutions Header & Layout Fix**: Removed illegal `parentanchor = vcenter` at `common.gui:586` and synced the widened `organization_resolutions_content` blockoverride into Glorp UI's `glorpUI_common.gui`.
+8. **Glorp UI Observer-Mode Season Guard**: Added `visible = "[GetPlayer.IsValid]"` in `glorp.gui` and lazy `SelectLocalization(GetPlayer.IsValid, ...)` guards on all 4 `GLORP_UI_CURRENT_SEASON*` keys.
+9. **Minor & Loc Cleanups**: Renamed `oe_wp26_enc_532_gen_narses` (zero Murmur3 hash collisions across 353,620 keys); added country-scoped `oe_theme_setup_creatable_count` fixing the 1337 BYZ opening theme count mismatch; calibrated 1337 Great Yuan bureaucracy/tribute opening upkeep; replaced invalid `chaac_god`/`dzahui_god` references with `tlaloc_god` (94 errors eliminated).
+10. **Expanded Static CI (36 Rules / 72 Unit Tests)**: Added preventive gates `R33` (`age_format_*`), `R34` (`persistent_dna` 5 mandatory genes), `R35` (no duplicate `INJECT:form_effect`), and `R36` (`map_objects` `_mapobject` shader verification).
+
+### 3. Known Notes & Verification Scope
+- **Bookmark Country Pre-Selection**: EU5 1.4.9's `BookmarkView.SelectAndContinue` selects the start date only and cannot pre-select an individual country tag before entering the lobby; choose your realm on the lobby map after loading the era.
+- **Live verification**: all five eras plus Fallen Eagle 532/768 starts, the full stack (National Destinies + Glorp UI), the compat bridge and Fourth Rome up to 1455 were played in EU5 1.4.9 without crashes; 3D models, post-landing Fourth Rome content and the 361/395/476/632 starts were not individually inspected.
+
+---
+
 # 凤凰计划测试版 v25.0 更新日志
 
 ## v25.0《殖民 4.0 与全时代》（整合 v24.0 与 v25.0，2026-11-24）

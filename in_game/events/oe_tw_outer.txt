@@ -8,7 +8,7 @@ oe_tw.1 = {
     image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
     title = oe_tw.1.t
     desc = { first_valid = { triggered_desc = { trigger = { current_date < 1403.1.1 } desc = oe_tw.1.d_pre } desc = oe_tw.1.d } }
-    trigger = { tag = BYZ has_variable = oe_tw_grant_target }
+    trigger = { is_rebel_country = no tag = BYZ has_variable = oe_tw_grant_target }
     immediate = { if = { limit = { has_variable = oe_tw_grant_target } var:oe_tw_grant_target = { save_scope_as = oe_tw_tc ruler ?= { save_scope_as = oe_tw_tr } } } }
     option = {
         name = oe_tw.1.a
@@ -53,7 +53,7 @@ oe_tw.2 = {
     image = "gfx/interface/illustrations/government/geopolitics_illustration.dds"
     title = oe_tw.2.t
     desc = oe_tw.2.d
-    trigger = { tag = BYZ any_owned_location = { has_variable = oe_tw_ret_pending } }
+    trigger = { is_rebel_country = no tag = BYZ any_owned_location = { has_variable = oe_tw_ret_pending } }
     immediate = { save_scope_as = oe_tw_byz if = { limit = { NOT = { has_variable = oe_tw_ret_n } } set_variable = { name = oe_tw_ret_n value = 0 } } change_variable = { name = oe_tw_ret_n add = 1 } set_variable = { name = oe_tw_ret_region value = -1 } set_variable = { name = oe_tw_ret_count value = 0 } random_owned_location = { limit = { has_variable = oe_tw_ret_pending } save_scope_as = oe_tw_ret_loc scope:oe_tw_byz = { set_variable = { name = oe_tw_ret_region value = scope:oe_tw_ret_loc.var:oe_tw_ret_pending } } } every_owned_location = { limit = { has_variable = oe_tw_ret_pending var:oe_tw_ret_pending = scope:oe_tw_byz.var:oe_tw_ret_region } scope:oe_tw_byz = { change_variable = { name = oe_tw_ret_count add = 1 } } remove_variable = oe_tw_ret_pending } }
     option = {
         name = oe_tw.2.a

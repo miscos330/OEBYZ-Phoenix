@@ -1,0 +1,36 @@
+﻿# Project Phoenix v29.0 Clean-Room Formables 4-Piece Kit (oe_wp24b_).
+# Additive EU5-native module; zero vanilla overrides; R31 & G_ELR_ISOLATION compliant.
+
+# Event-driven country formation trigger + lightweight O(1) yearly check for pre-existing / secularized hosts.
+# Strictly isolated via oe_main_mod_old_world_event_allowed = yes (G_ELR_ISOLATION) and current_year >= 1337 (R31).
+
+on_new_country_formed = {
+	on_actions = { oe_wp24b_on_country_formed }
+}
+
+yearly_country_pulse = {
+	on_actions = { oe_wp24b_yearly_formables_pulse }
+}
+
+oe_wp24b_on_country_formed = {
+	trigger = {
+		oe_main_mod_old_world_event_allowed = yes
+		is_rebel_country = no
+		oe_wp24b_any_formable_host = yes
+	}
+	effect = {
+		oe_wp24b_dispatch_founding_event = yes
+	}
+}
+
+oe_wp24b_yearly_formables_pulse = {
+	trigger = {
+		oe_main_mod_old_world_event_allowed = yes
+		is_rebel_country = no
+		current_year >= 1337
+		oe_wp24b_any_formable_host = yes
+	}
+	effect = {
+		oe_wp24b_dispatch_founding_event = yes
+	}
+}

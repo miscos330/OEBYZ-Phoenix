@@ -1,11 +1,14 @@
 ﻿# Location scope. Remove only this house and its registry entry, leaving other urban houses intact.
 oe_nf_remove_control = {
-    if = { limit = { has_location_modifier = oe_nf_land_$slot$ } remove_location_modifier = oe_nf_land_$slot$ }
-    if = { limit = { has_location_modifier = oe_nf_industry_$slot$ } remove_location_modifier = oe_nf_industry_$slot$ }
-    save_scope_as = oe_nf_released_location
-    international_organization:oe_byz_empire_pillars = {
-        remove_list_variable = { name = oe_nf_locations_$slot$ target = scope:oe_nf_released_location }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = { limit = { has_location_modifier = oe_nf_land_$slot$ } remove_location_modifier = oe_nf_land_$slot$ }
+	    if = { limit = { has_location_modifier = oe_nf_industry_$slot$ } remove_location_modifier = oe_nf_industry_$slot$ }
+	    save_scope_as = oe_nf_released_location
+	    international_organization:oe_byz_empire_pillars = {
+	        remove_list_variable = { name = oe_nf_locations_$slot$ target = scope:oe_nf_released_location }
+	    }
+	}
 }
 # IO scope; validate the target again before either purse or authority is charged.
 oe_nf_redeem = {

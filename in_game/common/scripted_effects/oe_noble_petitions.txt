@@ -10,32 +10,35 @@ oe_npet_capture = {
     }
 }
 oe_npet_prepare = {
-    oe_court_clear_invalid = yes
-    oe_nf_refresh = yes
-    clear_saved_scope = oe_npet_family
-    clear_saved_scope = oe_npet_nominee
-    clear_saved_scope = oe_npet_slot
-    clear_saved_scope = oe_npet_office
-    clear_saved_scope = oe_npet_cabinet
-    clear_saved_scope = oe_npet_theme
-    clear_saved_scope = oe_npet_previous
-    international_organization:oe_byz_empire_pillars = {
-        if = { limit = { oe_npet_house = { slot = 1 kind = $kind$ } } var:oe_nf_head_1 = { add_to_list = oe_npet_heads } }
-        if = { limit = { oe_npet_house = { slot = 2 kind = $kind$ } } var:oe_nf_head_2 = { add_to_list = oe_npet_heads } }
-        if = { limit = { oe_npet_house = { slot = 3 kind = $kind$ } } var:oe_nf_head_3 = { add_to_list = oe_npet_heads } }
-        if = { limit = { oe_npet_house = { slot = 4 kind = $kind$ } } var:oe_nf_head_4 = { add_to_list = oe_npet_heads } }
-    }
-    random_in_list = {
-        list = oe_npet_heads
-        save_scope_as = oe_npet_head
-        international_organization:oe_byz_empire_pillars = {
-            if = { limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:oe_npet_head } oe_npet_capture = { slot = 1 kind = $kind$ } }
-            if = { limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:oe_npet_head } oe_npet_capture = { slot = 2 kind = $kind$ } }
-            if = { limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:oe_npet_head } oe_npet_capture = { slot = 3 kind = $kind$ } }
-            if = { limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:oe_npet_head } oe_npet_capture = { slot = 4 kind = $kind$ } }
-        }
-    }
-    oe_npet_pick_target_$kind$ = yes
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    oe_court_clear_invalid = yes
+	    oe_nf_refresh = yes
+	    clear_saved_scope = oe_npet_family
+	    clear_saved_scope = oe_npet_nominee
+	    clear_saved_scope = oe_npet_slot
+	    clear_saved_scope = oe_npet_office
+	    clear_saved_scope = oe_npet_cabinet
+	    clear_saved_scope = oe_npet_theme
+	    clear_saved_scope = oe_npet_previous
+	    international_organization:oe_byz_empire_pillars = {
+	        if = { limit = { oe_npet_house = { slot = 1 kind = $kind$ } } var:oe_nf_head_1 = { add_to_list = oe_npet_heads } }
+	        if = { limit = { oe_npet_house = { slot = 2 kind = $kind$ } } var:oe_nf_head_2 = { add_to_list = oe_npet_heads } }
+	        if = { limit = { oe_npet_house = { slot = 3 kind = $kind$ } } var:oe_nf_head_3 = { add_to_list = oe_npet_heads } }
+	        if = { limit = { oe_npet_house = { slot = 4 kind = $kind$ } } var:oe_nf_head_4 = { add_to_list = oe_npet_heads } }
+	    }
+	    random_in_list = {
+	        list = oe_npet_heads
+	        save_scope_as = oe_npet_head
+	        international_organization:oe_byz_empire_pillars = {
+	            if = { limit = { has_variable = oe_nf_dynasty_1 var:oe_nf_head_1 = scope:oe_npet_head } oe_npet_capture = { slot = 1 kind = $kind$ } }
+	            if = { limit = { has_variable = oe_nf_dynasty_2 var:oe_nf_head_2 = scope:oe_npet_head } oe_npet_capture = { slot = 2 kind = $kind$ } }
+	            if = { limit = { has_variable = oe_nf_dynasty_3 var:oe_nf_head_3 = scope:oe_npet_head } oe_npet_capture = { slot = 3 kind = $kind$ } }
+	            if = { limit = { has_variable = oe_nf_dynasty_4 var:oe_nf_head_4 = scope:oe_npet_head } oe_npet_capture = { slot = 4 kind = $kind$ } }
+	        }
+	    }
+	    oe_npet_pick_target_$kind$ = yes
+	}
 }
 oe_npet_pick_target_1 = {
     random_list = {
@@ -63,12 +66,15 @@ oe_npet_pick_target_3 = {
     }
 }
 oe_npet_pay_influence = {
-    international_organization:oe_byz_empire_pillars = {
-        if = { limit = { oe_npet_slot_matches = { slot = 1 } } oe_nf_change_influence = { slot = 1 amount = $amount$ } }
-        if = { limit = { oe_npet_slot_matches = { slot = 2 } } oe_nf_change_influence = { slot = 2 amount = $amount$ } }
-        if = { limit = { oe_npet_slot_matches = { slot = 3 } } oe_nf_change_influence = { slot = 3 amount = $amount$ } }
-        if = { limit = { oe_npet_slot_matches = { slot = 4 } } oe_nf_change_influence = { slot = 4 amount = $amount$ } }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = {
+	        if = { limit = { oe_npet_slot_matches = { slot = 1 } } oe_nf_change_influence = { slot = 1 amount = $amount$ } }
+	        if = { limit = { oe_npet_slot_matches = { slot = 2 } } oe_nf_change_influence = { slot = 2 amount = $amount$ } }
+	        if = { limit = { oe_npet_slot_matches = { slot = 3 } } oe_nf_change_influence = { slot = 3 amount = $amount$ } }
+	        if = { limit = { oe_npet_slot_matches = { slot = 4 } } oe_nf_change_influence = { slot = 4 amount = $amount$ } }
+	    }
+	}
 }
 # Direct appointment deliberately bypasses the normal five-legitimacy dismissal action.
 oe_npet_replace_office = {
@@ -128,11 +134,14 @@ oe_npet_accept_3 = {
     }
 }
 oe_npet_refuse = {
-    if = {
-        limit = { oe_npet_can_accept = { kind = $kind$ } }
-        international_organization:oe_byz_empire_pillars = {
-            change_variable = { name = oe_pillars_authority add = -2 }
-            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-        }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { oe_npet_can_accept = { kind = $kind$ } }
+	        international_organization:oe_byz_empire_pillars = {
+	            change_variable = { name = oe_pillars_authority add = -2 }
+	            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	        }
+	    }
+	}
 }

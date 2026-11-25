@@ -5,12 +5,12 @@
 # the Italian chartered city), a seat on Byzantine land, no 5-year cooldown.
 oe_ta_can_change_course = {
     oe_theme_convertible_trigger = yes
-    capital = { owner = c:BYZ }
+    capital ?= { oe_owned_by_phoenix_empire = yes }
     NOT = { oe_ts_charter = yes }
     NOT = { has_variable = oe_theme_focus_cd }
 }
 oe_ta_course_ok_army = { NOT = { oe_ts_course_army = yes } }
-oe_ta_course_ok_navy = { NOT = { oe_ts_course_navy = yes } capital = { is_coastal = yes } }
+oe_ta_course_ok_navy = { NOT = { oe_ts_course_navy = yes } capital ?= { is_coastal = yes } }
 # A frontier march cannot turn civil: it lives under arms.
 oe_ta_course_ok_civil = { NOT = { oe_ts_course_civil = yes } NOT = { oe_ts_frontier = yes } }
 # r9: the theme has at least one course it may take (else the course button stays off).
@@ -20,10 +20,11 @@ oe_ta_any_course_ok = { OR = { oe_ta_course_ok_army = yes oe_ta_course_ok_navy =
 # a coastal heartland seat at sea while naval themes are under a third of all themes, an inland heartland seat civil.
 oe_ta_ai_course_army = { oe_ts_frontier = yes NOT = { oe_ts_course_army = yes } }
 oe_ta_ai_course_navy = {
-    oe_ts_core = yes capital = { is_coastal = yes } NOT = { oe_ts_course_navy = yes }
-    c:BYZ = { oe_ta_navy_count < oe_ta_navy_cap }
+    oe_ts_core = yes capital ?= { is_coastal = yes } NOT = { oe_ts_course_navy = yes }
+    has_global_variable = oe_phoenix_empire
+    global_var:oe_phoenix_empire ?= { oe_ta_navy_count < oe_ta_navy_cap }
 }
-oe_ta_ai_course_civil = { oe_ts_core = yes capital = { is_coastal = no } NOT = { oe_ts_course_civil = yes } }
+oe_ta_ai_course_civil = { oe_ts_core = yes capital ?= { is_coastal = no } NOT = { oe_ts_course_civil = yes } }
 oe_ta_ai_wants_change = {
     oe_ta_can_change_course = yes
     has_variable = oe_theme_loyalty_band var:oe_theme_loyalty_band >= 2

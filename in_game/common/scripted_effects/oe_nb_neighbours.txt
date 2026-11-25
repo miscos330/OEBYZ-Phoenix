@@ -92,24 +92,30 @@ oe_nb_wed_check = {
 
 # BYZ scope. oe_nb.1: Leo IV is killed by the nobles (1341.8.28), only while Cilicia is AI.
 oe_nb_world_1 = {
-    if = {
-        limit = { country_exists = c:CIL c:CIL = { is_ai = yes } character:cil_leo_iv ?= { is_alive = yes is_ruler_of = c:CIL } }
-        kill_character = character:cil_leo_iv
-        set_global_variable = { name = oe_nb_leo4_killed value = 1 } c:BYZ ?= { set_variable = { name = oe_nb_leo4_killed value = 1 } }
-    }
+	if = {
+		limit = { exists = character:cil_leo_iv }
+	    if = {
+	        limit = { country_exists = c:CIL c:CIL = { is_ai = yes } character:cil_leo_iv ?= { is_alive = yes is_ruler_of = c:CIL } }
+	        kill_character = character:cil_leo_iv
+	        set_global_variable = { name = oe_nb_leo4_killed value = 1 } c:BYZ ?= { set_variable = { name = oe_nb_leo4_killed value = 1 } }
+	    }
+	}
 }
 # BYZ scope. oe_nb.3: Vidin becomes a tsardom under Ivan Sratsimir, vassal of Bulgaria (as vanilla flavor_bul.2 a).
 oe_nb_world_3 = {
-    if = {
-        limit = { oe_nb_cond_3 = yes }
-        character:bul_ivan_sratsimir = { save_scope_as = oe_nb_sra }
-        c:BUL = { create_country_from_cores_in_our_locations = c:VID }
-        c:VID ?= {
-            set_new_ruler = scope:oe_nb_sra
-            make_subject_of = { target = c:BUL type = subject_type:vassal }
-        }
-        set_global_variable = { name = oe_nb_vidin_split value = 1 } c:BYZ ?= { set_variable = { name = oe_nb_vidin_split value = 1 } }
-    }
+	if = {
+		limit = { exists = character:bul_ivan_sratsimir }
+	    if = {
+	        limit = { oe_nb_cond_3 = yes }
+	        character:bul_ivan_sratsimir = { save_scope_as = oe_nb_sra }
+	        c:BUL = { create_country_from_cores_in_our_locations = c:VID }
+	        c:VID ?= {
+	            set_new_ruler = scope:oe_nb_sra
+	            make_subject_of = { target = c:BUL type = subject_type:vassal }
+	        }
+	        set_global_variable = { name = oe_nb_vidin_split value = 1 } c:BYZ ?= { set_variable = { name = oe_nb_vidin_split value = 1 } }
+	    }
+	}
 }
 # BYZ scope. oe_nb.4: Moldavia leaves Hungary and Bogdan takes the throne (only while Moldavia and Hungary are AI).
 oe_nb_world_4 = {
@@ -258,12 +264,15 @@ oe_nb_run_job = {
 }
 # 11: Guy of Lusignan goes east and takes the Cilician throne.
 oe_nb_job_guy = {
-    if = {
-        limit = { country_exists = c:CIL c:CIL = { is_ai = yes } oe_nb_guy_here = yes }
-        character:cil_konstandin_ii_lusignan = { move_country = c:CIL }
-        c:CIL = { set_new_ruler = character:cil_konstandin_ii_lusignan }
-        set_global_variable = { name = oe_nb_cil_guy value = 1 } c:BYZ ?= { set_variable = { name = oe_nb_cil_guy value = 1 } }
-    }
+	if = {
+		limit = { exists = character:cil_konstandin_ii_lusignan }
+	    if = {
+	        limit = { country_exists = c:CIL c:CIL = { is_ai = yes } oe_nb_guy_here = yes }
+	        character:cil_konstandin_ii_lusignan = { move_country = c:CIL }
+	        c:CIL = { set_new_ruler = character:cil_konstandin_ii_lusignan }
+	        set_global_variable = { name = oe_nb_cil_guy value = 1 } c:BYZ ?= { set_variable = { name = oe_nb_cil_guy value = 1 } }
+	    }
+	}
 }
 # 21: the Bulgarian bride comes to Constantinople; betrothed (married at once if both are 14; the monthly check
 # marries them later if the engine cannot betroth them).

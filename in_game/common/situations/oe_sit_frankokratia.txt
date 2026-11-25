@@ -2,6 +2,7 @@
 
 oe_sit_frankokratia = {
 	monthly_spawn_chance = monthly_spawn_chance_unique
+	hint_tag = hint_oe_sit_frankokratia
 	can_start = {
 		NOT = { has_global_variable = oe_lat_sit_started }
 		current_year <= 1460
@@ -28,7 +29,10 @@ oe_sit_frankokratia = {
 		desc = "oe_sit_frankokratia_outcome_latin_desc"
 		trigger = {
 			has_variable = oe_lat_sit_months
-			var:oe_lat_sit_months >= 24
+			trigger_if = {
+				limit = { has_variable = oe_lat_sit_months }
+				var:oe_lat_sit_months >= 24
+			}
 			OR = {
 				country_exists = c:LAT
 				country_exists = c:ACH
@@ -46,7 +50,10 @@ oe_sit_frankokratia = {
 				}
 				AND = {
 					has_variable = oe_lat_sit_latin_index
-					var:oe_lat_sit_latin_index >= 80
+					trigger_if = {
+						limit = { has_variable = oe_lat_sit_latin_index }
+						var:oe_lat_sit_latin_index >= 80
+					}
 				}
 			}
 		}
@@ -115,12 +122,18 @@ oe_sit_frankokratia = {
 		desc = "oe_sit_frankokratia_outcome_eastern_desc"
 		trigger = {
 			has_variable = oe_lat_sit_months
-			var:oe_lat_sit_months >= 24
+			trigger_if = {
+				limit = { has_variable = oe_lat_sit_months }
+				var:oe_lat_sit_months >= 24
+			}
 			NOT = { country_exists = c:LAT }
 			OR = {
 				AND = {
 					has_variable = oe_lat_sit_latin_index
-					var:oe_lat_sit_latin_index <= 15
+					trigger_if = {
+						limit = { has_variable = oe_lat_sit_latin_index }
+						var:oe_lat_sit_latin_index <= 15
+					}
 				}
 				AND = {
 					NOT = { country_exists = c:ACH }
@@ -128,14 +141,19 @@ oe_sit_frankokratia = {
 					NOT = { country_exists = c:NAX }
 					NOT = { country_exists = c:NEG }
 					NOT = { country_exists = c:CEP }
-					NOT = { country_exists = c:CYP }
-					NOT = { country_exists = c:CIL }
 				}
 			}
 		}
 		immediate = {
 			set_global_variable = { name = oe_lat_sit_ended value = 2 }
 			if = {
+				limit = { country_exists = c:ROM c:ROM = { owns = location:constantinople } }
+				c:ROM = {
+					add_country_modifier = { modifier = oe_lat_mod_sit_eastern_victory years = 30 mode = replace }
+					trigger_event_non_silently = oe_lat_emp.14
+				}
+			}
+			else_if = {
 				limit = { country_exists = c:BYZ c:BYZ = { owns = location:constantinople } }
 				c:BYZ = {
 					add_country_modifier = { modifier = oe_lat_mod_sit_eastern_victory years = 30 mode = replace }
@@ -149,6 +167,13 @@ oe_sit_frankokratia = {
 					trigger_event_non_silently = oe_lat_emp.14
 				}
 			}
+			else_if = {
+				limit = { country_exists = c:BYZ }
+				c:BYZ = {
+					add_country_modifier = { modifier = oe_lat_mod_sit_eastern_victory years = 30 mode = replace }
+					trigger_event_non_silently = oe_lat_emp.14
+				}
+			}
 		}
 	}
 	outcome = {
@@ -157,7 +182,10 @@ oe_sit_frankokratia = {
 		trigger = {
 			current_year >= 1520
 			has_variable = oe_lat_sit_months
-			var:oe_lat_sit_months >= 36
+			trigger_if = {
+				limit = { has_variable = oe_lat_sit_months }
+				var:oe_lat_sit_months >= 36
+			}
 		}
 		immediate = {
 			set_global_variable = { name = oe_lat_sit_ended value = 3 }

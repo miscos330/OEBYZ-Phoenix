@@ -2,6 +2,7 @@
 
 oe_sit_two_emperors = {
 	monthly_spawn_chance = monthly_spawn_chance_unique
+	hint_tag = hint_oe_sit_two_emperors
 	can_start = {
 		NOT = { has_global_variable = oe_twe_started }
 		NOT = { has_global_variable = oe_twe_ended }
@@ -25,11 +26,17 @@ oe_sit_two_emperors = {
 			OR = {
 				AND = {
 					has_variable = oe_twe_balance
-					var:oe_twe_balance >= 85
+					trigger_if = {
+						limit = { has_variable = oe_twe_balance }
+						var:oe_twe_balance >= 85
+					}
 				}
 				AND = {
 					has_variable = oe_twe_hegemony_months
-					var:oe_twe_hegemony_months >= 12
+					trigger_if = {
+						limit = { has_variable = oe_twe_hegemony_months }
+						var:oe_twe_hegemony_months >= 12
+					}
 				}
 				NOT = { exists = international_organization:hre }
 				international_organization:hre = { NOT = { exists = leader_country } }
@@ -67,12 +74,24 @@ oe_sit_two_emperors = {
 			international_organization:hre = { exists = leader_country }
 			oe_twe_emperors_at_war = no
 			has_variable = oe_twe_concord
-			var:oe_twe_concord >= 80
+			trigger_if = {
+				limit = { has_variable = oe_twe_concord }
+				var:oe_twe_concord >= 80
+			}
 			has_variable = oe_twe_balance
-			var:oe_twe_balance >= 35
-			var:oe_twe_balance <= 65
+			trigger_if = {
+				limit = { has_variable = oe_twe_balance }
+				var:oe_twe_balance >= 35
+			}
+			trigger_if = {
+				limit = { has_variable = oe_twe_balance }
+				var:oe_twe_balance <= 65
+			}
 			has_variable = oe_twe_concord_months
-			var:oe_twe_concord_months >= 12
+			trigger_if = {
+				limit = { has_variable = oe_twe_concord_months }
+				var:oe_twe_concord_months >= 12
+			}
 		}
 		immediate = {
 			set_global_variable = { name = oe_twe_ended value = 2 }
@@ -124,7 +143,10 @@ oe_sit_two_emperors = {
 			OR = {
 				AND = {
 					has_variable = oe_twe_balance
-					var:oe_twe_balance <= 15
+					trigger_if = {
+						limit = { has_variable = oe_twe_balance }
+						var:oe_twe_balance <= 15
+					}
 				}
 				AND = {
 					NOT = { country_exists = c:ROM }
@@ -133,9 +155,15 @@ oe_sit_two_emperors = {
 				AND = {
 					current_year >= 1680
 					has_variable = oe_twe_hub_east
-					var:oe_twe_hub_east <= 0
+					trigger_if = {
+						limit = { has_variable = oe_twe_hub_east }
+						var:oe_twe_hub_east <= 0
+					}
 					has_variable = oe_twe_balance
-					var:oe_twe_balance <= 35
+					trigger_if = {
+						limit = { has_variable = oe_twe_balance }
+						var:oe_twe_balance <= 35
+					}
 				}
 			}
 		}

@@ -226,10 +226,13 @@ oe_un_promise = {
 
 # BYZ scope. Imperial Authority $amount$ (the same as oe_mo_auth, oe_lat_auth).
 oe_un_auth = {
-    international_organization:oe_byz_empire_pillars = {
-        change_variable = { name = oe_pillars_authority add = $amount$ }
-        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = {
+	        change_variable = { name = oe_pillars_authority add = $amount$ }
+	        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	    }
+	}
 }
 # BYZ scope. Gain $months$ months of trade and tax income.
 oe_un_gain = { add_gold = { value = monthly_income_trade_and_tax multiply = $months$ } }

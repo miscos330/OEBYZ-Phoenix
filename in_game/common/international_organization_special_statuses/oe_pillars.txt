@@ -19,16 +19,20 @@ oe_pillars_noble = {
 oe_pillars_theme = {
     modifier = {
         scale = {
-            value = "c:BYZ.payment_maintenance(international_organization:oe_byz_empire_pillars|oe_byz_empire_theme_org_leader_pay_for_army)"
-            subtract = 1
+            value = 0
+            if = {
+                limit = { exists = international_organization:oe_byz_empire_pillars }
+                value = "c:BYZ.payment_maintenance(international_organization:oe_byz_empire_pillars|oe_byz_empire_theme_org_leader_pay_for_army)"
+                subtract = 1
+            }
         }
         land_morale_modifier = 0.8
         loyalty_to_overlord = 50
     }
     priority = 60
-    can_bestow_trigger = { oe_pillars_theme_trigger = yes }
-    auto_bestowal_trigger = { oe_pillars_theme_trigger = yes }
-    auto_rescind_trigger = { NOT = { oe_pillars_theme_trigger = yes } }
+    can_bestow_trigger = { exists = international_organization:oe_byz_empire_pillars oe_pillars_theme_trigger = yes }
+    auto_bestowal_trigger = { exists = international_organization:oe_byz_empire_pillars oe_pillars_theme_trigger = yes }
+    auto_rescind_trigger = { exists = international_organization:oe_byz_empire_pillars NOT = { oe_pillars_theme_trigger = yes } }
 }
 oe_pillars_subject = {
     priority = 40

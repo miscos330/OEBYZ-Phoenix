@@ -229,24 +229,27 @@ oe_cmp_do_invest = {
 
 # BYZ scope. Audit (action and AI; design 3.8): 2 authority, autonomy -15, 10 % of the fund fined and half of it to the treasury; b: burghers a little down; c: the partner oe_cmp_op_audit. Cooldown 60 months.
 oe_cmp_do_audit = {
-    if = {
-        limit = { has_variable = oe_cmp_holder var:oe_cmp_holder >= 2 }
-        international_organization:oe_byz_empire_pillars = {
-            change_variable = { name = oe_pillars_authority add = -2 }
-            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-        }
-        save_scope_value_as = { name = oe_cmp_amt value = oe_cmp_fine }
-        save_scope_value_as = { name = oe_cmp_amt2 value = oe_cmp_fine_half }
-        change_variable = { name = oe_cmp_fund subtract = scope:oe_cmp_amt }
-        add_gold = scope:oe_cmp_amt2
-        oe_cmp_auto_add = { n = -15 }
-        if = {
-            limit = { var:oe_cmp_holder ?= 2 }
-            add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_penalty }
-        }
-        else = { oe_cmp_partner_op = { m = oe_cmp_op_audit } }
-        set_variable = { name = oe_cmp_aud_next value = { value = oe_ml_month_now add = 60 } }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_cmp_holder var:oe_cmp_holder >= 2 }
+	        international_organization:oe_byz_empire_pillars = {
+	            change_variable = { name = oe_pillars_authority add = -2 }
+	            clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	        }
+	        save_scope_value_as = { name = oe_cmp_amt value = oe_cmp_fine }
+	        save_scope_value_as = { name = oe_cmp_amt2 value = oe_cmp_fine_half }
+	        change_variable = { name = oe_cmp_fund subtract = scope:oe_cmp_amt }
+	        add_gold = scope:oe_cmp_amt2
+	        oe_cmp_auto_add = { n = -15 }
+	        if = {
+	            limit = { var:oe_cmp_holder ?= 2 }
+	            add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_penalty }
+	        }
+	        else = { oe_cmp_partner_op = { m = oe_cmp_op_audit } }
+	        set_variable = { name = oe_cmp_aud_next value = { value = oe_ml_month_now add = 60 } }
+	    }
+	}
 }
 
 # BYZ scope, January. The AI does not use the actions (ai_tick = never); it rolls here (design 3.7): 30 % to invest while the fund is under 2 months and the treasury holds 8; 50 % to audit from autonomy 60.

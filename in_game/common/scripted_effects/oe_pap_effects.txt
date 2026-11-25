@@ -73,6 +73,7 @@ oe_pap_charter_legation_effect = {
 		limit = { oe_pap_loc_eligible_for_legation = yes }
 		order_by = population
 		max = 1
+		check_range_bounds = no
 		save_scope_as = oe_pap_legation_seat
 	}
 	if = {
@@ -96,18 +97,22 @@ oe_pap_charter_legation_effect = {
 			}
 			order_by = population
 			max = 4
+			check_range_bounds = no
 			add_to_list = oe_pap_legation_locs
 		}
 		scope:oe_pap_legation_seat = {
-			create_country_from_location = {
-				overlord = scope:oe_pap_overlord
-				subject_type = subject_type:oe_pap_legation
-				change_government_type = government_type:theocracy
-				change_country_type = location
-				set_capital = scope:oe_pap_legation_seat
-				change_culture = scope:oe_pap_overlord.culture
-				change_religion = religion:catholic
-				save_scope_as = oe_pap_new_legation
+			if = {
+				limit = { has_owner = yes }
+				create_country_from_location = {
+					overlord = scope:oe_pap_overlord
+					subject_type = subject_type:oe_pap_legation
+					change_government_type = government_type:theocracy
+					change_country_type = location
+					set_capital = scope:oe_pap_legation_seat
+					change_culture = scope:oe_pap_overlord.culture
+					change_religion = religion:catholic
+					save_scope_as = oe_pap_new_legation
+				}
 			}
 		}
 		if = {
@@ -157,6 +162,7 @@ oe_pap_charter_legation_effect = {
 oe_pap_day1_init = {
 	if = {
 		limit = {
+			current_date >= 1337.1.1
 			current_date < 1338.1.1
 			NOT = { has_global_variable = oe_pap_day1_init_done }
 		}
@@ -263,6 +269,7 @@ oe_pap_kernel_yearly = {
 		set_global_variable = { name = oe_pap_ran_y value = current_year }
 		if = {
 			limit = {
+				current_date >= 1337.1.1
 				current_date < 1338.1.1
 				NOT = { has_global_variable = oe_pap_day1_init_done }
 			}

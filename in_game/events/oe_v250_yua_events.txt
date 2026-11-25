@@ -1,344 +1,9 @@
-﻿# NEW 2026-11-24 v25.0 Phase 4B 1337 Great Yuan/Early Ming Deep Flavor & Mechanic Pack (oe_v250_yua_, gen_v250_1337_mos_yua.py) — 12 Historical Branching Events (strictly 1337-gated, verified 1080x440 DDS, 0 orphans). Edit gen_v250_1337_mos_yua.py, not this file.
+﻿# NEW 2026-11-24 v25.0 Phase 4B 1337 Great Yuan/Early Ming Deep Flavor & Mechanic Pack (oe_v250_yua_, gen_v250_1337_mos_yua.py) — 3 Historical Branching Events (strictly 1337-gated, verified 1080x440 DDS, 0 orphans). Edit gen_v250_1337_mos_yua.py, not this file.
 
 
 namespace = oe_v250_yua
 
-# 1. Bayan's Hardline Regency vs Confucians (1338+)
-oe_v250_yua.1 = {
-	type = country_event
-	title = oe_v250_yua.1.t
-	desc = oe_v250_yua.1.d
-	outcome = neutral
-	image = "gfx/interface/illustrations/events/oe_ev_yuan_court_envoy.dds"
-	trigger = {
-		NOT = { has_global_variable = oe_alt_era_start }
-		current_year <= 1460
-		OR = {
-			AND = { tag = CHI NOT = { has_or_had_tag = MNG } }
-			tag = YUA
-		}
-	}
-	option = {
-		name = oe_v250_yua.1.a
-		ai_chance = { base = 45 }
-		add_stability = stability_weak_penalty
-		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_bayan_regency years = 12 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.1.b
-		ai_chance = { base = 40 }
-		add_gold = -60
-		add_prestige = prestige_weak_bonus
-		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_keju_reopened years = 12 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.1.c
-		ai_chance = { base = 15 }
-		add_stability = stability_weak_bonus
-		add_country_modifier = { modifier = oe_v250_yua_mod_dadu_court_balance years = 12 mode = replace }
-	}
-}
-
-# 2. Toqto'a's New Deal (Zhizheng Reform) (1341+)
-oe_v250_yua.2 = {
-	type = country_event
-	title = oe_v250_yua.2.t
-	desc = oe_v250_yua.2.d
-	outcome = positive
-	image = "gfx/interface/illustrations/events/oe_ev_sci_siku_qintianjian.dds"
-	trigger = {
-		NOT = { has_global_variable = oe_alt_era_start }
-		current_year <= 1460
-		OR = {
-			AND = { tag = CHI NOT = { has_or_had_tag = MNG } }
-			tag = YUA
-		}
-	}
-	option = {
-		name = oe_v250_yua.2.a
-		ai_chance = { base = 55 }
-		add_gold = -75
-		add_legitimacy = legitimacy_mild_bonus
-		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_penalty } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_zhizheng_new_deal years = 15 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.2.b
-		ai_chance = { base = 30 }
-		add_stability = stability_weak_bonus
-		add_country_modifier = { modifier = oe_v250_yua_mod_moderate_zhizheng years = 15 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.2.c
-		ai_chance = { base = 15 }
-		add_gold = -50
-		add_prestige = prestige_mild_bonus
-		add_country_modifier = { modifier = oe_v250_yua_mod_three_histories years = 15 mode = replace }
-	}
-}
-
-# 3. The 1344 Yellow River Avulsion (Baimao Breach) (1344+)
-oe_v250_yua.3 = {
-	type = country_event
-	title = oe_v250_yua.3.t
-	desc = oe_v250_yua.3.d
-	outcome = negative
-	image = "gfx/interface/illustrations/events/oe_ev_v180_little_ice_age_winter.dds"
-	trigger = {
-		NOT = { has_global_variable = oe_alt_era_start }
-		current_year <= 1460
-		OR = {
-			AND = { tag = CHI NOT = { has_or_had_tag = MNG } }
-			tag = YUA
-		}
-	}
-	option = {
-		name = oe_v250_yua.3.a
-		ai_chance = { base = 55 }
-		add_gold = -90
-		if = { limit = { owns = location:kaifeng } location:kaifeng = { change_control = control_weak_bonus } }
-		if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_penalty } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_yellow_river_corvee years = 12 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.3.b
-		ai_chance = { base = 30 }
-		add_gold = -110
-		if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_granary_relief years = 12 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.3.c
-		ai_chance = { base = 15 }
-		add_stability = stability_weak_penalty
-		if = { limit = { owns = location:kaifeng } location:kaifeng = { change_prosperity = prosperity_weak_penalty } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_provincial_dike_neglect years = 12 mode = replace }
-	}
-}
-
-# 4. Chao Paper Currency Hyperinflation (1348+)
-oe_v250_yua.4 = {
-	type = country_event
-	title = oe_v250_yua.4.t
-	desc = oe_v250_yua.4.d
-	outcome = negative
-	image = "gfx/interface/illustrations/events/oe_ev_yuan_jiaochao_mint.dds"
-	trigger = {
-		NOT = { has_global_variable = oe_alt_era_start }
-		current_year <= 1460
-		OR = {
-			AND = { tag = CHI NOT = { has_or_had_tag = MNG } }
-			tag = YUA
-		}
-	}
-	option = {
-		name = oe_v250_yua.4.a
-		ai_chance = { base = 50 }
-		add_gold = -100
-		add_inflation = inflation_mild_bonus
-		add_country_modifier = { modifier = oe_v250_yua_mod_zhizheng_sound_coin years = 15 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.4.b
-		ai_chance = { base = 35 }
-		add_gold = 140
-		add_inflation = inflation_mild_penalty
-		add_country_modifier = { modifier = oe_v250_yua_mod_emergency_jiaochao years = 12 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.4.c
-		ai_chance = { base = 15 }
-		if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_dual_silver_market years = 15 mode = replace }
-	}
-}
-
-# 5. Jia Lu's Grand Canal Restoration (1351+)
-oe_v250_yua.5 = {
-	type = country_event
-	title = oe_v250_yua.5.t
-	desc = oe_v250_yua.5.d
-	outcome = neutral
-	image = "gfx/interface/illustrations/events/oe_ev_v190_grand_canal_fleet.dds"
-	trigger = {
-		NOT = { has_global_variable = oe_alt_era_start }
-		current_year <= 1460
-		OR = {
-			AND = { tag = CHI NOT = { has_or_had_tag = MNG } }
-			tag = YUA
-		}
-	}
-	option = {
-		name = oe_v250_yua.5.a
-		ai_chance = { base = 55 }
-		add_gold = -95
-		add_stability = stability_weak_penalty
-		if = { limit = { owns = location:xuzhou } location:xuzhou = { change_development = development_weak_bonus } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_jialu_canal_restored years = 18 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.5.b
-		ai_chance = { base = 30 }
-		add_gold = -140
-		add_country_modifier = { modifier = oe_v250_yua_mod_paid_canal_works years = 15 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.5.c
-		ai_chance = { base = 15 }
-		if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_bonus } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_abandoned_canal_work years = 15 mode = replace }
-	}
-}
-
-# 6. Maritime Grain Tribute (Haiyun) Embargo (1354+)
-oe_v250_yua.6 = {
-	type = country_event
-	title = oe_v250_yua.6.t
-	desc = oe_v250_yua.6.d
-	outcome = negative
-	image = "gfx/interface/illustrations/events/oe_ev_econ2_granary_fleet.dds"
-	trigger = {
-		NOT = { has_global_variable = oe_alt_era_start }
-		current_year <= 1460
-		OR = {
-			AND = { tag = CHI NOT = { has_or_had_tag = MNG } }
-			tag = YUA
-		}
-	}
-	option = {
-		name = oe_v250_yua.6.a
-		ai_chance = { base = 50 }
-		add_gold = -90
-		add_navy_tradition = navy_tradition_mild_bonus
-		add_country_modifier = { modifier = oe_v250_yua_mod_armed_haiyun_escorts years = 15 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.6.b
-		ai_chance = { base = 30 }
-		if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_penalty } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_northern_requisitions years = 12 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.6.c
-		ai_chance = { base = 20 }
-		add_prestige = prestige_weak_penalty
-		if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_haiyun_chartered_captains years = 15 mode = replace }
-	}
-}
-
-# 7. Steppe Princes vs Han Garrison Commanders (1358+)
-oe_v250_yua.7 = {
-	type = country_event
-	title = oe_v250_yua.7.t
-	desc = oe_v250_yua.7.d
-	outcome = neutral
-	image = "gfx/interface/illustrations/events/oe_ev_levy_eurasian_hosts.dds"
-	trigger = {
-		NOT = { has_global_variable = oe_alt_era_start }
-		current_year <= 1460
-		OR = {
-			AND = { tag = CHI NOT = { has_or_had_tag = MNG } }
-			tag = YUA
-		}
-	}
-	option = {
-		name = oe_v250_yua.7.a
-		ai_chance = { base = 55 }
-		add_yearly_manpower = 0.40
-		add_army_tradition = army_tradition_mild_bonus
-		add_country_modifier = { modifier = oe_v250_yua_mod_loyalist_militia_lords years = 15 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.7.b
-		ai_chance = { base = 30 }
-		add_gold = -95
-		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_central_keshig_banners years = 15 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.7.c
-		ai_chance = { base = 15 }
-		add_stability = stability_weak_bonus
-		add_country_modifier = { modifier = oe_v250_yua_mod_censorate_military_audit years = 15 mode = replace }
-	}
-}
-
-# 8. Dadu Court Factionalism & Heir Ayushiridara (1362+)
-oe_v250_yua.8 = {
-	type = country_event
-	title = oe_v250_yua.8.t
-	desc = oe_v250_yua.8.d
-	outcome = negative
-	image = "gfx/interface/illustrations/events/oe_ev_cel_mandate_court.dds"
-	trigger = {
-		NOT = { has_global_variable = oe_alt_era_start }
-		current_year <= 1460
-		OR = {
-			AND = { tag = CHI NOT = { has_or_had_tag = MNG } }
-			tag = YUA
-		}
-	}
-	option = {
-		name = oe_v250_yua.8.a
-		ai_chance = { base = 50 }
-		add_stability = stability_weak_penalty
-		add_legitimacy = legitimacy_mild_bonus
-		add_country_modifier = { modifier = oe_v250_yua_mod_palace_guard_centralized years = 15 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.8.b
-		ai_chance = { base = 35 }
-		add_stability = stability_mild_bonus
-		add_country_modifier = { modifier = oe_v250_yua_mod_frontier_warlord_accord years = 15 mode = replace }
-	}
-	option = {
-		name = oe_v250_yua.8.c
-		ai_chance = { base = 15 }
-		add_gold = -65
-		add_country_modifier = { modifier = oe_v250_yua_mod_secretariat_mediation years = 15 mode = replace }
-	}
-}
-
-# 9. Liaodong & Goryeo Frontier Diplomacy (1365+)
-oe_v250_yua.9 = {
-	type = country_event
-	title = oe_v250_yua.9.t
-	desc = oe_v250_yua.9.d
-	outcome = neutral
-	image = "gfx/interface/illustrations/events/oe_ev_pmch_shanhaiguan.dds"
-	trigger = {
-		NOT = { has_global_variable = oe_alt_era_start }
-		current_year <= 1460
-		OR = {
-			AND = { tag = CHI NOT = { has_or_had_tag = MNG } }
-			tag = YUA
-		}
-	}
-	option = {
-		name = oe_v250_yua.9.a
-		ai_chance = { base = 50 }
-		add_gold = -75
-		if = { limit = { owns = location:liaoyang } location:liaoyang = { change_control = control_mild_bonus } }
-		add_country_modifier = { modifier = oe_v250_yua_mod_liaodong_bulwark years = 15 mode = replace }
-		if = { limit = { country_exists = c:KOR c:KOR = { is_rebel_country = no } } c:KOR = { add_opinion = { target = root modifier = opinion_mildly_displeased } } }
-	}
-	option = {
-		name = oe_v250_yua.9.b
-		ai_chance = { base = 35 }
-		add_country_modifier = { modifier = oe_v250_yua_mod_goryeo_flank_accord years = 15 mode = replace }
-		if = { limit = { country_exists = c:KOR c:KOR = { is_rebel_country = no } } add_opinion = { target = c:KOR modifier = opinion_good_relations } c:KOR = { add_opinion = { target = root modifier = opinion_good_relations } } }
-	}
-	option = {
-		name = oe_v250_yua.9.c
-		ai_chance = { base = 15 }
-		add_country_modifier = { modifier = oe_v250_yua_mod_liaodong_marches years = 15 mode = replace }
-	}
-}
-
-# 10. Early Ming / Restored Yuan: Yellow Registers & Fish-Scale Cadastre (1375+)
+# 10. Early Ming Cadastre: Yellow Registers & Fish-Scale Survey (1375+)
 oe_v250_yua.10 = {
 	type = country_event
 	title = oe_v250_yua.10.t
@@ -349,9 +14,11 @@ oe_v250_yua.10 = {
 		NOT = { has_global_variable = oe_alt_era_start }
 		current_year <= 1460
 		OR = {
-			tag = CHI
-			tag = YUA
 			tag = MNG
+			AND = {
+				tag = CHI
+				has_or_had_tag = MNG
+			}
 		}
 	}
 	option = {
@@ -388,9 +55,11 @@ oe_v250_yua.11 = {
 		NOT = { has_global_variable = oe_alt_era_start }
 		current_year <= 1460
 		OR = {
-			tag = CHI
-			tag = YUA
 			tag = MNG
+			AND = {
+				tag = CHI
+				has_or_had_tag = MNG
+			}
 		}
 	}
 	option = {
@@ -426,9 +95,11 @@ oe_v250_yua.12 = {
 		NOT = { has_global_variable = oe_alt_era_start }
 		current_year <= 1460
 		OR = {
-			tag = CHI
-			tag = YUA
 			tag = MNG
+			AND = {
+				tag = CHI
+				has_or_had_tag = MNG
+			}
 		}
 	}
 	option = {

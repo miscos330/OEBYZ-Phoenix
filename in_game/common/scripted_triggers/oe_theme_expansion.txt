@@ -1,4 +1,4 @@
-﻿# Province scope; only the standard theme creation action uses this range.
+﻿# Province scope; only the standard theme creation action uses this range (legacy fallback outside R01-R79).
 oe_theme_creation_region_trigger = {
     OR = {
         region = region:anatolia_region
@@ -6,7 +6,7 @@ oe_theme_creation_region_trigger = {
         area = area:armenian_highlands_area
         area = area:wallachia_area
         AND = {
-            c:BYZ = { has_variable = oe_create_eastern_themes_done }
+            global_var:oe_phoenix_empire ?= { has_variable = oe_create_eastern_themes_done }
             OR = {
                 area = area:jazira_area
                 area = area:iraq_arabi_area
@@ -14,7 +14,7 @@ oe_theme_creation_region_trigger = {
             }
         }
         AND = {
-            c:BYZ = { has_variable = oe_create_austrian_themes_done }
+            global_var:oe_phoenix_empire ?= { has_variable = oe_create_austrian_themes_done }
             OR = {
                 area = area:transdanubia_area
                 area = area:upper_austria_area
@@ -26,7 +26,7 @@ oe_theme_creation_region_trigger = {
             }
         }
         AND = {
-            c:BYZ = { has_variable = oe_create_swiss_themes_done }
+            global_var:oe_phoenix_empire ?= { has_variable = oe_create_swiss_themes_done }
             OR = {
                 area = area:eastern_switzerland_area
                 area = area:central_switzerland_area
@@ -39,7 +39,7 @@ oe_theme_creation_region_trigger = {
 # Location scope; a capital proxy resolves a landless building country on the map.
 # The final capital comparison rejects obsolete pointers after a country moves.
 oe_theme_picker_capital_trigger = {
-    owner = c:BYZ
+    oe_owned_by_phoenix_empire = yes
     has_variable = oe_theme_picker_country
     var:oe_theme_picker_country = {
         oe_theme_convertible_trigger = yes

@@ -12,8 +12,14 @@ situation_panel = {
                 spriteborder = { 0 0 }
             }
         }
+        blockoverride "FirstCountryVisible" {
+            visible = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_east_emperor').GetCountry.IsValid]"
+        }
         blockoverride "FirstCountryContext" {
             datacontext = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_east_emperor').GetCountry]"
+        }
+        blockoverride "SecondCountryVisible" {
+            visible = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_west_emperor').GetCountry.IsValid]"
         }
         blockoverride "SecondCountryContext" {
             datacontext = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_west_emperor').GetCountry]"
@@ -43,6 +49,13 @@ situation_panel = {
 
     blockoverride "situation_subheader_content" {}
 
+    blockoverride "situation_panel_outcome_hint" {
+        action_tooltip = {
+            title = "OPEN_HINT"
+            on_action = "[OpenLateralViewWithParams('hints', 'selected_hint = hint_oe_sit_two_emperors')]"
+        }
+    }
+
     blockoverride "situation_panel_main_content" {
         card_common = {
             layoutpolicy_horizontal = expanding
@@ -56,13 +69,13 @@ situation_panel = {
                     spacing = 6
                 oe_sit_tug_bar = {
                     blockoverride "tug_left" {
-                        text_single = { fontsize = 13 default_format = "#color_purple" text = "OE_TWE_BAL_L" }
+                        text_single = { fontsize = 13 default_format = "#color_very_light_blue" text = "OE_TWE_BAL_L" }
                     }
                     blockoverride "tug_center" {
                         text_single = { fontsize = 14 default_format = "#bold" raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_balance').GetValue|0] / 100" }
                     }
                     blockoverride "tug_right" {
-                        text_single = { fontsize = 13 default_format = "#color_gold" text = "OE_TWE_BAL_R" }
+                        text_single = { fontsize = 13 default_format = "#color_yellow" text = "OE_TWE_BAL_R" }
                     }
                     blockoverride "tug_bar_style" { using = progress_bar_red_alt }
                     blockoverride "tug_bar_bounds" { min = 0 max = 100 }
@@ -90,21 +103,21 @@ situation_panel = {
                         multiline = yes
                         autoresize = yes
                         maximumsize = { 440 -1 }
-                        fontsize = 12
-                        default_format = "#weak"
+                        fontsize = 13
+                        default_format = "#color_light_gray"
                         text = "OE_TWE_BAL_FOOT"
                     }
                 }
                 }
                 oe_sit_tug_bar = {
                     blockoverride "tug_left" {
-                        text_single = { fontsize = 13 default_format = "#color_gold" text = "OE_TWE_CON_L" }
+                        text_single = { fontsize = 13 default_format = "#color_yellow" text = "OE_TWE_CON_L" }
                     }
                     blockoverride "tug_center" {
                         text_single = { fontsize = 14 default_format = "#bold" raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_concord').GetValue|0] / 100" }
                     }
                     blockoverride "tug_right" {
-                        text_single = { fontsize = 13 default_format = "#weak" text = "OE_TWE_CON_R" }
+                        text_single = { fontsize = 13 default_format = "#medium" text = "OE_TWE_CON_R" }
                     }
                     blockoverride "tug_bar_style" { using = progress_bar_goldish }
                     blockoverride "tug_bar_bounds" { min = 0 max = 100 }
@@ -127,8 +140,8 @@ situation_panel = {
                         multiline = yes
                         autoresize = yes
                         maximumsize = { 440 -1 }
-                        fontsize = 12
-                        default_format = "#weak"
+                        fontsize = 13
+                        default_format = "#color_light_gray"
                         text = "OE_TWE_CON_FOOT"
                     }
                 }
@@ -141,8 +154,8 @@ situation_panel = {
                             text_single = {
                                 layoutpolicy_horizontal = expanding
                                 align = hcenter|nobaseline
-                                fontsize = 12
-                                default_format = "#weak"
+                                fontsize = 13
+                                default_format = "#medium"
                                 text = "OE_TWE_KPI_HUBS"
                             }
                         }
@@ -152,7 +165,7 @@ situation_panel = {
                                 align = hcenter|nobaseline
                                 elide = right
                                 fontsize = 15
-                                default_format = "#bold #color_gold"
+                                default_format = "#color_yellow;bold"
                                 raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_hub_east').GetValue|0] : [SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_hub_west').GetValue|0]"
                             }
                         }
@@ -162,8 +175,8 @@ situation_panel = {
                             text_single = {
                                 layoutpolicy_horizontal = expanding
                                 align = hcenter|nobaseline
-                                fontsize = 12
-                                default_format = "#weak"
+                                fontsize = 13
+                                default_format = "#medium"
                                 text = "OE_TWE_KPI_TENSION"
                             }
                         }
@@ -173,7 +186,7 @@ situation_panel = {
                                 align = hcenter|nobaseline
                                 elide = right
                                 fontsize = 15
-                                default_format = "#bold #color_orange"
+                                default_format = "#color_orange;bold"
                                 raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_twe_tension').GetValue|0] / 100"
                             }
                         }
@@ -183,8 +196,8 @@ situation_panel = {
                             text_single = {
                                 layoutpolicy_horizontal = expanding
                                 align = hcenter|nobaseline
-                                fontsize = 12
-                                default_format = "#weak"
+                                fontsize = 13
+                                default_format = "#medium"
                                 text = "OE_TWE_KPI_POSTURE"
                             }
                         }

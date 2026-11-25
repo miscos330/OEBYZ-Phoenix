@@ -89,6 +89,7 @@ if = {
 }
 
 # Same action context; new offices exist before any old office is destroyed.
+# v26.0 WP11-2 Option 2A: hub-only posts; admin posts strictly town/city/megalopolis (rural_settlement = no).
 oe_theme_convert_to_ordinary_effect = {
     scope:oe_theme_converted_country = {
         add_reform = government_reform:oe_byz_theme_system_subject
@@ -99,6 +100,7 @@ oe_theme_convert_to_ordinary_effect = {
     }
     every_in_list = {
         list = oe_theme_conversion_locations
+        limit = { oe_theme_is_hub_location = yes this != scope:oe_theme_new_capital }
         construct_building = { building_type = building_type:oe_byz_theme_system owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
     }
     scope:oe_theme_converted_country = {
@@ -123,7 +125,7 @@ oe_theme_convert_to_naval_effect = {
     }
     every_in_list = {
         list = oe_theme_conversion_locations
-        limit = { this != scope:oe_theme_new_capital }
+        limit = { oe_theme_is_hub_location = yes this != scope:oe_theme_new_capital }
         construct_building = { building_type = building_type:oe_byz_theme_naval_post owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
     }
     scope:oe_theme_converted_country = {
@@ -141,14 +143,15 @@ oe_theme_convert_to_administrative_effect = {
     scope:oe_theme_converted_country = {
         add_reform = government_reform:oe_byz_theme_administrative_subject
         set_capital = scope:oe_theme_new_capital
-        leave_all_wars_with = c:BYZ
+        if = { limit = { has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire } leave_all_wars_with = global_var:oe_phoenix_empire }
+        else_if = { limit = { country_exists = c:BYZ } leave_all_wars_with = c:BYZ }
     }
     scope:oe_theme_new_capital = {
         construct_building = { building_type = building_type:oe_byz_theme_administrative_seat owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
     }
     every_in_list = {
         list = oe_theme_conversion_locations
-        limit = { this != scope:oe_theme_new_capital }
+        limit = { oe_theme_is_urban_hub = yes this != scope:oe_theme_new_capital }
         construct_building = { building_type = building_type:oe_byz_theme_administrative_post owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
     }
     scope:oe_theme_converted_country = {
@@ -172,7 +175,7 @@ oe_theme_convert_to_frontier_effect = {
     }
     every_in_list = {
         list = oe_theme_conversion_locations
-        limit = { this != scope:oe_theme_new_capital }
+        limit = { oe_theme_is_hub_location = yes this != scope:oe_theme_new_capital }
         construct_building = { building_type = building_type:oe_byz_theme_frontier_post owner = scope:oe_theme_converted_country instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
     }
     scope:oe_theme_converted_country = {

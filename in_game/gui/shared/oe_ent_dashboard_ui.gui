@@ -8,6 +8,93 @@ types OeEntDashboardTypes {
         layoutpolicy_horizontal = expanding
         spacing = 8
 
+        # 0. Pre-Threshold Scale Roadmap Card (visible before reaching 150 locations / while engine is on standby)
+        card_common = {
+            layoutpolicy_horizontal = expanding
+            visible = "[Not(GetScriptedGui('oe_ent_dashboard_visible').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+            blockoverride "header_decor_templates" { using = oe_header_imperial_purple }
+            blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/alerts_icons/setup_a_law.dds" }
+            blockoverride "common_header_text_full" { text_single = { text = "OE_ENT_UI_ROADMAP_TITLE" fontsize = 16 } }
+            blockoverride "common_bottom_content" {
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+                    margin = { 10 8 }
+                    spacing = 6
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        spacing = 8
+                        tooltip = "OE_ENT_UI_ROADMAP_PROG_TT"
+                        text_single = {
+                            layoutpolicy_horizontal = expanding
+                            align = left|nobaseline
+                            elide = right
+                            fontsize = 14
+                            default_format = "#yellow_titles;bold"
+                            text = "OE_ENT_UI_ROADMAP_PROG_LBL"
+                        }
+                        text_single = {
+                            autoresize = yes
+                            align = right|nobaseline
+                            fontsize = 15
+                            default_format = "#color_yellow;bold"
+                            raw_text = "[GetPlayer.GetOwnedLocationCount] / 150"
+                        }
+                    }
+                    oe_threshold_bar = {
+                        layoutpolicy_horizontal = expanding
+                        size = { -1 14 }
+                        tooltip = "OE_ENT_UI_ROADMAP_PROG_TT"
+                        blockoverride "bar_style" { using = progress_bar_goldish }
+                        blockoverride "bar_bounds" { min = 0 max = 150 }
+                        blockoverride "bar_value" {
+                            value = "[FixedPointToFloat(GetPlayer.MakeScope.ScriptValue('oe_ent_rd_locs'))]"
+                        }
+                    }
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        multiline = yes
+                        autoresize = yes
+                        maximumsize = { 468 -1 }
+                        fontsize = 13
+                        default_format = "#color_light_gray"
+                        text = "OE_ENT_UI_ROADMAP_SUB"
+                    }
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        margin = { 10 8 }
+                        spacing = 4
+                        using = bg_paper_card
+                        using = bg_cabinet_card_frame
+                        text_single = {
+                            layoutpolicy_horizontal = expanding
+                            multiline = yes
+                            autoresize = yes
+                            maximumsize = { 448 -1 }
+                            fontsize = 13
+                            text = "OE_ENT_UI_ROADMAP_B1"
+                        }
+                        text_single = {
+                            layoutpolicy_horizontal = expanding
+                            multiline = yes
+                            autoresize = yes
+                            maximumsize = { 448 -1 }
+                            fontsize = 13
+                            text = "OE_ENT_UI_ROADMAP_B2"
+                        }
+                        text_single = {
+                            layoutpolicy_horizontal = expanding
+                            multiline = yes
+                            autoresize = yes
+                            maximumsize = { 448 -1 }
+                            fontsize = 13
+                            text = "OE_ENT_UI_ROADMAP_B3"
+                        }
+                    }
+                    block "oe_ent_pre_threshold_actions" {}
+                }
+            }
+        }
+
         # 1. Header Banner + Main Entropy Meter + 3 KPI Badges
         card_common = {
             layoutpolicy_horizontal = expanding
@@ -40,7 +127,7 @@ types OeEntDashboardTypes {
                                 size = { 100% 100% }
                                 autoresize = no
                                 align = center|nobaseline
-                                fontsize = 12
+                                fontsize = 13
                                 elide = right
                                 text = "[SelectLocalization(GetScriptedGui('oe_ent_dashboard_visible').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), 'OE_ENT_UI_STATE_ACTIVE', 'OE_ENT_UI_STATE_STANDBY')]"
                             }
@@ -48,16 +135,29 @@ types OeEntDashboardTypes {
                         widget = {
                             parentanchor = bottom|left
                             size = { 100% 24 }
-                            using = bg_dark_paper_card
-                            alpha = 0.88
+                            background = {
+                                using = paper_card_texture
+                                alpha = 0.88
+                                modify_texture = {
+                                    using = color_paper_texture
+                                }
+                                modify_texture = {
+                                    using = overlay_paper_03
+                                }
+                                modify_texture = {
+                                    using = color_black_texture
+                                    blend_mode = overlay
+                                    alpha = 0.4
+                                }
+                            }
                             text_single = {
                                 size = { 100% 100% }
                                 margin = { 8 0 }
                                 autoresize = no
                                 align = left|nobaseline
                                 elide = right
-                                fontsize = 12
-                                default_format = "#color_gold"
+                                fontsize = 13
+                                default_format = "#yellow_titles"
                                 text = "OE_ENT_UI_BANNER_SUB"
                             }
                         }
@@ -69,13 +169,13 @@ types OeEntDashboardTypes {
                         visible = "[GetPlayer.MakeScope.GetVariable('oe_ent_index').IsSet]"
                         oe_sit_tug_bar = {
                             blockoverride "tug_left" {
-                                text_single = { fontsize = 12 default_format = "#G" text = "OE_ENT_UI_BAR_LEFT" }
+                                text_single = { fontsize = 13 default_format = "#G" text = "OE_ENT_UI_BAR_LEFT" }
                             }
                             blockoverride "tug_center" {
-                                text_single = { fontsize = 13 default_format = "#bold #color_gold" text = "OE_ENT_UI_BAR_MID" }
+                                text_single = { fontsize = 13 default_format = "#color_yellow;bold" text = "OE_ENT_UI_BAR_MID" }
                             }
                             blockoverride "tug_right" {
-                                text_single = { fontsize = 12 default_format = "#R" text = "OE_ENT_UI_BAR_RIGHT" }
+                                text_single = { fontsize = 13 default_format = "#R" text = "OE_ENT_UI_BAR_RIGHT" }
                             }
                             blockoverride "tug_bar_style" { using = progress_bar_red_alt }
                             blockoverride "tug_bar_bounds" { min = 0 max = 100 }
@@ -105,8 +205,8 @@ types OeEntDashboardTypes {
                                     multiline = yes
                                     autoresize = yes
                                     maximumsize = { 456 -1 }
-                                    fontsize = 12
-                                    default_format = "#weak"
+                                    fontsize = 13
+                                    default_format = "#color_light_gray"
                                     text = "OE_ENT_UI_BAR_TIERS"
                                 }
                             }
@@ -117,13 +217,13 @@ types OeEntDashboardTypes {
                         visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_index').IsSet)]"
                         oe_sit_tug_bar = {
                             blockoverride "tug_left" {
-                                text_single = { fontsize = 12 default_format = "#G" text = "OE_ENT_UI_BAR_LEFT" }
+                                text_single = { fontsize = 13 default_format = "#G" text = "OE_ENT_UI_BAR_LEFT" }
                             }
                             blockoverride "tug_center" {
-                                text_single = { fontsize = 13 default_format = "#bold #color_gold" text = "OE_ENT_UI_BAR_MID" }
+                                text_single = { fontsize = 13 default_format = "#color_yellow;bold" text = "OE_ENT_UI_BAR_MID" }
                             }
                             blockoverride "tug_right" {
-                                text_single = { fontsize = 12 default_format = "#R" text = "OE_ENT_UI_BAR_RIGHT" }
+                                text_single = { fontsize = 13 default_format = "#R" text = "OE_ENT_UI_BAR_RIGHT" }
                             }
                             blockoverride "tug_bar_style" { using = progress_bar_red_alt }
                             blockoverride "tug_bar_bounds" { min = 0 max = 100 }
@@ -151,8 +251,8 @@ types OeEntDashboardTypes {
                                     multiline = yes
                                     autoresize = yes
                                     maximumsize = { 456 -1 }
-                                    fontsize = 12
-                                    default_format = "#weak"
+                                    fontsize = 13
+                                    default_format = "#color_light_gray"
                                     text = "OE_ENT_UI_BAR_TIERS"
                                 }
                             }
@@ -169,8 +269,8 @@ types OeEntDashboardTypes {
                                 text_single = {
                                     layoutpolicy_horizontal = expanding
                                     align = hcenter|nobaseline
-                                    fontsize = 12
-                                    default_format = "#weak"
+                                    fontsize = 13
+                                    default_format = "#medium"
                                     text = "OE_ENT_UI_KPI_IDX"
                                 }
                             }
@@ -182,7 +282,7 @@ types OeEntDashboardTypes {
                                         layoutpolicy_horizontal = expanding
                                         align = hcenter|nobaseline
                                         fontsize = 16
-                                        default_format = "#bold #color_gold"
+                                        default_format = "#color_yellow;bold"
                                         raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_index').GetValue|0] / 100"
                                     }
                                 }
@@ -191,7 +291,7 @@ types OeEntDashboardTypes {
                                     visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_index').IsSet)]"
                                     align = hcenter|nobaseline
                                     fontsize = 16
-                                    default_format = "#bold #color_gold"
+                                    default_format = "#color_yellow;bold"
                                     raw_text = "0 / 100"
                                 }
                             }
@@ -202,8 +302,8 @@ types OeEntDashboardTypes {
                                 text_single = {
                                     layoutpolicy_horizontal = expanding
                                     align = hcenter|nobaseline
-                                    fontsize = 12
-                                    default_format = "#weak"
+                                    fontsize = 13
+                                    default_format = "#medium"
                                     text = "OE_ENT_UI_KPI_DELTA"
                                 }
                             }
@@ -236,7 +336,7 @@ types OeEntDashboardTypes {
                                     layoutpolicy_horizontal = expanding
                                     align = hcenter|nobaseline
                                     elide = right
-                                    fontsize = 12
+                                    fontsize = 13
                                     text = "[SelectLocalization(GetPlayer.MakeScope.GetVariable('oe_ent_pax_done').IsSet, 'OE_ENT_UI_KPI_PAX_DONE', 'OE_ENT_UI_KPI_PAX')]"
                                 }
                             }
@@ -248,7 +348,7 @@ types OeEntDashboardTypes {
                                         layoutpolicy_horizontal = expanding
                                         align = hcenter|nobaseline
                                         fontsize = 16
-                                        default_format = "#bold #color_gold"
+                                        default_format = "#color_yellow;bold"
                                         raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_low_months').GetValue|0] / 120"
                                     }
                                 }
@@ -257,7 +357,7 @@ types OeEntDashboardTypes {
                                     visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_low_months').IsSet)]"
                                     align = hcenter|nobaseline
                                     fontsize = 16
-                                    default_format = "#bold #color_gold"
+                                    default_format = "#color_yellow;bold"
                                     raw_text = "0 / 120"
                                 }
                             }
@@ -598,8 +698,8 @@ types OeEntDashboardTypes {
                                         layoutpolicy_horizontal = expanding
                                         align = hcenter|nobaseline
                                         elide = right
-                                        fontsize = 11
-                                        default_format = "#weak"
+                                        fontsize = 13
+                                        default_format = "#medium"
                                         text = "OE_ENT_UI_MIT_REL"
                                     }
                                 }
@@ -632,8 +732,8 @@ types OeEntDashboardTypes {
                                         layoutpolicy_horizontal = expanding
                                         align = hcenter|nobaseline
                                         elide = right
-                                        fontsize = 11
-                                        default_format = "#weak"
+                                        fontsize = 13
+                                        default_format = "#medium"
                                         text = "OE_ENT_UI_MIT_CIV"
                                     }
                                 }
@@ -645,7 +745,7 @@ types OeEntDashboardTypes {
                                             layoutpolicy_horizontal = expanding
                                             align = hcenter|nobaseline
                                             fontsize = 15
-                                            default_format = "#bold #G"
+                                            default_format = "#color_green;bold"
                                             raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_civ').GetValue|0]"
                                         }
                                     }
@@ -654,7 +754,7 @@ types OeEntDashboardTypes {
                                         visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_civ').IsSet)]"
                                         align = hcenter|nobaseline
                                         fontsize = 15
-                                        default_format = "#bold #G"
+                                        default_format = "#color_green;bold"
                                         raw_text = "0"
                                     }
                                 }
@@ -666,8 +766,8 @@ types OeEntDashboardTypes {
                                         layoutpolicy_horizontal = expanding
                                         align = hcenter|nobaseline
                                         elide = right
-                                        fontsize = 11
-                                        default_format = "#weak"
+                                        fontsize = 13
+                                        default_format = "#medium"
                                         text = "OE_ENT_UI_MIT_MIL"
                                     }
                                 }
@@ -679,7 +779,7 @@ types OeEntDashboardTypes {
                                             layoutpolicy_horizontal = expanding
                                             align = hcenter|nobaseline
                                             fontsize = 15
-                                            default_format = "#bold #color_gold"
+                                            default_format = "#color_yellow;bold"
                                             raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_mil').GetValue|0]"
                                         }
                                     }
@@ -688,7 +788,7 @@ types OeEntDashboardTypes {
                                         visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_cache_prf_mil').IsSet)]"
                                         align = hcenter|nobaseline
                                         fontsize = 15
-                                        default_format = "#bold #color_gold"
+                                        default_format = "#color_yellow;bold"
                                         raw_text = "0"
                                     }
                                 }
@@ -700,8 +800,8 @@ types OeEntDashboardTypes {
                                         layoutpolicy_horizontal = expanding
                                         align = hcenter|nobaseline
                                         elide = right
-                                        fontsize = 11
-                                        default_format = "#weak"
+                                        fontsize = 13
+                                        default_format = "#medium"
                                         text = "OE_ENT_UI_MIT_LOY"
                                     }
                                 }
@@ -713,7 +813,7 @@ types OeEntDashboardTypes {
                                             layoutpolicy_horizontal = expanding
                                             align = hcenter|nobaseline
                                             fontsize = 15
-                                            default_format = "#bold #R"
+                                            default_format = "#color_red;bold"
                                             raw_text = "[GetPlayer.MakeScope.GetVariable('oe_ent_cache_low_loy').GetValue|0]"
                                         }
                                     }
@@ -722,7 +822,7 @@ types OeEntDashboardTypes {
                                         visible = "[Not(GetPlayer.MakeScope.GetVariable('oe_ent_cache_low_loy').IsSet)]"
                                         align = hcenter|nobaseline
                                         fontsize = 15
-                                        default_format = "#bold #R"
+                                        default_format = "#color_red;bold"
                                         raw_text = "0"
                                     }
                                 }
@@ -745,7 +845,7 @@ types OeEntDashboardTypes {
                                 layoutpolicy_horizontal = expanding
                                 align = left|nobaseline
                                 elide = right
-                                fontsize = 12
+                                fontsize = 13
                                 default_format = "#G"
                                 text = "OE_ENT_UI_AR_MERGED"
                             }
@@ -757,8 +857,8 @@ types OeEntDashboardTypes {
                         multiline = yes
                         autoresize = yes
                         maximumsize = { 468 -1 }
-                        fontsize = 12
-                        default_format = "#weak"
+                        fontsize = 13
+                        default_format = "#color_light_gray"
                         text = "OE_ENT_UI_MIT_NOTE"
                     }
                 }
@@ -896,8 +996,8 @@ types OeEntDashboardTypes {
                             multiline = yes
                             autoresize = yes
                             maximumsize = { 336 -1 }
-                            fontsize = 11
-                            default_format = "#weak"
+                            fontsize = 13
+                            default_format = "#color_light_gray"
                             text = "OE_ENT_UI_ACT_HINT"
                         }
                         button_regular = {
@@ -917,7 +1017,7 @@ types OeEntDashboardTypes {
                                 text_single = {
                                     layoutpolicy_horizontal = expanding
                                     align = left|nobaseline
-                                    fontsize = 12
+                                    fontsize = 13
                                     elide = right
                                     text = "OE_ENT_UI_BTN_DECISIONS"
                                     alwaystransparent = yes
@@ -965,7 +1065,7 @@ types OeEntDashboardTypes {
                     layoutpolicy_horizontal = expanding
                     align = left|nobaseline
                     fontsize = 16
-                    default_format = "#bold #color_gold"
+                    default_format = "#yellow_titles;bold"
                     text = "OE_ENT_UI_MODAL_TITLE"
                 }
                 button_regular = {

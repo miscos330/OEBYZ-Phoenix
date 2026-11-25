@@ -10,9 +10,9 @@ oe_rel2_dec_convene_pentarchy_synod = {
 		NOT = { has_variable = oe_rel2_pentarchy_synod_held }
 	}
 	allow = {
-		custom_tooltip = {
-			text = oe_rel2_player_only_tt
+		OR = {
 			is_ai = no
+			NOT = { oe_rule_is_global_arcs_player_only = yes }
 		}
 		trigger_if = {
 			limit = { has_global_variable = oe_rel2_pentarchy_held }
@@ -24,7 +24,19 @@ oe_rel2_dec_convene_pentarchy_synod = {
 		stability >= 10
 		gold >= 120
 	}
-	ai_will_do = { value = 0 }
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = {
+				OR = {
+					gold < 240
+					at_war = yes
+					oe_rule_is_global_arcs_player_only = yes
+				}
+			}
+			value = 0
+		}
+	}
 	illustration_tags = { 10 = interior }
 	illustration_scope = {
 		event_illustration_poptype_effect = {
@@ -58,9 +70,9 @@ oe_rel2_dec_chalcedon_accord = {
 		NOT = { has_variable = oe_rel2_chalcedon_signed }
 	}
 	allow = {
-		custom_tooltip = {
-			text = oe_rel2_player_only_tt
+		OR = {
 			is_ai = no
+			NOT = { oe_rule_is_global_arcs_player_only = yes }
 		}
 		gold >= 80
 		OR = {
@@ -70,7 +82,19 @@ oe_rel2_dec_chalcedon_accord = {
 			country_exists = c:ETH
 		}
 	}
-	ai_will_do = { value = 0 }
+	ai_will_do = {
+		value = 8
+		if = {
+			limit = {
+				OR = {
+					gold < 200
+					at_war = yes
+					oe_rule_is_global_arcs_player_only = yes
+				}
+			}
+			value = 0
+		}
+	}
 	illustration_tags = { 10 = interior }
 	illustration_scope = {
 		event_illustration_poptype_effect = {
@@ -104,14 +128,26 @@ oe_rel2_dec_jerusalem_pilgrim_charter = {
 		}
 	}
 	allow = {
-		custom_tooltip = {
-			text = oe_rel2_player_only_tt
+		OR = {
 			is_ai = no
+			NOT = { oe_rule_is_global_arcs_player_only = yes }
 		}
 		gold >= 100
 		stability >= 5
 	}
-	ai_will_do = { value = 0 }
+	ai_will_do = {
+		value = 8
+		if = {
+			limit = {
+				OR = {
+					gold < 220
+					at_war = yes
+					oe_rule_is_global_arcs_player_only = yes
+				}
+			}
+			value = 0
+		}
+	}
 	illustration_tags = { 10 = exterior }
 	illustration_scope = {
 		event_illustration_poptype_effect = {

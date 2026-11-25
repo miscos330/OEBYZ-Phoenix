@@ -112,32 +112,35 @@ oe_tb2_apply_step = {
 # Theme scope (worker). One planned course change, checked again (authority, cooldown, the course still open, the
 # AI's navy cap with the live count), paid and made as the course menu oe_theme_admin.1 does. The mark goes either way.
 oe_tb2_course_one = {
-    if = {
-        limit = {
-            oe_ta_can_change_course = yes
-            international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 5 }
-            OR = {
-                AND = { var:oe_tb2_adv ?= 1 oe_ta_course_ok_army = yes }
-                AND = { var:oe_tb2_adv ?= 2 oe_ta_course_ok_navy = yes c:BYZ = { oe_ta_navy_count < oe_ta_navy_cap } }
-                AND = { var:oe_tb2_adv ?= 3 oe_ta_course_ok_civil = yes }
-            }
-        }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
-        if = { limit = { var:oe_tb2_adv ?= 1 } oe_ta_set_course = { course = army } }
-        else_if = { limit = { var:oe_tb2_adv ?= 2 } oe_ta_set_course = { course = navy } }
-        else = { oe_ta_set_course = { course = civil } }
-        set_variable = { name = oe_theme_focus_cd years = 5 }
-        c:BYZ = { change_variable = { name = oe_tb2_r_c add = 1 } }
-        # the change keeps its seat list and two saved scopes for the rest of the event chain: empty them, so that the
-        # next run's change never builds posts on this theme's land
-        if = {
-            limit = { any_in_list = { list = oe_theme_conversion_locations } }
-            every_in_list = { list = oe_theme_conversion_locations remove_from_list = oe_theme_conversion_locations }
-        }
-        clear_saved_scope = oe_theme_converted_country
-        clear_saved_scope = oe_theme_new_capital
-    }
-    remove_variable = oe_tb2_adv
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = {
+	            oe_ta_can_change_course = yes
+	            international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 5 }
+	            OR = {
+	                AND = { var:oe_tb2_adv ?= 1 oe_ta_course_ok_army = yes }
+	                AND = { var:oe_tb2_adv ?= 2 oe_ta_course_ok_navy = yes c:BYZ = { oe_ta_navy_count < oe_ta_navy_cap } }
+	                AND = { var:oe_tb2_adv ?= 3 oe_ta_course_ok_civil = yes }
+	            }
+	        }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
+	        if = { limit = { var:oe_tb2_adv ?= 1 } oe_ta_set_course = { course = army } }
+	        else_if = { limit = { var:oe_tb2_adv ?= 2 } oe_ta_set_course = { course = navy } }
+	        else = { oe_ta_set_course = { course = civil } }
+	        set_variable = { name = oe_theme_focus_cd years = 5 }
+	        c:BYZ = { change_variable = { name = oe_tb2_r_c add = 1 } }
+	        # the change keeps its seat list and two saved scopes for the rest of the event chain: empty them, so that the
+	        # next run's change never builds posts on this theme's land
+	        if = {
+	            limit = { any_in_list = { list = oe_theme_conversion_locations } }
+	            every_in_list = { list = oe_theme_conversion_locations remove_from_list = oe_theme_conversion_locations }
+	        }
+	        clear_saved_scope = oe_theme_converted_country
+	        clear_saved_scope = oe_theme_new_capital
+	    }
+	    remove_variable = oe_tb2_adv
+	}
 }
 
 # BYZ scope (worker, job 2). 修缮城堡 in every march that may, highest border pressure first, while the
@@ -237,103 +240,106 @@ oe_tb2_mg_works = {
 # _w works (this year), _g strategos (0 not due, 1 replaced, 2 no house could, 3 authority under 8); oe_tb2_t_y
 # the year. BYZ: oe_tb2_s_* the same counts summed over the managed themes this year (oe_tb2_s_y the year, _n themes).
 oe_tb2_mg_year = {
-    c:BYZ = {
-        if = {
-            limit = { NOT = { AND = { has_variable = oe_tb2_s_y var:oe_tb2_s_y >= current_year } } }
-            set_variable = { name = oe_tb2_s_y value = current_year }
-            set_variable = { name = oe_tb2_s_n value = 0 }
-            set_variable = { name = oe_tb2_s_c value = 0 }
-            set_variable = { name = oe_tb2_s_p value = 0 }
-            set_variable = { name = oe_tb2_s_g value = 0 }
-            set_variable = { name = oe_tb2_s_f value = 0 }
-            set_variable = { name = oe_tb2_s_l value = 0 }
-            set_variable = { name = oe_tb2_s_w value = 0 }
-        }
-        change_variable = { name = oe_tb2_s_n add = 1 }
-    }
-    set_variable = { name = oe_tb2_t_y value = current_year }
-    set_variable = { name = oe_tb2_t_c value = 0 }
-    set_variable = { name = oe_tb2_t_p value = 0 }
-    set_variable = { name = oe_tb2_t_g value = 0 }
-    set_variable = { name = oe_tb2_t_f value = 0 }
-    set_variable = { name = oe_tb2_t_l value = 0 }
-    set_variable = { name = oe_tb2_t_w value = 0 }
-    # course: oe_ta_ai_course, for this theme
-    if = {
-        limit = { oe_ta_ai_wants_change = yes international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 25 } }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
-        set_variable = { name = oe_theme_focus_cd years = 5 }
-        if = { limit = { oe_ta_ai_course_army = yes } oe_ta_set_course = { course = army } }
-        else_if = { limit = { oe_ta_ai_course_navy = yes } oe_ta_set_course = { course = navy } }
-        else = { oe_ta_set_course = { course = civil } }
-        if = {
-            limit = { any_in_list = { list = oe_theme_conversion_locations } }
-            every_in_list = { list = oe_theme_conversion_locations remove_from_list = oe_theme_conversion_locations }
-        }
-        clear_saved_scope = oe_theme_converted_country
-        clear_saved_scope = oe_theme_new_capital
-        set_variable = { name = oe_tb2_t_c value = 1 }
-        c:BYZ = { change_variable = { name = oe_tb2_s_c add = 1 } }
-    }
-    # finance: the AI's pronoia rule
-    if = {
-        limit = { oe_tb2_pron_adv = yes }
-        set_variable = { name = oe_theme_fiscal value = 3 } set_variable = { name = oe_theme_officials_cd years = 2 } set_variable = oe_theme_tiers_dirty oe_ti_pronoia_set = yes
-        set_variable = { name = oe_tb2_t_p value = 1 }
-        c:BYZ = { change_variable = { name = oe_tb2_s_p add = 1 } }
-    }
-    # strategos: loyalty under 40 and 60 months in office -> the emperor's political ally sends a man (oe_tg_ai_yearly)
-    if = {
-        limit = { has_variable = oe_theme_loyalty var:oe_theme_loyalty < 40 has_variable = oe_theme_tenure var:oe_theme_tenure >= 60 NOT = { oe_ts_despot = yes } }
-        if = {
-            limit = { NOT = { international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 8 } } }
-            set_variable = { name = oe_tb2_t_g value = 3 }
-        }
-        else = {
-            set_variable = { name = oe_tb2_t_g value = 2 }
-            if = {
-                limit = { international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_political_ally } }
-                save_scope_as = oe_tg_theme_s
-                international_organization:oe_byz_empire_pillars = {
-                    if = { limit = { oe_nf_is_political_ally = { slot = 1 } oe_tg_slot_has_candidate = { slot = 1 } } c:BYZ = { oe_tg_appoint = { slot = 1 } } } else_if = { limit = { oe_nf_is_political_ally = { slot = 2 } oe_tg_slot_has_candidate = { slot = 2 } } c:BYZ = { oe_tg_appoint = { slot = 2 } } } else_if = { limit = { oe_nf_is_political_ally = { slot = 3 } oe_tg_slot_has_candidate = { slot = 3 } } c:BYZ = { oe_tg_appoint = { slot = 3 } } } else_if = { limit = { oe_nf_is_political_ally = { slot = 4 } oe_tg_slot_has_candidate = { slot = 4 } } c:BYZ = { oe_tg_appoint = { slot = 4 } } }
-                }
-                if = {
-                    limit = { exists = scope:oe_tg_nominee has_ruler = yes ruler = scope:oe_tg_nominee }
-                    set_variable = { name = oe_tb2_t_g value = 1 }
-                    c:BYZ = { change_variable = { name = oe_tb2_s_g add = 1 } }
-                }
-                # theme-fix2 (r23 g7): a man was found but the install did not take; oe_tg_appoint charged nothing
-                else_if = {
-                    limit = { exists = scope:oe_tg_nominee }
-                    set_variable = { name = oe_tb2_t_g value = 4 }
-                }
-                clear_saved_scope = oe_tg_nominee
-                clear_saved_scope = oe_tg_theme_s
-            }
-        }
-    }
-    # marches: oe_tbd_ai, for this march. theme-fix2 (r23 g7: f=1 but l=0 from pressure 80): whether border troops are
-    # due is read BEFORE the castle is repaired, because the castle's worker oe_tbd.9 recomputes the pressure (with the
-    # castle's cut) and its result was seen before the levy line was read.
-    if = {
-        limit = { oe_tbd_levy_target = yes has_variable = oe_tbd_pressure var:oe_tbd_pressure >= 60 }
-        set_variable = oe_tb2_lv_due
-    }
-    if = {
-        limit = { oe_tbd_fortify_target = yes oe_tbd_hot = yes c:BYZ = { gold >= 300 } }
-        save_scope_as = oe_tbd_act_theme
-        c:BYZ = { oe_tbd_fortify_do = yes change_variable = { name = oe_tb2_s_f add = 1 } }
-        clear_saved_scope = oe_tbd_act_theme
-        set_variable = { name = oe_tb2_t_f value = 1 }
-    }
-    if = {
-        limit = { has_variable = oe_tb2_lv_due oe_tbd_levy_target = yes c:BYZ = { gold >= 150 } }
-        save_scope_as = oe_tbd_act_theme
-        c:BYZ = { oe_tbd_levy_do = yes change_variable = { name = oe_tb2_s_l add = 1 } }
-        clear_saved_scope = oe_tbd_act_theme
-        set_variable = { name = oe_tb2_t_l value = 1 }
-    }
-    remove_variable = oe_tb2_lv_due
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    c:BYZ = {
+	        if = {
+	            limit = { NOT = { AND = { has_variable = oe_tb2_s_y var:oe_tb2_s_y >= current_year } } }
+	            set_variable = { name = oe_tb2_s_y value = current_year }
+	            set_variable = { name = oe_tb2_s_n value = 0 }
+	            set_variable = { name = oe_tb2_s_c value = 0 }
+	            set_variable = { name = oe_tb2_s_p value = 0 }
+	            set_variable = { name = oe_tb2_s_g value = 0 }
+	            set_variable = { name = oe_tb2_s_f value = 0 }
+	            set_variable = { name = oe_tb2_s_l value = 0 }
+	            set_variable = { name = oe_tb2_s_w value = 0 }
+	        }
+	        change_variable = { name = oe_tb2_s_n add = 1 }
+	    }
+	    set_variable = { name = oe_tb2_t_y value = current_year }
+	    set_variable = { name = oe_tb2_t_c value = 0 }
+	    set_variable = { name = oe_tb2_t_p value = 0 }
+	    set_variable = { name = oe_tb2_t_g value = 0 }
+	    set_variable = { name = oe_tb2_t_f value = 0 }
+	    set_variable = { name = oe_tb2_t_l value = 0 }
+	    set_variable = { name = oe_tb2_t_w value = 0 }
+	    # course: oe_ta_ai_course, for this theme
+	    if = {
+	        limit = { oe_ta_ai_wants_change = yes international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 25 } }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
+	        set_variable = { name = oe_theme_focus_cd years = 5 }
+	        if = { limit = { oe_ta_ai_course_army = yes } oe_ta_set_course = { course = army } }
+	        else_if = { limit = { oe_ta_ai_course_navy = yes } oe_ta_set_course = { course = navy } }
+	        else = { oe_ta_set_course = { course = civil } }
+	        if = {
+	            limit = { any_in_list = { list = oe_theme_conversion_locations } }
+	            every_in_list = { list = oe_theme_conversion_locations remove_from_list = oe_theme_conversion_locations }
+	        }
+	        clear_saved_scope = oe_theme_converted_country
+	        clear_saved_scope = oe_theme_new_capital
+	        set_variable = { name = oe_tb2_t_c value = 1 }
+	        c:BYZ = { change_variable = { name = oe_tb2_s_c add = 1 } }
+	    }
+	    # finance: the AI's pronoia rule
+	    if = {
+	        limit = { oe_tb2_pron_adv = yes }
+	        set_variable = { name = oe_theme_fiscal value = 3 } set_variable = { name = oe_theme_officials_cd years = 2 } set_variable = oe_theme_tiers_dirty oe_ti_pronoia_set = yes
+	        set_variable = { name = oe_tb2_t_p value = 1 }
+	        c:BYZ = { change_variable = { name = oe_tb2_s_p add = 1 } }
+	    }
+	    # strategos: loyalty under 40 and 60 months in office -> the emperor's political ally sends a man (oe_tg_ai_yearly)
+	    if = {
+	        limit = { has_variable = oe_theme_loyalty var:oe_theme_loyalty < 40 has_variable = oe_theme_tenure var:oe_theme_tenure >= 60 NOT = { oe_ts_despot = yes } }
+	        if = {
+	            limit = { NOT = { international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 8 } } }
+	            set_variable = { name = oe_tb2_t_g value = 3 }
+	        }
+	        else = {
+	            set_variable = { name = oe_tb2_t_g value = 2 }
+	            if = {
+	                limit = { international_organization:oe_byz_empire_pillars = { has_variable = oe_nf_political_ally } }
+	                save_scope_as = oe_tg_theme_s
+	                international_organization:oe_byz_empire_pillars = {
+	                    if = { limit = { oe_nf_is_political_ally = { slot = 1 } oe_tg_slot_has_candidate = { slot = 1 } } c:BYZ = { oe_tg_appoint = { slot = 1 } } } else_if = { limit = { oe_nf_is_political_ally = { slot = 2 } oe_tg_slot_has_candidate = { slot = 2 } } c:BYZ = { oe_tg_appoint = { slot = 2 } } } else_if = { limit = { oe_nf_is_political_ally = { slot = 3 } oe_tg_slot_has_candidate = { slot = 3 } } c:BYZ = { oe_tg_appoint = { slot = 3 } } } else_if = { limit = { oe_nf_is_political_ally = { slot = 4 } oe_tg_slot_has_candidate = { slot = 4 } } c:BYZ = { oe_tg_appoint = { slot = 4 } } }
+	                }
+	                if = {
+	                    limit = { exists = scope:oe_tg_nominee has_ruler = yes ruler = scope:oe_tg_nominee }
+	                    set_variable = { name = oe_tb2_t_g value = 1 }
+	                    c:BYZ = { change_variable = { name = oe_tb2_s_g add = 1 } }
+	                }
+	                # theme-fix2 (r23 g7): a man was found but the install did not take; oe_tg_appoint charged nothing
+	                else_if = {
+	                    limit = { exists = scope:oe_tg_nominee }
+	                    set_variable = { name = oe_tb2_t_g value = 4 }
+	                }
+	                clear_saved_scope = oe_tg_nominee
+	                clear_saved_scope = oe_tg_theme_s
+	            }
+	        }
+	    }
+	    # marches: oe_tbd_ai, for this march. theme-fix2 (r23 g7: f=1 but l=0 from pressure 80): whether border troops are
+	    # due is read BEFORE the castle is repaired, because the castle's worker oe_tbd.9 recomputes the pressure (with the
+	    # castle's cut) and its result was seen before the levy line was read.
+	    if = {
+	        limit = { oe_tbd_levy_target = yes has_variable = oe_tbd_pressure var:oe_tbd_pressure >= 60 }
+	        set_variable = oe_tb2_lv_due
+	    }
+	    if = {
+	        limit = { oe_tbd_fortify_target = yes oe_tbd_hot = yes c:BYZ = { gold >= 300 } }
+	        save_scope_as = oe_tbd_act_theme
+	        c:BYZ = { oe_tbd_fortify_do = yes change_variable = { name = oe_tb2_s_f add = 1 } }
+	        clear_saved_scope = oe_tbd_act_theme
+	        set_variable = { name = oe_tb2_t_f value = 1 }
+	    }
+	    if = {
+	        limit = { has_variable = oe_tb2_lv_due oe_tbd_levy_target = yes c:BYZ = { gold >= 150 } }
+	        save_scope_as = oe_tbd_act_theme
+	        c:BYZ = { oe_tbd_levy_do = yes change_variable = { name = oe_tb2_s_l add = 1 } }
+	        clear_saved_scope = oe_tbd_act_theme
+	        set_variable = { name = oe_tb2_t_l value = 1 }
+	    }
+	    remove_variable = oe_tb2_lv_due
+	}
 }
 # BYZ scope (menu oe_tb2.3). All themes that may / all managed themes.
 oe_tb2_mg_all_on = { every_subject = { limit = { oe_tb2_mg_can = yes } oe_tb2_mg_on = yes } }

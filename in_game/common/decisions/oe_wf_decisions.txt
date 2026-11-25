@@ -1,0 +1,302 @@
+﻿# NEW 2026-11-24 v26.1 WP15-2 Wanfang Celestial Empire Core (oe_wf_, gen_v261_wanfang_celestial.py) — EU5-Native Era Names, 3-Stage Mandate Cycle, Bilateral Royal Favor & Five Court Policies (0 vanilla overrides, 0 edits to existing files, 100% O(1) & G_ELR_ISOLATION compliant). Edit gen_v261_wanfang_celestial.py, not this file.
+
+# =============================================================================
+# System 1: Era Names (年号系统)
+# =============================================================================
+oe_wf_dec_proclaim_era_name = {
+	decision_category = country_specific_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+		NOT = { has_variable = oe_wf_era_reign_proclaimed }
+	}
+	allow = {
+		NOT = { has_variable = oe_wf_era_manual_cd }
+		gold >= 40
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				gold >= 80
+				NOT = { has_variable = oe_wf_era_reign_proclaimed }
+			}
+			add = 65
+		}
+	}
+	illustration_tags = { 10 = interior }
+	option = {
+		name = oe_wf_dec_proclaim_era_name.a
+		ai_chance = { value = 100 }
+		effect = {
+			add_gold = -40
+			set_variable = { name = oe_wf_era_reign_proclaimed value = 1 }
+			set_variable = { name = oe_wf_era_manual_cd value = 1 years = 15 }
+			set_variable = { name = oe_wf_era_reign_years value = 0 }
+			trigger_event_non_silently = oe_wf.1
+		}
+	}
+}
+
+# =============================================================================
+# System 3: Bilateral Royal Favor Tributary System (皇恩双向宗藩)
+# =============================================================================
+oe_wf_dec_send_tribute_mission = {
+	decision_category = country_specific_decisions
+	potential = {
+		oe_wf_is_tributary_of_emperor = yes
+	}
+	allow = {
+		NOT = { has_variable = oe_wf_tribute_mission_cd }
+		gold >= 30
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				gold >= 70
+				NOT = { has_variable = oe_wf_tribute_mission_cd }
+				OR = {
+					NOT = { has_variable = oe_wf_huangen }
+					AND = {
+						has_variable = oe_wf_huangen
+						var:oe_wf_huangen < 60
+					}
+				}
+			}
+			add = 35
+		}
+	}
+	illustration_tags = { 10 = exterior }
+	option = {
+		name = oe_wf_dec_send_tribute_mission.a
+		ai_chance = { value = 100 }
+		effect = {
+			set_variable = { name = oe_wf_tribute_mission_cd value = 1 years = 5 }
+			trigger_event_non_silently = oe_wf.20
+		}
+	}
+}
+
+oe_wf_dec_petition_imperial_aid = {
+	decision_category = country_specific_decisions
+	potential = {
+		oe_wf_is_tributary_of_emperor = yes
+	}
+	allow = {
+		custom_tooltip = {
+			text = oe_wf_need_huangen_25_tt
+			has_variable = oe_wf_huangen
+			var:oe_wf_huangen >= 25
+		}
+		NOT = { has_variable = oe_wf_petition_aid_cd }
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				has_variable = oe_wf_huangen
+				var:oe_wf_huangen >= 35
+				OR = {
+					at_war = yes
+					stability < 10
+					gold < 60
+				}
+			}
+			add = 45
+		}
+	}
+	illustration_tags = { 10 = interior }
+	option = {
+		name = oe_wf_dec_petition_imperial_aid.a
+		ai_chance = { value = 100 }
+		effect = {
+			set_variable = { name = oe_wf_petition_aid_cd value = 1 years = 8 }
+			trigger_event_non_silently = oe_wf.21
+		}
+	}
+}
+
+oe_wf_dec_petition_sinicization_charter = {
+	decision_category = country_specific_decisions
+	potential = {
+		oe_wf_is_tributary_of_emperor = yes
+	}
+	allow = {
+		custom_tooltip = {
+			text = oe_wf_need_huangen_30_tt
+			has_variable = oe_wf_huangen
+			var:oe_wf_huangen >= 30
+		}
+		NOT = { has_variable = oe_wf_sinicize_cd }
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				has_variable = oe_wf_huangen
+				var:oe_wf_huangen >= 45
+				at_war = no
+			}
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = interior }
+	option = {
+		name = oe_wf_dec_petition_sinicization_charter.a
+		ai_chance = { value = 100 }
+		effect = {
+			oe_wf_add_huangen = { amount = -30 }
+			set_variable = { name = oe_wf_sinicize_cd value = 1 years = 15 }
+			trigger_event_non_silently = oe_wf.25
+		}
+	}
+}
+
+oe_wf_dec_bestow_royal_favor = {
+	decision_category = country_specific_decisions
+	potential = {
+		oe_wf_is_middle_kingdom_leader = yes
+	}
+	allow = {
+		NOT = { has_variable = oe_wf_bestow_grace_cd }
+		gold >= 75
+		custom_tooltip = {
+			text = oe_wf_need_tributary_tt
+			OR = {
+				any_subject = {
+					is_rebel_country = no
+				}
+				trigger_if = {
+					limit = { exists = international_organization:middle_kingdom }
+					international_organization:middle_kingdom = {
+						any_international_organization_member = {
+							NOT = { this = root }
+							is_rebel_country = no
+						}
+					}
+				}
+				trigger_else = {
+					always = no
+				}
+			}
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				gold >= 200
+				at_war = no
+			}
+			add = 35
+		}
+	}
+	illustration_tags = { 10 = exterior }
+	option = {
+		name = oe_wf_dec_bestow_royal_favor.a
+		ai_chance = { value = 100 }
+		effect = {
+			add_gold = -75
+			set_variable = { name = oe_wf_bestow_grace_cd value = 1 years = 10 }
+			trigger_event_non_silently = oe_wf.26
+		}
+	}
+}
+
+# =============================================================================
+# System 4: Wanfang 7.2 Five Court Policies (宫廷五策决议)
+# =============================================================================
+oe_wf_dec_special_grace_exam = {
+	decision_category = government_decisions
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+	}
+	allow = {
+		NOT = { has_variable = oe_wf_exam_cd }
+		gold >= 60
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				gold >= 140
+				at_war = no
+			}
+			add = 40
+		}
+	}
+	illustration_tags = { 10 = interior }
+	option = {
+		name = oe_wf_dec_special_grace_exam.a
+		ai_chance = { value = 100 }
+		effect = {
+			add_gold = -60
+			set_variable = { name = oe_wf_exam_cd value = 1 years = 12 }
+			trigger_event_non_silently = oe_wf.30
+		}
+	}
+}
+
+oe_wf_dec_penitential_edict = {
+	decision_category = government_decisions
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+	}
+	allow = {
+		oe_wf_in_crisis_for_penitence = yes
+		NOT = { has_variable = oe_wf_penitence_cd }
+		prestige >= 10
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				prestige >= 15
+				OR = {
+					stability < 0
+					war_exhaustion >= 6
+				}
+			}
+			add = 60
+		}
+	}
+	illustration_tags = { 10 = interior }
+	option = {
+		name = oe_wf_dec_penitential_edict.a
+		ai_chance = { value = 100 }
+		effect = {
+			set_variable = { name = oe_wf_penitence_cd value = 1 years = 15 }
+			trigger_event_non_silently = oe_wf.34
+		}
+	}
+}
+
+oe_wf_dec_toggle_governance_style = {
+	decision_category = government_decisions
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+	}
+	allow = {
+		NOT = { has_variable = oe_wf_gov_style_cd }
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				NOT = { has_country_modifier = oe_wf_gov_diligent_mod }
+				NOT = { has_country_modifier = oe_wf_gov_hands_off_mod }
+			}
+			add = 35
+		}
+	}
+	illustration_tags = { 10 = interior }
+	option = {
+		name = oe_wf_dec_toggle_governance_style.a
+		ai_chance = { value = 100 }
+		effect = {
+			set_variable = { name = oe_wf_gov_style_cd value = 1 years = 10 }
+			trigger_event_non_silently = oe_wf.35
+		}
+	}
+}

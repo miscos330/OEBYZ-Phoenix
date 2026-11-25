@@ -73,6 +73,48 @@ oe_as2_dec_extend_romanization = {
 	}
 }
 
+# 2b. Tier-2 Constitutio Antoniniana / Ecumenical Romanitas Charter (BYZ at 75% milestone or restored ROM)
+oe_as2_dec_constitutio_antoniniana = {
+	decision_category = government_decisions
+	potential = {
+		oe_as2_is_roman_host = yes
+		OR = {
+			has_variable = oe_as2_ms_75_done
+			tag = ROM
+		}
+	}
+	allow = {
+		stability >= 10
+		gold >= 100
+		NOT = { has_country_modifier = oe_as2_doctrine_cooldown_mod }
+	}
+	ai_will_do = {
+		value = 10
+		if = {
+			limit = {
+				OR = {
+					has_country_modifier = oe_as2_ms75_roman_integration_mod
+					has_country_modifier = oe_as2_ms75_federative_romanitas_mod
+				}
+			}
+			value = 0
+		}
+		if = {
+			limit = { gold < 200 }
+			value = 0
+		}
+	}
+	illustration_tags = { 10 = interior }
+	option = {
+		name = oe_as2_dec_constitutio_antoniniana.a
+		effect = {
+			add_gold = -100
+			add_country_modifier = { modifier = oe_as2_doctrine_cooldown_mod years = 15 mode = replace }
+			trigger_event_non_silently = oe_as2.4
+		}
+	}
+}
+
 # 3. China Cultural Integration Charter (CHI / MNG / MCH / Middle Kingdom Leader)
 oe_as2_dec_china_integration = {
 	decision_category = government_decisions

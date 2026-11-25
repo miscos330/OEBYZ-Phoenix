@@ -1,0 +1,189 @@
+﻿# NEW 2026-11-25 v27.0 WP19 Wanfang Phase 2 (oe_wf2_, gen_v270_wanfang_p2.py) — Wokou Native Disaster, Yellow River & Grand Canal Huai'an, 10 Vaulted Reforms/Privileges & Osmanli Rome (0 vanilla overrides, 0 edits to existing files, 100% O(1), R31 & G_ELR_ISOLATION compliant). Edit gen_v270_wanfang_p2.py, not this file.
+
+# WP19-1: Jiajing Southeastern Wokou Native EU5 Disaster (matches icon main_menu/gfx/interface/icons/disasters/oe_wf_dis_wokou_raids.dds).
+# Strictly R08 / R10 / R31 / G_ELR_ISOLATION compliant, zero map-wide loops.
+oe_wf_dis_wokou_raids = {
+	image = "gfx/interface/illustrations/events/oe_wf_ev_wokou_coastal_conflict.dds"
+	monthly_spawn_chance = monthly_spawn_chance_medium
+	fire_only_once = yes
+	ends_on_regime_change = yes
+
+	can_start = {
+		oe_wf2_is_wokou_eligible_empire = yes
+		is_rebel_country = no
+		is_subject = no
+		has_any_active_disaster = no
+		current_year >= 1500
+		current_year <= 1640
+		NOT = { has_variable = oe_wf2_wokou_resolved }
+		NOT = { has_country_modifier = oe_wf2_mod_wokou_pacified }
+		NOT = { has_country_modifier = oe_wf2_mod_longqing_open_ports }
+		OR = {
+			stability < 35
+			war_exhaustion >= 1
+			NOT = { has_reform = government_reform:oe_pmng_ref_maritime_celestial_empire }
+		}
+	}
+
+	can_end = {
+		OR = {
+			NOT = { oe_wf2_owns_se_coast_core = yes }
+			AND = {
+				stability >= 10
+				at_war = no
+				trigger_if = {
+					limit = { has_variable = oe_wf2_wokou_suppression }
+					var:oe_wf2_wokou_suppression >= 60
+				}
+				trigger_else = {
+					always = no
+				}
+			}
+			AND = {
+				has_variable = oe_wf2_wokou_climax_done
+				stability >= 5
+			}
+		}
+	}
+
+	modifier = {
+		trade_sea_efficiency = -0.15
+		global_maritime_presence_modifier = -0.15
+		global_pirate_spawn_chance = 0.25
+		burghers_estate_target_satisfaction = -0.08
+		global_monthly_prosperity = -0.003
+		tax_income_efficiency = -0.06
+	}
+
+	on_start = {
+		set_variable = { name = oe_wf2_wokou_active value = 1 }
+		set_variable = { name = oe_wf2_wokou_suppression value = 0 }
+		set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 3 }
+		if = {
+			limit = { owns = location:dinghai }
+			location:dinghai = { add_location_modifier = { modifier = oe_wf2_loc_shuangyu_smuggling years = 12 mode = replace } }
+		}
+		if = {
+			limit = { NOT = { has_variable = oe_wf2_wokou_ev1_done } }
+			set_variable = { name = oe_wf2_wokou_ev1_done value = 1 }
+			trigger_event_non_silently = oe_wf2_wokou.1
+		}
+	}
+
+	on_monthly = {
+		random_list = {
+			12 = { custom_tooltip = an_event_occurs_tt }
+			88 = { custom_tooltip = no_event_occurs_tt }
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					OR = {
+						has_country_modifier = oe_wf2_mod_yiwu_qi_army
+						has_country_modifier = oe_wf2_mod_yuanyang_tactics
+						has_country_modifier = oe_wf2_mod_longqing_open_ports
+					}
+				}
+				oe_wf2_add_wokou_suppression = { amount = 1 }
+			}
+			if = {
+				limit = { NOT = { has_variable = oe_wf2_wokou_ev_cd } }
+				if = {
+					limit = { NOT = { has_variable = oe_wf2_wokou_ev2_done } }
+					set_variable = { name = oe_wf2_wokou_ev2_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.2
+				}
+				else_if = {
+					limit = { NOT = { has_variable = oe_wf2_wokou_ev3_done } }
+					set_variable = { name = oe_wf2_wokou_ev3_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.3
+				}
+				else_if = {
+					limit = { NOT = { has_variable = oe_wf2_wokou_ev4_done } }
+					set_variable = { name = oe_wf2_wokou_ev4_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.4
+				}
+				else_if = {
+					limit = { NOT = { has_variable = oe_wf2_wokou_ev5_done } }
+					set_variable = { name = oe_wf2_wokou_ev5_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.5
+				}
+				else_if = {
+					limit = {
+						has_variable = oe_wf2_wokou_ev5_done
+						NOT = { has_variable = oe_wf2_wokou_ev6_done }
+					}
+					set_variable = { name = oe_wf2_wokou_ev6_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.6
+				}
+				else_if = {
+					limit = { NOT = { has_variable = oe_wf2_wokou_ev7_done } }
+					set_variable = { name = oe_wf2_wokou_ev7_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.7
+				}
+				else_if = {
+					limit = { NOT = { has_variable = oe_wf2_wokou_ev8_done } }
+					set_variable = { name = oe_wf2_wokou_ev8_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.8
+				}
+				else_if = {
+					limit = {
+						has_variable = oe_wf2_wokou_ev8_done
+						NOT = { has_variable = oe_wf2_wokou_ev9_done }
+					}
+					set_variable = { name = oe_wf2_wokou_ev9_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.9
+				}
+				else_if = {
+					limit = {
+						has_variable = oe_wf2_wokou_ev9_done
+						NOT = { has_variable = oe_wf2_wokou_ev10_done }
+					}
+					set_variable = { name = oe_wf2_wokou_ev10_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.10
+				}
+				else_if = {
+					limit = { NOT = { has_variable = oe_wf2_wokou_ev11_done } }
+					set_variable = { name = oe_wf2_wokou_ev11_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.11
+				}
+				else_if = {
+					limit = { NOT = { has_variable = oe_wf2_wokou_ev12_done } }
+					set_variable = { name = oe_wf2_wokou_ev12_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.12
+				}
+				else_if = {
+					limit = { NOT = { has_variable = oe_wf2_wokou_ev13_done } }
+					set_variable = { name = oe_wf2_wokou_ev13_done value = 1 }
+					set_variable = { name = oe_wf2_wokou_ev_cd value = 1 months = 4 }
+					trigger_event_non_silently = oe_wf2_wokou.13
+				}
+			}
+		}
+	}
+
+	on_end = {
+		if = {
+			limit = { has_variable = oe_wf2_wokou_active }
+			remove_variable = oe_wf2_wokou_active
+		}
+		set_variable = { name = oe_wf2_wokou_resolved value = 1 }
+		add_country_modifier = { modifier = oe_wf2_mod_wokou_pacified years = 20 mode = replace }
+		if = {
+			limit = { NOT = { has_variable = oe_wf2_wokou_ev14_done } }
+			set_variable = { name = oe_wf2_wokou_ev14_done value = 1 }
+			trigger_event_non_silently = oe_wf2_wokou.14
+		}
+	}
+}

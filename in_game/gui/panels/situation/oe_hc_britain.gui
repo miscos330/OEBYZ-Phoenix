@@ -41,6 +41,13 @@ situation_panel = {
 
     blockoverride "situation_subheader_content" {}
 
+    blockoverride "situation_panel_outcome_hint" {
+        action_tooltip = {
+            title = "OPEN_HINT"
+            on_action = "[OpenLateralViewWithParams('hints', 'selected_hint = hint_oe_hc_britain')]"
+        }
+    }
+
     blockoverride "situation_panel_main_content" {
         oe_sit_end_conditions = {}
         card_common = {
@@ -55,13 +62,13 @@ situation_panel = {
                     spacing = 6
                 oe_sit_tug_bar = {
                     blockoverride "tug_left" {
-                        text_single = { fontsize = 13 default_format = "#color_gold" text = "OE_SIT_HC_PROG_L" }
+                        text_single = { fontsize = 13 default_format = "#color_yellow" text = "OE_SIT_HC_PROG_L" }
                     }
                     blockoverride "tug_center" {
                         text_single = { fontsize = 14 default_format = "#bold" raw_text = "[GetCountry('BYZ').MakeScope.GetVariable('oe_hc_britain_progress').GetValue|0] / 100" }
                     }
                     blockoverride "tug_right" {
-                        text_single = { fontsize = 13 default_format = "#weak" text = "OE_SIT_HC_PROG_R" }
+                        text_single = { fontsize = 13 default_format = "#medium" text = "OE_SIT_HC_PROG_R" }
                     }
                     blockoverride "tug_bar_style" { using = progress_bar_goldish }
                     blockoverride "tug_bar_bounds" { min = 0 max = 100 }
@@ -84,21 +91,21 @@ situation_panel = {
                         multiline = yes
                         autoresize = yes
                         maximumsize = { 440 -1 }
-                        fontsize = 12
-                        default_format = "#weak"
+                        fontsize = 13
+                        default_format = "#color_light_gray"
                         text = "OE_SIT_HC_PROG_FOOT"
                     }
                 }
                 }
                 oe_sit_tug_bar = {
                     blockoverride "tug_left" {
-                        text_single = { fontsize = 13 default_format = "#color_gold" text = "OE_SIT_HC_PRES_L" }
+                        text_single = { fontsize = 13 default_format = "#color_yellow" text = "OE_SIT_HC_PRES_L" }
                     }
                     blockoverride "tug_center" {
                         text_single = { fontsize = 14 default_format = "#bold" raw_text = "[GetCountry('BYZ').MakeScope.GetVariable('oe_hc_britain_pressure').GetValue|0] / 100" }
                     }
                     blockoverride "tug_right" {
-                        text_single = { fontsize = 13 default_format = "#weak" text = "OE_SIT_HC_PRES_R" }
+                        text_single = { fontsize = 13 default_format = "#medium" text = "OE_SIT_HC_PRES_R" }
                     }
                     blockoverride "tug_bar_style" { using = progress_bar_red_alt }
                     blockoverride "tug_bar_bounds" { min = 0 max = 100 }
@@ -121,8 +128,8 @@ situation_panel = {
                         multiline = yes
                         autoresize = yes
                         maximumsize = { 440 -1 }
-                        fontsize = 12
-                        default_format = "#weak"
+                        fontsize = 13
+                        default_format = "#color_light_gray"
                         text = "OE_SIT_HC_PRES_FOOT"
                     }
                 }
@@ -135,8 +142,8 @@ situation_panel = {
                             text_single = {
                                 layoutpolicy_horizontal = expanding
                                 align = hcenter|nobaseline
-                                fontsize = 12
-                                default_format = "#weak"
+                                fontsize = 13
+                                default_format = "#medium"
                                 text = "OE_SIT_MONTHS"
                             }
                         }
@@ -146,7 +153,7 @@ situation_panel = {
                                 align = hcenter|nobaseline
                                 elide = right
                                 fontsize = 15
-                                default_format = "#bold #color_gold"
+                                default_format = "#color_yellow;bold"
                                 raw_text = "[GetCountry('BYZ').MakeScope.GetVariable('oe_hc_britain_months').GetValue|0] / 120"
                             }
                         }
@@ -156,8 +163,8 @@ situation_panel = {
                             text_single = {
                                 layoutpolicy_horizontal = expanding
                                 align = hcenter|nobaseline
-                                fontsize = 12
-                                default_format = "#weak"
+                                fontsize = 13
+                                default_format = "#medium"
                                 text = "OE_SIT_HC_BONUS"
                             }
                         }
@@ -215,6 +222,13 @@ situation_panel = {
                     }
                 }
             }
+        }
+    }
+
+    blockoverride "situation_panel_main_actions" {
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            using = situations_actions
         }
     }
 }

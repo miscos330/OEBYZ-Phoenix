@@ -12,21 +12,27 @@ oe_trg_end_1 = {
 }
 # var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
 oe_trg_install_1 = {
-    if = {
-        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-        var:oe_trg_head_1 ?= { remove_variable = oe_trg_office }
-        set_variable = { name = oe_trg_head_1 value = var:oe_trg_pick }
-        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 1 } }
-        set_variable = { name = oe_trg_cd_1 value = 1 years = 2 }
-        oe_trg_refresh_1 = yes
-    }
-    remove_variable = oe_trg_pick
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_1 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_1 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 1 } }
+	        set_variable = { name = oe_trg_cd_1 value = 1 years = 2 }
+	        oe_trg_refresh_1 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
 }
 # Influence for the house of kephale k (no change when he is not house-born).
 oe_trg_house_inf_1 = {
-    var:oe_trg_head_1 ?= { save_scope_as = oe_trg_hk }
-    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_1 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
 }
 # Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
 oe_trg_dismiss_1 = {
@@ -38,9 +44,12 @@ oe_trg_dismiss_1 = {
 }
 # Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
 oe_trg_concede_1 = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    oe_trg_house_inf_1 = { amount = 50 }
-    set_variable = { name = oe_trg_cd_1 value = 1 years = 5 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_1 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_1 value = 1 years = 5 }
+	}
 }
 # Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
 oe_trg_defy_1 = {
@@ -63,7 +72,7 @@ oe_trg_appanage_1 = {
     }
 }
 
-# ---- 马其顿与色萨利 / Macedonia and Thessaly
+# ---- 亚细亚与爱琴 / Asiana and the Aegean
 oe_trg_refresh_2 = {
     if = { limit = { oe_trg_head_ok_2 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_2 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
 }
@@ -74,21 +83,27 @@ oe_trg_end_2 = {
 }
 # var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
 oe_trg_install_2 = {
-    if = {
-        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-        var:oe_trg_head_2 ?= { remove_variable = oe_trg_office }
-        set_variable = { name = oe_trg_head_2 value = var:oe_trg_pick }
-        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 2 } }
-        set_variable = { name = oe_trg_cd_2 value = 1 years = 2 }
-        oe_trg_refresh_2 = yes
-    }
-    remove_variable = oe_trg_pick
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_2 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_2 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 2 } }
+	        set_variable = { name = oe_trg_cd_2 value = 1 years = 2 }
+	        oe_trg_refresh_2 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
 }
 # Influence for the house of kephale k (no change when he is not house-born).
 oe_trg_house_inf_2 = {
-    var:oe_trg_head_2 ?= { save_scope_as = oe_trg_hk }
-    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_2 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
 }
 # Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
 oe_trg_dismiss_2 = {
@@ -100,9 +115,12 @@ oe_trg_dismiss_2 = {
 }
 # Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
 oe_trg_concede_2 = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    oe_trg_house_inf_2 = { amount = 50 }
-    set_variable = { name = oe_trg_cd_2 value = 1 years = 5 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_2 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_2 value = 1 years = 5 }
+	}
 }
 # Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
 oe_trg_defy_2 = {
@@ -125,7 +143,7 @@ oe_trg_appanage_2 = {
     }
 }
 
-# ---- 希腊与群岛 / Hellas and the Islands
+# ---- 本都与高加索 / Pontica and Caucasus
 oe_trg_refresh_3 = {
     if = { limit = { oe_trg_head_ok_3 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_3 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
 }
@@ -136,21 +154,27 @@ oe_trg_end_3 = {
 }
 # var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
 oe_trg_install_3 = {
-    if = {
-        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-        var:oe_trg_head_3 ?= { remove_variable = oe_trg_office }
-        set_variable = { name = oe_trg_head_3 value = var:oe_trg_pick }
-        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 3 } }
-        set_variable = { name = oe_trg_cd_3 value = 1 years = 2 }
-        oe_trg_refresh_3 = yes
-    }
-    remove_variable = oe_trg_pick
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_3 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_3 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 3 } }
+	        set_variable = { name = oe_trg_cd_3 value = 1 years = 2 }
+	        oe_trg_refresh_3 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
 }
 # Influence for the house of kephale k (no change when he is not house-born).
 oe_trg_house_inf_3 = {
-    var:oe_trg_head_3 ?= { save_scope_as = oe_trg_hk }
-    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_3 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
 }
 # Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
 oe_trg_dismiss_3 = {
@@ -162,9 +186,12 @@ oe_trg_dismiss_3 = {
 }
 # Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
 oe_trg_concede_3 = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    oe_trg_house_inf_3 = { amount = 50 }
-    set_variable = { name = oe_trg_cd_3 value = 1 years = 5 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_3 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_3 value = 1 years = 5 }
+	}
 }
 # Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
 oe_trg_defy_3 = {
@@ -187,7 +214,7 @@ oe_trg_appanage_3 = {
     }
 }
 
-# ---- 多瑙河与伊利里库姆 / Danube and Illyricum
+# ---- 东方与黎凡特 / Oriens and the Levant
 oe_trg_refresh_4 = {
     if = { limit = { oe_trg_head_ok_4 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_4 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
 }
@@ -198,21 +225,27 @@ oe_trg_end_4 = {
 }
 # var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
 oe_trg_install_4 = {
-    if = {
-        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-        var:oe_trg_head_4 ?= { remove_variable = oe_trg_office }
-        set_variable = { name = oe_trg_head_4 value = var:oe_trg_pick }
-        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 4 } }
-        set_variable = { name = oe_trg_cd_4 value = 1 years = 2 }
-        oe_trg_refresh_4 = yes
-    }
-    remove_variable = oe_trg_pick
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_4 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_4 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 4 } }
+	        set_variable = { name = oe_trg_cd_4 value = 1 years = 2 }
+	        oe_trg_refresh_4 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
 }
 # Influence for the house of kephale k (no change when he is not house-born).
 oe_trg_house_inf_4 = {
-    var:oe_trg_head_4 ?= { save_scope_as = oe_trg_hk }
-    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_4 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
 }
 # Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
 oe_trg_dismiss_4 = {
@@ -224,9 +257,12 @@ oe_trg_dismiss_4 = {
 }
 # Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
 oe_trg_concede_4 = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    oe_trg_house_inf_4 = { amount = 50 }
-    set_variable = { name = oe_trg_cd_4 value = 1 years = 5 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_4 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_4 value = 1 years = 5 }
+	}
 }
 # Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
 oe_trg_defy_4 = {
@@ -249,7 +285,7 @@ oe_trg_appanage_4 = {
     }
 }
 
-# ---- 西安纳托利亚 / Western Anatolia
+# ---- 埃及与昔兰尼加 / Aegyptus and Cyrenaica
 oe_trg_refresh_5 = {
     if = { limit = { oe_trg_head_ok_5 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_5 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
 }
@@ -260,21 +296,27 @@ oe_trg_end_5 = {
 }
 # var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
 oe_trg_install_5 = {
-    if = {
-        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-        var:oe_trg_head_5 ?= { remove_variable = oe_trg_office }
-        set_variable = { name = oe_trg_head_5 value = var:oe_trg_pick }
-        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 5 } }
-        set_variable = { name = oe_trg_cd_5 value = 1 years = 2 }
-        oe_trg_refresh_5 = yes
-    }
-    remove_variable = oe_trg_pick
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_5 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_5 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 5 } }
+	        set_variable = { name = oe_trg_cd_5 value = 1 years = 2 }
+	        oe_trg_refresh_5 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
 }
 # Influence for the house of kephale k (no change when he is not house-born).
 oe_trg_house_inf_5 = {
-    var:oe_trg_head_5 ?= { save_scope_as = oe_trg_hk }
-    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_5 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
 }
 # Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
 oe_trg_dismiss_5 = {
@@ -286,9 +328,12 @@ oe_trg_dismiss_5 = {
 }
 # Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
 oe_trg_concede_5 = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    oe_trg_house_inf_5 = { amount = 50 }
-    set_variable = { name = oe_trg_cd_5 value = 1 years = 5 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_5 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_5 value = 1 years = 5 }
+	}
 }
 # Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
 oe_trg_defy_5 = {
@@ -311,7 +356,7 @@ oe_trg_appanage_5 = {
     }
 }
 
-# ---- 东安纳托利亚 / Eastern Anatolia
+# ---- 马其顿与希腊 / Macedonia and Hellas
 oe_trg_refresh_6 = {
     if = { limit = { oe_trg_head_ok_6 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_6 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
 }
@@ -322,21 +367,27 @@ oe_trg_end_6 = {
 }
 # var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
 oe_trg_install_6 = {
-    if = {
-        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-        var:oe_trg_head_6 ?= { remove_variable = oe_trg_office }
-        set_variable = { name = oe_trg_head_6 value = var:oe_trg_pick }
-        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 6 } }
-        set_variable = { name = oe_trg_cd_6 value = 1 years = 2 }
-        oe_trg_refresh_6 = yes
-    }
-    remove_variable = oe_trg_pick
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_6 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_6 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 6 } }
+	        set_variable = { name = oe_trg_cd_6 value = 1 years = 2 }
+	        oe_trg_refresh_6 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
 }
 # Influence for the house of kephale k (no change when he is not house-born).
 oe_trg_house_inf_6 = {
-    var:oe_trg_head_6 ?= { save_scope_as = oe_trg_hk }
-    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_6 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
 }
 # Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
 oe_trg_dismiss_6 = {
@@ -348,9 +399,12 @@ oe_trg_dismiss_6 = {
 }
 # Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
 oe_trg_concede_6 = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    oe_trg_house_inf_6 = { amount = 50 }
-    set_variable = { name = oe_trg_cd_6 value = 1 years = 5 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_6 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_6 value = 1 years = 5 }
+	}
 }
 # Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
 oe_trg_defy_6 = {
@@ -373,7 +427,7 @@ oe_trg_appanage_6 = {
     }
 }
 
-# ---- 意大利 / Italy
+# ---- 达契亚与多瑙 / Dacia and the Lower Danube
 oe_trg_refresh_7 = {
     if = { limit = { oe_trg_head_ok_7 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_7 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
 }
@@ -384,21 +438,27 @@ oe_trg_end_7 = {
 }
 # var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
 oe_trg_install_7 = {
-    if = {
-        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-        var:oe_trg_head_7 ?= { remove_variable = oe_trg_office }
-        set_variable = { name = oe_trg_head_7 value = var:oe_trg_pick }
-        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 7 } }
-        set_variable = { name = oe_trg_cd_7 value = 1 years = 2 }
-        oe_trg_refresh_7 = yes
-    }
-    remove_variable = oe_trg_pick
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_7 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_7 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 7 } }
+	        set_variable = { name = oe_trg_cd_7 value = 1 years = 2 }
+	        oe_trg_refresh_7 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
 }
 # Influence for the house of kephale k (no change when he is not house-born).
 oe_trg_house_inf_7 = {
-    var:oe_trg_head_7 ?= { save_scope_as = oe_trg_hk }
-    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_7 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
 }
 # Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
 oe_trg_dismiss_7 = {
@@ -410,9 +470,12 @@ oe_trg_dismiss_7 = {
 }
 # Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
 oe_trg_concede_7 = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    oe_trg_house_inf_7 = { amount = 50 }
-    set_variable = { name = oe_trg_cd_7 value = 1 years = 5 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_7 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_7 value = 1 years = 5 }
+	}
 }
 # Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
 oe_trg_defy_7 = {
@@ -435,7 +498,7 @@ oe_trg_appanage_7 = {
     }
 }
 
-# ---- 海外诸地 / Overseas
+# ---- 潘诺尼亚与诺里库姆 / Pannonia and Noricum
 oe_trg_refresh_8 = {
     if = { limit = { oe_trg_head_ok_8 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_8 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
 }
@@ -446,21 +509,27 @@ oe_trg_end_8 = {
 }
 # var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
 oe_trg_install_8 = {
-    if = {
-        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-        var:oe_trg_head_8 ?= { remove_variable = oe_trg_office }
-        set_variable = { name = oe_trg_head_8 value = var:oe_trg_pick }
-        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 8 } }
-        set_variable = { name = oe_trg_cd_8 value = 1 years = 2 }
-        oe_trg_refresh_8 = yes
-    }
-    remove_variable = oe_trg_pick
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_8 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_8 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 8 } }
+	        set_variable = { name = oe_trg_cd_8 value = 1 years = 2 }
+	        oe_trg_refresh_8 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
 }
 # Influence for the house of kephale k (no change when he is not house-born).
 oe_trg_house_inf_8 = {
-    var:oe_trg_head_8 ?= { save_scope_as = oe_trg_hk }
-    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_8 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
 }
 # Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
 oe_trg_dismiss_8 = {
@@ -472,9 +541,12 @@ oe_trg_dismiss_8 = {
 }
 # Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
 oe_trg_concede_8 = {
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
-    oe_trg_house_inf_8 = { amount = 50 }
-    set_variable = { name = oe_trg_cd_8 value = 1 years = 5 }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_8 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_8 value = 1 years = 5 }
+	}
 }
 # Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
 oe_trg_defy_8 = {
@@ -497,8 +569,293 @@ oe_trg_appanage_8 = {
     }
 }
 
+# ---- 意大利与阿尔卑斯 / Italia and Raetia
+oe_trg_refresh_9 = {
+    if = { limit = { oe_trg_head_ok_9 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_9 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
+}
+oe_trg_end_9 = {
+    var:oe_trg_head_9 ?= { remove_variable = oe_trg_office }
+    remove_variable = oe_trg_head_9
+    every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_9 = yes } remove_country_modifier = oe_trg_kephale_rule remove_country_modifier = oe_trg_kephale_defiant }
+}
+# var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
+oe_trg_install_9 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_9 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_9 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 9 } }
+	        set_variable = { name = oe_trg_cd_9 value = 1 years = 2 }
+	        oe_trg_refresh_9 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
+}
+# Influence for the house of kephale k (no change when he is not house-born).
+oe_trg_house_inf_9 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_9 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
+}
+# Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
+oe_trg_dismiss_9 = {
+    if = { limit = { oe_trg_overmighty_9 = yes }
+        every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_9 = yes } oe_ts_recent_loy = { amount = -5 } }
+        oe_trg_house_inf_9 = { amount = -50 }
+    }
+    oe_trg_end_9 = yes
+}
+# Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
+oe_trg_concede_9 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_9 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_9 value = 1 years = 5 }
+	}
+}
+# Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
+oe_trg_defy_9 = {
+    every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_9 = yes } add_country_modifier = { modifier = oe_trg_kephale_defiant years = 2 mode = replace } }
+}
+# The region's largest core theme (most jurisdiction locations), saved as scope:oe_trg_fief.
+oe_trg_find_fief_9 = {
+    if = { limit = { any_subject = { oe_theme_member_trigger = yes oe_trg_in_region_9 = yes oe_ts_core = yes } }
+        ordered_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_9 = yes oe_ts_core = yes } order_by = oe_theme_jurisdiction_size save_scope_as = oe_trg_fief }
+    }
+}
+# Appanage: the largest core theme becomes a despotate (status 5) and the kephale its ruler; the office ends.
+oe_trg_appanage_9 = {
+    oe_trg_find_fief_9 = yes
+    var:oe_trg_head_9 ?= { save_scope_as = oe_trg_despot }
+    if = {
+        limit = { exists = scope:oe_trg_fief exists = scope:oe_trg_despot }
+        oe_trg_end_9 = yes
+        oe_trg_make_despot = yes
+    }
+}
+
+# ---- 阿非利加与撒丁 / Africa and Sardinia
+oe_trg_refresh_10 = {
+    if = { limit = { oe_trg_head_ok_10 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_10 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
+}
+oe_trg_end_10 = {
+    var:oe_trg_head_10 ?= { remove_variable = oe_trg_office }
+    remove_variable = oe_trg_head_10
+    every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_10 = yes } remove_country_modifier = oe_trg_kephale_rule remove_country_modifier = oe_trg_kephale_defiant }
+}
+# var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
+oe_trg_install_10 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_10 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_10 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 10 } }
+	        set_variable = { name = oe_trg_cd_10 value = 1 years = 2 }
+	        oe_trg_refresh_10 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
+}
+# Influence for the house of kephale k (no change when he is not house-born).
+oe_trg_house_inf_10 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_10 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
+}
+# Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
+oe_trg_dismiss_10 = {
+    if = { limit = { oe_trg_overmighty_10 = yes }
+        every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_10 = yes } oe_ts_recent_loy = { amount = -5 } }
+        oe_trg_house_inf_10 = { amount = -50 }
+    }
+    oe_trg_end_10 = yes
+}
+# Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
+oe_trg_concede_10 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_10 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_10 value = 1 years = 5 }
+	}
+}
+# Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
+oe_trg_defy_10 = {
+    every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_10 = yes } add_country_modifier = { modifier = oe_trg_kephale_defiant years = 2 mode = replace } }
+}
+# The region's largest core theme (most jurisdiction locations), saved as scope:oe_trg_fief.
+oe_trg_find_fief_10 = {
+    if = { limit = { any_subject = { oe_theme_member_trigger = yes oe_trg_in_region_10 = yes oe_ts_core = yes } }
+        ordered_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_10 = yes oe_ts_core = yes } order_by = oe_theme_jurisdiction_size save_scope_as = oe_trg_fief }
+    }
+}
+# Appanage: the largest core theme becomes a despotate (status 5) and the kephale its ruler; the office ends.
+oe_trg_appanage_10 = {
+    oe_trg_find_fief_10 = yes
+    var:oe_trg_head_10 ?= { save_scope_as = oe_trg_despot }
+    if = {
+        limit = { exists = scope:oe_trg_fief exists = scope:oe_trg_despot }
+        oe_trg_end_10 = yes
+        oe_trg_make_despot = yes
+    }
+}
+
+# ---- 西班牙与高卢 / Hispania and Gallia
+oe_trg_refresh_11 = {
+    if = { limit = { oe_trg_head_ok_11 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_11 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
+}
+oe_trg_end_11 = {
+    var:oe_trg_head_11 ?= { remove_variable = oe_trg_office }
+    remove_variable = oe_trg_head_11
+    every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_11 = yes } remove_country_modifier = oe_trg_kephale_rule remove_country_modifier = oe_trg_kephale_defiant }
+}
+# var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
+oe_trg_install_11 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_11 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_11 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 11 } }
+	        set_variable = { name = oe_trg_cd_11 value = 1 years = 2 }
+	        oe_trg_refresh_11 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
+}
+# Influence for the house of kephale k (no change when he is not house-born).
+oe_trg_house_inf_11 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_11 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
+}
+# Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
+oe_trg_dismiss_11 = {
+    if = { limit = { oe_trg_overmighty_11 = yes }
+        every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_11 = yes } oe_ts_recent_loy = { amount = -5 } }
+        oe_trg_house_inf_11 = { amount = -50 }
+    }
+    oe_trg_end_11 = yes
+}
+# Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
+oe_trg_concede_11 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_11 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_11 value = 1 years = 5 }
+	}
+}
+# Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
+oe_trg_defy_11 = {
+    every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_11 = yes } add_country_modifier = { modifier = oe_trg_kephale_defiant years = 2 mode = replace } }
+}
+# The region's largest core theme (most jurisdiction locations), saved as scope:oe_trg_fief.
+oe_trg_find_fief_11 = {
+    if = { limit = { any_subject = { oe_theme_member_trigger = yes oe_trg_in_region_11 = yes oe_ts_core = yes } }
+        ordered_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_11 = yes oe_ts_core = yes } order_by = oe_theme_jurisdiction_size save_scope_as = oe_trg_fief }
+    }
+}
+# Appanage: the largest core theme becomes a despotate (status 5) and the kephale its ruler; the office ends.
+oe_trg_appanage_11 = {
+    oe_trg_find_fief_11 = yes
+    var:oe_trg_head_11 ?= { save_scope_as = oe_trg_despot }
+    if = {
+        limit = { exists = scope:oe_trg_fief exists = scope:oe_trg_despot }
+        oe_trg_end_11 = yes
+        oe_trg_make_despot = yes
+    }
+}
+
+# ---- 不列颠与莱茵 / Britannia and the Rhine
+oe_trg_refresh_12 = {
+    if = { limit = { oe_trg_head_ok_12 = yes } every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_12 = yes } add_country_modifier = { modifier = oe_trg_kephale_rule months = 13 mode = replace } } }
+}
+oe_trg_end_12 = {
+    var:oe_trg_head_12 ?= { remove_variable = oe_trg_office }
+    remove_variable = oe_trg_head_12
+    every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_12 = yes } remove_country_modifier = oe_trg_kephale_rule remove_country_modifier = oe_trg_kephale_defiant }
+}
+# var:oe_trg_pick = the new kephale. Costs 3 Imperial Authority.
+oe_trg_install_12 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { has_variable = oe_trg_pick exists = var:oe_trg_pick }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	        var:oe_trg_head_12 ?= { remove_variable = oe_trg_office }
+	        set_variable = { name = oe_trg_head_12 value = var:oe_trg_pick }
+	        var:oe_trg_pick = { set_variable = { name = oe_trg_office value = 12 } }
+	        set_variable = { name = oe_trg_cd_12 value = 1 years = 2 }
+	        oe_trg_refresh_12 = yes
+	    }
+	    remove_variable = oe_trg_pick
+	}
+}
+# Influence for the house of kephale k (no change when he is not house-born).
+oe_trg_house_inf_12 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    var:oe_trg_head_12 ?= { save_scope_as = oe_trg_hk }
+	    if = { limit = { exists = scope:oe_trg_hk } international_organization:oe_byz_empire_pillars = { if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_1 = yes } } oe_nf_change_influence = { slot = 1 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_2 = yes } } oe_nf_change_influence = { slot = 2 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_3 = yes } } oe_nf_change_influence = { slot = 3 amount = $amount$ } } else_if = { limit = { scope:oe_trg_hk = { oe_trg_char_in_house_4 = yes } } oe_nf_change_influence = { slot = 4 amount = $amount$ } } } }
+	}
+}
+# Dismissal. An overmighty kephale's fall costs: every theme of the region loyalty -5 (5 years), his house -50 influence.
+oe_trg_dismiss_12 = {
+    if = { limit = { oe_trg_overmighty_12 = yes }
+        every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_12 = yes } oe_ts_recent_loy = { amount = -5 } }
+        oe_trg_house_inf_12 = { amount = -50 }
+    }
+    oe_trg_end_12 = yes
+}
+# Concession: 3 Imperial Authority, his house +50 influence, no further trouble from this office for 5 years.
+oe_trg_concede_12 = {
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } }
+	    oe_trg_house_inf_12 = { amount = 50 }
+	    set_variable = { name = oe_trg_cd_12 value = 1 years = 5 }
+	}
+}
+# Reprimand only: the region's themes carry oe_trg_kephale_defiant for 2 years.
+oe_trg_defy_12 = {
+    every_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_12 = yes } add_country_modifier = { modifier = oe_trg_kephale_defiant years = 2 mode = replace } }
+}
+# The region's largest core theme (most jurisdiction locations), saved as scope:oe_trg_fief.
+oe_trg_find_fief_12 = {
+    if = { limit = { any_subject = { oe_theme_member_trigger = yes oe_trg_in_region_12 = yes oe_ts_core = yes } }
+        ordered_subject = { limit = { oe_theme_member_trigger = yes oe_trg_in_region_12 = yes oe_ts_core = yes } order_by = oe_theme_jurisdiction_size save_scope_as = oe_trg_fief }
+    }
+}
+# Appanage: the largest core theme becomes a despotate (status 5) and the kephale its ruler; the office ends.
+oe_trg_appanage_12 = {
+    oe_trg_find_fief_12 = yes
+    var:oe_trg_head_12 ?= { save_scope_as = oe_trg_despot }
+    if = {
+        limit = { exists = scope:oe_trg_fief exists = scope:oe_trg_despot }
+        oe_trg_end_12 = yes
+        oe_trg_make_despot = yes
+    }
+}
+
 # scope:oe_trg_despot takes over scope:oe_trg_fief as despot (same steps as the house appointment, oe_tg_install).
 oe_trg_make_despot = {
+    save_scope_as = oe_trg_overlord
     scope:oe_trg_fief = { oe_ts_set_status = { status = 5 } }
     scope:oe_trg_fief = { ruler ?= { save_scope_as = oe_trg_displaced } }
     scope:oe_trg_despot = { move_country = scope:oe_trg_fief }
@@ -508,14 +865,14 @@ oe_trg_make_despot = {
         scope:oe_trg_despot = { add_trait = trait:oe_character_war_score_trait_VI }
         scope:oe_trg_displaced ?= {
             if = { limit = { is_alive = yes NOT = { oe_nf_theme_governor = yes } } remove_trait = trait:oe_character_war_score_trait_VI }
-            if = { limit = { is_alive = yes is_ruler = no } move_country = c:BYZ reset_ruler_title = {} }
+            if = { limit = { is_alive = yes is_ruler = no } move_country = scope:oe_trg_overlord reset_ruler_title = {} }
         }
     }
     oe_court_clear_invalid = yes
 }
 
 # Theme counts for the appointment event (oe_trg.1 shows them).
-oe_trg_store_counts = { set_variable = { name = oe_trg_n_1 value = oe_trg_count_1 } set_variable = { name = oe_trg_n_2 value = oe_trg_count_2 } set_variable = { name = oe_trg_n_3 value = oe_trg_count_3 } set_variable = { name = oe_trg_n_4 value = oe_trg_count_4 } set_variable = { name = oe_trg_n_5 value = oe_trg_count_5 } set_variable = { name = oe_trg_n_6 value = oe_trg_count_6 } set_variable = { name = oe_trg_n_7 value = oe_trg_count_7 } set_variable = { name = oe_trg_n_8 value = oe_trg_count_8 } }
+oe_trg_store_counts = { set_variable = { name = oe_trg_n_1 value = oe_trg_count_1 } set_variable = { name = oe_trg_n_2 value = oe_trg_count_2 } set_variable = { name = oe_trg_n_3 value = oe_trg_count_3 } set_variable = { name = oe_trg_n_4 value = oe_trg_count_4 } set_variable = { name = oe_trg_n_5 value = oe_trg_count_5 } set_variable = { name = oe_trg_n_6 value = oe_trg_count_6 } set_variable = { name = oe_trg_n_7 value = oe_trg_count_7 } set_variable = { name = oe_trg_n_8 value = oe_trg_count_8 } set_variable = { name = oe_trg_n_9 value = oe_trg_count_9 } set_variable = { name = oe_trg_n_10 value = oe_trg_count_10 } set_variable = { name = oe_trg_n_11 value = oe_trg_count_11 } set_variable = { name = oe_trg_n_12 value = oe_trg_count_12 } }
 
 # Monthly: an office whose holder died, left the court or took the throne ends at once (notice oe_trg.4).
 oe_trg_monthly = {
@@ -527,6 +884,10 @@ oe_trg_monthly = {
     if = { limit = { has_variable = oe_trg_head_6 NOT = { oe_trg_head_ok_6 = yes } } set_variable = { name = oe_trg_ev_region value = 6 } if = { limit = { exists = var:oe_trg_head_6 } set_variable = { name = oe_trg_ev_head value = var:oe_trg_head_6 } } oe_trg_end_6 = yes trigger_event_non_silently = oe_trg.4 }
     if = { limit = { has_variable = oe_trg_head_7 NOT = { oe_trg_head_ok_7 = yes } } set_variable = { name = oe_trg_ev_region value = 7 } if = { limit = { exists = var:oe_trg_head_7 } set_variable = { name = oe_trg_ev_head value = var:oe_trg_head_7 } } oe_trg_end_7 = yes trigger_event_non_silently = oe_trg.4 }
     if = { limit = { has_variable = oe_trg_head_8 NOT = { oe_trg_head_ok_8 = yes } } set_variable = { name = oe_trg_ev_region value = 8 } if = { limit = { exists = var:oe_trg_head_8 } set_variable = { name = oe_trg_ev_head value = var:oe_trg_head_8 } } oe_trg_end_8 = yes trigger_event_non_silently = oe_trg.4 }
+    if = { limit = { has_variable = oe_trg_head_9 NOT = { oe_trg_head_ok_9 = yes } } set_variable = { name = oe_trg_ev_region value = 9 } if = { limit = { exists = var:oe_trg_head_9 } set_variable = { name = oe_trg_ev_head value = var:oe_trg_head_9 } } oe_trg_end_9 = yes trigger_event_non_silently = oe_trg.4 }
+    if = { limit = { has_variable = oe_trg_head_10 NOT = { oe_trg_head_ok_10 = yes } } set_variable = { name = oe_trg_ev_region value = 10 } if = { limit = { exists = var:oe_trg_head_10 } set_variable = { name = oe_trg_ev_head value = var:oe_trg_head_10 } } oe_trg_end_10 = yes trigger_event_non_silently = oe_trg.4 }
+    if = { limit = { has_variable = oe_trg_head_11 NOT = { oe_trg_head_ok_11 = yes } } set_variable = { name = oe_trg_ev_region value = 11 } if = { limit = { exists = var:oe_trg_head_11 } set_variable = { name = oe_trg_ev_head value = var:oe_trg_head_11 } } oe_trg_end_11 = yes trigger_event_non_silently = oe_trg.4 }
+    if = { limit = { has_variable = oe_trg_head_12 NOT = { oe_trg_head_ok_12 = yes } } set_variable = { name = oe_trg_ev_region value = 12 } if = { limit = { exists = var:oe_trg_head_12 } set_variable = { name = oe_trg_ev_head value = var:oe_trg_head_12 } } oe_trg_end_12 = yes trigger_event_non_silently = oe_trg.4 }
 }
 
 # Yearly: refresh the kephale modifiers, AI appointment, and with 40 % chance one overmighty kephale stirs.
@@ -539,6 +900,10 @@ oe_trg_yearly = {
     oe_trg_refresh_6 = yes
     oe_trg_refresh_7 = yes
     oe_trg_refresh_8 = yes
+    oe_trg_refresh_9 = yes
+    oe_trg_refresh_10 = yes
+    oe_trg_refresh_11 = yes
+    oe_trg_refresh_12 = yes
     oe_trg_ai_yearly = yes
     if = {
         limit = { oe_trg_any_ev_ok = yes }
@@ -557,6 +922,10 @@ oe_trg_stir = {
         10 = { trigger = { oe_trg_ev_ok_6 = yes } oe_trg_fire_6 = yes }
         10 = { trigger = { oe_trg_ev_ok_7 = yes } oe_trg_fire_7 = yes }
         10 = { trigger = { oe_trg_ev_ok_8 = yes } oe_trg_fire_8 = yes }
+        10 = { trigger = { oe_trg_ev_ok_9 = yes } oe_trg_fire_9 = yes }
+        10 = { trigger = { oe_trg_ev_ok_10 = yes } oe_trg_fire_10 = yes }
+        10 = { trigger = { oe_trg_ev_ok_11 = yes } oe_trg_fire_11 = yes }
+        10 = { trigger = { oe_trg_ev_ok_12 = yes } oe_trg_fire_12 = yes }
     }
 }
 oe_trg_fire_1 = {
@@ -623,12 +992,44 @@ oe_trg_fire_8 = {
         50 = { trigger_event_non_silently = oe_trg.2 }
     }
 }
+oe_trg_fire_9 = {
+    set_variable = { name = oe_trg_ev_region value = 9 }
+    set_variable = { name = oe_trg_cd_9 value = 1 years = 3 }
+    random_list = {
+        50 = { trigger = { any_subject = { oe_theme_member_trigger = yes oe_trg_in_region_9 = yes oe_ts_core = yes } } trigger_event_non_silently = oe_trg.3 }
+        50 = { trigger_event_non_silently = oe_trg.2 }
+    }
+}
+oe_trg_fire_10 = {
+    set_variable = { name = oe_trg_ev_region value = 10 }
+    set_variable = { name = oe_trg_cd_10 value = 1 years = 3 }
+    random_list = {
+        50 = { trigger = { any_subject = { oe_theme_member_trigger = yes oe_trg_in_region_10 = yes oe_ts_core = yes } } trigger_event_non_silently = oe_trg.3 }
+        50 = { trigger_event_non_silently = oe_trg.2 }
+    }
+}
+oe_trg_fire_11 = {
+    set_variable = { name = oe_trg_ev_region value = 11 }
+    set_variable = { name = oe_trg_cd_11 value = 1 years = 3 }
+    random_list = {
+        50 = { trigger = { any_subject = { oe_theme_member_trigger = yes oe_trg_in_region_11 = yes oe_ts_core = yes } } trigger_event_non_silently = oe_trg.3 }
+        50 = { trigger_event_non_silently = oe_trg.2 }
+    }
+}
+oe_trg_fire_12 = {
+    set_variable = { name = oe_trg_ev_region value = 12 }
+    set_variable = { name = oe_trg_cd_12 value = 1 years = 3 }
+    random_list = {
+        50 = { trigger = { any_subject = { oe_theme_member_trigger = yes oe_trg_in_region_12 = yes oe_ts_core = yes } } trigger_event_non_silently = oe_trg.3 }
+        50 = { trigger_event_non_silently = oe_trg.2 }
+    }
+}
 
 # AI Byzantium: one appointment a year when Imperial Authority is at least 25, to the first open region with
 # at least 3 themes; the candidate with the best adm + mil, sons of mighty houses last.
 oe_trg_ai_yearly = {
     if = {
-        limit = { oe_start_is_1337 = yes exists = international_organization:oe_byz_empire_pillars is_ai = yes international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 25 } any_character = { oe_trg_candidate = yes } }
+        limit = { oe_byz_core_active = yes exists = international_organization:oe_byz_empire_pillars is_ai = yes international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 25 } any_character = { oe_trg_candidate = yes } }
         if = { limit = { oe_trg_open_1 = yes oe_trg_count_1 >= 3 } oe_trg_ai_pick = yes oe_trg_install_1 = yes }
         else_if = { limit = { oe_trg_open_2 = yes oe_trg_count_2 >= 3 } oe_trg_ai_pick = yes oe_trg_install_2 = yes }
         else_if = { limit = { oe_trg_open_3 = yes oe_trg_count_3 >= 3 } oe_trg_ai_pick = yes oe_trg_install_3 = yes }
@@ -637,6 +1038,10 @@ oe_trg_ai_yearly = {
         else_if = { limit = { oe_trg_open_6 = yes oe_trg_count_6 >= 3 } oe_trg_ai_pick = yes oe_trg_install_6 = yes }
         else_if = { limit = { oe_trg_open_7 = yes oe_trg_count_7 >= 3 } oe_trg_ai_pick = yes oe_trg_install_7 = yes }
         else_if = { limit = { oe_trg_open_8 = yes oe_trg_count_8 >= 3 } oe_trg_ai_pick = yes oe_trg_install_8 = yes }
+        else_if = { limit = { oe_trg_open_9 = yes oe_trg_count_9 >= 3 } oe_trg_ai_pick = yes oe_trg_install_9 = yes }
+        else_if = { limit = { oe_trg_open_10 = yes oe_trg_count_10 >= 3 } oe_trg_ai_pick = yes oe_trg_install_10 = yes }
+        else_if = { limit = { oe_trg_open_11 = yes oe_trg_count_11 >= 3 } oe_trg_ai_pick = yes oe_trg_install_11 = yes }
+        else_if = { limit = { oe_trg_open_12 = yes oe_trg_count_12 >= 3 } oe_trg_ai_pick = yes oe_trg_install_12 = yes }
     }
 }
 oe_trg_ai_pick = {
@@ -645,33 +1050,40 @@ oe_trg_ai_pick = {
 }
 
 # Event options (oe_trg.2 / oe_trg.3) act on the region in var:oe_trg_ev_region.
-oe_trg_ev_dismiss = { if = { limit = { var:oe_trg_ev_region ?= 1 } oe_trg_dismiss_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } oe_trg_dismiss_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } oe_trg_dismiss_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } oe_trg_dismiss_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } oe_trg_dismiss_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } oe_trg_dismiss_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } oe_trg_dismiss_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } oe_trg_dismiss_8 = yes } }
-oe_trg_ev_concede = { if = { limit = { var:oe_trg_ev_region ?= 1 } oe_trg_concede_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } oe_trg_concede_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } oe_trg_concede_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } oe_trg_concede_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } oe_trg_concede_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } oe_trg_concede_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } oe_trg_concede_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } oe_trg_concede_8 = yes } }
-oe_trg_ev_defy = { if = { limit = { var:oe_trg_ev_region ?= 1 } oe_trg_defy_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } oe_trg_defy_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } oe_trg_defy_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } oe_trg_defy_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } oe_trg_defy_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } oe_trg_defy_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } oe_trg_defy_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } oe_trg_defy_8 = yes } }
-oe_trg_ev_appanage = { if = { limit = { var:oe_trg_ev_region ?= 1 } oe_trg_appanage_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } oe_trg_appanage_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } oe_trg_appanage_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } oe_trg_appanage_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } oe_trg_appanage_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } oe_trg_appanage_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } oe_trg_appanage_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } oe_trg_appanage_8 = yes } }
+oe_trg_ev_dismiss = { if = { limit = { var:oe_trg_ev_region ?= 1 } oe_trg_dismiss_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } oe_trg_dismiss_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } oe_trg_dismiss_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } oe_trg_dismiss_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } oe_trg_dismiss_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } oe_trg_dismiss_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } oe_trg_dismiss_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } oe_trg_dismiss_8 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 9 } oe_trg_dismiss_9 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 10 } oe_trg_dismiss_10 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 11 } oe_trg_dismiss_11 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 12 } oe_trg_dismiss_12 = yes } }
+oe_trg_ev_concede = { if = { limit = { var:oe_trg_ev_region ?= 1 } oe_trg_concede_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } oe_trg_concede_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } oe_trg_concede_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } oe_trg_concede_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } oe_trg_concede_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } oe_trg_concede_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } oe_trg_concede_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } oe_trg_concede_8 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 9 } oe_trg_concede_9 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 10 } oe_trg_concede_10 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 11 } oe_trg_concede_11 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 12 } oe_trg_concede_12 = yes } }
+oe_trg_ev_defy = { if = { limit = { var:oe_trg_ev_region ?= 1 } oe_trg_defy_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } oe_trg_defy_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } oe_trg_defy_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } oe_trg_defy_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } oe_trg_defy_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } oe_trg_defy_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } oe_trg_defy_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } oe_trg_defy_8 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 9 } oe_trg_defy_9 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 10 } oe_trg_defy_10 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 11 } oe_trg_defy_11 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 12 } oe_trg_defy_12 = yes } }
+oe_trg_ev_appanage = { if = { limit = { var:oe_trg_ev_region ?= 1 } oe_trg_appanage_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } oe_trg_appanage_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } oe_trg_appanage_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } oe_trg_appanage_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } oe_trg_appanage_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } oe_trg_appanage_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } oe_trg_appanage_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } oe_trg_appanage_8 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 9 } oe_trg_appanage_9 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 10 } oe_trg_appanage_10 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 11 } oe_trg_appanage_11 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 12 } oe_trg_appanage_12 = yes } }
 # Event immediate: scope:oe_trg_kephale (the office holder) and, for oe_trg.3, scope:oe_trg_fief.
-oe_trg_ev_load = { if = { limit = { var:oe_trg_ev_region ?= 1 } var:oe_trg_head_1 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } var:oe_trg_head_2 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } var:oe_trg_head_3 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } var:oe_trg_head_4 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } var:oe_trg_head_5 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } var:oe_trg_head_6 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } var:oe_trg_head_7 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } var:oe_trg_head_8 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_8 = yes } }
+oe_trg_ev_load = { if = { limit = { var:oe_trg_ev_region ?= 1 } var:oe_trg_head_1 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_1 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 2 } var:oe_trg_head_2 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_2 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 3 } var:oe_trg_head_3 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_3 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 4 } var:oe_trg_head_4 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_4 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 5 } var:oe_trg_head_5 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_5 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 6 } var:oe_trg_head_6 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_6 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 7 } var:oe_trg_head_7 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_7 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 8 } var:oe_trg_head_8 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_8 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 9 } var:oe_trg_head_9 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_9 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 10 } var:oe_trg_head_10 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_10 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 11 } var:oe_trg_head_11 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_11 = yes } else_if = { limit = { var:oe_trg_ev_region ?= 12 } var:oe_trg_head_12 ?= { save_scope_as = oe_trg_kephale } oe_trg_find_fief_12 = yes } }
 # Dismissal action: the selected kephale (scope:target_character).
-oe_trg_action_dismiss = { if = { limit = { scope:target_character = { var:oe_trg_office ?= 1 } } oe_trg_dismiss_1 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 2 } } oe_trg_dismiss_2 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 3 } } oe_trg_dismiss_3 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 4 } } oe_trg_dismiss_4 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 5 } } oe_trg_dismiss_5 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 6 } } oe_trg_dismiss_6 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 7 } } oe_trg_dismiss_7 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 8 } } oe_trg_dismiss_8 = yes } }
+oe_trg_action_dismiss = { if = { limit = { scope:target_character = { var:oe_trg_office ?= 1 } } oe_trg_dismiss_1 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 2 } } oe_trg_dismiss_2 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 3 } } oe_trg_dismiss_3 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 4 } } oe_trg_dismiss_4 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 5 } } oe_trg_dismiss_5 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 6 } } oe_trg_dismiss_6 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 7 } } oe_trg_dismiss_7 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 8 } } oe_trg_dismiss_8 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 9 } } oe_trg_dismiss_9 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 10 } } oe_trg_dismiss_10 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 11 } } oe_trg_dismiss_11 = yes } else_if = { limit = { scope:target_character = { var:oe_trg_office ?= 12 } } oe_trg_dismiss_12 = yes } }
 
 # ---- dev-mod test helpers (BYZ scope)
 # Free appointment of a random candidate to the first great region with a theme and no kephale.
 oe_trg_test_appoint = {
-    random_character = { limit = { oe_trg_candidate = yes } save_scope_as = oe_trg_test_c }
-    if = {
-        limit = { exists = scope:oe_trg_test_c }
-        set_variable = { name = oe_trg_pick value = scope:oe_trg_test_c }
-        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 3 } }
-        if = { limit = { NOT = { oe_trg_head_ok_1 = yes } oe_trg_count_1 >= 1 } oe_trg_install_1 = yes }
-        else_if = { limit = { NOT = { oe_trg_head_ok_2 = yes } oe_trg_count_2 >= 1 } oe_trg_install_2 = yes }
-        else_if = { limit = { NOT = { oe_trg_head_ok_3 = yes } oe_trg_count_3 >= 1 } oe_trg_install_3 = yes }
-        else_if = { limit = { NOT = { oe_trg_head_ok_4 = yes } oe_trg_count_4 >= 1 } oe_trg_install_4 = yes }
-        else_if = { limit = { NOT = { oe_trg_head_ok_5 = yes } oe_trg_count_5 >= 1 } oe_trg_install_5 = yes }
-        else_if = { limit = { NOT = { oe_trg_head_ok_6 = yes } oe_trg_count_6 >= 1 } oe_trg_install_6 = yes }
-        else_if = { limit = { NOT = { oe_trg_head_ok_7 = yes } oe_trg_count_7 >= 1 } oe_trg_install_7 = yes }
-        else_if = { limit = { NOT = { oe_trg_head_ok_8 = yes } oe_trg_count_8 >= 1 } oe_trg_install_8 = yes }
-        remove_variable = oe_trg_pick
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    random_character = { limit = { oe_trg_candidate = yes } save_scope_as = oe_trg_test_c }
+	    if = {
+	        limit = { exists = scope:oe_trg_test_c }
+	        set_variable = { name = oe_trg_pick value = scope:oe_trg_test_c }
+	        international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 3 } }
+	        if = { limit = { NOT = { oe_trg_head_ok_1 = yes } oe_trg_count_1 >= 1 } oe_trg_install_1 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_2 = yes } oe_trg_count_2 >= 1 } oe_trg_install_2 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_3 = yes } oe_trg_count_3 >= 1 } oe_trg_install_3 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_4 = yes } oe_trg_count_4 >= 1 } oe_trg_install_4 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_5 = yes } oe_trg_count_5 >= 1 } oe_trg_install_5 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_6 = yes } oe_trg_count_6 >= 1 } oe_trg_install_6 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_7 = yes } oe_trg_count_7 >= 1 } oe_trg_install_7 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_8 = yes } oe_trg_count_8 >= 1 } oe_trg_install_8 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_9 = yes } oe_trg_count_9 >= 1 } oe_trg_install_9 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_10 = yes } oe_trg_count_10 >= 1 } oe_trg_install_10 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_11 = yes } oe_trg_count_11 >= 1 } oe_trg_install_11 = yes }
+	        else_if = { limit = { NOT = { oe_trg_head_ok_12 = yes } oe_trg_count_12 >= 1 } oe_trg_install_12 = yes }
+	        remove_variable = oe_trg_pick
+	    }
+	}
 }
 # Fire an overmighty event for the first held office, overmighty or not: 2 he ignores orders, 3 he asks for an appanage.
 oe_trg_test_stir_2 = {
@@ -683,6 +1095,10 @@ oe_trg_test_stir_2 = {
     else_if = { limit = { oe_trg_head_ok_6 = yes } remove_variable = oe_trg_cd_6 set_variable = { name = oe_trg_ev_region value = 6 } trigger_event_non_silently = oe_trg.2 }
     else_if = { limit = { oe_trg_head_ok_7 = yes } remove_variable = oe_trg_cd_7 set_variable = { name = oe_trg_ev_region value = 7 } trigger_event_non_silently = oe_trg.2 }
     else_if = { limit = { oe_trg_head_ok_8 = yes } remove_variable = oe_trg_cd_8 set_variable = { name = oe_trg_ev_region value = 8 } trigger_event_non_silently = oe_trg.2 }
+    else_if = { limit = { oe_trg_head_ok_9 = yes } remove_variable = oe_trg_cd_9 set_variable = { name = oe_trg_ev_region value = 9 } trigger_event_non_silently = oe_trg.2 }
+    else_if = { limit = { oe_trg_head_ok_10 = yes } remove_variable = oe_trg_cd_10 set_variable = { name = oe_trg_ev_region value = 10 } trigger_event_non_silently = oe_trg.2 }
+    else_if = { limit = { oe_trg_head_ok_11 = yes } remove_variable = oe_trg_cd_11 set_variable = { name = oe_trg_ev_region value = 11 } trigger_event_non_silently = oe_trg.2 }
+    else_if = { limit = { oe_trg_head_ok_12 = yes } remove_variable = oe_trg_cd_12 set_variable = { name = oe_trg_ev_region value = 12 } trigger_event_non_silently = oe_trg.2 }
 }
 oe_trg_test_stir_3 = {
     if = { limit = { oe_trg_head_ok_1 = yes } remove_variable = oe_trg_cd_1 set_variable = { name = oe_trg_ev_region value = 1 } trigger_event_non_silently = oe_trg.3 }
@@ -693,4 +1109,8 @@ oe_trg_test_stir_3 = {
     else_if = { limit = { oe_trg_head_ok_6 = yes } remove_variable = oe_trg_cd_6 set_variable = { name = oe_trg_ev_region value = 6 } trigger_event_non_silently = oe_trg.3 }
     else_if = { limit = { oe_trg_head_ok_7 = yes } remove_variable = oe_trg_cd_7 set_variable = { name = oe_trg_ev_region value = 7 } trigger_event_non_silently = oe_trg.3 }
     else_if = { limit = { oe_trg_head_ok_8 = yes } remove_variable = oe_trg_cd_8 set_variable = { name = oe_trg_ev_region value = 8 } trigger_event_non_silently = oe_trg.3 }
+    else_if = { limit = { oe_trg_head_ok_9 = yes } remove_variable = oe_trg_cd_9 set_variable = { name = oe_trg_ev_region value = 9 } trigger_event_non_silently = oe_trg.3 }
+    else_if = { limit = { oe_trg_head_ok_10 = yes } remove_variable = oe_trg_cd_10 set_variable = { name = oe_trg_ev_region value = 10 } trigger_event_non_silently = oe_trg.3 }
+    else_if = { limit = { oe_trg_head_ok_11 = yes } remove_variable = oe_trg_cd_11 set_variable = { name = oe_trg_ev_region value = 11 } trigger_event_non_silently = oe_trg.3 }
+    else_if = { limit = { oe_trg_head_ok_12 = yes } remove_variable = oe_trg_cd_12 set_variable = { name = oe_trg_ev_region value = 12 } trigger_event_non_silently = oe_trg.3 }
 }

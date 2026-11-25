@@ -124,46 +124,52 @@ oe_theme_general_coup = {
 # Any scope; scope:oe_recall_theme is the theme whose strategos is recalled (进京述职).
 # Saves scope value oe_recall_blocked when the recall does not happen.
 oe_theme_recall_risk = {
-    if = {
-        limit = { scope:oe_recall_theme = { var:oe_theme_loyalty_band ?= 0 } }
-        random = {
-            chance = 30
-            scope:oe_recall_theme = { set_variable = oe_theme_revolt_now }
-            save_scope_value_as = { name = oe_recall_blocked value = 2 }
-            c:BYZ = { set_variable = { name = oe_theme_recall_target value = scope:oe_recall_theme } trigger_event_non_silently = oe_theme_usurp.2 }
-        }
-    }
-    else_if = {
-        limit = { scope:oe_recall_theme = { var:oe_theme_loyalty_band ?= 1 } }
-        random = {
-            chance = 25
-            scope:oe_recall_theme = {
-                change_variable = { name = oe_theme_loyalty add = -5 }
-                clamp_variable = { name = oe_theme_loyalty min = 0 max = 100 }
-            }
-            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -1 } }
-            save_scope_value_as = { name = oe_recall_blocked value = 1 }
-            c:BYZ = { set_variable = { name = oe_theme_recall_target value = scope:oe_recall_theme } trigger_event_non_silently = oe_theme_usurp.1 }
-        }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = { scope:oe_recall_theme = { var:oe_theme_loyalty_band ?= 0 } }
+	        random = {
+	            chance = 30
+	            scope:oe_recall_theme = { set_variable = oe_theme_revolt_now }
+	            save_scope_value_as = { name = oe_recall_blocked value = 2 }
+	            c:BYZ = { set_variable = { name = oe_theme_recall_target value = scope:oe_recall_theme } trigger_event_non_silently = oe_theme_usurp.2 }
+	        }
+	    }
+	    else_if = {
+	        limit = { scope:oe_recall_theme = { var:oe_theme_loyalty_band ?= 1 } }
+	        random = {
+	            chance = 25
+	            scope:oe_recall_theme = {
+	                change_variable = { name = oe_theme_loyalty add = -5 }
+	                clamp_variable = { name = oe_theme_loyalty min = 0 max = 100 }
+	            }
+	            international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -1 } }
+	            save_scope_value_as = { name = oe_recall_blocked value = 1 }
+	            c:BYZ = { set_variable = { name = oe_theme_recall_target value = scope:oe_recall_theme } trigger_event_non_silently = oe_theme_usurp.1 }
+	        }
+	    }
+	}
 }
 
 # Theme scope. 收缴兵权: half the theme's armies (rounded up) pass to the empire.
 oe_theme_disarm = {
-    save_scope_as = oe_disarm_theme
-    set_variable = { name = oe_theme_disarm_cd years = 10 }
-    change_variable = { name = oe_theme_loyalty add = -10 }
-    clamp_variable = { name = oe_theme_loyalty min = 0 max = 100 }
-    set_variable = { name = oe_theme_disarm_flip value = 0 }
-    every_army = {
-        if = {
-            limit = { scope:oe_disarm_theme = { NOT = { var:oe_theme_disarm_flip ?= 1 } } }   # '?=': option tooltips dry-run this without the set_variable (r5)
-            change_unit_owner = c:BYZ
-            scope:oe_disarm_theme = { set_variable = { name = oe_theme_disarm_flip value = 1 } }
-        }
-        else = { scope:oe_disarm_theme = { set_variable = { name = oe_theme_disarm_flip value = 0 } } }
-    }
-    remove_variable = oe_theme_disarm_flip
-    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } }
-    set_variable = { name = oe_theme_army value = regular_army_size }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    save_scope_as = oe_disarm_theme
+	    set_variable = { name = oe_theme_disarm_cd years = 10 }
+	    change_variable = { name = oe_theme_loyalty add = -10 }
+	    clamp_variable = { name = oe_theme_loyalty min = 0 max = 100 }
+	    set_variable = { name = oe_theme_disarm_flip value = 0 }
+	    every_army = {
+	        if = {
+	            limit = { scope:oe_disarm_theme = { NOT = { var:oe_theme_disarm_flip ?= 1 } } }   # '?=': option tooltips dry-run this without the set_variable (r5)
+	            change_unit_owner = c:BYZ
+	            scope:oe_disarm_theme = { set_variable = { name = oe_theme_disarm_flip value = 1 } }
+	        }
+	        else = { scope:oe_disarm_theme = { set_variable = { name = oe_theme_disarm_flip value = 0 } } }
+	    }
+	    remove_variable = oe_theme_disarm_flip
+	    international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -3 } }
+	    set_variable = { name = oe_theme_army value = regular_army_size }
+	}
 }

@@ -95,6 +95,7 @@ oe_tbd_pick_loc_raided = {
 oe_tbd_roll = {
     if = {
         limit = {
+            oe_tbd_events_allowed = yes
             NOT = { any_subject = { oe_tbd_queued = yes } }
             any_subject = { oe_tbd_can_strike = yes }
         }
@@ -104,17 +105,23 @@ oe_tbd_roll = {
 }
 # BYZ scope. At most one event of this track a month for the whole empire.
 oe_tbd_dispatch = {
+    if = {
+        limit = { oe_tbd_events_allowed = yes }
     if = { limit = { any_subject = { has_variable = oe_tbd_q_merc } } if = { limit = { NOT = { has_variable = oe_dbg_n_tbd } } set_variable = { name = oe_dbg_n_tbd value = 0 } } change_variable = { name = oe_dbg_n_tbd add = 1 } trigger_event_non_silently = oe_tbd.5 }
     else_if = { limit = { any_subject = { has_variable = oe_tbd_q_raid } } if = { limit = { NOT = { has_variable = oe_dbg_n_tbd } } set_variable = { name = oe_dbg_n_tbd value = 0 } } change_variable = { name = oe_dbg_n_tbd add = 1 } trigger_event_non_silently = oe_tbd.1 }
     else_if = { limit = { any_subject = { has_variable = oe_tbd_q_beat } } if = { limit = { NOT = { has_variable = oe_dbg_n_tbd } } set_variable = { name = oe_dbg_n_tbd value = 0 } } change_variable = { name = oe_dbg_n_tbd add = 1 } trigger_event_non_silently = oe_tbd.4 }
     else_if = { limit = { any_subject = { has_variable = oe_tbd_q_flee } } if = { limit = { NOT = { has_variable = oe_dbg_n_tbd } } set_variable = { name = oe_dbg_n_tbd value = 0 } } change_variable = { name = oe_dbg_n_tbd add = 1 } trigger_event_non_silently = oe_tbd.2 }
     else_if = { limit = { any_subject = { has_variable = oe_tbd_q_defect } } if = { limit = { NOT = { has_variable = oe_dbg_n_tbd } } set_variable = { name = oe_dbg_n_tbd value = 0 } } change_variable = { name = oe_dbg_n_tbd add = 1 } trigger_event_non_silently = oe_tbd.3 }
+    }
 }
 # BYZ scope, every January. Hired mercenaries may make trouble.
 oe_tbd_january = {
-    every_subject = {
-        limit = { oe_theme_member_trigger = yes has_country_modifier = oe_tbd_hired NOT = { has_variable = oe_tbd_q_merc } NOT = { has_variable = oe_te_managed } }
-        random = { chance = 10 set_variable = oe_tbd_q_merc }
+    if = {
+        limit = { oe_tbd_events_allowed = yes }
+        every_subject = {
+            limit = { oe_theme_member_trigger = yes has_country_modifier = oe_tbd_hired NOT = { has_variable = oe_tbd_q_merc } NOT = { has_variable = oe_te_managed } }
+            random = { chance = 10 set_variable = oe_tbd_q_merc }
+        }
     }
 }
 # BYZ scope, monthly (on_action oe_tbd_byz_pulse).

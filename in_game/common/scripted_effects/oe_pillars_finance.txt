@@ -1,18 +1,21 @@
 ﻿# IO scope, called once a month. Natural -0.2 decay is in the IO variable definition.
 oe_pillars_authority_payment_effect = {
-    if = {
-        limit = {
-            country_exists = c:BYZ
-            c:BYZ = { is_member_of_international_organization = international_organization:oe_byz_empire_pillars }
-            gold > 0
-            oe_pillars_purse_monthly_income > 0
-            oe_pillars_authority_available_spend > 0
-        }
-        # Freeze BOTH values before debit; never recompute the gain from the reduced purse.
-        save_scope_value_as = { name = oe_pillars_actual_authority_spend value = oe_pillars_authority_available_spend }
-        save_scope_value_as = { name = oe_pillars_actual_authority_gain value = oe_pillars_authority_available_gain }
-        add_gold = { value = scope:oe_pillars_actual_authority_spend multiply = -1 }
-        change_variable = { name = oe_pillars_authority add = scope:oe_pillars_actual_authority_gain }
-        set_variable = { name = oe_pillars_authority value = { value = var:oe_pillars_authority min = 0 max = 100 } }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    if = {
+	        limit = {
+	            country_exists = c:BYZ
+	            c:BYZ = { is_member_of_international_organization = international_organization:oe_byz_empire_pillars }
+	            gold > 0
+	            oe_pillars_purse_monthly_income > 0
+	            oe_pillars_authority_available_spend > 0
+	        }
+	        # Freeze BOTH values before debit; never recompute the gain from the reduced purse.
+	        save_scope_value_as = { name = oe_pillars_actual_authority_spend value = oe_pillars_authority_available_spend }
+	        save_scope_value_as = { name = oe_pillars_actual_authority_gain value = oe_pillars_authority_available_gain }
+	        add_gold = { value = scope:oe_pillars_actual_authority_spend multiply = -1 }
+	        change_variable = { name = oe_pillars_authority add = scope:oe_pillars_actual_authority_gain }
+	        set_variable = { name = oe_pillars_authority value = { value = var:oe_pillars_authority min = 0 max = 100 } }
+	    }
+	}
 }

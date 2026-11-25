@@ -1,0 +1,94 @@
+﻿# NEW 2026-11-24 v26.1 WP15-2 Wanfang Celestial Empire Core (oe_wf_, gen_v261_wanfang_celestial.py) — EU5-Native Era Names, 3-Stage Mandate Cycle, Bilateral Royal Favor & Five Court Policies (0 vanilla overrides, 0 edits to existing files, 100% O(1) & G_ELR_ISOLATION compliant). Edit gen_v261_wanfang_celestial.py, not this file.
+
+# 1. Changwei Secret Inspection (MIL, province target): raises local & national control and anti-graft tax efficiency at estate & prestige cost.
+oe_wf_cab_changwei_inspect = {
+	ability = mil
+	helps_with = "location"
+	allow_multiple = no
+
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+	}
+
+	allow = {
+		num_locations > 0
+	}
+
+	select_trigger = {
+		looking_for_a = province
+		source = actor
+		target_flag = target
+		name = "oe_wf_cab_changwei_inspect_select_province"
+		none_available_msg_key = "oe_wf_cab_changwei_inspect_no_provinces"
+		column = { data = name }
+		column = { data = control }
+		column = { data = population }
+		visible = {
+			any_location_in_province = {
+				has_owner = yes
+				owner = scope:actor
+				controller ?= scope:actor
+			}
+			NOT = {
+				cabinet_already_performing_same_task_on_target = {
+					cabinet_action = oe_wf_cab_changwei_inspect
+					interaction_target = target
+				}
+			}
+		}
+		map_color = define:NMapColors|MAP_COLOR_HIGH
+	}
+
+	location_modifier = {
+		local_monthly_control = 0.015
+		local_max_control = 0.08
+	}
+
+	country_modifier = {
+		global_monthly_control = 0.003
+		tax_income_efficiency = 0.03
+		nobles_estate_target_satisfaction = -0.05
+		burghers_estate_target_satisfaction = -0.04
+		monthly_prestige = -0.02
+	}
+
+	map_marker = {
+		show_for_owner = yes
+	}
+
+	ai_will_do = {
+		add = { value = 4 }
+	}
+}
+
+# 2. Diligent Secretariat Governance (ADM, country-wide): boosts cabinet efficiency, stability investment, and taxes at court outlay & prestige cost.
+oe_wf_cab_diligent_governance = {
+	ability = adm
+	allow_multiple = no
+
+	potential = {
+		oe_wf_is_era_name_eligible = yes
+	}
+
+	allow = {
+		num_locations > 0
+	}
+
+	country_modifier = {
+		country_cabinet_efficiency = 0.08
+		stability_investment = 0.06
+		tax_income_efficiency = 0.04
+		court_spending_efficiency = -0.06
+		monthly_prestige = -0.02
+	}
+
+	progress = {
+		scope:actor = {
+			value = stability
+		}
+	}
+
+	ai_will_do = {
+		add = { value = 5 }
+	}
+}

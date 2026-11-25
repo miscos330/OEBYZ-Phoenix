@@ -1,0 +1,177 @@
+﻿# NEW 2026-11-25 v27.0 WP19 Wanfang Phase 2 (oe_wf2_, gen_v270_wanfang_p2.py) — Wokou Native Disaster, Yellow River & Grand Canal Huai'an, 10 Vaulted Reforms/Privileges & Osmanli Rome (0 vanilla overrides, 0 edits to existing files, 100% O(1), R31 & G_ELR_ISOLATION compliant). Edit gen_v270_wanfang_p2.py, not this file.
+
+namespace = oe_wf2_osmanli
+
+# WP19-5: Optional Alt-History Easter Egg — Osmanli Rome (TUR only, strictly isolated from BYZ)
+
+# 1. Kayser-i Rum Between Two Romes
+oe_wf2_osmanli.1 = {
+	type = country_event
+	title = oe_wf2_osmanli.1.t
+	desc = oe_wf2_osmanli.1.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v170_1453_constantinople.dds"
+	trigger = {
+		tag = TUR
+		is_rebel_country = no
+		owns = location:constantinople
+		owns = location:rome
+	}
+	option = {
+		name = oe_wf2_osmanli.1.a
+		ai_chance = { base = 90 }
+		add_prestige = prestige_mild_bonus
+		add_legitimacy = 5
+		trigger_event_non_silently = { id = oe_wf2_osmanli.2 days = 180 }
+	}
+	option = {
+		name = oe_wf2_osmanli.1.b
+		ai_chance = { base = 10 }
+		add_gold = 150
+		add_stability = 4
+	}
+}
+
+# 2. The Phanar, the Capitol, and the Twin Patriarchates
+oe_wf2_osmanli.2 = {
+	type = country_event
+	title = oe_wf2_osmanli.2.t
+	desc = oe_wf2_osmanli.2.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_byz_senate_consistorium.dds"
+	trigger = {
+		tag = TUR
+		is_rebel_country = no
+	}
+	option = {
+		name = oe_wf2_osmanli.2.a
+		ai_chance = { base = 80 }
+		add_country_modifier = { modifier = oe_wf2_mod_osmanli_charter years = 25 mode = replace }
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_penalty }
+		trigger_event_non_silently = { id = oe_wf2_osmanli.3 days = 180 }
+	}
+	option = {
+		name = oe_wf2_osmanli.2.b
+		ai_chance = { base = 20 }
+		add_stability = 3
+		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
+		trigger_event_non_silently = { id = oe_wf2_osmanli.3 days = 180 }
+	}
+}
+
+# 3. Kanunname & Corpus Juris: The Bilingual Imperial Divan
+oe_wf2_osmanli.3 = {
+	type = country_event
+	title = oe_wf2_osmanli.3.t
+	desc = oe_wf2_osmanli.3.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v230_spqr_roman_senate_revival.dds"
+	trigger = {
+		tag = TUR
+		is_rebel_country = no
+	}
+	option = {
+		name = oe_wf2_osmanli.3.a
+		ai_chance = { base = 80 }
+		add_gold = -120
+		add_country_modifier = { modifier = oe_wf2_mod_osmanli_kanun_juris years = 25 mode = replace }
+		trigger_event_non_silently = { id = oe_wf2_osmanli.4 days = 180 }
+	}
+	option = {
+		name = oe_wf2_osmanli.3.b
+		ai_chance = { base = 20 }
+		add_gold = 80
+		add_legitimacy = 5
+		trigger_event_non_silently = { id = oe_wf2_osmanli.4 days = 180 }
+	}
+}
+
+# 4. The Imperial Varangian-Janissary Guard
+oe_wf2_osmanli.4 = {
+	type = country_event
+	title = oe_wf2_osmanli.4.t
+	desc = oe_wf2_osmanli.4.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_v160_tur_janissary.dds"
+	trigger = {
+		tag = TUR
+		is_rebel_country = no
+	}
+	option = {
+		name = oe_wf2_osmanli.4.a
+		ai_chance = { base = 75 }
+		add_gold = -100
+		add_army_tradition = 8
+		add_navy_tradition = 8
+		trigger_event_non_silently = { id = oe_wf2_osmanli.5 days = 180 }
+	}
+	option = {
+		name = oe_wf2_osmanli.4.b
+		ai_chance = { base = 25 }
+		add_stability = 4
+		add_manpower = 4
+		trigger_event_non_silently = { id = oe_wf2_osmanli.5 days = 180 }
+	}
+}
+
+# 5. Embassies of a Restored Mediterranean Order
+oe_wf2_osmanli.5 = {
+	type = country_event
+	title = oe_wf2_osmanli.5.t
+	desc = oe_wf2_osmanli.5.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
+	trigger = {
+		tag = TUR
+		is_rebel_country = no
+	}
+	option = {
+		name = oe_wf2_osmanli.5.a
+		ai_chance = { base = 75 }
+		add_prestige = prestige_mild_bonus
+		culture = { add_cultural_tradition = 5 }
+		trigger_event_non_silently = { id = oe_wf2_osmanli.6 days = 180 }
+	}
+	option = {
+		name = oe_wf2_osmanli.5.b
+		ai_chance = { base = 25 }
+		add_gold = 140
+		add_stability = 3
+		trigger_event_non_silently = { id = oe_wf2_osmanli.6 days = 180 }
+	}
+}
+
+# 6. Crown of Osmanli Rome
+oe_wf2_osmanli.6 = {
+	type = country_event
+	title = oe_wf2_osmanli.6.t
+	desc = oe_wf2_osmanli.6.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_ev_con_pax_romana.dds"
+	trigger = {
+		tag = TUR
+		is_rebel_country = no
+	}
+	option = {
+		name = oe_wf2_osmanli.6.a
+		ai_chance = { base = 80 }
+		add_prestige = prestige_severe_bonus
+		add_legitimacy = 12
+		add_country_modifier = { modifier = oe_wf2_mod_osmanli_rome_crown years = 40 mode = replace }
+		if = {
+			limit = { owns = location:constantinople }
+			location:constantinople = { change_prosperity = prosperity_mild_bonus }
+		}
+		if = {
+			limit = { owns = location:rome }
+			location:rome = { change_prosperity = prosperity_mild_bonus }
+		}
+	}
+	option = {
+		name = oe_wf2_osmanli.6.b
+		ai_chance = { base = 20 }
+		add_stability = 8
+		add_gold = 250
+		add_country_modifier = { modifier = oe_wf2_mod_osmanli_charter years = 30 mode = replace }
+	}
+}

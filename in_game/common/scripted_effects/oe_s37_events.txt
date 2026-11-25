@@ -146,20 +146,23 @@ oe_s37_ev_monthly = {
 # ---------------------------------------------------------------- co-emperor (the author's start-patch steps)
 # BYZ scope. Imperial Authority -10, prestige -15; John V becomes co-emperor (oe_byz_character_patch.txt 63-83).
 oe_s37_crown_do = {
-    international_organization:oe_byz_empire_pillars ?= { if = { limit = { has_variable = oe_pillars_authority } change_variable = { name = oe_pillars_authority add = -10 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } }
-    add_prestige = -15
-    character:byz_john_v_palaiologos ?= {
-        if = {
-            limit = { is_alive = yes }
-            add_character_modifier = { modifier = oe_byz_select_as_second_empire_mod days = -1 mode = replace }
-            if = {
-                limit = { NOT = { has_estate = estate_type:crown_estate } }
-                change_character_estate = estate_type:crown_estate
-            }
-            c:BYZ = { set_variable = { name = oe_byz_co_emperor_display value = character:byz_john_v_palaiologos } }
-        }
-    }
-    set_variable = oe_s37_crowned
+	if = {
+		limit = { exists = character:byz_john_v_palaiologos }
+	    international_organization:oe_byz_empire_pillars ?= { if = { limit = { has_variable = oe_pillars_authority } change_variable = { name = oe_pillars_authority add = -10 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } }
+	    add_prestige = -15
+	    character:byz_john_v_palaiologos ?= {
+	        if = {
+	            limit = { is_alive = yes }
+	            add_character_modifier = { modifier = oe_byz_select_as_second_empire_mod days = -1 mode = replace }
+	            if = {
+	                limit = { NOT = { has_estate = estate_type:crown_estate } }
+	                change_character_estate = estate_type:crown_estate
+	            }
+	            c:BYZ = { set_variable = { name = oe_byz_co_emperor_display value = character:byz_john_v_palaiologos } }
+	        }
+	    }
+	    set_variable = oe_s37_crowned
+	}
 }
 
 # ---------------------------------------------------------------- test helpers (dev mod buttons and console; BYZ scope)

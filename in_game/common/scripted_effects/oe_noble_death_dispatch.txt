@@ -1,17 +1,20 @@
 ﻿# Character scope. Do not wait for is_alive or the country's character list to change.
 oe_nf_note_character_death = {
-    save_scope_as = oe_nf_deceased_person
-    international_organization:oe_byz_empire_pillars = {
-        if = {
-            limit = { NOT = { any_in_list = { variable = oe_nf_deceased_characters this = scope:oe_nf_deceased_person } } }
-            add_to_variable_list = { name = oe_nf_deceased_characters target = scope:oe_nf_deceased_person }
-        }
-        oe_nf_retire_dead_head = { slot = 1 }
-        oe_nf_retire_dead_head = { slot = 2 }
-        oe_nf_retire_dead_head = { slot = 3 }
-        oe_nf_retire_dead_head = { slot = 4 }
-    }
-    c:BYZ = { oe_nf_refresh = yes oe_nf_queue_death_refresh = yes }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    save_scope_as = oe_nf_deceased_person
+	    international_organization:oe_byz_empire_pillars = {
+	        if = {
+	            limit = { NOT = { any_in_list = { variable = oe_nf_deceased_characters this = scope:oe_nf_deceased_person } } }
+	            add_to_variable_list = { name = oe_nf_deceased_characters target = scope:oe_nf_deceased_person }
+	        }
+	        oe_nf_retire_dead_head = { slot = 1 }
+	        oe_nf_retire_dead_head = { slot = 2 }
+	        oe_nf_retire_dead_head = { slot = 3 }
+	        oe_nf_retire_dead_head = { slot = 4 }
+	    }
+	    c:BYZ = { oe_nf_refresh = yes oe_nf_queue_death_refresh = yes }
+	}
 }
 # IO scope. Clearing the exact old head before refreshing makes duplicate hooks idempotent.
 oe_nf_retire_dead_head = {

@@ -30,23 +30,23 @@ oe_te_trib = {
     if = { limit = { oe_ts_tribute_amount > 0 gold >= oe_ts_tribute_amount } add = oe_ts_tribute_amount }
 }
 # The theme's own take of the tax base (its income; whether it comes out of the crown's taxes is not settled, case S/K
-# of the design): the seat's location in full, each post's location at 15%. Only locations the crown owns.
+# of the design): the seat's location in full, each post's location at 30%. Only locations the crown owns.
 oe_te_seat_tb = {
     value = 0
-    every_owned_foreign_building_location = { limit = { owner ?= c:BYZ oe_te_seat_loc = yes } add = location_tax_base }
+    every_owned_foreign_building_location = { limit = { oe_owned_by_phoenix_empire = yes oe_te_seat_loc = yes } add = location_tax_base }
 }
 oe_te_post_tb = {
     value = 0
-    every_owned_foreign_building_location = { limit = { owner ?= c:BYZ NOT = { oe_te_seat_loc = yes } } add = location_tax_base }
+    every_owned_foreign_building_location = { limit = { oe_owned_by_phoenix_empire = yes NOT = { oe_te_seat_loc = yes } } add = location_tax_base }
 }
 # perf audit 2026-11-20: one walk (the card line shows it on every theme); the same sum as
-# oe_te_seat_tb x 1 + oe_te_post_tb x 0.15, rounded per location instead of per total.
+# oe_te_seat_tb x 1 + oe_te_post_tb x 0.3, rounded per location instead of per total.
 oe_te_taxbase = {
     value = 0
     every_owned_foreign_building_location = {
-        limit = { owner ?= c:BYZ }
+        limit = { oe_owned_by_phoenix_empire = yes }
         if = { limit = { oe_te_seat_loc = yes } add = { value = location_tax_base multiply = 1 } }
-        else = { add = { value = location_tax_base multiply = 0.15 } }
+        else = { add = { value = location_tax_base multiply = 0.3 } }
     }
 }
 

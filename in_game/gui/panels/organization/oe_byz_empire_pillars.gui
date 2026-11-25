@@ -5,10 +5,10 @@ organization_panel = {
     blockoverride "io_overview_actions" {}
     blockoverride "organization_overview_payments" {}
     blockoverride "organization_custom_tabs" {
-        # v13.6 W1: Slimmed top tab bar to 4 permanent tabs (Overview | Edicts | Themes | Entropy).
+        # v25.5 W2A: 4-tab layout (Overview | Edicts | Themes | Dynamic 4th Tab: Day-1 Precedence <150 locs -> Entropy >=150 locs).
         button_secondary_tab_alt = {
             using = layoutpolicy_expanding
-            blockoverride "tab_text" { text = "OE_PILLARS_EDICTS" }
+            blockoverride "tab_text" { text = "OE_PILLARS_EDICTS" fontsize = 14 }
             tooltip = "OE_PILLARS_EDICTS_DESC"
             onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_edicts')]"
             onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
@@ -18,17 +18,30 @@ organization_panel = {
         # NEW 2026-11-17 theme-rework UI-1: 军区 tab (page body in gui/shared/oe_theme_ui.gui).
         button_secondary_tab_alt = {
             using = layoutpolicy_expanding
-            blockoverride "tab_text" { text = "OE_PILLARS_THEMES" }
+            blockoverride "tab_text" { text = "OE_PILLARS_THEMES" fontsize = 14 }
             tooltip = "OE_PILLARS_THEMES_DESC"
             onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_themes')]"
             onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
             onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
             down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_themes')]"
         }
-        # NEW 2026-11-21 v9.0 Route 2: 熵增 tab (page body in gui/shared/oe_ent_dashboard_ui.gui, gen_empire_entropy.py).
+        # NEW v25.5 W2A: Dynamic 4th top tab — Day-1 active 琼筵序次 (Precedence) while <150 locations and Entropy is on standby.
         button_secondary_tab_alt = {
             using = layoutpolicy_expanding
-            blockoverride "tab_text" { text = "OE_PILLARS_ENTROPY" }
+            visible = "[And(GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), Not(Or(GreaterThanOrEqualTo_int32(InternationalOrganizationsView.GetPlayer.GetOwnedLocationCount, '(int32)150'), GetScriptedGui('oe_ent_dashboard_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))))]"
+            blockoverride "tab_text" { text = "OE_COURT_TITLE" fontsize = 14 }
+            tooltip = "OE_UI2_TAB_COURT_DAY1_TT"
+            onclick = "[GetScriptedGui('oe_nf_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+            onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_court')]"
+            onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+            onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+            down = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_court')]"
+        }
+        # NEW 2026-11-21 v9.0 Route 2 / v25.5 W2A: 熵增 tab (active 4th top tab once >=150 locations, Entropy active, or court inactive).
+        button_secondary_tab_alt = {
+            using = layoutpolicy_expanding
+            visible = "[Or(Or(GreaterThanOrEqualTo_int32(InternationalOrganizationsView.GetPlayer.GetOwnedLocationCount, '(int32)150'), GetScriptedGui('oe_ent_dashboard_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)), Not(GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)))]"
+            blockoverride "tab_text" { text = "OE_PILLARS_ENTROPY" fontsize = 14 }
             tooltip = "OE_PILLARS_ENTROPY_DESC"
             onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_entropy')]"
             onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
@@ -383,7 +396,8 @@ card_common = {
                         }
                     }
                 }
-                # NEW r6 a-ui: fold group fis_itp (open by default).
+                # [V136_W2A_FOLD_FIS_ITP_BEGIN]
+                # NEW v25.5 W2A (updated v26.0 WP8-6): fold group fis_itp (closed by default on Day 1; auto-expands & highlights when Roman Alliance ready).
                 vbox = {
                     layoutpolicy_horizontal = expanding spacing = 8
                     hbox = {
@@ -392,33 +406,50 @@ card_common = {
                             size = { 28 34 }
                             button = {
                                 size = { 24 24 } parentanchor = center
-                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_itp')]"
-                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_itp')]"
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_itp'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_fis_itp')]"
                                 texture = "gfx/interface/buttons/flats/button_simple_right.dds"
                                 using = button_regular_icon_color
-                                tooltip = "OE_R6_FOLD_TT"
+                                tooltip = "OE_UI2_FOLD_FIS_ITP_TT"
                             }
                             button = {
                                 size = { 24 24 } parentanchor = center
-                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_itp'))]"
-                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_itp')]"
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_itp')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_fis_itp')]"
                                 texture = "gfx/interface/buttons/flats/button_simple_down.dds"
                                 using = button_regular_icon_color
-                                tooltip = "OE_R6_FOLD_TT"
+                                tooltip = "OE_UI2_FOLD_FIS_ITP_TT"
                             }
                         }
                         button_secondary_tab_alt = {
                             layoutpolicy_horizontal = expanding
                             size = { -1 34 }
                             blockoverride "tab_text" { text = "OE_R6_GRP_FIS_ITP" fontsize = 16 }
-                            tooltip = "OE_R6_FOLD_TT"
-                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_itp')]"
-                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_itp'))]"
+                            tooltip = "OE_UI2_FOLD_FIS_ITP_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_fis_itp')]"
+                            down = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_itp')]"
+                        }
+                        widget = {
+                            size = { 168 34 }
+                            visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_itp'))]"
+                            using = bg_dark_paper_card
+                            using = bg_header_golden_frame
+                            tooltip = "OE_UI2_FOLD_FIS_ITP_TT"
+                            text_single = {
+                                size = { 100% 100% }
+                                margin = { 6 0 }
+                                autoresize = no
+                                align = center|nobaseline
+                                elide = right
+                                fontsize = 13
+                                default_format = "#color_light_gray"
+                                text = "[SelectLocalization(InternationalOrganizationsView.GetPlayer.MakeScope.GetVariable('oe_itp_on').IsSet, 'OE_UI2_BADGE_UNLOCKED_FOLD', 'OE_UI2_BADGE_FIS_ITP_LOCK')]"
+                            }
                         }
                     }
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 10
-                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_itp'))]"
+                        visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_itp')]"
                         datamodel = "[InternationalOrganizationsView.GetActions]"
                         item = {
                             widget = {
@@ -428,7 +459,9 @@ card_common = {
                         }
                     }
                 }
-                # NEW r6 a-ui: fold group fis_cmp (open by default).
+                # [V136_W2A_FOLD_FIS_ITP_END]
+                # [V136_W2A_FOLD_FIS_CMP_BEGIN]
+                # NEW v25.5 W2A (updated v26.0 WP8-6): fold group fis_cmp (closed by default on Day 1; auto-expands & highlights when Roman Alliance ready).
                 vbox = {
                     layoutpolicy_horizontal = expanding spacing = 8
                     hbox = {
@@ -437,33 +470,50 @@ card_common = {
                             size = { 28 34 }
                             button = {
                                 size = { 24 24 } parentanchor = center
-                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_cmp')]"
-                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_cmp')]"
+                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_cmp'))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_fis_cmp')]"
                                 texture = "gfx/interface/buttons/flats/button_simple_right.dds"
                                 using = button_regular_icon_color
-                                tooltip = "OE_R6_FOLD_TT"
+                                tooltip = "OE_UI2_FOLD_FIS_CMP_TT"
                             }
                             button = {
                                 size = { 24 24 } parentanchor = center
-                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_cmp'))]"
-                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_cmp')]"
+                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_cmp')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_fis_cmp')]"
                                 texture = "gfx/interface/buttons/flats/button_simple_down.dds"
                                 using = button_regular_icon_color
-                                tooltip = "OE_R6_FOLD_TT"
+                                tooltip = "OE_UI2_FOLD_FIS_CMP_TT"
                             }
                         }
                         button_secondary_tab_alt = {
                             layoutpolicy_horizontal = expanding
                             size = { -1 34 }
                             blockoverride "tab_text" { text = "OE_R6_GRP_FIS_CMP" fontsize = 16 }
-                            tooltip = "OE_R6_FOLD_TT"
-                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_fis_cmp')]"
-                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_cmp'))]"
+                            tooltip = "OE_UI2_FOLD_FIS_CMP_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_fis_cmp')]"
+                            down = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_cmp')]"
+                        }
+                        widget = {
+                            size = { 168 34 }
+                            visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_cmp'))]"
+                            using = bg_dark_paper_card
+                            using = bg_header_golden_frame
+                            tooltip = "OE_UI2_FOLD_FIS_CMP_TT"
+                            text_single = {
+                                size = { 100% 100% }
+                                margin = { 6 0 }
+                                autoresize = no
+                                align = center|nobaseline
+                                elide = right
+                                fontsize = 13
+                                default_format = "#color_light_gray"
+                                text = "[SelectLocalization(InternationalOrganizationsView.GetPlayer.MakeScope.GetVariable('oe_cmp_holder').IsSet, 'OE_UI2_BADGE_UNLOCKED_FOLD', 'OE_UI2_BADGE_FIS_CMP_LOCK')]"
+                            }
                         }
                     }
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 10
-                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_fis_cmp'))]"
+                        visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_open_fis_cmp')]"
                         datamodel = "[InternationalOrganizationsView.GetActions]"
                         item = {
                             widget = {
@@ -473,6 +523,7 @@ card_common = {
                         }
                     }
                 }
+                # [V136_W2A_FOLD_FIS_CMP_END]
                 # NEW r6 a-ui: fold group fis_revenue (open by default).
                 vbox = {
                     layoutpolicy_horizontal = expanding spacing = 8
@@ -621,7 +672,8 @@ card_common = {
                         }
                     }
                 }
-                # NEW r6 a-ui: fold group civ_subj (open by default).
+                # [V136_W2A_FOLD_CIV_SUBJ_BEGIN]
+                # NEW v25.5 W2A (updated v26.0 WP8-6): fold group civ_subj (closed by default on Day 1; auto-expands & highlights when Roman Alliance ready).
                 vbox = {
                     layoutpolicy_horizontal = expanding spacing = 8
                     hbox = {
@@ -630,33 +682,50 @@ card_common = {
                             size = { 28 34 }
                             button = {
                                 size = { 24 24 } parentanchor = center
-                                visible = "[InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_subj')]"
-                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_subj')]"
+                                visible = "[Not(Or(And(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj'))), And(Not(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)), InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj'))))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_civ_subj')]"
                                 texture = "gfx/interface/buttons/flats/button_simple_right.dds"
                                 using = button_regular_icon_color
-                                tooltip = "OE_R6_FOLD_TT"
+                                tooltip = "OE_UI2_FOLD_CIV_SUBJ_TT"
                             }
                             button = {
                                 size = { 24 24 } parentanchor = center
-                                visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_subj'))]"
-                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_subj')]"
+                                visible = "[Or(And(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj'))), And(Not(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)), InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj')))]"
+                                onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_civ_subj')]"
                                 texture = "gfx/interface/buttons/flats/button_simple_down.dds"
                                 using = button_regular_icon_color
-                                tooltip = "OE_R6_FOLD_TT"
+                                tooltip = "OE_UI2_FOLD_CIV_SUBJ_TT"
                             }
                         }
                         button_secondary_tab_alt = {
                             layoutpolicy_horizontal = expanding
                             size = { -1 34 }
                             blockoverride "tab_text" { text = "OE_R6_GRP_CIV_SUBJ" fontsize = 16 }
-                            tooltip = "OE_R6_FOLD_TT"
-                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_fold_civ_subj')]"
-                            down = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_subj'))]"
+                            tooltip = "OE_UI2_FOLD_CIV_SUBJ_TT"
+                            onclick = "[InternationalOrganizationsView.Vars.Toggle('oe_r6_open_civ_subj')]"
+                            down = "[Or(And(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj'))), And(Not(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)), InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj')))]"
+                        }
+                        widget = {
+                            size = { 168 34 }
+                            visible = "[Or(Not(Or(And(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj'))), And(Not(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)), InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj')))), GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))]"
+                            using = bg_dark_paper_card
+                            using = bg_header_golden_frame
+                            tooltip = "OE_UI2_FOLD_CIV_SUBJ_TT"
+                            text_single = {
+                                size = { 100% 100% }
+                                margin = { 6 0 }
+                                autoresize = no
+                                align = center|nobaseline
+                                elide = right
+                                fontsize = 13
+                                default_format = "#color_light_gray"
+                                text = "[SelectLocalization(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), 'OE_UI2_BADGE_CIV_SUBJ_ACTIVE', 'OE_UI2_BADGE_CIV_SUBJ_LOCK')]"
+                            }
                         }
                     }
                     vbox = {
                         layoutpolicy_horizontal = expanding spacing = 10
-                        visible = "[Not(InternationalOrganizationsView.Vars.Exists('oe_r6_fold_civ_subj'))]"
+                        visible = "[Or(And(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), Not(InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj'))), And(Not(GetScriptedGui('oe_ui2_has_roman_alliance').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)), InternationalOrganizationsView.Vars.Exists('oe_r6_open_civ_subj')))]"
                         datamodel = "[InternationalOrganizationsView.GetActions]"
                         item = {
                             widget = {
@@ -666,10 +735,12 @@ card_common = {
                         }
                     }
                 }
-                # NEW r6 a-ui: fold group civ_new (open by default).
+                # [V136_W2A_FOLD_CIV_SUBJ_END]
+                # [V136_V260_FOLD_CIV_NEW_BEGIN]
+                # NEW v26.0 WP11: fold group civ_new (open by default; includes 4 independent Prefecture Expansion Charters + legacy expansion edicts).
                 vbox = {
                     layoutpolicy_horizontal = expanding spacing = 8
-                    visible = "[Or(GetScriptedGui('oe_create_eastern_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),Or(GetScriptedGui('oe_create_austrian_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),GetScriptedGui('oe_create_swiss_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)))]"
+                    visible = "[Or(GetScriptedGui('oe_theme_unlock_pref_1_vis').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),Or(GetScriptedGui('oe_theme_unlock_pref_2_vis').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),Or(GetScriptedGui('oe_theme_unlock_pref_3_vis').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),Or(GetScriptedGui('oe_theme_unlock_pref_4_vis').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),Or(GetScriptedGui('oe_create_eastern_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),Or(GetScriptedGui('oe_create_austrian_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End),GetScriptedGui('oe_create_swiss_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)))))))]"
                     hbox = {
                         layoutpolicy_horizontal = expanding spacing = 6
                         widget = {
@@ -706,12 +777,13 @@ card_common = {
                         datamodel = "[InternationalOrganizationsView.GetActions]"
                         item = {
                             widget = {
-                                visible = "[Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_eastern_themes'),GetScriptedGui('oe_create_eastern_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_austrian_themes'),GetScriptedGui('oe_create_austrian_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),And(EqualTo_string(GenericAction.GetKey, 'oe_create_swiss_themes'),GetScriptedGui('oe_create_swiss_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))))]"
+                                visible = "[Or(And(EqualTo_string(GenericAction.GetKey, 'oe_theme_unlock_prefecture_1_action'),GetScriptedGui('oe_theme_unlock_pref_1_vis').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),Or(And(EqualTo_string(GenericAction.GetKey, 'oe_theme_unlock_prefecture_2_action'),GetScriptedGui('oe_theme_unlock_pref_2_vis').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),Or(And(EqualTo_string(GenericAction.GetKey, 'oe_theme_unlock_prefecture_3_action'),GetScriptedGui('oe_theme_unlock_pref_3_vis').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),Or(And(EqualTo_string(GenericAction.GetKey, 'oe_theme_unlock_prefecture_4_action'),GetScriptedGui('oe_theme_unlock_pref_4_vis').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_eastern_themes'),GetScriptedGui('oe_create_eastern_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),Or(And(EqualTo_string(GenericAction.GetKey, 'oe_create_austrian_themes'),GetScriptedGui('oe_create_austrian_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)),And(EqualTo_string(GenericAction.GetKey, 'oe_create_swiss_themes'),GetScriptedGui('oe_create_swiss_themes_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))))))))]"
                                 using = oe_edict_card
                             }
                         }
                     }
                 }
+                # [V136_V260_FOLD_CIV_NEW_END]
                 # NEW r6 a-ui: fold group civ_settings (closed by default).
                 vbox = {
                     layoutpolicy_horizontal = expanding spacing = 8
@@ -787,7 +859,8 @@ vbox = {
         }
     }
 # [V136_W1_CHRONICLE_PAGE_END]
-# NEW 2026-11-21 v9.0 Route 2: 熵增 page (O(1) visual dashboard in gui/shared/oe_ent_dashboard_ui.gui).
+# [V136_W2A_ENTROPY_PAGE_BEGIN]
+# NEW 2026-11-21 v9.0 Route 2 / v25.5 W2A: 熵增 page with conditional Back-to-Overview bar & Day-1 quick-jump actions.
 widget = {
         using = layoutpolicy_expanding
         visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_entropy')]"
@@ -800,11 +873,46 @@ widget = {
                     layoutpolicy_horizontal = expanding
                     margin = { 12 10 }
                     spacing = 8
-                    oe_ent_dashboard_body = {}
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        visible = "[And(GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), Not(Or(GreaterThanOrEqualTo_int32(InternationalOrganizationsView.GetPlayer.GetOwnedLocationCount, '(int32)150'), GetScriptedGui('oe_ent_dashboard_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))))]"
+                        using = oe_ui2_back_to_overview_bar
+                    }
+                    oe_ent_dashboard_body = {
+                        blockoverride "oe_ent_pre_threshold_actions" {
+                            hbox = {
+                                layoutpolicy_horizontal = expanding
+                                spacing = 6
+                                button_regular_paper_card_hre = {
+                                    layoutpolicy_horizontal = expanding
+                                    layoutstretchfactor_horizontal = 1
+                                    size = { -1 36 }
+                                    visible = "[GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                    tooltip = "OE_ENT_UI_JUMP_COURT_TT"
+                                    onclick = "[GetScriptedGui('oe_nf_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                    onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_court')]"
+                                    onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                                    onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                    text_single = { parentanchor = center text = "OE_ENT_UI_JUMP_COURT" fontsize = 14 }
+                                }
+                                button_regular_paper_card_hre = {
+                                    layoutpolicy_horizontal = expanding
+                                    layoutstretchfactor_horizontal = 1
+                                    size = { -1 36 }
+                                    tooltip = "OE_ENT_UI_JUMP_EDICTS_TT"
+                                    onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_edicts')]"
+                                    onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                                    onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                    text_single = { parentanchor = center text = "OE_ENT_UI_JUMP_EDICTS" fontsize = 14 }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+# [V136_W2A_ENTROPY_PAGE_END]
 widget = {
         using = layoutpolicy_expanding
         visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_reforms')]"
@@ -1668,7 +1776,7 @@ oe_pillars_payment_ledger = {}
 card_common = {
         blockoverride "header_decor_templates" { using = bg_card_header_01_hre using = bg_cabinet_card_frame }
         blockoverride "common_header_icon_texture" { texture = "gfx/interface/icons/international_organizations/oe_byz_empire_pillars.dds" }
-        blockoverride "common_header_text_full" { text_single = { layoutpolicy_horizontal = expanding align = center autoresize = no text = "OE_PILLARS_FINANCE_COURT" fontsize = 18 } }
+        blockoverride "common_header_text_full" { text_single = { layoutpolicy_horizontal = expanding align = center autoresize = no elide = right text = "OE_PILLARS_FINANCE_COURT" fontsize = 18 } }
         blockoverride "common_bottom_content" {
             vbox = { layoutpolicy_horizontal = expanding margin = { 10 10 } spacing = 10
             oe_pillars_authority_investment = {}
@@ -1899,7 +2007,7 @@ card_common = {
                                 size = { -1 22 }
                                 elide = right
                                 fontsize = 17
-                                default_format = "#bold #color_gold"
+                                default_format = "#yellow_titles;bold"
                                 text = "OE_UI2_CHR_BANNER_TITLE"
                             }
                             text_single = {
@@ -1908,7 +2016,7 @@ card_common = {
                                 size = { -1 18 }
                                 elide = right
                                 fontsize = 13
-                                default_format = "#weak"
+                                default_format = "#color_light_gray"
                                 text = "OE_UI2_CHR_BANNER_SUB"
                             }
                         }
@@ -1921,6 +2029,7 @@ card_common = {
                                 size = { 100% 100% }
                                 autoresize = no
                                 align = center|nobaseline
+                                elide = right
                                 fontsize = 13
                                 text = "OE_UI2_CHR_BANNER_BADGE"
                             }
@@ -1954,7 +2063,18 @@ card_common = {
                         layoutpolicy_horizontal = expanding
                         layoutstretchfactor_horizontal = 1
                         size = { -1 38 }
-                        visible = "[GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        visible = "[And(GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), Not(Or(GreaterThanOrEqualTo_int32(InternationalOrganizationsView.GetPlayer.GetOwnedLocationCount, '(int32)150'), GetScriptedGui('oe_ent_dashboard_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End))))]"
+                        tooltip = "OE_UI2_BTN_ENTROPY_ROADMAP_TT"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_entropy')]"
+                        onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                        onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                        text_single = { parentanchor = center text = "OE_UI2_BTN_ENTROPY_ROADMAP" fontsize = 15 }
+                    }
+                    button_regular_paper_card_hre = {
+                        layoutpolicy_horizontal = expanding
+                        layoutstretchfactor_horizontal = 1
+                        size = { -1 38 }
+                        visible = "[And(GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End), Or(GreaterThanOrEqualTo_int32(InternationalOrganizationsView.GetPlayer.GetOwnedLocationCount, '(int32)150'), GetScriptedGui('oe_ent_dashboard_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)))]"
                         tooltip = "OE_COURT_DESC"
                         onclick = "[GetScriptedGui('oe_nf_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
                         onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_court')]"
@@ -2020,6 +2140,144 @@ card_common = {
                     }
                 }
             }
+            # [V136_W2A_SENATE_CARD_BEGIN]
+            # NEW v25.5 W2A: Compact O(1) Imperial Senate Seat & Vote Preview Card (BYZ/ROM).
+            card_common = {
+                layoutpolicy_horizontal = expanding
+                visible = "[Or(EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'BYZ'), EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'ROM'))]"
+                blockoverride "header_decor_templates" {
+                    using = oe_header_imperial_purple
+                }
+                blockoverride "common_header_icon_texture" {
+                    texture = "gfx/interface/icons/international_organizations/oe_pillars_authority.dds"
+                }
+                blockoverride "common_header_text_full" {
+                    text_single = { text = "OE_UI2_SENATE_CARD_TITLE" fontsize = 18 }
+                }
+                blockoverride "common_bottom_content" {
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        margin = { 10 8 }
+                        spacing = 6
+                        hbox = {
+                            layoutpolicy_horizontal = expanding
+                            spacing = 6
+                            oe_kpi_tile = {
+                                tooltip = "OE_UI2_SENATE_KPI_SEATS_TT"
+                                blockoverride "kpi_label" {
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        align = hcenter|nobaseline
+                                        elide = right
+                                        fontsize = 13
+                                        default_format = "#medium"
+                                        text = "OE_UI2_SENATE_KPI_SEATS"
+                                    }
+                                }
+                                blockoverride "kpi_value" {
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        align = hcenter|nobaseline
+                                        fontsize = 16
+                                        default_format = "#color_yellow;bold"
+                                        raw_text = "[GuiScope.SetRoot(InternationalOrganizationsView.GetInternationalOrganization.GetLeaderCountry.MakeScope).ScriptValue('oe_tsn_seats_value')|0]"
+                                    }
+                                }
+                            }
+                            oe_kpi_tile = {
+                                tooltip = "OE_UI2_SENATE_KPI_LEVY_TT"
+                                blockoverride "kpi_label" {
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        align = hcenter|nobaseline
+                                        elide = right
+                                        fontsize = 13
+                                        default_format = "#medium"
+                                        text = "OE_UI2_SENATE_KPI_LEVY"
+                                    }
+                                }
+                                blockoverride "kpi_value" {
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        align = hcenter|nobaseline
+                                        fontsize = 16
+                                        text = "OE_UI2_SENATE_PV1_VAL"
+                                    }
+                                }
+                            }
+                            oe_kpi_tile = {
+                                tooltip = "OE_UI2_SENATE_KPI_PROV_TT"
+                                blockoverride "kpi_label" {
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        align = hcenter|nobaseline
+                                        elide = right
+                                        fontsize = 13
+                                        default_format = "#medium"
+                                        text = "OE_UI2_SENATE_KPI_PROV"
+                                    }
+                                }
+                                blockoverride "kpi_value" {
+                                    text_single = {
+                                        layoutpolicy_horizontal = expanding
+                                        align = hcenter|nobaseline
+                                        fontsize = 16
+                                        text = "OE_UI2_SENATE_PV3_VAL"
+                                    }
+                                }
+                            }
+                        }
+                        text_single = {
+                            layoutpolicy_horizontal = expanding
+                            multiline = yes
+                            autoresize = yes
+                            fontsize = 13
+                            default_format = "#color_light_gray"
+                            text = "OE_UI2_SENATE_HINT"
+                            tooltip = "OE_UI2_SENATE_KPI_SEATS_TT"
+                        }
+                        hbox = {
+                            layoutpolicy_horizontal = expanding
+                            spacing = 6
+                            widget = {
+                                layoutpolicy_horizontal = expanding
+                                layoutstretchfactor_horizontal = 3
+                                size = { -1 38 }
+                                visible = "[Or(EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'BYZ'), EqualTo_string(InternationalOrganizationsView.GetPlayer.GetTag, 'ROM'))]"
+                                datacontext = "[GetGenericAction('oe_tsn_levy_request')]"
+                                button_regular_diamond = {
+                                    size = { 100% 38 }
+                                    fontsize = 15
+                                    text = "[GenericAction.GetNameWithNoTooltip]"
+                                    tooltipwidget = { using = io_generic_action_button_tooltip }
+                                    visible = "[PdxGuiWidget.IsUberButtonVisible]"
+                                    enabled = "[PdxGuiWidget.IsUberButtonEnabled]"
+                                    scripted_action_tooltip = {
+                                        click_type = left
+                                        click_mode = single
+                                        actor = "[InternationalOrganizationsView.GetPlayer]"
+                                        action_name = "[GenericAction.GetKey]"
+                                        parameter = { parameter_name = "recipient" parameter_value = "[InternationalOrganizationsView.GetInternationalOrganization]" }
+                                    }
+                                }
+                            }
+                            button_regular_paper_card_hre = {
+                                layoutpolicy_horizontal = expanding
+                                layoutstretchfactor_horizontal = 2
+                                size = { -1 38 }
+                                visible = "[GetScriptedGui('oe_court_page_visible').IsShown(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                tooltip = "OE_UI2_SENATE_BTN_COURT_TT"
+                                onclick = "[GetScriptedGui('oe_nf_refresh_on_open').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                onclick = "[InternationalOrganizationsView.Vars.Set('organizations', 'oe_court')]"
+                                onclick = "[InternationalOrganizationsView.Vars.Set('oe_nf_open_family', '')]"
+                                onclick = "[GetScriptedGui('oe_nf_clear_territory_focus').Execute(GuiScope.SetRoot(InternationalOrganizationsView.GetPlayer.MakeScope).End)]"
+                                text_single = { parentanchor = center text = "OE_UI2_SENATE_BTN_COURT" fontsize = 14 }
+                            }
+                        }
+                    }
+                }
+            }
+            # [V136_W2A_SENATE_CARD_END]
         
         }
     }
@@ -2393,6 +2651,7 @@ size = { 152 132 }
                             text_single = {
                                 layoutpolicy_horizontal = expanding
                                 maximumsize = { 140 23 }
+                                elide = right
                                 fontsize = 16
                                 visible = "[Country.GetGovernment.HasRulerOrRegent]"
                                 text = "[Country.GetGovernment.GetRulerOrRegent.GetShortNameWithNoTooltip]"
@@ -2401,6 +2660,7 @@ size = { 152 132 }
                             text_single = {
                                 layoutpolicy_horizontal = expanding
                                 maximumsize = { 140 23 }
+                                elide = right
                                 fontsize = 16
                                 visible = "[Country.HasCapital]"
                                 text = "[Country.GetCapital.GetName]"
@@ -2433,25 +2693,31 @@ template oe_ui2_back_to_overview_bar {
                 visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_chronicle')]"
                 text = "OE_CHR_TITLE"
                 fontsize = 16
-                default_format = "#color_gold"
+                default_format = "#yellow_titles"
             }
             text_single = {
                 visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_reforms')]"
                 text = "OE_CHR_TAB_REFORMS"
                 fontsize = 16
-                default_format = "#color_gold"
+                default_format = "#yellow_titles"
             }
             text_single = {
                 visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_court')]"
                 text = "OE_COURT_TITLE"
                 fontsize = 16
-                default_format = "#color_gold"
+                default_format = "#yellow_titles"
             }
             text_single = {
                 visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'custom')]"
                 text = "OE_PILLARS_TRANSFERS"
                 fontsize = 16
-                default_format = "#color_gold"
+                default_format = "#yellow_titles"
+            }
+            text_single = {
+                visible = "[InternationalOrganizationsView.Vars.HasValue('organizations', 'oe_entropy')]"
+                text = "OE_ENT_UI_TITLE"
+                fontsize = 16
+                default_format = "#yellow_titles"
             }
         }
     }

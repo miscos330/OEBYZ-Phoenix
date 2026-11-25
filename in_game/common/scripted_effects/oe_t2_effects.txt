@@ -15,21 +15,36 @@ oe_t2_change_auth = {
 }
 
 # Location scope. Instantly constructs a free jurisdiction post matching $owner$'s subject type.
+# v26.0 WP11-2 Option 2A: Hub-only deployment (admin posts town/city only; others hub = capital/town/city).
 oe_t2_construct_matching_post = {
     if = {
-        limit = { $owner$ = { is_subject_type = oe_empire_theme_naval } }
-        construct_building = { building_type = building_type:oe_byz_theme_naval_post owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
-    }
-    else_if = {
         limit = { $owner$ = { is_subject_type = oe_empire_theme_administrative } }
-        construct_building = { building_type = building_type:oe_byz_theme_administrative_post owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        if = {
+            limit = { oe_theme_is_urban_hub = yes }
+            construct_building = { building_type = building_type:oe_byz_theme_administrative_post owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        }
     }
     else_if = {
-        limit = { $owner$ = { is_subject_type = oe_empire_theme_frontier } }
-        construct_building = { building_type = building_type:oe_byz_theme_frontier_post owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
-    }
-    else = {
-        construct_building = { building_type = building_type:oe_byz_theme_system owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        limit = { oe_theme_is_hub_location = yes }
+        if = {
+            limit = { $owner$ = { is_subject_type = oe_empire_theme_naval } }
+            construct_building = { building_type = building_type:oe_byz_theme_naval_post owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        }
+        else_if = {
+            limit = { $owner$ = { is_subject_type = oe_empire_theme_frontier } }
+            construct_building = { building_type = building_type:oe_byz_theme_frontier_post owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        }
+        else_if = {
+            limit = { $owner$ = { is_subject_type = oe_empire_theme_italian } }
+            construct_building = { building_type = building_type:oe_byz_theme_italian_post owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        }
+        else_if = {
+            limit = { $owner$ = { is_subject_type = oe_empire_theme_latin } }
+            construct_building = { building_type = building_type:oe_byz_theme_latin_post owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        }
+        else = {
+            construct_building = { building_type = building_type:oe_byz_theme_system owner = $owner$ instant = yes cost_multiplier = 0 cost_multiplier_reason = "game_concept_event" }
+        }
     }
 }
 
@@ -43,8 +58,8 @@ oe_t2_destroy_parent_post = {
     if = { limit = { has_building = building_type:oe_byz_theme_latin_post } destroy_building_forcefully = "building(building_type:oe_byz_theme_latin_post|scope:oe_t2_split_parent)" }
 }
 
-# Theme scope; scope:oe_t2_absorb_seat is the seat location of historical region $region_id$.
-# Co-administers historical region $region_id$ without altering the 39 region IDs (up to 3 absorbed slots).
+# Theme scope; scope:oe_t2_absorb_seat is the seat location of region $region_id$.
+# Co-administers region $region_id$ without altering the 79 region IDs (up to 6 absorbed slots).
 oe_t2_absorb_region_into_theme = {
     save_scope_as = oe_t2_absorber
     if = {
@@ -53,7 +68,7 @@ oe_t2_absorb_region_into_theme = {
         if = {
             limit = { exists = scope:oe_t2_absorb_seat }
             set_variable = { name = oe_t2_absorbed_seat value = scope:oe_t2_absorb_seat }
-            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center }
+            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
         }
         set_variable = { name = oe_t2_absorbed_count value = 1 }
     }
@@ -63,7 +78,7 @@ oe_t2_absorb_region_into_theme = {
         if = {
             limit = { exists = scope:oe_t2_absorb_seat }
             set_variable = { name = oe_t2_absorbed_seat_2 value = scope:oe_t2_absorb_seat }
-            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center }
+            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
         }
         set_variable = { name = oe_t2_absorbed_count value = 2 }
     }
@@ -73,31 +88,66 @@ oe_t2_absorb_region_into_theme = {
         if = {
             limit = { exists = scope:oe_t2_absorb_seat }
             set_variable = { name = oe_t2_absorbed_seat_3 value = scope:oe_t2_absorb_seat }
-            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center }
+            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
         }
         set_variable = { name = oe_t2_absorbed_count value = 3 }
     }
-    c:BYZ = {
-        every_owned_location = {
-            limit = {
-                var:oe_theme_region ?= $region_id$
-                NOT = { oe_theme_location_occupied_trigger = yes }
+    else_if = {
+        limit = { NOT = { has_variable = oe_t2_absorbed_region_4 } }
+        set_variable = { name = oe_t2_absorbed_region_4 value = $region_id$ }
+        if = {
+            limit = { exists = scope:oe_t2_absorb_seat }
+            set_variable = { name = oe_t2_absorbed_seat_4 value = scope:oe_t2_absorb_seat }
+            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
+        }
+        set_variable = { name = oe_t2_absorbed_count value = 4 }
+    }
+    else_if = {
+        limit = { NOT = { has_variable = oe_t2_absorbed_region_5 } }
+        set_variable = { name = oe_t2_absorbed_region_5 value = $region_id$ }
+        if = {
+            limit = { exists = scope:oe_t2_absorb_seat }
+            set_variable = { name = oe_t2_absorbed_seat_5 value = scope:oe_t2_absorb_seat }
+            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
+        }
+        set_variable = { name = oe_t2_absorbed_count value = 5 }
+    }
+    else_if = {
+        limit = { NOT = { has_variable = oe_t2_absorbed_region_6 } }
+        set_variable = { name = oe_t2_absorbed_region_6 value = $region_id$ }
+        if = {
+            limit = { exists = scope:oe_t2_absorb_seat }
+            set_variable = { name = oe_t2_absorbed_seat_6 value = scope:oe_t2_absorb_seat }
+            scope:oe_t2_absorb_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
+        }
+        set_variable = { name = oe_t2_absorbed_count value = 6 }
+    }
+    if = {
+        limit = { has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire }
+        global_var:oe_phoenix_empire = {
+            every_owned_location = {
+                limit = {
+                    var:oe_theme_region ?= $region_id$
+                    NOT = { oe_theme_location_occupied_trigger = yes }
+                }
+                oe_t2_construct_matching_post = { owner = scope:oe_t2_absorber }
             }
-            oe_t2_construct_matching_post = { owner = scope:oe_t2_absorber }
+            oe_theme_reconcile_occupied = yes
         }
     }
     set_variable = oe_theme_tiers_dirty
 }
 
-# BYZ scope; scope:recipient = minor theme to absorb, scope:target = receiving loyal theme.
+# BYZ/ROM scope; scope:recipient = minor theme to absorb, scope:target = receiving loyal theme.
 oe_t2_do_consolidate_theme = {
+    save_scope_as = oe_t2_overlord
     scope:recipient = {
         if = { limit = { exists = capital } capital = { save_scope_as = oe_t2_old_seat } }
         ruler ?= { save_scope_as = oe_t2_former_strat }
         save_scope_value_as = { name = oe_t2_xfer_gold value = oe_t2_half_gold }
         save_scope_value_as = { name = oe_t2_xfer_mp value = oe_t2_half_manpower }
         every_owned_foreign_building_location = {
-            limit = { has_owner = yes owner ?= c:BYZ }
+            limit = { oe_owned_by_phoenix_empire = yes }
             oe_t2_construct_matching_post = { owner = scope:target }
         }
         every_army = { change_unit_owner = scope:target }
@@ -115,7 +165,7 @@ oe_t2_do_consolidate_theme = {
             if = {
                 limit = { exists = scope:oe_t2_old_seat }
                 set_variable = { name = oe_t2_absorbed_seat value = scope:oe_t2_old_seat }
-                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center }
+                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
             }
             set_variable = { name = oe_t2_absorbed_count value = 1 }
         }
@@ -128,7 +178,7 @@ oe_t2_do_consolidate_theme = {
             if = {
                 limit = { exists = scope:oe_t2_old_seat }
                 set_variable = { name = oe_t2_absorbed_seat_2 value = scope:oe_t2_old_seat }
-                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center }
+                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
             }
             set_variable = { name = oe_t2_absorbed_count value = 2 }
         }
@@ -141,34 +191,116 @@ oe_t2_do_consolidate_theme = {
             if = {
                 limit = { exists = scope:oe_t2_old_seat }
                 set_variable = { name = oe_t2_absorbed_seat_3 value = scope:oe_t2_old_seat }
-                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center }
+                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
             }
             set_variable = { name = oe_t2_absorbed_count value = 3 }
+        }
+        else_if = {
+            limit = { NOT = { has_variable = oe_t2_absorbed_region_4 } }
+            if = {
+                limit = { scope:recipient = { has_variable = oe_theme_region_id } }
+                set_variable = { name = oe_t2_absorbed_region_4 value = scope:recipient.var:oe_theme_region_id }
+            }
+            if = {
+                limit = { exists = scope:oe_t2_old_seat }
+                set_variable = { name = oe_t2_absorbed_seat_4 value = scope:oe_t2_old_seat }
+                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
+            }
+            set_variable = { name = oe_t2_absorbed_count value = 4 }
+        }
+        else_if = {
+            limit = { NOT = { has_variable = oe_t2_absorbed_region_5 } }
+            if = {
+                limit = { scope:recipient = { has_variable = oe_theme_region_id } }
+                set_variable = { name = oe_t2_absorbed_region_5 value = scope:recipient.var:oe_theme_region_id }
+            }
+            if = {
+                limit = { exists = scope:oe_t2_old_seat }
+                set_variable = { name = oe_t2_absorbed_seat_5 value = scope:oe_t2_old_seat }
+                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
+            }
+            set_variable = { name = oe_t2_absorbed_count value = 5 }
+        }
+        else_if = {
+            limit = { NOT = { has_variable = oe_t2_absorbed_region_6 } }
+            if = {
+                limit = { scope:recipient = { has_variable = oe_theme_region_id } }
+                set_variable = { name = oe_t2_absorbed_region_6 value = scope:recipient.var:oe_theme_region_id }
+            }
+            if = {
+                limit = { exists = scope:oe_t2_old_seat }
+                set_variable = { name = oe_t2_absorbed_seat_6 value = scope:oe_t2_old_seat }
+                scope:oe_t2_old_seat = { set_variable = oe_t2_merged_center set_variable = oe_theme_region_occupied }
+            }
+            set_variable = { name = oe_t2_absorbed_count value = 6 }
         }
         set_variable = oe_theme_tiers_dirty
     }
     scope:oe_t2_former_strat ?= {
         if = {
             limit = { is_alive = yes }
-            move_country = c:BYZ
+            move_country = scope:oe_t2_overlord
             reset_ruler_title = {}
         }
     }
-    c:BYZ = {
+    scope:oe_t2_overlord = {
         annex_country = { country = scope:recipient reason = Diplomatic transfer = yes }
+        oe_theme_reconcile_occupied = yes
+        oe_theme_empire_sync_caps = yes
     }
 }
 
-# Theme scope (the co-administering parent theme). LIFO-splits off its most recently absorbed historical region.
+# Theme scope (the co-administering parent theme). LIFO-splits off its most recently absorbed region (up to 6 slots).
 oe_t2_do_split_theme = {
     save_scope_as = oe_t2_split_parent
     if = {
+        limit = { has_variable = oe_t2_absorbed_region_6 has_variable = oe_t2_absorbed_seat_6 }
+        var:oe_t2_absorbed_seat_6 = { save_scope_as = oe_t2_split_seat }
+        every_owned_foreign_building_location = {
+            limit = {
+                oe_owned_by_phoenix_empire = yes
+                var:oe_theme_region ?= scope:oe_t2_split_parent.var:oe_t2_absorbed_region_6
+            }
+            oe_t2_destroy_parent_post = yes
+        }
+        remove_variable = oe_t2_absorbed_region_6
+        remove_variable = oe_t2_absorbed_seat_6
+        set_variable = { name = oe_t2_absorbed_count value = 5 }
+    }
+    else_if = {
+        limit = { has_variable = oe_t2_absorbed_region_5 has_variable = oe_t2_absorbed_seat_5 }
+        var:oe_t2_absorbed_seat_5 = { save_scope_as = oe_t2_split_seat }
+        every_owned_foreign_building_location = {
+            limit = {
+                oe_owned_by_phoenix_empire = yes
+                var:oe_theme_region ?= scope:oe_t2_split_parent.var:oe_t2_absorbed_region_5
+            }
+            oe_t2_destroy_parent_post = yes
+        }
+        remove_variable = oe_t2_absorbed_region_5
+        remove_variable = oe_t2_absorbed_seat_5
+        set_variable = { name = oe_t2_absorbed_count value = 4 }
+    }
+    else_if = {
+        limit = { has_variable = oe_t2_absorbed_region_4 has_variable = oe_t2_absorbed_seat_4 }
+        var:oe_t2_absorbed_seat_4 = { save_scope_as = oe_t2_split_seat }
+        every_owned_foreign_building_location = {
+            limit = {
+                oe_owned_by_phoenix_empire = yes
+                var:oe_theme_region ?= scope:oe_t2_split_parent.var:oe_t2_absorbed_region_4
+            }
+            oe_t2_destroy_parent_post = yes
+        }
+        remove_variable = oe_t2_absorbed_region_4
+        remove_variable = oe_t2_absorbed_seat_4
+        set_variable = { name = oe_t2_absorbed_count value = 3 }
+    }
+    else_if = {
         limit = { has_variable = oe_t2_absorbed_region_3 has_variable = oe_t2_absorbed_seat_3 }
         var:oe_t2_absorbed_seat_3 = { save_scope_as = oe_t2_split_seat }
         every_owned_foreign_building_location = {
             limit = {
-                has_owner = yes
-                owner ?= c:BYZ
+                oe_owned_by_phoenix_empire = yes
                 var:oe_theme_region ?= scope:oe_t2_split_parent.var:oe_t2_absorbed_region_3
             }
             oe_t2_destroy_parent_post = yes
@@ -176,27 +308,13 @@ oe_t2_do_split_theme = {
         remove_variable = oe_t2_absorbed_region_3
         remove_variable = oe_t2_absorbed_seat_3
         set_variable = { name = oe_t2_absorbed_count value = 2 }
-        oe_ts_recent_loy = { amount = 5 }
-        set_variable = oe_theme_tiers_dirty
-        if = {
-            limit = { exists = scope:oe_t2_split_seat }
-            scope:oe_t2_split_seat = {
-                remove_variable = oe_t2_merged_center
-                if = {
-                    limit = { has_owner = yes owner ?= c:BYZ }
-                    save_scope_as = oe_theme_seat
-                    c:BYZ = { oe_theme_found_at_seat = yes }
-                }
-            }
-        }
     }
     else_if = {
         limit = { has_variable = oe_t2_absorbed_region_2 has_variable = oe_t2_absorbed_seat_2 }
         var:oe_t2_absorbed_seat_2 = { save_scope_as = oe_t2_split_seat }
         every_owned_foreign_building_location = {
             limit = {
-                has_owner = yes
-                owner ?= c:BYZ
+                oe_owned_by_phoenix_empire = yes
                 var:oe_theme_region ?= scope:oe_t2_split_parent.var:oe_t2_absorbed_region_2
             }
             oe_t2_destroy_parent_post = yes
@@ -204,27 +322,13 @@ oe_t2_do_split_theme = {
         remove_variable = oe_t2_absorbed_region_2
         remove_variable = oe_t2_absorbed_seat_2
         set_variable = { name = oe_t2_absorbed_count value = 1 }
-        oe_ts_recent_loy = { amount = 5 }
-        set_variable = oe_theme_tiers_dirty
-        if = {
-            limit = { exists = scope:oe_t2_split_seat }
-            scope:oe_t2_split_seat = {
-                remove_variable = oe_t2_merged_center
-                if = {
-                    limit = { has_owner = yes owner ?= c:BYZ }
-                    save_scope_as = oe_theme_seat
-                    c:BYZ = { oe_theme_found_at_seat = yes }
-                }
-            }
-        }
     }
     else_if = {
         limit = { has_variable = oe_t2_absorbed_region has_variable = oe_t2_absorbed_seat }
         var:oe_t2_absorbed_seat = { save_scope_as = oe_t2_split_seat }
         every_owned_foreign_building_location = {
             limit = {
-                has_owner = yes
-                owner ?= c:BYZ
+                oe_owned_by_phoenix_empire = yes
                 var:oe_theme_region ?= scope:oe_t2_split_parent.var:oe_t2_absorbed_region
             }
             oe_t2_destroy_parent_post = yes
@@ -232,28 +336,34 @@ oe_t2_do_split_theme = {
         remove_variable = oe_t2_absorbed_region
         remove_variable = oe_t2_absorbed_seat
         if = { limit = { has_variable = oe_t2_absorbed_count } remove_variable = oe_t2_absorbed_count }
+    }
+    if = {
+        limit = { exists = scope:oe_t2_split_seat }
         oe_ts_recent_loy = { amount = 5 }
         set_variable = oe_theme_tiers_dirty
-        if = {
-            limit = { exists = scope:oe_t2_split_seat }
-            scope:oe_t2_split_seat = {
-                remove_variable = oe_t2_merged_center
-                if = {
-                    limit = { has_owner = yes owner ?= c:BYZ }
-                    save_scope_as = oe_theme_seat
-                    c:BYZ = { oe_theme_found_at_seat = yes }
+        scope:oe_t2_split_seat = {
+            if = { limit = { has_variable = oe_t2_merged_center } remove_variable = oe_t2_merged_center }
+            if = { limit = { has_variable = oe_theme_region_occupied } remove_variable = oe_theme_region_occupied }
+            if = {
+                limit = { oe_owned_by_phoenix_empire = yes has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire }
+                save_scope_as = oe_theme_seat
+                global_var:oe_phoenix_empire = {
+                    oe_theme_found_at_seat = yes
+                    oe_theme_reconcile_occupied = yes
+                    oe_theme_empire_sync_caps = yes
                 }
             }
         }
     }
 }
 
-# BYZ scope; scope:recipient & scope:target are two themes swapping their Strategoi cleanly.
+# BYZ/ROM scope; scope:recipient & scope:target are two themes swapping their Strategoi cleanly.
 oe_t2_do_rotate_strategoi = {
+    save_scope_as = oe_t2_overlord
     scope:recipient = { ruler = { save_scope_as = oe_t2_gen_a } }
     scope:target = { ruler = { save_scope_as = oe_t2_gen_b } }
-    scope:oe_t2_gen_a = { move_country = c:BYZ }
-    scope:oe_t2_gen_b = { move_country = c:BYZ }
+    scope:oe_t2_gen_a = { move_country = scope:oe_t2_overlord }
+    scope:oe_t2_gen_b = { move_country = scope:oe_t2_overlord }
     scope:oe_t2_gen_a = { move_country = scope:target }
     scope:target = { set_new_ruler = scope:oe_t2_gen_a }
     scope:oe_t2_gen_b = { move_country = scope:recipient }
@@ -405,8 +515,9 @@ oe_t2_crisis_monthly = {
             var:oe_theme_loyalty < 35
             NOT = { has_variable = oe_t2_crisis_cd }
             NOT = { has_variable = oe_theme_revolt_now }
-            country_exists = c:BYZ
-            c:BYZ = {
+            has_global_variable = oe_phoenix_empire
+            exists = global_var:oe_phoenix_empire
+            global_var:oe_phoenix_empire = {
                 is_rebel_country = no
                 NOT = { has_variable = oe_t2_crisis_global_cd }
             }
@@ -415,12 +526,12 @@ oe_t2_crisis_monthly = {
         set_variable = { name = oe_t2_crisis_cd years = 8 }
         if = {
             limit = {
-                c:BYZ = {
+                global_var:oe_phoenix_empire = {
                     NOT = { has_variable = oe_t2_petition_cd }
                     oe_t2_restless_theme_count >= 2
                 }
             }
-            c:BYZ = {
+            global_var:oe_phoenix_empire = {
                 set_variable = { name = oe_t2_petition_cd years = 8 }
                 set_variable = { name = oe_t2_crisis_global_cd months = 12 }
                 set_variable = { name = oe_t2_crisis_theme value = scope:oe_t2_crisis_lead }
@@ -428,7 +539,7 @@ oe_t2_crisis_monthly = {
             }
         }
         else = {
-            c:BYZ = {
+            global_var:oe_phoenix_empire = {
                 set_variable = { name = oe_t2_crisis_global_cd months = 12 }
                 set_variable = { name = oe_t2_crisis_theme value = scope:oe_t2_crisis_lead }
                 trigger_event_non_silently = oe_t2_crisis.1
@@ -437,8 +548,9 @@ oe_t2_crisis_monthly = {
     }
 }
 
-# BYZ scope. Imperial Guard purge success / failure helpers for oe_t2_crisis.1 Option A.
+# BYZ/ROM scope. Imperial Guard purge success / failure helpers for oe_t2_crisis.1 Option A.
 oe_t2_crisis_purge_win = {
+    save_scope_as = oe_t2_overlord
     var:oe_t2_crisis_theme ?= {
         oe_ts_replace_strategos = yes
         set_variable = { name = oe_theme_tenure value = 0 }
@@ -450,7 +562,7 @@ oe_t2_crisis_purge_win = {
         oe_tg_refresh_house = yes
     }
     every_subject = {
-        limit = { oe_theme_member_trigger = yes NOT = { this = c:BYZ.var:oe_t2_crisis_theme } }
+        limit = { oe_theme_member_trigger = yes NOT = { this = scope:oe_t2_overlord.var:oe_t2_crisis_theme } }
         oe_ts_recent_loy = { amount = 5 }
     }
 }
@@ -462,13 +574,14 @@ oe_t2_crisis_purge_fail = {
     }
 }
 
-# BYZ scope. Loyal neighbour crackdown + rebel estate confiscation for oe_t2_crisis.1 Option C.
+# BYZ/ROM scope. Loyal neighbour crackdown + rebel estate confiscation for oe_t2_crisis.1 Option C.
 oe_t2_crisis_neighbor_crackdown = {
+    save_scope_as = oe_t2_overlord
     var:oe_t2_crisis_theme ?= {
         if = {
             limit = { oe_tg_house_born = yes }
             oe_ti_house_inf = { amount = -80 }
-            c:BYZ = {
+            scope:oe_t2_overlord = {
                 add_gold = 250
                 set_variable = oe_t2_confiscated_house
             }

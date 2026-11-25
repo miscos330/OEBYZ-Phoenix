@@ -1,0 +1,77 @@
+﻿# NEW 2026-11-25 v27.0 WP19 Wanfang Phase 2 (oe_wf2_, gen_v270_wanfang_p2.py) — Wokou Native Disaster, Yellow River & Grand Canal Huai'an, 10 Vaulted Reforms/Privileges & Osmanli Rome (0 vanilla overrides, 0 edits to existing files, 100% O(1), R31 & G_ELR_ISOLATION compliant). Edit gen_v270_wanfang_p2.py, not this file.
+
+# WP19-2: Appoint Chief Hydraulic Commissioner (Pan Jixun's Confine-Water School)
+oe_wf2_dec_appoint_river_commissioner = {
+	decision_category = country_specific_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		oe_wf2_is_yellow_river_steward = yes
+		current_year >= 1450
+	}
+	allow = {
+		NOT = { has_variable = oe_wf2_river_comm_cd }
+		gold >= 100
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				gold >= 180
+				OR = {
+					has_country_modifier = oe_wf2_mod_river_neglect_crisis
+					NOT = { has_country_modifier = oe_wf2_mod_shushui_gongsha }
+				}
+			}
+			add = 65
+		}
+	}
+	illustration_tags = { 10 = exterior }
+	option = {
+		name = oe_wf2_dec_appoint_river_commissioner.a
+		ai_chance = { value = 100 }
+		effect = {
+			add_gold = -100
+			set_variable = { name = oe_wf2_river_comm_cd value = 1 years = 15 }
+			oe_wf2_add_river_readiness = { amount = 25 }
+			if = {
+				limit = { has_country_modifier = oe_wf2_mod_river_neglect_crisis }
+				remove_country_modifier = oe_wf2_mod_river_neglect_crisis
+			}
+			trigger_event_non_silently = oe_wf2_yr.6
+		}
+	}
+}
+
+# WP19-5: Optional Alt-History Easter Egg — Proclaim Osmanli Rome (TUR only, AI weight 0 so historical AI never derails)
+oe_wf2_dec_proclaim_osmanli_rome = {
+	decision_category = country_specific_decisions
+	hide_repeatable_tag = yes
+	potential = {
+		oe_main_mod_old_world_event_allowed = yes
+		is_rebel_country = no
+		tag = TUR
+		NOT = { tag = BYZ }
+		current_year >= 1453
+		owns = location:constantinople
+		owns = location:rome
+		NOT = { has_variable = oe_wf2_osmanli_rome_started }
+	}
+	allow = {
+		oe_wf2_is_osmanli_rome_eligible = yes
+		stability >= 15
+		gold >= 200
+	}
+	ai_will_do = {
+		value = 0
+	}
+	illustration_tags = { 10 = interior }
+	option = {
+		name = oe_wf2_dec_proclaim_osmanli_rome.a
+		ai_chance = { value = 100 }
+		effect = {
+			add_gold = -200
+			set_variable = { name = oe_wf2_osmanli_rome_started value = 1 }
+			trigger_event_non_silently = oe_wf2_osmanli.1
+		}
+	}
+}

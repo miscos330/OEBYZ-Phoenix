@@ -22,6 +22,21 @@ oe_lat_active_tiers_val = {
 	if = { limit = { oe_lat_has_fief_tier_5 = yes } add = 1 }
 }
 
+# Country scope. Scaled gold costs for Frankokratia situation actions (bounded for small baronies & large empires).
+oe_lat_action_gold_small = {
+	value = monthly_income_trade_and_tax
+	multiply = 2.5
+	min = 25
+	max = 350
+}
+
+oe_lat_action_gold_med = {
+	value = monthly_income_trade_and_tax
+	multiply = 4
+	min = 40
+	max = 500
+}
+
 # Global/Situation scope. Computed Latin Ascendancy Index (0..100) across the Aegean & Straits.
 oe_lat_latin_index_val = {
 	value = 40
@@ -70,12 +85,24 @@ oe_lat_latin_index_val = {
 		add = 10
 	}
 	if = {
+		limit = { location:constantinople ?= { has_owner = yes owner = { oe_lat_sit_byz_bloc = yes } } }
+		add = -10
+	}
+	if = {
+		limit = { location:thessaloniki ?= { has_owner = yes owner = { oe_lat_sit_byz_bloc = yes } } }
+		add = -6
+	}
+	if = {
 		limit = { location:constantinople ?= { has_owner = yes owner = { oe_lat_sit_turkish_bloc = yes } } }
 		add = -16
 	}
 	if = {
 		limit = { location:thessaloniki ?= { has_owner = yes owner = { oe_lat_sit_turkish_bloc = yes } } }
 		add = -8
+	}
+	if = {
+		limit = { has_global_variable = oe_lat_sit_action_shift }
+		add = global_var:oe_lat_sit_action_shift
 	}
 	min = 0
 	max = 100

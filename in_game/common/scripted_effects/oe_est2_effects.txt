@@ -255,9 +255,12 @@ oe_est2_country_yearly = {
 		oe_est2_mobilize_estate_regiment = yes
 	}
 
-	# Event dispatch (18-month per-country cooldown to prevent popup fatigue; all 16 events reachable).
+	# Event dispatch (18-month per-country cooldown + global flavor throttle; blocks Act I/II ELR isolation).
 	if = {
-		limit = { NOT = { has_variable = oe_est2_ev_cd } }
+		limit = {
+			oe_main_mod_global_event_allowed = yes
+			NOT = { has_variable = oe_est2_ev_cd }
+		}
 
 		# .1 Magnate Private Banners Mustered
 		if = {
@@ -265,6 +268,8 @@ oe_est2_country_yearly = {
 				NOT = { has_variable = oe_est2_ev_1_done }
 				country_type = location
 				country_has_estate = estate_type:nobles_estate
+				num_locations >= 25
+				oe_years_since_start >= 15
 				OR = {
 					oe_est2_has_restless_armed_estate = yes
 					current_year >= 1348
@@ -272,6 +277,7 @@ oe_est2_country_yearly = {
 			}
 			set_variable = { name = oe_est2_ev_1_done value = 1 }
 			set_variable = { name = oe_est2_ev_cd value = 1 months = 18 }
+			oe_mark_player_global_flavor_cd = yes
 			trigger_event_non_silently = oe_est2.1
 		}
 		# .2 Sengoku Shugo & Samurai Retainer Standoff
@@ -317,6 +323,8 @@ oe_est2_country_yearly = {
 			limit = {
 				NOT = { has_variable = oe_est2_ev_5_done }
 				country_type = location
+				num_locations >= 25
+				oe_years_since_start >= 15
 				stability >= 8
 				OR = {
 					has_variable = oe_est2_private_levies_active
@@ -393,6 +401,7 @@ oe_est2_country_yearly = {
 		else_if = {
 			limit = {
 				NOT = { has_variable = oe_est2_ev_10_done }
+				oe_years_since_start >= 15
 				OR = {
 					num_loans >= 3
 					is_during_bankruptcy = yes
@@ -408,6 +417,7 @@ oe_est2_country_yearly = {
 		else_if = {
 			limit = {
 				NOT = { has_variable = oe_est2_ev_11_done }
+				oe_years_since_start >= 15
 				OR = {
 					has_variable = oe_est2_ev_10_done
 					current_year >= 1530

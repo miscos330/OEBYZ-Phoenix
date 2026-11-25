@@ -20,27 +20,52 @@
 oe_yn_tiers = {
 	icon = "gfx/interface/icons/map_modes/provinces.dds"
 	map_color = {
-		# the Yuan's own land inside a branch secretariat: v14.5 regional Tier 3/2/1/0 location modifiers
+		# WP13 PERF-3: color directly from var:oe_yp_unit + secretariat country var:oe_yp_tier (ZERO dependency on 1,797 rebuilt location modifiers!)
 		if = {
-			limit = { country_exists = c:CHI owner ?= c:CHI has_variable = oe_yp_unit }
+			limit = { country_exists = c:CHI owner ?= c:CHI has_variable = oe_yp_unit var:oe_yp_unit >= 2 }
 			if = {
 				limit = {
 					OR = {
-						has_location_modifier = oe_yp_tier_loyal
-						has_location_modifier = oe_yp_prof_wealth_t3
-						has_location_modifier = oe_yp_prof_front_t3
-						has_location_modifier = oe_yp_prof_fortress_t3
-						has_location_modifier = oe_yp_prof_frontier_t3
+						AND = { var:oe_yp_unit ?= 2 country_exists = c:YHN c:YHN = { var:oe_yp_tier ?= 3 } }
+						AND = { var:oe_yp_unit ?= 3 country_exists = c:YJZ c:YJZ = { var:oe_yp_tier ?= 3 } }
+						AND = { var:oe_yp_unit ?= 4 country_exists = c:YJX c:YJX = { var:oe_yp_tier ?= 3 } }
+						AND = { var:oe_yp_unit ?= 5 country_exists = c:YHG c:YHG = { var:oe_yp_tier ?= 3 } }
+						AND = { var:oe_yp_unit ?= 6 country_exists = c:YSX c:YSX = { var:oe_yp_tier ?= 3 } }
+						AND = { var:oe_yp_unit ?= 7 country_exists = c:YSC c:YSC = { var:oe_yp_tier ?= 3 } }
 					}
 				}
 				value = rgb { 70 150 90 }
 			}
-			else_if = { limit = { has_location_modifier = oe_yp_tier_lax } value = rgb { 214 150 60 } }
-			else_if = { limit = { has_location_modifier = oe_yp_tier_estranged } value = rgb { 190 60 50 } }
+			else_if = {
+				limit = {
+					OR = {
+						AND = { var:oe_yp_unit ?= 2 country_exists = c:YHN c:YHN = { var:oe_yp_tier ?= 1 } }
+						AND = { var:oe_yp_unit ?= 3 country_exists = c:YJZ c:YJZ = { var:oe_yp_tier ?= 1 } }
+						AND = { var:oe_yp_unit ?= 4 country_exists = c:YJX c:YJX = { var:oe_yp_tier ?= 1 } }
+						AND = { var:oe_yp_unit ?= 5 country_exists = c:YHG c:YHG = { var:oe_yp_tier ?= 1 } }
+						AND = { var:oe_yp_unit ?= 6 country_exists = c:YSX c:YSX = { var:oe_yp_tier ?= 1 } }
+						AND = { var:oe_yp_unit ?= 7 country_exists = c:YSC c:YSC = { var:oe_yp_tier ?= 1 } }
+					}
+				}
+				value = rgb { 214 150 60 }
+			}
+			else_if = {
+				limit = {
+					OR = {
+						AND = { var:oe_yp_unit ?= 2 country_exists = c:YHN c:YHN = { var:oe_yp_tier ?= 0 } }
+						AND = { var:oe_yp_unit ?= 3 country_exists = c:YJZ c:YJZ = { var:oe_yp_tier ?= 0 } }
+						AND = { var:oe_yp_unit ?= 4 country_exists = c:YJX c:YJX = { var:oe_yp_tier ?= 0 } }
+						AND = { var:oe_yp_unit ?= 5 country_exists = c:YHG c:YHG = { var:oe_yp_tier ?= 0 } }
+						AND = { var:oe_yp_unit ?= 6 country_exists = c:YSX c:YSX = { var:oe_yp_tier ?= 0 } }
+						AND = { var:oe_yp_unit ?= 7 country_exists = c:YSC c:YSC = { var:oe_yp_tier ?= 0 } }
+					}
+				}
+				value = rgb { 190 60 50 }
+			}
 			else = { value = rgb { 170 160 120 } }
 		}
 		else_if = {
-			limit = { country_exists = c:CHI owner ?= { is_subject_of = c:CHI OR = { is_subject_type = oe_yp_frontier tag = KOR } } }
+			limit = { country_exists = c:CHI owner ?= { is_subject_of = c:CHI OR = { is_subject_type = oe_yp_frontier tag = LNG tag = KOR } } }
 			if = { limit = { owner = { var:oe_yp_tier ?= 3 } } value = rgb { 70 150 90 } }
 			else_if = { limit = { owner = { var:oe_yp_tier ?= 1 } } value = rgb { 214 150 60 } }
 			else_if = { limit = { owner = { var:oe_yp_tier ?= 0 } } value = rgb { 190 60 50 } }

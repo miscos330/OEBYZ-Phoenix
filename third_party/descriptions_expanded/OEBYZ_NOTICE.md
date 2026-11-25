@@ -10,7 +10,6 @@ Byte-identical copies of version 1.2.3 (SHA-256):
 
 - `in_game/common/customizable_localization/lde_history_entries.txt` `8078b8b16c82e9101305446490aca7a6ff6d838709ba37a750c59f0f4e45486f`
 - `in_game/localization/simp_chinese/lde_history_entries_l_simp_chinese.yml` `ef6b9f980ac86953bb84a3a9c597b2e4aacd2438b930bddb134130283672ee5b`
-- `in_game/localization/simp_chinese/replace/lde_history_entries_replace_l_simp_chinese.yml` `ee2c2fbce3d7c5b13a0b3b80550e8588a998ea15fd4ccfda70147e6db1a33ea2`
 - `in_game/localization/english/replace/lde_history_entries_replace_l_english.yml` `bef0c846b82f1928a9c824ee96fd293dd595daec55cfb1c8ec97ef8dbebb2c03`
 - `LICENSE` `98d215b1d5affaf6e75e6e1d7b2df3b945b5dfd3479ad700d5c2807dd08609ea`
 - `LICENSES/CC-BY-SA-4.0.txt` `091d08965bb70d444daccb62c5bcc4345cd4d6a65267da1f06564c95d25d9abb`
@@ -24,6 +23,9 @@ Byte-identical copies of version 1.2.3 (SHA-256):
 
 - `in_game/localization/english/lde_history_entries_l_english.yml` (upstream SHA-256 `71f7df07dfeb0baede6419852cf1271b47d557dc4c4400f04b290d7d077e4d4b`):
   removed one stray CJK string in `lde_dyn_takou_dynasty` so the English localization file contains zero CJK characters;
+  all other lines are unchanged from version 1.2.3.
+- `in_game/localization/simp_chinese/replace/lde_history_entries_replace_l_simp_chinese.yml` (upstream SHA-256 `ee2c2fbce3d7c5b13a0b3b80550e8588a998ea15fd4ccfda70147e6db1a33ea2`):
+  aligned two invalid god references (`chaac_god` and `dzahui_god`) to `tlaloc_god` matching the English replace file and EU5 1.4.9 god database;
   all other lines are unchanged from version 1.2.3.
 - `in_game/gui/zz_lde_history_tooltips.gui`: the country, culture and dynasty tooltips first show Phoenix's own text
   for the object when there is one, otherwise the Descriptions Expanded text as before. Nothing else in the file is changed.

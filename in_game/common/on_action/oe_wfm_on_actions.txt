@@ -1,0 +1,139 @@
+﻿# NEW 2026-11-24 v26.1 WP15-3 Ming Historical Gap Arcs & 15 Curated East Asian Landmarks (oe_wfm_, gen_v261_wanfang_ming_landmarks.py) — 0 vanilla overrides, 0 oe_pmng overlap, G09/G12/G_ELR_ISOLATION compliant. Edit gen_v261_wanfang_ming_landmarks.py, not this file.
+
+yearly_country_pulse = {
+	on_actions = {
+		oe_wfm_yearly_pulse
+	}
+}
+
+oe_wfm_yearly_pulse = {
+	trigger = {
+		tag = MNG
+		is_rebel_country = no
+		NOT = { oe_is_fourth_rome_exile_country = yes }
+		num_locations > 0
+		current_year >= 1370
+		current_year <= 1625
+		NOT = { has_variable = oe_wfm_pulse_cd }
+	}
+	effect = {
+		# Arc 1 (1337 Ming-rise only, skipped cleanly in 1453+ starts): Hongwu Border Princes -> Jianwen -> Jingnan -> Fang Xiaoru
+		if = {
+			limit = {
+				NOT = { has_global_variable = oe_alt_era_start }
+				NOT = { has_variable = oe_wfm_ev1_done }
+				current_year >= 1370
+				current_year <= 1405
+			}
+			set_variable = { name = oe_wfm_ev1_done value = 1 }
+			set_variable = { name = oe_wfm_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wfm.1
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_alt_era_start }
+				has_variable = oe_wfm_ev1_done
+				NOT = { has_variable = oe_wfm_ev2_done }
+				current_year >= 1396
+				current_year <= 1418
+			}
+			set_variable = { name = oe_wfm_ev2_done value = 1 }
+			set_variable = { name = oe_wfm_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wfm.2
+		}
+		# Arc 2 (1337 Ming-rise only, skipped cleanly in 1453+ starts): Renxuan Governance & Grand Coordinators
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_alt_era_start }
+				NOT = { has_variable = oe_wfm_ev5_done }
+				current_year >= 1424
+				current_year <= 1448
+			}
+			set_variable = { name = oe_wfm_ev5_done value = 1 }
+			set_variable = { name = oe_wfm_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wfm.5
+		}
+		# Arc 3a (1337 Ming-rise, 1445-1458): 1449 Tumu Crisis when steppe frontier pressure exists
+		else_if = {
+			limit = {
+				NOT = { has_global_variable = oe_alt_era_start }
+				NOT = { has_variable = oe_wfm_ev7_done }
+				current_year >= 1445
+				current_year <= 1458
+				owns = location:dadu
+				OR = {
+					country_exists = c:OIR
+					country_exists = c:KHA
+					country_exists = c:YUA
+					country_exists = c:CHI
+					at_war = yes
+				}
+			}
+			set_variable = { name = oe_wfm_ev7_done value = 1 }
+			set_variable = { name = oe_wfm_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wfm.7
+		}
+		# Arc 3b (1453 Jingtai start OR post-Tumu 1337 saves, 1449-1456): Yu Qian's Defense of Beijing & Training Camps
+		else_if = {
+			limit = {
+				NOT = { has_variable = oe_wfm_ev8_done }
+				current_year >= 1449
+				current_year <= 1456
+				owns = location:dadu
+				OR = {
+					has_global_variable = oe_alt_era_start
+					has_variable = oe_wfm_ev7_done
+					current_year >= 1453
+				}
+			}
+			set_variable = { name = oe_wfm_ev8_done value = 1 }
+			set_variable = { name = oe_wfm_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wfm.8
+		}
+		# Arc 3c (BOTH 1337 and 1453, 1457-1464): 1457 Duomen Coup -> chains to oe_wfm.11 (Immolation Abolition & Martial Exams)
+		else_if = {
+			limit = {
+				NOT = { has_variable = oe_wfm_ev10_done }
+				current_year >= 1457
+				current_year <= 1464
+				owns = location:dadu
+			}
+			set_variable = { name = oe_wfm_ev10_done value = 1 }
+			set_variable = { name = oe_wfm_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wfm.10
+		}
+		# Arc 4 (BOTH 1337 and 1453, 1538-1568): Southeast Wokou Contraband & Coastal Crisis chain
+		else_if = {
+			limit = {
+				NOT = { has_variable = oe_wfm_ev12_done }
+				current_year >= 1538
+				current_year <= 1568
+				OR = {
+					owns = location:hangzhou
+					owns = location:jinjiang
+					owns = location:shangyuan
+					owns = location:guangzhou
+				}
+			}
+			set_variable = { name = oe_wfm_ev12_done value = 1 }
+			set_variable = { name = oe_wfm_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wfm.12
+		}
+		# Arc 5 (BOTH 1337 and 1453, 1520-1620): Yellow River Captures the Huai -> Pan Jixun's Hydraulics
+		else_if = {
+			limit = {
+				NOT = { has_variable = oe_wfm_ev16_done }
+				current_year >= 1520
+				current_year <= 1620
+				OR = {
+					owns = location:shangyuan
+					owns = location:dadu
+					owns = location:qufu
+				}
+			}
+			set_variable = { name = oe_wfm_ev16_done value = 1 }
+			set_variable = { name = oe_wfm_pulse_cd value = 1 years = 2 }
+			trigger_event_non_silently = oe_wfm.16
+		}
+	}
+}

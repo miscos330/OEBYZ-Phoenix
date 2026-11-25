@@ -387,12 +387,15 @@ oe_alb_spawn_sk = {
         limit = { oe_alb_kruje_w6_ok = yes }
         location:kruje = {
             owner = { save_scope_as = oe_alb_sk_old }
-            create_country_from_location = {
-                save_scope_as = oe_alb_sk_new
-                change_government_type = government_type:monarchy
-                change_country_type = location
-                change_religion = religion:orthodox
-                change_culture = culture:albanian
+            if = {
+            	limit = { has_owner = yes }
+	            create_country_from_location = {
+	                save_scope_as = oe_alb_sk_new
+	                change_government_type = government_type:monarchy
+	                change_country_type = location
+	                change_religion = religion:orthodox
+	                change_culture = culture:albanian
+	            }
             }
         }
         if = {
@@ -961,7 +964,7 @@ oe_alb_test_assim = {
                 multiply = oe_rw_assim_albania_source_share
                 if = { limit = { oe_rw_albania_origin_ge50 = yes } add = 10000000 }
                 if = { limit = { this = location:durres } add = 1000000 }
-                if = { limit = { owner = c:BYZ } add = 100000000 }
+                if = { limit = { owner ?= c:BYZ } add = 100000000 }
             }
             save_scope_as = oe_alb_as_top
         }

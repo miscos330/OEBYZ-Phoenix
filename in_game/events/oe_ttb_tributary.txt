@@ -8,7 +8,7 @@ oe_ttb.1 = { # 新的朝贡国
     image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
     title = oe_ttb.1.t
     desc = { first_valid = { triggered_desc = { trigger = { current_date < 1356.1.1 } desc = oe_ttb.1.d_pre } desc = oe_ttb.1.d } }
-    trigger = { tag = BYZ any_subject = { has_variable = oe_ttb_q_invest } }
+    trigger = { is_rebel_country = no tag = BYZ any_subject = { has_variable = oe_ttb_q_invest } }
     immediate = { random_subject = { limit = { has_variable = oe_ttb_q_invest } save_scope_as = oe_ttb_ev_trib } scope:oe_ttb_ev_trib ?= { remove_variable = oe_ttb_q_invest } if = { limit = { exists = scope:oe_ttb_ev_trib } set_variable = { name = oe_tw_grant_target value = scope:oe_ttb_ev_trib } } }
     option = {
         name = oe_ttb.1.a
@@ -38,7 +38,7 @@ oe_ttb.2 = { # 朝贡国请为同盟
     image = "gfx/interface/illustrations/government/geopolitics_expansion_illustration.dds"
     title = oe_ttb.2.t
     desc = oe_ttb.2.d
-    trigger = { tag = BYZ any_subject = { has_variable = oe_ttb_q_promote } }
+    trigger = { is_rebel_country = no tag = BYZ any_subject = { has_variable = oe_ttb_q_promote } }
     immediate = { random_subject = { limit = { has_variable = oe_ttb_q_promote } save_scope_as = oe_ttb_ev_trib } scope:oe_ttb_ev_trib ?= { remove_variable = oe_ttb_q_promote } }
     option = {
         name = oe_ttb.2.a
@@ -62,7 +62,7 @@ oe_ttb.3 = { # 宗主名分
     image = "gfx/interface/illustrations/events/oe_ev_byz_senate_consistorium.dds"
     title = oe_ttb.3.t
     desc = { first_valid = { triggered_desc = { trigger = { current_date < 1356.1.1 } desc = oe_ttb.3.d_pre } desc = oe_ttb.3.d } }
-    trigger = { tag = BYZ has_variable = oe_ttb_q_gain }
+    trigger = { is_rebel_country = no tag = BYZ has_variable = oe_ttb_q_gain }
     immediate = { remove_variable = oe_ttb_q_gain }
     option = {
         name = oe_ttb.3.a
@@ -78,7 +78,7 @@ oe_ttb.4 = { # 宗主名分旁落
     image = "gfx/interface/illustrations/disaster/decline_of_empire.dds"
     title = oe_ttb.4.t
     desc = oe_ttb.4.d
-    trigger = { tag = BYZ has_variable = oe_ttb_q_lost }
+    trigger = { is_rebel_country = no tag = BYZ has_variable = oe_ttb_q_lost }
     immediate = { remove_variable = oe_ttb_q_lost }
     option = {
         name = oe_ttb.4.a
@@ -94,7 +94,7 @@ oe_ttb.5 = { # 岁币换来停战
     image = "gfx/interface/illustrations/events/oe_ev_byz_nomisma_treasury.dds"
     title = oe_ttb.5.t
     desc = { first_valid = { triggered_desc = { trigger = { var:oe_ttb_ev_war ?= 1 } desc = oe_ttb.5.d1 } desc = oe_ttb.5.d } }
-    trigger = { tag = BYZ }
+    trigger = { is_rebel_country = no tag = BYZ }
     immediate = { if = { limit = { has_variable = oe_ttb_ev_t } var:oe_ttb_ev_t ?= { save_scope_as = oe_ttb_ev_t } } }
     option = {
         name = oe_ttb.5.a
@@ -110,7 +110,7 @@ oe_ttb.6 = { # 使节无功而返
     image = "gfx/interface/illustrations/events/oe_ev_anatolian_frontier.dds"
     title = oe_ttb.6.t
     desc = { first_valid = { triggered_desc = { trigger = { current_date < 1338.1.1 var:oe_ttb_ev_why ?= 1 } desc = oe_ttb.6.d1_pre } triggered_desc = { trigger = { current_date < 1338.1.1 } desc = oe_ttb.6.d_pre } triggered_desc = { trigger = { var:oe_ttb_ev_why ?= 1 } desc = oe_ttb.6.d1 } desc = oe_ttb.6.d } }
-    trigger = { tag = BYZ }
+    trigger = { is_rebel_country = no tag = BYZ }
     immediate = { if = { limit = { has_variable = oe_ttb_ev_t } var:oe_ttb_ev_t ?= { save_scope_as = oe_ttb_ev_t } } }
     option = {
         name = oe_ttb.6.a
@@ -126,7 +126,7 @@ oe_ttb.7 = { # 岁币协议作废
     image = "gfx/interface/illustrations/government/occupation_illustration.dds"
     title = oe_ttb.7.t
     desc = { first_valid = { triggered_desc = { trigger = { var:oe_ttb_ev_kind ?= 1 } desc = oe_ttb.7.d1 } desc = oe_ttb.7.d } }
-    trigger = { tag = BYZ has_variable = oe_ttb_q_end_any }
+    trigger = { is_rebel_country = no tag = BYZ has_variable = oe_ttb_q_end_any }
     immediate = { if = { limit = { any_country = { var:oe_ttb_q_end ?= 1 } } random_country = { limit = { var:oe_ttb_q_end ?= 1 } save_scope_as = oe_ttb_ev_t } set_variable = { name = oe_ttb_ev_kind value = 1 } } else = { random_country = { limit = { has_variable = oe_ttb_q_end } save_scope_as = oe_ttb_ev_t } set_variable = { name = oe_ttb_ev_kind value = 2 } } scope:oe_ttb_ev_t ?= { remove_variable = oe_ttb_q_end } if = { limit = { NOT = { any_country = { has_variable = oe_ttb_q_end } } } remove_variable = oe_ttb_q_end_any } }
     option = {
         name = oe_ttb.7.a
@@ -147,7 +147,7 @@ oe_ttb.8 = {
     type = country_event
     hidden = yes
     title = oe_ttb.8.t
-    trigger = { tag = BYZ }
+    trigger = { is_rebel_country = no tag = BYZ }
     immediate = {
         if = {
             limit = { has_variable = oe_ttb_offer }

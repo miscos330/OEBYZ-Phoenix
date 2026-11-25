@@ -17,10 +17,13 @@ oe_itp_take = {
 
 # Any scope. Imperial Authority $amount$ (negative = a cost), kept within 0-100.
 oe_itp_auth = {
-    international_organization:oe_byz_empire_pillars = {
-        change_variable = { name = oe_pillars_authority add = $amount$ }
-        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-    }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = {
+	        change_variable = { name = oe_pillars_authority add = $amount$ }
+	        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	    }
+	}
 }
 
 # BYZ scope. Interface (design 4.2): the Venetian claims change by $kd$ thousand ducats (negative = paid off), never below 0.

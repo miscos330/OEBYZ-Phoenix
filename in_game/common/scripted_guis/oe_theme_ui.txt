@@ -12,18 +12,36 @@ oe_theme_ui_low_loyalty = {
 }
 oe_theme_ui_open_focus = {
     scope = country
-    is_valid = { oe_theme_member_trigger = yes oe_ta_can_change_course = yes oe_ta_any_course_ok = yes international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 5 } }
-    effect = { save_scope_as = oe_ui_theme c:BYZ = { set_variable = { name = oe_theme_admin_target value = scope:oe_ui_theme } trigger_event_non_silently = oe_theme_admin.1 } }
+    is_valid = { oe_theme_member_trigger = yes oe_ta_can_change_course = yes oe_ta_any_course_ok = yes exists = international_organization:oe_byz_empire_pillars international_organization:oe_byz_empire_pillars ?= { var:oe_pillars_authority >= 5 } }
+    effect = {
+        save_scope_as = oe_ui_theme
+        if = {
+            limit = { has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire }
+            global_var:oe_phoenix_empire = { set_variable = { name = oe_theme_admin_target value = scope:oe_ui_theme } trigger_event_non_silently = oe_theme_admin.1 }
+        }
+    }
 }
 oe_theme_ui_open_officials = {
     scope = country
     is_valid = { oe_theme_member_trigger = yes }
-    effect = { save_scope_as = oe_ui_theme c:BYZ = { set_variable = { name = oe_theme_admin_target value = scope:oe_ui_theme } trigger_event_non_silently = oe_theme_admin.2 } }
+    effect = {
+        save_scope_as = oe_ui_theme
+        if = {
+            limit = { has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire }
+            global_var:oe_phoenix_empire = { set_variable = { name = oe_theme_admin_target value = scope:oe_ui_theme } trigger_event_non_silently = oe_theme_admin.2 }
+        }
+    }
 }
 oe_theme_ui_open_works = {
     scope = country
     is_valid = { oe_theme_member_trigger = yes NOT = { has_variable = oe_theme_proj } }
-    effect = { save_scope_as = oe_ui_theme c:BYZ = { set_variable = { name = oe_theme_works_target value = scope:oe_ui_theme } trigger_event_non_silently = oe_theme_works.1 } }
+    effect = {
+        save_scope_as = oe_ui_theme
+        if = {
+            limit = { has_global_variable = oe_phoenix_empire exists = global_var:oe_phoenix_empire }
+            global_var:oe_phoenix_empire = { set_variable = { name = oe_theme_works_target value = scope:oe_ui_theme } trigger_event_non_silently = oe_theme_works.1 }
+        }
+    }
 }
 
 # IO scope.

@@ -1,0 +1,56 @@
+﻿# NEW 2026-11-24 v26.0 WP13 Great Yuan P2-A Content Pack (oe_ywp13_, gen_v260_yuan_wp13.py) — Four-Class/Three-Teachings Stability Closure & 1342 Marignolli Silk Road Flavor (0 vanilla overrides, 0 mainline slots, 1337-gated). Edit gen_v260_yuan_wp13.py, not this file.
+
+oe_ywp13_dec_four_class_closure = {
+	decision_category = government_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_start_is_1337 = yes
+		NOT = { has_global_variable = oe_alt_era_start }
+		is_rebel_country = no
+		OR = {
+			tag = YUA
+			AND = {
+				tag = CHI
+				NOT = { has_variable = rtr_is_new_china }
+				NOT = { has_or_had_tag = MNG }
+				NOT = { has_or_had_tag = MCH }
+				culture = { has_culture_group = culture_group:mongolian_group }
+			}
+		}
+		NOT = { has_variable = oe_ywp13_four_class_done }
+	}
+	allow = {
+		is_subject = no
+		owns = location:dadu
+		stability >= 10
+		gold >= 120
+		OR = {
+			NOT = { is_situation_active = situation:red_turban_rebellions }
+			current_year >= 1365
+			has_global_variable = oe_sit2_yr_started
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				current_year >= 1372
+				NOT = { is_situation_active = situation:red_turban_rebellions }
+				gold >= 200
+				stability >= 15
+			}
+			add = 35
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:crown_estate } }
+	option = {
+		name = oe_ywp13_dec_four_class_closure.a
+		effect = {
+			set_variable = { name = oe_ywp13_four_class_done value = 1 }
+			add_gold = -120
+			trigger_event_non_silently = oe_ywp13.1
+		}
+	}
+}

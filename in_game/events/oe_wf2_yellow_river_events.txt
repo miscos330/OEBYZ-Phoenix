@@ -1,0 +1,269 @@
+﻿# NEW 2026-11-25 v27.0 WP19 Wanfang Phase 2 (oe_wf2_, gen_v270_wanfang_p2.py) — Wokou Native Disaster, Yellow River & Grand Canal Huai'an, 10 Vaulted Reforms/Privileges & Osmanli Rome (0 vanilla overrides, 0 edits to existing files, 100% O(1), R31 & G_ELR_ISOLATION compliant). Edit gen_v270_wanfang_p2.py, not this file.
+
+namespace = oe_wf2_yr
+
+# 1. Silt and Torrent: Legacy of Jia Lu's Embankments
+oe_wf2_yr.1 = {
+	type = country_event
+	title = oe_wf2_yr.1.t
+	desc = oe_wf2_yr.1.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_yellow_river_flood.dds"
+	trigger = { oe_wf2_is_yellow_river_steward = yes }
+	option = {
+		name = oe_wf2_yr.1.a
+		historical_option = yes
+		ai_chance = { base = 65 }
+		add_gold = -110
+		oe_wf2_add_river_readiness = { amount = 20 }
+		oe_wf2_apply_river_dike_boon = yes
+	}
+	option = {
+		name = oe_wf2_yr.1.b
+		ai_chance = { base = 35 }
+		add_gold = -40
+		oe_wf2_add_river_readiness = { amount = 8 }
+		add_stability = 2
+	}
+}
+
+# 2. Periodic Breach Crisis at Kaifeng and Xuzhou
+oe_wf2_yr.2 = {
+	type = country_event
+	title = oe_wf2_yr.2.t
+	desc = oe_wf2_yr.2.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_wf_ev_yellow_river_flood.dds"
+	trigger = { oe_wf2_is_yellow_river_steward = yes }
+	option = {
+		name = oe_wf2_yr.2.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		add_gold = -140
+		oe_wf2_add_river_readiness = { amount = 20 }
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty }
+		if = {
+			limit = { oe_wf2_has_grand_canal_huaian = yes }
+			add_stability = 4
+			add_gold = 40
+		}
+		else = {
+			add_stability = 2
+		}
+	}
+	option = {
+		name = oe_wf2_yr.2.b
+		ai_chance = { base = 30 }
+		add_stability = -6
+		oe_wf2_apply_river_flood_hit = yes
+		add_country_modifier = { modifier = oe_wf2_mod_river_neglect_crisis years = 12 mode = replace }
+		if = {
+			limit = {
+				exists = international_organization:middle_kingdom
+				is_leader_of_international_organization = international_organization:middle_kingdom
+			}
+			change_celestial_authority = { value = celestial_authority_weak_penalty }
+		}
+	}
+}
+
+# 3. The Huai'an Grain Transport Bottleneck (synergy with oe_wfm_bld_grand_canal_huaian!)
+oe_wf2_yr.3 = {
+	type = country_event
+	title = oe_wf2_yr.3.t
+	desc = oe_wf2_yr.3.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_river_dike_engineering.dds"
+	trigger = {
+		oe_wf2_is_yellow_river_steward = yes
+		owns = location:shanyang_huaian
+	}
+	option = {
+		name = oe_wf2_yr.3.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		add_gold = -130
+		oe_wf2_add_river_readiness = { amount = 20 }
+		add_country_modifier = { modifier = oe_wf2_mod_canal_grain_security years = 20 mode = replace }
+		if = {
+			limit = { oe_wf2_has_grand_canal_huaian = yes }
+			add_prestige = prestige_mild_bonus
+			location:shanyang_huaian = { change_prosperity = prosperity_mild_bonus }
+		}
+		else = {
+			location:shanyang_huaian = {
+				construct_building = {
+					building_type = building_type:oe_wfm_bld_grand_canal_huaian
+					cost_multiplier = 0
+					cost_multiplier_reason = "game_concept_event"
+					instant = yes
+				}
+			}
+		}
+	}
+	option = {
+		name = oe_wf2_yr.3.b
+		ai_chance = { base = 30 }
+		add_gold = -50
+		add_stability = 2
+		add_country_modifier = { modifier = oe_wf2_mod_canal_grain_security years = 12 mode = replace }
+	}
+}
+
+# 4. Corvee Exhaustion Along the River
+oe_wf2_yr.4 = {
+	type = country_event
+	title = oe_wf2_yr.4.t
+	desc = oe_wf2_yr.4.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_mandate_decline.dds"
+	trigger = { oe_wf2_is_yellow_river_steward = yes }
+	option = {
+		name = oe_wf2_yr.4.a
+		historical_option = yes
+		ai_chance = { base = 60 }
+		add_gold = -90
+		oe_wf2_add_river_readiness = { amount = 15 }
+		add_country_modifier = { modifier = oe_wf2_mod_paid_dike_labor years = 18 mode = replace }
+	}
+	option = {
+		name = oe_wf2_yr.4.b
+		ai_chance = { base = 40 }
+		oe_wf2_add_river_readiness = { amount = 10 }
+		add_gold = 60
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_penalty }
+	}
+}
+
+# 5. Grand Hydraulic Debate: Divert the Branches or Confine the Channel?
+oe_wf2_yr.5 = {
+	type = country_event
+	title = oe_wf2_yr.5.t
+	desc = oe_wf2_yr.5.d
+	outcome = neutral
+	image = "gfx/interface/illustrations/events/oe_wf_ev_grand_secretariat_council.dds"
+	trigger = { oe_wf2_is_yellow_river_steward = yes }
+	option = {
+		name = oe_wf2_yr.5.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		add_gold = -120
+		oe_wf2_add_river_readiness = { amount = 25 }
+		add_country_modifier = { modifier = oe_wf2_mod_shushui_gongsha years = 20 mode = replace }
+		oe_wf2_apply_river_dike_boon = yes
+	}
+	option = {
+		name = oe_wf2_yr.5.b
+		ai_chance = { base = 30 }
+		add_gold = -60
+		oe_wf2_add_river_readiness = { amount = 10 }
+		add_country_modifier = { modifier = oe_wf2_mod_paid_dike_labor years = 15 mode = replace }
+	}
+}
+
+# 6. Pan Jixun's Confine-Water Masterwork (called by decision oe_wf2_dec_appoint_river_commissioner)
+oe_wf2_yr.6 = {
+	type = country_event
+	title = oe_wf2_yr.6.t
+	desc = oe_wf2_yr.6.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wf_ev_river_dike_engineering.dds"
+	trigger = { oe_wf2_is_yellow_river_steward = yes }
+	option = {
+		name = oe_wf2_yr.6.a
+		historical_option = yes
+		ai_chance = { base = 75 }
+		add_stability = 5
+		add_prestige = prestige_mild_bonus
+		add_country_modifier = { modifier = oe_wf2_mod_shushui_gongsha years = 20 mode = replace }
+		oe_wf2_apply_river_dike_boon = yes
+		if = {
+			limit = { oe_wf2_has_grand_canal_huaian = yes }
+			add_country_modifier = { modifier = oe_wf2_mod_canal_grain_security years = 20 mode = replace }
+			if = {
+				limit = {
+					exists = international_organization:middle_kingdom
+					is_leader_of_international_organization = international_organization:middle_kingdom
+				}
+				change_celestial_authority = { value = celestial_authority_weak_bonus }
+			}
+		}
+	}
+	option = {
+		name = oe_wf2_yr.6.b
+		ai_chance = { base = 25 }
+		add_stability = 4
+		add_country_modifier = { modifier = oe_wf2_mod_canal_grain_security years = 20 mode = replace }
+	}
+}
+
+# 7. The Tribute Grain Fleet Reaches Tongzhou (Positive payoff)
+oe_wf2_yr.7 = {
+	type = country_event
+	title = oe_wf2_yr.7.t
+	desc = oe_wf2_yr.7.d
+	outcome = positive
+	image = "gfx/interface/illustrations/events/oe_wf_ev_mandate_prosperity.dds"
+	trigger = { oe_wf2_is_yellow_river_steward = yes }
+	option = {
+		name = oe_wf2_yr.7.a
+		historical_option = yes
+		ai_chance = { base = 70 }
+		add_gold = 140
+		add_stability = 4
+		add_prestige = prestige_mild_bonus
+		if = {
+			limit = {
+				exists = international_organization:middle_kingdom
+				is_leader_of_international_organization = international_organization:middle_kingdom
+			}
+			change_celestial_authority = { value = celestial_authority_weak_bonus }
+		}
+	}
+	option = {
+		name = oe_wf2_yr.7.b
+		ai_chance = { base = 30 }
+		add_stability = 5
+		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus }
+		if = {
+			limit = { owns = location:dadu }
+			location:dadu = { change_prosperity = prosperity_weak_bonus }
+		}
+	}
+}
+
+# 8. Neglected Dikes: Heaven's Rebuke on the Central Plain
+oe_wf2_yr.8 = {
+	type = country_event
+	title = oe_wf2_yr.8.t
+	desc = oe_wf2_yr.8.d
+	outcome = negative
+	image = "gfx/interface/illustrations/events/oe_wf_ev_yellow_river_flood.dds"
+	trigger = { oe_wf2_is_yellow_river_steward = yes }
+	option = {
+		name = oe_wf2_yr.8.a
+		historical_option = yes
+		ai_chance = { base = 75 }
+		add_gold = -160
+		if = {
+			limit = { has_country_modifier = oe_wf2_mod_river_neglect_crisis }
+			remove_country_modifier = oe_wf2_mod_river_neglect_crisis
+		}
+		oe_wf2_add_river_readiness = { amount = 25 }
+		add_country_modifier = { modifier = oe_wf2_mod_shushui_gongsha years = 15 mode = replace }
+		oe_wf2_apply_river_dike_boon = yes
+	}
+	option = {
+		name = oe_wf2_yr.8.b
+		ai_chance = { base = 25 }
+		add_stability = -5
+		oe_wf2_apply_river_flood_hit = yes
+		if = {
+			limit = {
+				exists = international_organization:middle_kingdom
+				is_leader_of_international_organization = international_organization:middle_kingdom
+			}
+			change_celestial_authority = { value = celestial_authority_weak_penalty }
+		}
+	}
+}

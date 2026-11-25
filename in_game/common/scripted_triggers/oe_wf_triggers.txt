@@ -1,0 +1,100 @@
+﻿# NEW 2026-11-24 v26.1 WP15-2 Wanfang Celestial Empire Core (oe_wf_, gen_v261_wanfang_celestial.py) — EU5-Native Era Names, 3-Stage Mandate Cycle, Bilateral Royal Favor & Five Court Policies (0 vanilla overrides, 0 edits to existing files, 100% O(1) & G_ELR_ISOLATION compliant). Edit gen_v261_wanfang_celestial.py, not this file.
+
+# Country scope. True for any non-rebel, non-Fourth-Rome leader of the Middle Kingdom IO.
+oe_wf_is_middle_kingdom_leader = {
+	oe_main_mod_old_world_event_allowed = yes
+	trigger_if = {
+		limit = { exists = international_organization:middle_kingdom }
+		is_leader_of_international_organization = international_organization:middle_kingdom
+	}
+	trigger_else = {
+		always = no
+	}
+}
+
+# Country scope. Eligible for Era Names & Wanfang 7.2 Court Policies:
+# Middle Kingdom leader OR major Chinese dynastic tags (MNG/CHI/YUA/MCH/CSH), never rebels or Fourth Rome.
+oe_wf_is_era_name_eligible = {
+	oe_main_mod_old_world_event_allowed = yes
+	OR = {
+		trigger_if = {
+			limit = { exists = international_organization:middle_kingdom }
+			is_leader_of_international_organization = international_organization:middle_kingdom
+		}
+		trigger_else = {
+			always = no
+		}
+		tag = MNG
+		tag = CHI
+		tag = YUA
+		tag = MCH
+		tag = CSH
+	}
+}
+
+# Country scope. Tributary or subject of the Middle Kingdom leader (strictly R04/R05/G_ELR_ISOLATION guarded).
+oe_wf_is_tributary_of_emperor = {
+	oe_main_mod_old_world_event_allowed = yes
+	trigger_if = {
+		limit = { exists = international_organization:middle_kingdom }
+		NOT = { is_leader_of_international_organization = international_organization:middle_kingdom }
+		OR = {
+			is_member_of_international_organization = international_organization:middle_kingdom
+			trigger_if = {
+				limit = { is_subject = yes }
+				overlord = {
+					is_leader_of_international_organization = international_organization:middle_kingdom
+				}
+			}
+			trigger_else = {
+				always = no
+			}
+		}
+	}
+	trigger_else = {
+		always = no
+	}
+}
+
+# Country scope. Highlights Renewal Era Name (中兴改元) during consolidation/late cycle or low mandate/stability.
+oe_wf_has_low_mandate_or_stability = {
+	OR = {
+		stability < 5
+		trigger_if = {
+			limit = {
+				exists = international_organization:middle_kingdom
+				is_leader_of_international_organization = international_organization:middle_kingdom
+			}
+			NOT = { current_celestial_authority = { value = 45 } }
+		}
+		trigger_else = {
+			always = no
+		}
+		AND = {
+			has_variable = oe_wf_cycle_stage
+			var:oe_wf_cycle_stage >= 2
+		}
+	}
+}
+
+# Country scope. Crisis threshold permitting the Imperial Penitential Edict (罪己诏).
+oe_wf_in_crisis_for_penitence = {
+	OR = {
+		stability < 10
+		war_exhaustion >= 4
+		trigger_if = {
+			limit = {
+				exists = international_organization:middle_kingdom
+				is_leader_of_international_organization = international_organization:middle_kingdom
+			}
+			NOT = { current_celestial_authority = { value = 50 } }
+		}
+		trigger_else = {
+			always = no
+		}
+		AND = {
+			has_variable = oe_wf_cycle_stage
+			var:oe_wf_cycle_stage >= 3
+		}
+	}
+}

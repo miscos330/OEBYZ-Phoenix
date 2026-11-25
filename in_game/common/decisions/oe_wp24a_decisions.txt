@@ -1,0 +1,392 @@
+﻿# NEW 2026-11-24 v29.0 WP24-A Main Mod Core Deepening (oe_wp24a_, gen_v290_wp24a_core_deepening.py) — WP11 Four Praetorian Prefectures + WP12 Teutonic 1525 Reformation Fork + WP13 Northern Yuan & Four Khanates (0 vanilla overrides, 0 mainline slots). Edit gen_v290_wp24a_core_deepening.py, not this file.
+
+# =============================================================================
+# WP11 Deepening — 4 Praetorian Prefectures Regional Charter Decisions
+# =============================================================================
+
+oe_wp24a_dec_pref_oriens_charter = {
+	decision_category = government_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp24a_holds_oriens = yes
+		NOT = { has_variable = oe_wp24a_oriens_chartered }
+	}
+	allow = {
+		is_rebel_country = no
+		gold >= 120
+		stability >= 5
+		OR = {
+			owns_or_non_sovereign_subject_owns = location:antioch
+			owns_or_non_sovereign_subject_owns = location:damascus
+			owns_or_non_sovereign_subject_owns = location:alexandria
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 240 stability >= 10 }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:burghers_estate background = estate_type:crown_estate } }
+	option = {
+		name = oe_wp24a_dec_pref_oriens_charter.a
+		effect = {
+			set_variable = { name = oe_wp24a_oriens_chartered value = 1 }
+			add_gold = -120
+			trigger_event_non_silently = oe_wp24a_pref.1
+		}
+	}
+}
+
+oe_wp24a_dec_pref_illyricum_charter = {
+	decision_category = government_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp24a_holds_illyricum = yes
+		NOT = { has_variable = oe_wp24a_illyricum_chartered }
+	}
+	allow = {
+		is_rebel_country = no
+		gold >= 120
+		stability >= 5
+		OR = {
+			owns_or_non_sovereign_subject_owns = location:thessaloniki
+			owns_or_non_sovereign_subject_owns = location:belgrad
+			owns_or_non_sovereign_subject_owns = location:buda
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 240 stability >= 10 }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp24a_dec_pref_illyricum_charter.a
+		effect = {
+			set_variable = { name = oe_wp24a_illyricum_chartered value = 1 }
+			add_gold = -120
+			trigger_event_non_silently = oe_wp24a_pref.4
+		}
+	}
+}
+
+oe_wp24a_dec_pref_italia_charter = {
+	decision_category = government_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp24a_holds_italia = yes
+		NOT = { has_variable = oe_wp24a_italia_chartered }
+	}
+	allow = {
+		is_rebel_country = no
+		gold >= 140
+		stability >= 5
+		OR = {
+			owns_or_non_sovereign_subject_owns = location:ravenna
+			owns_or_non_sovereign_subject_owns = location:rome
+			owns_or_non_sovereign_subject_owns = location:tunis
+			owns_or_non_sovereign_subject_owns = location:palermo
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 260 stability >= 10 }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:nobles_estate background = estate_type:crown_estate } }
+	option = {
+		name = oe_wp24a_dec_pref_italia_charter.a
+		effect = {
+			set_variable = { name = oe_wp24a_italia_chartered value = 1 }
+			add_gold = -140
+			trigger_event_non_silently = oe_wp24a_pref.7
+		}
+	}
+}
+
+oe_wp24a_dec_pref_gallia_charter = {
+	decision_category = government_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp24a_holds_gallia = yes
+		NOT = { has_variable = oe_wp24a_gallia_chartered }
+	}
+	allow = {
+		is_rebel_country = no
+		gold >= 150
+		stability >= 5
+		OR = {
+			owns_or_non_sovereign_subject_owns = location:lyon
+			owns_or_non_sovereign_subject_owns = location:trier
+			owns_or_non_sovereign_subject_owns = location:paris
+			owns_or_non_sovereign_subject_owns = location:toledo
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 280 stability >= 10 }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:burghers_estate } }
+	option = {
+		name = oe_wp24a_dec_pref_gallia_charter.a
+		effect = {
+			set_variable = { name = oe_wp24a_gallia_chartered value = 1 }
+			add_gold = -150
+			trigger_event_non_silently = oe_wp24a_pref.10
+		}
+	}
+}
+
+# =============================================================================
+# WP12 Deepening — Teutonic Order 1525 Reformation Fork (2 Mutually-Exclusive Decisions)
+# =============================================================================
+
+oe_wp24a_dec_teu_secularize_prussia = {
+	decision_category = religious_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		NOT = { has_variable = oe_wp24a_teu_branch_secular }
+		NOT = { has_variable = oe_wp24a_teu_branch_catholic }
+		NOT = { has_variable = oe_teu_counter_reformation_order }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		current_year >= 1517
+		OR = {
+			current_year >= 1525
+			has_variable = oe_teu_secularized_pru
+			AND = {
+				religion:lutheran = { is_religion_enabled = yes }
+				"religion_percentage_in_country(religion:lutheran)" >= 0.10
+			}
+		}
+		OR = {
+			owns = location:konigsberg
+			owns = location:malbork
+			num_locations >= 5
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				OR = {
+					has_variable = oe_teu_secularized_pru
+					AND = {
+						current_year >= 1525
+						religion:lutheran = { is_religion_enabled = yes }
+						"religion_percentage_in_country(religion:lutheran)" >= 0.15
+					}
+				}
+			}
+			add = 45
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:nobles_estate } }
+	option = {
+		name = oe_wp24a_dec_teu_secularize_prussia.a
+		effect = {
+			set_variable = { name = oe_wp24a_teu_branch_secular value = 1 }
+			set_variable = { name = oe_wp24a_teu_1_done value = 1 }
+			trigger_event_non_silently = oe_wp24a_teu.1
+		}
+	}
+}
+
+oe_wp24a_dec_teu_eternal_crusade = {
+	decision_category = religious_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp24a_is_teu_host = yes
+		oe_wp24a_is_teu_reformation_era = yes
+		religion ?= religion:catholic
+		NOT = { has_variable = oe_wp24a_teu_branch_catholic }
+		NOT = { has_variable = oe_wp24a_teu_branch_secular }
+		NOT = { has_variable = oe_teu_secularized_pru }
+	}
+	allow = {
+		is_rebel_country = no
+		at_war = no
+		current_year >= 1517
+		religion ?= religion:catholic
+		OR = {
+			current_year >= 1525
+			has_variable = oe_teu_counter_reformation_order
+			devotion >= 60
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				OR = {
+					has_variable = oe_teu_counter_reformation_order
+					AND = {
+						current_year >= 1526
+						religion ?= religion:catholic
+						devotion >= 65
+					}
+				}
+			}
+			add = 40
+		}
+	}
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:clergy_estate background = estate_type:nobles_estate } }
+	option = {
+		name = oe_wp24a_dec_teu_eternal_crusade.a
+		effect = {
+			set_variable = { name = oe_wp24a_teu_branch_catholic value = 1 }
+			set_variable = { name = oe_wp24a_teu_5_done value = 1 }
+			trigger_event_non_silently = oe_wp24a_teu.5
+		}
+	}
+}
+
+# =============================================================================
+# WP13 Deepening — Northern Yuan Resurgence & Four Khanates Reconnection (3 Decisions)
+# =============================================================================
+
+oe_wp24a_dec_yuan_dayan_six_tumens = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp24a_yuan_steppe_anchor = yes
+		NOT = { has_variable = oe_wp24a_yuan_tumens_done }
+	}
+	allow = {
+		is_rebel_country = no
+		current_year >= 1368
+		gold >= 100
+		OR = {
+			NOT = { owns = location:dadu }
+			owns = location:karakorum
+			owns = location:shangdu
+			has_variable = oe_nyu_six_tumens_united
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 180 current_year >= 1400 }
+			add = 30
+		}
+	}
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp24a_dec_yuan_dayan_six_tumens.a
+		effect = {
+			set_variable = { name = oe_wp24a_yuan_tumens_done value = 1 }
+			add_gold = -100
+			trigger_event_non_silently = oe_wp24a_yuan.1
+		}
+	}
+}
+
+oe_wp24a_dec_yuan_reconquest_dadu = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp24a_is_yuan_host = yes
+		OR = {
+			has_variable = oe_wp24a_yuan_tumens_done
+			has_variable = oe_nyu_six_tumens_united
+			NOT = { owns = location:dadu }
+		}
+		NOT = { has_variable = oe_wp24a_yuan_dadu_arc_done }
+	}
+	allow = {
+		is_rebel_country = no
+		current_year >= 1375
+		prestige >= 10
+		OR = {
+			has_variable = oe_wp24a_yuan_tumens_done
+			has_variable = oe_nyu_six_tumens_united
+			army_tradition >= 20
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { prestige >= 20 current_year >= 1440 }
+			add = 30
+		}
+	}
+	illustration_tags = { 10 = armed 10 = exterior }
+	illustration_scope = { event_illustration_poptype_effect = { foreground = pop_type:soldiers background = pop_type:nobles } }
+	option = {
+		name = oe_wp24a_dec_yuan_reconquest_dadu.a
+		effect = {
+			set_variable = { name = oe_wp24a_yuan_dadu_arc_done value = 1 }
+			trigger_event_non_silently = oe_wp24a_yuan.4
+		}
+	}
+}
+
+oe_wp24a_dec_yuan_four_khanates_yam = {
+	decision_category = country_specific_decisions
+	only_once = yes
+	only_once_scope = country
+	potential = {
+		oe_wp24a_is_yuan_host = yes
+		NOT = { has_variable = oe_wp24a_yuan_yam_done }
+	}
+	allow = {
+		is_rebel_country = no
+		current_year >= 1345
+		gold >= 120
+		prestige >= 10
+		OR = {
+			country_exists = c:GLH
+			country_exists = c:GOL
+			country_exists = c:CHG
+			country_exists = c:JAL
+			country_exists = c:TIM
+			country_exists = c:IRA
+			owns = location:karakorum
+		}
+	}
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = { gold >= 240 prestige >= 20 current_year >= 1360 }
+			add = 25
+		}
+	}
+	illustration_tags = { 10 = interior }
+	illustration_scope = { event_illustration_estate_effect = { foreground = estate_type:crown_estate background = estate_type:burghers_estate } }
+	option = {
+		name = oe_wp24a_dec_yuan_four_khanates_yam.a
+		effect = {
+			set_variable = { name = oe_wp24a_yuan_yam_done value = 1 }
+			add_gold = -120
+			trigger_event_non_silently = oe_wp24a_yuan.6
+		}
+	}
+}

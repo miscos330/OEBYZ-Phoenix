@@ -335,14 +335,17 @@ oe_col_fire_10 = {
 
 # BYZ scope; scope:oe_col_pick saved (a sparse location). Starts a resettlement: costs 2 Imperial Authority, the action cools down 24 months (12 while the discount lasts), oe_col.1 opens for that place.
 oe_col_start = {
-    international_organization:oe_byz_empire_pillars = {
-        change_variable = { name = oe_pillars_authority add = -2 }
-        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-    }
-    set_variable = { name = oe_col_target value = scope:oe_col_pick }
-    if = { limit = { has_variable = oe_col_discount } set_variable = { name = oe_col_act_cd months = 12 } }
-    else = { set_variable = { name = oe_col_act_cd months = 24 } }
-    oe_col_fire_1 = yes
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = {
+	        change_variable = { name = oe_pillars_authority add = -2 }
+	        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	    }
+	    set_variable = { name = oe_col_target value = scope:oe_col_pick }
+	    if = { limit = { has_variable = oe_col_discount } set_variable = { name = oe_col_act_cd months = 12 } }
+	    else = { set_variable = { name = oe_col_act_cd months = 24 } }
+	    oe_col_fire_1 = yes
+	}
 }
 
 # BYZ scope, monthly. oe_col.10 while the start event's refugees modifier lasts (20 % a month when the line is free); once it is gone unfired, oe_col_fired_10 = 2 (dropped).
@@ -1153,19 +1156,22 @@ oe_col_req_clear = {
 
 # BYZ scope; scope:oe_col_pick_site saved (a site that passes oe_col_site_ok). OUR REQUEST (action and AI): 2 authority and oe_col_cost_post gold (no gold while the opening voucher lasts; it is used up when the post opens), then THE HOST'S EVENT oe_col.24 for the owner of the site. No answer in 2 months: oe_col_req_fallback.
 oe_col_request = {
-    international_organization:oe_byz_empire_pillars = {
-        change_variable = { name = oe_pillars_authority add = -2 }
-        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
-    }
-    if = { limit = { has_variable = oe_col_voucher } set_variable = { name = oe_col_req_paid value = 0 } }
-    else = {
-        set_variable = { name = oe_col_req_paid value = oe_col_cost_post }
-        add_gold = { value = oe_col_cost_post multiply = -1 }
-    }
-    set_variable = { name = oe_col_req_loc value = scope:oe_col_pick_site }
-    set_variable = { name = oe_col_req_due value = { value = oe_ml_month_now add = 2 } }
-    if = { limit = { has_variable = oe_col_ans } remove_variable = oe_col_ans }
-    scope:oe_col_pick_site = { owner ?= { trigger_event_non_silently = oe_col.24 } }
+	if = {
+		limit = { exists = international_organization:oe_byz_empire_pillars }
+	    international_organization:oe_byz_empire_pillars = {
+	        change_variable = { name = oe_pillars_authority add = -2 }
+	        clamp_variable = { name = oe_pillars_authority min = 0 max = 100 }
+	    }
+	    if = { limit = { has_variable = oe_col_voucher } set_variable = { name = oe_col_req_paid value = 0 } }
+	    else = {
+	        set_variable = { name = oe_col_req_paid value = oe_col_cost_post }
+	        add_gold = { value = oe_col_cost_post multiply = -1 }
+	    }
+	    set_variable = { name = oe_col_req_loc value = scope:oe_col_pick_site }
+	    set_variable = { name = oe_col_req_due value = { value = oe_ml_month_now add = 2 } }
+	    if = { limit = { has_variable = oe_col_ans } remove_variable = oe_col_ans }
+	    scope:oe_col_pick_site = { owner ?= { trigger_event_non_silently = oe_col.24 } }
+	}
 }
 
 # BYZ scope. Sends oe_col.20 if its trigger holds (the empire's merchant ships (once); 6 quiet months after it): takes the main-line month (line 16).

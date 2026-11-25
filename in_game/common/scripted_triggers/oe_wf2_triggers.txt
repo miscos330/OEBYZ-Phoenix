@@ -1,0 +1,77 @@
+﻿# NEW 2026-11-25 v27.0 WP19 Wanfang Phase 2 (oe_wf2_, gen_v270_wanfang_p2.py) — Wokou Native Disaster, Yellow River & Grand Canal Huai'an, 10 Vaulted Reforms/Privileges & Osmanli Rome (0 vanilla overrides, 0 edits to existing files, 100% O(1), R31 & G_ELR_ISOLATION compliant). Edit gen_v270_wanfang_p2.py, not this file.
+
+# Country scope. Holds at least 2 core Southeastern Chinese coastal hubs (O(1) explicit checks, zero map-wide loops).
+oe_wf2_owns_se_coast_core = {
+	calc_true_if = {
+		amount >= 2
+		owns = location:dinghai
+		owns = location:hangzhou
+		owns = location:linhai
+		owns = location:yongjia
+		owns = location:huating
+		owns = location:minxian
+		owns = location:jinjiang
+		owns = location:longxi
+		owns = location:guangzhou
+	}
+}
+
+# Country scope. Eligible Chinese/East Asian coastal Middle Kingdom empire for WP19-1 Wokou disaster & anti-Wokou tools.
+oe_wf2_is_wokou_eligible_empire = {
+	oe_main_mod_old_world_event_allowed = yes
+	is_rebel_country = no
+	oe_wf2_owns_se_coast_core = yes
+	OR = {
+		oe_wf_is_middle_kingdom_leader = yes
+		tag = MNG
+		tag = CHI
+		tag = MCH
+		tag = CSH
+		tag = KOR
+	}
+}
+
+# Country scope. Owns core Yellow River / Grand Canal Huai'an basin locations (O(1)).
+oe_wf2_owns_yellow_river_basin = {
+	OR = {
+		owns = location:kaifeng
+		owns = location:xuzhou
+		owns = location:shanyang_huaian
+	}
+}
+
+# Country scope. Eligible Chinese/Middle Kingdom realm for WP19-2 Yellow River & Grand Canal Huai'an governance.
+oe_wf2_is_yellow_river_steward = {
+	oe_main_mod_old_world_event_allowed = yes
+	is_rebel_country = no
+	oe_wf2_owns_yellow_river_basin = yes
+	OR = {
+		oe_wf_is_era_name_eligible = yes
+		oe_wf_is_middle_kingdom_leader = yes
+	}
+}
+
+# Country scope. Checks whether the Grand Canal Huai'an landmark stands in Jiangsu Huai'an (shanyang_huaian).
+oe_wf2_has_grand_canal_huaian = {
+	owns = location:shanyang_huaian
+	location:shanyang_huaian = {
+		has_building_with_at_least_one_level = oe_wfm_bld_grand_canal_huaian
+	}
+}
+
+# Country scope. Strict eligibility for WP19-5 Optional Easter Egg — Osmanli Rome (TUR only, never BYZ, R31-safe).
+oe_wf2_is_osmanli_rome_eligible = {
+	oe_main_mod_old_world_event_allowed = yes
+	is_rebel_country = no
+	tag = TUR
+	NOT = { tag = BYZ }
+	current_year >= 1453
+	owns = location:constantinople
+	owns = location:rome
+	OR = {
+		has_accepted_culture = culture:greek_culture
+		religion = religion:orthodox
+		societal_value:spiritualist_vs_humanist >= 20
+		modifier:tolerance_heathen >= 1
+	}
+}

@@ -2,7 +2,8 @@
 	type = internationalorganization
 	show_message = no
 	potential = {
-		scope:actor = { tag = BYZ }
+		exists = international_organization:oe_byz_empire_pillars
+		scope:actor = { oe_is_phoenix_empire = yes }
 	}
 
 	allow = {
@@ -11,7 +12,7 @@
 			has_raised_levies = no
 		}
 	
-        international_organization:oe_byz_empire_pillars = {
+        international_organization:oe_byz_empire_pillars ?= {
             custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_5 var:oe_pillars_authority >= 5 }
         }
 }
@@ -37,7 +38,7 @@
 		}
 		visible = {
 			scope:actor = {
-				tag = BYZ
+				oe_is_phoenix_empire = yes
 			}
 			international_organization_type = international_organization_type:oe_byz_empire_pillars
 		}
@@ -55,7 +56,7 @@
 		column = { data = name }
 		column = { data = population }
 		visible = {
-			# NEW 2026-11-17 theme-rework: inside the 39 historical regions a theme is founded from the
+			# v26.0 WP11: inside the 79 Roman/historical regions a theme is founded from the
 			# province holding the region centre (see scripted_triggers/oe_theme_regions.txt).
 			# Outside them the original area rule still applies.
 			OR = {
@@ -65,7 +66,7 @@
 				oe_theme_creation_region_trigger = yes
 				NOT = { area = area:thrace_area }
 				any_location_in_province = {
-					owner = c:BYZ
+					oe_owned_by_phoenix_empire = yes
 				}
 				NOT = {
 					root.area = {
@@ -82,30 +83,30 @@
         international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
 		custom_tooltip = {
 			text = oe_create_theme_tt
-		# NEW 2026-11-17 theme-rework: the seat is the historical region centre when there is one,
-		# otherwise the province capital as before. Saved before founding, because founding marks the region occupied.
+		# v26.0 WP11: inside the 79 Roman regions delegate to unified Option 2A Hub-deploying oe_theme_found_at_seat_empire;
+		# outside them keep the legacy area fallback with Option 2A hub posts and BYZ/ROM overlord.
 		if = {
 			limit = { scope:target = { any_location_in_province = { oe_theme_region_center_creatable = yes } } }
 			scope:target = { random_location_in_province = { limit = { oe_theme_region_center_creatable = yes } save_scope_as = oe_theme_seat } }
+			scope:actor = {
+				oe_theme_found_at_seat_empire = yes
+				oe_theme_empire_sync_caps = yes
+			}
 		}
 		else = {
 			scope:target = { random_location_in_province = { limit = { is_province_capital = yes } save_scope_as = oe_theme_seat } }
-		}
-		scope:oe_theme_seat = {
+			scope:oe_theme_seat = {
 				create_building_country_in_location = {
-							religion = religion:orthodox
-							culture = culture:oe_roman_noble_culture
-							subject_type = subject_type:oe_empire_theme
-							overlord = c:BYZ
-							reforms = {
-							oe_byz_theme_system_subject
-							}
-							hidden_effect = {
+					religion = religion:orthodox
+					culture = culture:oe_roman_noble_culture
+					subject_type = subject_type:oe_empire_theme
+					overlord = scope:actor
+					reforms = { oe_byz_theme_system_subject }
+					hidden_effect = {
 						change_government_type = government_type:monarchy
 						change_heir_selection = heir_selection:oe_rome_province_elect
-
-							}
-							save_scope_as = target_building_country
+					}
+					save_scope_as = target_building_country
 				}
 				construct_building = {
 					building_type = building_type:oe_byz_theme_system_noble
@@ -113,32 +114,26 @@
 					cost_multiplier = 0
 					cost_multiplier_reason = "game_concept_event"
 				}
-		}
-		scope:target_building_country.ruler = {
-			add_trait = trait:oe_character_war_score_trait_VI
-		}
-		# NEW 2026-11-17 theme names: historical name from the seat (gen_theme_names.py).
-		scope:oe_theme_seat = { save_scope_as = oe_theme_name_seat }
-		scope:target_building_country = { oe_theme_apply_name = yes }
-		international_organization:oe_byz_empire_pillars = {
-		add_country_to_international_organization = scope:target_building_country
-		international_organization_add_special_status = {
-				type = special_status:oe_pillars_theme
-				country = scope:target_building_country
 			}
-		}
-		# NEW 2026-11-17 theme-rework: jurisdiction = every BYZ location of the historical region; area outside the regions.
-		if = {
-			limit = { scope:oe_theme_seat = { has_variable = oe_theme_region } }
-			scope:target_building_country = { set_variable = { name = oe_theme_region_id value = scope:oe_theme_seat.var:oe_theme_region } }
-			# Stage 2: distance band of the region (centre carries oe_theme_region_tier) for loyalty.
-			if = {
-				limit = { scope:oe_theme_seat = { has_variable = oe_theme_region_tier } }
-				scope:target_building_country = { set_variable = { name = oe_theme_distance value = scope:oe_theme_seat.var:oe_theme_region_tier } }
+			scope:target_building_country = {
+				if = { limit = { exists = ruler } ruler = { add_trait = trait:oe_character_war_score_trait_VI } }
 			}
-			c:BYZ = {
-				every_owned_location = {
-					limit = { var:oe_theme_region ?= scope:oe_theme_seat.var:oe_theme_region }
+			scope:oe_theme_seat = { save_scope_as = oe_theme_name_seat }
+			scope:target_building_country = { oe_theme_apply_name = yes }
+			international_organization:oe_byz_empire_pillars = {
+				add_country_to_international_organization = scope:target_building_country
+				international_organization_add_special_status = {
+					type = special_status:oe_pillars_theme
+					country = scope:target_building_country
+				}
+			}
+			scope:target.area = {
+				every_location_in_area = {
+					limit = {
+						oe_owned_by_phoenix_empire = yes
+						oe_theme_is_hub_location = yes
+						NOT = { this = scope:oe_theme_seat }
+					}
 					construct_building = {
 						building_type = building_type:oe_byz_theme_system
 						owner = scope:target_building_country
@@ -147,49 +142,25 @@
 					}
 				}
 			}
-		}
-		else = {
-		scope:target.area = {
-			every_location_in_area = {
-				limit = {
-					owner = c:BYZ
+			scope:oe_theme_seat = {
+				while = {
+					count = 3
+					create_sub_unit_with_owner = { type = oe_byz_theme_subject_soldier_I owner = scope:target_building_country }
 				}
-				construct_building = {
-					building_type = building_type:oe_byz_theme_system
-					owner = scope:target_building_country
-					cost_multiplier = 0
-					cost_multiplier_reason = "game_concept_event"
-				}
-			}
-		}
-		}
-		# FIX 2026-11-17: 'scope:target_building_country.capital' errors at runtime (got a location scope), so the
-		# 3 soldiers and 6 cogs were never created. The seat is the new theme's capital.
-		scope:oe_theme_seat = {
-			while =  {
-				count = 3
-				create_sub_unit_with_owner = {
-					type = oe_byz_theme_subject_soldier_I
-					owner = scope:target_building_country
+				if = {
+					limit = { is_coastal = yes }
+					while = {
+						count = 6
+						create_sub_unit_with_owner = { type = n_cog owner = scope:target_building_country }
+					}
 				}
 			}
-			if = {
-				limit = { is_coastal = yes }
-			while =  {
-				count = 6
-				create_sub_unit_with_owner = {
-					type = n_cog
-					owner = scope:target_building_country
-				}
+			scope:target_building_country = {
+				set_gold = 300
+				add_manpower = 3
+				if = { limit = { has_variable = oe_theme_named } oe_theme_admin_init = yes }
 			}
-		}
-		}
-		scope:target_building_country = {
-# PAUSED 2026-11-01: theme supervisory offices, per user request.
-#             oe_theme_ensure_supervisory_office_effect = yes
-			set_gold = 300
-			add_manpower = 3
-			# FIX 2026-11-17 (author decision): no food-access relation on founding (popup spam; themes cancelled it the next month).
+			scope:actor = { oe_theme_empire_sync_caps = yes }
 		}
 	}}
 }
@@ -197,15 +168,16 @@ oe_byz_empire_org_action_abolish_theme = {#裁撤军区
 	type = internationalorganization
 	
 	potential = {
-		scope:actor = { tag = BYZ }
+		exists = international_organization:oe_byz_empire_pillars
+		scope:actor = { oe_is_phoenix_empire = yes }
 	}
 
 	allow = {
 		scope:actor = {
-			tag = BYZ
+			oe_is_phoenix_empire = yes
 		}
 	
-        international_organization:oe_byz_empire_pillars = {
+        international_organization:oe_byz_empire_pillars ?= {
             custom_tooltip = { text = OE_PILLARS_AUTHORITY_REQUIRED_5 var:oe_pillars_authority >= 5 }
         }
     }
@@ -232,7 +204,7 @@ oe_byz_empire_org_action_abolish_theme = {#裁撤军区
 		}
 		visible = {
 			scope:actor = {
-				tag = BYZ
+				oe_is_phoenix_empire = yes
 			}
 			international_organization_type = international_organization_type:oe_byz_empire_pillars
 		}
@@ -260,19 +232,23 @@ oe_byz_empire_org_action_abolish_theme = {#裁撤军区
 	effect = {
         if = {
             limit = {
-                scope:actor = { tag = BYZ }
+                scope:actor = { oe_is_phoenix_empire = yes }
                 scope:recipient = { this = international_organization:oe_byz_empire_pillars }
                 scope:target_country = { oe_theme_member_trigger = yes }
                 international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 5 }
             }
             international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -5 } }
-
+            scope:target_country = {
+                if = { limit = { exists = capital capital = { has_variable = oe_theme_region_occupied } } capital = { remove_variable = oe_theme_region_occupied } }
+            }
 		scope:actor = {
 			annex_country = {
                 country = scope:target_country
                 reason = Diplomatic
                 transfer = yes
             }
+            oe_theme_reconcile_occupied = yes
+            oe_theme_empire_sync_caps = yes
 		}
 	
         }
@@ -370,6 +346,7 @@ oe_byz_empire_org_action_abolish_ruler = {#进京述职
 	type = internationalorganization
 	
 	potential = {
+		exists = international_organization:oe_byz_empire_pillars
 		scope:actor = { tag = BYZ }
 	}
 

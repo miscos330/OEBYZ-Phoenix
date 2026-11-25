@@ -12,7 +12,7 @@ oe_fin.1 = { # 海佩伦的成色
             desc = oe_fin.1.desc
         }
     }
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } oe_start_is_1337 = yes current_year >= 1337 current_year < 1453 }
     immediate = { oe_fin_save_bank_tsbk = yes }
     option = {
         name = oe_fin.1.a
@@ -49,7 +49,7 @@ oe_fin.2 = { # 面包与粮船
             desc = oe_fin.2.desc
         }
     }
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } oe_start_is_1337 = yes current_year >= 1337 current_year < 1453 }
     immediate = { oe_fin_save_bank_dobk = yes }
     option = {
         name = oe_fin.2.a
@@ -87,7 +87,7 @@ oe_fin.3 = { # 修教堂的钱
     image = "gfx/interface/illustrations/international_organization_types/autocephalous_patriarchate.dds"
     title = oe_fin.3.t
     desc = oe_fin.3.desc
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } oe_start_is_1337 = yes current_year >= 1337 current_year < 1453 }
     option = {
         name = oe_fin.3.a
         add_gold = { value = oe_fin_month multiply = 8 }
@@ -122,7 +122,7 @@ oe_fin.4 = { # 意大利银行家的条件
             desc = oe_fin.4.desc
         }
     }
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } oe_start_is_1337 = yes current_year >= 1337 current_year < 1453 }
     immediate = { ordered_subject = { limit = { is_subject_type = oe_bank } order_by = gold save_scope_as = oe_fin_bank } }
     option = {
         name = oe_fin.4.a
@@ -144,7 +144,7 @@ oe_fin.4 = { # 意大利银行家的条件
         trigger = { any_subject = { is_subject_type = oe_bank gold >= 100 } }
         custom_tooltip = oe_fin.4.c.tt
         add_gold = oe_fin_bank_loan_12
-        hidden_effect = { save_scope_value_as = { name = oe_fin_amt value = oe_fin_bank_loan_12 } scope:oe_fin_bank ?= { add_gold = { value = scope:oe_fin_amt multiply = -1 } } international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 2 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } }
+        hidden_effect = { save_scope_value_as = { name = oe_fin_amt value = oe_fin_bank_loan_12 } scope:oe_fin_bank ?= { add_gold = { value = scope:oe_fin_amt multiply = -1 } } if = { limit = { exists = international_organization:oe_byz_empire_pillars } international_organization:oe_byz_empire_pillars = { if = { limit = { has_variable = oe_pillars_authority } change_variable = { name = oe_pillars_authority add = 2 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } } } }
         ai_chance = { base = 45 }
     }
     option = {
@@ -165,7 +165,7 @@ oe_fin.5 = { # 包税人的预付款
             desc = oe_fin.5.desc
         }
     }
-    trigger = { tag = BYZ has_variable = oe_fin_theme }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } has_variable = oe_fin_theme }
     immediate = { var:oe_fin_theme ?= { save_scope_as = oe_fin_theme } if = { limit = { oe_court_taxmaster_filled = yes } var:oe_court_taxmaster = { save_scope_as = oe_fin_taxmaster } } }
     option = {
         name = oe_fin.5.a
@@ -179,7 +179,7 @@ oe_fin.5 = { # 包税人的预付款
         name = oe_fin.5.b
         custom_tooltip = oe_fin.5.b.tt
         add_gold = { value = oe_fin_month multiply = -3 }
-        hidden_effect = { every_subject = { limit = { oe_theme_member_trigger = yes var:oe_theme_fiscal ?= 2 } oe_ts_recent_loy = { amount = -5 } set_variable = { name = oe_theme_fiscal value = 1 } set_variable = { name = oe_theme_officials_cd years = 2 } set_variable = oe_theme_tiers_dirty } international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } }
+        hidden_effect = { every_subject = { limit = { oe_theme_member_trigger = yes var:oe_theme_fiscal ?= 2 } oe_ts_recent_loy = { amount = -5 } set_variable = { name = oe_theme_fiscal value = 1 } set_variable = { name = oe_theme_officials_cd years = 2 } set_variable = oe_theme_tiers_dirty } if = { limit = { exists = international_organization:oe_byz_empire_pillars } international_organization:oe_byz_empire_pillars = { if = { limit = { has_variable = oe_pillars_authority } change_variable = { name = oe_pillars_authority add = 3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } } } }
         ai_chance = { base = 35 modifier = { factor = 0.25 gold < oe_fin_low_gold } }
     }
     option = {
@@ -194,12 +194,12 @@ oe_fin.6 = { # 税吏的私囊
     image = "gfx/interface/illustrations/disaster/oe_byzantine_intrigue.dds"
     title = oe_fin.6.t
     desc = oe_fin.6.desc
-    trigger = { tag = BYZ has_variable = oe_fin_theme }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } oe_start_is_1337 = yes current_year >= 1337 current_year < 1453 has_variable = oe_fin_theme }
     immediate = { var:oe_fin_theme ?= { save_scope_as = oe_fin_theme } }
     option = {
         name = oe_fin.6.a
         custom_tooltip = oe_fin.6.a.tt
-        hidden_effect = { scope:oe_fin_theme ?= { oe_ts_recent_eff = { line = 4 amount = 15 } } scope:oe_fin_theme ?= { oe_ts_recent_loy = { amount = -5 } } international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 2 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } }
+        hidden_effect = { scope:oe_fin_theme ?= { oe_ts_recent_eff = { line = 4 amount = 15 } } scope:oe_fin_theme ?= { oe_ts_recent_loy = { amount = -5 } } if = { limit = { exists = international_organization:oe_byz_empire_pillars } international_organization:oe_byz_empire_pillars = { if = { limit = { has_variable = oe_pillars_authority } change_variable = { name = oe_pillars_authority add = 2 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } } } }
         ai_chance = { base = 35 }
     }
     option = {
@@ -223,13 +223,13 @@ oe_fin.7 = { # 一成商税
     image = "gfx/interface/illustrations/trade_market/trade.dds"
     title = oe_fin.7.t
     desc = oe_fin.7.desc
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } oe_start_is_1337 = yes current_year >= 1337 current_year < 1453 }
     option = {
         name = oe_fin.7.a
         custom_tooltip = oe_fin.7.a.tt
         add_country_modifier = { modifier = oe_fin_kommerkion_enforced years = 10 mode = replace }
         add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_penalty }
-        hidden_effect = { if = { limit = { country_exists = c:VEN } reverse_add_opinion = { modifier = oe_fin_customs_crackdown target = c:VEN } } if = { limit = { country_exists = c:GEN } reverse_add_opinion = { modifier = oe_fin_customs_crackdown target = c:GEN } } }
+        hidden_effect = { if = { limit = { country_exists = c:VEN NOT = { this = c:VEN } } reverse_add_opinion = { modifier = oe_fin_customs_crackdown target = c:VEN } } if = { limit = { country_exists = c:GEN NOT = { this = c:GEN } } reverse_add_opinion = { modifier = oe_fin_customs_crackdown target = c:GEN } } }
         ai_chance = { base = 35 }
     }
     option = {
@@ -240,10 +240,10 @@ oe_fin.7 = { # 一成商税
     }
     option = {
         name = oe_fin.7.c
-        trigger = { international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 1 } }
+        trigger = { trigger_if = { limit = { exists = international_organization:oe_byz_empire_pillars } international_organization:oe_byz_empire_pillars = { var:oe_pillars_authority >= 1 } } trigger_else = { always = no } }
         custom_tooltip = oe_fin.7.c.tt
         add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus }
-        hidden_effect = { international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = -1 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } }
+        hidden_effect = { if = { limit = { exists = international_organization:oe_byz_empire_pillars } international_organization:oe_byz_empire_pillars = { if = { limit = { has_variable = oe_pillars_authority } change_variable = { name = oe_pillars_authority add = -1 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } } } }
         ai_chance = { base = 25 }
     }
 }
@@ -254,7 +254,7 @@ oe_fin.8 = { # 圣乔治银行的提议
     image = "gfx/interface/illustrations/institutions/global_trade.dds"
     title = oe_fin.8.t
     desc = oe_fin.8.desc
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } }
     immediate = { oe_fin_save_bank_gebk = yes }
     option = {
         name = oe_fin.8.a
@@ -283,7 +283,7 @@ oe_fin.9 = { # 里亚尔托的挤兑
     image = "gfx/interface/illustrations/disaster/ciompi_revolt.dds"
     title = oe_fin.9.t
     desc = oe_fin.9.desc
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } }
     immediate = { oe_fin_save_bank_vebk = yes }
     option = {
         name = oe_fin.9.a
@@ -318,7 +318,7 @@ oe_fin.10 = { # 苏丹的胡椒
     image = "gfx/interface/illustrations/missions/generic_trade.dds"
     title = oe_fin.10.t
     desc = oe_fin.10.desc
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } }
     immediate = { oe_fin_save_bank_egbk = yes }
     option = {
         name = oe_fin.10.a
@@ -347,7 +347,7 @@ oe_fin.11 = { # 小麦大麦税
     image = "gfx/interface/illustrations/situation/little_ice_age.dds"
     title = oe_fin.11.t
     desc = oe_fin.11.desc
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } oe_start_is_1337 = yes current_year >= 1337 current_year < 1453 }
     option = {
         name = oe_fin.11.a
         add_gold = { value = oe_fin_month multiply = 6 }
@@ -376,7 +376,7 @@ oe_fin.12 = { # 钱商行会
     image = "gfx/interface/illustrations/missions/generic_capital_economy.dds"
     title = oe_fin.12.t
     desc = oe_fin.12.desc
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } }
     immediate = { ordered_subject = { limit = { is_subject_type = oe_bank } order_by = gold save_scope_as = oe_fin_bank } }
     option = {
         name = oe_fin.12.a
@@ -406,7 +406,7 @@ oe_fin.13 = { # 巴西尔的地窖
     image = "gfx/interface/illustrations/work_of_art_and_holy_sites/palace.dds"
     title = oe_fin.13.t
     desc = oe_fin.13.desc
-    trigger = { tag = BYZ }
+    trigger = { tag = BYZ is_rebel_country = no NOT = { oe_is_fourth_rome_exile_country = yes } }
     option = {
         name = oe_fin.13.a
         add_stability = stability_mild_bonus
@@ -424,7 +424,7 @@ oe_fin.13 = { # 巴西尔的地窖
     option = {
         name = oe_fin.13.c
         custom_tooltip = oe_fin.13.c.tt
-        hidden_effect = { international_organization:oe_byz_empire_pillars = { change_variable = { name = oe_pillars_authority add = 3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } }
+        hidden_effect = { if = { limit = { exists = international_organization:oe_byz_empire_pillars } international_organization:oe_byz_empire_pillars = { if = { limit = { has_variable = oe_pillars_authority } change_variable = { name = oe_pillars_authority add = 3 } clamp_variable = { name = oe_pillars_authority min = 0 max = 100 } } } } }
         ai_chance = { base = 30 }
     }
 }
