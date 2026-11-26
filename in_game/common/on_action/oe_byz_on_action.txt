@@ -184,13 +184,14 @@ monthly_country_pulse  = {#@@@每月扳机
 # oe_byz_check_oe_byz_rr_rome_hope
 
 		oe_byz_cabinet_experience
-	
-        oe_byz_maintain_latin_death_markers
         # Consolidated in the small historical-character patch.
         # oe_byz_migrate_andronikos_identity
         # Consolidated in the small historical-character patch.
         # oe_byz_migrate_john_v_education
     }
+}
+yearly_country_pulse = {
+    on_actions = { oe_byz_maintain_latin_death_markers }
 }
 
 
@@ -574,7 +575,7 @@ on_actions = {
 }
 }
 oe_byzt_theme_house = {#军区治所
-	trigger = { current_year >= 1200 }
+	trigger = { current_year >= 1200 country_exists = c:BYZ scope:winner ?= c:BYZ }
 	effect = {
 		if = {
 			limit = {
@@ -636,7 +637,7 @@ oe_byz_phoenix_rebuild_army = {
     }
 }
 oe_byz_war_hurt = {#战争造成盗匪
-	trigger = { current_year >= 1200 }
+	trigger = { current_year >= 1200 country_exists = c:BYZ scope:winner ?= c:BYZ }
 	effect = {
 		if = {
 			limit = {
@@ -826,7 +827,7 @@ on_siege_won = {#@@@围城胜利扳机
 }
 
 oe_byz_siege_won_turkish_transfer = {#围城胜利：土耳其文化地点转给东罗马
-		trigger = { current_year >= 1200 }
+		trigger = { current_year >= 1200 country_exists = c:BYZ OR = { root = c:BYZ root = { is_subject_of = c:BYZ } } }
 		effect = {
 		if = {
 		limit = {
@@ -1281,7 +1282,14 @@ oe_byz_initialize_latin_death_markers = {
     effect = { oe_byz_restore_latin_death_markers = yes }
 }
 oe_byz_maintain_latin_death_markers = {
-    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no }
+    trigger = {
+        current_year >= 1200
+        current_year < 1410
+        tag = BYZ
+        is_rebel_country = no
+        oe_start_is_1337 = yes
+        NOT = { AND = { has_variable = oe_byz_sic_succession_fired has_variable = oe_byz_nap_succession_fired } }
+    }
     effect = { oe_byz_restore_latin_death_markers = yes }
 }
 
@@ -1322,9 +1330,9 @@ oe_byz_initialize_historical_character_patch = {
 oe_byz_migrate_historical_character_patch = {
     trigger = {
         current_year >= 1200
-        oe_start_is_1337 = yes
         tag = BYZ is_rebel_country = no
         NOT = { has_global_variable = oe_byz_historical_character_patch_applied }
+        oe_start_is_1337 = yes
     }
     effect = { oe_byz_apply_historical_character_patch = yes }
 }
@@ -1333,9 +1341,9 @@ oe_byz_migrate_historical_character_patch = {
 oe_byz_migrate_andronikos_abilities = {
     trigger = {
         current_year >= 1200
-        oe_start_is_1337 = yes
         tag = BYZ is_rebel_country = no
         NOT = { has_global_variable = oe_byz_andronikos_abilities_repaired }
+        oe_start_is_1337 = yes
     }
     effect = { oe_byz_repair_andronikos_capped_abilities = yes }
 }

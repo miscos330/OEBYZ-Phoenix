@@ -34,7 +34,17 @@ oe_osman_born = {
 }
 monthly_country_pulse = { on_actions = { oe_osman_maintenance } }
 oe_osman_maintenance = {
-    trigger = { current_year >= 1299 tag = BYZ is_rebel_country = no }
+    trigger = {
+        current_year >= 1299
+        tag = BYZ
+        is_rebel_country = no
+        OR = {
+            AND = { NOT = { country_exists = c:TUR } NOT = { has_variable = oe_osman_fate_shown } }
+            has_variable = oe_osman_conversion_waiting
+            has_variable = oe_osman_chain_active
+            has_variable = oe_osman_expelled
+        }
+    }
     effect = {
         # Recovery for unusual destruction scripts; normal annexations dispatch immediately.
         if = { limit = { NOT = { country_exists = c:TUR } NOT = { has_variable = oe_osman_fate_shown } } oe_osman_open_fate = yes }

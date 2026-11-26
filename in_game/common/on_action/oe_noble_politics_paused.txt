@@ -1,11 +1,13 @@
 ﻿# Migration only: no scoring, influence changes, economic costs, or new characters.
 on_game_start = { on_actions = { oe_np_pause_startup_cleanup } }
-monthly_country_pulse = { on_actions = { oe_np_pause_monthly_cleanup } }
+yearly_country_pulse = { on_actions = { oe_np_pause_monthly_cleanup } }
 oe_np_pause_startup_cleanup = { effect = { every_country = { oe_np_paused_cleanup = yes } } }
 oe_np_pause_monthly_cleanup = {
     trigger = {
+        current_year >= 1200
+        is_rebel_country = no
         OR = {
-            AND = { tag = BYZ is_rebel_country = no }
+            tag = BYZ
             has_country_modifier = oe_npi_court_honor
         }
     }

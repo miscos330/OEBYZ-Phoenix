@@ -1,13 +1,16 @@
-# Project Phoenix (《凤凰计划》 / OEBYZ) v48.0 — Europa Universalis V 1.4.9
+![凤凰计划 Project Phoenix](https://raw.githubusercontent.com/wiki/miscos330/OEBYZ-Phoenix/images/cover.jpg)
 
-**Target Game Version:** Europa Universalis V `1.4.*` (`1.4.9`)  
-**Languages:** Complete Simplified Chinese & English (`l_simp_chinese` + `l_english`, 100% key parity across 89,200+ main-mod keys)  
-**Repository:** https://github.com/miscos330/OEBYZ-Phoenix  
+# Project Phoenix (《凤凰计划》 / OEBYZ) v50.0 — Europa Universalis V 1.4.9
+
+**Target Game Version:** Europa Universalis V `1.4.*` (`1.4.9`)
+**Languages:** Complete Simplified Chinese & English (`l_simp_chinese` + `l_english`, 90,000+ main-mod keys)
+**Repository:** https://github.com/miscos330/OEBYZ-Phoenix
 **制作 / Made by:** 寐夜空灵、miscos330 (`Made by: 寐夜空灵, miscos330`)
 
-> **Save Compatibility & Streamlined 9-Package Unified Matrix Notice / 存档兼容性与 9 包大一统矩阵说明**  
-> **EN:** `v48.0` adds the **1204 Shattered Purple & Song–Jin–Mongol Dual Flagships** plus **6 Grounded Eurasian Alt-History Miracle Arcs** (*Zheng He Reborn & Forbidden City × Nova Constantinople Pacific Reunion* with `oe_v47_sub_shibo_protectorate`, *Varna Victorious Three-Crown Crusade*, *Twin Eagles of Moscow & Constantinople*, *Al-Andalus Resurgent / New Cordoba Exile*, *Mamluk Suez Canal & Red Sea Spice Hegemony*, and *Ulugh Beg's Samarkand Renaissance*) — **8 new custom-GUI interactive Situations**, **102 deep 3-option events**, **7 iconic reforms**, and **24 curated oil DDS assets**, human-friendly & AI-restrained, all verified **`60/60 R01–R60 PASS`**. Always start a new campaign. Place **Glorp UI 1.4.9 & Phoenix UI Overhaul** (`3845632981`) **at the very bottom** of your playset.  
-> **中文：** `v48.0` 实装 **`1204` 紫衣七雄罗马继承战与南宋开禧北伐/金蒙大博弈双旗舰**，以及**欧亚六大“史实根基 × 极致爽感”奇迹架空线**（大明重启郑和下西洋 + 西洋市舶宣慰司海外附庸 + **《紫禁城宝船 × 新君士坦丁堡巨舰》太平洋史诗会师**、瓦尔纳大捷三皇圣战、莫斯科—君士坦丁堡双鹰合璧、安达卢斯复兴/新科尔多瓦流亡、马穆鲁克苏伊士古运河、乌鲁伯格撒马尔罕文艺复兴）——新增 **8 套定制 `.gui` 交互局势**、**102 条三选项深度事件**、**7 项改革**与 **24 张油画 `.dds`**（对玩家默认可见、对 AI 严格克制，全 9 包矩阵 **60/60 `R01–R60` 零报错**）。请新开一局；**《Glorp UI 1.4.9 凤凰适配增强》**（`3845632981`）请始终排在播放集**最底部**。
+> **Saves / 存档：** v50.0 is not compatible with older saves; please start a new game. v50.0 不兼容旧存档，请新开一局。
+> **EN:** v50.0 adds conqueror expeditions for every era (Belisarius, Narses and Liberius in 532, up to Napoleon in 1821), an imperial reconquest casus belli with 16 decisive peace treaties, 54 basic advances so Late Antique starts can tax and build, a deeper Fourth Rome (54 native countries, 17 exarchates, fixed ship prices, New World towns, correct 1444 succession), Roman–Hellenic polytheism with 30 omens, 26 world wonders and about 366 redrawn oil-painting interface cards. Tested live in EU5 1.4.9 over four rounds (rc1–rc4). Full notes: `CHANGELOG.md`.
+> **中文：** v50.0 新增各时代征服者远征（532 贝利撒留、纳尔塞斯、利贝里乌斯，直到 1821 拿破仑）、帝国收复失地宣战理由与 16 套历史决战和约、54 项基础革新（古典开局可征税建造）、第四罗马深化（54 个美洲土著国家、17 个总督区、船价修复、新大陆建城、1444 继承修复）、罗马—希腊多神教 30 项神谕、26 座世界奇观，以及约 366 张油画界面卡片。已在 EU5 1.4.9 上经过四轮实机验收（rc1–rc4）。详见 `CHANGELOG.md`。
+> **History below / 以下为历代版本说明：** sections marked v48.0 and earlier describe those versions and are kept for reference.
 
 ---
 
@@ -103,18 +106,19 @@
 
 ---
 
-## Official Optional Submod Matrix & Load Order / 官方 10 包纯净矩阵与推荐排序
+## Official Optional Submod Matrix & Load Order / 官方子模组与推荐排序（v50.0）
 
-Place enabled submods **below (after)** the Project Phoenix main mod in the order shown below:
+Place enabled submods **below (after)** the Project Phoenix main mod in the order shown below / 子模组请排在主模组之后，顺序如下：
 
-| # | Package / 子模组 | Role & Dependency / 定位与依赖 | Workshop / Version |
+| # | Package / 子模组 | Role / 定位 | Workshop |
 |---:|---|---|---|
-| 1 | **Project Phoenix (OEBYZ)** (`oebyz.phoenix.main`) | Main overhaul (`1337–1836`, WP32 / WP33+WP47 5-tab UI dock / WP35 6 Great-Power Systems / Era-Aware AI Overhaul / 148 Era Country Descs, 24 vanilla overrides, 88,000+ EN/ZH keys, `56/56` CI pass). Bundles *Descriptions Expanded*. | [`3667460405`](https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405) · `v42.0` |
-| 2 | **All-Eras Historical Bookmarks (+ Built-In Fourth Rome)** (`oebyz.phoenix.all_eras`) | **6 Eras (`1204/1337/1444/1648/1776/1821`)** + **Integrated Standalone Fourth Rome (`1444` Dual-Path + Orthodox Default + AI Exodus, 5 3D Wonders & 10 Systems)** + **32 Museum-Grade Era Banners** + 10 interactive situations, 17 era decisions, 24 wonders & +304 retinues (`56/56` CI). **100% Standalone-capable.** | [`3844848618`](https://steamcommunity.com/sharedfiles/filedetails/?id=3844848618) · `v42.0` |
-| 3 | **National Destinies — Deep Integration** (`oebyz.phoenix.national_destinies`) | Authorized integration of *National Destinies* (`3668193813` + ZH `3744757513`), 50,720 EN/ZH keys, `REPLACE:country_flavor`, 0 hash collisions (`56/56` CI). *(Or use lightweight **ND Compat Bridge** [`3845632818`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632818) with external Workshop `3668193813`.)* | [`3845632867`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632867) / [`3845632818`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632818) · `v42.0` |
-| 4 | **Map Beautification — Pick 1 of 3 Styles** | Classic Atlas ([`3845632643`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632643)) / High-Contrast ([`3845632683`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632683)) / Imperial Parchment ([`3845632746`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632746)). Zero-shader + 2 live map modes. | [`3845632643`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632643) / [`3845632683`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632683) / [`3845632746`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632746) · `v42.0` |
-| 5 | **Glorp UI 1.4.9 & Phoenix UI Overhaul** (`oebyz.phoenix.glorp_ui`) | Authorized UI overhaul harmonized with WP33 5-tab Phoenix dock, 0 CMF errors, zero ZH button clipping & `56/56` CI. **Always load last.** | [`3845632981`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632981) · `v42.0` |
-| ★ | **The Fallen Eagle (361–768 AD)** (`oebyz.phoenix.fallen_eagle`) | **Standalone Late Antiquity Overhaul** (run alone — do not mix with #1/#2): 16 Late Antique cultures, pre-1054 Christianity & Arianism, **24 parchment maps + 24 era banners**, 10 interactive situations & GUIs, 16 decisions, 18 wonders, +120 retinues & 0 undiscovered capitals (`56/56` CI pass). | [`3845632550`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632550) · Standalone · `v42.0` |
+| 1 | **Project Phoenix (OEBYZ)** (`oebyz.phoenix.main`) | Main mod (1337–1836). Bundles *Descriptions Expanded*. / 主模组，内置描述扩展。 | [`3667460405`](https://steamcommunity.com/sharedfiles/filedetails/?id=3667460405) |
+| 2 | **Chronicles of All Eras 361–1821 / 全时代编年史** (`oebyz.phoenix.chronicles`) | 12 starts (361–1821), Fourth Rome and The Fallen Eagle included; runs standalone. / 12 个开局，含第四罗马与雄鹰陨落，可独立运行。 | [`3844848618`](https://steamcommunity.com/sharedfiles/filedetails/?id=3844848618) |
+| 3 | **National Destinies — Deep Integration / 国家命运深度整合** (`oebyz.phoenix.national_destinies`) | Or the Workshop original + the compatibility bridge; never both. / 或改用原版 + 兼容桥，二者不要同时启用。 | [`3845632867`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632867) / [`3845632818`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632818) |
+| 4 | **Map Beautification, pick one / 地图美化三选一** | Classic Atlas / High-Contrast / Imperial Parchment. / 经典制图 / 高对比政区 / 帝国羊皮纸。 | [`3845632643`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632643) / [`3845632683`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632683) / [`3845632746`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632746) |
+| 5 | **Glorp UI 1.4.9 Phoenix edition / Glorp UI 凤凰适配** (`oebyz.phoenix.glorp_ui`) | **Always load last.** / **务必排在最底部。** | [`3845632981`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632981) |
+
+- **Retired / 已停更：** the standalone *The Fallen Eagle 361–768* (`3845632550`) is merged into the Chronicles; do not enable it. 旧的独立《雄鹰陨落》已并入编年史，请勿启用。
 
 - **Bundled Overlay Note:** Do not subscribe separately to *Descriptions Expanded*. Place *Descriptions for Every Tile* or *Every Historical Character* **above (before)** Project Phoenix if used.
 - **Manual Install:** Download archives from [GitHub Releases](https://github.com/miscos330/OEBYZ-Phoenix/releases), extract into `Documents\Paradox Interactive\Europa Universalis V\mod\`, and enable in the order above.

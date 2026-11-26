@@ -1,3 +1,211 @@
+# 《凤凰计划（OEBYZ）》v50.0 更新日志
+
+> **发布状态**：v50.0 正式版（EU5 1.4.9），合并 v49–v50 的全部更新。候选版 v50.0-rc1 到 rc4 于 2026-11-26 至 27 在 EU5 1.4.9 上经过四轮实机验收；发布包就是实测通过的 rc4，没有再改模组文件（只更新了 README）。
+> **存档提示**：v50.0 **不兼容旧版本存档**，请新开一局。
+> **新封面**：主模组换了新的封面图和启动器缩略图。
+
+制作：寐夜空灵、miscos330
+
+---
+
+## 一、中文更新日志
+
+### 1. 征服者远征与历史决战（全时代编年史）
+
+- **532 查士丁尼光复重做**：
+  - 贝利撒留北非远征军、贝利撒留与纳尔塞斯意大利远征军、利贝里乌斯西班牙远征军，都改成可独立作战的远征军附庸。
+  - 发动时先选目标国，再选沿海登陆点；在战区内占领即征服，被敌人夺回就失守。
+  - 远征军有增援、召回、册封总督区、吞并四种互动。
+  - 新增 540 年拉文纳哥特王冠事件（可切换扮演贝利撒留）、托提拉复起，以及西方诸王国联合并致信库思老一世造成的两线压力；伊苏里亚、奥斯若伊奈等内部边区可以和平整合。
+  - 宣战只针对目标国及其附庸，不再牵连整个马格里布。
+- **其余各时代的远征：**
+  - 361 尤里安两河远征；
+  - 395 斯提里科与阿拉里克；
+  - 476 狄奥多里克征意大利；
+  - 632 哈立德与大唐李靖；
+  - 768 查理曼伦巴第远征；
+  - 1204 光复君士坦丁堡先锋与蒙古万户；
+  - 1453 教宗援军与乌尔班巨炮；
+  - 1648 郑成功北伐；
+  - 1776 叶卡捷琳娜“希腊计划”远征军；
+  - 1821 拿破仑归来（可切换扮演拿破仑）。
+- **帝国收复失地宣战理由与 16 套决战和约**：1337 以外的开局都有通用的帝国收复失地宣战理由，另有 16 套一对一的历史决战宣战理由和专属和约，配 19 张羊皮纸图标。
+
+### 2. 科技、开局与经济（全时代编年史）
+
+- **科技树：**1337 之前的 5 个时代新增 54 项基础革新，包括征税、稳定投入、农耕、采矿、城建修路、舰船和基础法典。古典晚期和中世纪前期开局不再无法征税或建造。
+- **开局科技：**1337 以外的 11 个开局按年代解锁初始科技，1776 和 1821 开局的科技断层大幅减少。
+- **附庸与特权：**
+  - 1337 之前的时代都能有附庸，532 东罗马开局的 8 个边区与同盟蛮族附庸不再首日解体。
+  - 361–1453 的拜占庭开局配齐专属特权，532 从 0 项增加到 15 项。
+- **开局校准：**
+  - 古典晚期人口不再成倍下滑；
+  - 删掉不合时代的建筑和过多的城堡；
+  - 校准各开局的军队、舰队和国库；
+  - 361 罗马开局由赤字改为盈余：rc3 实测每月 −78，v50.0 为 +124.75。
+
+### 3. 第四罗马（全时代编年史）
+
+- **美洲土著：**1444/1453 的美洲新增 54 个历史土著国家，配原住民政策法令和 18 条事件。
+- **衍生国家：**加强 14 个衍生国家、文兰与帝国附庸；斯巴达尼亚有四阶段西进玩法和专属霸权宣战理由。
+- **总督区：**新建总督区时优先把已有的分支国家就地升格，避免同一地区出现重复总督区。总督区增加到 17 个，其中 7 个在旧大陆。新增三种分封方式和 24 条重返欧洲事件。
+- **造船价格：**修好时代数增加后船价翻倍的问题，不会再出现约 6,400 金的轻型战舰。
+- **新大陆城镇：**新增新大陆建镇和建城决议，以及东地中海希腊难民潮。
+- **1444 继承：**约翰八世补上父母，继承人正确识别为君士坦丁十一世，驾崩后直接继位，不进入摄政。西渡建立极乐洲新罗马时，同王朝成员一起随行。
+
+### 4. 罗马—希腊多神教
+
+- **主模组：**新增 6 位神祇、30 项大祭司神谕、4 项宗教特质、2 项内阁行动、3 项决议和 23 条事件。
+- **编年史第四罗马：**新增新大陆 6 座古典神庙奇观、“诸神和平”体系和 12 条跨洋宗教事件。
+
+### 5. v49 合入内容、美术与性能
+
+- **v49.0：**26 座三阶世界奇观；传奇雇佣兵团、海盗与大师；各时代君主服饰肖像；古典奥林匹克与无敌舰队；游戏规则集中设置。
+- **v49.5：**
+  - 新增 395 东西罗马双紫局势，退役 21 个重复的旧局势；
+  - 补充女性君主肖像；
+  - 为 123 项改革和特权加上地理、科技、宗教条件，例如没到太平洋就不能选太平洋相关的特许。
+- **美术：**重绘约 366 张油画风格的界面卡片（阶层特权、政府改革、法律、附庸、国际组织纹章、建筑、内阁、局势、灾难），另有 34 张古典时代徽章与横幅、12 个古典机构图标。1337 的“军区制”改革卡重新绘制。
+- **性能与兼容：**优化 103 条定期脚本，改善中后期卡顿；编年史改了两个标签（`RMN→RMY`、`ARC→CTK`），与《国家命运》不再冲突。
+
+### 6. 实机问题修复（rc1–rc4 四轮实机验收）
+
+- 532 发动远征不再刷出大量报错，也不再让整个马格里布对远征军宣战；“托提拉复起”的逻辑正常载入；局势面板不再新旧两套按钮并存。
+- 神圣罗马帝国相关行动、特权和法律在没有该组织或国家的年代不再报错。
+- 361 革新不再开局全部研究完成，现在显示“25/109”，并有可研究项目。
+- 1337 等开局的自建文化不再提示“没有人口”。
+- 补齐 8 个远征附庸类型的本地化和 16 条国家互动消息类型；开局生成人物时文化、宗教不再为空。
+- 1204 行动脚本的 `'root'` 比较报错归零；古典晚期 3 项革新的语法错误修好。
+- 主模组启动器缩略图换成新封面。
+
+### 7. 实机验收（2026-11-26 至 27，EU5 1.4.9）
+
+- **532 东罗马：**
+  - 开局月结余 +311，有 15 项特权和 8 个附庸；
+  - 发动北非远征（目标汪达尔，加贝斯登陆），只有 4 场相关战争，远征脚本报错为 0。
+- **1444 拜占庭：**
+  - 造船价格正常；
+  - 继承人是君士坦丁十一世，约翰八世驾崩后直接继位；
+  - 西渡建立极乐洲新罗马后，国王驾崩同样正常继位，皇弟随行。
+- **361 罗马：**月结余 +124.75，革新可研究。
+- **1337 拜占庭：**“军区制”卡片显示新油画，载入时没有“文化无人口”提示。
+- **1204：**观察模式运行 6 年，没有刷屏报错。
+- **其余开局：**395、476、632、768、1648、1776、1821 都能正常进局，并在观察模式下运行 1 到 4 年，没有刷屏报错。
+- **没有实测：**
+  - 540 拉文纳事件和 532 战后转总督区；
+  - 361、1648、1821 由玩家亲自发动的远征；
+  - 26 座奇观和多神教神谕的逐项操作。
+
+### 8. 已知问题
+
+- 1444 拜占庭开局，王室改革显示“7/6”，超出上限。
+- 1204 运行中原版威尼斯事件（`flavor_ver.txt`）会持续报“人物作用域为空”，不影响游玩。
+- 361 罗马的教士税是 0（教士人口少、教堂维护多，属于阶层收支的正常结果）。
+
+---
+
+## 二、English Changelog
+
+> **Status:** v50.0 release (EU5 1.4.9), covering everything in v49 and v50. Candidates v50.0-rc1 to rc4 went through four rounds of live testing in EU5 1.4.9 on 2026-11-26/27; the released packages are the tested rc4 with no further changes to mod files (only the README was updated).
+> **Saves:** v50.0 is **not** compatible with older saves. Please start a new game.
+> **New cover:** the main mod has a new cover image and launcher thumbnail.
+
+Made by: 寐夜空灵, miscos330
+
+### 1. Conqueror expeditions and decisive wars (Chronicles of All Eras)
+
+- **532 Justinian's reconquest reworked:**
+  - Belisarius in Africa, Belisarius and Narses in Italy, and Liberius in Spain are now expeditionary subjects that fight on their own.
+  - You pick a target country and a coastal landing site. Locations occupied inside the theatre are conquered at once, and lost again if the enemy retakes them.
+  - Each expedition can be reinforced, recalled, chartered as an exarchate or annexed.
+  - New: the 540 Ravenna Gothic crown event (you can switch to playing Belisarius), Totila's revival, and Western kings rallying and writing to Khosrow I for a two-front squeeze. Inner marches such as Isauria and Osroene can be integrated peacefully.
+  - Wars are now declared only on the target and its subjects, not on the whole Maghreb.
+- **Expeditions in the other eras:**
+  - 361 Julian's Mesopotamian campaign;
+  - 395 Stilicho and Alaric;
+  - 476 Theoderic in Italy;
+  - 632 Khalid and the Tang general Li Jing;
+  - 768 Charlemagne in Lombardy;
+  - 1204 the Constantinople reconquest vanguard and the Mongol tumens;
+  - 1453 papal relief and Urban's great gun;
+  - 1648 Koxinga's northern campaign;
+  - 1776 Catherine's Greek Plan army;
+  - 1821 Napoleon's return (you can switch to playing Napoleon).
+- **Imperial reconquest and 16 decisive peace treaties:** every start except 1337 gets a general imperial reconquest casus belli, plus 16 paired historical casus belli with their own peace treaties and 19 parchment icons.
+
+### 2. Technology, starts and economy (Chronicles of All Eras)
+
+- **Technology:** 54 basic advances for the five ages before 1337: taxation, stability investment, farming, mining, building and roads, ships and early laws. Late Antique and early medieval starts can tax and build again.
+- **Starting technology:** the 11 starts other than 1337 unlock their starting technology by year, which greatly reduces the gaps in 1776 and 1821.
+- **Subjects and privileges:**
+  - Subjects are allowed in all ages before 1337, and the 8 frontier and foederati subjects of 532 East Rome no longer break away on day one.
+  - The Byzantine starts from 361 to 1453 get their Byzantine privileges; 532 goes from 0 to 15.
+- **Start calibration:**
+  - The doubled Late Antique population decline is gone;
+  - anachronistic buildings and surplus forts are removed;
+  - armies, fleets and treasuries are calibrated in every start;
+  - 361 Rome now starts with a surplus: −78 a month in the rc3 test, +124.75 in v50.0.
+
+### 3. Fourth Rome (Chronicles of All Eras)
+
+- **Native Americans:** 54 historical native countries in the Americas of 1444/1453, with a native policy law and 18 events.
+- **Successor states:** the 14 successor states, Vinland and the imperial subjects are stronger; Spartania gets a four-stage westward campaign and its own hegemony casus belli.
+- **Exarchates:** new exarchates are made by promoting an existing branch realm where possible, so the same region no longer gets two. There are now 17 exarchates, 7 of them in the Old World, three ways of enfeoffment and 24 return-to-Europe events.
+- **Ship prices:** the per-age doubling is fixed, so light warships no longer cost about 6,400 gold.
+- **New World towns:** new decisions to found towns and cities in the New World, and an eastern Mediterranean Greek refugee wave.
+- **1444 succession:** John VIII now has his parents set, so Constantine XI is recognised as heir and succeeds directly when John dies, without a regency. When the court sails west to found the Elysian New Rome, the rest of the dynasty goes too.
+
+### 4. Roman–Hellenic polytheism
+
+- **Main mod:** 6 new deities, 30 high-priest omens, 4 religious aspects, 2 cabinet actions, 3 decisions and 23 events.
+- **Chronicles Fourth Rome:** 6 classical temple wonders in the New World, a *Pax Deorum* system and 12 transatlantic religious events.
+
+### 5. Merged v49 content, art and performance
+
+- **v49.0:** 26 three-tier world wonders; legendary mercenary companies, pirates and masters; period ruler portraits; the classical Olympics and the Armada; a central game-rules screen.
+- **v49.5:**
+  - A 395 situation for the two Roman courts; 21 duplicate old situations retired.
+  - More portraits for female rulers.
+  - Geographic, technology and religious conditions for 123 reforms and privileges; for example, Pacific charters need a Pacific coast.
+- **Art:** about 366 interface cards redrawn as oil paintings (estate privileges, government reforms, laws, subjects, international organisation crests, buildings, cabinet, situations, disasters), plus 34 classical age emblems and banners and 12 classical institution icons. The 1337 "Theme System" reform card is redrawn.
+- **Performance and compatibility:** 103 recurring scripts optimised to reduce late-game slowdown; two Chronicles tags renamed (`RMN→RMY`, `ARC→CTK`) so they no longer clash with National Destinies.
+
+### 6. Fixes from live testing (four rounds, rc1–rc4)
+
+- In 532, launching an expedition no longer floods the error log or brings the whole Maghreb into the war; Totila's revival loads; the situation panel no longer shows old and new buttons side by side.
+- Holy Roman Empire actions, privileges and laws no longer raise errors in eras without that organisation or country.
+- 361 no longer starts with all advances researched; it shows "25/109" with advances available.
+- Custom cultures no longer report "no pops" in 1337 and other starts.
+- Localisation for 8 expedition subject types and 16 country-interaction message types added; characters created at game start no longer get an empty culture or religion.
+- The 1204 action `'root'` comparison errors are gone, and a syntax error in 3 Late Antique advances is fixed.
+- The main mod's launcher thumbnail now shows the new cover.
+
+### 7. Live test (2026-11-26/27, EU5 1.4.9)
+
+- **532 East Rome:**
+  - +311 a month at the start, with 15 privileges and 8 subjects.
+  - The Africa expedition (target the Vandals, landing at Gabès) led to 4 related wars, with 0 expedition script errors.
+- **1444 Byzantium:**
+  - Ship prices are normal.
+  - Constantine XI is heir and succeeds directly when John VIII dies.
+  - After sailing west to the Elysian New Rome, succession works the same way and the emperor's brothers go along.
+- **361 Rome:** +124.75 a month, with advances available.
+- **1337 Byzantium:** the "Theme System" card shows the new painting; no "culture has no pops" messages at load.
+- **1204:** six years in observer mode without error floods.
+- **Other starts:** 395, 476, 632, 768, 1648, 1776 and 1821 all start and ran 1 to 4 years in observer mode without error floods.
+- **Not tested:**
+  - the 540 Ravenna event and turning the 532 expeditions into exarchates after the war;
+  - player-launched expeditions in 361, 1648 and 1821;
+  - the 26 wonders and the polytheist omens one by one.
+
+### 8. Known issues
+
+- In a 1444 Byzantine game, the crown reforms show "7/6", over the limit.
+- In 1204, the vanilla Venetian event (`flavor_ver.txt`) keeps logging an empty character scope; this does not affect play.
+- 361 Rome's clergy tax is 0: there are few clergy and many churches to maintain, so this is the normal estate budget, not a bug.
+
+---
+
 # 《凤凰计划（OEBYZ）》v48.0 更新日志
 
 > **发布状态**：v48.0 正式版（EU5 1.4.9），合并 v41–v48 的全部更新。候选版 v48.0-rc2 已于 2026-11-26 在 EU5 1.4.9 实机验收；发布包在 rc2 基础上修了 3 处小问题（见第 5 节），修后在 1648 开局再次实机复测。

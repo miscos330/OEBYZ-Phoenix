@@ -9,8 +9,21 @@ oe_top_alerts_monthly_pulse = {
         is_ai = no
         is_rebel_country = no
         is_subject = no
+        OR = {
+            current_month = 1
+            current_month = 3
+            current_month = 5
+            current_month = 7
+            current_month = 9
+            current_month = 11
+            NOT = { has_variable = oe_top_alerts_init }
+        }
     }
     effect = {
+        if = {
+            limit = { NOT = { has_variable = oe_top_alerts_init } }
+            set_variable = { name = oe_top_alerts_init value = 1 }
+        }
         # Cache 1: Praetorian Prefecture / Classical Diocese slot available (BYZ/ROM)
         if = {
             limit = {
