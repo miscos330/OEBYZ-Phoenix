@@ -1,15 +1,15 @@
-﻿# Project Phoenix v15.0: targeted REPLACE overrides for vanilla cabinet_actions.
-# Generated from EU5 1.4.9 vanilla definitions; do not edit by hand.
+﻿# Project Phoenix v43.0: targeted REPLACE overrides for vanilla cabinet_actions (Romanitas Latinitas & Rhomanismos restored).
 
 # --- From in_game/common/cabinet_actions/D008_cabinet_actions.txt (2 blocks) ---
 REPLACE:spread_philhellenism = {
 	ability = dip
 	allow_multiple = no
-	
-	potential = {
-		tag = BYZ
 
-		has_dlc = "d008_fate_of_the_phoenix"
+	potential = {
+		OR = {
+			tag = BYZ
+			has_societal_value = societal_value_type:latinization_vs_hellenization
+		}
 	}
 
 	allow = {
@@ -22,18 +22,19 @@ REPLACE:spread_philhellenism = {
 	country_modifier = {
 		cultural_influence_modifier = 0.1
 		research_speed_modifier = 0.05
+		monthly_towards_hellenization = 0.1
 	}
 
 	ai_will_do = {
 		scope:actor = {
-			if = { 
+			if = {
 				limit = { at_war = yes }
 				subtract = {
 					value = 100
 					desc = AT_WAR
 				}
 			}
-			
+
 			if = {
 				limit = { num_loans > 0 }
 				add = {
@@ -58,14 +59,18 @@ REPLACE:spread_philhellenism = {
 REPLACE:encourage_latin_militarism = {
 	ability = mil
 	allow_multiple = no
-	
+
 	potential = {
-		always = no # Project Phoenix: soft-disabled D008 cabinet action
+		OR = {
+			has_societal_value = societal_value_type:latinization_vs_hellenization
+			court_language = language:latin_language
+		}
 	}
 
 	allow = {
 		OR = {
 			court_language = language:latin_language
+			has_reform = government_reform:mos_maiorum
 			culture = { has_culture_group = culture_group:italian_group }
 		}
 	}
@@ -73,24 +78,24 @@ REPLACE:encourage_latin_militarism = {
 	country_modifier = {
 		army_maintenance_efficiency = 0.05
 		monthly_army_tradition = 0.05
+		discipline = 0.02
 		monthly_towards_latinization = 0.1
 	}
 
 	ai_will_do = {
-
 		subtract = {
 			value = 25
 			desc = BASE_VALUE
 		}
 		scope:actor = {
-			if = { 
+			if = {
 				limit = { at_war = yes }
 				add = {
 					value = 25
 					desc = AT_WAR
 				}
 			}
-			
+
 			add = {
 				value = regular_army_size
 				desc = "regular army size"
@@ -107,7 +112,7 @@ REPLACE:increase_bureaucratic_entrenchment = {
 		oe_settings_bureaucracy_enabled = yes
 		any_current_bureaucracy = { count > 0 }
 	}
-	
+
 	country_modifier = {
 		global_bureaucracy_entrenchment_speed_modifier = 0.1
 	}
@@ -120,7 +125,7 @@ REPLACE:bolster_bureaucratic_efficiency = {
 		oe_settings_bureaucracy_enabled = yes
 		any_current_bureaucracy = { bureaucracy_maintenance > 0 }
 	}
-	
+
 	country_modifier = {
 		maintain_bureaucracy_price_cost_modifier = -0.05
 	}

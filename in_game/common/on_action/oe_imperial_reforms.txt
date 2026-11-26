@@ -1,6 +1,6 @@
 ﻿monthly_country_pulse = { on_actions = { oe_ir_monastery_monthly oe_ir_court_reform_repair oe_ir_tagmata_policy_unlock } }
 oe_ir_monastery_monthly = {
-    trigger = { is_rebel_country = no has_estate_privilege = estate_privilege:oe_noble_family_monasteries }
+    trigger = { current_year >= 1200 is_rebel_country = no has_estate_privilege = estate_privilege:oe_noble_family_monasteries }
     effect = { add_stability = 0.02 }
 }
 
@@ -8,6 +8,7 @@ on_battle_won = { on_actions = { oe_ir_army_battle_won } }
 oe_ir_army_battle_won = {
     # Native on_battle_won passes the victorious unit as scope:actor.
     trigger = {
+        current_year >= 1200
         country_exists = c:BYZ
         exists = scope:actor
         scope:actor = { is_army = yes owner = c:BYZ }
@@ -29,6 +30,7 @@ oe_ir_army_battle_won = {
 # No costs or other action rewards are repeated, and an existing good reform is never re-added.
 oe_ir_court_reform_repair = {
     trigger = {
+        current_year >= 1200
         tag = BYZ is_rebel_country = no
         has_variable = oe_ir_offices_done
         OR = {
@@ -44,6 +46,7 @@ oe_ir_court_reform_repair = {
 # No reform costs/rewards are repeated, and no country/location iteration is added.
 oe_ir_tagmata_policy_unlock = {
     trigger = {
+        current_year >= 1200
         tag = BYZ is_rebel_country = no
         has_variable = oe_ir_army_2_done
         NOT = { has_unlocked_policy_trigger = { type = byz_tagmata_policy_upgraded } }

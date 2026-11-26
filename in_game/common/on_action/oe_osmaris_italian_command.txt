@@ -2,14 +2,14 @@
 on_location_occupied = { on_actions = { oe_belisarius_authorized_occupation } }
 # Only siege_won reaches this handler; ordinary unfortified occupations never count.
 oe_belisarius_first_fort = {
-    trigger = { oe_belisarius_command_context = yes NOT = { has_variable = oe_belisarius_fort_victory } }
+    trigger = { current_year >= 1200 oe_belisarius_command_context = yes NOT = { has_variable = oe_belisarius_fort_victory } }
     effect = {
         set_variable = oe_belisarius_fort_victory
         if = { limit = { oe_belisarius_rising_ready = yes } trigger_event_non_silently = oe_flavor_byz.1015 }
     }
 }
 oe_belisarius_authorized_occupation = {
-    trigger = { oe_belisarius_capture_context = yes }
+    trigger = { current_year >= 1200 oe_belisarius_capture_context = yes }
     effect = { oe_belisarius_capture_authorized_land = yes }
 }
 on_war_declared = { on_actions = { oe_belisarius_check_war_art } }
@@ -17,6 +17,7 @@ on_join_war = { on_actions = { oe_belisarius_check_war_art } }
 # These callbacks have different country roots. Always inspect BYZ explicitly.
 oe_belisarius_check_war_art = {
     trigger = {
+        current_year >= 1200
         country_exists = c:BYZ
         c:BYZ = { has_variable = oe_belisarius_rising_presented NOT = { has_variable = oe_belisarius_war_art_presented } }
     }
@@ -24,6 +25,6 @@ oe_belisarius_check_war_art = {
 }
 monthly_country_pulse = { on_actions = { oe_belisarius_war_art_monthly } }
 oe_belisarius_war_art_monthly = {
-    trigger = { tag = BYZ is_rebel_country = no has_variable = oe_belisarius_rising_presented NOT = { has_variable = oe_belisarius_war_art_presented } }
+    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no has_variable = oe_belisarius_rising_presented NOT = { has_variable = oe_belisarius_war_art_presented } }
     effect = { oe_belisarius_try_war_art = yes }
 }

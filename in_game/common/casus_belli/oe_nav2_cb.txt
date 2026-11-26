@@ -14,6 +14,12 @@ oe_nav2_cb_strait_toll_dispute = {
 		has_ports = yes
 		NOT = { has_reform = government_reform:pirate_brethren_reform }
 		NOT = { country_type = navy }
+		exists = scope:target
+		scope:target = {
+			NOT = { this = root }
+			NOT = { is_subject_of = root }
+			oe_nav2_controls_major_strait = yes
+		}
 	}
 
 	create_enabled = {
@@ -100,6 +106,20 @@ oe_nav2_cb_suppress_piracy = {
 		is_rebel_country = no
 		has_ports = yes
 		navy_size > 0
+		exists = scope:target
+		scope:target = {
+			NOT = { this = root }
+			NOT = { is_subject_of = root }
+		}
+		OR = {
+			scope:target = { oe_nav2_is_pirate_entity = yes }
+			any_market_center_in_country = {
+				any_location_in_market = {
+					is_land = no
+					has_privateers_from = scope:target
+				}
+			}
+		}
 	}
 
 	create_enabled = {
@@ -156,7 +176,7 @@ oe_nav2_cb_suppress_piracy = {
 	}
 }
 
-# CB 3: Protect Coreligionists & Overseas Factories (Age 3+ kingdom/great power extraterritorial defense)
+# CB 3: Protect Coreligionists & Overseas Factories (Age 4+ kingdom/great power extraterritorial defense)
 oe_nav2_cb_protect_coreligionists = {
 	trade = no
 	speed = 12
@@ -166,17 +186,35 @@ oe_nav2_cb_protect_coreligionists = {
 		is_rebel_country = no
 		is_subject = no
 		exists = religion
-		current_age_or_later = { age = age_3_discovery }
+		current_age_or_later = { age = age_4_reformation }
 		OR = {
 			country_rank_level >= 3
 			is_great_power = yes
+		}
+		exists = scope:target
+		scope:target = {
+			NOT = { this = root }
+			NOT = { is_subject_of = root }
+			exists = religion
+			NOT = { religion = root.religion }
+			OR = {
+				any_owned_location = {
+					count >= 3
+					dominant_religion ?= root.religion
+				}
+				has_opinion = { target = root modifier = oe_nav2_b_letters_of_marque }
+				AND = {
+					has_variable = oe_nav2_factory_dispute_against
+					var:oe_nav2_factory_dispute_against ?= root
+				}
+			}
 		}
 	}
 
 	create_enabled = {
 		is_subject = no
 		exists = religion
-		current_age_or_later = { age = age_3_discovery }
+		current_age_or_later = { age = age_4_reformation }
 		NOT = { is_subject_of = scope:target }
 		NOT = { is_allied_with = { target = scope:target } }
 		scope:target = {
@@ -192,7 +230,7 @@ oe_nav2_cb_protect_coreligionists = {
 				has_opinion = { target = root modifier = oe_nav2_b_letters_of_marque }
 				AND = {
 					has_variable = oe_nav2_factory_dispute_against
-					var:oe_nav2_factory_dispute_against = root
+					var:oe_nav2_factory_dispute_against ?= root
 				}
 			}
 		}

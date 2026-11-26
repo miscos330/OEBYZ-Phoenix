@@ -1,0 +1,1388 @@
+﻿# Project Phoenix v45.0 — 20 Original HRE Interactive Situation Generic Actions (5 per Situation).
+# Strictly R09/R10/R11/R12/R49/R53 compliant (automation_tick = never, ai_tick = monthly, ai_will_do).
+
+oe_v45_hre_act_codify_seven_electorates = {
+	icon = claim_high_kingship
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			OR = {
+				is_leader_of_international_organization = international_organization:hre
+				has_special_status_in_international_organization = { type = special_status:elector international_organization = international_organization:hre }
+				has_special_status_in_international_organization = { type = special_status:archbishop_elector international_organization = international_organization:hre }
+			}
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 85
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_seven_electorates }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_codify_seven_electorates_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_golden_bull = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_golden_bull = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -85
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_seven_electorates years = 10 mode = replace }
+			add_legitimacy = 5
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_1_seen } } set_variable = { name = oe_v45_hre_ev_1_seen value = 1 } trigger_event_non_silently = oe_v45_hre.1 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } }
+			if = { limit = { exists = international_organization:hre scope:actor = { is_leader_of_international_organization = international_organization:hre } } change_variable = { name = oe_v45_hre_constitution add = 12 } } else = { change_variable = { name = oe_v45_hre_constitution add = -10 } }
+			if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } }
+			if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } }
+			set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution }
+			change_variable = { name = oe_v45_hre_constitution_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } }
+			change_variable = { name = oe_v45_hre_bull_codification add = 14 }
+			if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } }
+			if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_codify_seven_electorates_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 225 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 120 } } add = -10 }
+		if = { limit = { exists = international_organization:hre scope:actor = { is_leader_of_international_organization = international_organization:hre } } add = 14 }
+	}
+}
+
+oe_v45_hre_act_guarantee_free_cities = {
+	icon = offer_diplomatic_protection
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			OR = {
+				is_leader_of_international_organization = international_organization:hre
+				has_special_status_in_international_organization = { type = special_status:free_city international_organization = international_organization:hre }
+				is_member_of_international_organization = international_organization:hre
+			}
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 75
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_free_cities }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_guarantee_free_cities_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_golden_bull = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_golden_bull = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -75
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_free_cities years = 10 mode = replace }
+			capital ?= { change_prosperity = prosperity_very_weak_bonus }
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 2 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_2_seen } } set_variable = { name = oe_v45_hre_ev_2_seen value = 1 } trigger_event_non_silently = oe_v45_hre.2 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } }
+			if = { limit = { exists = international_organization:hre scope:actor = { is_leader_of_international_organization = international_organization:hre } } change_variable = { name = oe_v45_hre_constitution add = 8 } } else = { change_variable = { name = oe_v45_hre_constitution add = -6 } }
+			if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } }
+			if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } }
+			set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution }
+			change_variable = { name = oe_v45_hre_constitution_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } }
+			change_variable = { name = oe_v45_hre_bull_codification add = 10 }
+			if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } }
+			if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_guarantee_free_cities_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 215 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 110 } } add = -10 }
+		if = { limit = { scope:actor = { stability < 25 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_territorial_landfriede = {
+	icon = cmd_restore_stability
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 80
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_landfriede }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_territorial_landfriede_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_golden_bull = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_golden_bull = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -80
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_landfriede years = 10 mode = replace }
+			add_stability = 4
+			capital ?= { change_control = control_weak_bonus }
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_3_seen } } set_variable = { name = oe_v45_hre_ev_3_seen value = 1 } trigger_event_non_silently = oe_v45_hre.3 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } }
+			change_variable = { name = oe_v45_hre_constitution add = 10 }
+			if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } }
+			if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } }
+			set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution }
+			change_variable = { name = oe_v45_hre_constitution_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } }
+			change_variable = { name = oe_v45_hre_bull_codification add = 12 }
+			if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } }
+			if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_territorial_landfriede_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 220 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 115 } } add = -10 }
+		if = { limit = { scope:actor = { stability < 25 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_princely_capitulation = {
+	icon = proclaim_decree
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+			NOT = { is_leader_of_international_organization = international_organization:hre }
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 70
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_capitulation }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_princely_capitulation_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_golden_bull = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_golden_bull = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -70
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_capitulation years = 10 mode = replace }
+			add_prestige = 6
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_4_seen } } set_variable = { name = oe_v45_hre_ev_4_seen value = 1 } trigger_event_non_silently = oe_v45_hre.4 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } }
+			change_variable = { name = oe_v45_hre_constitution add = -14 }
+			if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } }
+			if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } }
+			set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution }
+			change_variable = { name = oe_v45_hre_constitution_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } }
+			change_variable = { name = oe_v45_hre_bull_codification add = 10 }
+			if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } }
+			if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_princely_capitulation_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 210 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 105 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = no } } add = 8 }
+	}
+}
+
+oe_v45_hre_act_frankfurt_coronation_diet = {
+	icon = call_parliament
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			OR = {
+				is_leader_of_international_organization = international_organization:hre
+				has_special_status_in_international_organization = { type = special_status:elector international_organization = international_organization:hre }
+				has_special_status_in_international_organization = { type = special_status:archbishop_elector international_organization = international_organization:hre }
+			}
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 95
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_frankfurt_diet }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_frankfurt_coronation_diet_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_golden_bull = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_golden_bull = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -95
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_frankfurt_diet years = 10 mode = replace }
+			add_prestige = 8
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_5_seen } } set_variable = { name = oe_v45_hre_ev_5_seen value = 1 } trigger_event_non_silently = oe_v45_hre.5 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } }
+			if = { limit = { exists = international_organization:hre scope:actor = { is_leader_of_international_organization = international_organization:hre } } change_variable = { name = oe_v45_hre_constitution add = 10 } } else = { change_variable = { name = oe_v45_hre_constitution add = -8 } }
+			if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } }
+			if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } }
+			set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution }
+			change_variable = { name = oe_v45_hre_constitution_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } }
+			change_variable = { name = oe_v45_hre_bull_codification add = 16 }
+			if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } }
+			if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_frankfurt_coronation_diet_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 235 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 130 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = no stability >= 10 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_reichskammergericht = {
+	icon = reform_society_action
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 90
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_reichskammergericht }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_reichskammergericht_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_imperial_diet = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_imperial_diet = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -90
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_reichskammergericht years = 10 mode = replace }
+			add_stability = 4
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_6_seen } } set_variable = { name = oe_v45_hre_ev_6_seen value = 1 } trigger_event_non_silently = oe_v45_hre.6 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } }
+			change_variable = { name = oe_v45_hre_reform_momentum add = 14 }
+			if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } }
+			if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } }
+			change_variable = { name = oe_v45_hre_diet_consensus add = 8 }
+			if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } }
+			if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_reichskammergericht_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 230 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 125 } } add = -10 }
+		if = { limit = { scope:actor = { stability < 25 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_common_penny_tax = {
+	icon = extraordinary_taxes
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			OR = {
+				is_leader_of_international_organization = international_organization:hre
+				has_special_status_in_international_organization = { type = special_status:elector international_organization = international_organization:hre }
+			}
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 65
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_common_penny }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_common_penny_tax_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_imperial_diet = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_imperial_diet = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -65
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_common_penny years = 10 mode = replace }
+			add_gold = 95
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_7_seen } } set_variable = { name = oe_v45_hre_ev_7_seen value = 1 } trigger_event_non_silently = oe_v45_hre.7 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } }
+			change_variable = { name = oe_v45_hre_reform_momentum add = 16 }
+			if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } }
+			if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } }
+			change_variable = { name = oe_v45_hre_diet_consensus add = -6 }
+			if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } }
+			if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_common_penny_tax_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 205 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 100 } } add = -10 }
+		if = { limit = { exists = international_organization:hre scope:actor = { is_leader_of_international_organization = international_organization:hre } } add = 14 }
+	}
+}
+
+oe_v45_hre_act_imperial_circles = {
+	icon = reform_imperial_armies
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 95
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_imperial_circles }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_imperial_circles_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_imperial_diet = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_imperial_diet = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -95
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_imperial_circles years = 10 mode = replace }
+			add_army_tradition = 5
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_8_seen } } set_variable = { name = oe_v45_hre_ev_8_seen value = 1 } trigger_event_non_silently = oe_v45_hre.8 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } }
+			change_variable = { name = oe_v45_hre_reform_momentum add = 14 }
+			if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } }
+			if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } }
+			change_variable = { name = oe_v45_hre_diet_consensus add = 10 }
+			if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } }
+			if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_imperial_circles_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 235 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 130 } } add = -10 }
+		if = { limit = { scope:actor = { stability < 25 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_regensburg_perpetual_diet = {
+	icon = call_emergency_parliament
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 100
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_regensburg_diet }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_regensburg_perpetual_diet_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_imperial_diet = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_imperial_diet = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -100
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_regensburg_diet years = 12 mode = replace }
+			add_prestige = 7
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_9_seen } } set_variable = { name = oe_v45_hre_ev_9_seen value = 1 } trigger_event_non_silently = oe_v45_hre.9 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } }
+			change_variable = { name = oe_v45_hre_reform_momentum add = 12 }
+			if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } }
+			if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } }
+			change_variable = { name = oe_v45_hre_diet_consensus add = 14 }
+			if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } }
+			if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_regensburg_perpetual_diet_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 240 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 135 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = no stability >= 10 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_estates_gravamina = {
+	icon = ask_nobility_for_diplomats
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+			NOT = { is_leader_of_international_organization = international_organization:hre }
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 70
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_gravamina }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_estates_gravamina_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_imperial_diet = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_imperial_diet = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -70
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_gravamina years = 10 mode = replace }
+			add_stability = 4
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_10_seen } } set_variable = { name = oe_v45_hre_ev_10_seen value = 1 } trigger_event_non_silently = oe_v45_hre.10 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } }
+			change_variable = { name = oe_v45_hre_reform_momentum add = -10 }
+			if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } }
+			if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } }
+			change_variable = { name = oe_v45_hre_diet_consensus add = 14 }
+			if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } }
+			if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_estates_gravamina_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 210 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 105 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = no } } add = 8 }
+	}
+}
+
+oe_v45_hre_act_cuius_regio = {
+	icon = ask_commoners_for_stability
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 80
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_cuius_regio }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_cuius_regio_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_confessional_leagues = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_confessional_leagues = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -80
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_cuius_regio years = 10 mode = replace }
+			add_stability = 5
+			set_variable = { name = oe_v45_hre_conciliatory_prince value = 1 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_11_seen } } set_variable = { name = oe_v45_hre_ev_11_seen value = 1 } trigger_event_non_silently = oe_v45_hre.11 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } }
+			change_variable = { name = oe_v45_hre_confessional_tension add = -14 }
+			if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } }
+			if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } }
+			set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension }
+			change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } }
+			change_variable = { name = oe_v45_hre_westphalia_accord add = 14 }
+			if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } }
+			if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_cuius_regio_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 220 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 115 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = no stability >= 10 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_catholic_league_treasury = {
+	icon = grant_holding_to_religious_order
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+			religion = religion:catholic
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 95
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_catholic_league }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_catholic_league_treasury_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_confessional_leagues = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_confessional_leagues = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -95
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_catholic_league years = 10 mode = replace }
+			add_army_tradition = 6
+			if = { limit = { has_variable = oe_v45_hre_conciliatory_prince } remove_variable = oe_v45_hre_conciliatory_prince }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_12_seen } } set_variable = { name = oe_v45_hre_ev_12_seen value = 1 } trigger_event_non_silently = oe_v45_hre.12 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } }
+			change_variable = { name = oe_v45_hre_confessional_tension add = 16 }
+			if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } }
+			if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } }
+			set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension }
+			change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } }
+			change_variable = { name = oe_v45_hre_westphalia_accord add = -6 }
+			if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } }
+			if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_catholic_league_treasury_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 235 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 130 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = yes } } add = 14 }
+	}
+}
+
+oe_v45_hre_act_evangelical_union = {
+	icon = embrace_the_reformation
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+			NOT = { religion = religion:catholic }
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 90
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_evangelical_union }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_evangelical_union_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_confessional_leagues = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_confessional_leagues = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -90
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_evangelical_union years = 10 mode = replace }
+			add_army_tradition = 6
+			if = { limit = { has_variable = oe_v45_hre_conciliatory_prince } remove_variable = oe_v45_hre_conciliatory_prince }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_13_seen } } set_variable = { name = oe_v45_hre_ev_13_seen value = 1 } trigger_event_non_silently = oe_v45_hre.13 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } }
+			change_variable = { name = oe_v45_hre_confessional_tension add = 16 }
+			if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } }
+			if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } }
+			set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension }
+			change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } }
+			change_variable = { name = oe_v45_hre_westphalia_accord add = -6 }
+			if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } }
+			if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_evangelical_union_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 230 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 125 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = yes } } add = 14 }
+	}
+}
+
+oe_v45_hre_act_westphalian_congress = {
+	icon = join_religious_league
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 95
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_westphalia_congress }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_westphalian_congress_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_confessional_leagues = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_confessional_leagues = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -95
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_westphalia_congress years = 12 mode = replace }
+			add_prestige = 8
+			set_variable = { name = oe_v45_hre_conciliatory_prince value = 1 }
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_14_seen } } set_variable = { name = oe_v45_hre_ev_14_seen value = 1 } trigger_event_non_silently = oe_v45_hre.14 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } }
+			change_variable = { name = oe_v45_hre_confessional_tension add = -18 }
+			if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } }
+			if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } }
+			set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension }
+			change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } }
+			change_variable = { name = oe_v45_hre_westphalia_accord add = 18 }
+			if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } }
+			if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_westphalian_congress_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 235 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 130 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = no stability >= 10 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_ecclesiastical_reservation = {
+	icon = add_religious_aspect
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			OR = {
+				is_leader_of_international_organization = international_organization:hre
+				has_special_status_in_international_organization = { type = special_status:archbishop_elector international_organization = international_organization:hre }
+				AND = { is_member_of_international_organization = international_organization:hre religion = religion:catholic }
+			}
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 85
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_ecclesiastical_res }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_ecclesiastical_reservation_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_confessional_leagues = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_confessional_leagues = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -85
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_ecclesiastical_res years = 10 mode = replace }
+			add_legitimacy = 5
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_15_seen } } set_variable = { name = oe_v45_hre_ev_15_seen value = 1 } trigger_event_non_silently = oe_v45_hre.15 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } }
+			change_variable = { name = oe_v45_hre_confessional_tension add = 14 }
+			if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } }
+			if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } }
+			set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension }
+			change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } }
+			change_variable = { name = oe_v45_hre_westphalia_accord add = 4 }
+			if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } }
+			if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_ecclesiastical_reservation_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 225 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 120 } } add = -10 }
+		if = { limit = { exists = international_organization:hre scope:actor = { is_leader_of_international_organization = international_organization:hre } } add = 14 }
+	}
+}
+
+oe_v45_hre_act_pragmatic_sanction = {
+	icon = ghibellines_petition_for_imperial_support
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			OR = {
+				tag = HAB
+				is_leader_of_international_organization = international_organization:hre
+				AND = { is_member_of_international_organization = international_organization:hre NOT = { tag = PRU } NOT = { tag = BRA } }
+			}
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 110
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_pragmatic_sanction }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_pragmatic_sanction_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -110
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_pragmatic_sanction years = 12 mode = replace }
+			add_legitimacy = 6
+			if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_16_seen } } set_variable = { name = oe_v45_hre_ev_16_seen value = 1 } trigger_event_non_silently = oe_v45_hre.16 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } }
+			change_variable = { name = oe_v45_hre_dualism_balance add = 16 }
+			if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } }
+			if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } }
+			set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance }
+			change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } }
+			change_variable = { name = oe_v45_hre_reich_integrity add = 10 }
+			if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } }
+			if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_pragmatic_sanction_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 250 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 145 } } add = -10 }
+		if = { limit = { exists = international_organization:hre scope:actor = { is_leader_of_international_organization = international_organization:hre } } add = 14 }
+	}
+}
+
+oe_v45_hre_act_prussian_cantonal = {
+	icon = cmd_strengthen_crown
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			OR = {
+				tag = PRU
+				tag = BRA
+				AND = { is_member_of_international_organization = international_organization:hre capital ?= { region = region:north_german_region } NOT = { is_leader_of_international_organization = international_organization:hre } }
+			}
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 105
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_prussian_cantonal }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_prussian_cantonal_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -105
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_prussian_cantonal years = 12 mode = replace }
+			add_army_tradition = 8
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_17_seen } } set_variable = { name = oe_v45_hre_ev_17_seen value = 1 } trigger_event_non_silently = oe_v45_hre.17 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } }
+			change_variable = { name = oe_v45_hre_dualism_balance add = -16 }
+			if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } }
+			if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } }
+			set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance }
+			change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } }
+			change_variable = { name = oe_v45_hre_reich_integrity add = -6 }
+			if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } }
+			if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_prussian_cantonal_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 245 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 140 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = yes } } add = 14 }
+	}
+}
+
+oe_v45_hre_act_third_germany_league = {
+	icon = create_italian_league
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+			NOT = { tag = HAB }
+			NOT = { is_leader_of_international_organization = international_organization:hre }
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 85
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_third_germany }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_third_germany_league_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -85
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_third_germany years = 12 mode = replace }
+			add_prestige = 6
+			add_stability = 4
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_18_seen } } set_variable = { name = oe_v45_hre_ev_18_seen value = 1 } trigger_event_non_silently = oe_v45_hre.18 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } }
+			change_variable = { name = oe_v45_hre_dualism_balance add = -8 }
+			if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } }
+			if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } }
+			set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance }
+			change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } }
+			change_variable = { name = oe_v45_hre_reich_integrity add = 12 }
+			if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } }
+			if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_third_germany_league_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 225 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 120 } } add = -10 }
+		if = { limit = { scope:actor = { at_war = no stability >= 10 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_imperial_mediatization = {
+	icon = ask_burghers_for_loan
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			is_member_of_international_organization = international_organization:hre
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 100
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_mediatization }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_imperial_mediatization_cd
+		years = 6
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -100
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_mediatization years = 12 mode = replace }
+			capital ?= { change_control = control_mild_bonus change_development = development_very_weak_bonus }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_19_seen } } set_variable = { name = oe_v45_hre_ev_19_seen value = 1 } trigger_event_non_silently = oe_v45_hre.19 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } }
+			if = { limit = { exists = international_organization:hre scope:actor = { OR = { tag = HAB is_leader_of_international_organization = international_organization:hre } } } change_variable = { name = oe_v45_hre_dualism_balance add = 8 } } else = { change_variable = { name = oe_v45_hre_dualism_balance add = -8 } }
+			if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } }
+			if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } }
+			set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance }
+			change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } }
+			change_variable = { name = oe_v45_hre_reich_integrity add = -10 }
+			if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } }
+			if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_imperial_mediatization_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 240 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 135 } } add = -10 }
+		if = { limit = { scope:actor = { stability < 25 } } add = 10 }
+	}
+}
+
+oe_v45_hre_act_dissolve_or_renew_crown = {
+	icon = seek_alliance_with_overlord_rival
+	type = situation
+	show_message = no
+	potential = {
+		exists = international_organization:hre
+		scope:actor = {
+			is_rebel_country = no
+			OR = {
+				is_leader_of_international_organization = international_organization:hre
+				tag = HAB
+				tag = PRU
+				tag = BRA
+				has_special_status_in_international_organization = { type = special_status:elector international_organization = international_organization:hre }
+			}
+		}
+	}
+	allow = {
+		exists = international_organization:hre
+		scope:actor = {
+			gold >= 120
+			NOT = { has_country_modifier = oe_v45_hre_mod_act_crown_reckoning }
+		}
+	}
+	cooldown = {
+		type = oe_v45_hre_act_dissolve_or_renew_crown_cd
+		years = 7
+	}
+	automation_tick = never
+	ai_tick = monthly
+	ai_tick_frequency = 12
+	select_trigger = {
+		looking_for_a = situation
+		interaction_source_list = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = { add_to_list = source }
+		}
+		target_flag = recipient
+		name = "choose_situation"
+		column = { data = name }
+		visible = {
+			situation:oe_sit_v45_hre_austro_prussian_dualism = this
+			situation_is_active = yes
+		}
+	}
+	effect = {
+		scope:actor = {
+			add_gold = -120
+			add_country_modifier = { modifier = oe_v45_hre_mod_act_crown_reckoning years = 15 mode = replace }
+			add_prestige = 12
+			if = { limit = { exists = international_organization:hre OR = { tag = HAB is_leader_of_international_organization = international_organization:hre } } change_imperial_authority = { value = 5 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_ev_20_seen } } set_variable = { name = oe_v45_hre_ev_20_seen value = 1 } trigger_event_non_silently = oe_v45_hre.20 }
+		}
+		scope:recipient = {
+			if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } }
+			if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } }
+			if = { limit = { exists = international_organization:hre scope:actor = { OR = { tag = HAB is_leader_of_international_organization = international_organization:hre } } } change_variable = { name = oe_v45_hre_dualism_balance add = 14 } change_variable = { name = oe_v45_hre_reich_integrity add = 14 } } else = { change_variable = { name = oe_v45_hre_dualism_balance add = -14 } change_variable = { name = oe_v45_hre_reich_integrity add = -14 } }
+			if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } }
+			if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } }
+			set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance }
+			change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 }
+			if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } }
+			if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } }
+		}
+		custom_tooltip = oe_v45_hre_act_dissolve_or_renew_crown_tt
+	}
+	ai_will_do = {
+		add = 12
+		if = { limit = { scope:actor = { gold >= 260 } } add = 12 }
+		if = { limit = { scope:actor = { gold < 155 } } add = -10 }
+		if = { limit = { exists = international_organization:hre scope:actor = { is_leader_of_international_organization = international_organization:hre } } add = 14 }
+	}
+}

@@ -441,19 +441,33 @@ template CountryTooltip {
 			}
 
 			# history_entries: 历史介绍；长文在框内滚动，写法同人物模组和原版阶层浮窗
-			# OEBYZ (gen_lde_overlay.py): OEBYZ's own text for this object, when it has one, instead of the block below
+			# OEBYZ (gen_lde_overlay.py): tiered history blocks (oe_chron_lde_country_desc -> oe_lde_country_desc -> lde_country_desc -> oe_lde_country_fallback)
 			TooltipScrolledFlavorTextBlock = {
-				visible = "[Not(StringIsEmpty(Country.Custom('oe_lde_country_desc')))]"
+				visible = "[Not(StringIsEmpty(Country.Custom('oe_chron_lde_country_desc')))]"
+				blockoverride "block_scrollarea" { maximumsize = { -1 450 } }
+				blockoverride "text" {
+					text = "[Country.Custom('oe_chron_lde_country_desc')]"
+				}
+			}
+			TooltipScrolledFlavorTextBlock = {
+				visible = "[And(StringIsEmpty(Country.Custom('oe_chron_lde_country_desc')), Not(StringIsEmpty(Country.Custom('oe_lde_country_desc'))))]"
 				blockoverride "block_scrollarea" { maximumsize = { -1 450 } }
 				blockoverride "text" {
 					text = "[Country.Custom('oe_lde_country_desc')]"
 				}
 			}
 			TooltipScrolledFlavorTextBlock = {
-				visible = "[And(StringIsEmpty(Country.Custom('oe_lde_country_desc')), Not(StringIsEmpty(Country.Custom('lde_country_desc'))))]"
+				visible = "[And(And(StringIsEmpty(Country.Custom('oe_chron_lde_country_desc')), StringIsEmpty(Country.Custom('oe_lde_country_desc'))), Not(StringIsEmpty(Country.Custom('lde_country_desc'))))]"
 				blockoverride "block_scrollarea" { maximumsize = { -1 450 } }
 				blockoverride "text" {
 					text = "[Country.Custom('lde_country_desc')]"
+				}
+			}
+			TooltipScrolledFlavorTextBlock = {
+				visible = "[And(And(And(StringIsEmpty(Country.Custom('oe_chron_lde_country_desc')), StringIsEmpty(Country.Custom('oe_lde_country_desc'))), StringIsEmpty(Country.Custom('lde_country_desc'))), Not(StringIsEmpty(Country.Custom('oe_lde_country_fallback'))))]"
+				blockoverride "block_scrollarea" { maximumsize = { -1 450 } }
+				blockoverride "text" {
+					text = "[Country.Custom('oe_lde_country_fallback')]"
 				}
 			}
 		}
@@ -509,16 +523,23 @@ template culture_tooltip {
 			}
 
 			# history_entries: 历史介绍；长文在框内滚动，写法同人物模组和原版阶层浮窗
-			# OEBYZ (gen_lde_overlay.py): OEBYZ's own text for this object, when it has one, instead of the block below
+			# OEBYZ (gen_lde_overlay.py): tiered history blocks (oe_chron_lde_culture_desc -> oe_lde_culture_desc -> lde_culture_desc)
 			TooltipScrolledFlavorTextBlock = {
-				visible = "[Not(StringIsEmpty(Culture.Custom('oe_lde_culture_desc')))]"
+				visible = "[Not(StringIsEmpty(Culture.Custom('oe_chron_lde_culture_desc')))]"
+				blockoverride "block_scrollarea" { maximumsize = { -1 450 } }
+				blockoverride "text" {
+					text = "[Culture.Custom('oe_chron_lde_culture_desc')]"
+				}
+			}
+			TooltipScrolledFlavorTextBlock = {
+				visible = "[And(StringIsEmpty(Culture.Custom('oe_chron_lde_culture_desc')), Not(StringIsEmpty(Culture.Custom('oe_lde_culture_desc'))))]"
 				blockoverride "block_scrollarea" { maximumsize = { -1 450 } }
 				blockoverride "text" {
 					text = "[Culture.Custom('oe_lde_culture_desc')]"
 				}
 			}
 			TooltipScrolledFlavorTextBlock = {
-				visible = "[And(StringIsEmpty(Culture.Custom('oe_lde_culture_desc')), Not(StringIsEmpty(Culture.Custom('lde_culture_desc'))))]"
+				visible = "[And(And(StringIsEmpty(Culture.Custom('oe_chron_lde_culture_desc')), StringIsEmpty(Culture.Custom('oe_lde_culture_desc'))), Not(StringIsEmpty(Culture.Custom('lde_culture_desc'))))]"
 				blockoverride "block_scrollarea" { maximumsize = { -1 450 } }
 				blockoverride "text" {
 					text = "[Culture.Custom('lde_culture_desc')]"
@@ -699,7 +720,7 @@ template Dynasty_tooltip {
 			# }
 
 			# history_entries: 历史介绍；长文在框内滚动，写法同人物模组和原版阶层浮窗
-			# OEBYZ (gen_lde_overlay.py): OEBYZ's own text for this object, when it has one, instead of the block below
+			# OEBYZ (gen_lde_overlay.py): tiered history blocks (oe_lde_dynasty_desc -> lde_dynasty_desc)
 			TooltipScrolledFlavorTextBlock = {
 				visible = "[And(Dynasty.HasDynastyHead, Not(StringIsEmpty(Dynasty.GetDynastyHead.Custom('oe_lde_dynasty_desc'))))]"
 				blockoverride "block_scrollarea" { maximumsize = { -1 450 } }

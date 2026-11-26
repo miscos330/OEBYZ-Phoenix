@@ -1,0 +1,177 @@
+﻿# Project Phoenix v42.0: Day-1 Alt-Era Byzantine Setup Effect (1444 Late Palaiologan & 1204 Nicaean Exile).
+# Populates instant OEBYZ reforms and 8 Byzantine estate privileges (2 per estate) when running OEBYZ + All-Eras
+# outside the 1337 start, preventing the 0/0/0/0 privilege wipe caused by OEBYZ vanilla privilege exclusions.
+
+oe_v420_alt_era_byz_init_effect = {
+	if = {
+		limit = {
+			NOT = { oe_start_is_1337 = yes }
+			NOT = {
+				AND = {
+					current_year >= 1337
+					current_year < 1338
+				}
+			}
+			country_exists = c:BYZ
+		}
+		# 1. 1444.11.11 Late Palaiologan Byzantium (1440..1460)
+		if = {
+			limit = {
+				current_year >= 1440
+				current_year <= 1460
+			}
+			c:BYZ = {
+				if = {
+					limit = {
+						is_rebel_country = no
+						tag = BYZ
+						num_locations >= 1
+						NOT = { oe_is_fourth_rome_exile_country = yes }
+						NOT = { has_variable = oe_v420_alt_era_byz_initialized }
+					}
+					set_variable = { name = oe_v420_alt_era_byz_initialized value = 1 }
+					set_variable = { name = oe_v420_alt_era_1444_byz value = 1 }
+					# Replace generic feudal_nobility template reform with 3 instant Late Palaiologan reforms
+					if = {
+						limit = { has_reform = government_reform:feudal_nobility }
+						remove_reform = government_reform:feudal_nobility
+					}
+					if = {
+						limit = { NOT = { has_reform = government_reform:oe_v420_byz_1444_palaiologan_despotates } }
+						add_reform = government_reform:oe_v420_byz_1444_palaiologan_despotates
+					}
+					if = {
+						limit = { NOT = { has_reform = government_reform:oe_v420_byz_1444_theodosian_garrison } }
+						add_reform = government_reform:oe_v420_byz_1444_theodosian_garrison
+					}
+					if = {
+						limit = { NOT = { has_reform = government_reform:oe_v420_byz_1444_mistral_renaissance_court } }
+						add_reform = government_reform:oe_v420_byz_1444_mistral_renaissance_court
+					}
+					# Grant 8 authentic Byzantine estate privileges (2 per estate)
+					if = {
+						limit = { country_has_estate = estate_type:nobles_estate }
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_noble_court_dignities } }
+							grant_estate_privilege = estate_privilege:oe_noble_court_dignities
+						}
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_noble_frontier_fortresses } }
+							grant_estate_privilege = estate_privilege:oe_noble_frontier_fortresses
+						}
+					}
+					if = {
+						limit = { country_has_estate = estate_type:clergy_estate }
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_clergy_athos_autonomy } }
+							grant_estate_privilege = estate_privilege:oe_clergy_athos_autonomy
+						}
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_clergy_patriarchal_envoys } }
+							grant_estate_privilege = estate_privilege:oe_clergy_patriarchal_envoys
+						}
+					}
+					if = {
+						limit = { country_has_estate = estate_type:burghers_estate }
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_burghers_golden_horn_charter } }
+							grant_estate_privilege = estate_privilege:oe_burghers_golden_horn_charter
+						}
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_burghers_straits_convoys } }
+							grant_estate_privilege = estate_privilege:oe_burghers_straits_convoys
+						}
+					}
+					if = {
+						limit = { country_has_estate = estate_type:peasants_estate }
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_peasants_village_watch } }
+							grant_estate_privilege = estate_privilege:oe_peasants_village_watch
+						}
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_byz_great_farm } }
+							grant_estate_privilege = estate_privilege:oe_byz_great_farm
+						}
+					}
+				}
+			}
+		}
+		# 2. 1204 Empire of Nicaea (BYZ tag in exile, 1200..1220)
+		else_if = {
+			limit = {
+				current_year >= 1200
+				current_year <= 1220
+			}
+			c:BYZ = {
+				if = {
+					limit = {
+						is_rebel_country = no
+						tag = BYZ
+						num_locations >= 1
+						NOT = { oe_is_fourth_rome_exile_country = yes }
+						NOT = { has_variable = oe_v420_alt_era_byz_initialized }
+					}
+					set_variable = { name = oe_v420_alt_era_byz_initialized value = 1 }
+					set_variable = { name = oe_v420_alt_era_1204_byz value = 1 }
+					if = {
+						limit = { has_reform = government_reform:feudal_nobility }
+						remove_reform = government_reform:feudal_nobility
+					}
+					if = {
+						limit = { NOT = { has_reform = government_reform:oe_v420_byz_1204_nicaean_exile_court } }
+						add_reform = government_reform:oe_v420_byz_1204_nicaean_exile_court
+					}
+					if = {
+						limit = { NOT = { has_reform = government_reform:oe_v420_byz_1204_akritai_border_themes } }
+						add_reform = government_reform:oe_v420_byz_1204_akritai_border_themes
+					}
+					# Grant 8 authentic Nicaean Byzantine estate privileges (2 per estate)
+					if = {
+						limit = { country_has_estate = estate_type:nobles_estate }
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_noble_court_dignities } }
+							grant_estate_privilege = estate_privilege:oe_noble_court_dignities
+						}
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_noble_frontier_fortresses } }
+							grant_estate_privilege = estate_privilege:oe_noble_frontier_fortresses
+						}
+					}
+					if = {
+						limit = { country_has_estate = estate_type:clergy_estate }
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_clergy_athos_autonomy } }
+							grant_estate_privilege = estate_privilege:oe_clergy_athos_autonomy
+						}
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_clergy_patriarchal_envoys } }
+							grant_estate_privilege = estate_privilege:oe_clergy_patriarchal_envoys
+						}
+					}
+					if = {
+						limit = { country_has_estate = estate_type:burghers_estate }
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_burghers_caravan_hostels } }
+							grant_estate_privilege = estate_privilege:oe_burghers_caravan_hostels
+						}
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_burghers_shipyard_contracts } }
+							grant_estate_privilege = estate_privilege:oe_burghers_shipyard_contracts
+						}
+					}
+					if = {
+						limit = { country_has_estate = estate_type:peasants_estate }
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_peasants_military_service_land } }
+							grant_estate_privilege = estate_privilege:oe_peasants_military_service_land
+						}
+						if = {
+							limit = { NOT = { has_estate_privilege = estate_privilege:oe_byz_great_farm } }
+							grant_estate_privilege = estate_privilege:oe_byz_great_farm
+						}
+					}
+				}
+			}
+		}
+	}
+}

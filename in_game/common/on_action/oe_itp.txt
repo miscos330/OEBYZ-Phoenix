@@ -7,13 +7,13 @@
 # known by their loc key (oe_itp_loan_<slot>), so the handler does not depend on root.
 on_loan_repaid = { on_actions = { oe_itp_oa_repaid } }
 oe_itp_oa_repaid = {
-    trigger = { exists = scope:target }
+    trigger = { current_year >= 1200 exists = scope:target }
     effect = { oe_itp_on_repaid = yes }
 }
 
 # root = the country that went bankrupt. Rule REBELTAG: a civil-war rebel state keeps the tag BYZ.
 on_bankruptcy = { on_actions = { oe_itp_oa_bankrupt } }
 oe_itp_oa_bankrupt = {
-    trigger = { tag = BYZ is_rebel_country = no has_variable = oe_itp_on }
+    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no has_variable = oe_itp_on }
     effect = { oe_itp_bankrupt = yes }
 }

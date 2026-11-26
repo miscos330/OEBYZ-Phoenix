@@ -1,0 +1,143 @@
+﻿# Project Phoenix v45.0 — Original HRE Situation Panel: oe_sit_v45_hre_confessional_leagues.
+# 100% vanilla EU5 1.4.9 widgets; zero custom types; R22, R23 & R53 compliant.
+situation_panel = {
+	blockoverride "situation_header_left" {
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				fontsize = 14
+				default_format = "#subtle_name"
+				text = "OE_V45_HRE_CONFESS_HDR_L"
+			}
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				fontsize = 14
+				default_format = "#yellow_titles"
+				raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_v45_hre_confessional_tension').GetValue|0] (-100..+100)"
+			}
+		}
+		expand = {}
+	}
+
+	blockoverride "situation_header_right" {
+		expand = {}
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				align = right|nobaseline
+				fontsize = 14
+				default_format = "#subtle_name"
+				text = "OE_V45_HRE_CONFESS_HDR_R"
+			}
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				align = right|nobaseline
+				fontsize = 14
+				default_format = "#yellow_titles"
+				raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_v45_hre_westphalia_accord').GetValue|0] / 100"
+			}
+		}
+	}
+
+	blockoverride "situation_panel_image" {
+		background = {
+			texture = "gfx/interface/illustrations/situation/oe_sit_v45_hre_confessional_leagues.dds"
+			spriteType = stretched
+		}
+		using = scene_fade_vertical_up
+	}
+
+	blockoverride "situation_subheader_content" {}
+
+	blockoverride "situation_panel_outcome_hint" {
+		action_tooltip = {
+			title = "OPEN_HINT"
+			on_action = "[OpenLateralViewWithParams('hints', 'selected_hint = hint_oe_sit_v45_hre_confessional_leagues')]"
+		}
+	}
+
+	blockoverride "situation_panel_main_content" {
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			using = bg_paper_card_situations
+			margin = { 12 10 }
+			spacing = 8
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				fontsize = 16
+				default_format = "#header_titles"
+				text = "OE_V45_HRE_CONFESS_CARD_TITLE"
+			}
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				autoresize = yes
+				max_width = 460
+				fontsize = 13
+				default_format = "#color_light_gray"
+				text = "OE_V45_HRE_CONFESS_CARD_BODY"
+			}
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 3
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = {
+						fontsize = 13
+						default_format = "#subtle_name"
+						text = "OE_V45_HRE_GAUGE_CONFESS_TENSION"
+					}
+					expand = {}
+					text_single = {
+						fontsize = 13
+						default_format = "#yellow_titles"
+						raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_v45_hre_confessional_tension').GetValue|0] (-100..+100)"
+					}
+				}
+				progressbar = {
+					layoutpolicy_horizontal = expanding
+					size = { -1 12 }
+					min = 0
+					max = 200
+					value = "[FixedPointToFloat(SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_v45_hre_confessional_tension_bar').GetValue)]"
+					progresstexture = "gfx/interface/progressbars/progress_bar_red_alt.dds"
+					noprogresstexture = "gfx/interface/icons/unit_view/moral_bar_transparent.dds"
+					texture_density = 2
+					spriteType = Corneredstretched
+					spriteborder = { 12 0 }
+				}
+			}
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 3
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = {
+						fontsize = 13
+						default_format = "#subtle_name"
+						text = "OE_V45_HRE_GAUGE_CONFESS_ACCORD"
+					}
+					expand = {}
+					text_single = {
+						fontsize = 13
+						default_format = "#yellow_titles"
+						raw_text = "[SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_v45_hre_westphalia_accord').GetValue|0] / 100"
+					}
+				}
+				progressbar = {
+					layoutpolicy_horizontal = expanding
+					size = { -1 12 }
+					min = 0
+					max = 100
+					value = "[FixedPointToFloat(SituationView.GetActiveSituation.GetSituation.MakeScope.GetVariable('oe_v45_hre_westphalia_accord').GetValue)]"
+					progresstexture = "gfx/interface/progressbars/progress_bar_green_alt.dds"
+					noprogresstexture = "gfx/interface/icons/unit_view/moral_bar_transparent.dds"
+					texture_density = 2
+					spriteType = Corneredstretched
+					spriteborder = { 12 0 }
+				}
+			}
+		}
+	}
+}

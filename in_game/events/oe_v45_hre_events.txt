@@ -1,0 +1,869 @@
+﻿# Project Phoenix v45.0 — 20 Deep 3-Option HRE Pure-Situation Events (oe_v45_hre.1..20).
+# 100% R10/R11/R12/R28/R31/R50 compliant (0 orphans, closed year bounds, exists = international_organization:hre).
+
+namespace = oe_v45_hre
+
+# 1. [oe_sit_v45_hre_golden_bull] The Seven Seals of Nuremberg
+oe_v45_hre.1 = {
+	type = country_event
+	title = oe_v45_hre.1.title
+	desc = oe_v45_hre.1.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_golden_bull.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1345
+		current_year <= 1410
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_1_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.1.a
+		add_legitimacy = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = 12 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 10 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 45 }
+	}
+	option = {
+		name = oe_v45_hre.1.b
+		add_gold = 60
+		add_stability = 5
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = -12 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 10 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.1.c
+		add_prestige = 7
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 2 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = 2 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 12 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 30 }
+	}
+}
+
+# 2. [oe_sit_v45_hre_golden_bull] Leagues of the Swabian & Rhenish Free Cities
+oe_v45_hre.2 = {
+	type = country_event
+	title = oe_v45_hre.2.title
+	desc = oe_v45_hre.2.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_golden_bull.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1345
+		current_year <= 1410
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_2_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.2.a
+		add_gold = 70
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = 10 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 8 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.2.b
+		add_stability = 6
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = -10 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 6 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.2.c
+		add_prestige = 6
+		capital ?= { change_prosperity = prosperity_weak_bonus }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = 0 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 10 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 30 }
+	}
+}
+
+# 3. [oe_sit_v45_hre_golden_bull] Robber Barons & the Imperial Landfriede
+oe_v45_hre.3 = {
+	type = country_event
+	title = oe_v45_hre.3.title
+	desc = oe_v45_hre.3.desc
+	outcome = negative
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_golden_bull.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1345
+		current_year <= 1410
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_3_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.3.a
+		add_gold = -55
+		add_army_tradition = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = 12 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 10 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 45 }
+	}
+	option = {
+		name = oe_v45_hre.3.b
+		add_stability = 5
+		capital ?= { change_control = control_weak_bonus }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = -10 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 6 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.3.c
+		add_gold = -35
+		add_prestige = 5
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = 4 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 8 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 30 }
+	}
+}
+
+# 4. [oe_sit_v45_hre_golden_bull] The Electoral Capitulation of Rhense
+oe_v45_hre.4 = {
+	type = country_event
+	title = oe_v45_hre.4.title
+	desc = oe_v45_hre.4.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_golden_bull.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1345
+		current_year <= 1410
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_4_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.4.a
+		add_prestige = 8
+		add_legitimacy = 5
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = 14 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 8 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.4.b
+		add_stability = 6
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = -14 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 10 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.4.c
+		add_gold = -40
+		add_prestige = 5
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = -4 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 12 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 30 }
+	}
+}
+
+# 5. [oe_sit_v45_hre_golden_bull] Bells of Frankfurt & the Crown of Aachen
+oe_v45_hre.5 = {
+	type = country_event
+	title = oe_v45_hre.5.title
+	desc = oe_v45_hre.5.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_golden_bull.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1345
+		current_year <= 1410
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_5_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.5.a
+		add_prestige = 10
+		add_legitimacy = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 5 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = 14 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 12 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 45 }
+	}
+	option = {
+		name = oe_v45_hre.5.b
+		add_stability = 6
+		capital ?= { change_prosperity = prosperity_weak_bonus }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = -12 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 12 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.5.c
+		add_gold = -50
+		add_research_progress = research_progress_weak_bonus
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_golden_bull } situation:oe_sit_v45_hre_golden_bull = { if = { limit = { NOT = { has_variable = oe_v45_hre_constitution } } set_variable = { name = oe_v45_hre_constitution value = 0 } } change_variable = { name = oe_v45_hre_constitution add = 4 } if = { limit = { var:oe_v45_hre_constitution > 100 } set_variable = { name = oe_v45_hre_constitution value = 100 } } if = { limit = { var:oe_v45_hre_constitution < -100 } set_variable = { name = oe_v45_hre_constitution value = -100 } } set_variable = { name = oe_v45_hre_constitution_bar value = var:oe_v45_hre_constitution } change_variable = { name = oe_v45_hre_constitution_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_bull_codification } } set_variable = { name = oe_v45_hre_bull_codification value = 20 } } change_variable = { name = oe_v45_hre_bull_codification add = 14 } if = { limit = { var:oe_v45_hre_bull_codification > 100 } set_variable = { name = oe_v45_hre_bull_codification value = 100 } } if = { limit = { var:oe_v45_hre_bull_codification < 0 } set_variable = { name = oe_v45_hre_bull_codification value = 0 } } } }
+		ai_chance = { base = 30 }
+	}
+}
+
+# 6. [oe_sit_v45_hre_imperial_diet] The Diet of Worms & the Eternal Landfriede
+oe_v45_hre.6 = {
+	type = country_event
+	title = oe_v45_hre.6.title
+	desc = oe_v45_hre.6.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_imperial_diet.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1470
+		current_year <= 1600
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_6_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.6.a
+		add_gold = -60
+		add_stability = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 14 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 10 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 45 }
+	}
+	option = {
+		name = oe_v45_hre.6.b
+		add_legitimacy = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 12 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = -6 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.6.c
+		add_prestige = 6
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 4 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 12 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 25 }
+	}
+}
+
+# 7. [oe_sit_v45_hre_imperial_diet] Resistance to the Common Penny Levy
+oe_v45_hre.7 = {
+	type = country_event
+	title = oe_v45_hre.7.title
+	desc = oe_v45_hre.7.desc
+	outcome = negative
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_imperial_diet.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1470
+		current_year <= 1600
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_7_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.7.a
+		add_gold = 110
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 14 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = -10 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.7.b
+		add_stability = 6
+		add_gold = 45
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 8 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 12 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.7.c
+		add_prestige = -4
+		capital ?= { change_prosperity = prosperity_weak_bonus }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = -8 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 14 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 20 }
+	}
+}
+
+# 8. [oe_sit_v45_hre_imperial_diet] The Ten Imperial Circles & Regional Defense
+oe_v45_hre.8 = {
+	type = country_event
+	title = oe_v45_hre.8.title
+	desc = oe_v45_hre.8.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_imperial_diet.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1470
+		current_year <= 1600
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_8_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.8.a
+		add_gold = -55
+		add_army_tradition = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 14 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 10 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 45 }
+	}
+	option = {
+		name = oe_v45_hre.8.b
+		add_gold = 60
+		capital ?= { change_development = development_very_weak_bonus }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 10 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 12 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.8.c
+		add_stability = 5
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = -4 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 10 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 20 }
+	}
+}
+
+# 9. [oe_sit_v45_hre_imperial_diet] The Perpetual Assembly of Regensburg
+oe_v45_hre.9 = {
+	type = country_event
+	title = oe_v45_hre.9.title
+	desc = oe_v45_hre.9.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_imperial_diet.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1470
+		current_year <= 1600
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_9_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.9.a
+		add_prestige = 8
+		add_research_progress = research_progress_weak_bonus
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 12 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 14 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 45 }
+	}
+	option = {
+		name = oe_v45_hre.9.b
+		add_legitimacy = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 14 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 4 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.9.c
+		add_stability = 6
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = -4 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 12 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 20 }
+	}
+}
+
+# 10. [oe_sit_v45_hre_imperial_diet] Gravamina of the German Estates & Imperial Knights
+oe_v45_hre.10 = {
+	type = country_event
+	title = oe_v45_hre.10.title
+	desc = oe_v45_hre.10.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_imperial_diet.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1470
+		current_year <= 1600
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_10_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.10.a
+		add_stability = 7
+		add_prestige = 6
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 10 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 14 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 45 }
+	}
+	option = {
+		name = oe_v45_hre.10.b
+		add_army_tradition = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = 10 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = 2 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.10.c
+		add_gold = 55
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_imperial_diet } situation:oe_sit_v45_hre_imperial_diet = { if = { limit = { NOT = { has_variable = oe_v45_hre_reform_momentum } } set_variable = { name = oe_v45_hre_reform_momentum value = 25 } } change_variable = { name = oe_v45_hre_reform_momentum add = -8 } if = { limit = { var:oe_v45_hre_reform_momentum > 100 } set_variable = { name = oe_v45_hre_reform_momentum value = 100 } } if = { limit = { var:oe_v45_hre_reform_momentum < 0 } set_variable = { name = oe_v45_hre_reform_momentum value = 0 } } if = { limit = { NOT = { has_variable = oe_v45_hre_diet_consensus } } set_variable = { name = oe_v45_hre_diet_consensus value = 40 } } change_variable = { name = oe_v45_hre_diet_consensus add = -4 } if = { limit = { var:oe_v45_hre_diet_consensus > 100 } set_variable = { name = oe_v45_hre_diet_consensus value = 100 } } if = { limit = { var:oe_v45_hre_diet_consensus < 0 } set_variable = { name = oe_v45_hre_diet_consensus value = 0 } } } }
+		ai_chance = { base = 20 }
+	}
+}
+
+# 11. [oe_sit_v45_hre_confessional_leagues] The Formula of Augsburg: Cuius Regio, Eius Religio
+oe_v45_hre.11 = {
+	type = country_event
+	title = oe_v45_hre.11.title
+	desc = oe_v45_hre.11.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_confessional_leagues.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1555
+		current_year <= 1655
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_11_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.11.a
+		add_stability = 6
+		set_variable = { name = oe_v45_hre_conciliatory_prince value = 1 }
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = -14 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = 14 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 45 }
+	}
+	option = {
+		name = oe_v45_hre.11.b
+		add_legitimacy = 6
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = 12 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = 4 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.11.c
+		add_army_tradition = 6
+		add_gold = -40
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = 16 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = -6 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 20 }
+	}
+}
+
+# 12. [oe_sit_v45_hre_confessional_leagues] The Ecclesiastical Reservation & Cologne Crisis
+oe_v45_hre.12 = {
+	type = country_event
+	title = oe_v45_hre.12.title
+	desc = oe_v45_hre.12.desc
+	outcome = negative
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_confessional_leagues.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1555
+		current_year <= 1655
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_12_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.12.a
+		add_army_tradition = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = 16 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = -4 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.12.b
+		add_prestige = 7
+		add_gold = 65
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = 16 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = -6 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 30 }
+	}
+	option = {
+		name = oe_v45_hre.12.c
+		add_stability = 5
+		set_variable = { name = oe_v45_hre_conciliatory_prince value = 1 }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = -14 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = 12 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 30 }
+	}
+}
+
+# 13. [oe_sit_v45_hre_confessional_leagues] Donauwörth Incident & the Rival Leagues
+oe_v45_hre.13 = {
+	type = country_event
+	title = oe_v45_hre.13.title
+	desc = oe_v45_hre.13.desc
+	outcome = negative
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_confessional_leagues.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1555
+		current_year <= 1655
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_13_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.13.a
+		add_army_tradition = 7
+		add_gold = -55
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = 18 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = -8 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.13.b
+		add_stability = 6
+		set_variable = { name = oe_v45_hre_conciliatory_prince value = 1 }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = -14 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = 14 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.13.c
+		add_prestige = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = -10 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = 12 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 25 }
+	}
+}
+
+# 14. [oe_sit_v45_hre_confessional_leagues] Defenestration & the Bohemian Storm
+oe_v45_hre.14 = {
+	type = country_event
+	title = oe_v45_hre.14.title
+	desc = oe_v45_hre.14.desc
+	outcome = negative
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_confessional_leagues.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1555
+		current_year <= 1655
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_14_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.14.a
+		add_army_tradition = 8
+		add_prestige = 8
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = 18 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = -8 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.14.b
+		add_gold = -50
+		add_stability = 6
+		set_variable = { name = oe_v45_hre_conciliatory_prince value = 1 }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = -16 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = 16 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.14.c
+		capital ?= { change_control = control_mild_bonus }
+		add_stability = 4
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = -6 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = 8 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 25 }
+	}
+}
+
+# 15. [oe_sit_v45_hre_confessional_leagues] Twin Treaties of Münster and Osnabrück
+oe_v45_hre.15 = {
+	type = country_event
+	title = oe_v45_hre.15.title
+	desc = oe_v45_hre.15.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_confessional_leagues.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1555
+		current_year <= 1655
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_15_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.15.a
+		add_stability = 8
+		add_prestige = 10
+		set_variable = { name = oe_v45_hre_conciliatory_prince value = 1 }
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 5 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = -24 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = 22 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 50 }
+	}
+	option = {
+		name = oe_v45_hre.15.b
+		add_gold = -70
+		capital ?= { change_prosperity = prosperity_mild_bonus change_development = development_very_weak_bonus }
+		set_variable = { name = oe_v45_hre_conciliatory_prince value = 1 }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = -18 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = 20 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 30 }
+	}
+	option = {
+		name = oe_v45_hre.15.c
+		add_army_tradition = 8
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_confessional_leagues } situation:oe_sit_v45_hre_confessional_leagues = { if = { limit = { NOT = { has_variable = oe_v45_hre_confessional_tension } } set_variable = { name = oe_v45_hre_confessional_tension value = 15 } } change_variable = { name = oe_v45_hre_confessional_tension add = 20 } if = { limit = { var:oe_v45_hre_confessional_tension > 100 } set_variable = { name = oe_v45_hre_confessional_tension value = 100 } } if = { limit = { var:oe_v45_hre_confessional_tension < -100 } set_variable = { name = oe_v45_hre_confessional_tension value = -100 } } set_variable = { name = oe_v45_hre_confessional_tension_bar value = var:oe_v45_hre_confessional_tension } change_variable = { name = oe_v45_hre_confessional_tension_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_westphalia_accord } } set_variable = { name = oe_v45_hre_westphalia_accord value = 20 } } change_variable = { name = oe_v45_hre_westphalia_accord add = -10 } if = { limit = { var:oe_v45_hre_westphalia_accord > 100 } set_variable = { name = oe_v45_hre_westphalia_accord value = 100 } } if = { limit = { var:oe_v45_hre_westphalia_accord < 0 } set_variable = { name = oe_v45_hre_westphalia_accord value = 0 } } } }
+		ai_chance = { base = 20 }
+	}
+}
+
+# 16. [oe_sit_v45_hre_austro_prussian_dualism] The Pragmatic Sanction & Silesian Gambit
+oe_v45_hre.16 = {
+	type = country_event
+	title = oe_v45_hre.16.title
+	desc = oe_v45_hre.16.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_austro_prussian_dualism.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1740
+		current_year <= 1820
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_16_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.16.a
+		add_legitimacy = 6
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = 16 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = 8 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.16.b
+		add_army_tradition = 8
+		add_prestige = 8
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = -16 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = -8 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.16.c
+		add_gold = 75
+		add_stability = 5
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = 0 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = 6 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 25 }
+	}
+}
+
+# 17. [oe_sit_v45_hre_austro_prussian_dualism] Cantons, Drill & the Potsdam Guard
+oe_v45_hre.17 = {
+	type = country_event
+	title = oe_v45_hre.17.title
+	desc = oe_v45_hre.17.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_austro_prussian_dualism.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1740
+		current_year <= 1820
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_17_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.17.a
+		add_army_tradition = 8
+		add_gold = -60
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = -14 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = -6 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.17.b
+		add_research_progress = research_progress_weak_bonus
+		capital ?= { change_control = control_mild_bonus }
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 3 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = 14 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = 8 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.17.c
+		add_gold = 85
+		capital ?= { change_prosperity = prosperity_mild_bonus }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = 0 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = 6 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 20 }
+	}
+}
+
+# 18. [oe_sit_v45_hre_austro_prussian_dualism] The Fürstenbund: Third-Germany Speaks
+oe_v45_hre.18 = {
+	type = country_event
+	title = oe_v45_hre.18.title
+	desc = oe_v45_hre.18.desc
+	outcome = positive
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_austro_prussian_dualism.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1740
+		current_year <= 1820
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_18_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.18.a
+		add_prestige = 8
+		add_stability = 6
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = -10 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = 12 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.18.b
+		add_gold = -65
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = 14 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = 8 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.18.c
+		add_gold = 60
+		add_prestige = 6
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = -14 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = -8 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 25 }
+	}
+}
+
+# 19. [oe_sit_v45_hre_austro_prussian_dualism] Reichsdeputationshauptschluss: The Great Mediatization
+oe_v45_hre.19 = {
+	type = country_event
+	title = oe_v45_hre.19.title
+	desc = oe_v45_hre.19.desc
+	outcome = negative
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_austro_prussian_dualism.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1740
+		current_year <= 1820
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_19_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.19.a
+		add_gold = 120
+		capital ?= { change_development = development_weak_bonus }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = -12 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = -16 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.19.b
+		add_legitimacy = 7
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 4 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = 12 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = 12 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.19.c
+		add_gold = -45
+		add_stability = 7
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = 2 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = -4 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 25 }
+	}
+}
+
+# 20. [oe_sit_v45_hre_austro_prussian_dualism] Twilight of the Double-Headed Eagle
+oe_v45_hre.20 = {
+	type = country_event
+	title = oe_v45_hre.20.title
+	desc = oe_v45_hre.20.desc
+	outcome = neutral
+	image = "gfx/interface/illustrations/situation/oe_sit_v45_hre_austro_prussian_dualism.dds"
+
+	trigger = {
+		is_rebel_country = no
+		exists = international_organization:hre
+		is_member_of_international_organization = international_organization:hre
+		current_year >= 1740
+		current_year <= 1820
+	}
+
+	immediate = {
+		set_variable = { name = oe_v45_hre_ev_20_seen value = 1 }
+	}
+
+	option = {
+		name = oe_v45_hre.20.a
+		add_prestige = 14
+		add_legitimacy = 8
+		if = { limit = { exists = international_organization:hre } change_imperial_authority = { value = 6 } }
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = 18 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = 18 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 40 }
+	}
+	option = {
+		name = oe_v45_hre.20.b
+		add_army_tradition = 10
+		add_prestige = 12
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = -20 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = -14 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 35 }
+	}
+	option = {
+		name = oe_v45_hre.20.c
+		add_stability = 8
+		add_research_progress = research_progress_severe_bonus
+		if = { limit = { is_situation_active = situation:oe_sit_v45_hre_austro_prussian_dualism } situation:oe_sit_v45_hre_austro_prussian_dualism = { if = { limit = { NOT = { has_variable = oe_v45_hre_dualism_balance } } set_variable = { name = oe_v45_hre_dualism_balance value = 10 } } change_variable = { name = oe_v45_hre_dualism_balance add = 0 } if = { limit = { var:oe_v45_hre_dualism_balance > 100 } set_variable = { name = oe_v45_hre_dualism_balance value = 100 } } if = { limit = { var:oe_v45_hre_dualism_balance < -100 } set_variable = { name = oe_v45_hre_dualism_balance value = -100 } } set_variable = { name = oe_v45_hre_dualism_balance_bar value = var:oe_v45_hre_dualism_balance } change_variable = { name = oe_v45_hre_dualism_balance_bar add = 100 } if = { limit = { NOT = { has_variable = oe_v45_hre_reich_integrity } } set_variable = { name = oe_v45_hre_reich_integrity value = 55 } } change_variable = { name = oe_v45_hre_reich_integrity add = -24 } if = { limit = { var:oe_v45_hre_reich_integrity > 100 } set_variable = { name = oe_v45_hre_reich_integrity value = 100 } } if = { limit = { var:oe_v45_hre_reich_integrity < 0 } set_variable = { name = oe_v45_hre_reich_integrity value = 0 } } } }
+		ai_chance = { base = 25 }
+	}
+}

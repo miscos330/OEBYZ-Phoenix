@@ -4,7 +4,7 @@ on_military_annex = { on_actions = { oe_osman_before_annex } }
 on_diplomatic_annex = { on_actions = { oe_osman_before_annex } }
 on_civil_war_annex = { on_actions = { oe_osman_before_annex } }
 oe_osman_before_annex = {
-    trigger = { country_exists = c:BYZ scope:target = c:TUR }
+    trigger = { current_year >= 1299 country_exists = c:BYZ scope:target = c:TUR }
     effect = { c:BYZ = { oe_osman_escort = yes } }
 }
 # Generic and specialized hooks share an idempotent gate. There is no preceding flavor event.
@@ -13,28 +13,28 @@ on_military_annexed = { on_actions = { oe_osman_after_annex } }
 on_diplomatic_annexed = { on_actions = { oe_osman_after_annex } }
 on_civil_war_annexed = { on_actions = { oe_osman_after_annex } }
 oe_osman_after_annex = {
-    trigger = { country_exists = c:BYZ scope:target = c:TUR }
+    trigger = { current_year >= 1299 country_exists = c:BYZ scope:target = c:TUR }
     effect = { c:BYZ = { oe_osman_open_fate = yes } }
 }
 # Also cover a last location transferred directly by script instead of an annexation effect.
 on_location_changed_owner = { on_actions = { oe_osman_last_location } }
 oe_osman_last_location = {
-    trigger = { country_exists = c:BYZ exists = scope:loser scope:loser = c:TUR scope:loser = { num_locations = 0 } }
+    trigger = { current_year >= 1299 country_exists = c:BYZ exists = scope:loser scope:loser = c:TUR scope:loser = { num_locations = 0 } }
     effect = { c:BYZ = { oe_osman_open_fate = yes } }
 }
 on_character_created = { on_actions = { oe_osman_created } }
 oe_osman_created = {
-    trigger = { country_exists = c:BYZ has_dynasty = yes dynasty = dynasty:ottomans_dynasty }
+    trigger = { current_year >= 1299 country_exists = c:BYZ has_dynasty = yes dynasty = dynasty:ottomans_dynasty }
     effect = { oe_osman_sync_person = yes }
 }
 on_character_birth = { on_actions = { oe_osman_born } }
 oe_osman_born = {
-    trigger = { country_exists = c:BYZ exists = scope:character scope:character = { has_dynasty = yes dynasty = dynasty:ottomans_dynasty } }
+    trigger = { current_year >= 1299 country_exists = c:BYZ exists = scope:character scope:character = { has_dynasty = yes dynasty = dynasty:ottomans_dynasty } }
     effect = { scope:character = { oe_osman_sync_person = yes } }
 }
 monthly_country_pulse = { on_actions = { oe_osman_maintenance } }
 oe_osman_maintenance = {
-    trigger = { tag = BYZ is_rebel_country = no }
+    trigger = { current_year >= 1299 tag = BYZ is_rebel_country = no }
     effect = {
         # Recovery for unusual destruction scripts; normal annexations dispatch immediately.
         if = { limit = { NOT = { country_exists = c:TUR } NOT = { has_variable = oe_osman_fate_shown } } oe_osman_open_fate = yes }

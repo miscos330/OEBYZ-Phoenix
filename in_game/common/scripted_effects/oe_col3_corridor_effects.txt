@@ -98,6 +98,16 @@ oe_col3_assign_ai_corridors = {
 				add_area_preference = oe_col3_celestial_nanyang_nurgan_corridor
 				add_area_preference = oe_col3_celestial_avoid_africa
 			}
+			# Edo Japan (JAP, 1635-1853 Sakoku Era): homeland archipelago guard focus
+			if = {
+				limit = {
+					tag = JAP
+					current_year >= 1635
+					current_year <= 1853
+				}
+				set_variable = { name = oe_col3_jap_sakoku_assigned value = 1 }
+				add_area_preference = oe_col3_japan_sakoku_focus
+			}
 			# European overseas exploration corridors (strictly gated >= 1450; 1337 receives them at 1450 via yearly tick)
 			if = {
 				limit = { current_year >= 1450 }
@@ -224,6 +234,26 @@ oe_col3_yearly_tick = {
 			set_variable = { name = oe_col3_cel_corridor_assigned value = 1 }
 			add_area_preference = oe_col3_celestial_nanyang_nurgan_corridor
 			add_area_preference = oe_col3_celestial_avoid_africa
+		}
+		# 2c. Edo Japan (JAP, 1635-1853 Sakoku Era): homeland archipelago guard focus; lift after 1853.
+		if = {
+			limit = {
+				is_ai = yes
+				tag = JAP
+				current_year >= 1635
+				current_year <= 1853
+				NOT = { has_area_preference = oe_col3_japan_sakoku_focus }
+			}
+			set_variable = { name = oe_col3_jap_sakoku_assigned value = 1 }
+			add_area_preference = oe_col3_japan_sakoku_focus
+		}
+		else_if = {
+			limit = {
+				tag = JAP
+				current_year > 1853
+				has_area_preference = oe_col3_japan_sakoku_focus
+			}
+			remove_area_preference = oe_col3_japan_sakoku_focus
 		}
 		# 3. Dynamic one-shot European overseas exploration corridors once 1450+ reached.
 		if = {

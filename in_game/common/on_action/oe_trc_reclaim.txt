@@ -7,7 +7,7 @@ monthly_country_pulse = { on_actions = { oe_trc_byz_pulse } }
 # (gen_territory_outer.py) that passes to BYZ or one of its themes waits to be settled; a waiting location that passes
 # to anyone else drops out. gen_territory_outer.py's own hook and its yearly check are not touched.
 oe_trc_owner_changed = {
-    trigger = { OR = { has_variable = oe_tw_former_province has_variable = oe_trc_pending has_variable = oe_trc_batch } }
+    trigger = { current_year >= 1200 OR = { has_variable = oe_tw_former_province has_variable = oe_trc_pending has_variable = oe_trc_batch } }
     effect = {
         if = {
             limit = { oe_trc_new_owner_byz = yes }
@@ -29,6 +29,6 @@ oe_trc_owner_changed = {
 }
 # BYZ, monthly, only while some land waits to be settled.
 oe_trc_byz_pulse = {
-    trigger = { tag = BYZ is_rebel_country = no has_variable = oe_trc_open }
+    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no has_variable = oe_trc_open }
     effect = { oe_trc_byz_monthly = yes }
 }

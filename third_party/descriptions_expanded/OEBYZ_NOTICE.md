@@ -27,10 +27,9 @@ Byte-identical copies of version 1.2.3 (SHA-256):
 - `in_game/localization/simp_chinese/replace/lde_history_entries_replace_l_simp_chinese.yml` (upstream SHA-256 `ee2c2fbce3d7c5b13a0b3b80550e8588a998ea15fd4ccfda70147e6db1a33ea2`):
   aligned two invalid god references (`chaac_god` and `dzahui_god`) to `tlaloc_god` matching the English replace file and EU5 1.4.9 god database;
   all other lines are unchanged from version 1.2.3.
-- `in_game/gui/zz_lde_history_tooltips.gui`: the country, culture and dynasty tooltips first show Phoenix's own text
-  for the object when there is one, otherwise the Descriptions Expanded text as before. Nothing else in the file is changed.
+- `in_game/gui/zz_lde_history_tooltips.gui`: tiered history blocks — 4-tier Country (`oe_chron_lde_country_desc` -> `oe_lde_country_desc` -> `lde_country_desc` -> `oe_lde_country_fallback`), 3-tier Culture (`oe_chron_lde_culture_desc` -> `oe_lde_culture_desc` -> `lde_culture_desc`), and 2-tier Dynasty (`oe_lde_dynasty_desc` -> `lde_dynasty_desc`). Nothing else in the file is changed.
 - `in_game/common/customizable_localization/oe_lde_overlay.txt` and `main_menu/localization/*/oe_lde_overlay_l_*.yml`:
-  54 new descriptions for countries, dynasties and cultures not covered by Descriptions Expanded, and 8 adapted ones:
+  55 new descriptions for countries, dynasties and cultures not covered by Descriptions Expanded, 148 era-aware country entries, 16 Tier-4 universal country fallbacks (kept strictly after Descriptions Expanded), 2 empty cross-mod Chronicles stubs (`oe_chron_lde_country_desc`, `oe_chron_lde_culture_desc`), and 8 adapted ones:
   for CRI, QAS, HCN, OTC, BGT, OGE, LNG, SYG the first paragraph is rewritten for Phoenix's setup (the Yuan princes are named
   by their titles; Crimea begins as the 1337 Crimean Tumen) and the later paragraphs of the Descriptions Expanded entry follow unchanged.
   For WAL, EPI, FEO, GAZ, SAO, ACH, NEO, ATH, gabras_dynasty, pontic_greek_culture, GLH, SMS, nakh_culture, ryazanian, CYP, GEO, HLG, QAR, AQQ, CDL, LNG, duan_dynasty, SRB, MOS, RUS, IRA, ETH, MAM, BYZ the Descriptions Expanded entry is shown with single sentences replaced where it

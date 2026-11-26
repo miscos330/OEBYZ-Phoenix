@@ -1,10 +1,12 @@
 ﻿on_location_occupied = { on_actions = { oe_heg_expedition_occupation } }
 on_siege_won = { on_actions = { oe_heg_expedition_occupation } }
 oe_heg_expedition_occupation = {
+    trigger = { current_year >= 1200 }
     effect = { scope:target = { oe_heg_expedition_capture = yes } }
 }
 on_ending_war = { on_actions = { oe_heg_expedition_peace } }
 oe_heg_expedition_peace = {
+    trigger = { current_year >= 1200 }
     effect = {
         # Covers expedition participants even when the native hook root is another war leader.
         c:BYZ ?= {
@@ -21,7 +23,7 @@ oe_heg_expedition_peace = {
 }
 monthly_country_pulse = { on_actions = { oe_heg_expedition_recover_watch } }
 oe_heg_expedition_recover_watch = {
-    trigger = { is_rebel_country = no has_reform = government_reform:oe_heg_expedition_reform }
+    trigger = { current_year >= 1200 is_rebel_country = no has_reform = government_reform:oe_heg_expedition_reform }
     effect = {
         if = { limit = { at_war = no NOT = { has_variable = oe_heg_expedition_launching } } oe_heg_finish_expedition = yes }
         else = { oe_heg_ensure_expedition_watch = yes }

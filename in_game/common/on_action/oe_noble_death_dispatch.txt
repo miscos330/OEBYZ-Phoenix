@@ -2,16 +2,16 @@
 on_ruler_death = { on_actions = { oe_nf_ruler_death } }
 on_new_ruler = { on_actions = { oe_nf_after_ruler_change } }
 oe_nf_ruler_death = {
-    trigger = { oe_start_is_1337 = yes country_exists = c:BYZ exists = scope:old_ruler scope:old_ruler = { oe_nf_death_tracked = yes } }
+    trigger = { current_year >= 1200 oe_start_is_1337 = yes country_exists = c:BYZ exists = scope:old_ruler scope:old_ruler = { oe_nf_death_tracked = yes } }
     effect = { scope:old_ruler = { oe_nf_note_character_death = yes } }
 }
 # Also recheck after a subject's succession has completed, when the living lists have settled.
 oe_nf_after_ruler_change = {
-    trigger = { oe_start_is_1337 = yes country_exists = c:BYZ oe_pillars_eligible_trigger = yes }
+    trigger = { current_year >= 1200 oe_start_is_1337 = yes country_exists = c:BYZ oe_pillars_eligible_trigger = yes }
     effect = { c:BYZ = { oe_nf_queue_death_refresh = yes } }
 }
 oe_nf_delayed_death_refresh = {
-    trigger = { oe_start_is_1337 = yes tag = BYZ is_rebel_country = no }
+    trigger = { current_year >= 1200 oe_start_is_1337 = yes tag = BYZ is_rebel_country = no }
     effect = {
         remove_variable = oe_nf_death_refresh_queued
         oe_nf_refresh = yes

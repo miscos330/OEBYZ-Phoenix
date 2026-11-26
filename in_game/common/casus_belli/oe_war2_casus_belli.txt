@@ -14,10 +14,23 @@ oe_war2_cb_open_ports_war = {
 		is_subject = no
 		has_ports = yes
 		NOT = { country_type = navy }
+		current_age_or_later = { age = age_4_reformation }
+		exists = scope:target
+		scope:target = {
+			NOT = { this = root }
+			NOT = { is_subject_of = root }
+			num_of_ports >= 2
+		}
+		OR = {
+			scope:target = { is_embargoing = root }
+			is_rival_of = scope:target
+			opinion = { target = scope:target value < -20 }
+		}
 	}
 
 	create_enabled = {
 		has_ports = yes
+		current_age_or_later = { age = age_4_reformation }
 		NOT = { is_subject_of = scope:target }
 		NOT = { is_allied_with = { target = scope:target } }
 		scope:target = {
@@ -75,6 +88,26 @@ oe_war2_cb_recover_heritage = {
 	create_visible = {
 		is_rebel_country = no
 		is_subject = no
+		exists = scope:target
+		scope:target = {
+			NOT = { this = root }
+			NOT = { is_subject_of = root }
+		}
+		OR = {
+			scope:target = {
+				any_work_of_art_in_country = {
+					art_is_priceless = no
+					origin ?= {
+						has_owner = yes
+						owner = { this = root }
+					}
+				}
+			}
+			AND = {
+				has_variable = oe_war2_plundered_by
+				var:oe_war2_plundered_by ?= scope:target
+			}
+		}
 	}
 
 	create_enabled = {
@@ -96,7 +129,7 @@ oe_war2_cb_recover_heritage = {
 			}
 			AND = {
 				has_variable = oe_war2_plundered_by
-				var:oe_war2_plundered_by = scope:target
+				var:oe_war2_plundered_by ?= scope:target
 			}
 		}
 	}
@@ -138,13 +171,28 @@ oe_war2_cb_defend_buffer = {
 	create_visible = {
 		is_rebel_country = no
 		is_subject = no
+		current_age_or_later = { age = age_5_absolutism }
 		OR = {
 			country_rank_level >= 3
 			is_great_power = yes
 		}
+		exists = scope:target
+		scope:target = {
+			NOT = { this = root }
+			NOT = { is_subject_of = root }
+		}
+		OR = {
+			has_country_modifier = oe_war2_mod_pt_buffer_winner
+			AND = {
+				has_variable = oe_war2_buffer_guarantor_against
+				var:oe_war2_buffer_guarantor_against ?= scope:target
+			}
+			is_rival_of = scope:target
+		}
 	}
 
 	create_enabled = {
+		current_age_or_later = { age = age_5_absolutism }
 		NOT = { is_subject_of = scope:target }
 		NOT = { is_allied_with = { target = scope:target } }
 		scope:target = {
@@ -211,6 +259,16 @@ oe_war2_cb_enforce_balance = {
 		OR = {
 			is_great_power = yes
 			country_rank_level >= 3
+		}
+		exists = scope:target
+		scope:target = {
+			NOT = { this = root }
+			NOT = { is_subject_of = root }
+			OR = {
+				is_great_power = yes
+				is_hegemon = yes
+				country_rank_level >= 4
+			}
 		}
 	}
 

@@ -5,24 +5,25 @@ on_character_death = { on_actions = { oe_nf_andronikos_character_death } }
 on_regency_start = { on_actions = { oe_nf_regency_ambition_check } }
 monthly_country_pulse = { on_actions = { oe_nf_regency_ambition_check } }
 oe_nf_succession_house_cleanup = {
-    trigger = { oe_start_is_1337 = yes tag = BYZ is_rebel_country = no }
+    trigger = { current_year >= 1200 oe_start_is_1337 = yes tag = BYZ is_rebel_country = no }
     effect = { oe_nf_refresh = yes }
 }
 oe_nf_andronikos_ruler_death = {
-    trigger = { oe_start_is_1337 = yes tag = BYZ is_rebel_country = no exists = character:byz_andronikos_iii_palaiologos scope:old_ruler = character:byz_andronikos_iii_palaiologos }
+    trigger = { current_year >= 1200 oe_start_is_1337 = yes tag = BYZ is_rebel_country = no exists = character:byz_andronikos_iii_palaiologos scope:old_ruler = character:byz_andronikos_iii_palaiologos }
     effect = { oe_nf_note_andronikos_death = yes }
 }
 # Also cover his death after abdication. Both hooks share an idempotent dispatcher.
 oe_nf_andronikos_character_death = {
-    trigger = { oe_start_is_1337 = yes country_exists = c:BYZ exists = character:byz_andronikos_iii_palaiologos scope:target = character:byz_andronikos_iii_palaiologos }
+    trigger = { current_year >= 1200 oe_start_is_1337 = yes country_exists = c:BYZ exists = character:byz_andronikos_iii_palaiologos scope:target = character:byz_andronikos_iii_palaiologos }
     effect = { c:BYZ = { oe_nf_note_andronikos_death = yes } }
 }
 oe_nf_after_andronikos_death = {
+    trigger = { current_year >= 1200 }
     effect = {
         if = { limit = { oe_nf_kantakouzenos_ambition_ready = yes } trigger_event_non_silently = oe_succession_settlement.1 }
     }
 }
 oe_nf_regency_ambition_check = {
-    trigger = { oe_start_is_1337 = yes tag = BYZ is_rebel_country = no oe_nf_kantakouzenos_ambition_ready = yes }
+    trigger = { current_year >= 1200 oe_start_is_1337 = yes tag = BYZ is_rebel_country = no oe_nf_kantakouzenos_ambition_ready = yes }
     effect = { trigger_event_non_silently = oe_succession_settlement.1 }
 }

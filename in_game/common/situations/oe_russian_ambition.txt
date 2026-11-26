@@ -2,6 +2,7 @@
     monthly_spawn_chance = monthly_spawn_chance_unique
     hint_tag = hint_oe_russian_ambition
     can_start = {
+        current_year >= 1337
         country_exists = c:RUS
         has_global_variable = oe_rus_started
         NOT = { is_situation_active = situation:oe_rise_of_rus }
@@ -25,9 +26,9 @@
         }
     }
     map_color = {
-        if = { limit = { has_owner = yes owner = c:RUS } value = owner.country_color }
-        else_if = { limit = { has_owner = yes owner = { is_subject_or_below_of = c:RUS } } value = c:RUS.country_color }
-        else_if = { limit = { has_owner = yes owner = { oe_ra_observer = yes } } value = owner.country_color }
+        if = { limit = { has_owner = yes owner ?= { tag = RUS } } value = owner.country_color }
+        else_if = { limit = { has_owner = yes country_exists = c:RUS owner ?= { is_subject_or_below_of = c:RUS } } value = c:RUS.country_color }
+        else_if = { limit = { has_owner = yes owner ?= { oe_ra_observer = yes } } value = owner.country_color }
         else = { value = define:NMapColors|DEFAULT_COLOR }
     }
 }

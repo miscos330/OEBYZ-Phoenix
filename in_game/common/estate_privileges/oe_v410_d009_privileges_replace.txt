@@ -1,0 +1,812 @@
+﻿# Project Phoenix v41.0: targeted TRY_REPLACE overrides for D009 Across the Pillars estate_privileges.
+# Replaces 4 full-file DLC overrides (d009_{burghers,clergy,nobles,peasants}_estate.txt) with DLC-safe TRY_REPLACE blocks.
+# Preserves 100% identical BYZ exclusion (NOT = { has_or_had_tag = BYZ }) in each privilege potential.
+
+# --- From dlc/D009_across_the_pillars/in_game/common/estate_privileges/d009_burghers_estate.txt (12 blocks) ---
+TRY_REPLACE:mudejar_aljamas = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		culture = { has_culture_group = culture_group:iberian_group }
+		religion.group != religion_group:muslim
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		global_pop_conversion_speed_modifier = -0.1
+		tolerance_heathen = 1
+		trade_income = 0.05
+	}
+}
+
+TRY_REPLACE:basque_cofradias_marineras = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			culture = culture:basque
+			is_basque_spain = yes
+		}
+		has_ports = yes
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = small_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		global_sailors_modifier = 0.1
+		ship_build_speed = 0.1
+	}
+}
+
+TRY_REPLACE:basque_universidad_mercaderes_bilbao = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			culture = culture:basque
+			is_basque_spain = yes
+		}
+		has_ports = yes
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		country_cabinet_efficiency = 0.05
+		global_burghers_estate_power = 0.5
+		global_merchant_capacity_modifier = 0.1
+		tax_income_efficiency = small_tax_income_efficiency_bonus
+	}
+}
+
+TRY_REPLACE:cas_letrados = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = CAS
+			is_castilian_spain = yes
+		}
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		country_cabinet_efficiency = 0.05
+		global_burghers_estate_power = 0.25
+		legislative_efficiency = 0.05
+	}
+}
+
+TRY_REPLACE:mll_consolat_de_mar = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = MLL
+			has_or_had_tag = ARA
+			is_aragonese_catalan_spain = yes
+		}
+		culture = culture:catalan
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		non_rural_migration_attraction = 0.25
+		trade_income = 0.05
+	}
+}
+
+TRY_REPLACE:nav_buenas_villas = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = NAV
+			is_basque_spain = yes
+		}
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		global_monthly_prosperity = 0.001
+	}
+}
+
+TRY_REPLACE:alg_taifa_rais = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = ALG
+		has_advance = alg_corsair_emergence
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		privateer_maintenance_cost_modifier = -0.1
+		trade_sea_efficiency = tiny_trade_sea_efficiency_bonus
+	}
+}
+
+TRY_REPLACE:mellah_charter = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		capital ?= { region = region:maghreb_region }
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		non_rural_migration_attraction = 0.15
+		selling_efficiency = tiny_selling_efficiency_bonus
+	}
+}
+
+TRY_REPLACE:mor_andalusian_refugees = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			culture = { has_culture_group = culture_group:maghrebi_group }
+			culture = { has_culture_group = culture_group:amazigh_group }
+			has_unlocked_estate_privilege_trigger = { type = mor_andalusian_refugees }
+		}
+	}
+
+	country_modifier = {
+		allow_andalusi_refugee_town_rights = yes
+		global_burghers_estate_power = 0.25
+	}
+}
+
+TRY_REPLACE:mozabite_communal_pact = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		culture = culture:mozabite
+		religion ?= religion:ibadi
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		selling_efficiency = tiny_selling_efficiency_bonus
+		trade_income = 0.05
+	}
+}
+
+TRY_REPLACE:tun_taifa_of_rais = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = TUN
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.5
+		global_sailors_modifier = 0.1
+		hire_privateer_cost_modifier = -0.15
+	}
+}
+
+TRY_REPLACE:tuareg_caravan_guild = {
+	estate = burghers_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		culture = culture:tuareg
+	}
+
+	country_modifier = {
+		burghers_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_burghers_estate_power = 0.25
+		global_merchant_capacity_modifier = 0.1
+		trade_land_efficiency = tiny_trade_land_efficiency_bonus
+	}
+}
+
+# --- From dlc/D009_across_the_pillars/in_game/common/estate_privileges/d009_clergy_estate.txt (7 blocks) ---
+TRY_REPLACE:bula_de_la_santa_cruzada = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		culture = { has_culture_group = culture_group:iberian_group }
+		religion ?= religion:catholic
+	}
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.25
+		global_manpower_modifier = 0.1
+		land_morale_modifier = 0.05
+		monthly_devotion = 0.1
+	}
+}
+
+TRY_REPLACE:cas_patronato_real = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = CAS
+			is_castilian_spain = yes
+		}
+		religion ?= religion:catholic
+	}
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		country_cabinet_efficiency = 0.05
+		global_clergy_estate_power = 0.25
+		monthly_religious_influence = 0.20
+	}
+}
+
+TRY_REPLACE:glc_archbishopric_compostela = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = GLC
+			is_galician_spain = yes
+		}
+		religion ?= religion:catholic
+	}
+
+	allow = {
+		OR = {
+			any_owned_location = {
+				this = location:santiago_compostela
+			}
+			any_core_location = {
+				this = location:santiago_compostela
+			}
+		}
+	}
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.25
+		monthly_prestige = 0.05
+		monthly_religious_influence = 0.15
+	}
+}
+
+TRY_REPLACE:gra_ulema_council = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = GRA
+			culture = culture:andalusi
+		}
+		religion ?= { group = religion_group:muslim }
+	}
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.25
+		legislative_efficiency = 0.05
+		monthly_legitimacy = 0.05
+	}
+}
+
+TRY_REPLACE:lon_san_isidoro_patronage = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = LON
+			is_leonese_spain = yes
+		}
+		religion ?= religion:catholic
+	}
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.25
+		global_max_literacy = 5
+		monthly_devotion = 0.1
+	}
+}
+
+TRY_REPLACE:maghrebi_zawiya_endowment = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		capital ?= { region = region:maghreb_region }
+		religion ?= { group = religion_group:muslim }
+	}
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.5
+		monthly_devotion = 0.05
+		monthly_legitimacy = 0.05
+		monthly_republican_tradition = 0.05
+		monthly_towards_spiritualist = societal_value_minor_monthly_move
+	}
+}
+
+TRY_REPLACE:mor_marabout_patronage = {
+	estate = clergy_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = MOR
+		religion ?= { group = religion_group:muslim }
+	}
+
+	country_modifier = {
+		clergy_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_clergy_estate_power = 0.5
+		global_pop_conversion_speed_modifier = 0.1
+		monthly_devotion = 0.05
+		monthly_legitimacy = 0.05
+		monthly_republican_tradition = 0.05
+	}
+}
+
+# --- From dlc/D009_across_the_pillars/in_game/common/estate_privileges/d009_nobles_estate.txt (11 blocks) ---
+TRY_REPLACE:spa_grandes_de_espana = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = SPA
+	}
+
+	country_modifier = {
+		country_cabinet_efficiency = 0.05
+		global_nobles_estate_power = 0.5
+		monthly_legitimacy = 0.1
+		nobles_estate_target_satisfaction = large_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:cat_capitols_de_cort = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = CAT
+			has_or_had_tag = ARA
+			is_aragonese_catalan_spain = yes
+		}
+		culture = culture:catalan
+	}
+
+	can_revoke = {
+		legitimacy > 90
+		"estate_power(estate_type:crown_estate)" > 0.3
+	}
+
+	location_modifier = {
+		potential_trigger = {
+			area = area:aragon_area
+		}
+		local_crown_estate_power = -0.15
+	}
+
+	country_modifier = {
+		change_policy_cost_modifier = -0.25
+		global_nobles_estate_power = 0.25
+		monthly_towards_decentralization = societal_value_monthly_move
+		nobles_estate_agenda_impact = 0.25
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:nav_mesnadero = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = NAV
+			has_or_had_tag = ARA
+			is_basque_spain = yes
+			is_aragonese_catalan_spain = yes
+		}
+	}
+
+	on_activate = {
+		custom_tooltip = nav_mesnadero_unlocks_mesnaderos_tt
+	}
+
+	country_modifier = {
+		army_heavy_cavalry_power = 0.05
+		army_tradition_from_battle = 1
+		global_nobles_estate_power = 0.25
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:basque_pase_foral = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			culture = culture:basque
+			is_basque_spain = yes
+		}
+	}
+
+	can_revoke = {
+		"estate_power(estate_type:crown_estate)" >= 0.35
+	}
+
+	country_modifier = {
+		global_crown_estate_power = -0.15
+		global_nobles_estate_power = 0.25
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+		stability_decay = -0.0001
+		pure_tooltip_entry = unlocks_proclaim_pase_foral_tt
+	}
+}
+
+TRY_REPLACE:gra_visirate = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = GRA
+			culture = culture:andalusi
+		}
+	}
+
+	country_modifier = {
+		country_cabinet_efficiency = 0.05
+		global_nobles_estate_power = 0.25
+		monthly_legitimacy = 0.05
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:anr_consell_de_la_terra = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = ANR
+		has_estate_privilege = estate_privilege:anr_quartos
+	}
+
+	country_modifier = {
+		global_estate_target_satisfaction = medium_privilege_target_satisfaction
+		global_nobles_estate_power = 0.5
+		legislative_efficiency = 0.05
+	}
+}
+
+TRY_REPLACE:anr_sindic_general = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = ANR
+	}
+
+	country_modifier = {
+		country_cabinet_efficiency = 0.05
+		government_size = 1
+		global_nobles_estate_power = 1.0
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:nav_palacio_cabo_armeria = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = NAV
+			is_basque_spain = yes
+		}
+	}
+
+	country_modifier = {
+		global_nobles_estate_power = 0.25
+		monthly_political_influence_gain_modifier = 0.10
+		nobles_estate_target_satisfaction = small_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:mor_makhzen_caids = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = MOR
+	}
+
+	country_modifier = {
+		global_nobles_estate_power = 0.5
+		monthly_towards_centralization = societal_value_minor_monthly_move
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+
+	country_modifier = {
+		potential_trigger = {
+			has_policy = centralized_makhzen_policy
+		}
+		global_crown_estate_power = 0.15
+	}
+}
+
+TRY_REPLACE:tle_mashwar_court = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = TLE
+		has_advance = qalat_al_mashwar_advance
+	}
+
+	country_modifier = {
+		country_cabinet_efficiency = 0.1
+		global_nobles_estate_power = 0.5
+		legislative_efficiency = 0.1
+		monthly_devotion = 0.03
+		monthly_legitimacy = 0.03
+		monthly_republican_tradition = 0.03
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:tun_hafsid_caliphal_claim = {
+	estate = nobles_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = TUN
+		has_advance = tun_caliphal_claim
+	}
+
+	country_modifier = {
+		diplomatic_reputation = diplomatic_reputation_weak_bonus
+		global_nobles_estate_power = 0.25
+		monthly_devotion = 0.05
+		monthly_legitimacy = 0.05
+		monthly_republican_tradition = 0.05
+		nobles_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+# --- From dlc/D009_across_the_pillars/in_game/common/estate_privileges/d009_peasants_estate.txt (7 blocks) ---
+TRY_REPLACE:gra_volunteers_of_faith = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = GRA
+			culture = culture:andalusi
+			culture = { has_culture_group = culture_group:maghrebi_group }
+			culture = { has_culture_group = culture_group:amazigh_group }
+		}
+		religion ?= { group = religion_group:muslim }
+	}
+
+	on_activate = {
+		custom_tooltip = gra_volunteers_of_faith_unlocks_mutatawwia_tt
+	}
+
+	country_modifier = {
+		global_levy_size_modifier = 0.05
+		global_manpower_modifier = 0.1
+		global_peasants_estate_power = 0.25
+		land_morale_modifier = 0.05
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:anr_quartos = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		has_or_had_tag = ANR
+	}
+
+	country_modifier = {
+		global_crown_estate_power = -0.25
+		global_peasants_estate_power = 0.25
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:glc_foros_de_galicia = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = GLC
+			is_galician_spain = yes
+		}
+	}
+
+	country_modifier = {
+		global_monthly_food_modifier = monthly_food_productivity_mild_bonus
+		global_peasants_estate_power = 0.25
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:lon_concejos_asturianos = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = ATU
+			has_or_had_tag = LON
+			is_leonese_spain = yes
+		}
+	}
+
+	country_modifier = {
+		global_peasants_estate_power = 0.25
+		monthly_rebel_growth = -0.0002
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:val_tribunal_de_les_aigues = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		OR = {
+			has_or_had_tag = CAT
+			has_or_had_tag = ARA
+			is_aragonese_catalan_spain = yes
+		}
+		culture = culture:catalan
+		any_owned_location = { area = area:valencia_area }
+	}
+
+	location_modifier = {
+		potential_trigger = {
+			area = area:valencia_area
+		}
+		local_max_rgo_size_modifier = 0.10
+	}
+
+	country_modifier = {
+		global_peasants_estate_power = 0.25
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+	}
+}
+
+TRY_REPLACE:eastern_amazigh_oasis_charter = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		culture = culture:eastern_amazigh
+	}
+
+	country_modifier = {
+		global_peasants_estate_power = 0.25
+		global_production_efficiency = 0.025
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		trade_land_efficiency = tiny_trade_land_efficiency_bonus
+	}
+}
+
+TRY_REPLACE:kabyle_tajmaat_pact = {
+	estate = peasants_estate
+
+	potential = {
+		NOT = { has_or_had_tag = BYZ } # Project Phoenix uses its own privileges.
+
+		has_dlc = "d009_across_the_pillars"
+		culture = culture:kabyle
+	}
+
+	country_modifier = {
+		global_peasants_estate_power = 0.25
+		monthly_towards_decentralization = societal_value_minor_monthly_move
+		peasants_estate_target_satisfaction = medium_privilege_target_satisfaction
+		pop_join_rebel_threshold = 0.05
+	}
+}

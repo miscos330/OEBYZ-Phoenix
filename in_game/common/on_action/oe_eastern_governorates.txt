@@ -5,17 +5,18 @@ on_location_occupied = { on_actions = { oe_heg_occupation_changed } }
 on_siege_won = { on_actions = { oe_heg_occupation_changed } }
 on_location_changed_owner = { on_actions = { oe_heg_owner_changed } }
 oe_heg_tracking_startup = {
+    trigger = { current_year >= 1200 }
     effect = { c:BYZ ?= { oe_heg_start_tracking = yes } }
 }
 oe_heg_tracking_monthly_failsafe = {
-    trigger = { tag = BYZ is_rebel_country = no }
+    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no }
     effect = {
         # Starts observation in existing saves; no invented historical occupation time.
         oe_heg_start_tracking = yes
     }
 }
 oe_heg_occupation_changed = {
-    trigger = { scope:target = { oe_heg_key_location = yes } }
+    trigger = { current_year >= 1200 scope:target = { oe_heg_key_location = yes } }
     effect = {
         # A fresh siege/occupation resets continuity even if two flips occur in one day.
         scope:target = {
@@ -31,7 +32,7 @@ oe_heg_occupation_changed = {
     }
 }
 oe_heg_owner_changed = {
-    trigger = { oe_heg_key_location = yes }
+    trigger = { current_year >= 1200 oe_heg_key_location = yes }
     effect = {
         if = {
             limit = { NOT = { oe_heg_military_occupation = yes } }

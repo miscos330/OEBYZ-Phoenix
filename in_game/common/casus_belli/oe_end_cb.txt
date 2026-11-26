@@ -15,6 +15,18 @@ oe_end_cb_great_war = {
 		is_subject = no
 		is_situation_active = situation:oe_sit_eurasian_great_war
 		oe_end_is_bloc_a = yes
+		exists = scope:target
+		scope:target = {
+			NOT = { this = root }
+			NOT = { is_subject_of = root }
+			OR = {
+				oe_end_is_bloc_b = yes
+				AND = {
+					is_great_power = yes
+					NOT = { oe_end_is_bloc_a = yes }
+				}
+			}
+		}
 	}
 
 	create_enabled = {
@@ -74,6 +86,12 @@ oe_end_cb_balance_of_power = {
 		is_subject = no
 		is_situation_active = situation:oe_sit_eurasian_great_war
 		oe_end_is_bloc_b = yes
+		exists = scope:target
+		scope:target = {
+			NOT = { this = root }
+			NOT = { is_subject_of = root }
+			oe_end_is_bloc_a = yes
+		}
 	}
 
 	create_enabled = {

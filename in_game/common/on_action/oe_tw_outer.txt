@@ -9,7 +9,7 @@ on_ruler_death = { on_actions = { oe_tw_ruler_death } }
 # Ranks: first month of a game or save, again 2 months later (the Roman World assigns its statuses in its own
 # monthly tick), then every 6 months.
 oe_tw_monthly_pulse = {
-    trigger = { tag = BYZ is_rebel_country = no NOT = { has_variable = oe_tw_rank_timer } }
+    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no NOT = { has_variable = oe_tw_rank_timer } }
     effect = {
         if = {
             limit = { NOT = { has_variable = oe_tw_rank_init } }
@@ -21,7 +21,7 @@ oe_tw_monthly_pulse = {
     }
 }
 oe_tw_yearly_pulse = {
-    trigger = { tag = BYZ is_rebel_country = no }
+    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no }
     effect = {
         oe_tw_former_yearly = yes
         if = { limit = { is_ai = yes } oe_tw_ai_yearly = yes }
@@ -31,6 +31,7 @@ oe_tw_yearly_pulse = {
 # that is lost again before its event drops out of that event.
 oe_tw_former_owner_changed = {
     trigger = {
+        current_year >= 1200
         OR = { has_variable = oe_tw_former_province has_variable = oe_tw_ret_pending }
         NOT = { owner ?= { tag = BYZ } }
     }
@@ -41,17 +42,17 @@ oe_tw_former_owner_changed = {
 }
 # root = country.
 oe_tw_new_ruler = {
-    trigger = { has_variable = oe_tw_titled }
+    trigger = { current_year >= 1200 has_variable = oe_tw_titled }
     effect = { oe_tw_on_new_ruler = yes }
 }
 # root = country (r10). The titled ruler died: the dignity lapses at once.
 oe_tw_ruler_death = {
-    trigger = { has_variable = oe_tw_titled }
+    trigger = { current_year >= 1200 has_variable = oe_tw_titled }
     effect = { oe_tw_on_ruler_death = yes }
 }
 # BYZ, monthly (r10). r10 found a title kept after its holder died; every titled country follows its current ruler again.
 oe_tw_title_sweep = {
-    trigger = { tag = BYZ is_rebel_country = no has_variable = oe_tw_any_titled }
+    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no has_variable = oe_tw_any_titled }
     effect = {
         remove_variable = oe_tw_any_titled
         every_country = {

@@ -2,6 +2,7 @@
 	monthly_spawn_chance = monthly_spawn_chance_unique
 	hint_tag = hint_phoenix_nirvana
 	can_start = {
+		current_year >= 1337
 		always = no
 	}
 	can_end = {
@@ -22,20 +23,23 @@
 	tooltip = {
 		if = {
 			limit = {
-				owner ?= c:BYZ
+				has_owner = yes
+				owner ?= { tag = BYZ }
 			}
 			custom_tooltip = phoenix_nirvana_byz_map_tt
 		}
 		if = {
 			limit = {
-				owner ?= { is_subject_of = c:BYZ}
+				has_owner = yes
+				country_exists = c:BYZ
+				owner ?= { is_subject_of = c:BYZ }
 			}
 			custom_tooltip = phoenix_nirvana_byz_map_ttt
 		}
 		if = {
 			limit = {
-				AND = {owner ?= { capital.region = region:anatolia_region }	
-				owner ?= {culture = culture:turkish_culture}}
+				has_owner = yes
+				owner ?= { capital ?= { region = region:anatolia_region } culture = culture:turkish_culture }
 			}
 			custom_tooltip = phoenix_nirvana_byz_map_tttt
 		}
@@ -44,23 +48,29 @@
 	map_color = {
 		if = {
 			limit = {
-				owner ?= c:BYZ
-			}
-			value = c:BYZ.country_color
-		}
-		if = {
-			limit = {
-				Not = {owner ?= c:BYZ}
-				Not = {owner ?= { is_subject_of = c:BYZ}}
-				Not = {owner ?= {religion = religion:catholic}}
-				OR = {owner ?= { capital.region = region:balkan_region }	
-				owner ?= { capital.region = region:anatolia_region }	}
+				has_owner = yes
+				owner ?= { tag = BYZ }
 			}
 			value = owner.country_color
 		}
 		if = {
 			limit = {
-				owner ?= { is_subject_of = c:BYZ}
+				has_owner = yes
+				NOT = { owner ?= { tag = BYZ } }
+				NOT = { AND = { country_exists = c:BYZ owner ?= { is_subject_of = c:BYZ } } }
+				NOT = { owner ?= { religion = religion:catholic } }
+				OR = {
+					owner ?= { capital ?= { region = region:balkan_region } }
+					owner ?= { capital ?= { region = region:anatolia_region } }
+				}
+			}
+			value = owner.country_color
+		}
+		if = {
+			limit = {
+				has_owner = yes
+				country_exists = c:BYZ
+				owner ?= { is_subject_of = c:BYZ }
 			}
 			value = c:BYZ.country_color
 		}

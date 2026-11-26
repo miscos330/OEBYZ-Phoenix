@@ -1,3 +1,127 @@
+# 《凤凰计划（OEBYZ）》v48.0 更新日志
+
+> **发布状态**：v48.0 正式版（EU5 1.4.9），合并 v41–v48 的全部更新。候选版 v48.0-rc2 已于 2026-11-26 在 EU5 1.4.9 实机验收；发布包在 rc2 基础上修了 3 处小问题（见第 5 节），修后在 1648 开局再次实机复测。
+> **存档提示**：v48.0 **不兼容旧版本存档**，请新开一局。
+> **雄鹰陨落**：已并入《全时代编年史》（3844848618）。旧的《雄鹰陨落 361–768》条目（3845632550）停止更新，请取消订阅，不要与 v48.0 同时启用。
+
+制作：寐夜空灵、miscos330
+
+---
+
+## 一、中文更新日志
+
+### 1. 全时代编年史（3844848618，原《全时代历史剧本拓展包》）
+
+- **十二个开局合一**：《雄鹰陨落 361–768》并入，现有 361 / 395 / 476 / 532 / 632 / 768 / 1204 / 1337 / 1444 / 1648 / 1776 / 1821 共 12 个开局，书签界面顶部可切换“古典晚期”与“中世至近世”两栏。可独立运行。
+- **近世局势（v48）**：
+  - 1648：南明中兴（郑成功北伐与康熙平藩）、英荷海洋争霸与克伦威尔革命、路易十四与凡尔赛。
+  - 1776：大西洋帝国联邦与美国独立战争、1793 乾隆十字路口（马戛尔尼使团）、叶卡捷琳娜“希腊计划”。
+  - 1821：希腊起义与“伟大理想”、穆罕默德·阿里与道光自强，以及玩家可选的彩蛋“圣赫勒拿密信”（可选纯史实关闭）。
+- **1204 与欧亚架空线（v47）**：《破碎的紫衣》七方局势、开禧北伐与宋金蒙；大明重启下西洋（含海外附庸“西洋市舶宣慰司”，可与第四罗马在太平洋会师）、瓦尔纳大捷、双鹰合璧、安达卢斯复兴、马穆鲁克重开苏伊士、撒马尔罕科学黄金时代。AI 默认走史实路线。
+- **古典晚期旗舰局势（v43–v46）**：361 尤里安太阳神复兴、476 西罗马最后火种、532 查士丁尼与五大牧首区、632 大唐天可汗国际组织与安西都护府、768 三帝纪元（含 802 查理曼与伊琳娜联姻）。
+- **第四罗马（v44）**：帝国威权控制台（三个分页、按权威解锁的行动）、6 种附庸与 10 项附庸互动、登陆后的流亡与衍生国家。
+- **国家与文化介绍（v48）**：约 210 条双语介绍重写，覆盖第四罗马、古典晚期帝国、1204–1821 补缺国家与编年史自建文化。
+
+### 2. 主模组（3667460405）
+
+- **跨时代隔离**：主模组的 14 世纪事件、局势与开局钩子加上年代下限，古典晚期开局不再弹出奥斯曼命运、新的朝贡国等内容。
+- **罗马化改革**：AI 控制的希腊语、东正教拜占庭与第四罗马不再主动拉丁化（玩家仍可自行选择）。
+- **报错与文字修复**：时代名叠字、战争名显示原始键、本地化键哈希冲突、重复定义的脚本键、`has_controller` 等载入报错全部清零。
+
+### 3. 其他子模组
+
+- **国家命运深度整合**（3845632867）、**兼容桥**（3845632818）、**Glorp UI 凤凰适配**（3845632981）、**地图美化 A/B/C**（3845632643 / 3845632683 / 3845632746）：随主模组同步到 v48.0。
+
+### 4. 实机问题修复（v46–v48 两轮实机验收）
+
+- 古典晚期开局不再弹出 14 世纪事件；768 三帝局势的地图配色不再刷屏报错。
+- 开局首月不再废除元老院或枢密院；`invalid government type` 清零。
+- AI 第四罗马登陆后宫廷语言与礼拜语言保持希腊语，宗教为正统大公教会。
+- 1444 郑和重航触发器的作用域错误修好（rc1 时 1444 开局 3 分钟约 11.4 万条报错，现为 0）。
+- 361 战争名正常显示国名；本地化键哈希碰撞为 0；附庸互动的消息类型补齐。
+- 532 东亚战区插图、361/768 事件配图、1648 白银事件配图换成油画；632 安西四镇开局计数为 0/4。
+
+### 5. 发布前追加修复（rc2 之后）
+
+- 1648：两个被南明中兴取代的旧明清局势不再同时启动。
+- 1648：南明中兴局势换用清军入城的油画，不再与 1444 郑和局势同图。
+- 1444：“滇云六十七土司勘合录”与“乐山大佛护持令”两个事件换了更贴切的配图（后者原先是藏地宫殿）。
+
+### 6. 实机验收（2026-11-26，EU5 1.4.9）
+
+- 1444 大明：郑和开场事件 1445.1 弹出，局势激活，面板行动可用；运行约一年，`has_culture_group` 报错为 0。
+- 1648 南明：局势面板正常，运行约一年，无刷屏报错；修复版再测，横幅只剩南明中兴与英荷海洋争霸。
+- 361 罗马：战争名正常，不再出现 14 世纪事件。
+- 632 大唐、768 法兰克、1451 第四罗马帝国威权面板：在 rc1 轮测试正常。
+- 本轮没有实测：1204、1776、1821 的新局势面板；第四罗马国家的悬停介绍；1648 大厅里墨西哥的国名。
+
+### 7. 已知问题
+
+- 1444 载入日志里仍有 16 条自建文化“没有人口”的提示（不影响游玩）。
+- 部分东亚事件之间共用同一张配图。
+
+---
+
+## 二、English Changelog
+
+> **Status:** v48.0 release (EU5 1.4.9), covering everything from v41 to v48. The v48.0-rc2 candidate was tested in EU5 1.4.9 on 2026-11-26; the released package adds 3 small fixes on top of rc2 (section 5), which were tested again in a 1648 game.
+> **Saves:** v48.0 is **not** compatible with older saves. Please start a new game.
+> **The Fallen Eagle:** now part of Chronicles of All Eras (3844848618). The old "The Fallen Eagle 361–768" item (3845632550) is no longer updated; please unsubscribe and do not enable it with v48.0.
+
+Made by: 寐夜空灵, miscos330
+
+### 1. Chronicles of All Eras (3844848618, formerly All-Eras Historical Bookmarks)
+
+- **Twelve starts in one:** The Fallen Eagle 361–768 is merged in, giving 12 starts (361 / 395 / 476 / 532 / 632 / 768 / 1204 / 1337 / 1444 / 1648 / 1776 / 1821); the bar at the top of the bookmark screen switches between Late Antiquity and Medieval to Early Modern. Runs standalone.
+- **Early-modern situations (v48):**
+  - 1648: the Southern Ming revival (Koxinga's northern campaign and the Revolt of the Three Feudatories), the Anglo-Dutch sea wars and Cromwell, Louis XIV and Versailles.
+  - 1776: an Atlantic imperial federation and the American War of Independence, the 1793 Qianlong crossroads (the Macartney embassy), Catherine's Greek Plan.
+  - 1821: the Greek uprising and the Megali Idea, Muhammad Ali and Qing self-strengthening, and the optional "Letter from St Helena" easter egg (can be closed for a purely historical game).
+- **1204 and Eurasian alternate histories (v47):** the seven-way Shattered Purple situation and the Kaixi Northern Expedition with Song, Jin and Mongols; the Ming treasure fleets sail again (with the overseas "Western Ocean Maritime Commission" subject, and a possible Pacific meeting with the Fourth Rome), Varna won, the double-headed eagles united, al-Andalus restored, a Mamluk Suez canal and Samarkand's golden age of science. The AI keeps to history by default.
+- **Late Antiquity flagship situations (v43–v46):** Julian's solar revival in 361, the last flame of the West in 476, Justinian and the five patriarchates in 532, the Tang Heavenly Khagan organisation and the Anxi Protectorate in 632, the age of three emperors in 768 (including the 802 Charlemagne–Irene marriage).
+- **Fourth Rome (v44):** an imperial authority console (three tabs, actions unlocked by authority), 6 subject types with 10 subject interactions, exile waves and successor states after the landfall.
+- **Country and culture descriptions (v48):** about 210 bilingual descriptions rewritten, covering the Fourth Rome, the Late Antique empires, missing 1204–1821 realms and the Chronicles' own cultures.
+
+### 2. Main mod (3667460405)
+
+- **Era isolation:** the main mod's 14th-century events, situations and start hooks now have a lower year bound, so Late Antique starts no longer get Ottoman destiny, new tributaries and the like.
+- **Romanisation reforms:** an AI-run Greek-speaking Orthodox Byzantium or Fourth Rome no longer latinises on its own (players still can).
+- **Error and text fixes:** doubled age names, raw-key war names, localisation key hash collisions, duplicated script keys and `has_controller` load errors all cleared.
+
+### 3. Other submods
+
+- **National Destinies integration** (3845632867), **compatibility bridge** (3845632818), **Glorp UI Phoenix edition** (3845632981) and **Map beautification A/B/C** (3845632643 / 3845632683 / 3845632746): updated to v48.0 with the main mod.
+
+### 4. Fixes from live testing (two rounds, v46–v48)
+
+- Late Antique starts no longer fire 14th-century events; the 768 three-emperors map colours no longer flood the error log.
+- The Senate or privy council is no longer abolished in the first month; `invalid government type` is gone.
+- An AI Fourth Rome keeps Greek as court and liturgical language and Orthodoxy after landfall.
+- The 1444 Zheng He trigger scope error is fixed (rc1 logged about 114,000 errors in 3 minutes of a 1444 game; now 0).
+- War names in 361 show the country names; zero localisation key hash collisions; the subject interaction message types are complete.
+- New oil paintings for the 532 East Asia theater, the 361/768 events and the 1648 silver event; the 632 Anxi Four Garrisons counter starts at 0/4.
+
+### 5. Fixes added before release (after rc2)
+
+- 1648: the two old Ming–Qing situations superseded by the Southern Ming no longer start alongside it.
+- 1648: the Southern Ming situation uses a painting of Qing cavalry storming a Ming city instead of sharing the 1444 Zheng He picture.
+- 1444: the Yunnan tusi register and Leshan Giant Buddha events get fitting pictures (the latter showed a Tibetan palace).
+
+### 6. Live test (2026-11-26, EU5 1.4.9)
+
+- 1444 Ming: the Zheng He opening event fired in 1445.1, the situation started and its panel actions work; about a year of play with 0 `has_culture_group` errors.
+- 1648 Southern Ming: the situation panel works, about a year of play without error floods; in the fixed build only the Southern Ming and Anglo-Dutch situations are shown.
+- 361 Rome: war names correct, no 14th-century events.
+- 632 Tang, 768 Francia and the 1451 Fourth Rome imperial authority panel: worked in the rc1 round.
+- Not tested this round: the new 1204, 1776 and 1821 situation panels; the Fourth Rome country tooltips; the name of Mexico in the 1648 lobby.
+
+### 7. Known issues
+
+- The 1444 load log still lists 16 custom cultures "with no pops" (no effect on play).
+- Some East Asian events share the same picture.
+
+---
+
 # 《凤凰计划（OEBYZ）》v40.0 更新日志
 
 > **发布状态**：v40.0 正式版（EU5 1.4.9），合并 v31–v40 的全部更新。候选版 v40.0-rc1 已于 2026-11-26 在 EU5 1.4.9 实机验收，发布包与验收时的文件逐字节一致。

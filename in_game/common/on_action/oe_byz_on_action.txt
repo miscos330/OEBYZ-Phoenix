@@ -26,7 +26,7 @@
 oe_byz_game_start_combint = {#开局拜占庭设置
 	# fm_patches1 A4 (decision 281): only in a game begun at the 1337 start (oe_start_1337, gen_mainline_lock.py);
 	# on_game_start runs its handlers in no fixed order, so while the flag is not set yet: the test oe_ml_mark_start uses.
-	trigger = { exists = character:byz_john_xiv_kalekas OR = { oe_start_is_1337 = yes AND = { NOT = { has_global_variable = oe_start_1337 } current_year >= 1337 current_year < 1338 } } }
+	trigger = { current_year >= 1200 exists = character:byz_john_xiv_kalekas OR = { oe_start_is_1337 = yes AND = { NOT = { has_global_variable = oe_start_1337 } current_year >= 1337 current_year < 1338 } } }
 	effect = {
 		province_definition:thessaly_province = {
 			every_location_in_province_definition = {
@@ -117,7 +117,7 @@ oe_byz_game_start_combint = {#开局拜占庭设置
 oe_byzt_create_army_strat = {#塞萨洛尼基开局设置
 	# fm_patches1 A4 (decision 281): only in a game begun at the 1337 start (oe_start_1337, gen_mainline_lock.py);
 	# on_game_start runs its handlers in no fixed order, so while the flag is not set yet: the test oe_ml_mark_start uses.
-	trigger = { exists = character:byz_ioannes_synadenos OR = { oe_start_is_1337 = yes AND = { NOT = { has_global_variable = oe_start_1337 } current_year >= 1337 current_year < 1338 } } }
+	trigger = { current_year >= 1200 exists = character:byz_ioannes_synadenos OR = { oe_start_is_1337 = yes AND = { NOT = { has_global_variable = oe_start_1337 } current_year >= 1337 current_year < 1338 } } }
 	effect = {
         character:byz_ioannes_synadenos = {
             if = { limit = { NOT = { owner = c:BYT01 } } move_country = c:BYT01 }
@@ -270,6 +270,7 @@ monthly_country_pulse  = {#@@@每月扳机
 
 oe_byz_cabinet_experience = {#内阁经验
 	trigger = {
+		current_year >= 1200
 		tag = BYZ is_rebel_country = no
 	}
 	effect = {
@@ -358,6 +359,7 @@ on_character_death = {#@@@角色死亡扳机
 }
 oe_byz_oc_latin_death = {
     trigger = {
+        current_year >= 1200
         oe_start_is_1337 = yes
         country_exists = c:BYZ
         c:BYZ = { NOT = { has_variable = oe_byz_sic_succession_fired } }
@@ -381,6 +383,7 @@ oe_byz_oc_latin_death = {
 }
 oe_byz_oc_latinI_death = {
     trigger = {
+        current_year >= 1200
         oe_start_is_1337 = yes
         country_exists = c:BYZ
         c:BYZ = { NOT = { has_variable = oe_byz_nap_succession_fired } }
@@ -552,6 +555,7 @@ oe_byz_oc_latinI_death = {
 
 oe_oe_byz_religion_leader_death = {#普世牧首去世
 	trigger = {
+		current_year >= 1200
 		scope:target = {
 			has_character_modifier = oe_byz_religion_leader
 		}
@@ -570,6 +574,7 @@ on_actions = {
 }
 }
 oe_byzt_theme_house = {#军区治所
+	trigger = { current_year >= 1200 }
 	effect = {
 		if = {
 			limit = {
@@ -623,7 +628,7 @@ oe_byzt_theme_house = {#军区治所
 }
 oe_byz_phoenix_rebuild_army = {
     # This hook is on_location_changed_owner: root is the acquired location.
-    trigger = { scope:winner ?= c:BYZ exists = scope:loser }
+    trigger = { current_year >= 1200 scope:winner ?= c:BYZ exists = scope:loser }
     effect = {
         if = { limit = { location_rank = location_rank:megalopolis } c:BYZ = { oe_ir_change_army_score = { math = add value = 3 } } }
         else_if = { limit = { location_rank = location_rank:city } c:BYZ = { oe_ir_change_army_score = { math = add value = 2 } } }
@@ -631,6 +636,7 @@ oe_byz_phoenix_rebuild_army = {
     }
 }
 oe_byz_war_hurt = {#战争造成盗匪
+	trigger = { current_year >= 1200 }
 	effect = {
 		if = {
 			limit = {
@@ -820,6 +826,7 @@ on_siege_won = {#@@@围城胜利扳机
 }
 
 oe_byz_siege_won_turkish_transfer = {#围城胜利：土耳其文化地点转给东罗马
+		trigger = { current_year >= 1200 }
 		effect = {
 		if = {
 		limit = {
@@ -867,12 +874,14 @@ oe_byz_siege_won_turkish_transfer = {#围城胜利：土耳其文化地点转给
 }
 
 four_yearly_country_pulse = {#@@@四年触发扳机
+	trigger = { current_year >= 1200 }
 	on_actions = {
 
 		
 	}
 }
 oe_byz_give_army_for_theme = {#军区补充兵力（已暂停）
+	trigger = { current_year >= 1200 }
 	effect = {
 		while = {
 			limit = {
@@ -919,6 +928,7 @@ on_bankruptcy = {#@@@国家破产扳机
 }	
 oe_byz_break = {#拜占庭破产
 	trigger = {
+		current_year >= 1200
 		root = c:BYZ
 	}
 	effect = {
@@ -973,6 +983,7 @@ on_battle_won_character = {#@@@角色战斗胜利扳机
 
 oe_character_war_score = {#战功
 	trigger = {
+		current_year >= 1200
 		root = {
 			exists = owner
 			OR = {
@@ -1078,6 +1089,7 @@ on_battle_lost_character = {#@@@角色战斗失败扳机
 }
 oe_byz_ruler_battle_lose = {#拜拜君主战斗失败
 	trigger = {
+		current_year >= 1200
 		exists = c:BYZ.ruler # FIX 2026-11-18: no ruler during a regency (r5 log: 'Invalid right side ... ruler')
 		root = c:BYZ.ruler
 	}
@@ -1126,6 +1138,7 @@ on_ending_war = {#@@@战争结束扳机
 }
 oe_byz_phoenix_trigger = {#拜拜战争胜负
 	trigger = {
+		current_year >= 1200
 		root = c:BYZ
 	}
 	effect = {
@@ -1154,6 +1167,7 @@ on_insult = {#@@@收到外交侮辱扳机
 }
 oe_byz_bei_ma = {#拜拜被骂了
 	trigger = {
+		current_year >= 1200
 		scope:recipient = c:BYZ
 	}
 	effect = {
@@ -1180,6 +1194,7 @@ on_new_ruler = {#@@@新统治者上任扳机
 }
 byz_new_ruler_appear = {#拜拜新统治者上任
 	trigger = {
+		current_year >= 1200
 		root = c:BYZ
 	}
 	effect = {
@@ -1230,6 +1245,7 @@ byz_new_ruler_appear = {#拜拜新统治者上任
 }
 oe_empire_theme_ruler_change = {#军区新统治者
 	trigger = {
+		current_year >= 1200
 		root = {
 			is_subject_type = oe_empire_theme 
 		}
@@ -1255,25 +1271,29 @@ oe_empire_theme_ruler_change = {#军区新统治者
 
 # Runs only at game start; score reads the character modifier directly.
 oe_byz_initialize_co_emperor = {
+    trigger = { current_year >= 1200 }
     effect = { oe_byz_restore_historical_co_emperor = yes }
 }
 
 # Game-start restoration and a bounded old-save repair while either historical character is alive.
 oe_byz_initialize_latin_death_markers = {
+    trigger = { current_year >= 1200 }
     effect = { oe_byz_restore_latin_death_markers = yes }
 }
 oe_byz_maintain_latin_death_markers = {
-    trigger = { tag = BYZ is_rebel_country = no }
+    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no }
     effect = { oe_byz_restore_latin_death_markers = yes }
 }
 
 oe_byz_initialize_andronikos_identity = {
+    trigger = { current_year >= 1200 }
     effect = { oe_byz_repair_andronikos_identity = yes }
 }
 
 # Existing saves repair on Byzantium's next monthly pulse, once per save.
 oe_byz_migrate_andronikos_identity = {
     trigger = {
+        current_year >= 1200
         tag = BYZ is_rebel_country = no
         NOT = { has_global_variable = oe_byz_andronikos_identity_repaired }
     }
@@ -1281,11 +1301,13 @@ oe_byz_migrate_andronikos_identity = {
 }
 
 oe_byz_initialize_john_v_education = {
+    trigger = { current_year >= 1200 }
     effect = { oe_byz_repair_john_v_education = yes }
 }
 
 oe_byz_migrate_john_v_education = {
     trigger = {
+        current_year >= 1200
         tag = BYZ is_rebel_country = no
         NOT = { has_global_variable = oe_byz_john_v_education_repaired }
     }
@@ -1294,11 +1316,12 @@ oe_byz_migrate_john_v_education = {
 
 # Small runtime setup instead of duplicating vanilla character_db records.
 oe_byz_initialize_historical_character_patch = {
-    trigger = { oe_start_is_1337 = yes }
+    trigger = { current_year >= 1200 oe_start_is_1337 = yes }
     effect = { oe_byz_initialize_historical_characters = yes }
 }
 oe_byz_migrate_historical_character_patch = {
     trigger = {
+        current_year >= 1200
         oe_start_is_1337 = yes
         tag = BYZ is_rebel_country = no
         NOT = { has_global_variable = oe_byz_historical_character_patch_applied }
@@ -1309,6 +1332,7 @@ oe_byz_migrate_historical_character_patch = {
 # Run before the earlier identity migration so only already-patched saves qualify.
 oe_byz_migrate_andronikos_abilities = {
     trigger = {
+        current_year >= 1200
         oe_start_is_1337 = yes
         tag = BYZ is_rebel_country = no
         NOT = { has_global_variable = oe_byz_andronikos_abilities_repaired }
@@ -1320,6 +1344,7 @@ oe_byz_migrate_andronikos_abilities = {
 # No decay and no iteration over countries, characters or populations.
 oe_byz_andronikos_health_check = {
     trigger = {
+        current_year >= 1200
         tag = BYZ is_rebel_country = no
         NOT = { has_variable = oe_andronikos_illness_queued }
         NOT = { has_variable = oe_andronikos_illness_resolved }

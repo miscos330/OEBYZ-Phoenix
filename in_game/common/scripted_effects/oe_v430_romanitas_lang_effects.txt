@@ -1,0 +1,79 @@
+﻿# Project Phoenix v43.0 — Romanitas Religion x Court/Liturgical Language Synchronization Effects.
+# Note: Main Mod standalone uses vanilla religions (orthodox, catholic, hellenism_religion).
+
+oe_v430_apply_mos_maiorum_language = {
+	if = {
+		limit = {
+			NOT = { court_language = language:latin_language }
+		}
+		set_court_language = dialect:roman_dialect
+	}
+	if = {
+		limit = { religion ?= religion:catholic }
+		set_liturgical_language = dialect:church_dialect
+	}
+	else_if = {
+		limit = { religion ?= religion:hellenism_religion }
+		set_liturgical_language = dialect:roman_dialect
+	}
+	else_if = {
+		limit = { has_reform = government_reform:oe_v430_ref_latin_liturgical_rite }
+		set_liturgical_language = dialect:roman_dialect
+	}
+}
+
+oe_v430_apply_rhomanismos_language = {
+	if = {
+		limit = {
+			NOT = { court_language = language:greek_language }
+		}
+		set_court_language = dialect:greek_language
+	}
+	if = {
+		limit = {
+			OR = {
+				religion ?= religion:orthodox
+				religion ?= religion:hellenism_religion
+			}
+		}
+		set_liturgical_language = dialect:greek_language
+	}
+}
+
+oe_v430_sync_faith_liturgical_language = {
+	if = {
+		limit = { religion ?= religion:catholic }
+		set_liturgical_language = dialect:church_dialect
+	}
+	else_if = {
+		limit = { religion ?= religion:hellenism_religion }
+		if = {
+			limit = {
+				OR = {
+					court_language = language:latin_language
+					has_reform = government_reform:mos_maiorum
+					has_reform = government_reform:oe_v430_ref_latin_liturgical_rite
+				}
+			}
+			set_liturgical_language = dialect:roman_dialect
+		}
+		else = {
+			set_liturgical_language = dialect:greek_language
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_reform = government_reform:oe_v430_ref_latin_liturgical_rite
+				AND = {
+					has_or_had_tag = ANC
+					court_language = language:latin_language
+				}
+			}
+		}
+		set_liturgical_language = dialect:roman_dialect
+	}
+	else = {
+		set_liturgical_language = dialect:greek_language
+	}
+}
