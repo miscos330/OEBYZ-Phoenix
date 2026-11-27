@@ -91,6 +91,7 @@ oe_create_theme_in_italy = {
         }
     }
     effect = {
+        custom_tooltip = oe_v55_perf_main_tt_create_italian_theme
         if = {
             limit = {
                 scope:actor = { oe_is_phoenix_empire = yes oe_italian_theme_creation_unlocked = yes at_war = no has_raised_levies = no }
@@ -102,7 +103,7 @@ oe_create_theme_in_italy = {
                 scope:recipient = { change_variable = { name = oe_pillars_authority add = -5 } }
                 scope:target = { random_location_in_province = { limit = { oe_theme_region_center_creatable = yes } save_scope_as = oe_theme_seat } }
                 scope:actor = {
-                    oe_theme_found_at_seat_empire = yes
+                    hidden_effect = { oe_theme_found_at_seat_empire = yes }
                     oe_theme_empire_sync_caps = yes
                 }
             }
@@ -116,18 +117,20 @@ oe_create_theme_in_italy = {
                 }
                 scope:recipient = { change_variable = { name = oe_pillars_authority add = -5 } }
                 scope:target = {
-                    every_location_in_province = {
-                        limit = { is_province_capital = yes oe_owned_by_phoenix_empire = yes }
-                        save_scope_as = oe_it_theme_capital
+                    hidden_effect = {
+                        every_location_in_province = {
+                            limit = { is_province_capital = yes oe_owned_by_phoenix_empire = yes }
+                            save_scope_as = oe_it_theme_capital
+                        }
                     }
                 }
                 if = {
                     limit = { scope:actor = { has_variable = oe_theme_italian_unlocked } }
-                    oe_it_theme_create_offices = { subject_type = oe_empire_theme_italian reform = oe_byz_theme_italian_subject seat = oe_byz_theme_italian_seat post = oe_byz_theme_italian_post }
+                    hidden_effect = { oe_it_theme_create_offices = { subject_type = oe_empire_theme_italian reform = oe_byz_theme_italian_subject seat = oe_byz_theme_italian_seat post = oe_byz_theme_italian_post } }
                 }
                 else_if = {
                     limit = { scope:actor = { has_variable = oe_theme_latin_unlocked } }
-                    oe_it_theme_create_offices = { subject_type = oe_empire_theme_latin reform = oe_byz_theme_latin_subject seat = oe_byz_theme_latin_seat post = oe_byz_theme_latin_post }
+                    hidden_effect = { oe_it_theme_create_offices = { subject_type = oe_empire_theme_latin reform = oe_byz_theme_latin_subject seat = oe_byz_theme_latin_seat post = oe_byz_theme_latin_post } }
                     scope:oe_it_theme_country = { add_manpower = 3 }
                     scope:oe_it_theme_capital = { oe_it_theme_create_three_current_age_infantry = { owner = scope:oe_it_theme_country } }
                 }

@@ -397,13 +397,16 @@ oe_rus_authorize_boyars = {
         visible = { oe_rus_boyar_province = yes }
     }
     effect = {
+        custom_tooltip = oe_v55_perf_main_tt_rus_boyars
         if = {
             limit = { exists = scope:target scope:target = { oe_rus_boyar_province = yes } }
             scope:actor = { add_political_influence = -10 }
             scope:target = {
-                every_location_in_province = {
-                    change_integration_progress = 50
-                    add_location_modifier = { modifier = oe_rus_boyar_privileges years = 50 mode = replace }
+                hidden_effect = {
+                    every_location_in_province = {
+                        change_integration_progress = 50
+                        add_location_modifier = { modifier = oe_rus_boyar_privileges years = 50 mode = replace }
+                    }
                 }
             }
         }
@@ -436,7 +439,7 @@ oe_rus_unify_russia = {
         column = { data = name }
         visible = { this = situation:oe_rise_of_rus situation_is_active = yes }
     }
-    effect = { scope:actor = { oe_rus_unify_russia_effect = yes } }
+    effect = { custom_tooltip = oe_v55_perf_main_tt_rus_unify scope:actor = { hidden_effect = { oe_rus_unify_russia_effect = yes } } }
     ai_will_do = { add = 80 }
 }
 

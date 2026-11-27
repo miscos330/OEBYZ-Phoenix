@@ -26,30 +26,33 @@ oe_wp32_dec_anatolian_beacon_chain = {
 	option = {
 		name = oe_wp32_dec_anatolian_beacon_chain.a
 		effect = {
+			custom_tooltip = oe_v55_perf_main_tt_beacon_chain
 			set_variable = { name = oe_wp32_beacon_chain_chartered value = 1 }
 			add_gold = -160
 			add_country_modifier = { modifier = oe_wp32_mod_beacon_chain_active years = 40 mode = replace }
-			every_owned_location = {
-				limit = {
-					OR = {
-						this = location:tarsus
-				this = location:nigde
-				this = location:aksaray
-				this = location:konya
-				this = location:emirdag
-				this = location:kutahya
-				this = location:iznik
-				this = location:izmit
+			hidden_effect = {
+				every_owned_location = {
+					limit = {
+						OR = {
+							this = location:tarsus
+					this = location:nigde
+					this = location:aksaray
+					this = location:konya
+					this = location:emirdag
+					this = location:kutahya
+					this = location:iznik
+					this = location:izmit
+						}
+						NOT = { has_building = building_type:oe_wp32_gp_phryktoria_beacon }
+						can_build_building = building_type:oe_wp32_gp_phryktoria_beacon
 					}
-					NOT = { has_building = building_type:oe_wp32_gp_phryktoria_beacon }
-					can_build_building = building_type:oe_wp32_gp_phryktoria_beacon
-				}
-				construct_building = {
-					building_type = building_type:oe_wp32_gp_phryktoria_beacon
-					owner = root
-					instant = yes
-					cost_multiplier = 0.25
-					cost_multiplier_reason = "oe_wp32_beacon_chain_reason"
+					construct_building = {
+						building_type = building_type:oe_wp32_gp_phryktoria_beacon
+						owner = root
+						instant = yes
+						cost_multiplier = 0.25
+						cost_multiplier_reason = "oe_wp32_beacon_chain_reason"
+					}
 				}
 			}
 			trigger_event_non_silently = { id = oe_wp32_gp.1 days = 2 }

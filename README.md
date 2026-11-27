@@ -1,15 +1,16 @@
 ![凤凰计划 Project Phoenix](https://raw.githubusercontent.com/wiki/miscos330/OEBYZ-Phoenix/images/cover.jpg)
 
-# Project Phoenix (《凤凰计划》 / OEBYZ) v50.0 — Europa Universalis V 1.4.9
+# Project Phoenix (《凤凰计划》 / OEBYZ) v55.0 — Europa Universalis V 1.4.9
 
 **Target Game Version:** Europa Universalis V `1.4.*` (`1.4.9`)
-**Languages:** Complete Simplified Chinese & English (`l_simp_chinese` + `l_english`, 90,000+ main-mod keys)
+**Languages:** Complete Simplified Chinese & English (`l_simp_chinese` + `l_english`, 90,500+ main-mod keys + 34,800+ Chronicles keys)
 **Repository:** https://github.com/miscos330/OEBYZ-Phoenix
 **制作 / Made by:** 寐夜空灵、miscos330 (`Made by: 寐夜空灵, miscos330`)
 
-> **Saves / 存档：** v50.0 is not compatible with older saves; please start a new game. v50.0 不兼容旧存档，请新开一局。
-> **EN:** v50.0 adds conqueror expeditions for every era (Belisarius, Narses and Liberius in 532, up to Napoleon in 1821), an imperial reconquest casus belli with 16 decisive peace treaties, 54 basic advances so Late Antique starts can tax and build, a deeper Fourth Rome (54 native countries, 17 exarchates, fixed ship prices, New World towns, correct 1444 succession), Roman–Hellenic polytheism with 30 omens, 26 world wonders and about 366 redrawn oil-painting interface cards. Tested live in EU5 1.4.9 over four rounds (rc1–rc4). Full notes: `CHANGELOG.md`.
-> **中文：** v50.0 新增各时代征服者远征（532 贝利撒留、纳尔塞斯、利贝里乌斯，直到 1821 拿破仑）、帝国收复失地宣战理由与 16 套历史决战和约、54 项基础革新（古典开局可征税建造）、第四罗马深化（54 个美洲土著国家、17 个总督区、船价修复、新大陆建城、1444 继承修复）、罗马—希腊多神教 30 项神谕、26 座世界奇观，以及约 366 张油画界面卡片。已在 EU5 1.4.9 上经过四轮实机验收（rc1–rc4）。详见 `CHANGELOG.md`。
+> **Saves / 存档：** v55.0 is not compatible with older saves; please start a new game. v55.0 不兼容旧存档，请新开一局。
+> **NEW Companion Music Submod / 全新官方音乐子模组：** [Project Phoenix Soundtrack / 凤凰计划 · 历代交响原声 (`3846593343`)](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) — 60 Roman symphonic & Mediterranean tracks (~148 min), loudness-matched into EU5's dynamic music system without removing vanilla tracks or altering the multiplayer checksum!
+> **EN:** v55.0 merges the entire **v51.0–v55.0** five-milestone overhaul: 355 all-era country profiles & 492 pre-1337 advances, a ground-up **532 Justinian Grand Redesign** (3 bespoke reconquest CBs, Africa/Italy/Spania auto-capitulation with 10-year truces, true Ostrogothic Kingdom `FXO`, and strict causal event gating), an **All-11-Era Historical Religion Overhaul** (9 new historical faiths including Chalcedonian Christianity, Arianism, Insular Christianity, Donatism, Iconoclasm, Slavic/Celtic/Germanic/Arab paganisms, and the 1054 Great Schism), an **All-Era & 1337 Dynamic Province-Capital War & Warscore Auto-Victory Engine** (with human-defender single-tile protection), the **1204–1368 Great Mongol Empire Five-Khan Enfeoffment** (12 sub-khanates & 5 subject archetypes), **1204 Nicaea/Epirus/Trebizond 4-layer Constantinople Core Restoration**, rebuilt **Fourth Rome** (overhauled Spartania + Asia-Africa expansion + 6 opt-in Eurasian IF universes), **1648/1776/1821 Global Empires** (Three Feudatories, Continental Congress, Maratha Confederacy, EIC, Qing Lifanyuan, German Confederation & Concert of Europe), **1337 11-Nation Deep Polish**, and a full **Zero-Lag Buff Event Audit** (310+ heavy-loop fixes + 78/78 engine CI rules). Live-verified across `rc1–rc4` in EU5 1.4.9. Full notes: `CHANGELOG.md`.
+> **中文：** v55.0 合并 **v51.0–v55.0** 五个大版本的全线重构：355 国全时代独立档案与 492 项 1337 前科技/思潮校准、**532 查士丁尼光复深度重做**（三战区专属光复 CB + 迦太基/拉文纳/西班牙自动受降与 10 年停战 + 东哥特王国 `FXO` 锁定 + 事件因果门控）、**全 11 剧本历史宗教大改**（新增迦克墩大公教会、阿里乌派、凯尔特海岛基督教、多纳图派、圣像破坏派、斯拉夫/凯尔特/大陆日耳曼/前伊斯兰阿拉伯多神教等 9 大宗教与 1054 东西大分裂）、**全时代与 1337 动态省会直占 + 战分自动决胜引擎**（含玩家防守方免被 AI 整省瞬吞保护）、**1204–1368 大蒙古国五汗分封**（12 个可分封子汗国与 5 类蒙古附庸）、**1204 尼西亚/伊庇鲁斯/特拉比松收复君堡 4 层核心修复**、**第四罗马全面重构**（斯巴达尼亚重做 + 亚非双洋扩张 + 6 大可选架空 IF 宇宙）、**1648/1776/1821 全球帝国大修**（清三藩、北美大陆会议、马拉地邦联、东印度公司、清理藩院、德意志邦联与欧洲协调）、**1337 十一大经典国精修**，以及**全模组零卡顿治理**（310+ 处重循环卡顿炸弹清理与 78/78 硬门禁）。已在 EU5 1.4.9 上完成 `rc1–rc4` 四轮实机验收。详见 `CHANGELOG.md`。
 > **History below / 以下为历代版本说明：** sections marked v48.0 and earlier describe those versions and are kept for reference.
 
 ---
@@ -106,7 +107,7 @@
 
 ---
 
-## Official Optional Submod Matrix & Load Order / 官方子模组与推荐排序（v50.0）
+## Official Optional Submod Matrix & Load Order / 官方子模组与推荐排序（v55.0）
 
 Place enabled submods **below (after)** the Project Phoenix main mod in the order shown below / 子模组请排在主模组之后，顺序如下：
 
@@ -116,9 +117,10 @@ Place enabled submods **below (after)** the Project Phoenix main mod in the orde
 | 2 | **Chronicles of All Eras 361–1821 / 全时代编年史** (`oebyz.phoenix.chronicles`) | 12 starts (361–1821), Fourth Rome and The Fallen Eagle included; runs standalone. / 12 个开局，含第四罗马与雄鹰陨落，可独立运行。 | [`3844848618`](https://steamcommunity.com/sharedfiles/filedetails/?id=3844848618) |
 | 3 | **National Destinies — Deep Integration / 国家命运深度整合** (`oebyz.phoenix.national_destinies`) | Or the Workshop original + the compatibility bridge; never both. / 或改用原版 + 兼容桥，二者不要同时启用。 | [`3845632867`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632867) / [`3845632818`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632818) |
 | 4 | **Map Beautification, pick one / 地图美化三选一** | Classic Atlas / High-Contrast / Imperial Parchment. / 经典制图 / 高对比政区 / 帝国羊皮纸。 | [`3845632643`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632643) / [`3845632683`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632683) / [`3845632746`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632746) |
-| 5 | **Glorp UI 1.4.9 Phoenix edition / Glorp UI 凤凰适配** (`oebyz.phoenix.glorp_ui`) | **Always load last.** / **务必排在最底部。** | [`3845632981`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632981) |
+| 5 | **Project Phoenix Soundtrack OST / 凤凰计划 · 历代交响原声** (`oebyz.phoenix.soundtrack_ost`) | **NEW!** 60 Roman & Mediterranean Wwise tracks (~148 min); keeps vanilla tracks, checksum-safe, runs standalone. / **全新！** 60 首罗马与地中海交响原声（约 148 分钟），保留原版曲目、不改联机校验、可独立运行。 | [`3846593343`](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) |
+| 6 | **Glorp UI 1.4.9 Phoenix edition / Glorp UI 凤凰适配** (`oebyz.phoenix.glorp_ui`) | **Always load last.** / **务必排在最底部。** | [`3845632981`](https://steamcommunity.com/sharedfiles/filedetails/?id=3845632981) |
 
-- **Retired / 已停更：** the standalone *The Fallen Eagle 361–768* (`3845632550`) is merged into the Chronicles; do not enable it. 旧的独立《雄鹰陨落》已并入编年史，请勿启用。
+- **Retired / 已停更：** the standalone *The Fallen Eagle 361–768* (`3845632550`) and *1453 Fourth Rome* (`3845210560`) are merged into the Chronicles; do not enable them. 旧的独立《雄鹰陨落》与《1453 第四罗马》已并入编年史，请勿启用。
 
 - **Bundled Overlay Note:** Do not subscribe separately to *Descriptions Expanded*. Place *Descriptions for Every Tile* or *Every Historical Character* **above (before)** Project Phoenix if used.
 - **Manual Install:** Download archives from [GitHub Releases](https://github.com/miscos330/OEBYZ-Phoenix/releases), extract into `Documents\Paradox Interactive\Europa Universalis V\mod\`, and enable in the order above.

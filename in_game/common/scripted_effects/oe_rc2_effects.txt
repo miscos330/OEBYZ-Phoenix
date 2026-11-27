@@ -433,9 +433,14 @@ oe_rc2_start_digestion = {
 oe_rc2_apply_stage3_loc_buff = {
 	if = {
 		limit = { has_variable = oe_rc2_digest_theater }
-		every_owned_location = {
-			limit = { var:oe_hc_gain ?= root.var:oe_rc2_digest_theater }
-			add_location_modifier = { modifier = oe_rc2_incorporated_province_loc_mod years = 25 mode = replace }
+		add_country_modifier = { modifier = oe_v55_perf_main_incorporated_theater_mod years = 25 mode = replace }
+		hidden_effect = {
+			ordered_owned_location = {
+				limit = { var:oe_hc_gain ?= root.var:oe_rc2_digest_theater }
+				order_by = population
+				max = 8
+				add_location_modifier = { modifier = oe_rc2_incorporated_province_loc_mod years = 25 mode = replace }
+			}
 		}
 	}
 }

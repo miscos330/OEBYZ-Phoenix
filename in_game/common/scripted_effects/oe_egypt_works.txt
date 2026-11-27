@@ -1,23 +1,35 @@
 ﻿# Called only on project/policy milestones. Two bounded area passes, never world scans.
 oe_egypt_add_food_layer = {
-    area:lower_egypt_area = { every_location_in_area = {
-        limit = { oe_works_egypt_owned_farm = yes }
-        add_location_modifier = { modifier = oe_egypt_food_expansion years = -1 mode = add size = 1 }
-    } }
-    area:upper_egypt_area = { every_location_in_area = {
-        limit = { oe_works_egypt_owned_farm = yes }
-        add_location_modifier = { modifier = oe_egypt_food_expansion years = -1 mode = add size = 1 }
-    } }
+    hidden_effect = {
+        area:lower_egypt_area = { ordered_location_in_area = {
+            limit = { oe_works_egypt_owned_farm = yes }
+            order_by = population
+            max = 8
+            add_location_modifier = { modifier = oe_egypt_food_expansion years = -1 mode = add size = 1 }
+        } }
+        area:upper_egypt_area = { ordered_location_in_area = {
+            limit = { oe_works_egypt_owned_farm = yes }
+            order_by = population
+            max = 8
+            add_location_modifier = { modifier = oe_egypt_food_expansion years = -1 mode = add size = 1 }
+        } }
+    }
 }
 oe_egypt_apply_land_policy = {
-    area:lower_egypt_area = { every_location_in_area = {
-        limit = { oe_works_egypt_owned_farm = yes }
-        add_location_modifier = { modifier = $MODIFIER$ years = -1 mode = replace }
-    } }
-    area:upper_egypt_area = { every_location_in_area = {
-        limit = { oe_works_egypt_owned_farm = yes }
-        add_location_modifier = { modifier = $MODIFIER$ years = -1 mode = replace }
-    } }
+    hidden_effect = {
+        area:lower_egypt_area = { ordered_location_in_area = {
+            limit = { oe_works_egypt_owned_farm = yes }
+            order_by = population
+            max = 8
+            add_location_modifier = { modifier = $MODIFIER$ years = -1 mode = replace }
+        } }
+        area:upper_egypt_area = { ordered_location_in_area = {
+            limit = { oe_works_egypt_owned_farm = yes }
+            order_by = population
+            max = 8
+            add_location_modifier = { modifier = $MODIFIER$ years = -1 mode = replace }
+        } }
+    }
 }
 # Province scope, called once per eligible Egyptian province by the monthly event.
 # Allocate the planned shipment in proportion to each province's initial stores.

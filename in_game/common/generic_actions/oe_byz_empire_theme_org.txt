@@ -89,7 +89,7 @@
 			limit = { scope:target = { any_location_in_province = { oe_theme_region_center_creatable = yes } } }
 			scope:target = { random_location_in_province = { limit = { oe_theme_region_center_creatable = yes } save_scope_as = oe_theme_seat } }
 			scope:actor = {
-				oe_theme_found_at_seat_empire = yes
+				hidden_effect = { oe_theme_found_at_seat_empire = yes }
 				oe_theme_empire_sync_caps = yes
 			}
 		}
@@ -128,17 +128,19 @@
 				}
 			}
 			scope:target.area = {
-				every_location_in_area = {
-					limit = {
-						oe_owned_by_phoenix_empire = yes
-						oe_theme_is_hub_location = yes
-						NOT = { this = scope:oe_theme_seat }
-					}
-					construct_building = {
-						building_type = building_type:oe_byz_theme_system
-						owner = scope:target_building_country
-						cost_multiplier = 0
-						cost_multiplier_reason = "game_concept_event"
+				hidden_effect = {
+					every_location_in_area = {
+						limit = {
+							oe_owned_by_phoenix_empire = yes
+							oe_theme_is_hub_location = yes
+							NOT = { this = scope:oe_theme_seat }
+						}
+						construct_building = {
+							building_type = building_type:oe_byz_theme_system
+							owner = scope:target_building_country
+							cost_multiplier = 0
+							cost_multiplier_reason = "game_concept_event"
+						}
 					}
 				}
 			}
@@ -558,32 +560,37 @@ oe_byz_empire_org_action_create_pronia_infastry = {#普罗尼亚征召
 	
 
 	effect = {
+		custom_tooltip = oe_v55_perf_main_tt_pronia_levy
 		scope:target = {
-			every_location_in_province = {
-				limit = {
-					owner = scope:actor
-				}
-			add_location_modifier = { 
-				modifier =  oe_pronia_levy_mod
-                years = 3
-				mode = add_and_extend
+			hidden_effect = {
+				every_location_in_province = {
+					limit = {
+						owner = scope:actor
+					}
+				add_location_modifier = { 
+					modifier =  oe_pronia_levy_mod
+	                years = 3
+					mode = add_and_extend
+					}
 				}
 			}
-			every_location_in_province = {
-				limit = {
-					is_province_capital = yes
-				}
-				create_sub_unit_with_owner = {
-					type = oe_byz_pronia_infantry
-					owner = scope:actor
-				}
-				create_sub_unit_with_owner = {
-					type = oe_byz_pronia_infantry
-					owner = scope:actor
-				}
-				create_sub_unit_with_owner = {
-					type = oe_byz_pronia_cavalry
-					owner = scope:actor
+			hidden_effect = {
+				every_location_in_province = {
+					limit = {
+						is_province_capital = yes
+					}
+					create_sub_unit_with_owner = {
+						type = oe_byz_pronia_infantry
+						owner = scope:actor
+					}
+					create_sub_unit_with_owner = {
+						type = oe_byz_pronia_infantry
+						owner = scope:actor
+					}
+					create_sub_unit_with_owner = {
+						type = oe_byz_pronia_cavalry
+						owner = scope:actor
+					}
 				}
 			}
 		}
