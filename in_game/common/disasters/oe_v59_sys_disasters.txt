@@ -1,0 +1,78 @@
+﻿# Project Phoenix v59.0 Main Mod Interactive Historical Disaster (1740-1836, R08/R12 clean).
+
+oe_v59_sys_dis_ancien_regime_bankruptcy = {
+	content_priority = 840
+	image = "gfx/interface/illustrations/disaster/revolution_disaster.dds"
+	monthly_spawn_chance = monthly_spawn_chance_low
+	fire_only_once = yes
+
+	can_start = {
+		is_rebel_country = no
+		is_subject = no
+		has_any_active_disaster = no
+		current_year >= 1740
+		current_year <= 1836
+		country_rank_level >= 3
+		NOT = { has_variable = oe_v59_sys_ancien_resolved }
+		OR = {
+			num_loans >= 5
+			is_during_bankruptcy = yes
+			AND = {
+				stability < 15
+				inflation >= 0.08
+			}
+		}
+	}
+
+	can_end = {
+		OR = {
+			current_year > 1836
+			has_variable = oe_v59_sys_ancien_resolved
+			AND = {
+				num_loans <= 2
+				is_during_bankruptcy = no
+				stability >= 25
+				trigger_if = {
+					limit = { has_variable = oe_v59_sys_ancien_steps }
+					var:oe_v59_sys_ancien_steps >= 2
+				}
+				trigger_else = { always = no }
+			}
+		}
+	}
+
+	modifier = {
+		bank_interest = 0.03
+		tax_income_efficiency = -0.14
+		global_estate_target_satisfaction = -0.08
+		monthly_rebel_growth = 0.012
+	}
+
+	on_start = {
+		set_variable = { name = oe_v59_sys_ancien_steps value = 0 }
+		set_variable = { name = oe_v59_sys_ancien_months value = 0 }
+		trigger_event_non_silently = oe_v59_sys_dis.1
+	}
+
+	on_monthly = {
+		hidden_effect = {
+			if = {
+				limit = { has_variable = oe_v59_sys_ancien_months }
+				change_variable = { name = oe_v59_sys_ancien_months add = 1 }
+			}
+			else = {
+				set_variable = { name = oe_v59_sys_ancien_months value = 1 }
+			}
+			random_list = {
+				92 = { }
+				4 = { trigger_event_non_silently = oe_v59_sys_dis.2 }
+				4 = { trigger_event_non_silently = oe_v59_sys_dis.3 }
+			}
+		}
+	}
+
+	on_end = {
+		set_variable = { name = oe_v59_sys_ancien_resolved value = 1 }
+		trigger_event_non_silently = oe_v59_sys_dis.4
+	}
+}

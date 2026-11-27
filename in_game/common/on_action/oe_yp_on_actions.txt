@@ -41,12 +41,12 @@ oe_yp_monthly_pulse = {
     # round 6: the frontier branch secretariats (land subjects, oe_yp_frontier) too
     # round 7 F6 (Y2) + WP13 PERF-5: strict 1337 gate, not after the secretariat or the whole Yuan has ended, and only under the Yuan itself
     trigger = {
-    	current_year >= 1200
-    	is_rebel_country = no
-        oe_start_is_1337 = yes
+    	current_year >= 1337
         NOT = { has_global_variable = oe_alt_era_start }
         NOT = { has_global_variable = oe_yp_dissolved }
+    	is_rebel_country = no
         NOT = { has_variable = oe_yp_ended }
+        oe_start_is_1337 = yes
         OR = { AND = { country_type = building is_subject_type = oe_yp_xingsheng } is_subject_type = oe_yp_frontier }
         oe_yp_yuan_fallen = no
         is_subject_of = c:CHI
@@ -71,17 +71,17 @@ oe_yp_formed = {
 # Round 7 F6 (Y2) + WP13 PERF-5. The monthly collapse check, run by one anchor in 1337 games only.
 oe_yp_collapse_pulse = {
     trigger = {
-        current_year >= 1200
-        is_rebel_country = no
+        current_year >= 1337
         has_global_variable = oe_yp_started
         NOT = { has_global_variable = oe_yp_dissolved }
         NOT = { has_global_variable = oe_alt_era_start }
-        oe_start_is_1337 = yes
+        is_rebel_country = no
         OR = {
             tag = CHI
             AND = { tag = YUA NOT = { country_exists = c:CHI } }
             AND = { has_variable = oe_yp_unit NOT = { country_exists = c:CHI } NOT = { country_exists = c:YUA } }
         }
+        oe_start_is_1337 = yes
     }
     effect = { oe_yp_collapse_check = yes }
 }

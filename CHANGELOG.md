@@ -1,3 +1,79 @@
+# 《凤凰计划（OEBYZ）》v60.0 更新日志（合并 v56.0–v60.0 五大里程碑 + 律法瘦身重构）
+
+> **发布状态**：v60.0（适配 EU5 1.4.9），合并 **v56.0 至 v60.0** 五个大版本的全线修复、深度拓展、架构瘦身与中英 Wiki 对齐。
+> **存档提示**：v60.0 **不兼容旧版本存档**，请新开一局。
+> **官方音乐子模组**：[《凤凰计划 · 历代交响原声》（Project Phoenix Soundtrack，工坊 ID `3846593343`）](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) — 60 首罗马与地中海交响原声（约 148 分钟），不改联机校验，保持独立兼容。
+
+制作：寐夜空灵、miscos330
+
+---
+
+## 一、中文更新日志
+
+### 1. 律法架构瘦身与原版 `INJECT:` 深度整合（主模组 + 编年史，v60.0 方案 B）
+
+针对玩家反馈的“自定义通用法律偏多、与原版法律及阶层特权重叠”以及“1337 拜占庭开局被锁在封建采邑征召”，彻底重构通用与地区律法架构：
+- **移除 7 条重叠独立法律**：删去 `oe_lw2_labor_mobility_law`（劳役农奴迁徙法）、`oe_lw2_military_service_law`（常备军与兵役法）、`oe_lw2_judicial_code_law`（司法与法典体系）、`oe_lw2_press_academy_law`（新闻出版与学府法）、`oe_lw2_maritime_commerce_law`（海事与特许贸易法）、`oe_sci_press_charter_law`（重复出版法）与英格兰重复普通法 `oe_lw2_eng_common_law`，同时彻底清理古典 6 纪元（361–768）开局 35 处旧兵役法引用。
+- **15 项特色政策无缝并入 6 条原版 EU5 法律（`INJECT:` / `REPLACE:`）**：
+  - `medieval_levy_law`（原版征召兵法）：并入 **军区与边疆屯田世兵制（`oe_lw2_pol_frontier_colonies`）**，**1337 开局即对拜占庭、军区制国家、希腊/中华/波斯/突厥文化圈开放可选**（其余国家大航海时代解锁）。
+  - `recruitment_law`（原版征兵法）：并入特许雇佣兵团与全民义务征兵制。
+  - `press_law`（原版出版法）：整合全部 5 项近代印刷与学府政策（含 3 项原科学革命出版宪章）。
+  - `maritime_law`、`peasants_rights_laws` 与 `legal_code_law`：并入重商航海条例、圈地工场与法定劳工保护、行政法院/近代民法典与英格兰人身保护令/权利法案。
+- **帝国财税与预算总法（`oe_lw2_fiscal_budget_law`）升级为开局三选一**：保留包税承包制，开放官僚帝国/大帝国开局即选「官僚清丈田赋」，并新增「市镇关榷与商帮协定」作为市民/海港路线 Day-1 选项（共 5 项，后 2 项按宗教改革/革命时代解锁）。
+- **地区律法去重与年代门控**：俄国农奴法典门控至 `>= 1480`；1337+ 金帐/帖木儿与印度主角去除与原版/专线的双札撒/双曼萨布达尔重叠。全库校验 295 条法律、1,149 项政策 `0` 重名。
+
+### 2. 全纪元顺序统一、1337 前防串代与 1204 大蒙古国大修（编年史 + 主模组，v56.0）
+
+- **11 纪元顺序统一（361–1756）**：合并 `in_game/common/age/00_default.txt`，彻底消除 1204 开局时代序倒置导致的“达延汗分封”等后世决议/法条泄漏，同时为全部北元与后世决议/法律补齐严格年代门控。
+- **1204 大蒙古国历史分封、忽里勒台承嗣与改革上限修复**：
+  - 全 948 个编年史游牧/部落开局国家（含 1204 大蒙古国 `MGE`）王室改革严格收束至 `<= 1/1`（1204 蒙古开局精准 `1/1`）。
+  - 四大分封（东道斡赤斤 `M5A`、钦察术赤汗国 `GLH`、察合台汗国 `CHG`、窝阔台汗国 `M5C`）精确锁定历史宗王（**帖木哥斡赤斤 / 术赤 / 察合台 / 窝阔台**），杜绝挑错人与重名，并为后世配齐塔察儿/拔都/合剌旭烈兀/贵由兜底继承人；修正“术赤汗国汗国”与伊儿汗国形容词重复后缀；1204 钦察正名为“钦察-库曼联盟”不再与金帐混淆。
+  - 新增专属 **忽里勒台大汗宗王承嗣制（`oe_v53_mgl_kurultai_succession`，`allow_foreign_ruler = no`）** 与分封即时继位人交接逻辑：已受封出镇独立兀鲁思的汗王不再兼任大蒙古国继承人，分封术赤/窝阔台后自动按历史顺位将大汗继承人顺延给留驻本廷的窝阔台或拖雷。
+- **第四罗马防坐牢与第三奥德赛重构**：修复 1444 拜占庭改革数（`5/6`）与卡死瓶颈，补齐 24 条新世界节奏事件、8 项决议、4 座新建筑与精确校准 30% 利润率的赫斯佩里亚紫锦工坊。
+
+### 3. 九大历史宗教神系与圣地、泛欧亚丝路与 13 条编年史旗舰任务树（v57.0–v58.0）
+
+- **9 大历史宗教完全体（v57.0）**：为迦克墩、阿里乌派、海岛基督教、多纳图派、圣像破坏派及斯拉夫/凯尔特/日耳曼/前伊斯兰阿拉伯多神教配齐 32 座专属圣地、5 大多神教神祇殿堂与 **6 项普世公会议行动**（含 768 圣像破坏派东罗马完整开放 6 项行动）。
+- **泛欧亚丝路与香料走廊局势 + 925 条六大文明动态地名（主模组 v58.0）**：覆盖拉丁语（175）、汉语官话（164）、阿拉伯语（167）、波斯语（130）、突厥语（153）与东斯拉夫语（136）共 925 条动态地名，零碰撞通过 `R65`。
+- **编年史 13 条旗舰引导任务树（v58.0）**：为 361 尤里安、395 东西罗马、532 查士丁尼、632 大唐与哈里发、768 查理曼、1204 蒙古与尼西亚、1444 第四罗马、1648 南明/清、1776 乾隆/北美与 1821 希腊等新增 13 条完整 DAG 任务树（106 项引导任务）。
+- **全球薄弱纪元与文明大补全（v58.0–v59.0）**：
+  - **古典晚期（395/476/632/768）**：新增《395 斯提里科、阿拉里克与冰封莱茵河》《793 林迪斯法恩与维京时代黎明》2 个高清 `1080×440` 局势、36 条历史事件、6 座地标建筑与 6 项改革；同步补齐阿克苏姆、笈多与大和内容。
+  - **1337 第二波十大经典国 + 东南亚与撒哈拉以南非洲 + 高加索草原**：深度拓展威尼斯、热那亚、波兰、朝鲜、德里、毗奢耶那伽罗、阿兹特克、印加等 10 国；补全吴哥/蒲甘/素可泰/马六甲/刚果/大津巴布韦/斯瓦希里/索马里 2 大局势与 36 条事件；新增 1204 塔玛尔女王格鲁吉亚与花剌子模局势、1204 伊比利亚再征服与腓特烈二世局势、瓦拉几亚/摩尔达维亚及准噶尔/哈萨克专线。
+  - **1821 拉美独立、意大利复兴、十二月党人与幕末维新（v59.0）**：新增拉美解放者局势（含墨西哥/大哥伦比亚/巴西等双进度条与 4 项互动行动）及欧洲民族复兴与日本幕末链。
+
+### 4. 原版机制深度扩容、美术去重、Glorp UI 清理与 86/86 硬门禁（v59.0–v60.0）
+
+- **全面接入 EU5 原生机制**：新增 12 项世界城市宪章（`town_rights`）、8 项带 `@trigger_no!` 规范提示的角色交互、6 项新兵种技能（全 20 项自定义兵种技能动态写入 `loading_screen/input_profile/oe_unit_abilities.profile`，热键报错归零）、议会议题与议程、8 个骑士修会、12 件世界杰作、4 场历史灾难与霸主敕令。
+- **美术与 GUI 质量清零**：
+  - 全部 64 组主模组重复 DDS 卡片彻底去重至 `0`；**100% 自定义局势（主模组 + 编年史共 86 个）全部配齐专属 `.gui` 面板**。
+  - 根治 `gen_v580` 的 136 字节 DDS 头偏移 bug，修复主模组 18 张 + 编年史 20 张 = **38 张** v58 贴图（彻底消除 395/768 局势与 1337 建筑图标紫噪点），并将 395/768 横幅全面升级为 `1080×440` 贴合时代的高清画面。
+  - 清理 Glorp UI 重复 `blockoverride`、`economy_lateralview.gui` 重复 `visible` 与无效热键引用。
+- **性能优化、英文 Wiki 全对齐与 86/86 引擎门禁**：
+  - 新增 `R79–R86` 八条引擎硬门禁（`172/172` 自测通过）：覆盖兵种技能 profile、100% 局势 GUI、纪元年代顺序、游牧/拜占庭开局改革上限、宗教圣地神祇、禁用抽象 `empty=yes` 刷兵、3 通道纹章 `color3`、禁用裸 `age >=`、生产方式校验、全开局 `10_countries.txt` 法律校验与全部 DDS 128 字节头校验。
+  - GitHub Wiki 同步上线 **10 页完整英文指南**，与中文 Wiki 全面对齐。
+
+### 5. 实机验收汇总（2026-11-27，EU5 1.4.9）
+
+- 经 `rc1 → rc2 → rc3` 三轮实机验证（0 CTD）：加载期较 `rc1` 清除全部 29 条报错且新增 `0` 条；`1204` 蒙古改革 `1/1`、四大兀鲁思精准绑定帖木哥斡赤斤 / 术赤 / 察合台 / 窝阔台、「术赤汗国」国名正常；`1337` 拜占庭方案 B 无重复法律、「军区与边疆屯田世兵制」开局即选、财税总法开局三选一；`768` 东罗马普世公会议 6 项行动全显示；`395`/`768`/`1204`/`1821` 五大新增局势面板与 395/768 图标横幅全部正常显示无报错；`rc4` 追加蒙古忽里勒台承嗣制（`O1`）与 395 莱茵古典横幅（`O2`）并全部通过 86/86 离线严检。
+- **已知与后续规划（v61.0）**：成吉思汗及古典/近代 3D 肖像服饰重构（需独立去清化贴图与专用 3D `.mesh`）与长事件标题排版治理已明确排入 `v61.0` 头号里程碑。
+
+---
+
+## 二、English Changelog
+
+> **Status:** v60.0 (EU5 1.4.9), combining all five milestones **v56.0–v60.0** plus the Plan B Laws Architecture Overhaul and full English Wiki parity.
+> **Saves:** v60.0 is **not** compatible with older saves. Please start a new game.
+> **Companion Soundtrack Submod:** [Project Phoenix Soundtrack (`3846593343`)](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) — 60 Roman & Mediterranean symphonic tracks (~148 min), checksum-safe.
+
+Made by: 寐夜空灵, miscos330
+
+- **Laws Architecture Slimming & Native Vanilla `INJECT:` Consolidation (Plan B):** Removed 7 overlapping standalone universal/regional laws and 35 legacy classical setup law refs; folded 15 distinct policies cleanly into 6 native EU5 laws (`medieval_levy_law` with Day-1 Theme / Frontier Military Colonies for BYZ/Greek/Chinese/Iranian/Turkic realms, `recruitment_law`, `press_law`, `maritime_law`, `peasants_rights_laws`, and `legal_code_law`); upgraded Fiscal Budget Law to 3 balanced Day-1 choices (295 laws / 1,149 policies verified 0 duplicates).
+- **Chronological Age-Order & Pre-1337 Anti-Leakage (v56.0):** Unified all 11 ages (`361–1756`) in `00_default.txt`, sealed Northern Yuan & late-era laws from 1204, capped all 948 Chronicles hordes/tribes to `<= 1/1` opening reforms (1204 MGE `1/1`), fixed 1444 BYZ `5/6` reforms, and overhauled Fourth Rome anti-prison pacing.
+- **1204 Great Mongol Empire Enfeoffment & Kurultai Succession Overhaul (v56.0 & v60.0):** Bound the four great appanages (`M5A` Otchigin, `GLH` Jochi, `CHG` Chagatai, `M5C` Ögedei) to their exact historical Borjigin princes with non-duplicate late heirs (Taghachar / Batu / Qara Hülegü / Güyük), fixed Jochid/Ilkhanid duplicate title suffixes, and added bespoke `oe_v53_mgl_kurultai_succession` (`allow_foreign_ruler = no`) plus automatic Ögedei/Tolui heir handoff so enfeoffed vassal khans never remain heir to the Great Khaganate.
+- **9 Historical Religions Full Mechanics, Silk Road & 13 Chronicles Flagship Mission Trees (v57.0–v58.0):** 32 holy sites, 5 pagan pantheons, 6-action Ecumenical Councils (open to 768 Iconoclast ERE), Pan-Eurasian Silk Road Situation, 925 6-civilization dynamic place names (Latin, Mandarin, Arabic, Persian, Turkish, East Slavic), and 13 guided Chronicles flagship mission trees (106 tasks).
+- **Global Era Expansions & Native Mechanics (v58.0–v59.0):** 395 Frozen Rhine & 768 Viking Dawn HD situations, 1337 Wave-2 10 nations, Southeast Asia & Sub-Saharan Africa (2 situations, 36 events), 1204 Queen Tamar Georgia / Khwarazm / Reconquista & Frederick II, 1821 Libertadores / Risorgimento / Decembrists / Bakumatsu, 12 World Town Charters, 8 Character Interactions, 20 registered Unit Abilities (`oe_unit_abilities.profile`), Parliaments, 8 Chivalric Orders, 12 Masterpieces & 4 Disasters.
+- **Zero Duplicate DDS, 100% Bespoke Situation GUIs, Complete English Wiki & 86/86 Strict CI:** Cleared 64 duplicate DDS card clusters to `0`, fixed the 136-byte DDS header offset across 38 v58 textures (eliminating purple-noise icons), upgraded 395/768 situation banners to crisp `1080×440`, added 10 full English Wiki guide pages, and enforced `86/86 R01–R86` CI rules (`172/172` selftests).
+
 # 《凤凰计划（OEBYZ）》v55.0 更新日志（合并 v51.0–v55.0 + 历代交响原声子模组）
 
 > **发布状态**：v55.0 正式版（EU5 1.4.9），合并 **v51.0 至 v55.0** 五个大版本的全部重构与修复。候选版 `v55.0-rc1` 至 `rc4` 于 2026-11-27 在 EU5 1.4.9 上经过四轮实机验收；发布包即实测通过的 `rc4`，模组脚本文件未再改动（仅更新主模组 `README.md`）。

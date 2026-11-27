@@ -1,0 +1,102 @@
+﻿# Project Phoenix v59.0: Native EU5 1.4.9 Interactive Disaster Panel — oe_v59_sys_dis_ancien_regime_bankruptcy (R22-clean, BOM+LF).
+
+disaster_panel = {
+
+	blockoverride "disaster_secondary_tab" {
+		margin_top = 10
+		spacing = 5
+		disaster_card_expandable = {
+			blockoverride "header_button_onclick" {
+				onclick = "[LateralView.Vars.Toggle( 'requirements_toggled' )]"
+			}
+			blockoverride "header_text" {
+				text = "END_REQUIREMENTS"
+			}
+			blockoverride "header_icon" {
+				texture = "gfx/interface/icons/disasters/end_requirements_green.dds"
+			}
+			blockoverride "bottom_content" {
+				TooltipRequirementsList = {
+					textcontext = "[DisasterView.GetDisaster.GetType.GetEndConditions]"
+				}
+			}
+			blockoverride "bottom_content_onclick" {
+				visible = "[LateralView.Vars.Exists( 'requirements_toggled' )]"
+			}
+			blockoverride "icon_replace_visible_yes" {
+				visible = "[LateralView.Vars.Exists( 'requirements_toggled' )]"
+			}
+			blockoverride "icon_replace_visible_not" {
+				visible = "[Not(LateralView.Vars.Exists( 'requirements_toggled' ))]"
+			}
+		}
+	}
+
+	blockoverride "disaster_main_content_subheader" {}
+
+	blockoverride "disaster_variable_progress_bar_visible" {
+		visible = no
+	}
+
+	blockoverride "main_content" {
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			using = bg_scroll_card_header
+			blockoverride "card_header_pattern" {}
+			margin = { 14 12 }
+			spacing = 8
+
+			text_multi = {
+				layoutpolicy_horizontal = expanding
+				autoresize = yes
+				maximumsize = { 460 -1 }
+				fontsize = 14
+				default_format = "#color_light_gray"
+				text = "oe_v59_sys_dis_ancien_regime_bankruptcy_desc"
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 8
+				text_single = {
+					fontsize = 14
+					default_format = "#yellow_titles"
+					text = "oe_v59_sys_dis_gui_steps_label"
+				}
+				expand = {}
+				text_single = {
+					fontsize = 14
+					default_format = "#bold"
+					raw_text = "[DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_v59_sys_ancien_steps').GetValue|0] / 2"
+				}
+			}
+
+			progressbar = {
+				visible = yes
+				layoutpolicy_horizontal = expanding
+				size = { -1 12 }
+				using = progress_bar_goldish
+				min = 0
+				max = 2
+				value = "[FixedPointToFloat(DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_v59_sys_ancien_steps').GetValue)]"
+				direction = horizontal
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 8
+				text_single = {
+					fontsize = 14
+					default_format = "#medium"
+					text = "oe_v59_sys_dis_gui_months_label"
+				}
+				expand = {}
+				text_single = {
+					fontsize = 14
+					default_format = "#bold"
+					raw_text = "[DisasterView.GetDisaster.GetOwner.MakeScope.GetVariable('oe_v59_sys_ancien_months').GetValue|0]"
+				}
+			}
+		}
+	}
+}

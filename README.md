@@ -1,17 +1,17 @@
 ![凤凰计划 Project Phoenix](https://raw.githubusercontent.com/wiki/miscos330/OEBYZ-Phoenix/images/cover.jpg)
 
-# Project Phoenix (《凤凰计划》 / OEBYZ) v55.0 — Europa Universalis V 1.4.9
+# Project Phoenix (《凤凰计划》 / OEBYZ) v60.0 — Europa Universalis V 1.4.9
 
 **Target Game Version:** Europa Universalis V `1.4.*` (`1.4.9`)
-**Languages:** Complete Simplified Chinese & English (`l_simp_chinese` + `l_english`, 90,500+ main-mod keys + 34,800+ Chronicles keys)
+**Languages:** Complete Simplified Chinese & English (`l_simp_chinese` + `l_english`, 93,200+ main-mod keys + 38,000+ Chronicles keys)
 **Repository:** https://github.com/miscos330/OEBYZ-Phoenix
 **制作 / Made by:** 寐夜空灵、miscos330 (`Made by: 寐夜空灵, miscos330`)
 
-> **Saves / 存档：** v55.0 is not compatible with older saves; please start a new game. v55.0 不兼容旧存档，请新开一局。
-> **NEW Companion Music Submod / 全新官方音乐子模组：** [Project Phoenix Soundtrack / 凤凰计划 · 历代交响原声 (`3846593343`)](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) — 60 Roman symphonic & Mediterranean tracks (~148 min), loudness-matched into EU5's dynamic music system without removing vanilla tracks or altering the multiplayer checksum!
-> **EN:** v55.0 merges the entire **v51.0–v55.0** five-milestone overhaul: 355 all-era country profiles & 492 pre-1337 advances, a ground-up **532 Justinian Grand Redesign** (3 bespoke reconquest CBs, Africa/Italy/Spania auto-capitulation with 10-year truces, true Ostrogothic Kingdom `FXO`, and strict causal event gating), an **All-11-Era Historical Religion Overhaul** (9 new historical faiths including Chalcedonian Christianity, Arianism, Insular Christianity, Donatism, Iconoclasm, Slavic/Celtic/Germanic/Arab paganisms, and the 1054 Great Schism), an **All-Era & 1337 Dynamic Province-Capital War & Warscore Auto-Victory Engine** (with human-defender single-tile protection), the **1204–1368 Great Mongol Empire Five-Khan Enfeoffment** (12 sub-khanates & 5 subject archetypes), **1204 Nicaea/Epirus/Trebizond 4-layer Constantinople Core Restoration**, rebuilt **Fourth Rome** (overhauled Spartania + Asia-Africa expansion + 6 opt-in Eurasian IF universes), **1648/1776/1821 Global Empires** (Three Feudatories, Continental Congress, Maratha Confederacy, EIC, Qing Lifanyuan, German Confederation & Concert of Europe), **1337 11-Nation Deep Polish**, and a full **Zero-Lag Buff Event Audit** (310+ heavy-loop fixes + 78/78 engine CI rules). Live-verified across `rc1–rc4` in EU5 1.4.9. Full notes: `CHANGELOG.md`.
-> **中文：** v55.0 合并 **v51.0–v55.0** 五个大版本的全线重构：355 国全时代独立档案与 492 项 1337 前科技/思潮校准、**532 查士丁尼光复深度重做**（三战区专属光复 CB + 迦太基/拉文纳/西班牙自动受降与 10 年停战 + 东哥特王国 `FXO` 锁定 + 事件因果门控）、**全 11 剧本历史宗教大改**（新增迦克墩大公教会、阿里乌派、凯尔特海岛基督教、多纳图派、圣像破坏派、斯拉夫/凯尔特/大陆日耳曼/前伊斯兰阿拉伯多神教等 9 大宗教与 1054 东西大分裂）、**全时代与 1337 动态省会直占 + 战分自动决胜引擎**（含玩家防守方免被 AI 整省瞬吞保护）、**1204–1368 大蒙古国五汗分封**（12 个可分封子汗国与 5 类蒙古附庸）、**1204 尼西亚/伊庇鲁斯/特拉比松收复君堡 4 层核心修复**、**第四罗马全面重构**（斯巴达尼亚重做 + 亚非双洋扩张 + 6 大可选架空 IF 宇宙）、**1648/1776/1821 全球帝国大修**（清三藩、北美大陆会议、马拉地邦联、东印度公司、清理藩院、德意志邦联与欧洲协调）、**1337 十一大经典国精修**，以及**全模组零卡顿治理**（310+ 处重循环卡顿炸弹清理与 78/78 硬门禁）。已在 EU5 1.4.9 上完成 `rc1–rc4` 四轮实机验收。详见 `CHANGELOG.md`。
-> **History below / 以下为历代版本说明：** sections marked v48.0 and earlier describe those versions and are kept for reference.
+> **Saves / 存档：** v60.0 is not compatible with older saves; please start a new game. v60.0 不兼容旧存档，请新开一局。
+> **Companion Music Submod / 官方音乐子模组：** [Project Phoenix Soundtrack / 凤凰计划 · 历代交响原声 (`3846593343`)](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) — 60 Roman symphonic & Mediterranean tracks (~148 min), loudness-matched into EU5's dynamic music system without removing vanilla tracks or altering the multiplayer checksum!
+> **EN:** v60.0 merges the entire **v56.0–v60.0** five-milestone mega-update: **Laws Architecture Slimming & Native Vanilla `INJECT:` Consolidation** (eliminating 7 overlapping standalone laws, folding 15 distinct policies cleanly into 6 native EU5 laws, unlocking Day-1 Theme / Frontier Military Colonies for BYZ/Greek/Chinese/Iranian/Turkic realms and 3 Day-1 Fiscal Budget choices), **Chronological Age-Order & Pre-1337 Anti-Leakage Overhaul** (unifying 11 ages 361–1756, sealing Northern Yuan & late laws from 1204), **Great Mongol Empire Enfeoffment & Kurultai Succession Overhaul** (exact historical princes Otchigin/Jochi/Chagatai/Ögedei with Kurultai non-foreign-ruler succession & automatic Ögedei/Tolui heir handoff, 1/1 horde opening reforms across all 948 hordes/tribes), **Fourth Rome Anti-Prison & Third-Odyssey Overhaul**, **9 Historical Religions Pantheons, 32 Holy Sites & 6-Action Ecumenical Councils**, **Pan-Eurasian Silk Road Situation & 925 6-Civilization Dynamic Place Names**, **13 Chronicles Flagship Mission Trees**, **395/476/632/768/1204/1337 Wave-2/1821 Global Expansions** (Southeast Asia, Sub-Saharan Africa, Caucasus/Khwarazm, Libertadores, Risorgimento & Bakumatsu), **World Town Charters, Character Interactions, 20 Registered Unit Abilities, Parliaments, Chivalric Orders & 12 Masterpieces**, **0 Duplicate DDS Cards & 100% Bespoke Situation GUIs**, **Complete English Wiki Parity**, and **86/86 Strict Engine CI (`R01–R86`, 172/172 selftests)**. Full notes: `CHANGELOG.md`.
+> **中文：** v60.0 合并 **v56.0–v60.0** 五个大版本全线拓展与架构升级：**律法架构瘦身与原版 `INJECT:` 整合**（精简 7 条重叠独立法律、15 项特色政策无缝并入 6 条原版法律，拜占庭/希腊/中华/波斯/突厥开局即选「军区与边疆屯田世兵制」，财税总法开局三选一）、**全纪元顺序统一与 1337 前防串代清零**（统一 11 纪元顺序、1204 彻底杜绝北元与后世法条泄漏）、**1204 大蒙古国历史分封与忽里勒台承嗣大修**（四大兀鲁思精确历史宗王帖木哥斡赤斤/术赤/察合台/窝阔台 + 忽里勒台大汗宗王承嗣制杜绝外邦汗王兼任继承人 + 分封自动顺延窝阔台/拖雷，全 948 个游牧/部落国家改革严格 `<= 1/1`）、**第四罗马防坐牢重构**、**9 大历史宗教神系/32 座圣地与 6 项普世公会议**、**泛欧亚丝路香料走廊局势与 925 条六大文明动态地名**、**编年史 13 条旗舰任务树**、**古典晚期/1204/1337 第二波/东南亚/非洲/高加索/1821 拉美独立与幕末全球补全**、**12 项世界城市宪章/8 项角色交互/20 项注册兵种技能/议会/骑士修会/12 件杰作**、**0 重复美术卡片与 100% 专属局势 GUI**、**完整英文 Wiki 对齐**，以及 **86/86 引擎硬门禁（`R01–R86`，172/172 自测通过）**。详见 `CHANGELOG.md`。
+> **History below / 以下为历代版本说明：** sections marked v55.0 and earlier describe those versions and are kept for reference.
 
 ---
 
@@ -107,7 +107,7 @@
 
 ---
 
-## Official Optional Submod Matrix & Load Order / 官方子模组与推荐排序（v55.0）
+## Official Optional Submod Matrix & Load Order / 官方子模组与推荐排序（v60.0）
 
 Place enabled submods **below (after)** the Project Phoenix main mod in the order shown below / 子模组请排在主模组之后，顺序如下：
 
