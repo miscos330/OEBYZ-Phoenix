@@ -39,6 +39,11 @@ oe_wp24a_pref.2 = {
 		ai_chance = { base = 60 }
 		add_stability = 5
 		add_country_modifier = { modifier = oe_wp24a_pref_oriens_harmony_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_pref.3 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wp24a_pref.2.b
@@ -46,6 +51,11 @@ oe_wp24a_pref.2 = {
 		add_prestige = prestige_weak_bonus
 		if = { limit = { country_has_estate = estate_type:clergy_estate } add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_mild_bonus } }
 		change_societal_value = { type = centralization_vs_decentralization value = -5 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_pref.3 days = { 365 730 } }
+		}
 	}
 }
 
@@ -55,13 +65,18 @@ oe_wp24a_pref.3 = {
 	desc = oe_wp24a_pref.3.d
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_v170_byz_ctesiphon.dds"
-	trigger = { oe_wp24a_is_roman_host = yes }
+	trigger = { oe_wp24a_is_roman_host = yes 
+		has_variable = oe_v70_mch_wp24a_pref_c01_s1 # [v70_mchain]
+	}
 	option = {
 		name = oe_wp24a_pref.3.a
 		ai_chance = { base = 55 }
 		add_army_tradition = 5
 		add_country_modifier = { modifier = oe_wp24a_pref_oriens_limes_mod years = 30 mode = replace }
-		hidden_effect = { oe_prf_auth_add = { amount = 4 } }
+		hidden_effect = { oe_prf_auth_add = { amount = 4 } 
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c01_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_wp24a_pref.3.b
@@ -69,6 +84,10 @@ oe_wp24a_pref.3 = {
 		add_stability = 5
 		add_legitimacy = 4
 		add_country_modifier = { modifier = oe_wp24a_pref_oriens_silk_mod years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c01_s2 value = 1 }
+		}
 	}
 }
 
@@ -102,7 +121,12 @@ oe_wp24a_pref.5 = {
 	desc = oe_wp24a_pref.5.d
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_byz_siege_walls.dds"
-	trigger = { oe_wp24a_is_roman_host = yes }
+	trigger = { oe_wp24a_is_roman_host = yes 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_wp24a_pref_c01_s2
+			current_year >= 1345
+		}
+	}
 	option = {
 		name = oe_wp24a_pref.5.a
 		ai_chance = { base = 65 }
@@ -110,12 +134,22 @@ oe_wp24a_pref.5 = {
 		add_army_tradition = 5
 		location:belgrad ?= { if = { limit = { owner ?= root } change_prosperity = 0.05 } }
 		add_country_modifier = { modifier = oe_wp24a_pref_illyricum_danube_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c01_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_pref.6 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wp24a_pref.5.b
 		ai_chance = { base = 35 }
 		add_stability = 4
 		add_country_modifier = { modifier = oe_wp24a_pref_illyricum_egnatia_mod years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c01_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_pref.6 days = { 365 730 } }
+		}
 	}
 }
 
@@ -125,19 +159,36 @@ oe_wp24a_pref.6 = {
 	desc = oe_wp24a_pref.6.d
 	outcome = neutral
 	image = "gfx/interface/illustrations/events/oe_ev_v160_byz_katepanate.dds"
-	trigger = { oe_wp24a_is_roman_host = yes }
+	trigger = { oe_wp24a_is_roman_host = yes 
+		has_variable = oe_v70_mch_wp24a_pref_c01_s3 # [v70_mchain]
+	}
 	option = {
 		name = oe_wp24a_pref.6.a
 		ai_chance = { base = 60 }
 		add_manpower = 1.5
 		add_country_modifier = { modifier = oe_wp24a_pref_illyricum_stratiotai_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wp24a_pref_c01_done } }
+				set_variable = { name = oe_v70_mch_wp24a_pref_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_wp24a_pref.6.b
 		ai_chance = { base = 40 }
 		add_legitimacy = 5
 		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
-		hidden_effect = { oe_prf_auth_add = { amount = 4 } }
+		hidden_effect = { oe_prf_auth_add = { amount = 4 } 
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wp24a_pref_c01_done } }
+				set_variable = { name = oe_v70_mch_wp24a_pref_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -179,13 +230,22 @@ oe_wp24a_pref.8 = {
 		add_stability = 6
 		add_prestige = prestige_mild_bonus
 		add_country_modifier = { modifier = oe_wp24a_pref_italia_senate_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c02_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_pref.9 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wp24a_pref.8.b
 		ai_chance = { base = 40 }
 		add_legitimacy = 6
 		change_societal_value = { type = centralization_vs_decentralization value = -5 }
-		hidden_effect = { oe_prf_auth_add = { amount = 5 } }
+		hidden_effect = { oe_prf_auth_add = { amount = 5 } 
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c02_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_pref.9 days = { 365 730 } }
+		}
 	}
 }
 
@@ -195,13 +255,19 @@ oe_wp24a_pref.9 = {
 	desc = oe_wp24a_pref.9.d
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_econ2_granary_fleet.dds"
-	trigger = { oe_wp24a_is_roman_host = yes }
+	trigger = { oe_wp24a_is_roman_host = yes 
+		has_variable = oe_v70_mch_wp24a_pref_c02_s1 # [v70_mchain]
+	}
 	option = {
 		name = oe_wp24a_pref.9.a
 		ai_chance = { base = 65 }
 		add_stability = 4
 		location:palermo ?= { if = { limit = { owner ?= root } change_prosperity = 0.06 } }
 		add_country_modifier = { modifier = oe_wp24a_pref_italia_annona_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c02_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_wp24a_pref.9.b
@@ -209,6 +275,10 @@ oe_wp24a_pref.9 = {
 		add_gold = 100
 		add_navy_tradition = 5
 		add_country_modifier = { modifier = oe_wp24a_pref_italia_exarch_fleet_mod years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c02_s2 value = 1 }
+		}
 	}
 }
 
@@ -243,19 +313,33 @@ oe_wp24a_pref.11 = {
 	desc = oe_wp24a_pref.11.d
 	outcome = neutral
 	image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
-	trigger = { oe_wp24a_is_roman_host = yes }
+	trigger = { oe_wp24a_is_roman_host = yes 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_wp24a_pref_c02_s2
+			current_year >= 1345
+		}
+	}
 	option = {
 		name = oe_wp24a_pref.11.a
 		ai_chance = { base = 60 }
 		add_stability = 5
 		add_country_modifier = { modifier = oe_wp24a_pref_gallia_curiae_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c02_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_pref.12 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wp24a_pref.11.b
 		ai_chance = { base = 40 }
 		add_gold = 110
 		add_legitimacy = 4
-		hidden_effect = { oe_prf_auth_add = { amount = 4 } }
+		hidden_effect = { oe_prf_auth_add = { amount = 4 } 
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_pref_c02_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_pref.12 days = { 365 730 } }
+		}
 	}
 }
 
@@ -265,7 +349,9 @@ oe_wp24a_pref.12 = {
 	desc = oe_wp24a_pref.12.d
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_con_pax_romana.dds"
-	trigger = { oe_wp24a_is_roman_host = yes }
+	trigger = { oe_wp24a_is_roman_host = yes 
+		has_variable = oe_v70_mch_wp24a_pref_c02_s3 # [v70_mchain]
+	}
 	option = {
 		name = oe_wp24a_pref.12.a
 		ai_chance = { base = 60 }
@@ -282,11 +368,27 @@ oe_wp24a_pref.12 = {
 			add_prestige = prestige_severe_bonus
 			hidden_effect = { oe_prf_auth_add = { amount = 8 } }
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wp24a_pref_c02_done } }
+				set_variable = { name = oe_v70_mch_wp24a_pref_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_wp24a_pref.12.b
 		ai_chance = { base = 40 }
 		add_army_tradition = 6
 		add_country_modifier = { modifier = oe_wp24a_pref_gallia_rhine_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wp24a_pref_c02_done } }
+				set_variable = { name = oe_v70_mch_wp24a_pref_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }

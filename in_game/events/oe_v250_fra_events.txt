@@ -30,6 +30,11 @@ oe_v250_fra.1 = {
 		add_legitimacy = 4
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev1_guyenne_confiscation years = 15 mode = replace }
 		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } c:ENG = { add_opinion = { target = root modifier = opinion_insulted } } }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v250_fra.2 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_v250_fra.1.b
@@ -38,6 +43,11 @@ oe_v250_fra.1 = {
 		add_prestige = -5
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev1_parlement_arbitration years = 15 mode = replace }
 		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } add_opinion = { target = c:ENG modifier = opinion_diplomatic_move } c:ENG = { add_opinion = { target = root modifier = opinion_diplomatic_move } } }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v250_fra.2 days = { 365 730 } }
+		}
 	}
 }
 
@@ -60,6 +70,7 @@ oe_v250_fra.2 = {
 			NOT = { has_global_variable = oe_start_1337 }
 		}
 		current_year <= 1470
+		has_variable = oe_v70_mch_v250_fra_c01_s1 # [v70_mchain]
 	}
 	option = {
 		name = oe_v250_fra.2.a
@@ -67,6 +78,10 @@ oe_v250_fra.2 = {
 		add_gold = 95
 		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev2_gabelle_monopoly years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c01_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_fra.2.b
@@ -74,6 +89,10 @@ oe_v250_fra.2 = {
 		add_gold = 35
 		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev2_municipal_aides years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c01_s2 value = 1 }
+		}
 	}
 }
 
@@ -96,6 +115,10 @@ oe_v250_fra.3 = {
 			NOT = { has_global_variable = oe_start_1337 }
 		}
 		current_year <= 1470
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v250_fra_c01_s2
+			current_year >= 1354
+		}
 	}
 	option = {
 		name = oe_v250_fra.3.a
@@ -103,6 +126,10 @@ oe_v250_fra.3 = {
 		add_prestige = -5
 		add_army_tradition = 5
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev3_fabian_doctrine years = 18 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c01_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_fra.3.b
@@ -110,12 +137,20 @@ oe_v250_fra.3 = {
 		add_prestige = 6
 		add_gold = -50
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev3_chivalric_shock years = 18 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c01_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_fra.3.c
 		ai_chance = { base = 20 }
 		add_gold = -65
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev3_crossbow_mercs years = 18 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c01_s3 value = 1 }
+		}
 	}
 }
 
@@ -138,6 +173,10 @@ oe_v250_fra.4 = {
 			NOT = { has_global_variable = oe_start_1337 }
 		}
 		current_year <= 1470
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v250_fra_c01_s3
+			current_year >= 1363
+		}
 	}
 	option = {
 		name = oe_v250_fra.4.a
@@ -145,6 +184,14 @@ oe_v250_fra.4 = {
 		add_gold = 55
 		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev4_estates_oversight years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v250_fra_c01_done } }
+				set_variable = { name = oe_v70_mch_v250_fra_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v250_fra.4.b
@@ -153,6 +200,14 @@ oe_v250_fra.4 = {
 		add_legitimacy = 5
 		add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_penalty }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev4_royal_defiance years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v250_fra_c01_done } }
+				set_variable = { name = oe_v70_mch_v250_fra_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -183,6 +238,10 @@ oe_v250_fra.5 = {
 		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
 		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_penalty }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev5_noble_suppression years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c02_s1 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_fra.5.b
@@ -191,6 +250,10 @@ oe_v250_fra.5 = {
 		add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_bonus }
 		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev5_rural_amnesty years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c02_s1 value = 1 }
+		}
 	}
 }
 
@@ -213,6 +276,10 @@ oe_v250_fra.6 = {
 			NOT = { has_global_variable = oe_start_1337 }
 		}
 		current_year <= 1470
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v250_fra_c02_s1
+			current_year >= 1372
+		}
 	}
 	option = {
 		name = oe_v250_fra.6.a
@@ -220,12 +287,20 @@ oe_v250_fra.6 = {
 		add_inflation = -1
 		add_stability = -3
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev6_permanent_taille years = 18 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c02_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_fra.6.b
 		ai_chance = { base = 35 }
 		add_stability = 5
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev6_provincial_estates years = 18 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c02_s2 value = 1 }
+		}
 	}
 }
 
@@ -248,6 +323,10 @@ oe_v250_fra.7 = {
 			NOT = { has_global_variable = oe_start_1337 }
 		}
 		current_year <= 1470
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v250_fra_c02_s2
+			current_year >= 1393
+		}
 	}
 	option = {
 		name = oe_v250_fra.7.a
@@ -256,6 +335,10 @@ oe_v250_fra.7 = {
 		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_penalty }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev7_marmouset_ministers years = 15 mode = replace }
 		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } c:BUR = { add_opinion = { target = root modifier = opinion_displeased } } }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c02_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_fra.7.b
@@ -264,6 +347,10 @@ oe_v250_fra.7 = {
 		add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev7_princes_of_blood years = 15 mode = replace }
 		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } add_opinion = { target = c:BUR modifier = opinion_pleased } c:BUR = { add_opinion = { target = root modifier = opinion_pleased } } }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c02_s3 value = 1 }
+		}
 	}
 }
 
@@ -286,6 +373,10 @@ oe_v250_fra.8 = {
 			NOT = { has_global_variable = oe_start_1337 }
 		}
 		current_year <= 1470
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v250_fra_c02_s3
+			current_year >= 1413
+		}
 	}
 	option = {
 		name = oe_v250_fra.8.a
@@ -294,6 +385,14 @@ oe_v250_fra.8 = {
 		add_prestige = -5
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev8_burgundian_appeasement years = 15 mode = replace }
 		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } add_opinion = { target = c:BUR modifier = opinion_good_relations } c:BUR = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v250_fra_c02_done } }
+				set_variable = { name = oe_v70_mch_v250_fra_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v250_fra.8.b
@@ -302,6 +401,14 @@ oe_v250_fra.8 = {
 		add_army_tradition = 4
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev8_armagnac_centralization years = 15 mode = replace }
 		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } c:BUR = { add_opinion = { target = root modifier = opinion_insulted } } }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v250_fra_c02_done } }
+				set_variable = { name = oe_v70_mch_v250_fra_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -332,6 +439,11 @@ oe_v250_fra.9 = {
 		add_yearly_manpower = 0.40
 		if = { limit = { owns = location:orleans } location:orleans = { change_prosperity = prosperity_mild_bonus } }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev9_maid_orleans years = 18 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c03_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v250_fra.10 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_v250_fra.9.b
@@ -339,6 +451,11 @@ oe_v250_fra.9 = {
 		add_stability = 4
 		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev9_poitiers_caution years = 18 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c03_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v250_fra.10 days = { 365 730 } }
+		}
 	}
 }
 
@@ -361,6 +478,7 @@ oe_v250_fra.10 = {
 			NOT = { has_global_variable = oe_start_1337 }
 		}
 		current_year <= 1470
+		has_variable = oe_v70_mch_v250_fra_c03_s1 # [v70_mchain]
 	}
 	option = {
 		name = oe_v250_fra.10.a
@@ -370,6 +488,10 @@ oe_v250_fra.10 = {
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev10_arras_concord years = 18 mode = replace }
 		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } add_opinion = { target = c:BUR modifier = opinion_good_relations } c:BUR = { add_opinion = { target = root modifier = opinion_good_relations } } }
 		if = { limit = { country_exists = c:ENG c:ENG = { is_rebel_country = no } } c:ENG = { add_opinion = { target = root modifier = opinion_displeased } } }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c03_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_fra.10.b
@@ -378,6 +500,10 @@ oe_v250_fra.10 = {
 		add_war_exhaustion = 1
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev10_valois_pride years = 18 mode = replace }
 		if = { limit = { country_exists = c:BUR c:BUR = { is_rebel_country = no } } c:BUR = { add_opinion = { target = root modifier = opinion_insulted } } }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c03_s2 value = 1 }
+		}
 	}
 }
 
@@ -400,6 +526,10 @@ oe_v250_fra.11 = {
 			NOT = { has_global_variable = oe_start_1337 }
 		}
 		current_year <= 1470
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v250_fra_c03_s2
+			current_year >= 1446
+		}
 	}
 	option = {
 		name = oe_v250_fra.11.a
@@ -408,6 +538,10 @@ oe_v250_fra.11 = {
 		add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_bonus }
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev11_pragmatic_sanction years = 20 mode = replace }
 		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } c:PAP = { add_opinion = { target = root modifier = opinion_insulted } } }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c03_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_fra.11.b
@@ -416,6 +550,10 @@ oe_v250_fra.11 = {
 		add_legitimacy = 5
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev11_papal_concordat years = 20 mode = replace }
 		if = { limit = { country_exists = c:PAP c:PAP = { is_rebel_country = no } } add_opinion = { target = c:PAP modifier = opinion_good_relations } c:PAP = { add_opinion = { target = root modifier = opinion_good_relations } } }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_fra_c03_s3 value = 1 }
+		}
 	}
 }
 
@@ -438,6 +576,10 @@ oe_v250_fra.12 = {
 			NOT = { has_global_variable = oe_start_1337 }
 		}
 		current_year <= 1470
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v250_fra_c03_s3
+			current_year >= 1453
+		}
 	}
 	option = {
 		name = oe_v250_fra.12.a
@@ -445,11 +587,27 @@ oe_v250_fra.12 = {
 		add_gold = -90
 		add_army_tradition = 6
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev12_bureau_artillery years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v250_fra_c03_done } }
+				set_variable = { name = oe_v70_mch_v250_fra_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v250_fra.12.b
 		ai_chance = { base = 35 }
 		add_yearly_manpower = 0.45
 		add_country_modifier = { modifier = oe_v250_fra_mod_ev12_franc_archers years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v250_fra_c03_done } }
+				set_variable = { name = oe_v70_mch_v250_fra_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }

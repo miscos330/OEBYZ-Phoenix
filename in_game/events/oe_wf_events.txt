@@ -163,6 +163,10 @@ oe_wf.10 = {
 		ai_chance = { base = 60 }
 		add_stability = 5
 		change_celestial_authority = { value = celestial_authority_weak_bonus }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wf_c01_s1 value = 1 }
+		}
 	}
 	option = {
 		name = oe_wf.10.b
@@ -175,6 +179,10 @@ oe_wf.10 = {
 			set_variable = { name = oe_wf_dynasty_age value = 60 }
 		}
 		change_variable = { name = oe_wf_dynasty_age add = -10 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wf_c01_s1 value = 1 }
+		}
 	}
 }
 
@@ -187,6 +195,10 @@ oe_wf.11 = {
 	image = "gfx/interface/illustrations/events/oe_wf_ev_mandate_decline.dds"
 	trigger = {
 		oe_wf_is_middle_kingdom_leader = yes
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_wf_c01_s1
+			current_year >= 1208
+		}
 	}
 	option = {
 		name = oe_wf.11.a
@@ -198,6 +210,10 @@ oe_wf.11 = {
 			set_variable = { name = oe_wf_reform_momentum value = 0 }
 		}
 		change_variable = { name = oe_wf_reform_momentum add = 1 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wf_c01_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_wf.11.b
@@ -207,6 +223,10 @@ oe_wf.11 = {
 		if = {
 			limit = { country_has_estate = estate_type:peasants_estate }
 			add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_penalty }
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wf_c01_s2 value = 1 }
 		}
 	}
 }
@@ -220,6 +240,10 @@ oe_wf.12 = {
 	image = "gfx/interface/illustrations/events/oe_wf_ev_beijing_imperial_capital.dds"
 	trigger = {
 		oe_wf_is_middle_kingdom_leader = yes
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_wf_c01_s2
+			current_year >= 1208
+		}
 	}
 	option = {
 		name = oe_wf.12.a
@@ -232,6 +256,14 @@ oe_wf.12 = {
 		}
 		change_variable = { name = oe_wf_reform_momentum add = 1 }
 		add_country_modifier = { modifier = oe_wf_cycle_audit_mod years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wf_c01_done } }
+				set_variable = { name = oe_v70_mch_wf_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_wf.12.b
@@ -240,6 +272,14 @@ oe_wf.12 = {
 		if = {
 			limit = { country_has_estate = estate_type:nobles_estate }
 			add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wf_c01_done } }
+				set_variable = { name = oe_v70_mch_wf_c01_done value = 1 }
+				add_prestige = 4
+			}
 		}
 	}
 }
@@ -271,6 +311,11 @@ oe_wf.13 = {
 			add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_bonus }
 		}
 		add_country_modifier = { modifier = oe_wf_cycle_cadastre_mod years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wf_c02_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wf.14 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wf.13.b
@@ -284,6 +329,11 @@ oe_wf.13 = {
 			add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_penalty }
 		}
 		add_gold = -40
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wf_c02_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wf.14 days = { 365 730 } }
+		}
 	}
 }
 
@@ -296,6 +346,7 @@ oe_wf.14 = {
 	image = "gfx/interface/illustrations/events/oe_wf_ev_ming_unification_map.dds"
 	trigger = {
 		oe_wf_is_middle_kingdom_leader = yes
+		has_variable = oe_v70_mch_wf_c02_s1 # [v70_mchain]
 	}
 	option = {
 		name = oe_wf.14.a
@@ -309,6 +360,10 @@ oe_wf.14 = {
 		}
 		change_variable = { name = oe_wf_reform_momentum add = 1 }
 		add_country_modifier = { modifier = oe_wf_cycle_frontier_pay_mod years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wf_c02_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_wf.14.b
@@ -317,6 +372,10 @@ oe_wf.14 = {
 		if = {
 			limit = { country_has_estate = estate_type:peasants_estate }
 			add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_mild_penalty }
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wf_c02_s2 value = 1 }
 		}
 	}
 }
@@ -330,6 +389,10 @@ oe_wf.15 = {
 	image = "gfx/interface/illustrations/events/oe_wf_ev_imperial_examination.dds"
 	trigger = {
 		oe_wf_is_middle_kingdom_leader = yes
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_wf_c02_s2
+			current_year >= 1208
+		}
 	}
 	option = {
 		name = oe_wf.15.a
@@ -345,6 +408,14 @@ oe_wf.15 = {
 			add_estate_satisfaction = { type = estate_type:clergy_estate value = estate_satisfaction_weak_penalty }
 		}
 		trigger_event_non_silently = { id = oe_wf.16 days = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wf_c02_done } }
+				set_variable = { name = oe_v70_mch_wf_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_wf.15.b
@@ -356,6 +427,14 @@ oe_wf.15 = {
 		}
 		change_variable = { name = oe_wf_dynasty_age add = -20 }
 		add_country_modifier = { modifier = oe_wf_cycle_cadastre_mod years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wf_c02_done } }
+				set_variable = { name = oe_v70_mch_wf_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 

@@ -13,6 +13,10 @@ oe_cel.1 = {
 		name = oe_cel.1.a
 		ai_chance = { base = 100 }
 		add_prestige = 5
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c01_s1 value = 1 }
+		}
 	}
 }
 
@@ -175,7 +179,12 @@ oe_cel.7 = {
 	desc = oe_cel.7.desc
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_cel_fanwang_revolt.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_cel_c01_s1
+			current_year >= 1208
+		}
+	}
 	immediate = {
 		remove_variable = oe_cel_crisis_active
 		remove_variable = oe_cel_crisis_due
@@ -188,6 +197,10 @@ oe_cel.7 = {
 		change_celestial_authority = { value = celestial_authority_weak_bonus }
 		oe_cel_cool_revocation_tension = { amount = 3 }
 		add_country_modifier = { modifier = oe_cel_fiefs_subdued_mod years = 20 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c01_s2 value = 1 }
+		}
 	}
 }
 
@@ -220,7 +233,12 @@ oe_cel.9 = {
 	desc = oe_cel.9.desc
 	outcome = neutral
 	image = "gfx/interface/illustrations/events/oe_ev_cel_princes_enfeoffed.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_cel_c01_s2
+			current_year >= 1208
+		}
+	}
 	option = {
 		name = oe_cel.9.a
 		ai_chance = { base = 70 }
@@ -230,6 +248,10 @@ oe_cel.9 = {
 				add_liberty_desire = -10
 			}
 			remove_variable = oe_cel_dead_fief
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c01_s3 value = 1 }
 		}
 	}
 	option = {
@@ -247,6 +269,10 @@ oe_cel.9 = {
 			remove_variable = oe_cel_dead_fief
 		}
 		oe_cel_bump_revocation_tension = yes
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c01_s3 value = 1 }
+		}
 	}
 }
 
@@ -345,11 +371,24 @@ oe_cel.15 = {
 	desc = oe_cel.15.desc
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_cel_gaituguiliu.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_cel_c01_s3
+			current_year >= 1208
+		}
+	}
 	option = {
 		name = oe_cel.15.a
 		ai_chance = { base = 100 }
 		add_prestige = 5
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_cel_c01_done } }
+				set_variable = { name = oe_v70_mch_cel_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -407,12 +446,20 @@ oe_cel.18 = {
 		ai_chance = { base = 50 }
 		set_variable = { name = oe_cel_debate_side value = 1 }
 		add_country_modifier = { modifier = oe_cel_ideology_left_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c02_s1 value = 1 }
+		}
 	}
 	option = {
 		name = oe_cel.18.b
 		ai_chance = { base = 50 }
 		set_variable = { name = oe_cel_debate_side value = 2 }
 		add_country_modifier = { modifier = oe_cel_ideology_right_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c02_s1 value = 1 }
+		}
 	}
 }
 
@@ -423,7 +470,12 @@ oe_cel.19 = {
 	desc = oe_cel.19.desc
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_cel_mandate_court.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_cel_c02_s1
+			current_year >= 1208
+		}
+	}
 	immediate = {
 		set_variable = { name = oe_cel_verdict_done value = 1 }
 	}
@@ -431,6 +483,10 @@ oe_cel.19 = {
 		name = oe_cel.19.a
 		ai_chance = { base = 100 }
 		add_stability = 1
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c02_s2 value = 1 }
+		}
 	}
 }
 
@@ -441,7 +497,12 @@ oe_cel.20 = {
 	desc = oe_cel.20.desc
 	outcome = negative
 	image = "gfx/interface/illustrations/events/oe_ev_cel_fanwang_revolt.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_cel_c02_s2
+			current_year >= 1208
+		}
+	}
 	immediate = {
 		every_subject = {
 			limit = { oe_cel_is_any_celestial_subject = yes }
@@ -453,10 +514,18 @@ oe_cel.20 = {
 		ai_chance = { base = 60 }
 		add_gold = -100
 		change_celestial_authority = { value = celestial_authority_weak_bonus }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c02_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_cel.20.b
 		ai_chance = { base = 40 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c02_s3 value = 1 }
+		}
 	}
 }
 
@@ -467,7 +536,12 @@ oe_cel.21 = {
 	desc = oe_cel.21.desc
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_cel_treasure_ocean.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_cel_c02_s3
+			current_year >= 1208
+		}
+	}
 	immediate = {
 		set_variable = { name = oe_cel_treasure_done value = 1 }
 	}
@@ -475,6 +549,14 @@ oe_cel.21 = {
 		name = oe_cel.21.a
 		ai_chance = { base = 100 }
 		add_prestige = 10
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_cel_c02_done } }
+				set_variable = { name = oe_v70_mch_cel_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -494,6 +576,10 @@ oe_cel.22 = {
 		ai_chance = { base = 100 }
 		add_prestige = 25
 		add_country_modifier = { modifier = oe_cel_twin_phoenix_mod years = 50 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c03_s1 value = 1 }
+		}
 	}
 }
 
@@ -504,7 +590,12 @@ oe_cel.23 = {
 	desc = oe_cel.23.desc
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_cel_treasure_ocean.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_cel_c03_s1
+			current_year >= 1208
+		}
+	}
 	immediate = {
 		set_variable = { name = oe_cel_elysia_met_done value = 1 }
 	}
@@ -512,6 +603,10 @@ oe_cel.23 = {
 		name = oe_cel.23.a
 		ai_chance = { base = 100 }
 		add_prestige = 10
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c03_s2 value = 1 }
+		}
 	}
 }
 
@@ -660,12 +755,20 @@ oe_cel.26 = {
 		add_prestige = 10
 		change_celestial_authority = { value = celestial_authority_very_weak_bonus }
 		add_country_modifier = { modifier = oe_cel_nanyang_hub_mod years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c04_s1 value = 1 }
+		}
 	}
 	option = {
 		name = oe_cel.26.b
 		ai_chance = { base = 30 }
 		add_gold = -60
 		add_country_modifier = { modifier = oe_cel_nanyang_fleet_depot_mod years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c04_s1 value = 1 }
+		}
 	}
 }
 
@@ -712,12 +815,28 @@ oe_cel.27 = {
 				owner = { add_opinion = { target = root modifier = oe_cel_op_enfeoffed } }
 			}
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_cel_c03_done } }
+				set_variable = { name = oe_v70_mch_cel_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_cel.27.b
 		ai_chance = { base = 25 }
 		add_prestige = 10
 		change_celestial_authority = { value = celestial_authority_very_weak_bonus }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_cel_c03_done } }
+				set_variable = { name = oe_v70_mch_cel_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -737,12 +856,20 @@ oe_cel.28 = {
 		ai_chance = { base = 70 }
 		add_prestige = 10
 		add_country_modifier = { modifier = oe_cel_western_regions_relay_mod years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c04_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_cel.28.b
 		ai_chance = { base = 30 }
 		add_gold = 120
 		change_celestial_authority = { value = celestial_authority_very_weak_bonus }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_cel_c04_s2 value = 1 }
+		}
 	}
 }
 
@@ -763,12 +890,28 @@ oe_cel.29 = {
 		add_prestige = 12
 		change_celestial_authority = { value = celestial_authority_very_weak_bonus }
 		add_country_modifier = { modifier = oe_cel_nurgan_stele_mod years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_cel_c04_done } }
+				set_variable = { name = oe_v70_mch_cel_c04_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_cel.29.b
 		ai_chance = { base = 25 }
 		add_gold = 90
 		add_country_modifier = { modifier = oe_cel_nurgan_fur_market_mod years = 20 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_cel_c04_done } }
+				set_variable = { name = oe_v70_mch_cel_c04_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 

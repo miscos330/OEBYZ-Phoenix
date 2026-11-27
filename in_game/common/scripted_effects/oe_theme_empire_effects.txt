@@ -5,6 +5,18 @@
 oe_phoenix_empire_sync = {
     if = {
         limit = {
+            has_global_variable = oe_v61_1204_mantle_claimed
+            has_global_variable = oe_phoenix_empire
+            exists = global_var:oe_phoenix_empire
+            global_var:oe_phoenix_empire = {
+                is_rebel_country = no
+                OR = { tag = BYZ tag = ROM tag = EPI tag = TRE }
+            }
+        }
+        # Preserve 1204 Constantinople mantle victor across monthly sync.
+    }
+    else_if = {
+        limit = {
             country_exists = c:ROM
             c:ROM = {
                 is_rebel_country = no
@@ -324,7 +336,7 @@ oe_theme_found_at_seat_empire = {
         limit = { scope:oe_theme_seat = { OR = { var:oe_theme_region ?= 58 var:oe_theme_region ?= 59 } is_coastal = yes } }
         scope:oe_theme_seat = {
             create_building_country_in_location = {
-                religion = religion:orthodox
+                religion = scope:oe_emp_overlord.religion
                 culture = culture:oe_roman_noble_culture
                 subject_type = subject_type:oe_empire_theme_naval
                 overlord = scope:oe_emp_overlord
@@ -346,7 +358,7 @@ oe_theme_found_at_seat_empire = {
         }
         scope:oe_theme_seat = {
             create_building_country_in_location = {
-                religion = religion:orthodox
+                religion = scope:oe_emp_overlord.religion
                 culture = culture:oe_roman_noble_culture
                 subject_type = subject_type:oe_empire_theme_italian
                 overlord = scope:oe_emp_overlord
@@ -365,7 +377,7 @@ oe_theme_found_at_seat_empire = {
         }
         scope:oe_theme_seat = {
             create_building_country_in_location = {
-                religion = religion:orthodox
+                religion = scope:oe_emp_overlord.religion
                 culture = culture:oe_roman_noble_culture
                 subject_type = subject_type:oe_empire_theme_latin
                 overlord = scope:oe_emp_overlord
@@ -383,7 +395,7 @@ oe_theme_found_at_seat_empire = {
     else = {
         scope:oe_theme_seat = {
             create_building_country_in_location = {
-                religion = religion:orthodox
+                religion = scope:oe_emp_overlord.religion
                 culture = culture:oe_roman_noble_culture
                 subject_type = subject_type:oe_empire_theme
                 overlord = scope:oe_emp_overlord

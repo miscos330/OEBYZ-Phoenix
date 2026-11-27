@@ -2,15 +2,15 @@
 monthly_country_pulse = { on_actions = { oe_court_monthly } }
 on_character_death = { on_actions = { oe_court_death } }
 oe_court_startup = {
-    trigger = { current_year >= 1200 oe_byz_core_active = yes country_exists = c:BYZ }
+    trigger = { current_year >= 361 oe_byz_core_active = yes country_exists = c:BYZ }
     effect = { c:BYZ = { oe_court_initialize = yes } }
 }
 oe_court_monthly = {
-    trigger = { current_year >= 1200 tag = BYZ is_rebel_country = no oe_byz_core_active = yes }
+    trigger = { current_year >= 361 tag = BYZ is_rebel_country = no oe_byz_core_active = yes }
     effect = { oe_court_clear_invalid = yes oe_court_initialize = yes oe_court_auto_fill = yes }
 }
 oe_court_death = {
-    trigger = { current_year >= 1200 oe_byz_core_active = yes country_exists = c:BYZ scope:target = { has_variable = oe_court_office_held } }
+    trigger = { current_year >= 361 oe_byz_core_active = yes country_exists = c:BYZ scope:target = { has_variable = oe_court_office_held } }
     effect = {
         # on_character_death can run before the person leaves the living character list.
         scope:target = { set_variable = oe_court_deceased }
@@ -21,6 +21,6 @@ oe_court_death = {
 # Becoming emperor immediately frees any court office; automated replacement uses the same eligibility rules.
 on_new_ruler = { on_actions = { oe_court_ruler_changed } }
 oe_court_ruler_changed = {
-    trigger = { current_year >= 1200 oe_byz_core_active = yes tag = BYZ is_rebel_country = no }
+    trigger = { current_year >= 361 oe_byz_core_active = yes tag = BYZ is_rebel_country = no }
     effect = { oe_court_clear_invalid = yes oe_court_auto_fill = yes }
 }

@@ -7,7 +7,7 @@ on_new_country_formed = { on_actions = { oe_theme_empire_on_formed } }
 monthly_country_pulse = { on_actions = { oe_theme_empire_monthly_pulse } }
 
 oe_theme_empire_on_start = {
-    trigger = { current_year >= 1200 }
+    trigger = { current_year >= 361 }
     effect = {
         oe_phoenix_empire_sync = yes
         oe_theme_regions_assign = yes
@@ -15,7 +15,7 @@ oe_theme_empire_on_start = {
 }
 
 oe_theme_empire_after_lobby = {
-    trigger = { current_year >= 1200 }
+    trigger = { current_year >= 361 }
     effect = {
         oe_phoenix_empire_sync = yes
         oe_theme_regions_assign = yes
@@ -29,12 +29,13 @@ oe_theme_empire_after_lobby = {
 # Immediate BYZ -> ROM tag-swap synchronization so IOs & all 12 theme building types stay 100% intact.
 oe_theme_empire_on_formed = {
     trigger = {
-        current_year >= 1200
+        current_year >= 361
         is_rebel_country = no
         OR = {
             tag = ROM
             tag = BYZ
             has_or_had_tag = BYZ
+            oe_is_western_phoenix_empire = yes
         }
     }
     effect = {
@@ -45,10 +46,12 @@ oe_theme_empire_on_formed = {
 
 oe_theme_empire_monthly_pulse = {
     trigger = {
-        current_year >= 1200
+        current_year >= 361
         is_rebel_country = no
-        OR = { tag = BYZ tag = ROM }
-        oe_is_phoenix_empire = yes
+        OR = {
+            oe_is_phoenix_empire = yes
+            oe_is_western_phoenix_empire = yes
+        }
     }
     effect = {
         oe_phoenix_empire_sync = yes

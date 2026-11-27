@@ -45,8 +45,14 @@ oe_yp_portrait_prince = {
             OR = {
                 is_heir = yes
                 AND = {
-                    c:CHI = { exists = ruler }
-                    is_close_relative = c:CHI.ruler
+                    trigger_if = {
+                        limit = {
+                            country_exists = c:CHI
+                            c:CHI = { exists = ruler }
+                        }
+                        is_close_relative = c:CHI.ruler
+                    }
+                    trigger_else = { always = no }
                 }
             }
         }

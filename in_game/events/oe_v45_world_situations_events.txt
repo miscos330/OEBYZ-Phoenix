@@ -34,6 +34,14 @@ oe_v45_ws.1 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c01_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_2_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.2 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.1.b
@@ -45,6 +53,14 @@ oe_v45_ws.1 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c01_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_2_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.2 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.1.c
@@ -54,6 +70,14 @@ oe_v45_ws.1 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_global_silver_flow } situation:oe_sit_v45_global_silver_flow = { if = { limit = { NOT = { has_variable = oe_v45_silver_index } } set_variable = { name = oe_v45_silver_index value = 35 } } change_variable = { name = oe_v45_silver_index add = -5 } if = { limit = { var:oe_v45_silver_index > 100 } set_variable = { name = oe_v45_silver_index value = 100 } } if = { limit = { var:oe_v45_silver_index < 0 } set_variable = { name = oe_v45_silver_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c01_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_2_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.2 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -72,6 +96,10 @@ oe_v45_ws.2 = {
 		current_year >= 1550
 		current_year <= 1710
 		is_situation_active = situation:oe_sit_v45_global_silver_flow
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c01_s1
+			has_variable = oe_v45_ws_2_seen
+		}
 	}
 
 	immediate = {
@@ -87,6 +115,11 @@ oe_v45_ws.2 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c01_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v45_ws.3 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_v45_ws.2.b
@@ -97,6 +130,11 @@ oe_v45_ws.2 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c01_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v45_ws.3 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_v45_ws.2.c
@@ -105,6 +143,11 @@ oe_v45_ws.2 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_global_silver_flow } situation:oe_sit_v45_global_silver_flow = { if = { limit = { NOT = { has_variable = oe_v45_silver_index } } set_variable = { name = oe_v45_silver_index value = 35 } } change_variable = { name = oe_v45_silver_index add = -4 } if = { limit = { var:oe_v45_silver_index > 100 } set_variable = { name = oe_v45_silver_index value = 100 } } if = { limit = { var:oe_v45_silver_index < 0 } set_variable = { name = oe_v45_silver_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c01_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v45_ws.3 days = { 365 730 } }
 		}
 	}
 }
@@ -123,6 +166,7 @@ oe_v45_ws.3 = {
 		current_year >= 1550
 		current_year <= 1710
 		is_situation_active = situation:oe_sit_v45_global_silver_flow
+		has_variable = oe_v70_mch_v45_world_situations_c01_s2 # [v70_mchain]
 	}
 
 	immediate = {
@@ -138,6 +182,14 @@ oe_v45_ws.3 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c01_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.3.b
@@ -147,6 +199,14 @@ oe_v45_ws.3 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c01_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.3.c
@@ -155,6 +215,14 @@ oe_v45_ws.3 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_global_silver_flow } situation:oe_sit_v45_global_silver_flow = { if = { limit = { NOT = { has_variable = oe_v45_silver_index } } set_variable = { name = oe_v45_silver_index value = 35 } } change_variable = { name = oe_v45_silver_index add = -4 } if = { limit = { var:oe_v45_silver_index > 100 } set_variable = { name = oe_v45_silver_index value = 100 } } if = { limit = { var:oe_v45_silver_index < 0 } set_variable = { name = oe_v45_silver_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c01_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c01_done value = 1 }
+				add_prestige = 4
+			}
 		}
 	}
 }
@@ -188,6 +256,14 @@ oe_v45_ws.4 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c02_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_5_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.5 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.4.b
@@ -198,6 +274,14 @@ oe_v45_ws.4 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c02_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_5_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.5 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.4.c
@@ -207,6 +291,14 @@ oe_v45_ws.4 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_global_silver_flow } situation:oe_sit_v45_global_silver_flow = { if = { limit = { NOT = { has_variable = oe_v45_silver_index } } set_variable = { name = oe_v45_silver_index value = 35 } } change_variable = { name = oe_v45_silver_index add = -6 } if = { limit = { var:oe_v45_silver_index > 100 } set_variable = { name = oe_v45_silver_index value = 100 } } if = { limit = { var:oe_v45_silver_index < 0 } set_variable = { name = oe_v45_silver_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c02_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_5_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.5 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -225,6 +317,10 @@ oe_v45_ws.5 = {
 		current_year >= 1550
 		current_year <= 1710
 		is_situation_active = situation:oe_sit_v45_global_silver_flow
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c02_s1
+			has_variable = oe_v45_ws_5_seen
+		}
 	}
 
 	immediate = {
@@ -240,6 +336,14 @@ oe_v45_ws.5 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c02_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_6_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.6 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.5.b
@@ -250,6 +354,14 @@ oe_v45_ws.5 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c02_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_6_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.6 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.5.c
@@ -259,6 +371,14 @@ oe_v45_ws.5 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_global_silver_flow } situation:oe_sit_v45_global_silver_flow = { if = { limit = { NOT = { has_variable = oe_v45_silver_index } } set_variable = { name = oe_v45_silver_index value = 35 } } change_variable = { name = oe_v45_silver_index add = -7 } if = { limit = { var:oe_v45_silver_index > 100 } set_variable = { name = oe_v45_silver_index value = 100 } } if = { limit = { var:oe_v45_silver_index < 0 } set_variable = { name = oe_v45_silver_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c02_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_6_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.6 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -277,6 +397,10 @@ oe_v45_ws.6 = {
 		current_year >= 1550
 		current_year <= 1710
 		is_situation_active = situation:oe_sit_v45_global_silver_flow
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c02_s2
+			has_variable = oe_v45_ws_6_seen
+		}
 	}
 
 	immediate = {
@@ -293,6 +417,14 @@ oe_v45_ws.6 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c02_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.6.b
@@ -303,6 +435,14 @@ oe_v45_ws.6 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c02_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.6.c
@@ -312,6 +452,14 @@ oe_v45_ws.6 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_global_silver_flow } situation:oe_sit_v45_global_silver_flow = { if = { limit = { NOT = { has_variable = oe_v45_silver_index } } set_variable = { name = oe_v45_silver_index value = 35 } } change_variable = { name = oe_v45_silver_index add = -8 } if = { limit = { var:oe_v45_silver_index > 100 } set_variable = { name = oe_v45_silver_index value = 100 } } if = { limit = { var:oe_v45_silver_index < 0 } set_variable = { name = oe_v45_silver_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c02_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c02_done value = 1 }
+				add_prestige = 4
+			}
 		}
 	}
 }
@@ -346,6 +494,14 @@ oe_v45_ws.7 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c03_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_8_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.8 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.7.b
@@ -356,6 +512,14 @@ oe_v45_ws.7 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c03_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_8_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.8 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.7.c
@@ -365,6 +529,14 @@ oe_v45_ws.7 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_little_ice_age } situation:oe_sit_v45_little_ice_age = { if = { limit = { NOT = { has_variable = oe_v45_lia_resilience } } set_variable = { name = oe_v45_lia_resilience value = 30 } } change_variable = { name = oe_v45_lia_resilience add = -6 } if = { limit = { var:oe_v45_lia_resilience > 100 } set_variable = { name = oe_v45_lia_resilience value = 100 } } if = { limit = { var:oe_v45_lia_resilience < 0 } set_variable = { name = oe_v45_lia_resilience value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c03_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_8_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.8 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -383,6 +555,10 @@ oe_v45_ws.8 = {
 		current_year >= 1570
 		current_year <= 1725
 		is_situation_active = situation:oe_sit_v45_little_ice_age
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c03_s1
+			has_variable = oe_v45_ws_8_seen
+		}
 	}
 
 	immediate = {
@@ -398,6 +574,14 @@ oe_v45_ws.8 = {
 		ai_chance = {
 			factor = 50
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c03_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_9_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.9 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.8.b
@@ -407,6 +591,14 @@ oe_v45_ws.8 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c03_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_9_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.9 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.8.c
@@ -415,6 +607,14 @@ oe_v45_ws.8 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_little_ice_age } situation:oe_sit_v45_little_ice_age = { if = { limit = { NOT = { has_variable = oe_v45_lia_resilience } } set_variable = { name = oe_v45_lia_resilience value = 30 } } change_variable = { name = oe_v45_lia_resilience add = -4 } if = { limit = { var:oe_v45_lia_resilience > 100 } set_variable = { name = oe_v45_lia_resilience value = 100 } } if = { limit = { var:oe_v45_lia_resilience < 0 } set_variable = { name = oe_v45_lia_resilience value = 0 } } } }
 		ai_chance = {
 			factor = 15
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c03_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_9_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.9 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -433,6 +633,10 @@ oe_v45_ws.9 = {
 		current_year >= 1570
 		current_year <= 1725
 		is_situation_active = situation:oe_sit_v45_little_ice_age
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c03_s2
+			has_variable = oe_v45_ws_9_seen
+		}
 	}
 
 	immediate = {
@@ -448,6 +652,14 @@ oe_v45_ws.9 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c03_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.9.b
@@ -457,6 +669,14 @@ oe_v45_ws.9 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c03_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.9.c
@@ -465,6 +685,14 @@ oe_v45_ws.9 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_little_ice_age } situation:oe_sit_v45_little_ice_age = { if = { limit = { NOT = { has_variable = oe_v45_lia_resilience } } set_variable = { name = oe_v45_lia_resilience value = 30 } } change_variable = { name = oe_v45_lia_resilience add = 2 } if = { limit = { var:oe_v45_lia_resilience > 100 } set_variable = { name = oe_v45_lia_resilience value = 100 } } if = { limit = { var:oe_v45_lia_resilience < 0 } set_variable = { name = oe_v45_lia_resilience value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c03_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c03_done value = 1 }
+				add_prestige = 4
+			}
 		}
 	}
 }
@@ -498,6 +726,14 @@ oe_v45_ws.10 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c04_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_11_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.11 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.10.b
@@ -508,6 +744,14 @@ oe_v45_ws.10 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c04_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_11_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.11 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.10.c
@@ -517,6 +761,14 @@ oe_v45_ws.10 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_little_ice_age } situation:oe_sit_v45_little_ice_age = { if = { limit = { NOT = { has_variable = oe_v45_lia_resilience } } set_variable = { name = oe_v45_lia_resilience value = 30 } } change_variable = { name = oe_v45_lia_resilience add = -8 } if = { limit = { var:oe_v45_lia_resilience > 100 } set_variable = { name = oe_v45_lia_resilience value = 100 } } if = { limit = { var:oe_v45_lia_resilience < 0 } set_variable = { name = oe_v45_lia_resilience value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c04_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_11_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.11 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -535,6 +787,10 @@ oe_v45_ws.11 = {
 		current_year >= 1570
 		current_year <= 1725
 		is_situation_active = situation:oe_sit_v45_little_ice_age
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c04_s1
+			has_variable = oe_v45_ws_11_seen
+		}
 	}
 
 	immediate = {
@@ -550,6 +806,14 @@ oe_v45_ws.11 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c04_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_12_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.12 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.11.b
@@ -559,6 +823,14 @@ oe_v45_ws.11 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c04_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_12_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.12 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.11.c
@@ -567,6 +839,14 @@ oe_v45_ws.11 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_little_ice_age } situation:oe_sit_v45_little_ice_age = { if = { limit = { NOT = { has_variable = oe_v45_lia_resilience } } set_variable = { name = oe_v45_lia_resilience value = 30 } } change_variable = { name = oe_v45_lia_resilience add = -4 } if = { limit = { var:oe_v45_lia_resilience > 100 } set_variable = { name = oe_v45_lia_resilience value = 100 } } if = { limit = { var:oe_v45_lia_resilience < 0 } set_variable = { name = oe_v45_lia_resilience value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c04_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_12_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.12 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -585,6 +865,10 @@ oe_v45_ws.12 = {
 		current_year >= 1570
 		current_year <= 1725
 		is_situation_active = situation:oe_sit_v45_little_ice_age
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c04_s2
+			has_variable = oe_v45_ws_12_seen
+		}
 	}
 
 	immediate = {
@@ -601,6 +885,14 @@ oe_v45_ws.12 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c04_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c04_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.12.b
@@ -611,6 +903,14 @@ oe_v45_ws.12 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c04_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c04_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.12.c
@@ -619,6 +919,14 @@ oe_v45_ws.12 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_little_ice_age } situation:oe_sit_v45_little_ice_age = { if = { limit = { NOT = { has_variable = oe_v45_lia_resilience } } set_variable = { name = oe_v45_lia_resilience value = 30 } } change_variable = { name = oe_v45_lia_resilience add = -5 } if = { limit = { var:oe_v45_lia_resilience > 100 } set_variable = { name = oe_v45_lia_resilience value = 100 } } if = { limit = { var:oe_v45_lia_resilience < 0 } set_variable = { name = oe_v45_lia_resilience value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c04_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c04_done value = 1 }
+				add_prestige = 4
+			}
 		}
 	}
 }
@@ -654,6 +962,14 @@ oe_v45_ws.13 = {
 		ai_chance = {
 			factor = 40
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c07_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_14_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.14 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.13.b
@@ -665,6 +981,14 @@ oe_v45_ws.13 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c07_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_14_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.14 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.13.c
@@ -675,6 +999,14 @@ oe_v45_ws.13 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_atlantic_revolutions } situation:oe_sit_v45_atlantic_revolutions = { if = { limit = { NOT = { has_variable = oe_v45_rev_fervor } } set_variable = { name = oe_v45_rev_fervor value = 10 } } change_variable = { name = oe_v45_rev_fervor add = -12 } if = { limit = { var:oe_v45_rev_fervor > 100 } set_variable = { name = oe_v45_rev_fervor value = 100 } } if = { limit = { var:oe_v45_rev_fervor < -100 } set_variable = { name = oe_v45_rev_fervor value = -100 } } } }
 		ai_chance = {
 			factor = 25
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c07_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_14_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.14 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -693,6 +1025,10 @@ oe_v45_ws.14 = {
 		current_year >= 1775
 		current_year <= 1835
 		is_situation_active = situation:oe_sit_v45_atlantic_revolutions
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c07_s1
+			has_variable = oe_v45_ws_14_seen
+		}
 	}
 
 	immediate = {
@@ -710,6 +1046,14 @@ oe_v45_ws.14 = {
 		ai_chance = {
 			factor = 40
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c07_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_15_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.15 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.14.b
@@ -722,6 +1066,14 @@ oe_v45_ws.14 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c07_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_15_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.15 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.14.c
@@ -732,6 +1084,14 @@ oe_v45_ws.14 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_atlantic_revolutions } situation:oe_sit_v45_atlantic_revolutions = { if = { limit = { NOT = { has_variable = oe_v45_rev_fervor } } set_variable = { name = oe_v45_rev_fervor value = 10 } } change_variable = { name = oe_v45_rev_fervor add = -14 } if = { limit = { var:oe_v45_rev_fervor > 100 } set_variable = { name = oe_v45_rev_fervor value = 100 } } if = { limit = { var:oe_v45_rev_fervor < -100 } set_variable = { name = oe_v45_rev_fervor value = -100 } } } }
 		ai_chance = {
 			factor = 25
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c07_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_15_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.15 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -750,6 +1110,10 @@ oe_v45_ws.15 = {
 		current_year >= 1775
 		current_year <= 1835
 		is_situation_active = situation:oe_sit_v45_atlantic_revolutions
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c07_s2
+			has_variable = oe_v45_ws_15_seen
+		}
 	}
 
 	immediate = {
@@ -766,6 +1130,14 @@ oe_v45_ws.15 = {
 		ai_chance = {
 			factor = 40
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c07_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c07_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.15.b
@@ -777,6 +1149,14 @@ oe_v45_ws.15 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c07_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c07_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.15.c
@@ -786,6 +1166,14 @@ oe_v45_ws.15 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_atlantic_revolutions } situation:oe_sit_v45_atlantic_revolutions = { if = { limit = { NOT = { has_variable = oe_v45_rev_fervor } } set_variable = { name = oe_v45_rev_fervor value = 10 } } change_variable = { name = oe_v45_rev_fervor add = -14 } if = { limit = { var:oe_v45_rev_fervor > 100 } set_variable = { name = oe_v45_rev_fervor value = 100 } } if = { limit = { var:oe_v45_rev_fervor < -100 } set_variable = { name = oe_v45_rev_fervor value = -100 } } } }
 		ai_chance = {
 			factor = 25
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c07_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c07_done value = 1 }
+				add_prestige = 4
+			}
 		}
 	}
 }
@@ -821,6 +1209,14 @@ oe_v45_ws.16 = {
 		ai_chance = {
 			factor = 40
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c08_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_17_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.17 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.16.b
@@ -830,6 +1226,14 @@ oe_v45_ws.16 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_atlantic_revolutions } situation:oe_sit_v45_atlantic_revolutions = { if = { limit = { NOT = { has_variable = oe_v45_rev_fervor } } set_variable = { name = oe_v45_rev_fervor value = 10 } } change_variable = { name = oe_v45_rev_fervor add = -3 } if = { limit = { var:oe_v45_rev_fervor > 100 } set_variable = { name = oe_v45_rev_fervor value = 100 } } if = { limit = { var:oe_v45_rev_fervor < -100 } set_variable = { name = oe_v45_rev_fervor value = -100 } } } }
 		ai_chance = {
 			factor = 35
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c08_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_17_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.17 days = { 365 730 } }
+			}
 		}
 	}
 	option = {
@@ -841,6 +1245,14 @@ oe_v45_ws.16 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_atlantic_revolutions } situation:oe_sit_v45_atlantic_revolutions = { if = { limit = { NOT = { has_variable = oe_v45_rev_fervor } } set_variable = { name = oe_v45_rev_fervor value = 10 } } change_variable = { name = oe_v45_rev_fervor add = 15 } if = { limit = { var:oe_v45_rev_fervor > 100 } set_variable = { name = oe_v45_rev_fervor value = 100 } } if = { limit = { var:oe_v45_rev_fervor < -100 } set_variable = { name = oe_v45_rev_fervor value = -100 } } } }
 		ai_chance = {
 			factor = 25
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c08_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_17_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.17 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -859,6 +1271,10 @@ oe_v45_ws.17 = {
 		current_year >= 1775
 		current_year <= 1835
 		is_situation_active = situation:oe_sit_v45_atlantic_revolutions
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c08_s1
+			has_variable = oe_v45_ws_17_seen
+		}
 	}
 
 	immediate = {
@@ -877,6 +1293,14 @@ oe_v45_ws.17 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c08_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_18_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.18 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.17.b
@@ -888,6 +1312,14 @@ oe_v45_ws.17 = {
 		ai_chance = {
 			factor = 30
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c08_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_18_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.18 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.17.c
@@ -897,6 +1329,14 @@ oe_v45_ws.17 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_atlantic_revolutions } situation:oe_sit_v45_atlantic_revolutions = { if = { limit = { NOT = { has_variable = oe_v45_rev_fervor } } set_variable = { name = oe_v45_rev_fervor value = 10 } } change_variable = { name = oe_v45_rev_fervor add = -12 } if = { limit = { var:oe_v45_rev_fervor > 100 } set_variable = { name = oe_v45_rev_fervor value = 100 } } if = { limit = { var:oe_v45_rev_fervor < -100 } set_variable = { name = oe_v45_rev_fervor value = -100 } } } }
 		ai_chance = {
 			factor = 25
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c08_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_18_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.18 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -915,6 +1355,10 @@ oe_v45_ws.18 = {
 		current_year >= 1775
 		current_year <= 1835
 		is_situation_active = situation:oe_sit_v45_atlantic_revolutions
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c08_s2
+			has_variable = oe_v45_ws_18_seen
+		}
 	}
 
 	immediate = {
@@ -930,6 +1374,14 @@ oe_v45_ws.18 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c08_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c08_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.18.b
@@ -940,6 +1392,14 @@ oe_v45_ws.18 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c08_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c08_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.18.c
@@ -949,6 +1409,14 @@ oe_v45_ws.18 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_atlantic_revolutions } situation:oe_sit_v45_atlantic_revolutions = { if = { limit = { NOT = { has_variable = oe_v45_rev_fervor } } set_variable = { name = oe_v45_rev_fervor value = 10 } } change_variable = { name = oe_v45_rev_fervor add = -12 } if = { limit = { var:oe_v45_rev_fervor > 100 } set_variable = { name = oe_v45_rev_fervor value = 100 } } if = { limit = { var:oe_v45_rev_fervor < -100 } set_variable = { name = oe_v45_rev_fervor value = -100 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c08_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c08_done value = 1 }
+				add_prestige = 4
+			}
 		}
 	}
 }
@@ -983,6 +1451,14 @@ oe_v45_ws.19 = {
 		ai_chance = {
 			factor = 50
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c05_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_20_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.20 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.19.b
@@ -994,6 +1470,14 @@ oe_v45_ws.19 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c05_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_20_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.20 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.19.c
@@ -1002,6 +1486,14 @@ oe_v45_ws.19 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_proto_industrialization } situation:oe_sit_v45_proto_industrialization = { if = { limit = { NOT = { has_variable = oe_v45_ind_index } } set_variable = { name = oe_v45_ind_index value = 20 } } change_variable = { name = oe_v45_ind_index add = -4 } if = { limit = { var:oe_v45_ind_index > 100 } set_variable = { name = oe_v45_ind_index value = 100 } } if = { limit = { var:oe_v45_ind_index < 0 } set_variable = { name = oe_v45_ind_index value = 0 } } } }
 		ai_chance = {
 			factor = 15
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c05_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_20_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.20 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -1020,6 +1512,10 @@ oe_v45_ws.20 = {
 		current_year >= 1750
 		current_year <= 1836
 		is_situation_active = situation:oe_sit_v45_proto_industrialization
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c05_s1
+			has_variable = oe_v45_ws_20_seen
+		}
 	}
 
 	immediate = {
@@ -1036,6 +1532,14 @@ oe_v45_ws.20 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c05_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_21_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.21 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.20.b
@@ -1047,6 +1551,14 @@ oe_v45_ws.20 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c05_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_21_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.21 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.20.c
@@ -1055,6 +1567,14 @@ oe_v45_ws.20 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_proto_industrialization } situation:oe_sit_v45_proto_industrialization = { if = { limit = { NOT = { has_variable = oe_v45_ind_index } } set_variable = { name = oe_v45_ind_index value = 20 } } change_variable = { name = oe_v45_ind_index add = -5 } if = { limit = { var:oe_v45_ind_index > 100 } set_variable = { name = oe_v45_ind_index value = 100 } } if = { limit = { var:oe_v45_ind_index < 0 } set_variable = { name = oe_v45_ind_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c05_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_21_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.21 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -1073,6 +1593,10 @@ oe_v45_ws.21 = {
 		current_year >= 1750
 		current_year <= 1836
 		is_situation_active = situation:oe_sit_v45_proto_industrialization
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c05_s2
+			has_variable = oe_v45_ws_21_seen
+		}
 	}
 
 	immediate = {
@@ -1089,6 +1613,14 @@ oe_v45_ws.21 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c05_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c05_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.21.b
@@ -1099,6 +1631,14 @@ oe_v45_ws.21 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c05_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c05_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.21.c
@@ -1107,6 +1647,14 @@ oe_v45_ws.21 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_proto_industrialization } situation:oe_sit_v45_proto_industrialization = { if = { limit = { NOT = { has_variable = oe_v45_ind_index } } set_variable = { name = oe_v45_ind_index value = 20 } } change_variable = { name = oe_v45_ind_index add = -4 } if = { limit = { var:oe_v45_ind_index > 100 } set_variable = { name = oe_v45_ind_index value = 100 } } if = { limit = { var:oe_v45_ind_index < 0 } set_variable = { name = oe_v45_ind_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c05_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c05_done value = 1 }
+				add_prestige = 4
+			}
 		}
 	}
 }
@@ -1142,6 +1690,14 @@ oe_v45_ws.22 = {
 		ai_chance = {
 			factor = 50
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c06_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_23_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.23 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.22.b
@@ -1152,6 +1708,14 @@ oe_v45_ws.22 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c06_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_23_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.23 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.22.c
@@ -1160,6 +1724,14 @@ oe_v45_ws.22 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_proto_industrialization } situation:oe_sit_v45_proto_industrialization = { if = { limit = { NOT = { has_variable = oe_v45_ind_index } } set_variable = { name = oe_v45_ind_index value = 20 } } change_variable = { name = oe_v45_ind_index add = -4 } if = { limit = { var:oe_v45_ind_index > 100 } set_variable = { name = oe_v45_ind_index value = 100 } } if = { limit = { var:oe_v45_ind_index < 0 } set_variable = { name = oe_v45_ind_index value = 0 } } } }
 		ai_chance = {
 			factor = 15
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c06_s1 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_23_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.23 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -1178,6 +1750,10 @@ oe_v45_ws.23 = {
 		current_year >= 1750
 		current_year <= 1836
 		is_situation_active = situation:oe_sit_v45_proto_industrialization
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c06_s1
+			has_variable = oe_v45_ws_23_seen
+		}
 	}
 
 	immediate = {
@@ -1194,6 +1770,14 @@ oe_v45_ws.23 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c06_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_24_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.24 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.23.b
@@ -1204,6 +1788,14 @@ oe_v45_ws.23 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c06_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_24_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.24 days = { 365 730 } }
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.23.c
@@ -1212,6 +1804,14 @@ oe_v45_ws.23 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_proto_industrialization } situation:oe_sit_v45_proto_industrialization = { if = { limit = { NOT = { has_variable = oe_v45_ind_index } } set_variable = { name = oe_v45_ind_index value = 20 } } change_variable = { name = oe_v45_ind_index add = 2 } if = { limit = { var:oe_v45_ind_index > 100 } set_variable = { name = oe_v45_ind_index value = 100 } } if = { limit = { var:oe_v45_ind_index < 0 } set_variable = { name = oe_v45_ind_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v45_world_situations_c06_s2 value = 1 }
+			if = {
+				limit = { NOT = { has_variable = oe_v45_ws_24_seen } }
+				trigger_event_non_silently = { id = oe_v45_ws.24 days = { 365 730 } }
+			}
 		}
 	}
 }
@@ -1230,6 +1830,10 @@ oe_v45_ws.24 = {
 		current_year >= 1750
 		current_year <= 1836
 		is_situation_active = situation:oe_sit_v45_proto_industrialization
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v45_world_situations_c06_s2
+			has_variable = oe_v45_ws_24_seen
+		}
 	}
 
 	immediate = {
@@ -1247,6 +1851,14 @@ oe_v45_ws.24 = {
 		ai_chance = {
 			factor = 45
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c06_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c06_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.24.b
@@ -1257,6 +1869,14 @@ oe_v45_ws.24 = {
 		ai_chance = {
 			factor = 35
 		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c06_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c06_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v45_ws.24.c
@@ -1265,6 +1885,14 @@ oe_v45_ws.24 = {
 		if = { limit = { is_situation_active = situation:oe_sit_v45_proto_industrialization } situation:oe_sit_v45_proto_industrialization = { if = { limit = { NOT = { has_variable = oe_v45_ind_index } } set_variable = { name = oe_v45_ind_index value = 20 } } change_variable = { name = oe_v45_ind_index add = -3 } if = { limit = { var:oe_v45_ind_index > 100 } set_variable = { name = oe_v45_ind_index value = 100 } } if = { limit = { var:oe_v45_ind_index < 0 } set_variable = { name = oe_v45_ind_index value = 0 } } } }
 		ai_chance = {
 			factor = 20
+		}
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v45_world_situations_c06_done } }
+				set_variable = { name = oe_v70_mch_v45_world_situations_c06_done value = 1 }
+				add_prestige = 4
+			}
 		}
 	}
 }

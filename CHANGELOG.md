@@ -1,3 +1,71 @@
+# 《凤凰计划（OEBYZ）》v70.0 更新日志（合并 v61–v67 七大研发波次 + 532/1204/事件链/国家革新全面重做）
+
+> **发布状态**：v70.0（适配 EU5 1.4.9），合并 **v61 至 v67** 七大内部研发波次及全模组实机大修。
+> **存档提示**：v70.0 **不兼容旧版本存档**，请新开一局。
+> **官方音乐子模组**：[《凤凰计划 · 历代交响原声》（Project Phoenix Soundtrack，工坊 ID `3846593343`）](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) — 60 首罗马与地中海交响原声（约 148 分钟），不改联机校验，保持独立兼容。
+
+制作：寐夜空灵、miscos330
+
+---
+
+## 一、中文更新日志
+
+### 1. 跨时代 3D 君主服饰重制与 HUD 暂停零遮挡（主模组，v61 & v66 & v70）
+
+- **全时代 3D 君主与贵族服饰大升级**：
+  - 彻底重构蒙古大汗与黄金家族贵族 3D 服饰：换装 **古金色锦边蒙古袍与貂皮大帽**，告别清代顶戴违和。
+  - 新增三大时代 3D 宫廷礼服贴图与规则：古典晚期罗马 **帝紫披风**、唐宋 **帝国织锦龙袍**、1821 **深午夜蓝拿破仑帝国军礼服**。
+- **悬浮 HUD 暂停菜单隐藏与罗马专属门控**：
+  - 主模组凤凰指挥坞（`oe_wp33_command_dock.gui`）与编年史架空导览窗统一接入 `Not(IsPauseMenuShown)`，按 Esc 打开暂停菜单时自动隐身，不再遮挡红色“退出”按钮。
+  - 凤凰帝国指令坞新增罗马专属可见门控（`BYZ`/`ROM`/`ELR` 等），非罗马国家（如奥斯曼、蒙古）不再错误显示罗马总控台。
+
+### 2. 532 查士丁尼光复 & 1204 大蒙古国实战大修（编年史，v70）
+
+- **532 查士丁尼光复全面重做**：
+  - **单一主敌定向宣战**：将非洲、意大利、西班牙远征军的宣战逻辑重构为 `oe_v70_532_resolve_single_primary_enemy`（目标若为附庸则仅对其最高宗主宣战），彻底告别一次向整个地区所有国家宣战导致远征军被瞬间围歼的弊病。
+  - **远征生存增强与应急驰援**：提高初始远征军编成与战费，新增 10 年均衡先锋修正与一次性跨海应急增援脉冲；攻克西西里后自动衔接北伐东哥特（`FXO`）并弹出进军/定鼎事件（`oe_v70_532.1`）。
+  - **手动指定下一目标与旧事件去重**：局势面板新增「指定远征军/总督区出征下一目标」行动，并解锁被击溃战区的重派条件；修复意大利光复进度条卡死问题，并去重 31 条旧版重复 532 事件与 536 火山冬小国刷屏。
+- **1204 大蒙古国扩张 CB 与辽阳精修**：
+  - 局势「大蒙古国崛起」新增 **4 项专属扩张 CB 行动**（长生天招降诏书、诏讨漠北诸部、敕命探马赤西征、挥师南下伐金灭宋）。
+  - 辽阳行省军府（`M5L`）彻底去“公国”后缀并改制为草原部落（`steppe_horde`）与达斡尔文化（`daur_culture`），配齐契丹耶律家族与君主「耶律留哥那颜」，并重排分封君主初始化顺序消除空位摄政。
+
+### 3. 全模组 379 条多幕事件链、国家革新 TAG 重映射与 167 项可成立国家门控（主模组 + 编年史，v70）
+
+- **全模组事件链重构（`1,186` 条事件 → `379` 条多幕链）**：覆盖 95 个自定义事件文件（编年史 **243 条链 / 737 事件**，含 1204 蒙古六大汗时代史诗线；主模组 **136 条链 / 449 事件**），削减 271 处扁平随机脉冲弹出，全部事件链零孤立（`R28 = 0`）。
+- **国家革新 TAG 重映射与时代专属革新**：通过 EU5 原生 `REPLACE:` 动态重映射 **340 项原版国家革新** 匹配编年史真实 TAG（大唐 `CSH`、东晋 `JIN`、北魏、西罗马 `ANC`、萨珊 `FXS`、法兰克 `FXF`、南宋 `CSO`、大蒙古 `MGE`、大明 `MNG` 等），并新增 **48 项** 跨时代专属国家革新（盛中世纪等早期时代即有 6+ 独特革新可研）。
+- **167 项可成立国家纪元与 TAG 完整性门控**：全面加固主模组 12 项与编年史 155 项可成立国家条件，361 未分裂罗马（`BYZ`）与 1204 大蒙古国（`MGE`）等不再错误显示成立罗马帝国或重复成立自身。
+- **自主牧首区空作用域修复**：以零原版覆盖的 `REPLACE:autocephalous_patriarchate` 为 `auto_leave_trigger` 补齐 `exists = scope:recipient` 与领袖守卫，并为 5 个中世/近世开局的自主牧首区补齐默认教义律法，彻底根治 1444 首月刷新万行报错。
+
+### 4. 12 时代活世界引擎与 45 条引导任务树（编年史，v62–v66）
+
+- **考古人口、16 历史文化与 12 细分宗教（v62）**：12 时代统一人口单一真源，补全 532 勿吉与古伦巴第文化（清除早产英格兰/法兰西/伦巴第残留），修正 1648 吴三桂/尚可喜姓名顺序与多尔衮出生地沈阳。
+- **原生民族演进运动、宗教分裂与 6 大跨文明修会（v63）**：15 项欧亚民族与宗教演进运动、动态宗教分裂链、6 个非天主教修会（多纳图斯、少林、拜火圣火卫士等）。
+- **大征服者焦土与难民、四时代奴隶制与五大文明连贯链（v64）**：征服者焦土毁城与流亡难民迁徙、古典隶农→中世纪农奴→大西洋种植园→近代废奴四阶段演进、罗马/中华/波斯/草原/伊斯兰五大文明连贯引擎与活丝绸之路。
+- **原生子系统补齐、3,040+ 动态地名与架空导览窗（v65）**：新增 6 类官僚机构（含完整修饰符定义与图标）、4 类雇工制度、4 类叛军诉求、3 类脚本外交关系、4 类历史疫病、6 项角色交互、6 项城市宪章、4 项兵种技能、3 项霸权、20 项和约条款、八语 **3,040+ 动态历史地名**（含 560 希腊语）与四页签编年史架空导览窗。
+- **45 条引导任务树、1444 君堡决战与原生决议迁移（v66）**：编年史任务树由 13 条扩充至 **45 条**（含 1444 君士坦丁十一世、穆罕默德二世与君堡 53 日决战事件链）；将原 50 项隐藏国家行动统一迁移至 EU5 原生「决议」界面；新增可随时开关的 **动态宿敌 AI**。
+
+### 5. 引擎门禁与验证状态（`94/94 R01–R94`）
+
+- 自动化门禁新增 `R87–R94` 八条硬规则（升级至 **94/94 条规则 / 188/188 自测通过**）：覆盖中文事件标题排版、运动六维修正、修会召唤与编码规范、围城焦土数值、文化方言合法性、官僚与疫病修饰符定义、暂停菜单 HUD 隐藏及可成立国家防自建/防串代。
+- 实机复验状态：`v70.0-rc1 → rc2` 已完成 EU5 1.4.9 多开局实机复验（确认 `rc1` 全部 14 项报错清零、原生决议可见可执行、暂停菜单退出键解锁、1444 君堡任务树与事件、532 文化与 `oe_v70_532.1`、1204 辽阳契丹分封与 4 项扩张 CB 及独特革新、361/1204 可成立国家门控、Glorp 单支军队窗口均通过）；`v70.0-rc3` 追加修复牧首区空作用域并通过全部 11 项离线严检，实机复核 1444 牧首区报错清零。
+- 已知问题（留待后续版本）：启用 Glorp UI 时左下角快捷栏在暂停菜单中仍会显示（不影响退出按钮）；1204 大蒙古国局势中计划的两项防僵局行动暂未在局势面板中出现。
+
+---
+
+## 二、English Changelog
+
+> **Status:** v70.0 (EU5 1.4.9), combining all seven internal waves **v61–v67** plus major v70 gameplay overhauls.
+> **Saves:** v70.0 is **not** compatible with older saves. Please start a new game.
+> **Companion Soundtrack Submod:** [Project Phoenix Soundtrack (`3846593343`)](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) — 60 Roman & Mediterranean symphonic tracks (~148 min), checksum-safe.
+
+Made by: 寐夜空灵, miscos330
+
+- **Cross-Era 3D Royal Attire & Pause-Safe HUD (v61, v66, v70):** Burnished antique-gold Mongol noble deel & sable cap (replacing Qing headgear), Late Antique Imperial Purple Chlamys, Tang/Song brocade court robes, and deep midnight-navy 1821 Napoleonic imperial coat; Phoenix Command Dock and Chronicles IF Guide Dock all hide cleanly on Pause Menu, and Command Dock auto-hides for non-Roman realms.
+- **532 Justinian Renovatio Overhaul (v70):** Single-primary-enemy war declarations (`oe_v70_532_resolve_single_primary_enemy`), stronger expeditionary forces + emergency sea-lift relief, automatic Sicily-to-Ostrogoth (`FXO`) chaining (`oe_v70_532.1`), manual Order Next Target situation action for any expedition or Exarchate, fixed Italy progress bar, and 31 legacy duplicate 532 events deduplicated.
+- **1204 Great Mongol Overhaul (v70):** 4 interactive expansion CB situation actions; Liaoyang (`M5L`) rebuilt as a Khitan steppe horde (`daur_culture`) under Yelü Liuge with zero interregnum.
+- **Whole-Mod Event Chains, National Advances TAG Remap & 167 Formables Guards (v70):** Consolidated 1,186 scattered events across 95 files into **379 multi-act narrative chains** (243 Chronicles / 737 events + 136 Main Mod / 449 events); dynamically remapped **340 vanilla country advances** via `REPLACE:` to authentic Chronicles TAGs plus **48 era-native national advances**; guarded **167 formables** (12 Main Mod + 155 Chronicles) against self-forming and early-era anachronisms; added a zero-override `REPLACE:autocephalous_patriarchate` scope guard plus default setup tenets across 5 Orthodox/Miaphysite starts.
+- **12-Era Living World & 45 Mission Trees (v62–v66):** Unified archaeological demographics, 16 historical cultures, 12 faiths, 15 ethnogenesis movements, 6 non-Catholic religious orders, conqueror devastation & refugees, 4-epoch slavery evolution, 5 continuity chains & living trade corridors, 6 bureaucracies, 4 employment systems, 4 rebel demands, 3 scripted relations, 4 historical diseases, 3,040+ dynamic toponyms (560 Greek), 45 guided Chronicles mission trees (incl. 1444 Constantine XI & Mehmed II + 53 Days of Constantinople), 50 actions migrated into native Decisions, toggleable Dynamic Nemesis AI, and **94/94 strict engine CI rules (`R01–R94`, `188/188` selftests, `H12 = 0`)**.
+
 # 《凤凰计划（OEBYZ）》v60.0 更新日志（合并 v56.0–v60.0 五大里程碑 + 律法瘦身重构）
 
 > **发布状态**：v60.0（适配 EU5 1.4.9），合并 **v56.0 至 v60.0** 五个大版本的全线修复、深度拓展、架构瘦身与中英 Wiki 对齐。

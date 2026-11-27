@@ -30,6 +30,10 @@ oe_react.1 = {
 			}
 		}
 		add_country_modifier = { modifier = oe_react_mod_refugee_resettlement years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c01_s1 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.1.b
@@ -37,6 +41,10 @@ oe_react.1 = {
 		add_prestige = prestige_weak_penalty
 		add_war_exhaustion = war_exhaustion_weak_penalty
 		add_country_modifier = { modifier = oe_react_mod_wartime_levies years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c01_s1 value = 1 }
+		}
 	}
 }
 
@@ -47,7 +55,12 @@ oe_react.2 = {
 	desc = oe_react.2.desc
 	outcome = negative
 	image = "gfx/interface/illustrations/events/oe_ev_v175_siege_refugees.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_react_c01_s1
+			current_year >= 1208
+		}
+	}
 	option = {
 		name = oe_react.2.a
 		ai_chance = { base = 65 }
@@ -55,6 +68,10 @@ oe_react.2 = {
 		add_prestige = prestige_mild_bonus
 		add_research_progress = research_progress_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_saved_archives years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c01_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.2.b
@@ -63,6 +80,10 @@ oe_react.2 = {
 		add_prestige = prestige_mild_penalty
 		add_war_exhaustion = war_exhaustion_weak_penalty
 		add_country_modifier = { modifier = oe_react_mod_emergency_mint years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c01_s2 value = 1 }
+		}
 	}
 }
 
@@ -73,19 +94,40 @@ oe_react.3 = {
 	desc = oe_react.3.desc
 	outcome = negative
 	image = "gfx/interface/illustrations/events/oe_ev_v175_siege_refugees.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_react_c01_s2
+			current_year >= 1208
+		}
+	}
 	option = {
 		name = oe_react.3.a
 		ai_chance = { base = 55 }
 		add_gold = -75
 		add_prestige = prestige_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_cultural_resolve years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_react_c01_done } }
+				set_variable = { name = oe_v70_mch_react_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_react.3.b
 		ai_chance = { base = 45 }
 		add_war_exhaustion = war_exhaustion_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_avenging_banners years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_react_c01_done } }
+				set_variable = { name = oe_v70_mch_react_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -107,6 +149,10 @@ oe_react.4 = {
 			add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_weak_bonus }
 		}
 		add_country_modifier = { modifier = oe_react_mod_estate_accord years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c02_s1 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.4.b
@@ -114,6 +160,10 @@ oe_react.4 = {
 		add_government_power = government_power_mild_bonus
 		add_stability = stability_weak_penalty
 		add_country_modifier = { modifier = oe_react_mod_martial_prerogative years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c02_s1 value = 1 }
+		}
 	}
 }
 
@@ -124,19 +174,32 @@ oe_react.5 = {
 	desc = oe_react.5.desc
 	outcome = neutral
 	image = "gfx/interface/illustrations/events/oe_ev_end_global_battlefront.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_react_c02_s1
+			current_year >= 1208
+		}
+	}
 	option = {
 		name = oe_react.5.a
 		ai_chance = { base = 55 }
 		add_gold = -50
 		add_army_tradition = army_tradition_mild_bonus
 		add_country_modifier = { modifier = oe_react_mod_battle_lessons years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c02_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.5.b
 		ai_chance = { base = 45 }
 		add_war_exhaustion = war_exhaustion_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_realm_rallied years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c02_s2 value = 1 }
+		}
 	}
 }
 
@@ -147,18 +210,31 @@ oe_react.6 = {
 	desc = oe_react.6.desc
 	outcome = neutral
 	image = "gfx/interface/illustrations/events/oe_ev_dip2_cipher_chamber.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_react_c02_s2
+			current_year >= 1208
+		}
+	}
 	option = {
 		name = oe_react.6.a
 		ai_chance = { base = 65 }
 		add_gold = -50
 		add_country_modifier = { modifier = oe_react_mod_frontier_alert years = 8 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c02_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.6.b
 		ai_chance = { base = 35 }
 		add_prestige = prestige_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_wartime_envoys years = 8 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c02_s3 value = 1 }
+		}
 	}
 }
 
@@ -169,13 +245,26 @@ oe_react.7 = {
 	desc = oe_react.7.desc
 	outcome = negative
 	image = "gfx/interface/illustrations/events/oe_gr_street_revolt.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_react_c02_s3
+			current_year >= 1208
+		}
+	}
 	option = {
 		name = oe_react.7.a
 		ai_chance = { base = 60 }
 		add_gold = -80
 		add_stability = stability_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_loyal_marches years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_react_c02_done } }
+				set_variable = { name = oe_v70_mch_react_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_react.7.b
@@ -183,6 +272,14 @@ oe_react.7 = {
 		add_war_exhaustion = war_exhaustion_mild_bonus
 		add_prestige = prestige_weak_penalty
 		add_country_modifier = { modifier = oe_react_mod_amnesty_decree years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_react_c02_done } }
+				set_variable = { name = oe_v70_mch_react_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -226,12 +323,20 @@ oe_react.9 = {
 		add_gold = -60
 		add_prestige = prestige_mild_bonus
 		add_country_modifier = { modifier = oe_react_mod_cultural_golden_age years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c03_s1 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.9.b
 		ai_chance = { base = 35 }
 		add_prestige = prestige_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_court_splendor years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c03_s1 value = 1 }
+		}
 	}
 }
 
@@ -270,18 +375,31 @@ oe_react.11 = {
 	desc = oe_react.11.desc
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_sci_royal_society.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_react_c03_s1
+			current_year >= 1208
+		}
+	}
 	option = {
 		name = oe_react.11.a
 		ai_chance = { base = 60 }
 		add_gold = -60
 		add_research_progress = research_progress_mild_bonus
 		add_country_modifier = { modifier = oe_react_mod_intellectual_wave years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c03_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.11.b
 		ai_chance = { base = 40 }
 		add_country_modifier = { modifier = oe_react_mod_applied_innovation years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c03_s2 value = 1 }
+		}
 	}
 }
 
@@ -292,13 +410,26 @@ oe_react.12 = {
 	desc = oe_react.12.desc
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_syn_republic_of_all_nations.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_react_c04_s2
+			current_year >= 1353
+		}
+	}
 	option = {
 		name = oe_react.12.a
 		ai_chance = { base = 55 }
 		add_prestige = prestige_mild_bonus
 		add_government_power = government_power_mild_bonus
 		add_country_modifier = { modifier = oe_react_mod_new_age_statecraft years = 20 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_react_c04_done } }
+				set_variable = { name = oe_v70_mch_react_c04_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_react.12.b
@@ -306,6 +437,14 @@ oe_react.12 = {
 		add_stability = stability_weak_bonus
 		add_research_progress = research_progress_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_new_age_prosperity years = 20 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_react_c04_done } }
+				set_variable = { name = oe_v70_mch_react_c04_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -316,18 +455,39 @@ oe_react.13 = {
 	desc = oe_react.13.desc
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_byz_diplomacy.dds"
-	trigger = { is_rebel_country = no }
+	trigger = { is_rebel_country = no 
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_react_c03_s2
+			current_year >= 1208
+		}
+	}
 	option = {
 		name = oe_react.13.a
 		ai_chance = { base = 60 }
 		add_prestige = prestige_mild_bonus
 		add_country_modifier = { modifier = oe_react_mod_dynastic_prestige years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_react_c03_done } }
+				set_variable = { name = oe_v70_mch_react_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_react.13.b
 		ai_chance = { base = 40 }
 		add_gold = 90
 		add_country_modifier = { modifier = oe_react_mod_dowry_endowment years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_react_c03_done } }
+				set_variable = { name = oe_v70_mch_react_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -345,11 +505,19 @@ oe_react.14 = {
 		add_stability = stability_weak_bonus
 		add_government_power = government_power_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_parliament_momentum years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c04_s1 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.14.b
 		ai_chance = { base = 45 }
 		add_country_modifier = { modifier = oe_react_mod_civic_mandate years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c04_s1 value = 1 }
+		}
 	}
 }
 
@@ -421,18 +589,30 @@ oe_react.17 = {
 		add_gold = -60
 		oe_react_spawn_free_company = yes
 		add_country_modifier = { modifier = oe_react_mod_free_company_contract years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c04_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.17.b
 		ai_chance = { base = 30 }
 		add_army_tradition = army_tradition_mild_bonus
 		add_country_modifier = { modifier = oe_react_mod_frontier_settlement years = 12 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c04_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_react.17.c
 		ai_chance = { base = 25 }
 		add_stability = stability_weak_bonus
 		add_country_modifier = { modifier = oe_react_mod_disciplined_levies years = 10 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_react_c04_s2 value = 1 }
+		}
 	}
 }
 

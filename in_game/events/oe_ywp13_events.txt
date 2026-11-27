@@ -137,12 +137,20 @@ oe_ywp13.3 = {
 		ai_chance = { base = 70 }
 		add_prestige = prestige_mild_bonus
 		add_country_modifier = { modifier = oe_ywp13_heavenly_horse_mod years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_ywp13_c01_s1 value = 1 }
+		}
 	}
 	option = {
 		name = oe_ywp13.3.b
 		ai_chance = { base = 30 }
 		add_army_tradition = 3
 		add_country_modifier = { modifier = oe_ywp13_fulin_caravan_mod years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_ywp13_c01_s1 value = 1 }
+		}
 	}
 }
 
@@ -170,6 +178,10 @@ oe_ywp13.4 = {
 		current_year >= 1370
 		NOT = { is_situation_active = situation:red_turban_rebellions }
 		owns = location:dadu
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_ywp13_c01_s1
+			current_year >= 1378
+		}
 	}
 	option = {
 		name = oe_ywp13.4.a
@@ -187,11 +199,27 @@ oe_ywp13.4 = {
 			c:ROM = { add_opinion = { target = root modifier = opinion_good_relations } }
 		}
 		add_country_modifier = { modifier = oe_ywp13_phoenix_silk_hostels years = 20 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_ywp13_c01_done } }
+				set_variable = { name = oe_v70_mch_ywp13_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_ywp13.4.b
 		ai_chance = { base = 35 }
 		add_prestige = prestige_weak_bonus
 		add_country_modifier = { modifier = oe_ywp13_qintian_exchange years = 15 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_ywp13_c01_done } }
+				set_variable = { name = oe_v70_mch_ywp13_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }

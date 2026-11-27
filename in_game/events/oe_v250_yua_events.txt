@@ -28,6 +28,11 @@ oe_v250_yua.10 = {
 		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_penalty } }
 		if = { limit = { country_has_estate = estate_type:peasants_estate } add_estate_satisfaction = { type = estate_type:peasants_estate value = estate_satisfaction_weak_bonus } }
 		add_country_modifier = { modifier = oe_v250_yua_mod_yellow_fishscale_cadastre years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_yua_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v250_yua.11 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_v250_yua.10.b
@@ -35,12 +40,22 @@ oe_v250_yua.10 = {
 		add_stability = stability_weak_bonus
 		if = { limit = { country_has_estate = estate_type:nobles_estate } add_estate_satisfaction = { type = estate_type:nobles_estate value = estate_satisfaction_mild_bonus } }
 		add_country_modifier = { modifier = oe_v250_yua_mod_gentry_lijia_compromise years = 20 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_yua_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v250_yua.11 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_v250_yua.10.c
 		ai_chance = { base = 15 }
 		if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_weak_bonus } }
 		add_country_modifier = { modifier = oe_v250_yua_mod_salt_guild_fisc years = 20 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_yua_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v250_yua.11 days = { 365 730 } }
+		}
 	}
 }
 
@@ -61,6 +76,7 @@ oe_v250_yua.11 = {
 				has_or_had_tag = MNG
 			}
 		}
+		has_variable = oe_v70_mch_v250_yua_c01_s1 # [v70_mchain]
 	}
 	option = {
 		name = oe_v250_yua.11.a
@@ -68,6 +84,10 @@ oe_v250_yua.11 = {
 		add_gold = -80
 		add_yearly_manpower = 0.35
 		add_country_modifier = { modifier = oe_v250_yua_mod_weisuo_colonies years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_yua_c01_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_yua.11.b
@@ -75,12 +95,20 @@ oe_v250_yua.11 = {
 		add_gold = -115
 		add_army_tradition = army_tradition_mild_bonus
 		add_country_modifier = { modifier = oe_v250_yua_mod_mobile_strike_corps years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_yua_c01_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v250_yua.11.c
 		ai_chance = { base = 15 }
 		add_gold = -100
 		add_country_modifier = { modifier = oe_v250_yua_mod_northern_wall_garrisons years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v250_yua_c01_s2 value = 1 }
+		}
 	}
 }
 
@@ -101,6 +129,10 @@ oe_v250_yua.12 = {
 				has_or_had_tag = MNG
 			}
 		}
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v250_yua_c01_s2
+			current_year >= 1403
+		}
 	}
 	option = {
 		name = oe_v250_yua.12.a
@@ -108,6 +140,14 @@ oe_v250_yua.12 = {
 		add_stability = stability_weak_bonus
 		if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_penalty } }
 		add_country_modifier = { modifier = oe_v250_yua_mod_haijin_tribute_order years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v250_yua_c01_done } }
+				set_variable = { name = oe_v70_mch_v250_yua_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v250_yua.12.b
@@ -115,6 +155,14 @@ oe_v250_yua.12 = {
 		add_gold = -75
 		if = { limit = { country_has_estate = estate_type:burghers_estate } add_estate_satisfaction = { type = estate_type:burghers_estate value = estate_satisfaction_mild_bonus } }
 		add_country_modifier = { modifier = oe_v250_yua_mod_shibosi_open_ports years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v250_yua_c01_done } }
+				set_variable = { name = oe_v70_mch_v250_yua_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v250_yua.12.c
@@ -122,5 +170,13 @@ oe_v250_yua.12 = {
 		add_gold = -110
 		add_navy_tradition = navy_tradition_mild_bonus
 		add_country_modifier = { modifier = oe_v250_yua_mod_coastal_patrol_fleet years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v250_yua_c01_done } }
+				set_variable = { name = oe_v70_mch_v250_yua_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }

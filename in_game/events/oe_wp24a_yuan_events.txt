@@ -42,12 +42,22 @@ oe_wp24a_yuan.2 = {
 		add_manpower = 1.5
 		add_army_tradition = 5
 		add_country_modifier = { modifier = oe_wp24a_yuan_zulgaan_cavalry_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.3 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wp24a_yuan.2.b
 		ai_chance = { base = 35 }
 		add_gold = 80
 		add_country_modifier = { modifier = oe_wp24a_yuan_six_tumens_mod years = 25 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.3 days = { 365 730 } }
+		}
 	}
 }
 
@@ -57,19 +67,31 @@ oe_wp24a_yuan.3 = {
 	desc = oe_wp24a_yuan.3.d
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_v155_nyu_kurultai.dds"
-	trigger = { oe_wp24a_is_yuan_host = yes }
+	trigger = { oe_wp24a_is_yuan_host = yes 
+		has_variable = oe_v70_mch_wp24a_yuan_c01_s1 # [v70_mchain]
+	}
 	option = {
 		name = oe_wp24a_yuan.3.a
 		ai_chance = { base = 65 }
 		add_prestige = prestige_mild_bonus
 		location:karakorum ?= { if = { limit = { owner ?= root } change_prosperity = 0.08 } }
 		add_country_modifier = { modifier = oe_wp24a_yuan_orkhon_banner_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c01_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.5 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wp24a_yuan.3.b
 		ai_chance = { base = 35 }
 		add_stability = 5
 		add_legitimacy = 5
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c01_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.5 days = { 365 730 } }
+		}
 	}
 }
 
@@ -106,7 +128,9 @@ oe_wp24a_yuan.5 = {
 	desc = oe_wp24a_yuan.5.d
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_cel_mandate_court.dds"
-	trigger = { oe_wp24a_is_yuan_host = yes }
+	trigger = { oe_wp24a_is_yuan_host = yes 
+		has_variable = oe_v70_mch_wp24a_yuan_c01_s2 # [v70_mchain]
+	}
 	option = {
 		name = oe_wp24a_yuan.5.a
 		ai_chance = { base = 65 }
@@ -114,12 +138,22 @@ oe_wp24a_yuan.5 = {
 		add_legitimacy = 6
 		location:shangdu ?= { if = { limit = { owner ?= root } change_prosperity = 0.08 } }
 		add_country_modifier = { modifier = oe_wp24a_yuan_twin_capitals_mod years = 35 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c01_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.7 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wp24a_yuan.5.b
 		ai_chance = { base = 35 }
 		add_army_tradition = 5
 		add_country_modifier = { modifier = oe_wp24a_yuan_zulgaan_cavalry_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c01_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.7 days = { 365 730 } }
+		}
 	}
 }
 
@@ -153,7 +187,9 @@ oe_wp24a_yuan.7 = {
 	desc = oe_wp24a_yuan.7.d
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_v175_glh_sarai_kurultai.dds"
-	trigger = { oe_wp24a_is_yuan_host = yes }
+	trigger = { oe_wp24a_is_yuan_host = yes 
+		has_variable = oe_v70_mch_wp24a_yuan_c01_s3 # [v70_mchain]
+	}
 	option = {
 		name = oe_wp24a_yuan.7.a
 		ai_chance = { base = 65 }
@@ -175,12 +211,28 @@ oe_wp24a_yuan.7 = {
 			c:CRI = { add_opinion = { target = root modifier = oe_wp24a_op_yam_accord } }
 		}
 		add_country_modifier = { modifier = oe_wp24a_yuan_jochid_accord_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wp24a_yuan_c01_done } }
+				set_variable = { name = oe_v70_mch_wp24a_yuan_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_wp24a_yuan.7.b
 		ai_chance = { base = 35 }
 		add_prestige = prestige_weak_bonus
 		add_army_tradition = 4
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wp24a_yuan_c01_done } }
+				set_variable = { name = oe_v70_mch_wp24a_yuan_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -201,12 +253,22 @@ oe_wp24a_yuan.8 = {
 			c:CHG = { add_opinion = { target = root modifier = oe_wp24a_op_yam_accord } }
 		}
 		add_country_modifier = { modifier = oe_wp24a_yuan_chagatai_compact_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c02_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.9 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wp24a_yuan.8.b
 		ai_chance = { base = 35 }
 		add_gold = 75
 		add_prestige = prestige_weak_bonus
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c02_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.9 days = { 365 730 } }
+		}
 	}
 }
 
@@ -216,7 +278,9 @@ oe_wp24a_yuan.9 = {
 	desc = oe_wp24a_yuan.9.d
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_cel3_myriad_tribute.dds"
-	trigger = { oe_wp24a_is_yuan_host = yes }
+	trigger = { oe_wp24a_is_yuan_host = yes 
+		has_variable = oe_v70_mch_wp24a_yuan_c02_s1 # [v70_mchain]
+	}
 	option = {
 		name = oe_wp24a_yuan.9.a
 		ai_chance = { base = 65 }
@@ -243,12 +307,22 @@ oe_wp24a_yuan.9 = {
 			c:IRA = { add_opinion = { target = root modifier = oe_wp24a_op_yam_concession } }
 		}
 		add_country_modifier = { modifier = oe_wp24a_yuan_yam_network_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c02_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.10 days = { 365 730 } }
+		}
 	}
 	option = {
 		name = oe_wp24a_yuan.9.b
 		ai_chance = { base = 35 }
 		add_army_tradition = 4
 		add_prestige = prestige_weak_bonus
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_wp24a_yuan_c02_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_wp24a_yuan.10 days = { 365 730 } }
+		}
 	}
 }
 
@@ -258,13 +332,23 @@ oe_wp24a_yuan.10 = {
 	desc = oe_wp24a_yuan.10.d
 	outcome = positive
 	image = "gfx/interface/illustrations/events/oe_ev_cel_mandate_court.dds"
-	trigger = { oe_wp24a_is_yuan_host = yes }
+	trigger = { oe_wp24a_is_yuan_host = yes 
+		has_variable = oe_v70_mch_wp24a_yuan_c02_s2 # [v70_mchain]
+	}
 	option = {
 		name = oe_wp24a_yuan.10.a
 		ai_chance = { base = 75 }
 		add_prestige = prestige_severe_bonus
 		add_diplomats = diplomats_mild_bonus
 		add_country_modifier = { modifier = oe_wp24a_yuan_pax_mongolica_mod years = 40 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wp24a_yuan_c02_done } }
+				set_variable = { name = oe_v70_mch_wp24a_yuan_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_wp24a_yuan.10.b
@@ -272,5 +356,13 @@ oe_wp24a_yuan.10 = {
 		add_gold = 120
 		add_stability = 6
 		add_country_modifier = { modifier = oe_wp24a_yuan_chagatai_compact_mod years = 30 mode = replace }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_wp24a_yuan_c02_done } }
+				set_variable = { name = oe_v70_mch_wp24a_yuan_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }

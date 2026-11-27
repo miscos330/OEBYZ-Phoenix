@@ -36,18 +36,33 @@ oe_v495_fl.1 = {
 		add_prestige = 8
 		add_country_modifier = { modifier = oe_v495_fl_mod_imperial_menagerie years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.2 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.1.b
 		add_stability = 3
 		add_country_modifier = { modifier = oe_v495_fl_mod_royal_jubilee years = 8 mode = replace }
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.2 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.1.c
 		change_gold_effect = { scale = 2.0 }
 		add_prestige = 3
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c01_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.2 days = { 570 760 } }
+		}
 	}
 }
 
@@ -69,6 +84,7 @@ oe_v495_fl.2 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_2_recent }
+		has_variable = oe_v70_mch_v495_flavor_c01_s1 # [v70_mchain]
 	}
 
 	immediate = {
@@ -83,18 +99,33 @@ oe_v495_fl.2 = {
 		add_prestige = 7
 		add_country_modifier = { modifier = oe_v495_fl_mod_court_salon years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c01_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.3 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.2.b
 		add_stability = 4
 		add_government_power = 4
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c01_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.3 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.2.c
 		change_gold_effect = { scale = 1.2 }
 		add_prestige = 4
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c01_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.3 days = { 570 760 } }
+		}
 	}
 }
 
@@ -115,6 +146,7 @@ oe_v495_fl.3 = {
 		num_locations >= 2
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_3_recent }
+		has_variable = oe_v70_mch_v495_flavor_c01_s2 # [v70_mchain]
 	}
 
 	immediate = {
@@ -129,17 +161,29 @@ oe_v495_fl.3 = {
 		add_army_tradition = 5
 		add_country_modifier = { modifier = oe_v495_fl_mod_defector_tactics years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c01_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.3.b
 		add_country_modifier = { modifier = oe_v495_fl_mod_cipher_bureau years = 8 mode = replace }
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c01_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.3.c
 		add_prestige = 4
 		add_stability = 3
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c01_s3 value = 1 }
+		}
 	}
 }
 
@@ -161,6 +205,10 @@ oe_v495_fl.4 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_4_recent }
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v495_flavor_c01_s3
+			current_year >= 1365
+		}
 	}
 
 	immediate = {
@@ -175,18 +223,42 @@ oe_v495_fl.4 = {
 		add_prestige = 9
 		add_country_modifier = { modifier = oe_v495_fl_mod_royal_jubilee years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c01_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.4.b
 		change_gold_effect = { scale = -1.0 }
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_tour_envoys years = 10 mode = replace }
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c01_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.4.c
 		change_gold_effect = { scale = 1.5 }
 		add_government_power = 5
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c01_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c01_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -222,6 +294,11 @@ oe_v495_fl.5 = {
 		add_prestige = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_world_exposition years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c02_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.6 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.5.b
@@ -229,12 +306,22 @@ oe_v495_fl.5 = {
 		add_research_progress = 4
 		add_country_modifier = { modifier = oe_v495_fl_mod_astronomical_patronage years = 8 mode = replace }
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c02_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.6 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.5.c
 		change_gold_effect = { scale = 2.2 }
 		add_stability = 2
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c02_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.6 days = { 570 760 } }
+		}
 	}
 }
 
@@ -255,6 +342,7 @@ oe_v495_fl.6 = {
 		num_locations >= 2
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_6_recent }
+		has_variable = oe_v70_mch_v495_flavor_c02_s1 # [v70_mchain]
 	}
 
 	immediate = {
@@ -269,18 +357,33 @@ oe_v495_fl.6 = {
 		add_navy_tradition = 5
 		add_country_modifier = { modifier = oe_v495_fl_mod_secret_portolans years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c02_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.7 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.6.b
 		change_gold_effect = { scale = -1.0 }
 		add_research_progress = 5
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c02_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.7 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.6.c
 		change_gold_effect = { scale = 1.5 }
 		add_prestige = 4
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c02_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.7 days = { 570 760 } }
+		}
 	}
 }
 
@@ -301,6 +404,7 @@ oe_v495_fl.7 = {
 		num_locations >= 2
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_7_recent }
+		has_variable = oe_v70_mch_v495_flavor_c02_s2 # [v70_mchain]
 	}
 
 	immediate = {
@@ -315,18 +419,30 @@ oe_v495_fl.7 = {
 		add_research_progress = 4
 		add_country_modifier = { modifier = oe_v495_fl_mod_astronomical_patronage years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c02_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.7.b
 		add_stability = 5
 		add_government_power = 4
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c02_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.7.c
 		change_gold_effect = { scale = 1.2 }
 		add_prestige = 5
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c02_s3 value = 1 }
+		}
 	}
 }
 
@@ -348,6 +464,10 @@ oe_v495_fl.8 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_8_recent }
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v495_flavor_c02_s3
+			current_year >= 1365
+		}
 	}
 
 	immediate = {
@@ -362,18 +482,42 @@ oe_v495_fl.8 = {
 		add_navy_tradition = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_fleet_review years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c02_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.8.b
 		change_gold_effect = { scale = -1.0 }
 		add_country_modifier = { modifier = oe_v495_fl_mod_secret_portolans years = 10 mode = replace }
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c02_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.8.c
 		change_gold_effect = { scale = 1.4 }
 		add_navy_tradition = 2
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c02_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c02_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -409,18 +553,33 @@ oe_v495_fl.9 = {
 		add_research_progress = 5
 		add_country_modifier = { modifier = oe_v495_fl_mod_astronomical_patronage years = 8 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c03_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.10 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.9.b
 		change_gold_effect = { scale = -1.2 }
 		add_country_modifier = { modifier = oe_v495_fl_mod_world_exposition years = 8 mode = replace }
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c03_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.10 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.9.c
 		change_gold_effect = { scale = 1.6 }
 		add_prestige = 4
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c03_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.10 days = { 570 760 } }
+		}
 	}
 }
 
@@ -441,6 +600,7 @@ oe_v495_fl.10 = {
 		num_locations >= 2
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_10_recent }
+		has_variable = oe_v70_mch_v495_flavor_c03_s1 # [v70_mchain]
 	}
 
 	immediate = {
@@ -455,17 +615,29 @@ oe_v495_fl.10 = {
 		add_research_progress = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_civic_engineering years = 8 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c03_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.10.b
 		add_prestige = 8
 		add_country_modifier = { modifier = oe_v495_fl_mod_court_salon years = 8 mode = replace }
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c03_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.10.c
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_tour_envoys years = 8 mode = replace }
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c03_s2 value = 1 }
+		}
 	}
 }
 
@@ -487,6 +659,10 @@ oe_v495_fl.11 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_11_recent }
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v495_flavor_c03_s2
+			current_year >= 1360
+		}
 	}
 
 	immediate = {
@@ -501,18 +677,33 @@ oe_v495_fl.11 = {
 		add_prestige = 7
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_tour_envoys years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c03_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.12 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.11.b
 		change_gold_effect = { scale = -0.8 }
 		add_country_modifier = { modifier = oe_v495_fl_mod_world_exposition years = 10 mode = replace }
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c03_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.12 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.11.c
 		change_gold_effect = { scale = 1.8 }
 		add_prestige = 3
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c03_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.12 days = { 570 760 } }
+		}
 	}
 }
 
@@ -533,6 +724,7 @@ oe_v495_fl.12 = {
 		num_locations >= 2
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_12_recent }
+		has_variable = oe_v70_mch_v495_flavor_c03_s3 # [v70_mchain]
 	}
 
 	immediate = {
@@ -547,17 +739,41 @@ oe_v495_fl.12 = {
 		add_army_tradition = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_frontier_champions years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c03_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.12.b
 		add_prestige = 5
 		add_stability = 3
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c03_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.12.c
 		add_country_modifier = { modifier = oe_v495_fl_mod_cipher_bureau years = 8 mode = replace }
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c03_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c03_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -593,6 +809,11 @@ oe_v495_fl.13 = {
 		add_prestige = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_tour_envoys years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c04_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.14 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.13.b
@@ -600,12 +821,22 @@ oe_v495_fl.13 = {
 		add_research_progress = 5
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_fleet_review years = 8 mode = replace }
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c04_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.14 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.13.c
 		add_government_power = 6
 		add_stability = 2
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c04_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.14 days = { 570 760 } }
+		}
 	}
 }
 
@@ -627,6 +858,7 @@ oe_v495_fl.14 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_14_recent }
+		has_variable = oe_v70_mch_v495_flavor_c04_s1 # [v70_mchain]
 	}
 
 	immediate = {
@@ -641,18 +873,33 @@ oe_v495_fl.14 = {
 		add_prestige = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_court_salon years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c04_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.15 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.14.b
 		change_gold_effect = { scale = 1.8 }
 		add_stability = 2
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c04_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.15 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.14.c
 		add_stability = 4
 		add_government_power = 4
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c04_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.15 days = { 570 760 } }
+		}
 	}
 }
 
@@ -674,6 +921,7 @@ oe_v495_fl.15 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_15_recent }
+		has_variable = oe_v70_mch_v495_flavor_c04_s2 # [v70_mchain]
 	}
 
 	immediate = {
@@ -688,6 +936,11 @@ oe_v495_fl.15 = {
 		add_prestige = 8
 		add_country_modifier = { modifier = oe_v495_fl_mod_imperial_menagerie years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c04_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.16 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.15.b
@@ -695,11 +948,21 @@ oe_v495_fl.15 = {
 		add_research_progress = 4
 		add_country_modifier = { modifier = oe_v495_fl_mod_world_exposition years = 10 mode = replace }
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c04_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.16 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.15.c
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_tour_envoys years = 10 mode = replace }
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c04_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.16 days = { 570 760 } }
+		}
 	}
 }
 
@@ -721,6 +984,7 @@ oe_v495_fl.16 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_16_recent }
+		has_variable = oe_v70_mch_v495_flavor_c04_s3 # [v70_mchain]
 	}
 
 	immediate = {
@@ -735,18 +999,42 @@ oe_v495_fl.16 = {
 		add_army_tradition = 5
 		add_country_modifier = { modifier = oe_v495_fl_mod_defector_tactics years = 8 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c04_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c04_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.16.b
 		add_stability = 4
 		add_prestige = 5
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c04_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c04_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.16.c
 		add_government_power = 6
 		add_prestige = 3
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c04_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c04_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -781,16 +1069,31 @@ oe_v495_fl.17 = {
 		change_gold_effect = { scale = -1.0 }
 		add_country_modifier = { modifier = oe_v495_fl_mod_secret_portolans years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c05_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.18 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.17.b
 		add_country_modifier = { modifier = oe_v495_fl_mod_world_exposition years = 10 mode = replace }
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c05_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.18 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.17.c
 		change_gold_effect = { scale = 2.2 }
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c05_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.18 days = { 570 760 } }
+		}
 	}
 }
 
@@ -811,6 +1114,7 @@ oe_v495_fl.18 = {
 		num_locations >= 2
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_18_recent }
+		has_variable = oe_v70_mch_v495_flavor_c05_s1 # [v70_mchain]
 	}
 
 	immediate = {
@@ -825,16 +1129,28 @@ oe_v495_fl.18 = {
 		add_research_progress = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_astronomical_patronage years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c05_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.18.b
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_tour_envoys years = 10 mode = replace }
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c05_s2 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.18.c
 		add_country_modifier = { modifier = oe_v495_fl_mod_civic_engineering years = 8 mode = replace }
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c05_s2 value = 1 }
+		}
 	}
 }
 
@@ -856,6 +1172,10 @@ oe_v495_fl.19 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_19_recent }
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v495_flavor_c05_s2
+			current_year >= 1360
+		}
 	}
 
 	immediate = {
@@ -870,6 +1190,11 @@ oe_v495_fl.19 = {
 		add_stability = 4
 		add_country_modifier = { modifier = oe_v495_fl_mod_royal_jubilee years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c05_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.20 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.19.b
@@ -877,12 +1202,22 @@ oe_v495_fl.19 = {
 		add_army_tradition = 4
 		add_country_modifier = { modifier = oe_v495_fl_mod_frontier_champions years = 8 mode = replace }
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c05_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.20 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.19.c
 		change_gold_effect = { scale = 1.5 }
 		add_prestige = 3
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c05_s3 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.20 days = { 570 760 } }
+		}
 	}
 }
 
@@ -904,6 +1239,7 @@ oe_v495_fl.20 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_20_recent }
+		has_variable = oe_v70_mch_v495_flavor_c05_s3 # [v70_mchain]
 	}
 
 	immediate = {
@@ -918,18 +1254,42 @@ oe_v495_fl.20 = {
 		add_prestige = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_civic_engineering years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c05_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c05_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.20.b
 		change_gold_effect = { scale = -1.5 }
 		add_country_modifier = { modifier = oe_v495_fl_mod_frontier_champions years = 10 mode = replace }
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c05_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c05_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.20.c
 		change_gold_effect = { scale = 1.2 }
 		add_stability = 3
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c05_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c05_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
 
@@ -964,6 +1324,11 @@ oe_v495_fl.21 = {
 		add_prestige = 8
 		add_country_modifier = { modifier = oe_v495_fl_mod_court_salon years = 10 mode = replace }
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c06_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.22 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.21.b
@@ -971,12 +1336,22 @@ oe_v495_fl.21 = {
 		add_government_power = 7
 		add_prestige = 5
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c06_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.22 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.21.c
 		add_army_tradition = 4
 		add_research_progress = 3
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c06_s1 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.22 days = { 570 760 } }
+		}
 	}
 }
 
@@ -997,6 +1372,7 @@ oe_v495_fl.22 = {
 		num_locations >= 2
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_22_recent }
+		has_variable = oe_v70_mch_v495_flavor_c06_s1 # [v70_mchain]
 	}
 
 	immediate = {
@@ -1010,18 +1386,33 @@ oe_v495_fl.22 = {
 		change_gold_effect = { scale = 2.5 }
 		add_stability = 2
 		ai_chance = { base = 45 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c06_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.23 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.22.b
 		add_navy_tradition = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_fleet_review years = 8 mode = replace }
 		ai_chance = { base = 35 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c06_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.23 days = { 570 760 } }
+		}
 	}
 	option = {
 		name = oe_v495_fl.22.c
 		add_prestige = 7
 		add_country_modifier = { modifier = oe_v495_fl_mod_secret_portolans years = 10 mode = replace }
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c06_s2 value = 1 }
+			trigger_event_non_silently = { id = oe_v495_fl.23 days = { 570 760 } }
+		}
 	}
 }
 
@@ -1042,6 +1433,7 @@ oe_v495_fl.23 = {
 		num_locations >= 2
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_23_recent }
+		has_variable = oe_v70_mch_v495_flavor_c06_s2 # [v70_mchain]
 	}
 
 	immediate = {
@@ -1055,17 +1447,29 @@ oe_v495_fl.23 = {
 		change_gold_effect = { scale = -1.0 }
 		add_country_modifier = { modifier = oe_v495_fl_mod_cipher_bureau years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c06_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.23.b
 		add_prestige = 6
 		add_country_modifier = { modifier = oe_v495_fl_mod_grand_tour_envoys years = 10 mode = replace }
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c06_s3 value = 1 }
+		}
 	}
 	option = {
 		name = oe_v495_fl.23.c
 		change_gold_effect = { scale = 2.0 }
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			set_variable = { name = oe_v70_mch_v495_flavor_c06_s3 value = 1 }
+		}
 	}
 }
 
@@ -1087,6 +1491,10 @@ oe_v495_fl.24 = {
 		at_war = no
 		NOT = { has_variable = oe_v495_fl_cd }
 		NOT = { has_variable = oe_v495_fl_24_recent }
+		OR = { # [v70_mchain]
+			has_variable = oe_v70_mch_v495_flavor_c06_s3
+			current_year >= 1365
+		}
 	}
 
 	immediate = {
@@ -1101,6 +1509,14 @@ oe_v495_fl.24 = {
 		add_stability = 3
 		add_country_modifier = { modifier = oe_v495_fl_mod_civic_engineering years = 10 mode = replace }
 		ai_chance = { base = 50 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c06_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c06_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.24.b
@@ -1108,11 +1524,27 @@ oe_v495_fl.24 = {
 		add_research_progress = 5
 		add_country_modifier = { modifier = oe_v495_fl_mod_astronomical_patronage years = 8 mode = replace }
 		ai_chance = { base = 30 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c06_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c06_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 	option = {
 		name = oe_v495_fl.24.c
 		change_gold_effect = { scale = 1.8 }
 		add_prestige = 4
 		ai_chance = { base = 20 }
+		hidden_effect = {
+			# [v70_mchain]
+			if = {
+				limit = { NOT = { has_variable = oe_v70_mch_v495_flavor_c06_done } }
+				set_variable = { name = oe_v70_mch_v495_flavor_c06_done value = 1 }
+				add_prestige = 4
+			}
+		}
 	}
 }
