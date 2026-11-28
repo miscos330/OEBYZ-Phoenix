@@ -1,17 +1,17 @@
 ![凤凰计划 Project Phoenix](https://raw.githubusercontent.com/wiki/miscos330/OEBYZ-Phoenix/images/cover.jpg)
 
-# Project Phoenix (《凤凰计划》 / OEBYZ) v70.0 — Europa Universalis V 1.4.9
+# Project Phoenix (《凤凰计划》 / OEBYZ) v83.0 — Europa Universalis V 1.4.9
 
 **Target Game Version:** Europa Universalis V `1.4.*` (`1.4.9`)
-**Languages:** Complete Simplified Chinese & English (`l_simp_chinese` + `l_english`, 100% bilingual coverage across Main Mod & Chronicles)
+**Languages:** Complete Simplified Chinese & English (`l_simp_chinese` + `l_english`)
 **Repository:** https://github.com/miscos330/OEBYZ-Phoenix
 **制作 / Made by:** 寐夜空灵、miscos330 (`Made by: 寐夜空灵, miscos330`)
 
-> **Saves / 存档：** v70.0 is not compatible with older saves; please start a new game. v70.0 不兼容旧存档，请新开一局。
-> **Companion Music Submod / 官方音乐子模组：** [Project Phoenix Soundtrack / 凤凰计划 · 历代交响原声 (`3846593343`)](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) — 60 Roman symphonic & Mediterranean tracks (~148 min), loudness-matched into EU5's dynamic music system without removing vanilla tracks or altering the multiplayer checksum!
-> **EN:** v70.0 merges the entire **v61–v67 → v70.0** seven-wave mega-update: **Cross-Era 3D Royal Attire Overhaul** (burnished antique-gold Mongol noble deel & sable cap, Late Antique purple chlamys, Tang/Song brocade, deep midnight-navy Napoleonic coat), **12-Era Archaeological Demographics, 16 Historical Cultures & 12 Subdivided Religions**, **Native Movements Ethnogenesis (15 movements), Dynamic Religious Schisms & 6 Cross-Civilization Religious Orders**, **Great Conquerors Devastation & Refugee Flight, 4-Epoch Slavery Overhaul, 5 Cross-Era Continuity Engines & Living Trade Corridors**, **Buried Native EU5 Subsystems** (6 bureaucracies, 4 employment systems, 4 rebel demands, 3 scripted relations, 4 diseases, 3,040+ dynamic toponyms incl. 560 Greek, Chronicles IF Guide Dock & Pause Menu guards), **45 Guided Chronicles Mission Trees** (incl. 1444 Constantine XI & Mehmed II + 53 Days of Constantinople) & Dynamic Nemesis AI, **532 Justinian Single-Target Expedition & Sicily-to-Ostrogoth Chaining Overhaul**, **1204 Great Mongol Expansion CBs & Liaoyang Khitan Fix**, **Whole-Mod Event Chain Consolidation (379 multi-act chains / 1,186 events)**, **340 Remapped + 48 Era-Native National Advances**, **167 Formables Era/TAG Integrity Guards**, and **94/94 Strict Engine CI (`R01–R94`, 188/188 selftests)**. Full notes: `CHANGELOG.md`.
-> **中文：** v70.0 合并 **v61–v67 → v70.0** 七大内部研发波次全线进化与深度玩法重构：**跨时代 3D 君主服饰重制**（古金色蒙古贵族袍与貂帽、古典晚期帝紫披风、唐宋锦袍、深午夜蓝拿破仑礼服）、**12 时代统一考古人口/16 历史文化与 12 细分宗教**、**原生民族演进运动（15 项）/动态宗教分裂与 6 大跨文明修会**、**大征服者焦土与难民迁徙/四时代奴隶制演变/五大文明连贯引擎与活丝绸之路**、**深度补齐 EU5 原生子系统**（6 类官僚机构/4 类雇工/4 类叛军诉求/3 类脚本外交关系/4 类疫病、3,040+ 多语动态地名含 560 希腊语、编年史架空导览窗与暂停菜单零遮挡）、**45 条编年史引导任务树**（含 1444 君士坦丁十一世/穆罕默德二世与君堡 53 日决战）与可切换动态宿敌 AI、**532 查士丁尼单一主敌光复与西西里→东哥特自动连战大修**、**1204 大蒙古国 4 项专属扩张 CB与辽阳契丹分封精修**、**全模组 379 条多幕事件链整合（1,186 条事件）**、**340 项原版国家革新 TAG 重映射 + 48 项跨时代专属革新**、**167 项可成立国家纪元与 TAG 完整性门控**，以及 **94/94 引擎硬门禁（`R01–R94`，188/188 自测全绿）**。详见 `CHANGELOG.md`。
-> **History below / 以下为历代版本说明：** sections marked v60.0 and earlier describe those versions and are kept for reference.
+> **Saves / 存档：** v83.0 is not compatible with older saves; please start a new game. v83.0 不兼容旧存档，请新开一局。
+> **Companion Music Submod / 官方音乐子模组：** [Project Phoenix Soundtrack / 凤凰计划 · 历代交响原声 (`3846593343`)](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) — 60 Roman symphonic & Mediterranean tracks (~148 min), checksum-safe.
+> **EN:** v83.0 merges internal waves **v71–v83** after four live test rounds: the **Phoenix Command Dock, Quick Nav and governance console for every human realm in all 12 bookmarks**, **cross-era 3D headwear** (Mongol boqta, Tang winged futou, Late Roman diadem, Sassanian korymbos, Qing court hat, Napoleonic bicorne for generals/admirals), **era-aware country descriptions** (vanilla 1337 texts only from 1300 on), the **dynasty-tooltip error fix**, and with **Chronicles of All Eras**: nomadic sub-appanages & Kurultai, three Eurasian migration chains, opening charters and era governance for all 12 bookmarks, 10 AI personalities, two new international organizations, 30 cross-era units, 7 native roads, religious schools, orders, expeditions, 126 early wonders, 324 characters, 24 disasters and 85 mission trees. Engine CI 99/99. **Known issues:** with Glorp UI, country tooltips do not yet show the Chronicles era descriptions; Tang Taizong's futou clips and Qing court attire is not yet historically accurate. Full notes: `CHANGELOG.md`.
+> **中文：** v83.0 合并 **v71–v83** 研发波次，经四轮实机复验后发布：**凤凰帝国总控台、快捷栏与政务托管台向全 12 剧本所有人类国家开放**、**跨时代 3D 冠帽**（蒙古姑姑冠、唐代展脚幞头、晚期罗马额冠、萨珊球顶王冠、清代朝冠、拿破仑双角帽仅限将领）、**国家介绍按时代显示**（原版 1337 年介绍只在 1300 年以后出现）、**修复王朝悬停刷屏报错**；搭配《全时代编年史》：游牧二级分封与忽里勒台、三条欧亚大迁徙链、全 12 剧本开局大政方略与时代治理、10 套 AI 人格、两个新国际组织、30 支跨时代兵种、7 条原生道路、宗教学派与骑士团、原生探险、126 座早期奇观、324 位传奇人物、24 个大灾难与 85 条任务树。引擎门禁 99/99。**已知问题：**启用 Glorp UI 时国家悬停介绍暂不显示编年史时代介绍；唐太宗幞头帽顶穿模、清代宫廷服饰尚未完全符合史实。详见 `CHANGELOG.md`。
+> **History below / 以下为历代版本说明：** sections marked v70.0 and earlier describe those versions and are kept for reference.
 
 ---
 
@@ -107,7 +107,7 @@
 
 ---
 
-## Official Optional Submod Matrix & Load Order / 官方子模组与推荐排序（v70.0）
+## Official Optional Submod Matrix & Load Order / 官方子模组与推荐排序（v83.0）
 
 Place enabled submods **below (after)** the Project Phoenix main mod in the order shown below / 子模组请排在主模组之后，顺序如下：
 

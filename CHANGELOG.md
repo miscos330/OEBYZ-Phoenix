@@ -1,3 +1,78 @@
+# 《凤凰计划（OEBYZ）》v83.0 更新日志（合并 v71–v83 研发波次 + 全 12 剧本游牧分封、迁徙与治理大扩展）
+
+> **发布状态**：v83.0（适配 EU5 1.4.9），合并 **v71 至 v83** 内部研发波次，经四轮实机复验（rc1–rc4）后发布。
+> **存档提示**：v83.0 **不兼容旧版本存档**，请新开一局。
+> **官方音乐子模组**：[《凤凰计划 · 历代交响原声》（Project Phoenix Soundtrack，工坊 ID `3846593343`）](https://steamcommunity.com/sharedfiles/filedetails/?id=3846593343) 完全兼容，无需重新下载。
+
+制作：寐夜空灵、miscos330
+
+---
+
+## 一、中文更新日志
+
+### 1. 游牧二级分封与忽里勒台（编年史，v81）
+
+- **三类游牧附属国**：翼部万户封国、八思哈辖地、探马赤镇戍军府，适用于 361–1836 全时代的草原政权；分封决议把边疆低控制地点裂土分给宗王，新封国自带核心并成为附庸。
+- **两级封顶**：封国本身不能再分封、不能再召开忽里勒台或颁赐投下户，单国最多 4 个封国。
+- **大汗狼纛征伐令**：弹窗直接写明东亚与西域两个候选强敌（如“立即向宋宣战”），也可选择“暂缓出师”退还 75 金币；“收回先锋营”改为原生决议。
+- 附属国外交行动、取消/解除关系等全部 46 类原版行动文本补齐中英文（覆盖主模组 49 种、编年史 35 种自定义附属类型）。
+
+### 2. 欧亚多米诺大迁徙（编年史，v82）
+
+- 使用原生人口迁移（跨境迁徙流、人口拆分与按人口改文化）实现三条跨大陆迁徙链：匈人西迁（361–589）、阿拉伯—突厥—粟特—马扎尔（632–1050）、蒙古大征服与欧亚民族大融合（1204–1380），共 18 个联动事件。
+- 2 个迁徙旗舰局势与 6 项玩家决议；“接纳迁徙部族入塞屯兵”限定在 1500 年以前。
+
+### 3. 全 12 剧本治理与时代决议（主模组 + 编年史，v83 / v74.5）
+
+- **凤凰帝国总控台与快捷栏向所有人类国家开放**（不再限定罗马系），标题与文化指令改为通用措辞。
+- 6 项全时代通用治理决议，4 项随时代演进的治理决议（361–631 督府/边防军、632–1443 军区/府兵/伊克塔、1444–1775 总督与监察官、1776–1836 部委与总参谋部），2 项文化融合与边疆移民决议。
+- **12 剧本开局十年大政方略**：开局约半个月弹出，三步连环事件；另有 36 项时代决议、27 条史实同盟与保证、6 大旗舰局势（395/476/632/768/1444/1776，使用原版史诗插图）。
+- **跨时代国家介绍**：新增 180 余条按时代区分的国家悬停介绍（如 1204 年蒙古为灭克烈、筹备 1206 斡难河大会，1648 与 1821 年大清各自不同）；原版 1337 年介绍只在 1300 年以后显示，早期剧本不再串台。
+
+### 4. AI、军事、宗教与文化系统（编年史，v71–v75）
+
+- **AI 与国际组织**：10 套史实 AI 战略人格、20 条扩张走廊；新增“丝路商帮联盟”与“草原大忽里勒台联盟”两个国际组织（原版风格横幅），并升级 4 个原有组织。
+- **军事**：30 支跨时代史实兵种、12 套时代征召、6 种征募方式、6 种阵型，7 条原生跨时代道路（含道路图标）及解锁科技。
+- **宗教与宫廷**：12 个宗教学派、12 个骑士团、8 类摄政、8 类子女教育、9 类艺术家；10 条原生陆海探险（马可·波罗、伊本·法德兰、玄奘西行、南海佛法等）。
+- **奇观、人物与灾难**：361–768 年 126 座奇观与艺术品、324 位传奇人物，大灾难由 8 个扩充到 24 个。
+- **任务树与挑战**：编年史引导任务树由 45 条扩充到 85 条；编年史遥测控制台 2.0；48 项跨时代编年史挑战。
+
+### 5. 跨时代 3D 冠帽（主模组，v76）
+
+- 新增蒙古姑姑冠、唐代展脚幞头、晚期罗马额冠、萨珊球顶王冠、清代朝冠与拿破仑双角帽（双角帽只给将领与海军上将，不给君主）。
+
+### 6. 修复
+
+- 修复鼠标悬停王朝图标时刷出大量报错（每次可达十余万行）。
+- 修复分封决议悬停报错、新国际组织初始化作用域错误、道路科技与附属类型脚本报错。
+- 补齐 28 个人名的中英文（不再出现“苏丹name_ayub杜兰尼”这类原始键名）。
+- 1204 蒙古“大汗狼纛征伐令”与“收回先锋营”两项破局行动改为原生决议，可在决议栏直接执行。
+- 启用 Glorp UI 时按 Esc，快捷栏与指挥坞一同隐藏，不再遮挡“退出”。
+- 自动化引擎门禁升级到 99/99（R01–R99）。
+
+### 7. 已知问题（留待后续版本）
+
+- 启用 Glorp UI 子模组时，国家悬停介绍暂不显示编年史的时代专属介绍（未启用 Glorp UI 时正常）。
+- 唐太宗幞头帽顶仍有穿模；清代宫廷服饰尚未完全符合史实，后续版本会按史实重做服饰与人物模型。
+
+---
+
+## II. English Changelog
+
+**Project Phoenix v83.0** (EU5 1.4.9) merges internal waves **v71–v83** and was released after four live test rounds (rc1–rc4). **Not compatible with older saves; please start a new game.** The companion Soundtrack OST (`3846593343`) remains fully compatible.
+
+1. **Nomadic sub-appanages & Kurultai (Chronicles, v81):** three steppe subject types (Wing Tumen, Baskak Domain, Tamma Viceroy) for 361–1836; carving decisions create cored vassals; hard two-tier cap and at most 4 appanages. The Wolf Banner War event names its eastern and western targets and offers a stand-down option that refunds 75 gold. All 46 vanilla subject-action texts are now localized for 49 Main Mod and 35 Chronicles subject types.
+2. **Eurasian domino migrations (Chronicles, v82):** native pop migration, pop splitting and culture change drive three migration chains (Hunnic 361–589; Arab/Turkic/Sogdian/Magyar 632–1050; the Mongol Eurasian crucible 1204–1380), 18 linked events, 2 migration situations and 6 decisions (the foederati decision ends at 1500).
+3. **Governance across all 12 bookmarks (Main Mod + Chronicles, v83 / v74.5):** the Phoenix Command Dock and Quick Nav bar now open for every human realm; 6 universal and 4 era-evolving governance decisions plus 2 cultural/colonist decisions; opening 10-year charter events for all 12 bookmarks (about two weeks in), 36 era decisions, 27 historical alliances/guarantees and 6 flagship situations with vanilla art; 180+ era-specific country descriptions, and vanilla 1337 texts only after 1300.
+4. **AI, military, religion & culture (Chronicles, v71–v75):** 10 AI personalities and 20 expansion corridors; two new international organizations (Silk Road League, Steppe Kurultai) and 4 upgraded ones; 30 cross-era units, 12 levies, 6 recruitment methods, 6 formations, 7 native road types with icons; 12 religious schools, 12 chivalric orders, 8 regencies, 8 child educations, 9 artist types, 10 native land/sea expeditions; 126 wonders and artworks for 361–768, 324 legendary characters, 24 disasters; 85 mission trees (from 45), Telemetry Console 2.0 and 48 cross-era challenges.
+5. **Cross-era 3D headwear (Main Mod, v76):** Mongol boqta, Tang winged futou, Late Roman diadem, Sassanian korymbos crown, Qing court hat and the Napoleonic bicorne (generals and admirals only).
+6. **Fixes:** the dynasty-tooltip error flood, appanage and IO-bootstrap script errors, road-advance and subject-type errors, 28 missing character names, the two 1204 Mongol stalemate breakers (now native decisions), and Glorp UI's quick bar on the pause menu; engine CI now 99/99 (R01–R99).
+7. **Known issues:** with the Glorp UI submod enabled, country tooltips do not yet show the Chronicles era descriptions (they do without Glorp UI); Tang Taizong's futou still clips at the crown and Qing court attire is not yet historically accurate — clothing and character models will be reworked.
+
+Made by: 寐夜空灵, miscos330
+
+---
+
 # 《凤凰计划（OEBYZ）》v70.0 更新日志（合并 v61–v67 七大研发波次 + 532/1204/事件链/国家革新全面重做）
 
 > **发布状态**：v70.0（适配 EU5 1.4.9），合并 **v61 至 v67** 七大内部研发波次及全模组实机大修。

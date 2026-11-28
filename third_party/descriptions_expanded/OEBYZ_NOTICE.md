@@ -8,7 +8,6 @@ that mod's description texts and adds its own.
 
 Byte-identical copies of version 1.2.3 (SHA-256):
 
-- `in_game/common/customizable_localization/lde_history_entries.txt` `8078b8b16c82e9101305446490aca7a6ff6d838709ba37a750c59f0f4e45486f`
 - `in_game/localization/simp_chinese/lde_history_entries_l_simp_chinese.yml` `ef6b9f980ac86953bb84a3a9c597b2e4aacd2438b930bddb134130283672ee5b`
 - `in_game/localization/english/replace/lde_history_entries_replace_l_english.yml` `bef0c846b82f1928a9c824ee96fd293dd595daec55cfb1c8ec97ef8dbebb2c03`
 - `LICENSE` `98d215b1d5affaf6e75e6e1d7b2df3b945b5dfd3479ad700d5c2807dd08609ea`
@@ -21,6 +20,9 @@ Byte-identical copies of version 1.2.3 (SHA-256):
 
 ## What Phoenix changed or added
 
+- `in_game/common/customizable_localization/lde_history_entries.txt` (upstream SHA-256 `8078b8b16c82e9101305446490aca7a6ff6d838709ba37a750c59f0f4e45486f`):
+  added `exists = dynasty:<id>` and `?=` null-safe guards on dynasty comparisons so non-1337 Chronicles bookmarks do not log missing-dynasty errors;
+  all other entries and texts are unchanged from version 1.2.3.
 - `in_game/localization/english/lde_history_entries_l_english.yml` (upstream SHA-256 `71f7df07dfeb0baede6419852cf1271b47d557dc4c4400f04b290d7d077e4d4b`):
   removed one stray CJK string in `lde_dyn_takou_dynasty` so the English localization file contains zero CJK characters;
   all other lines are unchanged from version 1.2.3.
@@ -28,8 +30,8 @@ Byte-identical copies of version 1.2.3 (SHA-256):
   aligned two invalid god references (`chaac_god` and `dzahui_god`) to `tlaloc_god` matching the English replace file and EU5 1.4.9 god database;
   all other lines are unchanged from version 1.2.3.
 - `in_game/gui/zz_lde_history_tooltips.gui`: tiered history blocks — 4-tier Country (`oe_chron_lde_country_desc` -> `oe_lde_country_desc` -> `lde_country_desc` -> `oe_lde_country_fallback`), 3-tier Culture (`oe_chron_lde_culture_desc` -> `oe_lde_culture_desc` -> `lde_culture_desc`), and 2-tier Dynasty (`oe_lde_dynasty_desc` -> `lde_dynasty_desc`). Nothing else in the file is changed.
-- `in_game/common/customizable_localization/oe_lde_overlay.txt` and `main_menu/localization/*/oe_lde_overlay_l_*.yml`:
-  55 new descriptions for countries, dynasties and cultures not covered by Descriptions Expanded, 148 era-aware country entries, 16 Tier-4 universal country fallbacks (kept strictly after Descriptions Expanded), 2 empty cross-mod Chronicles stubs (`oe_chron_lde_country_desc`, `oe_chron_lde_culture_desc`), and 8 adapted ones:
+- `in_game/common/customizable_localization/oe_lde_overlay.txt`, `in_game/common/customizable_localization/oe_chron_lde_overlay.txt`, and `main_menu/localization/*/oe_lde_overlay_l_*.yml`:
+  55 new descriptions for countries, dynasties and cultures not covered by Descriptions Expanded, 148 era-aware country entries, 16 Tier-4 universal country fallbacks (kept strictly after Descriptions Expanded), 2 empty cross-mod Chronicles VFS stubs (`oe_chron_lde_country_desc`, `oe_chron_lde_culture_desc` in `oe_chron_lde_overlay.txt`), and 8 adapted ones:
   for CRI, QAS, HCN, OTC, BGT, OGE, LNG, SYG the first paragraph is rewritten for Phoenix's setup (the Yuan princes are named
   by their titles; Crimea begins as the 1337 Crimean Tumen) and the later paragraphs of the Descriptions Expanded entry follow unchanged.
   For WAL, EPI, FEO, GAZ, SAO, ACH, NEO, ATH, gabras_dynasty, pontic_greek_culture, GLH, SMS, nakh_culture, ryazanian, CYP, GEO, HLG, QAR, AQQ, CDL, LNG, duan_dynasty, SRB, MOS, RUS, IRA, ETH, MAM, BYZ the Descriptions Expanded entry is shown with single sentences replaced where it
